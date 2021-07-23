@@ -18,18 +18,20 @@ public class HealthState
     private int Health;
     private bool HurtByPed;
     private bool HurtByVehicle;
+    private ISettingsProvideable Settings;
 
     public HealthState()
     {
 
     }
-    public HealthState(PedExt _MyPed)
+    public HealthState(PedExt _MyPed, ISettingsProvideable settings)
     {
         MyPed = _MyPed;
         Health = _MyPed.Pedestrian.Health;
         Armor = _MyPed.Pedestrian.Armor;
         CurrentArmor = Armor;
         CurrentHealth = Health;
+        Settings = settings;
     }
     public PedExt MyPed { get; set; }
     public bool HasLoggedDeath { get; private set; }
@@ -119,7 +121,10 @@ public class HealthState
 
         if (outBone != 0)
         {
-            NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
+            if (Settings.SettingsManager.GeneralSettings.HealthState_ClearDamage)
+            {
+                NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
+            }
             Bone DamagedOne = GetBone(outBone);//    .FirstOrDefault(x => x.Tag == DamagedBoneId);
             if (DamagedOne != null)
             {
@@ -140,11 +145,11 @@ public class HealthState
         if (IsArmor)
         {
             if (injury == InjuryType.Normal)
-                return 1.0f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_NormalDamageModifier;
             else if (injury == InjuryType.Graze)
-                return 0.25f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_GrazeDamageModifier;
             else if (injury == InjuryType.Critical)
-                return 2.0f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_CriticalDamageModifier;
             else if (injury == InjuryType.Vanilla)
                 return 1.0f;
             else
@@ -153,21 +158,26 @@ public class HealthState
         else
         {
             if (injury == InjuryType.Fatal)
-                return 10.0f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Health_FatalDamageModifier;
             else if (injury == InjuryType.Normal)
-                return 2.0f;//5.0f;//3.0f;//1.0f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Health_NormalDamageModifier;
             else if (injury == InjuryType.Graze)
-                return 0.75f;//0.25f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Health_GrazeDamageModifier;
             else if (injury == InjuryType.Critical)
-                return 3.0f;//8.0f;// 6.0f;//2.0f;
+                return Settings.SettingsManager.GeneralSettings.HealthState_Health_CriticalDamageModifier;
             else if (injury == InjuryType.Vanilla)
-                return 1.0f;// 6.0f;//2.0f;
+                return 1.0f;
             else
                 return 1.0f;
         }
     }
     private void ModifyDamage()
     {
+        if (!Settings.SettingsManager.GeneralSettings.HealthState_ModifyDamage)
+        {
+            return;
+        }
+
         HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", MyPed.Pedestrian);
         HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian);
         if (HurtByPed || HurtByVehicle)
@@ -176,11 +186,7 @@ public class HealthState
             int HealthDamage = Health - CurrentHealth;
             int ArmorDamage = Armor - CurrentArmor;
             BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
-            //WeaponInformation DamagingWeapon = DataMart.Weapons.GetDamagingWeapon(MyPed.Pedestrian);
-
-
             WeaponCategory category = WeaponCategory.Unknown;
-
             if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", MyPed.Pedestrian, 0, 1))
             {
                 category = WeaponCategory.Melee;
@@ -201,21 +207,19 @@ public class HealthState
                 category = WeaponCategory.Vehicle;
             }
    
-
-
-
-
             bool CanBeFatal = false;
             if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
+            {
                 CanBeFatal = true;
+            }
 
             bool ArmorWillProtect = false;
             if (DamagedLocation == BodyLocation.UpperTorso)
+            {
                 ArmorWillProtect = true;
-
+            }
             InjuryType HealthInjury = InjuryType.Vanilla; //RandomType(CanBeFatal);
             InjuryType ArmorInjury = InjuryType.Vanilla; //RandomType(false);
-
             if (MyPed.Health == 0)//already dead, we are intercepting
             {
                 HealthInjury = InjuryType.Fatal;
@@ -231,32 +235,39 @@ public class HealthState
             //    FlagAsBleeding();
             //}
 
-
-
             float HealthDamageModifier = GetDamageModifier(HealthInjury, false);
             float ArmorDamageModifier = GetDamageModifier(ArmorInjury, true);
 
             int NewHealthDamage = Convert.ToInt32(HealthDamage * HealthDamageModifier);
 
             if (!ArmorWillProtect)
+            {
                 NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
+            }
 
             int NewArmorDamage = 0;
             if (ArmorWillProtect)
+            {
                 NewArmorDamage = Convert.ToInt32(ArmorDamage * ArmorDamageModifier);
-
-
-
+            }
 
             if (Health - NewHealthDamage > 0)
+            {
                 MyPed.Pedestrian.Health = Health - NewHealthDamage;
+            }
             else
+            {
                 MyPed.Pedestrian.Health = 0;
+            }
 
             if (Armor - NewArmorDamage > 0)
+            {
                 MyPed.Pedestrian.Armor = Armor - NewArmorDamage;
+            }
             else
+            {
                 MyPed.Pedestrian.Armor = 0;
+            }
 
             string DisplayString = "";
             if (MyPed.IsCop)
@@ -279,42 +290,78 @@ public class HealthState
     }
     private InjuryType RandomType(bool CanBeFatal)
     {
-        int RandomNumber = RandomItems.MyRand.Next(1, 101);
-        if (RandomNumber <= 60)
-            return InjuryType.Normal;
-        else if (RandomNumber <= 70)
-            return InjuryType.Graze;
-        else if (RandomNumber <= 92)
-            return InjuryType.Critical;
-        else if (RandomNumber <= 100 && CanBeFatal)
-            return InjuryType.Fatal;
-        else
-            return InjuryType.Normal;
+        var ToPickFrom = new List<(float, InjuryType)>
+        {
+            (Settings.SettingsManager.GeneralSettings.HealthState_NormalDamagePercent, InjuryType.Normal),
+            (Settings.SettingsManager.GeneralSettings.HealthState_GrazeDamagePercent, InjuryType.Graze),
+            (Settings.SettingsManager.GeneralSettings.HealthState_CriticalDamagePercent, InjuryType.Critical),
+            (Settings.SettingsManager.GeneralSettings.HealthState_FatalDamagePercent,InjuryType.Fatal)
+        };
+        float Total = ToPickFrom.Sum(x => x.Item1);
+        float RandomPick = RandomItems.GetRandomNumber(0, Total);//--RandomItems.MyRand.Next(0, Total);
+        foreach ((float, InjuryType) percentage in ToPickFrom)
+        {
+            float SpawnChance = percentage.Item1;
+            if (RandomPick < SpawnChance)
+            {     
+                if (percentage.Item2 != InjuryType.Fatal)
+                {
+                    return percentage.Item2;
+                }
+                else if (percentage.Item2 == InjuryType.Fatal && CanBeFatal)
+                {
+                    return percentage.Item2;
+                }
+            }
+            RandomPick -= SpawnChance;
+        }
+        return InjuryType.Normal;
+
+
+
+        //int RandomNumber = RandomItems.MyRand.Next(1, 101);
+        //if (RandomNumber <= Settings.SettingsManager.GeneralSettings.HealthState_NormalDamagePercent)
+        //{
+        //    return InjuryType.Normal;
+        //}
+        //else if (RandomNumber <= 70)
+        //{
+        //    return InjuryType.Graze;
+        //}
+        //else if (RandomNumber <= 92)
+        //{
+        //    return InjuryType.Critical;
+        //}
+        //else if (RandomNumber <= 100 && CanBeFatal)
+        //{
+        //    return InjuryType.Fatal;
+        //}
+        //else
+        //{
+        //    return InjuryType.Normal;
+        //}
     }
     private void SetRagdoll(int NewHealth)
     {
+        if(!Settings.SettingsManager.GeneralSettings.HealthState_AllowRagdoll)
+        {
+            return;
+        }
         if (Health - NewHealth >= 65)
         {
             NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 3000, 3000, 0, false, false, false);
-            //IsBleeding = true;
-            //Mod.Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
         }
         else if (Health - NewHealth >= 35 && RandomItems.RandomPercent(60))
         {
             NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
-            //IsBleeding = true;
-            //Mod.Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
         }
         else if (Health - NewHealth >= 15 && RandomItems.RandomPercent(30))
         {
             NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
-            //IsBleeding = true;
-            //Mod.Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
         }
         else if (Health - NewHealth >= 10)
         {
-            //IsBleeding = true;
-            //Mod.Debugging.WriteToLog("PlayerHealthChanged", string.Format("Normal Hit, Bleeding"));
+
         }
     }
     private Bone GetBone(int ID)

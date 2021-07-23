@@ -283,7 +283,7 @@ public class Dispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip, Settings);
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
@@ -350,7 +350,7 @@ public class Dispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, false, Settings);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                                 spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
@@ -399,7 +399,7 @@ public class Dispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip, Settings);
                             spawnTask.AttemptSpawn();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                             spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
@@ -596,7 +596,7 @@ public class Dispatcher
                     Roadblock.Dispose();
                 }
 
-                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition);
+                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition, Settings);
                 Roadblock.SpawnRoadblock();
                 GameTimeLastSpawnedRoadblock = Game.GameTime;
                 EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);

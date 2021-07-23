@@ -10,7 +10,7 @@ public class Cop : PedExt
     private WeaponInventory WeaponInventory;
     private Voice Voice;
     private AssistManager AssistManager;
-    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
+    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned) : base(pedestrian, settings)
     {
         IsCop = true;
         Health = health;

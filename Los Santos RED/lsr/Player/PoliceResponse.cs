@@ -115,6 +115,7 @@ namespace LosSantosRED.lsr
                 }
                 PlaceLastReportedCrime = Location;
                 CrimeEvent PreviousViolation;
+
                 if (ByPolice)
                 {
                     PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
@@ -123,12 +124,17 @@ namespace LosSantosRED.lsr
                 {
                     PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
+
+
+
+
                 CrimeSceneDescription CrimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
                     CrimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
                     PreviousViolation.CurrentInformation = CrimeSceneDescription;
+                    
                 }
                 else
                 {

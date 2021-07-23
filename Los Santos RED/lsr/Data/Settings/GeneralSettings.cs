@@ -6,26 +6,44 @@ using System.Threading.Tasks;
 
 public class GeneralSettings
 {
-    public string MainCharacterToAlias { get; set; } = "Michael";
-
-    public bool PedTakeoverSetRandomMoney { get; set; } = true;
-    public int PedTakeoverRandomMoneyMin { get; set; } = 500;
-    public int PedTakeoverRandomMoneyMax { get; set; } = 5000;
-
+    public bool PedSwap_AliasPedAsMainCharacter { get; set; } = true;
+    public string PedSwap_MainCharacterToAlias { get; set; } = "Michael";
+    public bool PedSwap_SetRandomMoney { get; set; } = true;
+    public int PedSwap_RandomMoneyMin { get; set; } = 500;
+    public int PedSwap_RandomMoneyMax { get; set; } = 5000;
+    public int PedSwap_PercentageToGetRandomWeapon { get; set; } = 40;
+    public int PedSwap_PercentageToGetCriminalHistory { get; set; } = 20;
     public string MainCharacterToAliasModelName
     {
         get
         {
-            if (MainCharacterToAlias == "Michael")
+            if (PedSwap_MainCharacterToAlias == "Michael")
                 return "player_zero";
-            else if (MainCharacterToAlias == "Franklin")
+            else if (PedSwap_MainCharacterToAlias == "Franklin")
                 return "player_one";
-            else if (MainCharacterToAlias == "Trevor")
+            else if (PedSwap_MainCharacterToAlias == "Trevor")
                 return "player_two";
             else
                 return "player_zero";
         }
     }
+
+    public bool HealthState_ModifyDamage { get; set; } = true;
+    public bool HealthState_ClearDamage { get; set; } = true;
+    public float HealthState_Armor_NormalDamageModifier { get; set; } = 1.0f;
+    public float HealthState_Armor_GrazeDamageModifier { get; set; } = 0.25f;
+    public float HealthState_Armor_CriticalDamageModifier { get; set; } = 2.0f;
+    public float HealthState_Health_FatalDamageModifier { get; set; } = 10.0f;
+    public float HealthState_Health_NormalDamageModifier { get; set; } = 2.0f;
+    public float HealthState_Health_GrazeDamageModifier { get; set; } = 0.75f;
+    public float HealthState_Health_CriticalDamageModifier { get; set; } = 3.0f;
+    public bool HealthState_AllowRagdoll { get; set; } = true;
+    public float HealthState_NormalDamagePercent { get; set; } = 60f;
+    public float HealthState_GrazeDamagePercent { get; set; } = 10f;
+    public float HealthState_CriticalDamagePercent { get; set; } = 22f;
+    public float HealthState_FatalDamagePercent { get; set; } = 8f;
+
+
     public GeneralSettings()
     {
 

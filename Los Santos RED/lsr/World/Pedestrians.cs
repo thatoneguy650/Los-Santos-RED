@@ -219,14 +219,14 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false);
             myCop.IssueWeapons();
             if (Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {

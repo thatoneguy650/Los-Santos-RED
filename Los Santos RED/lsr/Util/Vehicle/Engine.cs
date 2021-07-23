@@ -51,12 +51,14 @@ public class Engine
     }
     public void Toggle(bool DesiredStatus)
     {
-        EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning),3);
+        
         if (CanToggle)
         {
+            EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning), 3);
             IsRunning = DesiredStatus;
             Update();
+            EntryPoint.WriteToConsole(string.Format("ToggleEngine End {0}", IsRunning), 3);
         }
-        EntryPoint.WriteToConsole(string.Format("ToggleEngine End {0}", IsRunning), 3);
+        
     }
 }

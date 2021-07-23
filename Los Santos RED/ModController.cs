@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace LosSantosRED.lsr
 {
+    //dont really like how this is written, need an entire refactor?
     public class ModController
     {
         private readonly Stopwatch TickStopWatch = new Stopwatch();
@@ -21,12 +22,15 @@ namespace LosSantosRED.lsr
         private string LastRanCoreTask;
         private string LastRanSecondaryTask;
         private string LastRanTertiaryTask;
+        private string LastRanQuaternaryTask;
         private string PrevLastRanCoreTask;
         private string PrevLastRanSecondaryTask;
         private string PrevLastRanTertiaryTask;
+        private string PrevLastRanQuaternaryTask;
         private List<ModTask> CoreTasks;
         private List<ModTask> SecondaryTasks;
         private List<ModTask> TertiaryTasks;
+        private List<ModTask> QuaternaryTasks;
         private Names Names;
         private GameSaves GameSaves;
         private PedSwap PedSwap;
@@ -75,7 +79,7 @@ namespace LosSantosRED.lsr
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
             Player.Reset(true, true, true, true);
-            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.PedTakeoverRandomMoneyMin, Settings.SettingsManager.GeneralSettings.PedTakeoverRandomMoneyMax));
+            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.PedSwap_RandomMoneyMin, Settings.SettingsManager.GeneralSettings.PedSwap_RandomMoneyMax));
         }
         public void NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
         {
@@ -92,34 +96,43 @@ namespace LosSantosRED.lsr
             }
             ReadDataFiles();
             WavAudio = new WavAudio();
+            GameFiber.Yield();
             Time = new Mod.Time();
+            GameFiber.Yield();
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
-            World.Setup();       
+            World.Setup();
+            GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
             Player.Setup();
-
-
-
-
-            //Input = new Input(Player, Settings);//input was up here in case anything gets real weird......
+            GameFiber.Yield();
             Police = new Police(World, Player);
+            GameFiber.Yield();
             Civilians = new Civilians(World, Player);
-            PedSwap = new PedSwap(Time, Player, Settings, World);
+            GameFiber.Yield();
+            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes);
+            GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons);
+            GameFiber.Yield();
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves, World);
+            GameFiber.Yield();
             Input = new Input(Player, Settings,UI);
+            GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
+            GameFiber.Yield();
             VanillaManager = new VanillaManager();
+            GameFiber.Yield();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this,Settings);
+            GameFiber.Yield();
             World.AddBlipsToMap();
+            GameFiber.Yield();
             PedSwap.Setup();
-
-
+            GameFiber.Yield();
 
             GameSave CurrentSave = GameSaves.GetSave(Player);
             if (CurrentSave != null)
             {
                 CurrentSave.Load(Weapons, PedSwap);
+                GameFiber.Yield();
             }
 
             GameFiber.Yield();
@@ -130,6 +143,8 @@ namespace LosSantosRED.lsr
             StartSecondaryLogic();
             GameFiber.Yield();
             StartTertiaryLogic();
+            GameFiber.Yield();
+            StartQuaternaryLogic();
             GameFiber.Yield();
             StartUILogic();
             GameFiber.Yield();
@@ -204,7 +219,7 @@ namespace LosSantosRED.lsr
         {
             CoreTasks = new List<ModTask>()
             {
-                  new ModTask(100, "Player.Update", Player.Update, 3),
+                  new ModTask(100, "Player.Update", Player.Update, 0),
 
             };
             SecondaryTasks = new List<ModTask>()
@@ -218,36 +233,7 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6),
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
-                //new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 9),
-
-                //new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance//500
-                //new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance//500
-
-                //new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 12),//500
-
-                //new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 13),  //very bad performance
-                //new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 14), //very bad performance
-
-                //new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 15),
-                //new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 16),
-                //new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 17),//500
-                //new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 18),//500
-
-                //new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 19),//500//added yields
-
-
-                //new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9), //WAS very bad performance, trying to limit counts
-                //new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 10),
-
-                //new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 11), //WAS very bad performance, trying to limit counts//added yields
-                //new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 12),//added yields
-
-                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 13),//1000
-                new ModTask(1000, "Time.Tick", Time.Tick, 14),
-
-
-                new ModTask(500, "Police.Update", Police.Update, 15),//added yields//cant get 300 ms updates in here anyways
-
+                new ModTask(500, "Police.Update", Police.Update, 9),//added yields//cant get 300 ms updates in here anyways
             };
 
             TertiaryTasks = new List<ModTask>()
@@ -262,12 +248,19 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 6),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 8),//500
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 9),//500
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 10),//500//added yields
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 20), //WAS very bad performance, trying to limit counts
-                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 21),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 22), //WAS very bad performance, trying to limit counts//added yields
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 23),//added yields
+                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 9),//1000
+                new ModTask(1000, "Time.Tick", Time.Tick, 10),
+            };
+
+            QuaternaryTasks = new List<ModTask>()
+            {
+
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),//500
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//500//added yields
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 2), //WAS very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 4), //WAS very bad performance, trying to limit counts//added yields
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),//added yields
             };
 
             FPS = new MovingAverage();
@@ -296,6 +289,11 @@ namespace LosSantosRED.lsr
                             }
                             EntryPoint.WriteToConsole("=================================== TERTIARY", 3);
                             foreach (ModTask modTask in TertiaryTasks)
+                            {
+                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                            }
+                            EntryPoint.WriteToConsole("=================================== QUATERNARY", 3);
+                            foreach (ModTask modTask in QuaternaryTasks)
                             {
                                 EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
                             }
@@ -332,9 +330,9 @@ namespace LosSantosRED.lsr
                             } 
                         }
                         FPS.ComputeAverage(Game.FrameRate);
-                        if (!Game.IsPaused && (Game.FrameRate < 45 || FPS.Average <= 55))
+                        if (!Game.IsPaused && (Game.FrameRate < 45))// || FPS.Average <= 55))
                         {
-                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {LastRanSecondaryTask} & {PrevLastRanTertiaryTask}", 3);
+                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask} & {LastRanQuaternaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {PrevLastRanSecondaryTask} & {PrevLastRanTertiaryTask} & {PrevLastRanQuaternaryTask}", 3);
                         }
                         TickStopWatch.Reset();
                         GameFiber.Yield();
@@ -432,6 +430,55 @@ namespace LosSantosRED.lsr
                                 else
                                 {
                                     LastRanTertiaryTask = "NONE";//nothing to run at all this tick, everything is on time
+                                }
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Secondary Logic");
+            GameFiber.Yield();
+        }
+        private void StartQuaternaryLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int CurrentQuaternaryTask = 0;
+                    while (IsRunning)
+                    {
+                        if (DebugSecondaryRunning)
+                        {
+                            if (CurrentQuaternaryTask > QuaternaryTasks.Count)
+                            {
+                                CurrentQuaternaryTask = 0;
+                            }
+                            PrevLastRanQuaternaryTask = LastRanQuaternaryTask;
+                            ModTask firstQuaternary = QuaternaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentQuaternaryTask).FirstOrDefault();
+                            if (firstQuaternary != null)
+                            {
+                                LastRanQuaternaryTask = firstQuaternary.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstQuaternary.GameTimeLastRan}";
+                                firstQuaternary.Run();
+                                CurrentQuaternaryTask++;
+                            }
+                            else
+                            {
+                                ModTask alternateQuaternaryTask = QuaternaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                if (alternateQuaternaryTask != null)
+                                {
+                                    LastRanQuaternaryTask = alternateQuaternaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateQuaternaryTask.GameTimeLastRan}";
+                                    alternateQuaternaryTask.Run();
+                                }
+                                else
+                                {
+                                    LastRanQuaternaryTask = "NONE";//nothing to run at all this tick, everything is on time
                                 }
                             }
                         }

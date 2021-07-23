@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr
         {
             Player = currentPlayer;
         }
-             private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
+        private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
         private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
         public bool HasHistory => CurrentHistory != null;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
@@ -61,6 +61,20 @@ namespace LosSantosRED.lsr
         {
             CurrentHistory = null;
             EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Clear", 3);
+        }
+        public void AddCrime(Crime crime)
+        {
+            if(CurrentHistory == null)
+            {
+                CurrentHistory = new BOLO(Vector3.Zero,new List<Crime>() { crime }, crime.ResultingWantedLevel);
+            }
+            else
+            {
+                if (!CurrentHistory.Crimes.Any(x => x.Name == crime.Name))
+                {
+                    CurrentHistory.Crimes.Add(crime);
+                }
+            }
         }
         public void PrintCriminalHistory()
         {

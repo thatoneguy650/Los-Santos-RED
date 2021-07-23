@@ -21,16 +21,19 @@ public class Fight : ComplexTask
     }
     public override void Start()
     {
-        EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}",3);
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.KeepTasks = true;
-        Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
-        Ped.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
-        GameTimeLastRan = Game.GameTime;
+        if (Ped.Pedestrian.Exists())
+        {
+            EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
+            Ped.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
+            GameTimeLastRan = Game.GameTime;
+        }
     }
     public override void Update()
     {
-        if(Player.IsWanted)
+        if(Player.IsWanted && Ped.Pedestrian.Exists())
         {
             Ped.Pedestrian.Tasks.Clear();
         }

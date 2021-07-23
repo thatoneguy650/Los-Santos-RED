@@ -27,14 +27,16 @@ public class Roadblock
     private IEntityProvideable World;
     private Agency Agency;
     private bool IsDisposed;
+    private ISettingsProvideable Settings;
     private float RotatedNodeHeading => NodeHeading - 90f;
-    public Roadblock(IDispatchable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, Vector3 initialPosition)
+    public Roadblock(IDispatchable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, Vector3 initialPosition, ISettingsProvideable settings)
     {
         Player = player;
         World = world;
         Agency = agency;
         Vehicle = vehicle;
         InitialPosition = initialPosition;
+        Settings = settings;
         VehicleModel = new Model(Vehicle.ModelName);
         SpikeStripModel = new Model(SpikeStripName);
     }
@@ -162,7 +164,7 @@ public class Roadblock
     private bool CreateVehicle(Vector3 position, float heading)
     {
 
-        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, true);
+        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, true, Settings);
         spawnTask.AttemptSpawn();
         spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
         spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));

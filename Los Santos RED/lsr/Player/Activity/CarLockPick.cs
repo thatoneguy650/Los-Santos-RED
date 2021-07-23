@@ -40,6 +40,9 @@ public class CarLockPick
             }
             int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
             VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
+
+            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick VehicleClass {VehicleClass}", 3);
+
             if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Helicopter)
             {
                 return false;//maybe add utility?
@@ -69,12 +72,14 @@ public class CarLockPick
                     EntryPoint.WriteToConsole("PickLock Setup Failed",3);
                     return;
                 }
+                GameFiber.Yield();
                 if (!LockPickAnimation())
                 {
                     //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Animation Failed",3);
                     return;
                 }
+                GameFiber.Yield();
                 FinishLockPick();
             }, "PickLock");
         }

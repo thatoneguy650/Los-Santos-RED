@@ -82,6 +82,10 @@ public class Weapons : IWeapons
     {
         return WeaponsList.Where(x => x.Category == MyCategory && x.IsRegular).PickRandom();
     }
+    public WeaponInformation GetRandomRegularWeapon()
+    {
+        return WeaponsList.Where(x => x.IsRegular).PickRandom();
+    }
     public WeaponInformation GetCurrentWeapon(Ped Pedestrian)
     {
         if (Pedestrian.Inventory.EquippedWeapon == null)

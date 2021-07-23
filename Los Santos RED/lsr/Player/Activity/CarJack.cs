@@ -57,6 +57,7 @@ public class CarJack
                 GameFiber.Yield();
                 if (!SetupCarJack())
                 {
+                    GameFiber.Yield();
                     if (Driver != null)
                     {
                         Driver.CanBeTasked = true;
@@ -65,17 +66,18 @@ public class CarJack
                 }
                 if (!CarJackAnimation())
                 {
+                    GameFiber.Yield();
                     if (Driver != null)
                     {
                         Driver.CanBeTasked = true;
                     }
                     return;
                 }
-
                 FinishCarJack();
                 if (Driver != null)
+                {
                     Driver.CanBeTasked = true;
-
+                }
                 //CameraManager.RestoreGameplayerCamera();
             }, "CarJackPedWithWeapon");
         }
@@ -101,7 +103,7 @@ public class CarJack
                 WantToCancel = true;
                 break;
             }
-            if (Game.LocalPlayer.Character.IsDead)
+            if (Game.LocalPlayer.Character.IsDead || Game.LocalPlayer.Character.IsRagdoll)
             {
                 WantToCancel = true;
                 break;

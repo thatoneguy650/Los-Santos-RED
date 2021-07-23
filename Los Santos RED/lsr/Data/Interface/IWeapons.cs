@@ -15,5 +15,6 @@ namespace LosSantosRED.lsr.Interface
         WeaponVariation GetWeaponVariation(Ped character, uint hash);
         WeaponInformation GetCurrentWeapon(Ped character);
         WeaponInformation GetRandomRegularWeapon(WeaponCategory randomWeaponCategory);
+        WeaponInformation GetRandomRegularWeapon();
     }
 }

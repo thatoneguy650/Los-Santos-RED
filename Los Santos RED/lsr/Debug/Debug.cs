@@ -243,29 +243,36 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        if (Player.CurrentVehicle != null)
-        {
-            Player.CurrentVehicle.IsStolen = false;
-            Player.CurrentVehicle.CarPlate.IsWanted = false;
-            Player.CurrentVehicle.OriginalLicensePlate.IsWanted = false;
-            Player.CurrentVehicle.WasReportedStolen = false;
-            EntryPoint.WriteToConsole("-------------------------------", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {Player.CurrentVehicle.Vehicle.Handle}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {Player.CurrentVehicle.IsStolen}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {Player.CurrentVehicle.WasReportedStolen}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {Player.CurrentVehicle.CopsRecognizeAsStolen}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {Player.CurrentVehicle.NeedsToBeReportedStolen}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {Player.CurrentVehicle.GameTimeToReportStolen}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {Player.CurrentVehicle.CarPlate.IsWanted}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {Player.CurrentVehicle.CarPlate.PlateNumber}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {Player.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {Player.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {Player.CurrentVehicle.HasOriginalPlate}", 3);
-            EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {Player.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
-            EntryPoint.WriteToConsole("-------------------------------", 3);
-        }
+        //if (Player.CurrentVehicle != null)
+        //{
+        //    Player.CurrentVehicle.IsStolen = false;
+        //    Player.CurrentVehicle.CarPlate.IsWanted = false;
+        //    Player.CurrentVehicle.OriginalLicensePlate.IsWanted = false;
+        //    Player.CurrentVehicle.WasReportedStolen = false;
+        //    EntryPoint.WriteToConsole("-------------------------------", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {Player.CurrentVehicle.Vehicle.Handle}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {Player.CurrentVehicle.IsStolen}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {Player.CurrentVehicle.WasReportedStolen}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {Player.CurrentVehicle.CopsRecognizeAsStolen}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {Player.CurrentVehicle.NeedsToBeReportedStolen}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {Player.CurrentVehicle.GameTimeToReportStolen}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {Player.CurrentVehicle.CarPlate.IsWanted}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {Player.CurrentVehicle.CarPlate.PlateNumber}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {Player.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {Player.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {Player.CurrentVehicle.HasOriginalPlate}", 3);
+        //    EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {Player.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+        //    EntryPoint.WriteToConsole("-------------------------------", 3);
+        //}
+        //IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking
+        EntryPoint.WriteToConsole("-------------------------------", 3);
+        EntryPoint.WriteToConsole($" Player.IsCarJacking: {Player.IsCarJacking}", 3);
+        EntryPoint.WriteToConsole($" Player.IsLockPicking: {Player.IsLockPicking}", 3);
+        EntryPoint.WriteToConsole($" Player.IsHotWiring: {Player.IsHotWiring}", 3);
+        EntryPoint.WriteToConsole($" Game.LocalPlayer.Character.IsJacking: {Game.LocalPlayer.Character.IsJacking}", 3);
+        EntryPoint.WriteToConsole("-------------------------------", 3);
 
-       // SpawnCarjackTarget();
+        // SpawnCarjackTarget();
 
 
 
@@ -353,6 +360,9 @@ public class Debug
             EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {Player.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
             EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {Player.CurrentVehicle.HasOriginalPlate}", 3);
             EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {Player.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+
+            EntryPoint.WriteToConsole($" Player.CurrentVehicle.Engine.IsRunning: {Player.CurrentVehicle.Engine.IsRunning}", 3);
+
             EntryPoint.WriteToConsole("-------------------------------", 3);
         }
 
@@ -708,7 +718,7 @@ public class Debug
                 try
                 {
 
-                    PedExt Coolio = new PedExt(newped, false, false, false, "Test1", null);
+                    PedExt Coolio = new PedExt(newped,Settings, false, false, false, "Test1", null);
                     Coolio.Update(Player, Player.Position);
                     Coolio.CurrentTask = new Chase(Coolio, Player, Distance, VehicleMissionFlag);
                     Coolio.CurrentTask.Start();

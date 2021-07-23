@@ -75,7 +75,7 @@ namespace Mod
 
             GameTimeStartedPlaying = Game.GameTime;
             Scanner = new Scanner(provider, this, audio, settings);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
             WeaponDropping = new WeaponDropping(this, Weapons);
             Surrendering = new SurrenderActivity(this);
@@ -223,7 +223,7 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -295,8 +295,7 @@ namespace Mod
             }
             if (!ByPolice && IsNotWanted)
             {
-                Investigation.Start();
-                
+                Investigation.Start();       
             }
         }
         public void Arrest()
@@ -351,7 +350,7 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias);
+            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -371,7 +370,7 @@ namespace Mod
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings),Settings);
             IsPerformingActivity = false;
             if (resetWanted)
             {
@@ -402,11 +401,11 @@ namespace Mod
             PlayerName = playerName;
             IsMale = isMale;
             SetMoney(money);
-            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias)}", 3);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias)}", 3);
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
@@ -476,26 +475,17 @@ namespace Mod
         }
         public void Update()
         {
-            UpdateData();
-            UpdateButtonPrompts();
+           UpdateData();
+           UpdateButtonPrompts();
         }
         private void UpdateData()
         {
-            if (UpdateState == 0)
-            {
-                UpdateVehicleData();
-                UpdateState++;
-            }
-            else if (UpdateState == 1)
-            {
-                UpdateWeaponData();
-                UpdateState++;
-            }
-            else if (UpdateState == 2)
-            {
-                UpdateStateData();
-                UpdateState = 0;
-            }  
+            UpdateVehicleData();
+            GameFiber.Yield();
+            UpdateWeaponData();
+            GameFiber.Yield();
+            UpdateStateData();
+            GameFiber.Yield();
         }
         private void UpdateButtonPrompts()
         {
@@ -714,6 +704,7 @@ namespace Mod
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
+        public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void DeleteTrackedVehicles()
         {
             TrackedVehicles.Clear();
@@ -839,12 +830,14 @@ namespace Mod
                     return;
                 }
                 UpdateCurrentVehicle();
+                //GameFiber.Yield();
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
                     if(!CurrentVehicle.HasBeenEnteredByPlayer)
                     {
                         CurrentVehicle.AttemptToLock();
+                        GameFiber.Yield();
                     }
                     
                     if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
@@ -926,7 +919,7 @@ namespace Mod
         }
 
         //General Updates
-        private void UpdateCurrentVehicle()
+        public void UpdateCurrentVehicle() //should this be public?
         {
             bool IsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
             bool IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
@@ -950,6 +943,7 @@ namespace Mod
                 return;
             }
             VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
+            //GameFiber.Yield();
             if (existingVehicleExt == null)
             {
                 VehicleExt createdVehicleExt = new VehicleExt(vehicle);
@@ -969,9 +963,9 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 1000)//750
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)//750
             {
-
+                GameFiber.Yield();
 
                 //Works fine just going simpler
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
@@ -1060,7 +1054,7 @@ namespace Mod
             }
             if (HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings);
             }
             HealthState.Update();
             IsStunned = Game.LocalPlayer.Character.IsStunned;
@@ -1127,7 +1121,7 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.MustBeHotwired;
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
               //  UpdateSpeedDispay();

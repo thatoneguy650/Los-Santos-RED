@@ -27,6 +27,7 @@ public class CarBreakIn
     {
         try
         {
+            EntryPoint.WriteToConsole("PLAYER EVENT: CarBreakIn Start", 3);
             Player.IsCarJacking = true;
             WereWindowsIntact = NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle);
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
@@ -42,6 +43,7 @@ public class CarBreakIn
                     GameFiber.Yield();
                 }
                 Player.IsCarJacking = false;
+                EntryPoint.WriteToConsole("PLAYER EVENT: CarBreakIn End", 3);
             }, "CarBreakIn");
         }
         catch (Exception e)

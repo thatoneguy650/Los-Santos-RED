@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LosSantosRED.lsr.Interface;
 
 public class SpawnTask
 {
@@ -17,7 +18,8 @@ public class SpawnTask
     private float Heading;
     private VehicleExt Vehicle;
     private DispatchableVehicle VehicleType;
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip)
+    private ISettingsProvideable Settings;
+    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings)
     {
         Agency = agency;
         PersonType = officerType;
@@ -26,6 +28,7 @@ public class SpawnTask
         InitialPosition = initialPosition;
         StreetPosition = streetPosition;
         Heading = heading;
+        Settings = settings;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -119,18 +122,18 @@ public class SpawnTask
             if (Agency.ResponseType == ResponseType.LawEnforcement)
             {
                 NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                Cop PrimaryCop = new Cop(ped, ped.Health, Agency, true);
+                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true);
                 PrimaryCop.IssueWeapons();
                 Person = PrimaryCop;
             }
             else if (Agency.ResponseType == ResponseType.EMS)
             {
-                EMT PrimaryEmt = new EMT(ped, ped.Health, Agency, true);
+                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true);
                 Person = PrimaryEmt;
             }
             else if (Agency.ResponseType == ResponseType.Fire)
             {
-                Firefighter PrimaryFirefighter = new Firefighter(ped, ped.Health, Agency, true);
+                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true);
                 Person = PrimaryFirefighter;
             }
             CreatedPeople.Add(Person);

@@ -61,13 +61,13 @@ public class Crimes : ICrimes
             new Crime("DrunkDriving", "Drunk Driving", 2, false, 20, true, false, false),
 
 
-            new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, true, true) { IsTrafficViolation = true },
+            new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, false, false) { IsTrafficViolation = true },
             new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, false, false, false),
-            new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, true, true, false),
+            new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, true, false, false),
             new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, false, false, false) { IsTrafficViolation = true },
             new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 33, false, false, false) { IsTrafficViolation = true },
-            new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 34, false, false, false) { IsTrafficViolation = true },
-            new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, false, false, false) { IsTrafficViolation = true },
+            new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 34, true, false, false) { IsTrafficViolation = true },
+            new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, true, false, false) { IsTrafficViolation = true },
             new Crime("FelonySpeeding", "Speeding", 1, false, 37, false, false, false) { IsTrafficViolation = true },
             new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, false),
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false),

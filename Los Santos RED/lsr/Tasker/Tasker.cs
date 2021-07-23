@@ -25,12 +25,13 @@ public class Tasker
         {
             int pedsUpdated = 0;
             Cop.UpdateTask();
-            pedsUpdated++;
-            if (pedsUpdated > 4)
-            {
-                pedsUpdated = 0;
-                GameFiber.Yield();
-            }
+            //pedsUpdated++;
+            //if (pedsUpdated > 4)
+            //{
+            //    pedsUpdated = 0;
+            //    GameFiber.Yield();
+            //}
+            GameFiber.Yield();
         }
     }
     public void RunCiviliansTasks()
@@ -39,12 +40,13 @@ public class Tasker
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
             Ped.UpdateTask();
-            pedsUpdated++;
-            if (pedsUpdated > 4)
-            {
-                pedsUpdated = 0;
-                GameFiber.Yield();
-            }
+            //pedsUpdated++;
+            //if (pedsUpdated > 4)
+            //{
+            //    pedsUpdated = 0;
+            //    GameFiber.Yield();
+            //}
+            GameFiber.Yield();
         }
     }
     public void UpdatePoliceTasks()
@@ -53,12 +55,13 @@ public class Tasker
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.DistanceToPlayer))
         {
             UpdateCurrentTask(Cop);
-            pedsUpdated++;
-            if (pedsUpdated > 4)
-            {
-                pedsUpdated = 0;
-                GameFiber.Yield();
-            }
+            //pedsUpdated++;
+            //if (pedsUpdated > 4)
+            //{
+            //    pedsUpdated = 0;
+            //    GameFiber.Yield();
+            //}
+            GameFiber.Yield();
         }
     }
     public void UpdateCivilianTasks()
@@ -69,12 +72,13 @@ public class Tasker
             if (Civilian.DistanceToPlayer <= 75f)
             {
                 UpdateCurrentTask(Civilian);
-                pedsUpdated++;
-                if (pedsUpdated > 4)
-                {
-                    pedsUpdated = 0;
-                    GameFiber.Yield();
-                }
+                //pedsUpdated++;
+                //if (pedsUpdated > 4)
+                //{
+                //    pedsUpdated = 0;
+                //    GameFiber.Yield();
+                //}
+                GameFiber.Yield();
             }
             else if (Civilian.CurrentTask != null)
             {

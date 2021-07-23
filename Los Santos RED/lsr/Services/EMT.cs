@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class EMT : PedExt
 {
     private uint GameTimeSpawned;
-    public EMT(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
+    public EMT(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned) : base(pedestrian,settings)
     {
         Health = health;
         AssignedAgency = agency;

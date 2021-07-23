@@ -30,14 +30,14 @@ public class PedExt : IComplexTaskable
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} See {CanSeePlayer} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
-    public PedExt(Ped _Pedestrian)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings)
     {
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
-        CurrentHealthState = new HealthState(this);
+        CurrentHealthState = new HealthState(this, settings);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian, settings)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;

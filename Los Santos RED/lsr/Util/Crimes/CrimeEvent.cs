@@ -38,9 +38,10 @@ public class CrimeEvent
     public void AddInstance()
     {
         if (CanAddInstance)
-        {
+        {    
             GameTimeLastOccurred = Game.GameTime;
             Instances++;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: ADD TO EXISTING CRIME: {AssociatedCrime.Name} Instances {Instances}", 3);
         }
     }
 }

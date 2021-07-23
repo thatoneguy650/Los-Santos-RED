@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
-        private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
+        private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
         public bool IsPressingEngineToggle => Game.IsKeyDown(Keys.X) && Game.IsShiftKeyDownRightNow;
         public void Update()
         {
@@ -91,8 +91,8 @@ namespace LosSantosRED.lsr
         }
         private void ButtonPromptCheck()
         {
-           // Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-            Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
+            Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+           // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
             
 
             if(Player.ButtonPrompts.Count > 10)

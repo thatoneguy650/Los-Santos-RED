@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,12 @@ namespace LosSantosRED.lsr.Interface
         PedVariation CurrentModelVariation { get; set; }
         string CurrentModelName { get; set; }
         Vector3 Position { get; }
+        VehicleExt CurrentVehicle { get; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();
         void SetMoney(int currentPedMoney);
+        void AddCrimeToHistory(Crime crime);
+        void UpdateCurrentVehicle();
     }
 }
