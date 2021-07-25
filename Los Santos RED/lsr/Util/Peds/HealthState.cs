@@ -86,7 +86,7 @@ public class HealthState
             CurrentArmor = MyPed.Pedestrian.Armor;
             if (CurrentHealth == 0)
             {
-                HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
+                HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
             }
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
@@ -94,6 +94,18 @@ public class HealthState
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
             }
+        }
+    }
+    public void Reset()
+    {
+        HasLoggedDeath = false;
+        GameTimeLastCheckedDamage = 0;
+        if(MyPed.Pedestrian.Exists())
+        {
+            Health = MyPed.Pedestrian.Health;
+            Armor = MyPed.Pedestrian.Armor;
+            CurrentArmor = Armor;
+            CurrentHealth = Health;
         }
     }
     private void FlagDamage(IPoliceRespondable CurrentPlayer)

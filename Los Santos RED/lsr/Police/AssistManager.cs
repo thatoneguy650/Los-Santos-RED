@@ -15,7 +15,6 @@ public class AssistManager
     {
         Cop = cop;
     }
-
     public void UpdateCollision(bool IsWanted)
     {
         if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
@@ -31,12 +30,6 @@ public class AssistManager
             }
 
         }
-    }
-    public void UpdateDrivingFlags()
-    {
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Cop.Pedestrian, 100f);
-        NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Cop.Pedestrian, 8f);
-        NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Cop.Pedestrian, 32, true);
     }
     private void SetClosestVehicleNoCollision()
     {

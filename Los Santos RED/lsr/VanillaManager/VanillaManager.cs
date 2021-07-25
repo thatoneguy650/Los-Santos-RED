@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -13,58 +14,86 @@ public class VanillaManager
     private bool IsVanillaRespawnActive = true;
     private bool IsVanillaDispatchActive = true;
     private uint GameTimeLastTerminatedVanillaDispatch;
+    private ISettingsProvideable Settings;
     private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
-    public VanillaManager()
+    public VanillaManager(ISettingsProvideable settings)
     {
+        Settings = settings;
     }
-
     public void Dispose()
     {
-        ActivateVanillaRespawn();
-        ActivateVanillaDispatch();
+        ActivateRespawn();
+        ActivateDispatch();
+        ActivateScenarioCops();
     }
     public void Tick()
     {
-        if (IsVanillaRespawnActive)
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateRespawn)
         {
-            TerminateVanillaRespawnController();
+            if (IsVanillaRespawnActive)
+            {
+                TerminateRespawnController();
+            }
         }
-        if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateDispatch)
         {
-            TerminateVanillaDispatch();
+            if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
+            {
+                TerminateDispatch();
+            }
         }
-        TerminateVanillaRespawnScripts();
-        TerminateVanillaHealthRecharge();
-        TerminateVanillaAudio();
+        if(Settings.SettingsManager.GeneralSettings.Vanilla_TerminateScenarioCops)
+        {
+            TerminateScnariosCops();
+        }
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateRespawn)
+        {
+            TerminateRespawnScripts();
+        }
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateHealthRecharge)
+        {
+            TerminateHealthRecharge();
+        }
+        TerminateAudio();   
     }
-    private void TerminateVanillaDispatch()
+    private void TerminateDispatch()
     {
-        SetVanillaDispatch(false);
+        SetDispatch(false);
         IsVanillaDispatchActive = false;
         GameTimeLastTerminatedVanillaDispatch = Game.GameTime;
     }
-    private void ActivateVanillaDispatch()
+    private void TerminateScnariosCops()
     {
-        SetVanillaDispatch(true);
+        SetScenarioCops(false);
+    }
+    private void ActivateDispatch()
+    {
+        SetDispatch(true);
         IsVanillaDispatchActive = true;
     }
-    private void TerminateVanillaAudio()
+    private void TerminateAudio()
     {
-        NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-        NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateScanner)
+        {
+            NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
+        }
+        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateWantedMusic)
+        {
+            NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+        }
     }
-    private void TerminateVanillaHealthRecharge()
+    private void TerminateHealthRecharge()
     {
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
-    private void TerminateVanillaRespawnController()
+    private void TerminateRespawnController()
     {
         var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
         Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
         Game.TerminateAllScriptsWithName("respawn_controller");
         IsVanillaRespawnActive = false;
     }
-    private void TerminateVanillaRespawnScripts()
+    private void TerminateRespawnScripts()
     {
         Game.DisableAutomaticRespawn = true;
         Game.FadeScreenOutOnDeath = false;
@@ -72,7 +101,7 @@ public class VanillaManager
         NativeFunction.Natives.x1E0B4DC0D990A4E7(false);
         NativeFunction.Natives.x21FFB63D8C615361(true);
     }
-    private void ActivateVanillaRespawn()
+    private void ActivateRespawn()
     {
         var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
         Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
@@ -80,7 +109,11 @@ public class VanillaManager
         Game.StartNewScript("selector");
         IsVanillaRespawnActive = true;
     }
-    private void SetVanillaDispatch(bool Enabled)
+    private void ActivateScenarioCops()
+    {
+        SetScenarioCops(true);
+    }
+    private void SetDispatch(bool Enabled)
     {
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobile, Enabled);
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceHelicopter, Enabled);
@@ -91,14 +124,13 @@ public class VanillaManager
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRoadBlock, Enabled);
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitCruising, Enabled);
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitPulledOver, Enabled);
-
-
-
-      //  NativeFunction.Natives.SET_CREATE_RANDOM_COPS(Enabled);
-       // NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);//off for now, want them to spawn in front of police stations, etc.
-       // NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
-
+    }
+    private void SetScenarioCops(bool Enabled)
+    {
+        NativeFunction.Natives.SET_CREATE_RANDOM_COPS(Enabled);
+        NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);
+        NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
     }
 }
 

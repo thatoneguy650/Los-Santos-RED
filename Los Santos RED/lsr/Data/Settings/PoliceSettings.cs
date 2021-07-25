@@ -10,12 +10,19 @@ public class PoliceSettings
     public bool ShowPoliceRadarBlips { get; set; } = false;
     public bool OverridePoliceAccuracy { get; set; } = true;
     public int PoliceGeneralAccuracy { get; set; } = 10;
-
-    public bool DispatchAudio { get; set; } = true;
-    public int DispatchAudioVolume { get; set; } = 5;
-    public bool DispatchSubtitles { get; set; } = false;
-    public bool DispatchNotifications { get; set; } = true;
-
+    public float AutoRecognizeDistance { get; set; } = 20f;
+    public float AlwaysRecognizeDistance { get; set; } = 7f;
+    public int RecentlySeenTime { get; set; } = 17000;
+    public bool AllowAmbientSpeech { get; set; } = true;
+    public bool AllowChaseAssists { get; set; } = true;
+    public bool ManagePoliceLoadout { get; set; } = true;
+    public float BustDistance { get; set; } = 5f;
+    public bool AllowRadioInAnimations { get; set; } = false;
+    public bool TaskPolice { get; set; } = true;
+    public int MinHealth { get; set; } = 85;
+    public int MaxHealth { get; set; } = 125;
+    public int MinArmor { get; set; } = 0;
+    public int MaxArmor { get; set; } = 50;
     public PoliceSettings()
     {
 

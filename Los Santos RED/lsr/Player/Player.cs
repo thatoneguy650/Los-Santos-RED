@@ -56,36 +56,30 @@ namespace Mod
         private uint GameTimeWantedLevelStarted;
         private string CurrentVehicleDebugString;
 
-        public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
             IsMale = isMale;
             PlayerName = suspectsName;
             Crimes = crimes;
-            if (currentMoney != 0)
-            {
-                SetMoney(currentMoney);
-            }
             EntityProvider = provider;
             TimeControllable = timeControllable;
             Settings = settings;
             Weapons = weapons;
             RadioStations = radioStations;
             Scenarios = scenarios;
-
             GameTimeStartedPlaying = Game.GameTime;
-            Scanner = new Scanner(provider, this, audio, settings);
+            Scanner = new Scanner(provider, this, audio, Settings);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
-            WeaponDropping = new WeaponDropping(this, Weapons);
+            WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this);
-            Violations = new Violations(this, TimeControllable, Crimes);
-            Investigation = new Investigation(this);
-            CriminalHistory = new CriminalHistory(this);
+            Violations = new Violations(this, TimeControllable, Crimes, Settings);
+            Investigation = new Investigation(this, Settings);
+            CriminalHistory = new CriminalHistory(this, Settings);
             PoliceResponse = new PoliceResponse(this);
-            SearchMode = new SearchMode(this);
-            Inventory = new Inventory(this);
-            
+            SearchMode = new SearchMode(this, Settings);
+            Inventory = new Inventory(this);    
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, placesOfInterest, Settings);
         }
         public Investigation Investigation { get; private set; }
@@ -370,7 +364,8 @@ namespace Mod
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings),Settings);
+            //HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
+            HealthState.Reset();
             IsPerformingActivity = false;
             if (resetWanted)
             {

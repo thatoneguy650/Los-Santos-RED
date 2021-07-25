@@ -19,18 +19,19 @@ namespace LosSantosRED.lsr
         private uint GameTimeStartedSearchMode;
         private uint GameTimeStartedActiveMode;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
-
+        private ISettingsProvideable Settings;
         public bool IsActive { get; private set; } = true;
-        public SearchMode(IPoliceRespondable currentPlayer)
+        public SearchMode(IPoliceRespondable currentPlayer, ISettingsProvideable settings)
         {
             Player = currentPlayer;
+            Settings = settings;
         }
         public float SearchModePercentage => IsInSearchMode ? 1.0f - ((float)TimeInSearchMode / (float)CurrentSearchTime) : 0;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
         public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? Game.GameTime - GameTimeStartedSearchMode : 0;
         public uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
-        public uint CurrentSearchTime => (uint)Player.WantedLevel * 30000;//30 seconds each
+        public uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PlayerSettings.SearchMode_SearchTimeMultiplier;//30000;//30 seconds each
         public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public string SearchModeDebug => IsInSearchMode ? $"TimeInSearchMode: {TimeInSearchMode}, CurrentSearchTime: {CurrentSearchTime}" + $" SearchModePercentage: {SearchModePercentage}, DebugPos: {StopSearchMode.DebugPosition}" : $"TimeInActiveMode: {TimeInActiveMode}, CurrentActiveTime: {CurrentActiveTime}, DebugPos: {StopSearchMode.DebugPosition}";
         public bool IsSpotterCop(uint Handle)
@@ -63,7 +64,10 @@ namespace LosSantosRED.lsr
         {
             if(IsActive)
             {
-                StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+                if (Settings.SettingsManager.PlayerSettings.SearchMode_FakeActiveWanted)
+                {
+                    StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+                }
             } 
         }
         private void DetermineMode()

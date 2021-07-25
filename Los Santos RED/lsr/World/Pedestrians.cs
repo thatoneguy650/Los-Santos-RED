@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 
 public class Pedestrians
 {
-    private int MaxCivilianHealth = 100;
-    private int MaxCopArmor = 50;
-    private int MaxCopHealth = 125;
-    private int MinCivilianHealth = 70;
-    private int MinCopArmor = 0;
-    private int MinCopHealth = 85;
+    //private int MaxCivilianHealth = 100;
+    //private int MaxCopArmor = 50;
+    //private int MaxCopHealth = 125;
+    //private int MinCivilianHealth = 70;
+    //private int MinCopArmor = 0;
+    //private int MinCopHealth = 85;
     private IAgencies Agencies;
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
@@ -43,13 +43,6 @@ public class Pedestrians
             return Police.Any(x => x.AssignedAgency.ID == "ARMY" && x.WasModSpawned);
         }
     }
-    public bool AnyCopsNearPlayer
-    {
-        get
-        {
-            return Police.Any(x => x.DistanceToPlayer <= 150f);
-        }
-    }
     public bool AnyHelicopterUnitsSpawned
     {
         get
@@ -62,13 +55,6 @@ public class Pedestrians
         get
         {
             return Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
-        }
-    }
-    public bool AnyPoliceShouldBustPlayer
-    {
-        get
-        {
-            return Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.ShouldBustPlayer);
         }
     }
     public int TotalSpawnedPolice
@@ -95,9 +81,13 @@ public class Pedestrians
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
+        {
             return true;
+        }
         else
+        {
             return false;
+        }
     }
     public void ClearSpawned()
     {
@@ -125,10 +115,6 @@ public class Pedestrians
             }
         }
         Firefighters.Clear();
-    }
-    public int CountNearbyPolice(Ped Pedestrian)
-    {
-        return Police.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
     }
     public PedExt GetPedExt(uint Handle)
     {
@@ -202,18 +188,18 @@ public class Pedestrians
     private void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        bool WillFight = RandomItems.RandomPercent(5);
-        bool WillCallPolice = RandomItems.RandomPercent(85);
+        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.Civilians_FightPercentage);
+        bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.Civilians_CallPolicePercentage);
         bool IsGangMember = false;
         if (Pedestrian.Exists())
         {
-            if (Pedestrian.IsGangMember())
+            if (Settings.SettingsManager.GeneralSettings.Civilians_GangAlwaysFights && Pedestrian.IsGangMember())
             {
                 IsGangMember = true;
                 WillFight = true;
                 WillCallPolice = false;
             }
-            else if (Pedestrian.IsSecurity())
+            else if (Settings.SettingsManager.GeneralSettings.Civilians_SecurityAlwaysFights && Pedestrian.IsSecurity())
             {
                 WillFight = true;
                 WillCallPolice = false;
@@ -290,7 +276,7 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
+        int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.Civilians_MinHealth, Settings.SettingsManager.GeneralSettings.Civilians_MaxHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;
         Pedestrian.Armor = 0;
@@ -303,15 +289,13 @@ public class Pedestrians
         {
             Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.PoliceGeneralAccuracy;
         }
-        int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
-        int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);
+        int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100;
+        int DesiredArmor = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor);
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;
         Pedestrian.Armor = DesiredArmor;
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
-       //not needed if i am tasking everything?, messing up the enter vehicle task?
-        //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {

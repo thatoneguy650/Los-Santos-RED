@@ -12,82 +12,61 @@ public class Tasker
     private IEntityProvideable PedProvider;
     private ITargetable Player;
     private IWeapons Weapons;
-    private Mod.Player PlayerIntellisense;//only for intellisense for the interface (see what i have and how i named it)
-    public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons)
+    private ISettingsProvideable Settings;
+    public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings)
     {
         PedProvider = pedProvider;
         Player = player;
         Weapons = weapons;
+        Settings = settings;
     }
     public void RunPoliceTasks()
     {
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
-            int pedsUpdated = 0;
             Cop.UpdateTask();
-            //pedsUpdated++;
-            //if (pedsUpdated > 4)
-            //{
-            //    pedsUpdated = 0;
-            //    GameFiber.Yield();
-            //}
             GameFiber.Yield();
         }
     }
     public void RunCiviliansTasks()
     {
-        int pedsUpdated = 0;
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
             Ped.UpdateTask();
-            //pedsUpdated++;
-            //if (pedsUpdated > 4)
-            //{
-            //    pedsUpdated = 0;
-            //    GameFiber.Yield();
-            //}
             GameFiber.Yield();
         }
     }
     public void UpdatePoliceTasks()
     {
-        int pedsUpdated = 0;
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.DistanceToPlayer))
+        if (Settings.SettingsManager.PoliceSettings.TaskPolice)
         {
-            UpdateCurrentTask(Cop);
-            //pedsUpdated++;
-            //if (pedsUpdated > 4)
-            //{
-            //    pedsUpdated = 0;
-            //    GameFiber.Yield();
-            //}
-            GameFiber.Yield();
+            foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))
+            {
+                UpdateCurrentTask(Cop);
+                GameFiber.Yield();
+            }
         }
     }
     public void UpdateCivilianTasks()
     {
-        int pedsUpdated = 0;
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+        if (Settings.SettingsManager.GeneralSettings.Tasker_TaskCivilians)
         {
-            if (Civilian.DistanceToPlayer <= 75f)
+            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
-                UpdateCurrentTask(Civilian);
-                //pedsUpdated++;
-                //if (pedsUpdated > 4)
-                //{
-                //    pedsUpdated = 0;
-                //    GameFiber.Yield();
-                //}
-                GameFiber.Yield();
+                if (Civilian.DistanceToPlayer <= 75f)
+                {
+                    UpdateCurrentTask(Civilian);
+                    GameFiber.Yield();
+                }
+                else if (Civilian.CurrentTask != null)
+                {
+                    Civilian.CurrentTask = null;
+                }
             }
-            else if (Civilian.CurrentTask != null)
+            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 100f))
             {
                 Civilian.CurrentTask = null;
             }
-        }
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 100f))
-        {
-            Civilian.CurrentTask = null;  
         }
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?

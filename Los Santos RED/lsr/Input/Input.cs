@@ -38,14 +38,14 @@ namespace LosSantosRED.lsr
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
-        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
+        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SurrenderKey) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
-        private bool IsPressingRightIndicator => Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
-        private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
+        private bool IsPressingRightIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.RightIndicatorKey) && Game.IsShiftKeyDownRightNow;
+        private bool IsPressingLeftIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && Game.IsShiftKeyDownRightNow;
+        private bool IsPressingHazards => Game.IsKeyDown(Settings.SettingsManager.KeySettings.HazardKey) && Game.IsShiftKeyDownRightNow;
+        private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
-        public bool IsPressingEngineToggle => Game.IsKeyDown(Keys.X) && Game.IsShiftKeyDownRightNow;
+        public bool IsPressingEngineToggle => Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
         public void Update()
         {
             SurrenderCheck();
@@ -93,8 +93,6 @@ namespace LosSantosRED.lsr
         {
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
            // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
-            
-
             if(Player.ButtonPrompts.Count > 10)
             {
                 EntryPoint.WriteToConsole($"Excessive Button Prompts {Player.ButtonPrompts.Count}", 1);

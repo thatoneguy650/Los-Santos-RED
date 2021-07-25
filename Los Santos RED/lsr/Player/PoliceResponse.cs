@@ -55,14 +55,8 @@ namespace LosSantosRED.lsr
         public bool PlayerSeenDuringCurrentWanted { get; set; }
         public bool PlayerSeenDuringWanted { get; set; } = false;
         public bool PoliceHaveDescription { get; private set; }
-        public bool RecentlyLostWanted => GameTimeLastWantedEnded != 0 && Game.GameTime - GameTimeLastWantedEnded <= 5000;
-        public List<CrimeEvent> RecentlyOccuredCrimes => CrimesObserved.Where(x => x.RecentlyOccurred(10000)).ToList();
-        public List<CrimeEvent> RecentlyReportedCrimes => CrimesReported.Where(x => x.RecentlyOccurred(10000)).ToList();
-        public bool RecentlyRequestedBackup => GameTimeLastRequestedBackup != 0 && Game.GameTime - GameTimeLastRequestedBackup <= 5000;
-
         public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
-        public bool ShouldSirenBeOn => CurrentResponse == ResponsePriority.Full || CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium;
         private ResponsePriority CurrentResponse
         {
             get
@@ -124,17 +118,12 @@ namespace LosSantosRED.lsr
                 {
                     PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
-
-
-
-
                 CrimeSceneDescription CrimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
                     CrimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
-                    PreviousViolation.CurrentInformation = CrimeSceneDescription;
-                    
+                    PreviousViolation.CurrentInformation = CrimeSceneDescription;       
                 }
                 else
                 {

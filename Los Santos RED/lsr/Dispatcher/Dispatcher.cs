@@ -120,35 +120,35 @@ public class Dispatcher
         {
             if (Player.Investigation.IsActive)
             {
-                return 6;// 9;//6
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Investigation;//6;// 9;//6
             }
             if (Player.WantedLevel == 0)
             {
-                return 5;// 8;//5
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Default;//5;// 8;//5
             }
             else if (Player.WantedLevel == 1)
             {
-                return 7;// 10;//7
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Wanted1;//7;// 10;//7
             }
             else if (Player.WantedLevel == 2)
             {
-                return 10;// 12;//10
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Wanted2;//10;// 12;//10
             }
             else if (Player.WantedLevel == 3)
             {
-                return 18;//18
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Wanted3;//18;//18
             }
             else if (Player.WantedLevel == 4)
             {
-                return 25;//25
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Wanted4;//25;//25
             }
             else if (Player.WantedLevel == 5)
             {
-                return 35;//35
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Wanted5;//35;//35
             }
             else
             {
-                return 5;//15
+                return Settings.SettingsManager.GeneralSettings.Dispatch_PoliceMax_Default;//5;//15
             }
         }
     }
@@ -185,17 +185,18 @@ public class Dispatcher
     public void Dispatch()
     {
         HasDispatchedThisTick = false;
-        DispatchLawEnforcement();
-        //if(!HasDispatchedThisTick)//for now
-        //{
-        //    DispatchEMS();
-        //}
-        
-        //if(!HasDispatchedThisTick)
-        //{
-        //    DispatchFire();
-        //}
-        
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchLE)
+        {
+            DispatchLawEnforcement();
+        }
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchEMS && !HasDispatchedThisTick)//for now
+        {
+            DispatchEMS();
+        }
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchFire && !HasDispatchedThisTick)
+        {
+            DispatchFire();
+        }
     }
     public void Dispose()
     {
@@ -203,10 +204,9 @@ public class Dispatcher
     }
     public void Recall()
     {
-        if (IsTimeToRecallLE)
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchLE && IsTimeToRecallLE)
         {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Recall");
-            foreach (Cop DeleteableCop in DeletableCops)//.Take(2))
+            foreach (Cop DeleteableCop in DeletableCops)
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
@@ -220,13 +220,9 @@ public class Dispatcher
             //    Roadblock = null;
             //    EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
             //}
-
-
-
-
             GameTimeAttemptedRecallLE = Game.GameTime;
         }
-        if(IsTimeToRecallEMS)
+        if(Settings.SettingsManager.GeneralSettings.Dispatch_DispatchEMS && IsTimeToRecallEMS)
         {
             foreach (EMT emt in DeletableEMTs)
             {
@@ -238,7 +234,7 @@ public class Dispatcher
             }
             GameTimeAttemptedRecallEMS = Game.GameTime;
         }
-        if (IsTimeToRecallFire)
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchFire && IsTimeToRecallFire)
         {
             foreach (Firefighter firefighter in DeletableFIrefighters)
             {

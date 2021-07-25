@@ -46,7 +46,7 @@ public class UISettings
     public string BustedMessageText { get; set; } = "BUSTED";
     public bool AllowScreenEffectReset { get; set; } = true;
     public string SpeedDisplayUnits { get; set; } = "MPH";
-
+    public bool DisplayButtonPrompts { get; set; } = true;
 
     public UISettings()
     {

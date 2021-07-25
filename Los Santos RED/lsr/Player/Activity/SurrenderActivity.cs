@@ -20,6 +20,7 @@ public class SurrenderActivity : DynamicActivity
     }
     public override void Continue()
     {
+
     }
     public override void Start()
     {

@@ -143,7 +143,7 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Heading = MyHeading;
 
             SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.PedSwap_AliasModelName);
             NativeHelper.ChangeModel(modelName);
             Ped PedBecame = Game.LocalPlayer.Character;
             if (variation != null)
@@ -345,7 +345,7 @@ public class PedSwap : IPedSwap
         if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.GeneralSettings.PedSwap_AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.PedSwap_AliasModelName);
             NativeHelper.ChangeModel(ModelToChange);
         }
 

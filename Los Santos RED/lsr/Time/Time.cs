@@ -22,8 +22,10 @@ namespace Mod
         private int StoredClockHours;
         private int StoredClockMinutes;
         private int StoredClockSeconds;
-        public Time()
+        private ISettingsProvideable Settings;
+        public Time(ISettingsProvideable settings)
         {
+            Settings = settings;
             NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
         }
         public string CurrentTime
@@ -51,7 +53,10 @@ namespace Mod
             }
             else
             {
-                GetIntervalAndMultiplier();
+                if (Settings.SettingsManager.GeneralSettings.Time_ScaleTime)
+                {
+                    GetIntervalAndMultiplier();
+                }
                 CheckTimeInterval();
             }
         }
@@ -59,8 +64,6 @@ namespace Mod
         {
             //EntryPoint.WriteToConsole(string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
             IsPaused = false;
-
-
             GameFiber UnPauseTime = GameFiber.StartNew(delegate
             {
                 uint GameTimeStartedResettingTime = Game.GameTime;
@@ -74,7 +77,6 @@ namespace Mod
         }
         private void CheckTimeInterval()
         {
-
             if (Game.GameTime - GameTimeLastSetClock >= Interval)
             {
                 NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);

@@ -11,7 +11,10 @@ public class KeySettings
     public Keys MenuKey { get; set; } = Keys.F10;
     public Keys SurrenderKey { get; set; } = Keys.E;
     public Keys DropWeaponKey { get; set; } = Keys.G;
-    public Keys VehicleKey { get; set; } = Keys.R;
+    public Keys RightIndicatorKey { get; set; } = Keys.E;
+    public Keys LeftIndicatorKey { get; set; } = Keys.Q;
+    public Keys HazardKey { get; set; } = Keys.Space;
+    public Keys EngineToggle { get; set; } = Keys.X;
     public KeySettings()
     {
 

@@ -22,17 +22,17 @@ namespace Mod
         private Vehicles Vehicles;
         private IZones Zones;
         private IJurisdictions Jurisdictions;
-        private Alex106ScenarioGroups Alex106ScenarioGroups;
+        private ISettingsProvideable Settings;
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
             Jurisdictions = jurisdictions;
+            Settings = settings;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
-        public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
@@ -54,17 +54,18 @@ namespace Mod
                 zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName,ResponseType.LawEnforcement)?.ColorInitials;
                 GameFiber.Yield();
             }
-            Alex106ScenarioGroups = new Alex106ScenarioGroups();
-            Alex106ScenarioGroups.Setup();
         }
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
+            if (Settings.SettingsManager.GeneralSettings.World_AddPOIBlipsToMap)
             {
-                MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
-                myBlip.AddToMap();
-                GameFiber.Yield();
+                foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
+                {
+                    MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
+                    myBlip.AddToMap();
+                    GameFiber.Yield();
+                }
             }
         }
         public void AddEntity(Blip myBlip) => CreatedBlips.Add(myBlip);
@@ -90,12 +91,10 @@ namespace Mod
             Pedestrians.ClearSpawned();
             Vehicles.ClearSpawned();
         }
-        public int CountNearbyPolice(Ped pedestrian) => Pedestrians.CountNearbyPolice(pedestrian);
         public void Dispose()
         {
             RemoveBlips();
             ClearSpawned();
-            Alex106ScenarioGroups.Dispose();
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
@@ -115,8 +114,20 @@ namespace Mod
         public void CreateNewPedestrians() => Pedestrians.CreateNew();
         public void ScanForVehicles() => Vehicles.Scan();
         public void CreateNewVehicles() => Vehicles.CreateNew();
-        public void UpdateVehiclePlates() => Vehicles.UpdatePlates();
-        public void CleanUpVehicles() => Vehicles.CleanUp();
+        public void UpdateVehiclePlates()
+        {
+            if (Settings.SettingsManager.GeneralSettings.World_UpdateVehiclePlates)
+            {
+                Vehicles.UpdatePlates();
+            }
+        }
+        public void CleanUpVehicles()
+        {
+            if (Settings.SettingsManager.GeneralSettings.World_CleanupVehicles)
+            {
+                Vehicles.CleanUp();
+            }
+        }
         public void LoadMPMap()
         {
             if (!IsMPMapLoaded)

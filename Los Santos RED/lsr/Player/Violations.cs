@@ -34,26 +34,28 @@ namespace LosSantosRED.lsr
         private bool TreatAsCop;
         private bool VehicleIsSuspicious;
         private readonly List<Crime> CrimesViolating = new List<Crime>();
-        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes)
+        private ISettingsProvideable Settings;
+        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings)
         {
             TimeReporter = timeReporter;
             Player = currentPlayer;
             Crimes = crimes;
             CrimeList = Crimes.CrimeList;
+            Settings = settings;
         }
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();//CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
         public string LawsViolatingDisplay => string.Join(",", CrimesViolating.Select(x => x.Name));
-        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= 9f);
-        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
-        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
-        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
-        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= 5000;
-        private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= 1000;
-        private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= 1000;
-        private bool RecentlyHitPed => TimeSincePlayerHitPed > -1 && TimeSincePlayerHitPed <= 1000;
-        private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > -1 && TimeSincePlayerHitVehicle <= 1000;
+        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance);
+        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtCivilianTime;
+        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtPoliceTime;
+        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyKilledCivilianTime;
+        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyKilledPoliceTime;
+        private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= Settings.SettingsManager.PlayerSettings.Violations_RecentlyDrivingAgainstTraffiTime;
+        private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= Settings.SettingsManager.PlayerSettings.Violations_RecentlyDrivingOnPavementTime;
+        private bool RecentlyHitPed => TimeSincePlayerHitPed > -1 && TimeSincePlayerHitPed <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitPedTime;
+        private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > -1 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitVehicleTime;
         private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;
         public void AddInjured(PedExt myPed)
         {

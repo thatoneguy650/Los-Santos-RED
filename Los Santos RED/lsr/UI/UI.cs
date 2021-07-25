@@ -115,41 +115,45 @@ public class UI : IMenuProvideable
     }
     private void DisplayButtonPrompts()
     {
-        instructional.Buttons.Clear();
-        if (DisplayablePlayer.ButtonPrompts.Any())
+        if (Settings.SettingsManager.UISettings.DisplayButtonPrompts)
         {
-            foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.OrderByDescending(x => x.Order))
+            instructional.Buttons.Clear();
+
+            if (DisplayablePlayer.ButtonPrompts.Any())
             {
-                if (buttonPrompt.Key != Keys.None)
+                foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.OrderByDescending(x => x.Order))
                 {
-                    if (buttonPrompt.Modifier != Keys.None)
+                    if (buttonPrompt.Key != Keys.None)
                     {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
+                        if (buttonPrompt.Modifier != Keys.None)
+                        {
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
+                        }
+                        else
+                        {
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                        }
                     }
                     else
                     {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                        if (buttonPrompt.Modifier != Keys.None)
+                        {
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, InstructionalKey.MouseLeft));
+                        }
+                        else
+                        {
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, InstructionalKey.MouseLeft));
+                        }
                     }
-                }
-                else
-                {
-                    if (buttonPrompt.Modifier != Keys.None)
-                    {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, InstructionalKey.MouseLeft));
-                    }
-                    else
-                    {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, InstructionalKey.MouseLeft));
-                    }
-                }
 
 
+                }
             }
-        }
-        instructional.Update();
-        if (DisplayablePlayer.ButtonPrompts.Any())
-        {
-            instructional.Draw();
+            instructional.Update();
+            if (DisplayablePlayer.ButtonPrompts.Any())
+            {
+                instructional.Draw();
+            }
         }
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)

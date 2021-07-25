@@ -16,12 +16,14 @@ namespace LosSantosRED.lsr
     {
         private BOLO CurrentHistory;
         private IPoliceRespondable Player;
-        public CriminalHistory(IPoliceRespondable currentPlayer)
+        private ISettingsProvideable Settings;
+        public CriminalHistory(IPoliceRespondable currentPlayer, ISettingsProvideable settings)
         {
             Player = currentPlayer;
+            Settings = settings;
         }
         private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
-        private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
+        private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_SearchRadiusIncrement : Settings.SettingsManager.PlayerSettings.CriminalHistory_MinimumSearchRadius;// 400f;
         public bool HasHistory => CurrentHistory != null;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
@@ -40,17 +42,20 @@ namespace LosSantosRED.lsr
                     if (Player.IsWanted)
                     {
                         ApplyLastWantedStats();
+                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Became Wanted", 3);
                     }
                     else if (IsNearLastSeenLocation() && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
                     {
                         ApplyLastWantedStats();
+                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Near Last Location", 3);
                     }
                     else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen)
                     {
                         ApplyLastWantedStats();
+                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle", 3);
                     }
                 }
-                if(HasHistory && Player.PoliceResponse.HasBeenNotWantedFor >= 120000)
+                if(HasHistory && Player.PoliceResponse.HasBeenNotWantedFor >= Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxTime)// 120000)
                 {
                     Clear();
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired", 3);
