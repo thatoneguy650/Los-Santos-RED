@@ -39,10 +39,18 @@ public class HealthState
     {
         get
         {
-            if (Game.GameTime - GameTimeLastCheckedDamage >= 300)
-                return true;
-            else
+            if(MyPed.DistanceToPlayer >= 400)
+            {
                 return false;
+            }
+            if (Game.GameTime - GameTimeLastCheckedDamage >= 300)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
     private bool ShouldBleed

@@ -81,19 +81,31 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void PrintCriminalHistory()
+        public string PrintCriminalHistory()
         {
             if(CurrentHistory != null)
             {
-                EntryPoint.WriteToConsole("-------------------------------Criminal History Start", 3);
-                EntryPoint.WriteToConsole($"Wanted Level: {CurrentHistory.WantedLevel}", 3);
-                EntryPoint.WriteToConsole($"LastSeenLocation: {CurrentHistory.LastSeenLocation}", 3);
-                foreach(Crime crime in CurrentHistory.Crimes)
+
+                string CrimeString = "";
+                foreach (Crime MyCrime in CurrentHistory.Crimes.OrderBy(x => x.Priority).Take(3))
                 {
-                    EntryPoint.WriteToConsole($" Crime: {crime.Name}, {crime.ResultingWantedLevel}", 3);
+                    CrimeString += string.Format("~n~{0}~s~", MyCrime.Name);
                 }
-                EntryPoint.WriteToConsole("-------------------------------Criminal History End", 3);
+                return CrimeString;
+
+
+
+
+                //EntryPoint.WriteToConsole("-------------------------------Criminal History Start", 3);
+                //EntryPoint.WriteToConsole($"Wanted Level: {CurrentHistory.WantedLevel}", 3);
+                //EntryPoint.WriteToConsole($"LastSeenLocation: {CurrentHistory.LastSeenLocation}", 3);
+                //foreach(Crime crime in CurrentHistory.Crimes)
+                //{
+                //    EntryPoint.WriteToConsole($" Crime: {crime.Name}, {crime.ResultingWantedLevel}", 3);
+                //}
+                //EntryPoint.WriteToConsole("-------------------------------Criminal History End", 3);
             }
+            return "";
         }
         private bool IsNearLastSeenLocation()
         {

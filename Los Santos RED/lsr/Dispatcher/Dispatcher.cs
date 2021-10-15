@@ -189,11 +189,11 @@ public class Dispatcher
         {
             DispatchLawEnforcement();
         }
-        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchEMS && !HasDispatchedThisTick)//for now
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchEMS && !HasDispatchedThisTick && 1==0)//off for now
         {
             DispatchEMS();
         }
-        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchFire && !HasDispatchedThisTick)
+        if (Settings.SettingsManager.GeneralSettings.Dispatch_DispatchFire && !HasDispatchedThisTick && 1==0)//off for now
         {
             DispatchFire();
         }

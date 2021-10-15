@@ -152,7 +152,11 @@ public class PedExt : IComplexTaskable
     {
         get
         {
-            if (GameTimeLastLOSCheck == 0)
+            if(DistanceToPlayer >= 100)
+            {
+                return false;
+            }
+            else if (GameTimeLastLOSCheck == 0)
             {
                 return true;
             }
@@ -266,11 +270,25 @@ public class PedExt : IComplexTaskable
         {
             if(IsCop)
             {
-                return 150;//150//keep this low for busting and tasking etc?
+                if (DistanceToPlayer >= 300)
+                {
+                    return 1500;
+                }
+                else
+                {
+                    return 500;//150
+                }
             }
             else
             {
-                return 500;// 750;//500
+                if (DistanceToPlayer >= 300)
+                {
+                    return 2000;
+                }
+                else
+                {
+                    return 750;//500// 750;//500
+                }
             }
         }
     }
@@ -345,8 +363,7 @@ public class PedExt : IComplexTaskable
                 if(IsCop)//for now i dont think i use any of that in a non cop person
                 {
                     UpdateVehicleState();
-                }
-                
+                } 
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
                 UpdateCrimes(playerToCheck);

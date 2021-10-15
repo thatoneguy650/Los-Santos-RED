@@ -84,6 +84,7 @@ namespace LosSantosRED.lsr
                 {
                     break;
                 }
+                GameFiber.Yield();
             }
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;

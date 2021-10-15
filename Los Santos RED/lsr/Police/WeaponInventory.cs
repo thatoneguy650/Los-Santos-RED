@@ -37,7 +37,7 @@ public class WeaponInventory
     }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {
-        if (ShouldAutoSetWeaponState)
+        if (ShouldAutoSetWeaponState && NeedsWeaponCheck)//NeedsWeaponCheck is new....
         {
             if (WantedLevel == 0)
             {

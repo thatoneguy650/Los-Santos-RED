@@ -307,6 +307,10 @@ namespace Mod
             {
                 NotifcationText = "Wanted For:" + PoliceResponse.PrintCrimes();
             }
+            else if (HasCriminalHistory)
+            {
+                NotifcationText = "Wanted For:" + PrintCriminalHistory();
+            }
 
             if (CurrentVehicle != null && !CurrentVehicle.IsStolen)
             {
@@ -698,7 +702,7 @@ namespace Mod
             Scanner.OnBribedPolice();
         }
         public void ResistArrest() => Respawning.ResistArrest();
-        public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
+        public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void DeleteTrackedVehicles()
         {

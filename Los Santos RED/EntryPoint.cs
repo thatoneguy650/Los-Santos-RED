@@ -8,7 +8,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
-    private static int LogLevel = 4;//most non spammy stuff + all debug
+    private static int LogLevel = 1;//most non spammy stuff + all debug
     /*enum? Use built in trace stuff?
      *  0 = Errors
         1 = ?

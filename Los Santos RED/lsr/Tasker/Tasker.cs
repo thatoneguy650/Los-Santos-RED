@@ -56,7 +56,7 @@ public class Tasker
                 if (Civilian.DistanceToPlayer <= 75f)
                 {
                     UpdateCurrentTask(Civilian);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                 }
                 else if (Civilian.CurrentTask != null)
                 {
@@ -67,6 +67,7 @@ public class Tasker
             {
                 Civilian.CurrentTask = null;
             }
+            GameFiber.Yield();
         }
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?

@@ -67,8 +67,8 @@ public class GeneralSettings
     public bool World_CleanupVehicles { get; set; } = true;
 
     public bool Dispatch_DispatchLE { get; set; } = true;
-    public bool Dispatch_DispatchEMS { get; set; } = true;
-    public bool Dispatch_DispatchFire { get; set; } = true;
+    public bool Dispatch_DispatchEMS { get; set; } = false;
+    public bool Dispatch_DispatchFire { get; set; } = false;
     public int Dispatch_PoliceMax_Default { get; set; } = 5;
     public int Dispatch_PoliceMax_Investigation { get; set; } = 6;
     public int Dispatch_PoliceMax_Wanted1 { get; set; } = 7;

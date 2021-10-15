@@ -158,8 +158,8 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartInputLogic();
             GameFiber.Yield();
-            StartDebugLogic();
-            GameFiber.Yield();
+           // StartDebugLogic();
+          //  GameFiber.Yield();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
         private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
@@ -304,10 +304,10 @@ namespace LosSantosRED.lsr
                             }
                         }
                         FPS.ComputeAverage(Game.FrameRate);
-                        if (!Game.IsPaused && (Game.FrameRate < 45))// || FPS.Average <= 55))
-                        {
-                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask} & {LastRanQuaternaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {PrevLastRanSecondaryTask} & {PrevLastRanTertiaryTask} & {PrevLastRanQuaternaryTask}", 3);
-                        }
+                        //if (!Game.IsPaused && (Game.FrameRate < 45))// || FPS.Average <= 55))
+                        //{
+                        //    EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask} & {LastRanQuaternaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {PrevLastRanSecondaryTask} & {PrevLastRanTertiaryTask} & {PrevLastRanQuaternaryTask}", 3);
+                        //}
                         TickStopWatch.Reset();
                         GameFiber.Yield();
                     }
@@ -364,6 +364,8 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Debug Logic");
+
+            //temp off for release?
         }
         private void StartInputLogic()
         {

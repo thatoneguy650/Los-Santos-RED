@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class PoliceSettings
 {
-    public bool SpawnedAmbientPoliceHaveBlip { get; set; } = true;
+    public bool SpawnedAmbientPoliceHaveBlip { get; set; } = false;
     public bool ShowPoliceRadarBlips { get; set; } = false;
     public bool OverridePoliceAccuracy { get; set; } = true;
     public int PoliceGeneralAccuracy { get; set; } = 10;
