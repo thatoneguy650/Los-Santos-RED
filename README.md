@@ -114,6 +114,12 @@ Vehicle Enter (Empty, Hold) - Smash Window
 - Do not save and turn off autosave
 - Restart the game without the mod active before saving (does some memory editing)
 
+## Issues
+- This is an alpha, expect crashes/low performance
+- Peds and Cops may react unexpectedly, AI programming is hard
+- Some settings are not implemented/ do not exist
+- Turning off some settings may cause other unexpected issues, mostly tested with everything ON
+
 ## Contact
 - For any questions, feedback, or assistance:
 [![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
