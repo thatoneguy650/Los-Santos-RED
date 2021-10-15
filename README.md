@@ -64,6 +64,7 @@
     - Vanilla Respawn/Dispatch disabled
 - Fully Adjustable Settings
   - XML settings
+- Plus lots more
 
 ## Default Controls
 F10 - Main Menu
@@ -103,6 +104,15 @@ Vehicle Enter (Empty, Hold) - Smash Window
 - [Foxunitone](https://www.gta5-mods.com/users/Foxunitone)
 - [RAGE Plugin Hook Team](https://ragepluginhook.net/About.aspx)
 - [GTA Forums](https://gtaforums.com/)
+
+## Compatibility
+- Incompatible with
+  - Any Police Script Mod
+  - Any Wanted Level Changing Mod
+  - Story Mode (Most Likely)
+  - Can you make it work with XXX? No.
+- Do not save and turn off autosave
+- Restart the game without the mod active before saving (does some memory editing)
 
 ## Contact
 - For any questions, feedback, or assistance:
