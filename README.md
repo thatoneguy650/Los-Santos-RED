@@ -7,7 +7,7 @@
 
 ## Installation
 - Place all [RAGE Plugin Hook](https://ragepluginhook.net/Downloads.aspx) files in the root GTA V directory
-- Place [RAGENativeUI.dll](https://github.com/alexguirre/RAGENativeUI/releases) in the root GTA V directory
+- Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
 
 ## Features
