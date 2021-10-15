@@ -65,6 +65,22 @@
 - Fully Adjustable Settings
   - XML settings
 
+## Default Controls
+F10 - Main Menu
+F11 - Debug Menu (disabled)
+E - Surrender
+G - Drop Weapon and Ammo
+Shift + E (In Car) - Right Blinker
+Shift + Q (In Car) - Left Blinker
+Shift + Space (In Car) - Hazards
+Shift + X (In Car) - Toggle Engine
+Vehicle Enter (Occupied, Press, w/ Weapon) - Carjack With Weapon
+Vehicle Enter (Occupied, Hold) - Regular Carjack
+Vehicle Enter (Empty, Press) - Lockpick
+Vehicle Enter (Empty, Hold) - Smash Window
+
+(others should have prompts)
+
 ## License
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
