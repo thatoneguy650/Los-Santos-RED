@@ -243,15 +243,18 @@ public class Vehicles
                     vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                     vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                 }
-                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                vehicleExt.CarPlate.PlateType = NewType.Index;
+                if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                {
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
+                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                    vehicleExt.CarPlate.PlateType = NewType.Index;
+                }
                 // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
             }
         }
         else
         {
-            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
+            if (RandomItems.RandomPercent(15) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
             {
                 PlateType NewType = PlateTypes.GetRandomPlateType();
                 if (NewType != null)
@@ -263,9 +266,12 @@ public class Vehicles
                         vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                         vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                     }
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index+1);
-                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                    vehicleExt.CarPlate.PlateType = NewType.Index;
+                    if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                    {
+                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                        vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                        vehicleExt.CarPlate.PlateType = NewType.Index;
+                    }
                     // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }

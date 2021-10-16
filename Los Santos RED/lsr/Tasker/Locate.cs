@@ -41,9 +41,12 @@ public class Locate : ComplexTask
     }
     public override void Start()
     {
-        //EntryPoint.WriteToConsole($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
-        Ped.Pedestrian.BlockPermanentEvents = false;
-        Update();
+        if (Ped.Pedestrian.Exists())
+        {
+            //EntryPoint.WriteToConsole($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
+            Ped.Pedestrian.BlockPermanentEvents = false;
+            Update();
+        }
     }
     public override void Update()
     {
