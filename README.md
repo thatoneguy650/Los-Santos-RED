@@ -7,7 +7,7 @@
 
 ## Installation
 - Place all [RAGE Plugin Hook](https://ragepluginhook.net/Downloads.aspx) files in the root GTA V directory
-- Place [RAGENativeUI.dll](https://github.com/alexguirre/RAGENativeUI/releases) in the root GTA V directory
+- Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
 
 ## Features
@@ -64,6 +64,34 @@
     - Vanilla Respawn/Dispatch disabled
 - Fully Adjustable Settings
   - XML settings
+- Plus lots more
+
+## Default Controls
+F10 - Main Menu
+
+F11 - Debug Menu (disabled)
+
+E - Surrender
+
+G - Drop Weapon and Ammo
+
+Shift + E (In Car) - Right Blinker
+
+Shift + Q (In Car) - Left Blinker
+
+Shift + Space (In Car) - Hazards
+
+Shift + X (In Car) - Toggle Engine
+
+Vehicle Enter (Occupied, Press, w/ Weapon) - Carjack With Weapon
+
+Vehicle Enter (Occupied, Hold) - Regular Carjack
+
+Vehicle Enter (Empty, Press) - Lockpick
+
+Vehicle Enter (Empty, Hold) - Smash Window
+
+(others should have prompts)
 
 ## License
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -76,6 +104,21 @@
 - [Foxunitone](https://www.gta5-mods.com/users/Foxunitone)
 - [RAGE Plugin Hook Team](https://ragepluginhook.net/About.aspx)
 - [GTA Forums](https://gtaforums.com/)
+
+## Compatibility
+- Incompatible with
+  - Any Police Script Mod
+  - Any Wanted Level Changing Mod
+  - Story Mode (Most Likely)
+  - Can you make it work with XXX? No.
+- Do not save and turn off autosave
+- Restart the game without the mod active before saving (does some memory editing)
+
+## Issues
+- This is an alpha, expect crashes/low performance
+- Peds and Cops may react unexpectedly, AI programming is hard
+- Some settings are not implemented/ do not exist
+- Turning off some settings may cause other unexpected issues, mostly tested with everything ON
 
 ## Contact
 - For any questions, feedback, or assistance:
