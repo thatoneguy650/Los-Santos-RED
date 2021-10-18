@@ -7,8 +7,13 @@
 
 ## Installation
 - Place all [RAGE Plugin Hook](https://ragepluginhook.net/Downloads.aspx) files in the root GTA V directory
+  - Alternate RPH Downloads
+    - [Rage Plugin Hook Discord (server updates channel)](https://discord.gg/z8N5P9MCRx)
+    - [LCPDFR Mod (do not install the lcpdfr folder or the content from the plugins folder)](https://www.lcpdfr.com/downloads/gta5mods/g17media/7792-lspd-first-response/)
 - Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
+
+
 
 ## Features
 - Enhanced Free Roam Mode
