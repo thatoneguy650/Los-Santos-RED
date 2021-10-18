@@ -73,19 +73,12 @@
 
 ## Default Controls
 F10 - Main Menu
-
 F11 - Debug Menu (disabled)
-
 E - Surrender
-
 G - Drop Weapon and Ammo
-
 Shift + E (In Car) - Right Blinker
-
 Shift + Q (In Car) - Left Blinker
-
 Shift + Space (In Car) - Hazards
-
 Shift + X (In Car) - Toggle Engine
 
 Vehicle Enter (Occupied, Press, w/ Weapon) - Carjack With Weapon
@@ -124,7 +117,9 @@ Vehicle Enter (Empty, Hold) - Smash Window
 - Peds and Cops may react unexpectedly, AI programming is hard
 - Some settings are not implemented/ do not exist
 - Turning off some settings may cause other unexpected issues, mostly tested with everything ON
-
+- If the mod doesn't load/can't get to the settings page, Once you are successfully loaded into SinglePlayer with RagePluginHook press F4. Type: ReloadAllPlugins and press Enter.
+- If you delete the xml files, they will be recreated on next launch with the default settings.
+- 
 ## Contact
 - For any questions, feedback, or assistance:
 [![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
