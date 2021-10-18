@@ -115,7 +115,7 @@
 - Turning off some settings may cause other unexpected issues, mostly tested with everything ON
 - If the mod doesn't load/can't get to the settings page, Once you are successfully loaded into SinglePlayer with RagePluginHook press F4. Type: ReloadAllPlugins and press Enter.
 - If you delete the xml files, they will be recreated on next launch with the default settings.
-- 
+
 ## Contact
 - For any questions, feedback, or assistance:
 [![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
