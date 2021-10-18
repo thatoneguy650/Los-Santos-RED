@@ -115,6 +115,7 @@
 - Turning off some settings may cause other unexpected issues, mostly tested with everything ON
 - If the mod doesn't load/can't get to the settings page, Once you are successfully loaded into SinglePlayer with RagePluginHook press F4. Type: ReloadAllPlugins and press Enter.
 - If you delete the xml files, they will be recreated on next launch with the default settings.
+- If you have crashes, please post the contents of your RagePluginHook.log file (located in the root GTA V directory). This will allow me to quickly see the exact error.
 
 ## Contact
 - For any questions, feedback, or assistance:
