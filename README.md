@@ -1,6 +1,6 @@
 # Los-Santos-RED
 
-> Keeps the action going in the world of Grand Theft Auto 
+> Enhanced and Customizable Free-Roam
 ![](https://img.shields.io/github/last-commit/thatoneguy650/Los-Santos-RED)
 ![](https://img.shields.io/github/commit-activity/w/thatoneguy650/Los-Santos-RED)
 
