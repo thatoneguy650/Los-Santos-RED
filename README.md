@@ -115,6 +115,13 @@
 - Do not save and turn off autosave
 - Restart the game without the mod active before saving (does some memory editing)
 
+- Complementary Mods
+  - [True Realistic Driving V](https://www.gta5-mods.com/scripts/true-realistic-driving-v-realistic-mass-v0-1-beta)
+  - [Manual Transmission](https://www.gta5-mods.com/scripts/manual-transmission-ikt)
+  - [Realistic Weapons Sounds](https://www.gta5-mods.com/weapons/realistic-weapons-sounds)
+  - [Add On Plates (should be configured already)](https://www.gta5-mods.com/paintjobs/new-license-plates-add-on)
+  - [Disable Red X Hitmarker Without Disabling the Crosshair](https://www.gta5-mods.com/misc/disable-red-x-hitmark-without-disabling-the-crossshair)
+
 ## Issues
 - This is an alpha, expect crashes/low performance
 - Peds and Cops may react unexpectedly, AI programming is hard
