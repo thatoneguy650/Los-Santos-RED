@@ -13,7 +13,9 @@
 - Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
 
-
+## Videos
+[![Video 1](https://img.youtube.com/vi/LvxnlAh2uio/0.jpg)](https://www.youtube.com/watch?v=LvxnlAh2uio)
+[![Video 2](https://img.youtube.com/vi/ljlNETG-BsQ/0.jpg)](https://www.youtube.com/watch?v=ljlNETG-BsQ)
 
 ## Features
 - Enhanced Free Roam Mode
