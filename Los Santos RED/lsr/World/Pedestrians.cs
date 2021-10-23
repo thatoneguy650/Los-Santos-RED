@@ -218,7 +218,7 @@ public class Pedestrians
         {
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false);
             myCop.IssueWeapons();
-            if (Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.Color;
@@ -289,15 +289,21 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (Settings.SettingsManager.PoliceSettings.OverridePoliceAccuracy)
+        if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
         {
-            Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
         }
-        int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100;
-        int DesiredArmor = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor);
-        Pedestrian.MaxHealth = DesiredHealth;
-        Pedestrian.Health = DesiredHealth;
-        Pedestrian.Armor = DesiredArmor;
+        if(Settings.SettingsManager.PoliceSettings.OverrideHealth)
+        {
+            int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100;
+            Pedestrian.MaxHealth = DesiredHealth;
+            Pedestrian.Health = DesiredHealth;
+        }
+        if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
+        {
+            int DesiredArmor = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor);
+            Pedestrian.Armor = DesiredArmor;
+        }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }

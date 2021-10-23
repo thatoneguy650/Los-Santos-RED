@@ -49,9 +49,12 @@ public class Idle : ComplexTask
     }
     public override void Start()
     {
-        EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}",5);
-        ClearTasks(true);
-        Update();
+        if (Ped.Pedestrian.Exists())
+        {
+            EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}", 5);
+            ClearTasks(true);
+            Update();
+        }
     }
     private void ClearTasks(bool resetAlertness)//temp public
     {

@@ -12,7 +12,7 @@ public class PlayerSettings
     public uint Recognize_NightPenalty { get; set; } = 3500;
     public uint Recognize_VehiclePenalty { get; set; } = 750;
     public bool DisableAutoEngineStart { get; set; } = true;
-
+    public bool UseCustomFuelSystem { get; set; } = true;
     public bool Scanner_IsEnabled { get; set; } = true;
     public bool Scanner_EnableAudio { get; set; } = true;
     public int Scanner_AudioVolume { get; set; } = 5;

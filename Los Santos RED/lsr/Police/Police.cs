@@ -34,7 +34,7 @@ namespace LosSantosRED.lsr
                 if (Cop.Pedestrian.Exists())
                 {
                     Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
-                    if (Settings.SettingsManager.PoliceSettings.ManagePoliceLoadout)
+                    if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                     {
                         Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
                     }

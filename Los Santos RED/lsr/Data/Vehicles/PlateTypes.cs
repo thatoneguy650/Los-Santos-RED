@@ -20,6 +20,11 @@ public class PlateTypes : IPlateTypes
     private bool UseVanillaConfig = false;
     public void ReadConfig()
     {
+        #if DEBUG
+                UseVanillaConfig = false;
+        #else
+                UseVanillaConfig = true;
+        #endif
         if (File.Exists(ConfigFileName))
         {
             PlateTypeList = Serialization.DeserializeParams<PlateType>(ConfigFileName);

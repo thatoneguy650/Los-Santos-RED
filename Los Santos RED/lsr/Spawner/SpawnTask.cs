@@ -148,7 +148,7 @@ public class SpawnTask
         GameFiber.Yield();
         if (copcar.Exists())
         {
-            VehicleExt CopVehicle = new VehicleExt(copcar, true);
+            VehicleExt CopVehicle = new VehicleExt(copcar, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
             if (copcar.Exists())
             {
                 copcar.IsPersistent = true;

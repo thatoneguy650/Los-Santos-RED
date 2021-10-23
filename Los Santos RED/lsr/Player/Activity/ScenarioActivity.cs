@@ -50,7 +50,19 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            Player.Character.Tasks.Clear();
+            try
+            {
+
+
+                //NativeFunction.Natives.SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(Player.Character, 0, 0, 0);
+                // NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Player.Character, 0, 0, 0);
+                // NativeFunction.Natives.TASK_AGITATED_ACTION(Player.Character, Player.Character);
+                Player.Character.Tasks.Clear();
+            }
+            catch
+            {
+                Game.DisplayNotification("FAIL");
+            }
             Player.IsPerformingActivity = false;
         }
         private void Idle()

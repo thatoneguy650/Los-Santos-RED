@@ -77,7 +77,7 @@ namespace Mod
             Violations = new Violations(this, TimeControllable, Crimes, Settings);
             Investigation = new Investigation(this, Settings);
             CriminalHistory = new CriminalHistory(this, Settings);
-            PoliceResponse = new PoliceResponse(this);
+            PoliceResponse = new PoliceResponse(this, Settings);
             SearchMode = new SearchMode(this, Settings);
             Inventory = new Inventory(this);    
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, placesOfInterest, Settings);
@@ -127,7 +127,7 @@ namespace Mod
                 if (isAiming != value)
                 {
                     isAiming = value;
-                    OnAiminChanged();
+                    OnAimingChanged();
                 }
             }
         }
@@ -280,14 +280,15 @@ namespace Mod
         public string DebugLine11 { get; set; }
         public Scanner DebugScanner => Scanner;//temp for testing with debug
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
-        public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
+        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
         {
-            PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
+            PoliceResponse.AddCrime(crimeObserved, description);
             if(AnnounceCrime)
             {
-                Scanner.AnnounceCrime(CrimeInstance, new CrimeSceneDescription(!IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed });
+                Scanner.AnnounceCrime(crimeObserved, description);
             }
-            if (!ByPolice && IsNotWanted)
+            if (!isObservedByPolice && IsNotWanted)
             {
                 Investigation.Start();       
             }
@@ -566,7 +567,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index]);
+                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index],Settings);
                 DynamicActivity.Start();
             }
         }
@@ -579,7 +580,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, toChange);
+                DynamicActivity = new PlateTheft(this, toChange,Settings);
                 DynamicActivity.Start();
             }
         }
@@ -618,7 +619,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this);
+                DynamicActivity = new PlateTheft(this,Settings);
                 DynamicActivity.Start();
             }
         }
@@ -764,7 +765,7 @@ namespace Mod
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
-        private void OnAiminChanged()
+        private void OnAimingChanged()
         {
             if (IsAiming)
             {
@@ -916,7 +917,24 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}",5);
         }
-
+        public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
+        {
+            if(IsWanted)
+            {
+                if (agency.ID == "ARMY")
+                {
+                    Scanner.OnArmyDeployed();
+                }
+                else if (agency.ID == "NOOSE")
+                {
+                    Scanner.OnNooseDeployed();
+                }
+                else if (vehicleType.IsHelicopter)
+                {
+                    Scanner.OnHelicoptersDeployed();
+                }
+            }
+        }
         //General Updates
         public void UpdateCurrentVehicle() //should this be public?
         {
@@ -945,7 +963,7 @@ namespace Mod
             //GameFiber.Yield();
             if (existingVehicleExt == null)
             {
-                VehicleExt createdVehicleExt = new VehicleExt(vehicle);
+                VehicleExt createdVehicleExt = new VehicleExt(vehicle,Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
                 TrackedVehicles.Add(createdVehicleExt);
                 existingVehicleExt = createdVehicleExt;
             }
@@ -957,7 +975,7 @@ namespace Mod
             {
                 existingVehicleExt.SetAsEntered();
             }
-            existingVehicleExt.Update(AutoTuneStation); 
+            existingVehicleExt.Update(AutoTuneStation, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem); 
             CurrentVehicle = existingVehicleExt;
         }
         private void UpdateLookedAtPed()
@@ -1282,5 +1300,7 @@ namespace Mod
             UpdateLookedAtPed();
             GameFiber.Yield();
         }
+
+
     }
 }

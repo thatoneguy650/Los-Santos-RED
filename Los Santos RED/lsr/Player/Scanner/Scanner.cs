@@ -129,7 +129,7 @@ namespace LosSantosRED.lsr
             Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
             if (ToAnnounce != null)
             {
-                if (!ToAnnounce.HasRecentlyBeenPlayed && (ToAnnounce.CanBeReportedMultipleTimes || ToAnnounce.TimesPlayed == 0))
+                if (!ToAnnounce.HasVeryRecentlyBeenPlayed && (ToAnnounce.CanBeReportedMultipleTimes || ToAnnounce.TimesPlayed == 0))
                 {
                     if (reportInformation.SeenByOfficers)
                     {
@@ -260,6 +260,27 @@ namespace LosSantosRED.lsr
                 AddToQueue(WeaponsFree);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
+        }
+        public void OnArmyDeployed()
+        {
+            if (CurrentPlayer.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+            {
+                AddToQueue(RequestMilitaryUnits);
+            }
+        }
+        public void OnNooseDeployed()
+        {
+            if (CurrentPlayer.IsWanted && !RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+            {
+                AddToQueue(RequestNOOSEUnits);
+            }
+        }
+        public void OnHelicoptersDeployed()
+        {
+            if (CurrentPlayer.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+            {
+                AddToQueue(RequestAirSupport);
+            }
         }
         public void Reset()
         {
@@ -617,7 +638,7 @@ namespace LosSantosRED.lsr
             else if (WeaponToDescribe.Category == WeaponCategory.Throwable || WeaponToDescribe.ModelName == "weapon_grenadelauncher_smoke" || WeaponToDescribe.ModelName == "weapon_compactlauncher")
             {
                 dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithexplosives.FileName);
-                dispatchEvent.Subtitles += " suspect is armed with a ~r~explosives~s~";
+                dispatchEvent.Subtitles += " suspect is armed with ~r~explosives~s~";
                 dispatchEvent.NotificationText += " Explosives";
             }
             else if (WeaponToDescribe.ModelName == "weapon_dagger" || WeaponToDescribe.ModelName == "weapon_knife" || WeaponToDescribe.ModelName == "weapon_switchblade")
@@ -684,7 +705,7 @@ namespace LosSantosRED.lsr
             {
                 dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingaweapon.FileName);
                 dispatchEvent.Subtitles += " suspect is carrying a ~r~weapon~s~";
-                dispatchEvent.NotificationText += " melee weapon";
+                dispatchEvent.NotificationText += " Close Combat Weapon";
             }
             else
             {
@@ -744,7 +765,7 @@ namespace LosSantosRED.lsr
         private void BuildDispatch(Dispatch DispatchToPlay)
         {
 
-            EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle}", 3);
+            EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
 
             DispatchEvent EventToPlay = new DispatchEvent();
             if (DispatchToPlay.HasPreamble)
@@ -933,21 +954,21 @@ namespace LosSantosRED.lsr
         {
             if (CurrentPlayer.IsWanted && CurrentPlayer.IsAliveAndFree && Settings.SettingsManager.PlayerSettings.Scanner_AllowStatusAnnouncements)
             {
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
-                {
-                    AddToQueue(RequestMilitaryUnits);
-                }
-                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
-                {
-                    AddToQueue(RequestNOOSEUnits);
-                }
-                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
-                {
-                    AddToQueue(RequestAirSupport);
-                }
+                //if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+                //{
+                //    AddToQueue(RequestMilitaryUnits);
+                //}
+                //if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+                //{
+                //    AddToQueue(RequestNOOSEUnits);
+                //}
+                //if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+                //{
+                //    AddToQueue(RequestAirSupport);
+                //}
                 if (CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
+                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
                     {
                         EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));

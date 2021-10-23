@@ -82,7 +82,10 @@ public class Vehicles
         int VehiclesUpdated = 0;
         foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
         {
-            UpdatePlate(MyCar);
+            if (MyCar.Vehicle.Exists())
+            {
+                UpdatePlate(MyCar);
+            }
             VehiclesUpdated++;
             if (VehiclesUpdated > 4)
             {
@@ -95,7 +98,7 @@ public class Vehicles
     {
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && !x.WasSpawnedEmpty))
         {
-            if (PoliceCar.Vehicle.IsEmpty)
+            if (PoliceCar.Vehicle.Exists() && PoliceCar.Vehicle.IsEmpty)
             {
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
@@ -109,9 +112,12 @@ public class Vehicles
     {
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
         {
-            if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 1000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
+            if (PoliceCar.Vehicle.Exists())
             {
-                PoliceCar.Vehicle.Repair();
+                if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 1000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
+                {
+                    PoliceCar.Vehicle.Repair();
+                }
             }
         }
     }
@@ -144,7 +150,7 @@ public class Vehicles
             {
                 if (!PoliceVehicles.Any(x => x.Handle == localHandle))
                 {
-                    VehicleExt Car = new VehicleExt(vehicle);
+                    VehicleExt Car = new VehicleExt(vehicle, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
                     //Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
                    // Car.UpgradePerformance();
                     PoliceVehicles.Add(Car);
@@ -185,7 +191,7 @@ public class Vehicles
                 
                 if (!CivilianVehicles.Any(x => x.Handle == localHandle))
                 {
-                    VehicleExt Car = new VehicleExt(vehicle);
+                    VehicleExt Car = new VehicleExt(vehicle, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
                     CivilianVehicles.Add(Car);
                     return true;
                 }
@@ -217,48 +223,27 @@ public class Vehicles
     }
     public void UpdatePlate(VehicleExt vehicleExt)//this might need to come out of here.... along with the two bools
     {
-        vehicleExt.HasUpdatedPlateType = true;
-        PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
-        string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
-        Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
+        if (vehicleExt.Vehicle.Exists())
+        {
+            vehicleExt.HasUpdatedPlateType = true;
+            PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
+            string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
+            Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
 
 
-        /*
-         * 
-         *TEMP HERE UNTIL I DECIDE
-         * 
-         * 
-         * */
-        if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
-        {
-            PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
-            
-            if (NewType != null)
+            /*
+             * 
+             *TEMP HERE UNTIL I DECIDE
+             * 
+             * 
+             * */
+            if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
             {
-                //EntryPoint.WriteToConsole($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
-                string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                if (NewPlateNumber != "")
-                {
-                    vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                    vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                    vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                }
-                if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
-                {
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                    vehicleExt.CarPlate.PlateType = NewType.Index;
-                }
-                // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
-            }
-        }
-        else
-        {
-            if (RandomItems.RandomPercent(15) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
-            {
-                PlateType NewType = PlateTypes.GetRandomPlateType();
+                PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
+
                 if (NewType != null)
                 {
+                    //EntryPoint.WriteToConsole($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                     if (NewPlateNumber != "")
                     {
@@ -268,11 +253,35 @@ public class Vehicles
                     }
                     if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
                     {
-                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                         vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                         vehicleExt.CarPlate.PlateType = NewType.Index;
                     }
                     // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                }
+            }
+            else
+            {
+                if (RandomItems.RandomPercent(15) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
+                {
+                    PlateType NewType = PlateTypes.GetRandomPlateType();
+                    if (NewType != null)
+                    {
+                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                        if (NewPlateNumber != "")
+                        {
+                            vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                            vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                            vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+                        }
+                        if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                        {
+                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                            vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                            vehicleExt.CarPlate.PlateType = NewType.Index;
+                        }
+                        // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    }
                 }
             }
         }

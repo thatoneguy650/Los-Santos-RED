@@ -19,6 +19,9 @@ public static class EntryPoint
     public static ModController ModController { get; set; }
     public static void Main()
     {
+        #if DEBUG
+                LogLevel = 5;
+        #endif
         while (Game.IsLoading)
         {
             GameFiber.Yield();

@@ -62,6 +62,9 @@ namespace LosSantosRED.lsr
             if (myPed.IsCop)
             {
                 GameTimeLastHurtCop = Game.GameTime;
+                //CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added", 5);
             }
             else
             {
@@ -75,6 +78,9 @@ namespace LosSantosRED.lsr
                 PlayerKilledCops.Add(myPed);
                 GameTimeLastKilledCop = Game.GameTime;
                 GameTimeLastHurtCop = Game.GameTime;
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                //CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
+                EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added", 5);
             }
             else
             {
@@ -138,15 +144,15 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            if (RecentlyKilledCop)
-            {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
-            }
+            //if (RecentlyKilledCop)
+            //{
+            //    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
+            //}
 
-            if (RecentlyHurtCop)
-            {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
-            }
+            //if (RecentlyHurtCop)
+            //{
+            //    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
+            //}
 
             if (RecentlyKilledCivilian || NearCivilianMurderVictim)
             {
@@ -253,7 +259,7 @@ namespace LosSantosRED.lsr
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
-            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Group != Game.LocalPlayer.Character.Group))
+            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group)))
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             }
@@ -378,6 +384,7 @@ namespace LosSantosRED.lsr
             {
                 if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
+                    EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
                     Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
                 }
             }

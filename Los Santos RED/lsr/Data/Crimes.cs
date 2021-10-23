@@ -43,7 +43,7 @@ public class Crimes : ICrimes
             new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2) { CanReportBySound = true },
             new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, false) { CanReportBySound = true },
             new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false),
-            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5),
+            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5) { CanViolateWithoutPerception = true },
             new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, false, true, true),
             new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false) { CanViolateMultipleTimes = false },
             new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8),
@@ -56,7 +56,7 @@ public class Crimes : ICrimes
             new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, true, true, true) { IsTrafficViolation = true },
             new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, true, true, true),
             new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 17, true, true, true),
-            new Crime("ResistingArrest", "Resisting Arrest", 2, false, 18, false) { CanViolateWithoutPerception = true },
+            new Crime("ResistingArrest", "Resisting Arrest", 2, false, 18, false),
             new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 19, true, true, true),
             new Crime("DrunkDriving", "Drunk Driving", 2, false, 20, true, false, false),
 

@@ -112,8 +112,11 @@
     <Compile Include="lsr\Data\Saves\GameSave.cs" />
     <Compile Include="lsr\Data\Saves\GameSaves.cs" />
     <Compile Include="lsr\Data\Settings\DebugSettings.cs" />
+    <Compile Include="lsr\Data\Settings\EMSSettings.cs" />
+    <Compile Include="lsr\Data\Settings\FireSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerSettings.cs" />
     <Compile Include="lsr\Data\Settings\RespawnSettings.cs" />
+    <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
     <Compile Include="lsr\Dispatcher\DispatchParameters.cs" />
     <Compile Include="lsr\Data\Interface\ICrimes.cs" />
     <Compile Include="lsr\Data\Interface\INameProvideable.cs" />
@@ -132,6 +135,8 @@
     <Compile Include="lsr\Data\Scanner\StreetScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
+    <Compile Include="lsr\Dispatcher\EMSDispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\FireDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
     <Compile Include="lsr\PedSwap\IPedSwap.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
@@ -261,7 +266,7 @@
     <Compile Include="lsr\Util\Crimes\Crime.cs" />
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />
     <Compile Include="lsr\Player\Scanner\AudioSet.cs" />
-    <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
+    <Compile Include="lsr\Dispatcher\LEDispatcher.cs" />
     <Compile Include="lsr\Player\Investigation.cs" />
     <Compile Include="lsr\Player\CriminalHistory.cs" />
     <Compile Include="lsr\Player\Scanner\CrimeSceneDescription.cs" />

@@ -30,7 +30,12 @@ public class UISettings
     public bool AlwaysShowCash { get; set; } = true;
     public bool AlwaysShowRadar { get; set; } = true;
     public bool AlwaysShowHUD { get; set; } = true;
-    public bool ShowDebug { get; set; } = false;
+
+    #if DEBUG
+        public bool ShowDebug { get; set; } = true;
+    #else
+        public bool ShowDebug { get; set; } = false;
+    #endif
     public bool ShowVanillaVehicleUI { get; set; } = false;
     public bool ShowVanillaAreaUI { get; set; } = false;
     public bool ShowSpeedDisplay { get; set; } = true;

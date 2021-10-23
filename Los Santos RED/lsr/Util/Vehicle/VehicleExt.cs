@@ -144,12 +144,12 @@ namespace LSR.Vehicles
             }
         }
         public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
-        public VehicleExt(Vehicle vehicle, uint gameTimeEntered) : this(vehicle)
-        {
-            GameTimeEntered = gameTimeEntered;
-            PlaceOriginallyEntered = Vehicle.Position;
-        }
-        public VehicleExt(Vehicle vehicle)
+        //public VehicleExt(Vehicle vehicle, uint gameTimeEntered) : this(vehicle)
+        //{
+        //    GameTimeEntered = gameTimeEntered;
+        //    PlaceOriginallyEntered = Vehicle.Position;
+        //}
+        public VehicleExt(Vehicle vehicle, bool setRandomFuelLevel)
         {
             Vehicle = vehicle;
             if (Vehicle.Exists())
@@ -158,14 +158,17 @@ namespace LSR.Vehicles
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-                Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
+                if (setRandomFuelLevel)
+                {
+                    Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
+                }
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
             Engine = new Engine(this);
         }
-        public VehicleExt(Vehicle vehicle,bool wasModSpawned) : this(vehicle)
+        public VehicleExt(Vehicle vehicle,bool wasModSpawned, bool setRandomFuelLevel) : this(vehicle, setRandomFuelLevel)
         {
             WasModSpawned = wasModSpawned;
         }
@@ -245,14 +248,17 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
-        public void Update(string DesiredStation)
+        public void Update(string DesiredStation, bool UpdateFuel)
         {
             if (IsCar)
             {
                 Engine.Update();
                 Radio.Update(DesiredStation);
                 Indicators.Update();
-                FuelTank.Update();
+                if (UpdateFuel)
+                {
+                    FuelTank.Update();
+                }
             }
         }
         public void UpdateDescription()

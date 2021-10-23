@@ -124,7 +124,7 @@ public class Locate : ComplexTask
             {
                 Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
             }
-            EntryPoint.WriteToConsole(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle),5);
+            //EntryPoint.WriteToConsole(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle),5);
         }
         if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {

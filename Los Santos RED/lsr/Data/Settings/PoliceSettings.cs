@@ -6,23 +6,36 @@ using System.Threading.Tasks;
 
 public class PoliceSettings
 {
-    public bool SpawnedAmbientPoliceHaveBlip { get; set; } = false;
-    public bool ShowPoliceRadarBlips { get; set; } = false;
-    public bool OverridePoliceAccuracy { get; set; } = true;
-    public int PoliceGeneralAccuracy { get; set; } = 10;
+    public bool ManageDispatching { get; set; } = true;
+    public bool ManageTasking { get; set; } = true;
+    public bool ShowSpawnedBlips { get; set; } = true;
+    public bool ShowVanillaBlips { get; set; } = false;
+    public bool OverrideAccuracy { get; set; } = true;
+    public int GeneralAccuracy { get; set; } = 10;
     public float AutoRecognizeDistance { get; set; } = 20f;
     public float AlwaysRecognizeDistance { get; set; } = 7f;
     public int RecentlySeenTime { get; set; } = 17000;
     public bool AllowAmbientSpeech { get; set; } = true;
     public bool AllowChaseAssists { get; set; } = true;
-    public bool ManagePoliceLoadout { get; set; } = true;
+    public bool ManageLoadout { get; set; } = true;
     public float BustDistance { get; set; } = 5f;
     public bool AllowRadioInAnimations { get; set; } = false;
-    public bool TaskPolice { get; set; } = true;
+    public bool OverrideHealth { get; set; } = true;
     public int MinHealth { get; set; } = 85;
     public int MaxHealth { get; set; } = 125;
+    public bool OverrideArmor { get; set; } = true;
     public int MinArmor { get; set; } = 0;
     public int MaxArmor { get; set; } = 50;
+    public int SpawnLimit_Default { get; set; } = 5;
+    public int SpawnLimit_Investigation { get; set; } = 6;
+    public int SpawnLimit_Wanted1 { get; set; } = 7;
+    public int SpawnLimit_Wanted2 { get; set; } = 10;
+    public int SpawnLimit_Wanted3 { get; set; } = 18;
+    public int SpawnLimit_Wanted4 { get; set; } = 25;
+    public int SpawnLimit_Wanted5 { get; set; } = 35;
+    public int KillLimit_Wanted4 { get; set; } = 4;
+    public int KillLimit_Wanted5 { get; set; } = 10;
+    public uint WantedLevelIncreaseTime { get; set; } = 240000;
     public PoliceSettings()
     {
 

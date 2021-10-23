@@ -18,12 +18,14 @@ public class PlateTheft : DynamicActivity
     private Vehicle VehicleWithPlate;
     private Vector3 CarPosition;
     private Vector3 ChangeSpot;
+    private ISettingsProvideable Settings;
     private bool IsChangingPlate => PlateToAdd != null;
-    public PlateTheft(IPlateChangeable player)
+    public PlateTheft(IPlateChangeable player, ISettingsProvideable settings)
     {
         Player = player;
+        Settings = settings;
     }
-    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange) : this(player)
+    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange, ISettingsProvideable settings) : this(player, settings)
     {
         PlateToAdd = plateToChange;
     }
@@ -127,7 +129,7 @@ public class PlateTheft : DynamicActivity
             TargetVehicle = Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
             if (TargetVehicle == null)
             {
-                TargetVehicle = new VehicleExt(VehicleWithPlate);
+                TargetVehicle = new VehicleExt(VehicleWithPlate,Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
                 Player.TrackedVehicles.Add(TargetVehicle);
             }
             return TargetVehicle;
@@ -254,7 +256,10 @@ public class PlateTheft : DynamicActivity
     private void Setup()
     {
         TargetVehicle = GetTargetVehicle();
-        CarPosition = TargetVehicle.Vehicle.Position;
-        ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        {
+            CarPosition = TargetVehicle.Vehicle.Position;
+            ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
+        }
     }
 }

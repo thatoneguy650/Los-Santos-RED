@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         Locations.LocationData CurrentLocation { get; }
         string DebugLine11 { get; set; }
+        void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }
 }

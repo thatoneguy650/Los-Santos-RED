@@ -33,7 +33,7 @@ public class Fight : ComplexTask
     }
     public override void Update()
     {
-        if(Player.IsWanted && Ped.Pedestrian.Exists())
+        if(Ped.Pedestrian.Exists() && Player.IsWanted)
         {
             Ped.Pedestrian.Tasks.Clear();
         }

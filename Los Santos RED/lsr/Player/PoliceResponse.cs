@@ -23,10 +23,12 @@ namespace LosSantosRED.lsr
         private IPoliceRespondable Player;
         private PoliceState PrevPoliceState;
         private Blip LastSeenLocationBlip;
+        private ISettingsProvideable Settings;
 
-        public PoliceResponse(IPoliceRespondable player)
+        public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings)
         {
             Player = player;
+            Settings = settings;
         }
         private enum PoliceState
         {
@@ -96,21 +98,21 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
+        public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription)
         {
             //this is a fucking mess of references and isnt working properly at all
             //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
-                if (HaveDescription)
+                if (crimeSceneDescription.HaveDescription)
                 {
-                    PoliceHaveDescription = HaveDescription;
+                    PoliceHaveDescription = crimeSceneDescription.HaveDescription;
                 }
-                PlaceLastReportedCrime = Location;
+                PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
                 CrimeEvent PreviousViolation;
 
-                if (ByPolice)
+                if (crimeSceneDescription.SeenByOfficers)
                 {
                     PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
@@ -118,30 +120,32 @@ namespace LosSantosRED.lsr
                 {
                     PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
-                CrimeSceneDescription CrimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
+               // CrimeSceneDescription crimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
-                    CrimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
-                    PreviousViolation.CurrentInformation = CrimeSceneDescription;       
+                    crimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
+                    PreviousViolation.CurrentInformation = crimeSceneDescription;       
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {ByPolice} Instances {CrimeSceneDescription.InstancesObserved}", 3);
-                    if (ByPolice)
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} Instances {crimeSceneDescription.InstancesObserved}", 3);
+                    if (crimeSceneDescription.SeenByOfficers)
                     {
-                        CrimesObserved.Add(new CrimeEvent(CrimeInstance, CrimeSceneDescription));                     
+                        CrimesObserved.Add(new CrimeEvent(CrimeInstance, crimeSceneDescription));                     
                     }
                     else
                     {
-                        CrimesReported.Add(new CrimeEvent(CrimeInstance, CrimeSceneDescription));
+                        CrimesReported.Add(new CrimeEvent(CrimeInstance, crimeSceneDescription));
                     }
                 }
-                if (ByPolice && Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
+                if (crimeSceneDescription.SeenByOfficers && Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
                 {
                     Player.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
-                }              
+                }
+                return crimeSceneDescription;
             }
+            return null;
         }
         public void ApplyReportedCrimes()
         {
@@ -258,7 +262,7 @@ namespace LosSantosRED.lsr
                         PlayerSeenDuringCurrentWanted = true;
                         PlayerSeenDuringWanted = true;
                     }
-                    if (HasBeenAtCurrentWantedLevelFor > 240000 && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
+                    if (HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
@@ -271,13 +275,13 @@ namespace LosSantosRED.lsr
                     int PoliceKilled = InstancesOfCrime("KillingPolice");
                     if (PoliceKilled > 0)
                     {
-                        if (PoliceKilled >= 4 && Player.WantedLevel < 5)
+                        if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
                         {
                             Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                             IsWeaponsFree = true;
                             Player.OnWeaponsFree();
                         }
-                        else if (PoliceKilled >= 2 && Player.WantedLevel < 4)
+                        else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
                         {
                             Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                             IsWeaponsFree = true;

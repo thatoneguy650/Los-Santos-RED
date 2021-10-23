@@ -15,6 +15,8 @@ public class SettingsManager
     public UISettings UISettings { get; set; } = new UISettings();
     public KeySettings KeySettings { get; set; } = new KeySettings();
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
+    public EMSSettings EMSSettings { get; set; } = new EMSSettings();
+    public FireSettings FireSettings { get; set; } = new FireSettings();
     public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
     public PlayerSettings PlayerSettings { get; set; } = new PlayerSettings();
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();

@@ -19,28 +19,33 @@ public class CallIn : ComplexTask
     }
     public override void Start()
     {
-        
-        EntryPoint.WriteToConsole($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}",3);
-        unsafe
+        if (Ped.Pedestrian.Exists())
         {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 50f, 10000);//100f
-            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            EntryPoint.WriteToConsole($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}", 3);
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 50f, 10000);//100f
+                NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }       
         }
         GameTimeLastRan = Game.GameTime;
     }
     public override void Update()
     {
-        //EntryPoint.WriteToConsole($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
-        if(Game.GameTime - GameTimeStartedCallIn >= 10000 && Ped.CrimesWitnessed.Any())
+        if (Ped.Pedestrian.Exists())
         {
-            ReportCrime();
+            //EntryPoint.WriteToConsole($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
+            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && Ped.CrimesWitnessed.Any())
+            {
+                ReportCrime();
+            }
         }
         GameTimeLastRan = Game.GameTime;
     }

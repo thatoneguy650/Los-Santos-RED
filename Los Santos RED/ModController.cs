@@ -158,8 +158,10 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartInputLogic();
             GameFiber.Yield();
-           // StartDebugLogic();
-          //  GameFiber.Yield();
+            #if DEBUG
+                StartDebugLogic();
+                GameFiber.Yield();
+            #endif
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
         private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
@@ -364,8 +366,6 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Debug Logic");
-
-            //temp off for release?
         }
         private void StartInputLogic()
         {
