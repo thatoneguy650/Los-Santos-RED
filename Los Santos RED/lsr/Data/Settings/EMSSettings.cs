@@ -8,9 +8,13 @@ public class EMSSettings
 {
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
-    public bool ShowSpawnedBlips { get; set; } = true;
+    public bool ShowSpawnedBlips { get; set; } = false;
     public EMSSettings()
     {
-
+        #if DEBUG
+            ShowSpawnedBlips =  true;
+        #else
+            ShowSpawnedBlips = false;
+        #endif
     }
 }

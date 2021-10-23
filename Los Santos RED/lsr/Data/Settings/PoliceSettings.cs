@@ -8,7 +8,7 @@ public class PoliceSettings
 {
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
-    public bool ShowSpawnedBlips { get; set; } = true;
+    public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;
     public int GeneralAccuracy { get; set; } = 10;
@@ -38,6 +38,10 @@ public class PoliceSettings
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
     public PoliceSettings()
     {
-
+        #if DEBUG
+                    ShowSpawnedBlips =  true;
+        #else
+                ShowSpawnedBlips = false;
+        #endif
     }
 }

@@ -66,20 +66,6 @@ public class GeneralSettings
     public bool World_UpdateVehiclePlates { get; set; } = true;
     public bool World_CleanupVehicles { get; set; } = true;
 
-    //public bool Dispatch_DispatchLE { get; set; } = true;
-    //public bool Dispatch_DispatchEMS { get; set; } = true;
-    //public bool Dispatch_DispatchFire { get; set; } = true;
-
-
-    //public int Dispatch_PoliceMax_Default { get; set; } = 5;
-    //public int Dispatch_PoliceMax_Investigation { get; set; } = 6;
-    //public int Dispatch_PoliceMax_Wanted1 { get; set; } = 7;
-    //public int Dispatch_PoliceMax_Wanted2 { get; set; } = 10;
-    //public int Dispatch_PoliceMax_Wanted3 { get; set; } = 18;
-    //public int Dispatch_PoliceMax_Wanted4 { get; set; } = 25;
-    //public int Dispatch_PoliceMax_Wanted5 { get; set; } = 35;
-
-    //need distance, and delete criteria settings as well
     public GeneralSettings()
     {
 

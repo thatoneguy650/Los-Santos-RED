@@ -554,9 +554,9 @@ namespace LosSantosRED.lsr
             if (VehicleToDescribe != null && VehicleToDescribe.Vehicle.Exists())
             {
                 dispatchEvent.NotificationText += "~n~Vehicle:~s~";
-                dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
-                dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
-                dispatchEvent.Subtitles += " suspect is driving a ~s~";
+                //dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+                //dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
+                //dispatchEvent.Subtitles += " suspect is driving a ~s~";
 
                 Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
                 string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
@@ -568,6 +568,22 @@ namespace LosSantosRED.lsr
                 string MakeAudio = VehicleScannerAudio.GetMakeAudio(MakeName);
                 string ClassAudio = VehicleScannerAudio.GetClassAudio(ClassInt);
                 string ModelAudio = VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
+
+                //if(VehicleToDescribe.IsStolen)
+                //{
+                //    dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+                //    dispatchEvent.SoundsToPlay.Add(conjunctives.In.FileName);
+                //    dispatchEvent.Subtitles += " suspect is in a stolen vehicle, a ~s~";
+                //    dispatchEvent.SoundsToPlay.Add(crime_10_851.Astolenvehicle.FileName);
+                //    dispatchEvent.SoundsToPlay.Add(conjunctives.A01.FileName);
+                //}
+                //else
+                //{
+                    dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+                    dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
+                    dispatchEvent.Subtitles += " suspect is driving a ~s~";
+                    
+                //}
 
                 if (ColorAudio != "")
                 {
@@ -1388,6 +1404,7 @@ namespace LosSantosRED.lsr
                 Name = "Carrying Weapon",
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeCarryingWeapon = true,
+                CanBeReportedMultipleTimes = false,
             };
             TerroristActivity = new Dispatch()
             {

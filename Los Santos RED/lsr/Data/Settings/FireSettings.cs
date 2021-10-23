@@ -8,9 +8,13 @@ public class FireSettings
 {
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
-    public bool ShowSpawnedBlips { get; set; } = true;
+    public bool ShowSpawnedBlips { get; set; } = false;
     public FireSettings()
     {
-
+        #if DEBUG
+            ShowSpawnedBlips =  true;
+        #else
+            ShowSpawnedBlips = false;
+        #endif
     }
 }
