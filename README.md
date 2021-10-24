@@ -1,4 +1,5 @@
 # Los-Santos-RED
+[![Pic1](https://i.imgur.com/t3Oq0iD.png)](https://i.imgur.com/t3Oq0iD.png)
 
 > Enhanced and Customizable Free-Roam
 ![](https://img.shields.io/github/last-commit/thatoneguy650/Los-Santos-RED)
@@ -12,6 +13,7 @@
     - [LCPDFR Mod (do not install the lcpdfr folder or the content from the plugins folder)](https://www.lcpdfr.com/downloads/gta5mods/g17media/7792-lspd-first-response/)
 - Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
+- [Installation Video](https://www.youtube.com/watch?v=0NpTHJcrIic)
 
 ## Videos
 [![Video 1](https://img.youtube.com/vi/LvxnlAh2uio/0.jpg)](https://www.youtube.com/watch?v=LvxnlAh2uio)
