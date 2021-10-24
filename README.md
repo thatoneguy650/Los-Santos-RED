@@ -2,7 +2,9 @@
 [![Pic1](https://i.imgur.com/t3Oq0iD.png)](https://i.imgur.com/t3Oq0iD.png)
 
 > Enhanced and Customizable Free-Roam
+
 ![](https://img.shields.io/github/last-commit/thatoneguy650/Los-Santos-RED)
+
 ![](https://img.shields.io/github/commit-activity/w/thatoneguy650/Los-Santos-RED)
 
 
@@ -97,7 +99,7 @@
 (others should have prompts)
 
 ## License
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Credits
 - [alexguirre](https://github.com/alexguirre)
@@ -135,5 +137,7 @@
 
 ## Contact
 - For any questions, feedback, or assistance:
+
 [![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
+
 [![](https://img.shields.io/badge/youtube-not%20phoon-red)](https://www.youtube.com/channel/UCztW17S8jNqJo6TqzmMbj8Q)
