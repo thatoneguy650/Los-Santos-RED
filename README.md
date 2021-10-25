@@ -1,7 +1,10 @@
 # Los-Santos-RED
+[![Pic1](https://i.imgur.com/t3Oq0iD.png)](https://i.imgur.com/t3Oq0iD.png)
 
 > Enhanced and Customizable Free-Roam
+
 ![](https://img.shields.io/github/last-commit/thatoneguy650/Los-Santos-RED)
+
 ![](https://img.shields.io/github/commit-activity/w/thatoneguy650/Los-Santos-RED)
 
 
@@ -12,6 +15,7 @@
     - [LCPDFR Mod (do not install the lcpdfr folder or the content from the plugins folder)](https://www.lcpdfr.com/downloads/gta5mods/g17media/7792-lspd-first-response/)
 - Place all [RAGENativeUI](https://github.com/alexguirre/RAGENativeUI/releases) files in the root GTA V directory
 - Download the latest release and drag into the Plugins folder in the root GTA V directory
+- [Installation Video](https://www.youtube.com/watch?v=0NpTHJcrIic)
 
 ## Videos
 [![Video 1](https://img.youtube.com/vi/LvxnlAh2uio/0.jpg)](https://www.youtube.com/watch?v=LvxnlAh2uio)
@@ -95,7 +99,7 @@
 (others should have prompts)
 
 ## License
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Credits
 - [alexguirre](https://github.com/alexguirre)
@@ -133,5 +137,7 @@
 
 ## Contact
 - For any questions, feedback, or assistance:
+
 [![](https://img.shields.io/badge/email-imnotphoon%40gmail-blue)](mailto:imnotphoon@gmail.com)
+
 [![](https://img.shields.io/badge/youtube-not%20phoon-red)](https://www.youtube.com/channel/UCztW17S8jNqJo6TqzmMbj8Q)
