@@ -58,7 +58,7 @@ namespace Mod
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            if (Settings.SettingsManager.GeneralSettings.World_AddPOIBlipsToMap)
+            if (Settings.SettingsManager.WorldSettings.AddPOIBlipsToMap)
             {
                 foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
                 {
@@ -116,14 +116,14 @@ namespace Mod
         public void CreateNewVehicles() => Vehicles.CreateNew();
         public void UpdateVehiclePlates()
         {
-            if (Settings.SettingsManager.GeneralSettings.World_UpdateVehiclePlates)
+            if (Settings.SettingsManager.WorldSettings.UpdateVehiclePlates)
             {
                 Vehicles.UpdatePlates();
             }
         }
         public void CleanUpVehicles()
         {
-            if (Settings.SettingsManager.GeneralSettings.World_CleanupVehicles)
+            if (Settings.SettingsManager.WorldSettings.CleanupVehicles)
             {
                 Vehicles.CleanUp();
             }

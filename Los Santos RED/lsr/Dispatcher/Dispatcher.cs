@@ -50,7 +50,15 @@ public class Dispatcher
     }
     public void Dispose()
     {
-
+        LEDispatcher.Dispose();
+    }
+    public void SpawnRoadblock()
+    {
+        LEDispatcher.SpawnRoadblock();
+    }
+    public void RemoveRoadblock()
+    {
+        LEDispatcher.RemoveRoadblock();
     }
 }
 

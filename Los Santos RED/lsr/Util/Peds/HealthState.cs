@@ -141,7 +141,7 @@ public class HealthState
 
         if (outBone != 0)
         {
-            if (Settings.SettingsManager.GeneralSettings.HealthState_ClearDamage)
+            if (Settings.SettingsManager.DamageSettings.ClearDamage)
             {
                 NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
             }
@@ -165,11 +165,11 @@ public class HealthState
         if (IsArmor)
         {
             if (injury == InjuryType.Normal)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_NormalDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Armor_NormalDamageModifier;
             else if (injury == InjuryType.Graze)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_GrazeDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Armor_GrazeDamageModifier;
             else if (injury == InjuryType.Critical)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Armor_CriticalDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Armor_CriticalDamageModifier;
             else if (injury == InjuryType.Vanilla)
                 return 1.0f;
             else
@@ -178,13 +178,13 @@ public class HealthState
         else
         {
             if (injury == InjuryType.Fatal)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Health_FatalDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Health_FatalDamageModifier;
             else if (injury == InjuryType.Normal)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Health_NormalDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Health_NormalDamageModifier;
             else if (injury == InjuryType.Graze)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Health_GrazeDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Health_GrazeDamageModifier;
             else if (injury == InjuryType.Critical)
-                return Settings.SettingsManager.GeneralSettings.HealthState_Health_CriticalDamageModifier;
+                return Settings.SettingsManager.DamageSettings.Health_CriticalDamageModifier;
             else if (injury == InjuryType.Vanilla)
                 return 1.0f;
             else
@@ -193,7 +193,7 @@ public class HealthState
     }
     private void ModifyDamage()
     {
-        if (!Settings.SettingsManager.GeneralSettings.HealthState_ModifyDamage)
+        if (!Settings.SettingsManager.DamageSettings.ModifyDamage)
         {
             return;
         }
@@ -312,10 +312,10 @@ public class HealthState
     {
         var ToPickFrom = new List<(float, InjuryType)>
         {
-            (Settings.SettingsManager.GeneralSettings.HealthState_NormalDamagePercent, InjuryType.Normal),
-            (Settings.SettingsManager.GeneralSettings.HealthState_GrazeDamagePercent, InjuryType.Graze),
-            (Settings.SettingsManager.GeneralSettings.HealthState_CriticalDamagePercent, InjuryType.Critical),
-            (Settings.SettingsManager.GeneralSettings.HealthState_FatalDamagePercent,InjuryType.Fatal)
+            (Settings.SettingsManager.DamageSettings.NormalDamagePercent, InjuryType.Normal),
+            (Settings.SettingsManager.DamageSettings.GrazeDamagePercent, InjuryType.Graze),
+            (Settings.SettingsManager.DamageSettings.CriticalDamagePercent, InjuryType.Critical),
+            (Settings.SettingsManager.DamageSettings.FatalDamagePercent,InjuryType.Fatal)
         };
         float Total = ToPickFrom.Sum(x => x.Item1);
         float RandomPick = RandomItems.GetRandomNumber(0, Total);//--RandomItems.MyRand.Next(0, Total);
@@ -340,7 +340,7 @@ public class HealthState
 
 
         //int RandomNumber = RandomItems.MyRand.Next(1, 101);
-        //if (RandomNumber <= Settings.SettingsManager.GeneralSettings.HealthState_NormalDamagePercent)
+        //if (RandomNumber <= Settings.SettingsManager.DamageSettings.HealthState_NormalDamagePercent)
         //{
         //    return InjuryType.Normal;
         //}
@@ -363,7 +363,7 @@ public class HealthState
     }
     private void SetRagdoll(int NewHealth)
     {
-        if(!Settings.SettingsManager.GeneralSettings.HealthState_AllowRagdoll)
+        if(!Settings.SettingsManager.DamageSettings.AllowRagdoll)
         {
             return;
         }

@@ -8,6 +8,7 @@ public class PoliceSettings
 {
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
+    public bool AllowExclusiveControlOverWantedLevel { get; set; } = true;
     public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;

@@ -47,7 +47,8 @@ public class EMSDispatcher
     {
         HasDispatchedThisTick = false;
         if (Settings.SettingsManager.EMSSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
-        {    
+        {
+            HasDispatchedThisTick = true;//up here for now, might be better down low
             EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;

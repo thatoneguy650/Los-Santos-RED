@@ -272,7 +272,10 @@ public class UI : IMenuProvideable
             {
                 CurrentSpeedDisplay += " !";
             }
-            CurrentSpeedDisplay += "~n~" + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
+            if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
+            {
+                CurrentSpeedDisplay += "~n~" + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
+            }
         }
         return CurrentSpeedDisplay;
     }

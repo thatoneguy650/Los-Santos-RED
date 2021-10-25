@@ -48,6 +48,7 @@ public class FireDispatcher
         HasDispatchedThisTick = false;
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
+            HasDispatchedThisTick = true;//up here for now, might be better down low
             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Fire Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;

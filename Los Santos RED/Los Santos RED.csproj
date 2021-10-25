@@ -111,11 +111,18 @@
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
     <Compile Include="lsr\Data\Saves\GameSave.cs" />
     <Compile Include="lsr\Data\Saves\GameSaves.cs" />
+    <Compile Include="lsr\Data\Settings\ActivitySettings.cs" />
+    <Compile Include="lsr\Data\Settings\CivilianSettings.cs" />
+    <Compile Include="lsr\Data\Settings\DamageSettings.cs" />
     <Compile Include="lsr\Data\Settings\DebugSettings.cs" />
     <Compile Include="lsr\Data\Settings\EMSSettings.cs" />
     <Compile Include="lsr\Data\Settings\FireSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PedSwapSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerSettings.cs" />
     <Compile Include="lsr\Data\Settings\RespawnSettings.cs" />
+    <Compile Include="lsr\Data\Settings\TimeSettings.cs" />
+    <Compile Include="lsr\Data\Settings\VanillaSettings.cs" />
+    <Compile Include="lsr\Data\Settings\WorldSettings.cs" />
     <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
     <Compile Include="lsr\Dispatcher\DispatchParameters.cs" />
     <Compile Include="lsr\Data\Interface\ICrimes.cs" />
@@ -273,7 +280,6 @@
     <Compile Include="lsr\Player\SearchMode.cs" />
     <Compile Include="lsr\Player\PoliceResponse.cs" />
     <Compile Include="lsr\Police\ResponsePriority.cs" />
-    <Compile Include="lsr\Data\Settings\GeneralSettings.cs" />
     <Compile Include="lsr\Data\Settings\KeySettings.cs" />
     <Compile Include="lsr\Data\Settings\PoliceSettings.cs" />
     <Compile Include="lsr\Data\Settings\Settings.cs" />

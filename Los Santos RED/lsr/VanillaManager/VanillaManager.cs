@@ -28,29 +28,29 @@ public class VanillaManager
     }
     public void Tick()
     {
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateRespawn)
+        if (Settings.SettingsManager.VanillaSettings.TerminateRespawn)
         {
             if (IsVanillaRespawnActive)
             {
                 TerminateRespawnController();
             }
         }
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateDispatch)
+        if (Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
             if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
             {
                 TerminateDispatch();
             }
         }
-        if(Settings.SettingsManager.GeneralSettings.Vanilla_TerminateScenarioCops)
+        if(Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
             TerminateScnariosCops();
         }
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateRespawn)
+        if (Settings.SettingsManager.VanillaSettings.TerminateRespawn)
         {
             TerminateRespawnScripts();
         }
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateHealthRecharge)
+        if (Settings.SettingsManager.VanillaSettings.TerminateHealthRecharge)
         {
             TerminateHealthRecharge();
         }
@@ -73,11 +73,11 @@ public class VanillaManager
     }
     private void TerminateAudio()
     {
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateScanner)
+        if (Settings.SettingsManager.VanillaSettings.TerminateScanner)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
         }
-        if (Settings.SettingsManager.GeneralSettings.Vanilla_TerminateWantedMusic)
+        if (Settings.SettingsManager.VanillaSettings.TerminateWantedMusic)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }

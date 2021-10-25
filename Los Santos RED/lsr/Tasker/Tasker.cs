@@ -49,14 +49,13 @@ public class Tasker
     }
     public void UpdateCivilianTasks()
     {
-        if (Settings.SettingsManager.GeneralSettings.Tasker_TaskCivilians)
+        if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
                 if (Civilian.DistanceToPlayer <= 75f)
                 {
                     UpdateCurrentTask(Civilian);
-                    //GameFiber.Yield();
                 }
                 else if (Civilian.CurrentTask != null)
                 {

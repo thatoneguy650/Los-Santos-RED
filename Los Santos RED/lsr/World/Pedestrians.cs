@@ -192,18 +192,18 @@ public class Pedestrians
     private void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.Civilians_FightPercentage);
-        bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.Civilians_CallPolicePercentage);
+        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
+        bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
         bool IsGangMember = false;
         if (Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.GeneralSettings.Civilians_GangAlwaysFights && Pedestrian.IsGangMember())
+            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
             {
                 IsGangMember = true;
                 WillFight = true;
                 WillCallPolice = false;
             }
-            else if (Settings.SettingsManager.GeneralSettings.Civilians_SecurityAlwaysFights && Pedestrian.IsSecurity())
+            else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage) && Pedestrian.IsSecurity())
             {
                 WillFight = true;
                 WillCallPolice = false;
@@ -280,10 +280,17 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.Civilians_MinHealth, Settings.SettingsManager.GeneralSettings.Civilians_MaxHealth) + 100;
-        Pedestrian.MaxHealth = DesiredHealth;
-        Pedestrian.Health = DesiredHealth;
-        Pedestrian.Armor = 0;
+        if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
+        {
+            Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
+        }
+        if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
+        {
+            int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
+            Pedestrian.MaxHealth = DesiredHealth;
+            Pedestrian.Health = DesiredHealth;
+            Pedestrian.Armor = 0;
+        }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }

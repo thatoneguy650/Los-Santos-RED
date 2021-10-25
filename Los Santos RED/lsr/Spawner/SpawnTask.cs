@@ -148,6 +148,7 @@ public class SpawnTask
         GameFiber.Yield();
         if (copcar.Exists())
         {
+            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);
             VehicleExt CopVehicle = new VehicleExt(copcar, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
             if (copcar.Exists())
             {

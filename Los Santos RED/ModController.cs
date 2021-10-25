@@ -79,7 +79,7 @@ namespace LosSantosRED.lsr
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
             Player.Reset(true, true, true, true);
-            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.PedSwap_RandomMoneyMin, Settings.SettingsManager.GeneralSettings.PedSwap_RandomMoneyMax));
+            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax));
         }
         public void NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
         {

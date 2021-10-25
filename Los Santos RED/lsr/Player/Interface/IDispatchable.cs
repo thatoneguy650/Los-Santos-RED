@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         Locations.LocationData CurrentLocation { get; }
         string DebugLine11 { get; set; }
+        VehicleExt CurrentVehicle { get; }
+
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }
 }

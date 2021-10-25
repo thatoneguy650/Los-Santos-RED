@@ -20,7 +20,7 @@ public class Agencies : IAgencies
     public void ReadConfig()
     {
         #if DEBUG
-            UseVanillaConfig =  false;
+            UseVanillaConfig =  true;
         #else
             UseVanillaConfig = true;
         #endif

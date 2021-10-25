@@ -33,10 +33,12 @@ namespace LosSantosRED.lsr.Player
         private bool ShouldContinue;
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
-        public SmokingActivity(IIntoxicatable consumable, bool isPot) : base()
+        private ISettingsProvideable Settings;
+        public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
+            Settings = settings;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override void Cancel()
@@ -314,11 +316,11 @@ namespace LosSantosRED.lsr.Player
             }
             if (IsPot)
             {
-                PropModelName = "p_amb_joint_01";
+                PropModelName = Settings.SettingsManager.ActivitySettings.Marijuana_PossibleProps.PickRandom();
             }
             else
             {
-                PropModelName = "ng_proc_cigarette01a";
+                PropModelName = Settings.SettingsManager.ActivitySettings.Cigarette_PossibleProps.PickRandom();
             }
 
 
@@ -351,7 +353,7 @@ namespace LosSantosRED.lsr.Player
 
             if (IsPot)
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 5000, 400000, "drug_wobbly");//IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");
+                IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
                 IntoxicatingEffect.Start();
             }
         }

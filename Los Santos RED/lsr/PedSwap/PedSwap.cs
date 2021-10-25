@@ -75,10 +75,9 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
         }
     }
-
     private void GiveHistory()
     {
-        if (RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.PedSwap_PercentageToGetRandomWeapon))
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomWeapon))
         {
             WeaponInformation myGun = Weapons.GetRandomRegularWeapon();
             if (myGun != null)
@@ -86,7 +85,7 @@ public class PedSwap : IPedSwap
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, false);
             }
         }
-        if(RandomItems.RandomPercent(Settings.SettingsManager.GeneralSettings.PedSwap_PercentageToGetCriminalHistory))
+        if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
         {
             Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
         }
@@ -142,8 +141,11 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
 
-            SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.PedSwap_AliasModelName);
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+            {
+                SetPlayerOffset();
+                NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+            }
             NativeHelper.ChangeModel(modelName);
             Ped PedBecame = Game.LocalPlayer.Character;
             if (variation != null)
@@ -220,12 +222,15 @@ public class PedSwap : IPedSwap
         }
         NativeHelper.ChangeModel(InitialModel.Name);
         InitialVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        SetPlayerOffset(InitialModel.Hash);
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            SetPlayerOffset(InitialModel.Hash);
+        }
         if (Car.Exists() && WasInCar)
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
         }
-        if (Settings.SettingsManager.GeneralSettings.PedSwap_SetRandomMoney && CurrentPedMoney > 0)
+        if (Settings.SettingsManager.PedSwapSettings.SetRandomMoney && CurrentPedMoney > 0)
         {
             Player.SetMoney(CurrentPedMoney);
         }
@@ -342,10 +347,10 @@ public class PedSwap : IPedSwap
     private void PostTakeover(string ModelToChange)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-        if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.GeneralSettings.PedSwap_AliasPedAsMainCharacter)
+        if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.PedSwap_AliasModelName);
+            NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
             NativeHelper.ChangeModel(ModelToChange);
         }
 
@@ -481,15 +486,15 @@ public class PedSwap : IPedSwap
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias == "Michael")
+        if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Michael")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
         }
-        else if (Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias == "Franklin")
+        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Franklin")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
         }
-        else if (Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias == "Trevor")
+        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Trevor")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
         }
@@ -501,6 +506,17 @@ public class PedSwap : IPedSwap
         //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
+    }
+    private string AliasModelName(string MainCharacterToAlias)
+    {
+        if (MainCharacterToAlias == "Michael")
+            return "player_zero";
+        else if (MainCharacterToAlias == "Franklin")
+            return "player_one";
+        else if (MainCharacterToAlias == "Trevor")
+            return "player_two";
+        else
+            return "player_zero";     
     }
 
     private class TakenOverPed

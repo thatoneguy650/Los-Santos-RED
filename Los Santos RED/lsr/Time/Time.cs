@@ -53,7 +53,7 @@ namespace Mod
             }
             else
             {
-                if (Settings.SettingsManager.GeneralSettings.Time_ScaleTime)
+                if (Settings.SettingsManager.TimeSettings.ScaleTime)
                 {
                     GetIntervalAndMultiplier();
                 }

@@ -217,7 +217,7 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -349,7 +349,7 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias);
+            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -401,11 +401,11 @@ namespace Mod
             PlayerName = playerName;
             IsMale = isMale;
             SetMoney(money);
-            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias)}", 3);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.PedSwap_MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
@@ -606,7 +606,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new DrinkingActivity(this);
+                DynamicActivity = new DrinkingActivity(this, Settings);
                 DynamicActivity.Start();
             }
         }
@@ -645,7 +645,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new SmokingActivity(this, false);
+                DynamicActivity = new SmokingActivity(this, false, Settings);
                 DynamicActivity.Start();
             }
             else if (IsPerformingActivity && CanPerformActivities)
@@ -662,7 +662,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new SmokingActivity(this, true);
+                DynamicActivity = new SmokingActivity(this, true, Settings);
                 DynamicActivity.Start();
             }
             else if (IsPerformingActivity && CanPerformActivities)
@@ -741,8 +741,11 @@ namespace Mod
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
-                    SetWantedLevel(0, "GAME AUTO SET WANTED", true);
+                    if (Settings.SettingsManager.PoliceSettings.AllowExclusiveControlOverWantedLevel)
+                    {
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
+                        SetWantedLevel(0, "GAME AUTO SET WANTED", true);
+                    }
                     //Game.LocalPlayer.WantedLevel = 0;
                 }
                 else

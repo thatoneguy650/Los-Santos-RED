@@ -17,9 +17,11 @@ namespace LosSantosRED.lsr.Player
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private IIntoxicatable Player;
-        public DrinkingActivity(IIntoxicatable consumable) : base()
+        private ISettingsProvideable Settings;
+        public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
             Player = consumable;
+            Settings = settings;
         }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
@@ -138,13 +140,13 @@ namespace LosSantosRED.lsr.Player
                 HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
             }
-            PropModel = new List<string>() { "prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03" }.PickRandom(); ;
+            PropModel = Settings.SettingsManager.ActivitySettings.Alcohol_PossibleProps.PickRandom(); ;
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
 
-            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 5000, 400000, "Drunk");//IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");
+            IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
             IntoxicatingEffect.Start();
         }
     }

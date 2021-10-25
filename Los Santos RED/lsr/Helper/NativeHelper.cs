@@ -17,9 +17,15 @@ namespace LosSantosRED.lsr.Helper
             {
                 case "Michael":
                     return Game.GetHashKey("SP0_TOTAL_CASH");
+                case "player_zero":
+                    return Game.GetHashKey("SP0_TOTAL_CASH");
                 case "Franklin":
                     return Game.GetHashKey("SP1_TOTAL_CASH");
+                case "player_one":
+                    return Game.GetHashKey("SP1_TOTAL_CASH");
                 case "Trevor":
+                    return Game.GetHashKey("SP2_TOTAL_CASH");
+                case "player_two":
                     return Game.GetHashKey("SP2_TOTAL_CASH");
                 default:
                     return Game.GetHashKey("SP0_TOTAL_CASH");

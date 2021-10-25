@@ -44,9 +44,9 @@ public class LEDispatcher
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit;
-    private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= 3 && Roadblock == null;
+    private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= 2 && Roadblock == null;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenSpawn;
+    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn
     {
@@ -169,6 +169,7 @@ public class LEDispatcher
         HasDispatchedThisTick = false;
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
+            HasDispatchedThisTick = true;//up here for now, might be better down low
             EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
@@ -218,11 +219,11 @@ public class LEDispatcher
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
-        //if (IsTimeToRoadblock && HasNeedToRoadblock)
-        //{
-        //    //to be readd :(
-        //    SpawnRegularRoadblock();
-        //}
+        if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
+        {
+            //to be readd :(
+            SpawnRoadblock();
+        }
         if (LastAgencySpawned != null)
         {
             Player.DebugLine11 = $"Roadblock: {Roadblock != null}; LastAgencySpawned: {LastAgencySpawned.ID}";
@@ -235,7 +236,7 @@ public class LEDispatcher
     }
     public void Dispose()
     {
-
+        RemoveRoadblock();
     }
     public void Recall()
     {
@@ -249,12 +250,12 @@ public class LEDispatcher
                     GameFiber.Yield();
                 }
             }
-            //if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
-            //{
-            //    Roadblock.Dispose();
-            //    Roadblock = null;
-            //    EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
-            //}
+            if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
+            {
+                Roadblock.Dispose();
+                Roadblock = null;
+                EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
+            }
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
@@ -423,9 +424,10 @@ public class LEDispatcher
         //}
         return false;
     }
-    public void SpawnRegularRoadblock()//temp public
+    public void SpawnRoadblock()//temp public
     {
-        Vector3 Position = Player.Character.GetOffsetPositionFront(400f);
+        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Roadblock", 3);
+        Vector3 Position = Player.Character.GetOffsetPositionFront(350f);//400f 400 is mostly far enough to not see it
         Street ForwardStreet = Streets.GetStreet(Position);
         if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
         {
@@ -438,12 +440,20 @@ public class LEDispatcher
                 {
                     Roadblock.Dispose();
                 }
-
                 Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition, Settings);
                 Roadblock.SpawnRoadblock();
                 GameTimeLastSpawnedRoadblock = Game.GameTime;
                 EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
             }
+        }
+    }
+    public void RemoveRoadblock()//temp public
+    {
+        if (Roadblock != null)
+        {
+            Roadblock.Dispose();
+            Roadblock = null;
+            EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
         }
     }
 }
