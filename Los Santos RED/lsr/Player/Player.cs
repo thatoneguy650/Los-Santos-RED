@@ -978,7 +978,7 @@ namespace Mod
             {
                 existingVehicleExt.SetAsEntered();
             }
-            existingVehicleExt.Update(AutoTuneStation, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem); 
+            existingVehicleExt.Update(AutoTuneStation, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem, Settings.SettingsManager.PlayerSettings.ScaleEngineDamage); 
             CurrentVehicle = existingVehicleExt;
         }
         private void UpdateLookedAtPed()
@@ -1141,10 +1141,8 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
-                //GameFiber.Yield();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.MustBeHotwired;
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
-              //  UpdateSpeedDispay();
                 if (isHotwiring != IsHotWiring)
                 {
                     if (IsHotWiring)
@@ -1193,7 +1191,13 @@ namespace Mod
                     GameTimeLastMovedFast = 0;
                 }
                 IsStill = VehicleSpeed <= 0.1f;
-               // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
+
+
+                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+                {
+                    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth}";
+                }
+                // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
             }
             else
             {

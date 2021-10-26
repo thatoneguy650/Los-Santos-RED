@@ -42,6 +42,8 @@ public class PlayerSettings
     public float CriminalHistory_SearchRadiusIncrement { get; set; } = 400f;
     public bool SearchMode_FakeActiveWanted { get; set; } = true;
     public uint SearchMode_SearchTimeMultiplier { get; set; } = 30000;
+    public bool ScaleEngineDamage { get; set; } = true;
+
     public PlayerSettings()
     {
 

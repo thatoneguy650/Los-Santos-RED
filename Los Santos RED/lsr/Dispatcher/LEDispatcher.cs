@@ -259,10 +259,6 @@ public class LEDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
-    private void AttemptDispatch()
-    {
-        
-    }
     private void Delete(PedExt Cop)
     {
         if (Cop != null && Cop.Pedestrian.Exists())
@@ -435,12 +431,12 @@ public class LEDispatcher
             {
                 Agency ToSpawn = GetRandomAgency(CenterPosition,ResponseType.LawEnforcement);
                 DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
-
-                if(Roadblock != null)
+                DispatchablePerson OfficerType = ToSpawn.GetRandomPed(Player.WantedLevel, VehicleToUse.RequiredPassengerModels);
+                if (Roadblock != null)
                 {
                     Roadblock.Dispose();
                 }
-                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition, Settings);
+                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings);
                 Roadblock.SpawnRoadblock();
                 GameTimeLastSpawnedRoadblock = Game.GameTime;
                 EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
