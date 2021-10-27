@@ -23,7 +23,8 @@ public class FireDispatcher
     private bool HasDispatchedThisTick;
     private uint GameTimeAttemptedDispatch;
     private uint GameTimeAttemptedRecall;
-    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions)
+    private IWeapons Weapons;
+    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons)
     {
         Player = player;
         World = world;
@@ -72,7 +73,7 @@ public class FireDispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
                             spawnTask.AttemptSpawn();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                             spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));

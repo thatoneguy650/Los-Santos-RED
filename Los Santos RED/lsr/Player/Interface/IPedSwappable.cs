@@ -23,5 +23,6 @@ namespace LosSantosRED.lsr.Interface
         void SetMoney(int currentPedMoney);
         void AddCrimeToHistory(Crime crime);
         void UpdateCurrentVehicle();
+        void SetWantedLevel(int v1, string v2, bool v3);
     }
 }

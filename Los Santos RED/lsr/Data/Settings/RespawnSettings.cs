@@ -29,4 +29,5 @@ public class RespawnSettings
     public int PoliceBribeWantedLevelScale { get; set; } = 500;
     public int PoliceBailWantedLevelScale { get; set; } = 750;
     public int HospitalFee { get; set; } = 5000;
+    public bool PermanentDeathMode { get; set; } = false;
 }

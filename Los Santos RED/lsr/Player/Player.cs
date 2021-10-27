@@ -103,6 +103,7 @@ namespace Mod
         public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle  && !IsMovingDynamically;//&& !IsAttemptingToSurrender
         public bool CanSurrender => Surrendering.CanSurrender;
         public Ped Character => Game.LocalPlayer.Character;
+        public bool CanUndie => Respawning.CanUndie;
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
@@ -261,6 +262,7 @@ namespace Mod
                 return Time;
             }
         }//move or delete?
+        public int TimesDied => Respawning.TimesDied;
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }//move or delete?
@@ -683,7 +685,7 @@ namespace Mod
         public void CheckInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
         public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
         public void DropWeapon() => WeaponDropping.DropWeapon();
-        public void LocationUpdate() => CurrentLocation.Update();
+        public void LocationUpdate() => CurrentLocation.Update(Character);
         public void ScannerUpdate() => Scanner.Tick();
         public void LowerHands() => Surrendering.LowerHands();//needs to move
         public void RaiseHands() => Surrendering.RaiseHands();//needs to move
@@ -1068,11 +1070,11 @@ namespace Mod
             {
                 OnWantedLevelChanged();
             }
-            if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
+            if (CurrentLocation.CharacterToLocate.Exists() && CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
             {
                 CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
             }
-            if (HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings);
             }

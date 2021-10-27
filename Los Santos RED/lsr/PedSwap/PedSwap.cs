@@ -47,14 +47,30 @@ public class PedSwap : IPedSwap
         InitialModel = Game.LocalPlayer.Character.Model;
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
     }
-    public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
+    public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try
         {
             Ped TargetPed = FindPedToSwapWith(Radius, Nearest);
             if (TargetPed == null)
             {
-                return;
+                if (createRandomPedIfNoneReturned)
+                {
+                    Ped createdPed = new Ped(Player.Position.Around2D(15f));
+                    GameFiber.Yield();
+                    if(createdPed.Exists())
+                    {
+                        TargetPed = createdPed;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
             }
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
@@ -68,7 +84,26 @@ public class PedSwap : IPedSwap
                 TaskFormerPed(CurrentPed);
             }
             PostTakeover(LastModelHash);
-            
+
+
+
+
+
+
+            GameFiber.StartNew(delegate
+            {
+                uint GameTimeLastTakenOver = Game.GameTime;
+                while (Game.GameTime - GameTimeLastTakenOver <= 3000)
+                {
+                    if (Game.LocalPlayer.WantedLevel != 0)
+                    {
+                        Player.SetWantedLevel(0, "PedSwap resetting afterwards", true);
+                    }
+                    GameFiber.Yield();
+                }
+                
+            }, "Wanted Level Stopper");
+
         }
         catch (Exception e3)
         {
@@ -90,7 +125,6 @@ public class PedSwap : IPedSwap
             Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
         }
     }
-
     public void BecomeRandomPed(bool DeleteOld)
     {
 

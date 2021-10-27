@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -119,7 +120,7 @@ public class Agency
         }
         return null;
     }
-    public IssuableWeapon GetRandomWeapon(bool isSidearm)
+    public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)
     {
         IssuableWeapon weaponToIssue;
         if (isSidearm)
@@ -130,7 +131,8 @@ public class Agency
         {
             weaponToIssue = LongGuns.PickRandom();
         }
-        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), null);
+        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
+        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
         return weaponToIssue;
     }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();

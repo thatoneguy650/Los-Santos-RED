@@ -171,38 +171,38 @@ public class Agencies : IAgencies
             new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> LSPDVehiclesVanilla = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
-            new DispatchableVehicle("police2", 25, 20) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
-            new DispatchableVehicle("police3", 25, 20) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new DispatchableVehicle("police2", 25, 20),
+            new DispatchableVehicle("police3", 25, 20),
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> LSSDVehiclesVanilla = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50){ RequiredLiveries = new List<int> { 0, 1, 2, 3 } },
-            new DispatchableVehicle("sheriff2", 50, 50) { RequiredLiveries = new List<int> { 0, 1, 2, 3 } } };
+            new DispatchableVehicle("sheriff", 50, 50),
+            new DispatchableVehicle("sheriff2", 50, 50) };
         List<DispatchableVehicle> LSPDVehicles = LSPDVehiclesVanilla;
         List<DispatchableVehicle> SAHPVehicles = HighwayPatrolVehicles;
         List<DispatchableVehicle> LSSDVehicles = LSSDVehiclesVanilla;
         List<DispatchableVehicle> BCSOVehicles = LSSDVehiclesVanilla;
         List<DispatchableVehicle> VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff2", 100, 100) { RequiredLiveries = new List<int> { 0, 1, 2, 3 } } };
+            new DispatchableVehicle("sheriff2", 100, 100) };
         List<DispatchableVehicle> ChumashLSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff2", 100, 100) { RequiredLiveries = new List<int> { 0, 1, 2, 3 } } };
+            new DispatchableVehicle("sheriff2", 100, 100) };
         List<DispatchableVehicle> LSSDDavisVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 100, 100){ RequiredLiveries = new List<int> { 0, 1, 2, 3 } } };
+            new DispatchableVehicle("sheriff", 100, 100) };
         List<DispatchableVehicle> RHPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police2", 100, 75) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new DispatchableVehicle("police2", 100, 75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> DPPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new DispatchableVehicle("police3", 100, 75) ,
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> ChumashLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new DispatchableVehicle("police3", 100, 75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> EastLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police", 100,75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> VWPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police", 100,75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
@@ -210,11 +210,11 @@ public class Agencies : IAgencies
             new DispatchableVehicle("buzzard2", 0,25) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 },
             new DispatchableVehicle("polmav", 0,75) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<DispatchableVehicle> ArmyVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("crusader", 75,50) { RequiredLiveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
-            new DispatchableVehicle("barracks", 25,50) { RequiredLiveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
-            new DispatchableVehicle("rhino", 0,10) { RequiredLiveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
-            new DispatchableVehicle("valkyrie", 0,50) { RequiredLiveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
-            new DispatchableVehicle("valkyrie2", 0,50) { RequiredLiveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("crusader", 75,50) { MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
+            new DispatchableVehicle("barracks", 25,50) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("rhino", 0,10) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
+            new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("valkyrie2", 0,50) { MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
         };
         List<DispatchableVehicle> OldSnowyVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeold1", 50, 50),
@@ -503,13 +503,13 @@ public class Agencies : IAgencies
 
             
         List<DispatchableVehicle> ChumashLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) { RequiredLiveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new DispatchableVehicle("police3", 100, 75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> EastLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police", 100,75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> VWPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police", 100,75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
@@ -541,7 +541,7 @@ public class Agencies : IAgencies
             new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 2 } } };
 
         //Weapon
-        List<IssuableWeapon> AllSidearms = new List<IssuableWeapon>()
+        List<IssuableWeapon> lists = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_pistol", new WeaponVariation()),
             new IssuableWeapon("weapon_pistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )})),
@@ -560,6 +560,7 @@ public class Agencies : IAgencies
             new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )})),
             new IssuableWeapon("weapon_heavypistol", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip" )})),
         };
+        List<IssuableWeapon> AllSidearms = lists;
         List<IssuableWeapon> AllLongGuns = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_pumpshotgun", new WeaponVariation()),
@@ -640,13 +641,12 @@ public class Agencies : IAgencies
             new Agency("~b~", "NYSP", "North Yankton State Police", "Blue", Classification.Police, NYSPPeds, OldSnowyVehicles, "NYSP ", LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~g~", "VCPD", "Vice City Police Department", "Green", Classification.Police, StandardCops, AllUnmarkedVehicles, "VCPD ", AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "LC ",AllSidearms, AllLongGuns) { MaxWantedLevelSpawn = 5 },
-            new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "LC ",AllSidearms, AllLongGuns) { MaxWantedLevelSpawn = 5 },
 
 
-            new Agency("~r~", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, Firefighters, Firetrucks, "LSFD ",null, null) { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true },
-            new Agency("~w~", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, EMTs, Amublance1, "LSMC ",null, null) { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true },
-            new Agency("~w~", "MRH", "Mission Row Hospital", "White", Classification.EMS, EMTs, Amublance2, "MRH ",null, null) { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true },
-            new Agency("~w~", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, EMTs, Amublance3, "LSFD ",null, null) { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true },
+            new Agency("~r~", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, Firefighters, Firetrucks, "LSFD ",null, null) { MaxWantedLevelSpawn = 2},
+            new Agency("~w~", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, EMTs, Amublance1, "LSMC ",null, null) { MaxWantedLevelSpawn = 2 },
+            new Agency("~w~", "MRH", "Mission Row Hospital", "White", Classification.EMS, EMTs, Amublance2, "MRH ",null, null) { MaxWantedLevelSpawn = 2 },
+            new Agency("~w~", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, EMTs, Amublance3, "LSFD ",null, null) { MaxWantedLevelSpawn = 2 },
 
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null) { MaxWantedLevelSpawn = 0 },
         };

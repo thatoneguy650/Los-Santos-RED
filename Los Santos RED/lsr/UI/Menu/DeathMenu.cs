@@ -16,11 +16,17 @@ public class DeathMenu : Menu
     private IRespawning Respawning;
     private List<GameLocation> Hospitals;
     private List<DistanceSelect> Distances;
-    public DeathMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
+    private ISettingsProvideable Settings;
+    private IRespawnable Player;
+    private IGameSaves GameSaves;
+    public DeathMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IRespawnable player, IGameSaves gameSaves)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
+        Player = player;
+        GameSaves = gameSaves;
         Menu = new UIMenu("Wasted", "Choose Respawn");
         menuPool.Add(Menu);
         Menu.OnItemSelect += OnItemSelect;
@@ -37,6 +43,19 @@ public class DeathMenu : Menu
         if(!Menu.Visible)
         {
             UpdateClosestHospitalIndex();
+            if(Settings.SettingsManager.RespawnSettings.PermanentDeathMode)
+            {
+                Undie.Enabled = false;
+                HospitalRespawn.Enabled = false;
+            }
+            else
+            {
+                HospitalRespawn.Enabled = true;
+            }
+            if(Settings.SettingsManager.RespawnSettings.AllowUndie && Player.CanUndie && !Settings.SettingsManager.RespawnSettings.PermanentDeathMode)
+            {
+                Undie.Enabled = true;
+            }
             Menu.Visible = true;
         }
     }
@@ -78,12 +97,14 @@ public class DeathMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, true, true);
+                PedSwap.TakeoverPed(500f, true, true, true, true);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true, true);
             }
+
+            GameSaves.DeleteSave(Player.PlayerName, Player.ModelName);
         }
         Menu.Visible = false;
     }

@@ -62,11 +62,11 @@ public class PedSwapMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, false, true);
+                PedSwap.TakeoverPed(500f, true, false, true, false);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true, false);
             }
         }
         else if (selectedItem == BecomeRandomPed)

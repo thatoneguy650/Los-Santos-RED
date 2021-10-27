@@ -44,6 +44,14 @@ public class GameSaves : IGameSaves
     {
         return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
     }
+    public void DeleteSave(string playerName, string modelName)
+    {
+        GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);
+        if(toDelete != null)
+        {
+            GameSaveList.Remove(toDelete);
+        }
+    }
     private void DefaultConfig()
     {
         //PedVariation ClaudeVariation = new PedVariation(new List<PedComponent>()

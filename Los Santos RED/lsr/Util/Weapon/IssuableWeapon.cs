@@ -21,7 +21,7 @@ public class IssuableWeapon
     }
 
     public string ModelName { get; set; }
-    public List<WeaponComponent> PossibleComponents { get; private set; } = new List<WeaponComponent>();
+    private List<WeaponComponent> PossibleComponents  = new List<WeaponComponent>();
     public WeaponVariation Variation { get; set; }
     public void ApplyVariation(Ped WeaponOwner)
     {

@@ -23,7 +23,8 @@ public class Pedestrians
     private INameProvideable Names;
     private IPedGroups RelationshipGroups;
     private List<Entity> WorldPeds = new List<Entity>();
-    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups)
+    private IWeapons Weapons;
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons)
     {
         Agencies = agencies;
         Zones = zones;
@@ -31,6 +32,7 @@ public class Pedestrians
         Settings = settings;
         Names = names;
         RelationshipGroups = relationshipGroups;
+        Weapons = weapons;
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
@@ -217,7 +219,7 @@ public class Pedestrians
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false);
-            myCop.IssueWeapons();
+            myCop.IssueWeapons(Weapons);
             if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();

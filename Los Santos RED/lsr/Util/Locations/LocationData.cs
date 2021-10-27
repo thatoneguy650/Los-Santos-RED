@@ -28,8 +28,12 @@ namespace LosSantosRED.lsr.Locations
         public Street CurrentCrossStreet { get; private set; }
         public Zone CurrentZone { get; private set; }
         public bool IsOffroad { get; private set; }
-        public void Update()
+        public void Update(Ped characterToLocate)
         {
+            if(characterToLocate.Exists())
+            {
+                CharacterToLocate = characterToLocate;
+            }
             if (CharacterToLocate.Exists())
             {
                 GetZone();
@@ -48,18 +52,28 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetZone()
         {
-            CurrentZone = Zones.GetZone(CharacterToLocate.Position);    
+            if (CharacterToLocate.Exists())
+            {
+                CurrentZone = Zones.GetZone(CharacterToLocate.Position);
+            }
         }
         private void GetNode()
         {
-            ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
-            if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 15f
+            if (CharacterToLocate.Exists())
             {
-                IsOffroad = true;
+                ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
+                if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 15f
+                {
+                    IsOffroad = true;
+                }
+                else
+                {
+                    IsOffroad = false;
+                }
             }
             else
             {
-                IsOffroad = false;
+                IsOffroad = true;
             }
         }
         private void GetStreets()

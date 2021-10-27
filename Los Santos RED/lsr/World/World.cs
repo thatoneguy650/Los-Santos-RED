@@ -23,13 +23,13 @@ namespace Mod
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups)
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
             Jurisdictions = jurisdictions;
             Settings = settings;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;

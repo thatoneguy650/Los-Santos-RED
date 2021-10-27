@@ -19,7 +19,8 @@ public class SpawnTask
     private VehicleExt Vehicle;
     private DispatchableVehicle VehicleType;
     private ISettingsProvideable Settings;
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings)
+    private IWeapons Weapons;
+    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons)
     {
         Agency = agency;
         PersonType = officerType;
@@ -29,6 +30,7 @@ public class SpawnTask
         StreetPosition = streetPosition;
         Heading = heading;
         Settings = settings;
+        Weapons = weapons;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -135,7 +137,7 @@ public class SpawnTask
             {
                 NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
                 Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true);
-                PrimaryCop.IssueWeapons();
+                PrimaryCop.IssueWeapons(Weapons);
                 Person = PrimaryCop;
             }
             else if (Agency.ResponseType == ResponseType.EMS)

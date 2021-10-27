@@ -19,7 +19,8 @@ public class Dispatcher
     private LEDispatcher LEDispatcher;
     private EMSDispatcher EMSDispatcher;
     private FireDispatcher FireDispatcher;
-    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions)
+    private IWeapons Weapons;
+    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons)
     {
         Player = player;
         World = world;
@@ -28,9 +29,10 @@ public class Dispatcher
         Streets = streets;
         Zones = zones;
         Jurisdictions = jurisdictions;
-        LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
-        EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
-        FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
+        Weapons = weapons;
+        LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons);
+        EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons);
+        FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons);
     }
     public void Dispatch()
     {

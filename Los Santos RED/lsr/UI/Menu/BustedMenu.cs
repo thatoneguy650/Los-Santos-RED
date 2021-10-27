@@ -95,11 +95,11 @@ public class BustedMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, true, true);
+                PedSwap.TakeoverPed(500f, true, true, true, false);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true, false);
             }
         }
         Menu.Visible = false;

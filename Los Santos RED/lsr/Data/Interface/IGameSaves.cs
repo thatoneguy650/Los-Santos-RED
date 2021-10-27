@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
         void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap);
 
         void Save(ISaveable player, IWeapons weapons);
+        void DeleteSave(string playerName, string modelName);
     }
 }

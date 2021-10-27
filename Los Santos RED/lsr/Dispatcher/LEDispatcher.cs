@@ -27,7 +27,8 @@ public class LEDispatcher
     private uint GameTimeLastSpawnedRoadblock;
     private Roadblock Roadblock;
     private Agency LastAgencySpawned;
-    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions)
+    private IWeapons Weapons;
+    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons)
     {
         Player = player;
         World = world;
@@ -36,6 +37,7 @@ public class LEDispatcher
         Streets = streets;
         Zones = zones;
         Jurisdictions = jurisdictions;
+        Weapons = weapons;
     }
 
     private float ClosestPoliceSpawnToOtherPoliceAllowed => Player.IsWanted ? 200f : 500f;
@@ -198,7 +200,7 @@ public class LEDispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
@@ -436,7 +438,7 @@ public class LEDispatcher
                 {
                     Roadblock.Dispose();
                 }
-                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings);
+                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons);
                 Roadblock.SpawnRoadblock();
                 GameTimeLastSpawnedRoadblock = Game.GameTime;
                 EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);

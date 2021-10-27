@@ -32,7 +32,7 @@ public class Cop : PedExt
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool WasModSpawned { get; private set; }
-    public void IssueWeapons() => WeaponInventory.IssueWeapons();
+    public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);

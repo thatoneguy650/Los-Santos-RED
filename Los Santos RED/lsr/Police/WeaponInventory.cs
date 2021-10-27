@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,11 @@ public class WeaponInventory
     public bool NeedsWeaponCheck => GameTimeLastWeaponCheck == 0 || Game.GameTime > GameTimeLastWeaponCheck + 750;
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public bool HasPistol => Sidearm != null;
-    public void IssueWeapons()
+    public void IssueWeapons(IWeapons weapons)
     {
-        Sidearm = Cop.AssignedAgency.GetRandomWeapon(true);
+        Sidearm = Cop.AssignedAgency.GetRandomWeapon(true, weapons);
         //EntryPoint.WriteToConsole($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
-        LongGun = Cop.AssignedAgency.GetRandomWeapon(false);
+        LongGun = Cop.AssignedAgency.GetRandomWeapon(false, weapons);
         //EntryPoint.WriteToConsole($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
     }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)

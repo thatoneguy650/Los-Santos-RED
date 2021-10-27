@@ -31,14 +31,14 @@ public class UI : IMenuProvideable
     private IJurisdictions Jurisdictions;
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
         Jurisdictions = jurisdictions;
         BigMessage = new BigMessageThread(true);
         menuPool = new MenuPool();
-        DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest);
+        DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest);
         MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations);
