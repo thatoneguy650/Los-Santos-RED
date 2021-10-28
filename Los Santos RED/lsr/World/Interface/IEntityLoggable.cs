@@ -10,7 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IEntityLoggable
     {
-        void AddEntity(VehicleExt vehicle);
+        void AddEntity(VehicleExt vehicle, ResponseType responseType);
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);
     }

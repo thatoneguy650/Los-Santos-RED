@@ -53,7 +53,9 @@ public class PedExt : IComplexTaskable
     public bool IsConversing { get; set; }
     public bool HasSpokenWithPlayer { get; set; }
     public bool CanBeTasked { get; set; } = true;
+    public bool CanBeAmbientTasked { get; set; } = true;
     public bool ShouldUpdateTask { get; set; } = true;
+    public bool HasBeenHurtByPlayer = false;
     public bool CanRecognizePlayer
     {
         get
@@ -122,6 +124,7 @@ public class PedExt : IComplexTaskable
     public bool HasReactedToCrimes { get; set; } = false;
     public bool HasSeenPlayerCommitCrime => CrimesWitnessed.Any();
     public int Health { get; set; }
+    public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsCop { get; set; } = false;
     public bool IsGangMember { get; set; } = false;
     public bool IsDriver { get; private set; } = false;

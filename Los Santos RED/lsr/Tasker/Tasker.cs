@@ -124,11 +124,20 @@ public class Tasker
             }
             else
             {
-                if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
+                if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
                 {
                     Cop.CurrentTask = new Idle(Cop, Player);
                     Cop.CurrentTask.Start();
                 }
+                //else
+                //{
+                //    if (Cop.CurrentTask != null && Cop.Pedestrian.Exists())
+                //    {
+                //        Cop.Pedestrian.Tasks.Clear();
+                //        Cop.CurrentTask = null;
+                //    }
+
+                //}
             }
         }
         else
@@ -138,12 +147,21 @@ public class Tasker
                 Cop.CurrentTask = new Idle(Cop, Player);
                 Cop.CurrentTask.Start();
             }
+            else
+            {
+                if(Cop.CurrentTask != null && Cop.Pedestrian.Exists())
+                {
+                    Cop.Pedestrian.Tasks.Clear();
+                    Cop.CurrentTask = null;
+                }
+                
+            }
         }
         Cop.GameTimeLastUpdatedTask = Game.GameTime;
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
-        if (Civilian.DistanceToPlayer <= 75f && Civilian.CanBeTasked)//50f
+        if (Civilian.DistanceToPlayer <= 75f && Civilian.CanBeTasked && Civilian.CanBeAmbientTasked)//50f
         {
             //bool SeenAnyReportableCrime = Civilian.CrimesWitnessed.Any(x => x.CanBeReportedByCivilians);
             bool SeenScaryCrime = Civilian.CrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians);

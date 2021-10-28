@@ -197,6 +197,7 @@ public class Pedestrians
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
         bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
         bool IsGangMember = false;
+        bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {
             if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
@@ -210,8 +211,14 @@ public class Pedestrians
                 WillFight = true;
                 WillCallPolice = false;
             }
+            else if (Pedestrian.IsPersistent)//must have been spawned by another mod?
+            {
+                WillFight = false;
+                WillCallPolice = false;
+                canBeAmbientTasked = false;
+            }
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)) { CanBeAmbientTasked = canBeAmbientTasked });
     }
     private void AddCop(Ped Pedestrian)
     {

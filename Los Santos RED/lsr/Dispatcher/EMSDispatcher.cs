@@ -81,7 +81,7 @@ public class EMSDispatcher
                                 SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.EMS));
                                 HasDispatchedThisTick = true;
                             }
                             catch (Exception ex)
@@ -129,10 +129,6 @@ public class EMSDispatcher
         {
             return emt.DistanceToPlayer >= DistanceToDeleteOnFoot;
         }
-    }
-    private void AttemptDispatch()
-    {
-        
     }
     private void Delete(PedExt emt)
     {

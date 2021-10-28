@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         Ped Character { get; }
         float SearchModePercentage { get; }
+        uint HasBeenWantedFor { get; }
 
         void CheckInjured(PedExt myPed);
         void CheckMurdered(PedExt myPed);

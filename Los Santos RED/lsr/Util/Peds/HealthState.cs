@@ -126,8 +126,9 @@ public class HealthState
         {
             CurrentPlayer.CheckMurdered(MyPed);
         }
-        else if (MyPed.Pedestrian.IsAlive && MyPed.CheckHurtBy(Game.LocalPlayer.Character))
+        else if (MyPed.Pedestrian.IsAlive && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(Game.LocalPlayer.Character))
         {
+            MyPed.HasBeenHurtByPlayer = true;
             CurrentPlayer.CheckInjured(MyPed);
         }
     }

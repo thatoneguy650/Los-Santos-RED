@@ -337,7 +337,7 @@ public class Roadblock
             }
             if (created.Vehicle.Exists())
             {
-                World.AddEntity(created);
+                World.AddEntity(created, ResponseType.LawEnforcement);
                 CreatedRoadblockVehicles.Add(created.Vehicle);
                 created.Vehicle.IsCollisionEnabled = true;
                 created.Vehicle.IsGravityDisabled = false;

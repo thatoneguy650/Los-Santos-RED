@@ -1599,6 +1599,7 @@ namespace LosSantosRED.lsr
                 Name = "Pedestrian Hit-and-Run",
                 LocationDescription = LocationSpecificity.Street,
                 CanAlwaysBeInterrupted = true,
+                CanBeReportedMultipleTimes = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_ped_struck_by_veh.Apedestrianstruck.FileName},"a pedestrian struck"),
@@ -1612,6 +1613,7 @@ namespace LosSantosRED.lsr
                 Name = "Motor Vehicle Accident",
                 LocationDescription = LocationSpecificity.Street,
                 CanAlwaysBeInterrupted = true,
+                CanBeReportedMultipleTimes = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName},"a motor vehicle accident"),

@@ -130,6 +130,20 @@ public class Vehicles
                 vehicleExt.Vehicle.Delete();
             }
         }
+        foreach (VehicleExt vehicleExt in EMSVehicles)
+        {
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleExt.Vehicle.Delete();
+            }
+        }
+        foreach (VehicleExt vehicleExt in FireVehicles)
+        {
+            if (vehicleExt.Vehicle.Exists())
+            {
+                vehicleExt.Vehicle.Delete();
+            }
+        }
         PoliceVehicles.Clear();
     }
     public VehicleExt GetVehicleExt(Vehicle vehicle)
@@ -145,79 +159,70 @@ public class Vehicles
     {
         if (vehicle.Exists())
         {
-            uint localHandle = vehicle.Handle;
+            VehicleExt Car = new VehicleExt(vehicle, Settings);
             if (vehicle.IsPoliceVehicle)
             {
-                if (!PoliceVehicles.Any(x => x.Handle == localHandle))
+                if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
-                    //Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
-                   // Car.UpgradePerformance();
                     PoliceVehicles.Add(Car);
                     return true;
                 }
             }
+            //else if (responseType == ResponseType.EMS)
+            //{
+            //    if (!EMSVehicles.Any(x => x.Handle == vehicle.Handle))
+            //    {
+            //        EMSVehicles.Add(Car);
+            //        return true;
+            //    }
+            //}
+            //else if (responseType == ResponseType.Fire)
+            //{
+            //    if (!FireVehicles.Any(x => x.Handle == vehicle.Handle))
+            //    {
+            //        FireVehicles.Add(Car);
+            //        return true;
+            //    }
+            //}
             else
             {
-                //VehicleExt Car = new VehicleExt(vehicle);
-                //if((VehicleClass)Car.ClassInt() == VehicleClass.Emergency)
-                //{
-                //    //this shit is slow as molasses, need a better way to screen em!
-                //    Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
-                //    if (FirstAgency != null)
-                //    {
-                //        if (FirstAgency.ResponseType == ResponseType.EMS)
-                //        {
-                //            if (!EMSVehicles.Any(x => x.Handle == vehicle.Handle))
-                //            {
-                //                //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
-                //                EMSVehicles.Add(Car);
-                //                return true;
-                //            }
-                //        }
-                //        else if (FirstAgency.ResponseType == ResponseType.Fire)
-                //        {
-                //            if (!FireVehicles.Any(x => x.Handle == localHandle))
-                //            {
-                //                //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
-                //                FireVehicles.Add(Car);
-                //                return true;
-                //            }
-                //        }
-                //    }
-                //}
-                //slow slow slow
-               // else 
-                
-                if (!CivilianVehicles.Any(x => x.Handle == localHandle))
+                if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
                     CivilianVehicles.Add(Car);
                     return true;
                 }
             }
         }
         return false;
-    }
-    public void AddToList(VehicleExt vehicleExt)
+     }
+    public void AddToList(VehicleExt vehicleExt, ResponseType responseType)
     {
-        if (vehicleExt.Vehicle.Exists())
+        if (responseType == ResponseType.LawEnforcement || vehicleExt.Vehicle.IsPoliceVehicle)
         {
-            if (vehicleExt.Vehicle.IsPoliceVehicle)
+            if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
             {
-                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    //vehicleExt.UpdateLivery(GetAgency(vehicleExt.Vehicle, 0, ResponseType.LawEnforcement));
-                    //vehicleExt.UpgradePerformance();
-                    PoliceVehicles.Add(vehicleExt);
-                }
+                PoliceVehicles.Add(vehicleExt);
             }
-            else
+        }
+        else if (responseType == ResponseType.EMS)
+        {
+            if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
             {
-                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    CivilianVehicles.Add(vehicleExt);
-                }
+                EMSVehicles.Add(vehicleExt);
+            }
+        }
+        else if (responseType == ResponseType.Fire)
+        {
+            if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+            {
+                FireVehicles.Add(vehicleExt);
+            }
+        }
+        else
+        {
+            if (!CivilianVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+            {
+                CivilianVehicles.Add(vehicleExt);
             }
         }
     }

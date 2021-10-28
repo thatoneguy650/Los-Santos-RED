@@ -213,7 +213,6 @@ public class Chase : ComplexTask
     }
     private void ExecuteCurrentSubTask()
     {
-        
         if (CurrentTask == Task.CarJack)
         {
             RunInterval = 200;
@@ -313,10 +312,11 @@ public class Chase : ComplexTask
     {
         NeedsUpdates = false;
         hasOwnFiber = true;
+        Ped.IsRunningOwnFiber = true;
         float MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
         GameFiber.StartNew(delegate
         {
-            while(hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask.Name == "Chase")
+            while(hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase)
             {
                 NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
                 Ped.Pedestrian.BlockPermanentEvents = true;
@@ -364,9 +364,11 @@ public class Chase : ComplexTask
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
+                    
                 }
                 GameFiber.Yield();
             }
+            Ped.IsRunningOwnFiber = false;
         }, "Run Cop Chase Logic");  
     }
     private void VehicleChase()

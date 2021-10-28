@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         string CurrentModelName { get; set; }
         Vector3 Position { get; }
         VehicleExt CurrentVehicle { get; }
+        PoolHandle OwnedVehicleHandle { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

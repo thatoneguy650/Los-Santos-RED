@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public class PlayerSettings
 {
+    public uint AlarmedCarTimeToReportStolen { get; set; } = 100000;
+    public uint NonAlarmedCarTimeToReportStolen { get; set; } = 600000;
     public string AutoTuneRadioStation { get; set; } = "RADIO_19_USER";
     public bool KeepRadioStationAutoTuned { get; set; } = false;
     public uint Recognize_BaseTime { get; set; } = 2000;
@@ -30,8 +32,8 @@ public class PlayerSettings
 
     public uint Violations_RecentlyDrivingAgainstTraffiTime { get; set; } = 1000;
     public uint Violations_RecentlyDrivingOnPavementTime { get; set; } = 1000;
-    public uint Violations_RecentlyHitPedTime { get; set; } = 1000;
-    public uint Violations_RecentlyHitVehicleTime { get; set; } = 1000;
+    public uint Violations_RecentlyHitPedTime { get; set; } = 1500;
+    public uint Violations_RecentlyHitVehicleTime { get; set; } = 1500;
     public float Investigation_ActiveDistance { get; set; } = 800f;
     public uint Investigation_TimeLimit { get; set; } = 60000;
     public float Investigation_MaxDistance { get; set; } = 1500f;

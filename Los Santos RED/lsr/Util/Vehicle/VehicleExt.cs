@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -16,6 +17,7 @@ namespace LSR.Vehicles
     {
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
+        private ISettingsProvideable Settings;
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -29,7 +31,7 @@ namespace LSR.Vehicles
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
-        public bool IsStolen { get; set; } = true;
+        public bool IsStolen { get; set; } = false;//true;
         public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
@@ -56,11 +58,11 @@ namespace LSR.Vehicles
             {
                 if (WasAlarmed && GameTimeEntered > 0)
                 {
-                    return GameTimeEntered + 60000;// was 100000, 60 second for testing
+                    return GameTimeEntered + Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolen;//60000;// was 100000, 60 second for testing
                 }
                 else if (GameTimeEntered > 0)
                 {
-                    return GameTimeEntered + 120000;//was 600000, 120 seconds for testing
+                    return GameTimeEntered + Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolen;// 120000;//was 600000, 120 seconds for testing
                 }
                 else
                 {
@@ -149,16 +151,17 @@ namespace LSR.Vehicles
         //    GameTimeEntered = gameTimeEntered;
         //    PlaceOriginallyEntered = Vehicle.Position;
         //}
-        public VehicleExt(Vehicle vehicle, bool setRandomFuelLevel)
+        public VehicleExt(Vehicle vehicle, ISettingsProvideable settings)
         {
             Vehicle = vehicle;
+            Settings = settings;
             if (Vehicle.Exists())
             {
                 Handle = vehicle.Handle;
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-                if (setRandomFuelLevel)
+                if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
                 {
                     Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
                 }
@@ -167,10 +170,6 @@ namespace LSR.Vehicles
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
             Engine = new Engine(this);
-        }
-        public VehicleExt(Vehicle vehicle,bool wasModSpawned, bool setRandomFuelLevel) : this(vehicle, setRandomFuelLevel)
-        {
-            WasModSpawned = wasModSpawned;
         }
         public void SetAsEntered()
         {

@@ -49,11 +49,19 @@ public class Crimes : ICrimes
             new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8),
             new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true },
             new Crime("Kidnapping", "Kidnapping", 2, false, 10, false, false, false),
+
+
+
+
+
+
+
             new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, true, true, true),
             new Crime("Mugging", "Mugging", 2, false, 12, true, true, true),
             new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 13),
-            new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 14, true, true, true),
-            new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, true, true, true) { IsTrafficViolation = true },
+            new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 14, true, true, true),
+            new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 15, true, true, true),
+            
             new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, true, true, true),
             new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 17, true, true, true),
             new Crime("ResistingArrest", "Resisting Arrest", 2, false, 18, false),

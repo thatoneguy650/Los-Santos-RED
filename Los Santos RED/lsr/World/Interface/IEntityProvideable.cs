@@ -30,7 +30,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMPMapLoaded { get; }
 
         void AddEntity(PedExt pedExt);
-        void AddEntity(VehicleExt x);
+        void AddEntity(VehicleExt x, ResponseType responseType);
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);
         void LoadMPMap();
         void LoadSPMap();

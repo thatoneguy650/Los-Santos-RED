@@ -26,5 +26,6 @@ namespace LosSantosRED.lsr.Interface
         Vector3 PositionLastSeenCrime { get; }
         bool IsCop { get; }
         ComplexTask CurrentTask { get; }
+        bool IsRunningOwnFiber { get; set; }
     }
 }

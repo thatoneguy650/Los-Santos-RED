@@ -145,11 +145,49 @@ public class Debug
     }
     private void DebugNumpad3()
     {
-
+        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists() && x.IsRunningOwnFiber))
+        {
+            EntryPoint.WriteToConsole($"Cop {cop.Handle} IsRunningOwnFiber {cop.IsRunningOwnFiber} CurrentTask {cop.CurrentTask?.Name} CurrentSubTask {cop.CurrentTask?.SubTaskName}", 4);
+        }
     }
     private void DebugNumpad4()
     {
+        Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(-5f));
+        coolguy.BlockPermanentEvents = true;
+        coolguy.KeepTasks = true;
+        //NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", coolguy, Player.CurrentVehicle.Vehicle, 5000, Player.Character.SeatIndex, 1f); //doesnt really work
+        //coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+        //coolguy.
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);
+            //NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, coolguy.CurrentVehicle, 256);
 
+            
+
+
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolguy, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+
+
+
+        while (coolguy.Exists() && coolguy.IsAlive && !Game.IsKeyDownRightNow(Keys.P))
+        {
+
+
+            Game.DisplayHelp($"Press P to delete ghost cop {coolguy.Position}");
+            GameFiber.Sleep(25);
+        }
+        if (coolguy.Exists())
+        {
+            coolguy.Delete();
+        }
     }
     private void DebugNumpad5()
     {

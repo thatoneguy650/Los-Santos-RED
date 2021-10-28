@@ -163,7 +163,7 @@ public class SpawnTask
         if (copcar.Exists())
         {
             NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);
-            VehicleExt CopVehicle = new VehicleExt(copcar, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
+            VehicleExt CopVehicle = new VehicleExt(copcar, Settings);
             if (copcar.Exists())
             {
                 copcar.IsPersistent = true;

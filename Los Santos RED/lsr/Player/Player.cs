@@ -148,6 +148,7 @@ namespace Mod
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !IsInVehicle && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
+        public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -282,6 +283,9 @@ namespace Mod
         public string DebugLine11 { get; set; }
         public Scanner DebugScanner => Scanner;//temp for testing with debug
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
+
+        public PoolHandle OwnedVehicleHandle { get; set; }
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -449,6 +453,12 @@ namespace Mod
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             CurrentModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+            {
+                OwnedVehicleHandle = Game.LocalPlayer.Character.CurrentVehicle.Handle;
+            }
+
+
             if (Settings.SettingsManager.PlayerSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -469,6 +479,9 @@ namespace Mod
             {
                 AutoTuneStation = Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation;// "RADIO_19_USER";
             }
+            #if DEBUG
+                AutoTuneStation = "RADIO_19_USER";
+            #endif
         }
         public void ShootAt(Vector3 TargetCoordinate)
         {
@@ -968,7 +981,7 @@ namespace Mod
             //GameFiber.Yield();
             if (existingVehicleExt == null)
             {
-                VehicleExt createdVehicleExt = new VehicleExt(vehicle,Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
+                VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
                 TrackedVehicles.Add(createdVehicleExt);
                 existingVehicleExt = createdVehicleExt;
             }
@@ -981,6 +994,13 @@ namespace Mod
                 existingVehicleExt.SetAsEntered();
             }
             existingVehicleExt.Update(AutoTuneStation, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem, Settings.SettingsManager.PlayerSettings.ScaleEngineDamage); 
+            if(!existingVehicleExt.IsStolen)
+            {
+                if(IsDriver && existingVehicleExt.Vehicle.Handle != OwnedVehicleHandle)
+                {
+                    existingVehicleExt.IsStolen = true;
+                }
+            }
             CurrentVehicle = existingVehicleExt;
         }
         private void UpdateLookedAtPed()
@@ -1112,6 +1132,7 @@ namespace Mod
             //{
             //    IsNearScenario = false;
             //}
+            
         }
         private void UpdateTargetedPed()
         {
@@ -1197,7 +1218,7 @@ namespace Mod
 
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
-                    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth}";
+                    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 }
                 // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
             }

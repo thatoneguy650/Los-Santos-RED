@@ -129,7 +129,7 @@ public class PlateTheft : DynamicActivity
             TargetVehicle = Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
             if (TargetVehicle == null)
             {
-                TargetVehicle = new VehicleExt(VehicleWithPlate,Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem);
+                TargetVehicle = new VehicleExt(VehicleWithPlate, Settings);
                 Player.TrackedVehicles.Add(TargetVehicle);
             }
             return TargetVehicle;

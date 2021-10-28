@@ -42,6 +42,7 @@ public class PedSwap : IPedSwap
     private PedVariation InitialVariation;
     private Model InitialModel;
     public int CurrentPedMoney { get; private set; }
+    public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
     {
         InitialModel = Game.LocalPlayer.Character.Model;
@@ -401,6 +402,10 @@ public class PedSwap : IPedSwap
             if(Player.CurrentVehicle != null)
             {
                 Player.CurrentVehicle.IsStolen = false;
+                if (Player.CurrentVehicle.Vehicle.Exists())
+                {
+                    Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
+                }
             }
         }
         else

@@ -189,28 +189,31 @@ public class LEDispatcher
             {
                 Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
                 GameFiber.Yield();
-                LastAgencySpawned = agency;
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-                GameFiber.Yield();
-                if (VehicleType != null)
+                if (agency != null)
                 {
-                    DispatchablePerson OfficerType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                    LastAgencySpawned = agency;
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                     GameFiber.Yield();
-                    if (OfficerType != null)
+                    if (VehicleType != null)
                     {
-                        try
+                        DispatchablePerson OfficerType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        GameFiber.Yield();
+                        if (OfficerType != null)
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
-                            spawnTask.AttemptSpawn();
-                            GameFiber.Yield();
-                            spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
-                            HasDispatchedThisTick = true;
-                            Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
-                        }
-                        catch (Exception ex)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            try
+                            {
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
+                                spawnTask.AttemptSpawn();
+                                GameFiber.Yield();
+                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
+                                HasDispatchedThisTick = true;
+                                Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
+                            }
+                            catch (Exception ex)
+                            {
+                                EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            }
                         }
                     }
                 }

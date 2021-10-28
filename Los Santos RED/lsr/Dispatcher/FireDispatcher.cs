@@ -65,23 +65,26 @@ public class FireDispatcher
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
                 Agency agency = GetRandomAgency(spawnLocation);
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
-                if (VehicleType != null)
+                if (agency != null)
                 {
-                    DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
-                    if (PersonType != null)
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                    if (VehicleType != null)
                     {
-                        try
+                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        if (PersonType != null)
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
-                            spawnTask.AttemptSpawn();
-                            spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
-                            HasDispatchedThisTick = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: Spawn Fire ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            try
+                            {
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
+                                spawnTask.AttemptSpawn();
+                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.Fire));
+                                HasDispatchedThisTick = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Fire ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            }
                         }
                     }
                 }

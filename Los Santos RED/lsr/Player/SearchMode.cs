@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr
         }
         private void DetermineMode()
         {
-            if (Player.IsWanted)
+            if (Player.IsWanted && Player.HasBeenWantedFor >= 5000)
             {
                 if (Player.AnyPoliceRecentlySeenPlayer)
                 {
@@ -332,9 +332,18 @@ namespace LosSantosRED.lsr
                     GhostCop.IsInvincible = true;
                     GhostCop.IsVisible = false;
 
-                    Blip myBlip = GhostCop.GetAttachedBlip();
-                    if (myBlip != null)
-                        myBlip.Delete();
+                    //Blip myBlip = GhostCop.GetAttachedBlip();
+                    //if (myBlip != null)
+                    //{
+                    //    myBlip.Delete();
+                    //}
+                    foreach(Blip blip in GhostCop.GetAttachedBlips())
+                    {
+                        if (blip != null)
+                        {
+                            blip.Delete();
+                        }
+                    }
                     GhostCop.VisionRange = 100f;
                     GhostCop.HearingRange = 100f;
                     GhostCop.CanRagdoll = false;
