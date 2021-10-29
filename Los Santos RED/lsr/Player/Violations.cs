@@ -246,7 +246,7 @@ namespace LosSantosRED.lsr
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x=> x.ID == "AttemptingSuicide"));//.IsCurrentlyViolating = true;
             }
-            if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted)
+            if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000)
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "TrespessingOnGovtProperty"));//.IsCurrentlyViolating = true;
             }

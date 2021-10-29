@@ -24,7 +24,7 @@ public class PoliceSettings
     public bool AllowAmbientSpeech { get; set; } = true;
     public bool AllowChaseAssists { get; set; } = true;
     public bool ManageLoadout { get; set; } = true;
-    public float BustDistance { get; set; } = 5f;
+    public float BustDistance { get; set; } = 4f;//5f;
     public bool AllowRadioInAnimations { get; set; } = false;
     public bool OverrideHealth { get; set; } = true;
     public int MinHealth { get; set; } = 85;

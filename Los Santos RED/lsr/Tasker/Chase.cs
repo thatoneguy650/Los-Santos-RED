@@ -26,6 +26,8 @@ public class Chase : ComplexTask
     private int VehicleMissionFlag;
     private bool IsChasingRecklessly;
     private bool hasOwnFiber = false;
+    private bool IsChasingSlowly = false;
+    private bool prevIsChasingSlowly = false;
 
     private enum Task
     {
@@ -62,6 +64,7 @@ public class Chase : ComplexTask
         Shoot,
         Aim,
         Goto,
+        None,
     }
     private bool ShouldChaseRecklessly => Player.PoliceResponse.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
@@ -188,6 +191,15 @@ public class Chase : ComplexTask
             {
                 ExecuteCurrentSubTask();
             }
+            else if (IsChasingSlowly != prevIsChasingSlowly)
+            {
+                CurrentSubTask = SubTask.None;
+                if (!hasOwnFiber)
+                {
+                    ExecuteCurrentSubTask();
+                }
+                prevIsChasingSlowly = IsChasingSlowly;
+            }
             if (Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
             {
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
@@ -265,6 +277,7 @@ public class Chase : ComplexTask
         {
             if (Player.WantedLevel == 1)
             {
+                IsChasingSlowly = true;
                 unsafe
                 {
                     int lol = 0;
@@ -278,6 +291,7 @@ public class Chase : ComplexTask
             }
             else
             {
+                IsChasingSlowly = false;
                 unsafe
                 {
                     int lol = 0;
@@ -313,6 +327,7 @@ public class Chase : ComplexTask
             //NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, 256);
             if (Player.WantedLevel == 1)
             {
+                IsChasingSlowly = true;
                 unsafe
                 {
                     int lol = 0;
@@ -328,6 +343,7 @@ public class Chase : ComplexTask
             }
             else
             {
+                IsChasingSlowly = false;
                 unsafe
                 {
                     int lol = 0;
@@ -351,20 +367,22 @@ public class Chase : ComplexTask
         Ped.IsRunningOwnFiber = true;
         float MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
         float RunSpeed = 500f;
+        bool prevIsChasingSlowly = IsChasingSlowly;
         GameFiber.StartNew(delegate
         {
             while(hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase)
             {
                 if(Player.WantedLevel == 1)
                 {
+                    IsChasingSlowly = true;
                     RunSpeed = 1.4f;
                 }
                 else
                 {
+                    IsChasingSlowly = false;
                     RunSpeed = 500f;
                     NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
-                }    
-                
+                }                    
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = false;
                 float LocalDistance = Ped.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character);

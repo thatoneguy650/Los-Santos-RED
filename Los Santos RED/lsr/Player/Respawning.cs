@@ -54,7 +54,7 @@ public class Respawning// : IRespawning
         }
         else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
                 CurrentPlayer.GiveMoney(-1 * Amount);
@@ -64,7 +64,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", "Thanks for the cash, now beat it.");
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
             return true;
@@ -81,7 +81,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", $"Thank you for paying the citation amount of ~r~${FineAmount}~s~, you are free to go.");
             CurrentPlayer.GiveMoney(-1 * FineAmount);
             GameTimeLastBribedPolice = Game.GameTime;
             return true;

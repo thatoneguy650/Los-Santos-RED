@@ -15,6 +15,8 @@ namespace LosSantosRED.lsr.Locations
         private Vector3 ClosestNode;
         private IStreets Streets;
         private IZones Zones;
+        private Zone PreviousZone;
+        private uint GameTimeEnteredZone;
 
         public LocationData(Ped characterToLocate, IStreets streets, IZones zones)
         {
@@ -28,6 +30,7 @@ namespace LosSantosRED.lsr.Locations
         public Street CurrentCrossStreet { get; private set; }
         public Zone CurrentZone { get; private set; }
         public bool IsOffroad { get; private set; }
+        public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public void Update(Ped characterToLocate)
         {
             if(characterToLocate.Exists())
@@ -55,6 +58,13 @@ namespace LosSantosRED.lsr.Locations
             if (CharacterToLocate.Exists())
             {
                 CurrentZone = Zones.GetZone(CharacterToLocate.Position);
+
+
+                if(PreviousZone == null || CurrentZone != PreviousZone)
+                {
+                    GameTimeEnteredZone = Game.GameTime;
+                    PreviousZone = CurrentZone;
+                }
             }
         }
         private void GetNode()

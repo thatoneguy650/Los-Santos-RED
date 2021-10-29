@@ -167,6 +167,14 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
+        public void OnPaidFine()
+        {
+            if (!ResumePatrol.HasRecentlyBeenPlayed)
+            {
+                AddToQueue(ResumePatrol);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
+        }
         public void OnGotOutOfVehicle()
         {
             if (!OnFoot.HasRecentlyBeenPlayed)
@@ -239,7 +247,7 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedActiveMode()
         {
-            if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !DispatchQueue.Any())
+            if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !DispatchQueue.Any() && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
             {
                 AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
@@ -1823,7 +1831,7 @@ namespace LosSantosRED.lsr
             };
             SuspectArrested = new Dispatch()
             {
-                Name = "Suspect Arrested",
+                Name = "Suspect Apprehended",
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
@@ -1835,7 +1843,7 @@ namespace LosSantosRED.lsr
             };
             SuspectWasted = new Dispatch()
             {
-                Name = "Suspect Wasted",
+                Name = "Suspect Neutralized",
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,

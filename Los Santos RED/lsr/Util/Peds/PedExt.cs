@@ -369,7 +369,7 @@ public class PedExt : IComplexTaskable
                 {
                     UpdateVehicleState();
                 } 
-                UpdateDistance(placeLastSeen);
+                UpdateDistance(placeLastSeen, playerToCheck.RootPosition);
                 UpdateLineOfSight();
                 UpdateCrimes(playerToCheck);
                 GameTimeLastUpdated = Game.GameTime;
@@ -494,13 +494,15 @@ public class PedExt : IComplexTaskable
         GameTimeContinuoslySeenPlayerSince = 0;
         CanSeePlayer = false;
     }
-    private void UpdateDistance(Vector3 placeLastSeen)
+    private void UpdateDistance(Vector3 placeLastSeen, Vector3 playerPos)
     {
         if (!NeedsDistanceCheck)
         {
             return;
         }
-        DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
+        Vector3 PlayerPosToCheck = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
+
+        DistanceToPlayer = Pedestrian.DistanceTo2D(PlayerPosToCheck);// Game.LocalPlayer.Character.Position);
         if (IsCop)
         {
             DistanceToLastSeen = Pedestrian.DistanceTo2D(placeLastSeen);

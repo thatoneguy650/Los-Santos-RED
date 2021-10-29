@@ -146,7 +146,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));//took out vehicle in here, might need at one star vehicle is ok
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -225,6 +225,7 @@ namespace Mod
         }
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public Vector3 Position => Game.LocalPlayer.Character.Position;
+        public Vector3 RootPosition { get; set; }
         public bool RecentlyResistedArrest => Respawning.RecentlyResistedArrest;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
@@ -384,6 +385,7 @@ namespace Mod
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
                 Scanner.Reset();
+                OwnedVehicleHandle = 0;
                 Update();
             }
             if (resetTimesDied)
@@ -721,7 +723,7 @@ namespace Mod
         {
             if (Respawning.PayFine())
             {
-                Scanner.OnInvestigationExpire();
+                Scanner.OnPaidFine();
             }
         }
         public void ResistArrest() => Respawning.ResistArrest();
@@ -1127,6 +1129,9 @@ namespace Mod
             {
                 IsIntoxicated = false;
             }
+
+            RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
+
             //works fine, just turned off for now
             //if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see
             //{
@@ -1149,7 +1154,7 @@ namespace Mod
             //{
             //    IsNearScenario = false;
             //}
-            
+
         }
         private void UpdateTargetedPed()
         {
@@ -1248,6 +1253,18 @@ namespace Mod
                 CurrentVehicle = null;
                // CurrentSpeedDisplay = "";
                 float PlayerSpeed = Game.LocalPlayer.Character.Speed;
+
+                foreach(VehicleExt ownedCar in TrackedVehicles.Where(x=> x.Vehicle.Exists() && x.Vehicle.Handle == OwnedVehicleHandle))
+                {
+                    if(ownedCar.Vehicle.DistanceTo2D(Position) >= 500f && ownedCar.Vehicle.IsPersistent)
+                    {
+                        ownedCar.Vehicle.IsPersistent = false;
+                    }
+                    else
+                    {
+                        ownedCar.Vehicle.IsPersistent = true;
+                    }
+                }
                 if (PlayerSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;

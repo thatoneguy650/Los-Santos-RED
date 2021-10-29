@@ -32,7 +32,7 @@ namespace LSR.Vehicles
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
         public bool IsStolen { get; set; } = false;//true;
-        public bool OwnedByPlayer { get; set; }
+       // public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
