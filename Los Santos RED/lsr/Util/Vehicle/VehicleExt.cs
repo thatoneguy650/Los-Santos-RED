@@ -247,6 +247,19 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
+        public void SetNotWanted()
+        {
+            IsStolen = false;
+            WasReportedStolen = false;
+            if(CarPlate != null)
+            {
+                CarPlate.IsWanted = false;
+            }
+            if(OriginalLicensePlate != null)
+            {
+                OriginalLicensePlate.IsWanted = false;
+            }
+        }
         public void Update(string DesiredStation, bool UpdateFuel, bool ScaleEngineDamage)
         {
             if (IsCar)
@@ -405,5 +418,7 @@ namespace LSR.Vehicles
                                     + (c1.G - c2.G) * (c1.G - c2.G)
                                     + (c1.B - c2.B) * (c1.B - c2.B));
         }
+
+
     }
 }

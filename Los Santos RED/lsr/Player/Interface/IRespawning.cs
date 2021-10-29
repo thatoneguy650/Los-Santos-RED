@@ -15,5 +15,6 @@ namespace LosSantosRED.lsr.Interface
         void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation);
         void BribePolice(int bribeAmount);
         void ResistArrest();
+        void PayFine();
     }
 }

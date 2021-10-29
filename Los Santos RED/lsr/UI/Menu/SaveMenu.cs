@@ -57,6 +57,8 @@ public class SaveMenu : Menu
         Saves.AddItem(GameSaveMenuList);
         Saves.AddItem(SaveGameItem);
         Saves.OnItemSelect += OnActionItemSelect;
+
+        GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -69,5 +71,6 @@ public class SaveMenu : Menu
             GameSaves.Save(Player, Weapons);
         }
         Saves.Visible = false;
+        GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
     }
 }

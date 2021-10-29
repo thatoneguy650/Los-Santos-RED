@@ -45,7 +45,7 @@ public class Crimes : ICrimes
             new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false),
             new Crime("HurtingPolice", "Assaulting Police", 3, false, 5) { CanViolateWithoutPerception = true },
             new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, false, true, true),
-            new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false) { CanViolateMultipleTimes = false },
+            new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false),
             new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8),
             new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true },
             new Crime("Kidnapping", "Kidnapping", 2, false, 10, false, false, false),

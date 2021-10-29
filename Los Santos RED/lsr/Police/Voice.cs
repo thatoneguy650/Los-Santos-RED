@@ -12,12 +12,16 @@ using System.Threading.Tasks;
 public class Voice
 {
     private Cop Cop;
-    private readonly List<string> DeadlyChaseSpeech = new List<string> { "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
-    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE", "ARREST_PLAYER" };
-    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "SUSPECT_KILLED_REPORT" };
-    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED" };
+
+    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE", "COMBAT_TAUNT" };
+    private readonly List<string> DeadlyChaseSpeech = new List<string> { "COVER_YOU", "COVER_ME", "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "GET_HIM", "REQUEST_NOOSE" };
+    //{ "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };  
+    private readonly List<string> WeaponsFreeSpeech = new List<string> { "CHALLENGE_THREATEN", "FIGHT","GENERIC_CURSE_HIGH","GENERIC_FRIGHTENED_HIGH","GENERIC_WAR_CRY","OFFICER_DOWN", "SHOOTOUT_OPEN_FIRE", "PINNED_DOWN", "TAKE_COVER" };
+    //{ "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_SHOCKED_HIGH", "GENERIC_WAR_CRY", "PINNED_DOWN", "GENERIC_INSULT_HIGH", "GET_HIM" };
+
     private readonly List<string> IdleSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
-    private readonly List<string> AngrySpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_SHOCKED_HIGH", "GENERIC_WAR_CRY", "PINNED_DOWN", "GENERIC_INSULT_HIGH", "GET_HIM" };
+    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE", "ARREST_PLAYER","CRIMINAL_APPREHENDED" };
+    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "SUSPECT_KILLED_REPORT" };
 
     private uint GameTimeLastRadioed;
     private uint GameTimeLastSpoke;
@@ -28,7 +32,9 @@ public class Voice
     }
 
     public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
-    public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < 25000;
+    public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
+    public int TimeBetweenSpeaking { get; private set; }
+
     public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
     public void RadioIn(IPoliceRespondable currentPlayer)
@@ -49,6 +55,18 @@ public class Voice
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
+        if(currentPlayer.WantedLevel <= 3)
+        {
+            TimeBetweenSpeaking = 25000;
+        }
+        else if(currentPlayer.PoliceResponse.IsWeaponsFree)
+        {
+            TimeBetweenSpeaking = 10000;
+        }
+        else if (currentPlayer.PoliceResponse.IsDeadlyChase)
+        {
+            TimeBetweenSpeaking = 18000;
+        }
         if (CanSpeak)
         {
             if (currentPlayer.IsWanted)
@@ -67,7 +85,7 @@ public class Voice
                     {
                         if (currentPlayer.PoliceResponse.IsWeaponsFree)
                         {
-                            Cop.Pedestrian.PlayAmbientSpeech(AngrySpeech.PickRandom(), Cop.IsInVehicle);
+                            Cop.Pedestrian.PlayAmbientSpeech(WeaponsFreeSpeech.PickRandom(), Cop.IsInVehicle);
                         }
                         else
                         {

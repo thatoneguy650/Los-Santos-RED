@@ -49,42 +49,48 @@ public class CarJack
         {
             Driver.CanBeTasked = false;
         }
-        EntryPoint.WriteToConsole($"CARJACK EVENT: Armed: Victim.CanBeTasked: {Driver.CanBeTasked}, Handle: {Driver.Pedestrian.Handle}", 3);
-        try
+        if (Driver != null && Driver.Pedestrian.Exists())
         {
-            GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
+            EntryPoint.WriteToConsole($"CARJACK EVENT: Armed: Victim.CanBeTasked: {Driver.CanBeTasked}, Handle: {Driver.Pedestrian.Handle}", 3);
+            try
             {
-                GameFiber.Yield();
-                if (!SetupCarJack())
+                GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
                 {
                     GameFiber.Yield();
-                    if (Driver != null)
+                    if (Driver != null && Driver.Pedestrian.Exists())
                     {
-                        Driver.CanBeTasked = true;
+                        if (!SetupCarJack())
+                        {
+                            GameFiber.Yield();
+                            if (Driver != null)
+                            {
+                                Driver.CanBeTasked = true;
+                            }
+                            return;
+                        }
+                        if (!CarJackAnimation())
+                        {
+                            GameFiber.Yield();
+                            if (Driver != null)
+                            {
+                                Driver.CanBeTasked = true;
+                            }
+                            return;
+                        }
+                        FinishCarJack();
+                        if (Driver != null)
+                        {
+                            Driver.CanBeTasked = true;
+                        }
                     }
-                    return;
-                }
-                if (!CarJackAnimation())
-                {
-                    GameFiber.Yield();
-                    if (Driver != null)
-                    {
-                        Driver.CanBeTasked = true;
-                    }
-                    return;
-                }
-                FinishCarJack();
-                if (Driver != null)
-                {
-                    Driver.CanBeTasked = true;
-                }
                 //CameraManager.RestoreGameplayerCamera();
             }, "CarJackPedWithWeapon");
-        }
-        catch (Exception e)
-        {
-            Player.IsCarJacking = false;
-            //EntryPoint.WriteToConsole("UnlockCarDoor" + e.Message + e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                Player.IsCarJacking = false;
+                //EntryPoint.WriteToConsole("UnlockCarDoor" + e.Message + e.StackTrace);
+            }
         }
     }
     private bool CarJackAnimation()

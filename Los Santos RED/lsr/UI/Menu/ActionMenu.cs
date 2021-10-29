@@ -139,6 +139,7 @@ public class ActionMenu : Menu
             Player.StopDynamicActivity();
         }
         Actions.Visible = false;
+        ChangePlate.Items = Player.SpareLicensePlates;
     }
     //private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
     //{

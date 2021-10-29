@@ -15,6 +15,7 @@ public class MainMenu : Menu
     private IActionable Player;
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
+    private UIMenuItem TakeVehicleOwnership;
     private ISettingsProvideable Settings;
     public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings)
     {
@@ -71,9 +72,14 @@ public class MainMenu : Menu
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
+
+        TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
+        ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Car;
+
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Gun;
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
+        Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(ShowStatus);
         Main.AddItem(UnloadMod);
     }
@@ -86,6 +92,10 @@ public class MainMenu : Menu
         else if (selectedItem == UnloadMod)
         {
             EntryPoint.ModController.Dispose();
+        }
+        else if (selectedItem == TakeVehicleOwnership)
+        {
+            Player.TakeOwnershipOfNearestCar();
         }
         Main.Visible = false;
     }

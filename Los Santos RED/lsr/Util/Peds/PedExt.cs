@@ -26,6 +26,7 @@ public class PedExt : IComplexTaskable
     private Entity Killer;
     private Entity LastHurtBy;
     private uint GameTimeLastExitedVehicle;
+    private ISettingsProvideable Settings;
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
@@ -36,6 +37,7 @@ public class PedExt : IComplexTaskable
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this, settings);
+        Settings = settings;
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian, settings)
     {
@@ -173,7 +175,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 1000;
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 700;//1000
     public bool NeedsUpdate
     {
         get
@@ -511,7 +513,7 @@ public class PedExt : IComplexTaskable
         {
             ClosestDistanceToPlayer = DistanceToPlayer;
         }
-        if (DistanceToPlayer <= 100f)//45f
+        if (DistanceToPlayer <= (IsCop ? Settings.SettingsManager.PoliceSettings.GunshotHearingDistance : Settings.SettingsManager.CivilianSettings.GunshotHearingDistance))//45f
         {
             WithinWeaponsAudioRange = true;
         }
@@ -548,7 +550,7 @@ public class PedExt : IComplexTaskable
             Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
             if (IsCop && !Pedestrian.IsInHelicopter)
             {
-                if (DistanceToPlayer <= 90f && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                if (DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                 }
@@ -559,10 +561,10 @@ public class PedExt : IComplexTaskable
             }
             else if (Pedestrian.IsInHelicopter)
             {
-                float DistanceToSee = 150f;
+                float DistanceToSee = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
                 if (PlayerToCheck.IsWanted)
                 {
-                    DistanceToSee = 350f;
+                    DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
                 }
                 if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
                 {
@@ -575,7 +577,7 @@ public class PedExt : IComplexTaskable
             }
             else
             {
-                if (DistanceToPlayer <= 90f && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                if (DistanceToPlayer <= Settings.SettingsManager.CivilianSettings.SightDistance && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                 }

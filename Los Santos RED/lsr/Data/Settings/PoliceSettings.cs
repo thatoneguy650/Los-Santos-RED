@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 
 public class PoliceSettings
 {
+    public int GeneralFineAmount { get; set; } = 500;
+    public int RoadblockMinWantedLevel { get; set; } = 3;
+    public int RoadblockMaxWantedLevel { get; set; } = 5;
+    public int MinTimeBetweenRoadblocks { get; set; } = 120000;
+    public int RoadblockWantedLevelAdditionalTimeScaler { get; set; } = 30000;
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
     public bool AllowExclusiveControlOverWantedLevel { get; set; } = true;
     public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;
-    public int GeneralAccuracy { get; set; } = 10;
-    public float AutoRecognizeDistance { get; set; } = 20f;
+    public int GeneralAccuracy { get; set; } = 8;//10;
+    public float AutoRecognizeDistance { get; set; } = 15f;//20f
     public float AlwaysRecognizeDistance { get; set; } = 7f;
-    public int RecentlySeenTime { get; set; } = 17000;
+    public int RecentlySeenTime { get; set; } = 10000;//17000
     public bool AllowAmbientSpeech { get; set; } = true;
     public bool AllowChaseAssists { get; set; } = true;
     public bool ManageLoadout { get; set; } = true;
@@ -37,6 +42,10 @@ public class PoliceSettings
     public int KillLimit_Wanted4 { get; set; } = 4;
     public int KillLimit_Wanted5 { get; set; } = 10;
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
+    public float SightDistance { get; set; } = 70f;//90f
+    public float GunshotHearingDistance { get; set; } = 80f;//100f
+    public float SightDistance_Helicopter { get; set; } = 150f;
+    public float SightDistance_Helicopter_AdditionalAtWanted { get; set; } = 100f;
     public PoliceSettings()
     {
         #if DEBUG

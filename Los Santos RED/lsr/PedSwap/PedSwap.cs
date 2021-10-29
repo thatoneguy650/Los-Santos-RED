@@ -61,7 +61,14 @@ public class PedSwap : IPedSwap
                     GameFiber.Yield();
                     if(createdPed.Exists())
                     {
-                        TargetPed = createdPed;
+                        if (createdPed.IsPoliceArmy())
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            TargetPed = createdPed;
+                        }
                     }
                     else
                     {
@@ -512,6 +519,41 @@ public class PedSwap : IPedSwap
         }
     }
     private void SetPlayerOffset()
+    {
+        ulong ModelHash = 0;
+        if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Michael")
+        {
+            ModelHash = 225514697;
+        }
+        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Franklin")
+        {
+            ModelHash = 2602752943;
+        }
+        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Trevor")
+        {
+            ModelHash = 2608926626;
+        }
+        if (ModelHash != 0)
+        {
+            //bigbruh in discord, supplied the below, seems to work just fine
+            unsafe
+            {
+                var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+                ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+                *((ulong*)(SkinPtr + 0x18)) = ModelHash;
+            }
+        }
+
+
+        
+        //unsafe
+        //{
+        //    var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+        //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+        //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
+        //}
+    }
+    private void SetPlayerOffsetOld()
     {
         ////i have no idea how this works
         const int WORLD_OFFSET = 8;

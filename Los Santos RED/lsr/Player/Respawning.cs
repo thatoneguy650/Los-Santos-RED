@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Respawning : IRespawning
+public class Respawning// : IRespawning
 {
     private int BailFee;
     private int BailFeePastDue;
@@ -45,11 +45,12 @@ public class Respawning : IRespawning
     {
         TimesDied = 0;
     }
-    public void BribePolice(int Amount)
+    public bool BribePolice(int Amount)
     {
         if (CurrentPlayer.Money < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
+            return false;
         }
         else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
@@ -58,6 +59,7 @@ public class Respawning : IRespawning
             {
                 CurrentPlayer.GiveMoney(-1 * Amount);
             }
+            return false;
         }
         else
         {
@@ -65,6 +67,24 @@ public class Respawning : IRespawning
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
+            return true;
+        }
+    }
+    public bool PayFine()
+    {
+        int FineAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
+        if (CurrentPlayer.Money < FineAmount)
+        {
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", FineAmount));
+            return false;
+        }
+        else
+        {
+            ResetPlayer(true, false, false, false, true);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
+            CurrentPlayer.GiveMoney(-1 * FineAmount);
+            GameTimeLastBribedPolice = Game.GameTime;
+            return true;
         }
     }
     public void ResistArrest()
@@ -314,6 +334,7 @@ public class Respawning : IRespawning
             Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
+
 }
 
 

@@ -21,8 +21,8 @@ public class Cop : PedExt
         {
             GameTimeSpawned = Game.GameTime;
         }
-        Pedestrian.VisionRange = 90f;//55F
-        Pedestrian.HearingRange = 55;//25
+        Pedestrian.VisionRange = settings.SettingsManager.PoliceSettings.SightDistance;//55F
+        Pedestrian.HearingRange = 55;//25 not really used
         WeaponInventory = new WeaponInventory(this);
         Voice = new Voice(this);
         AssistManager = new AssistManager(this);

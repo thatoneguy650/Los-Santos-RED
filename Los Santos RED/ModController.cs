@@ -121,7 +121,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings);
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves, World, Player);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player);
             GameFiber.Yield();
             Input = new Input(Player, Settings,UI);
             GameFiber.Yield();
@@ -275,12 +275,12 @@ namespace LosSantosRED.lsr
             QuaternaryTasks = new List<ModTask>()
             {
 
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),//500
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//500//added yields
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 2), //WAS very bad performance, trying to limit counts
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 2), 
                 new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 4), //WAS very bad performance, trying to limit counts//added yields
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),//added yields
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 4),
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
             };
 
             FPS = new MovingAverage();

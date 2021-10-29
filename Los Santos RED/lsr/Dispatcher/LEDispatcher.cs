@@ -46,7 +46,7 @@ public class LEDispatcher
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit;
-    private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= 2 && Roadblock == null;
+    private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
@@ -162,7 +162,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((5 - Player.WantedLevel) * 10000) + 70000;//90 seconds at level 3?, 70 at level 5? sounds okay?
+                return ((5 - Player.WantedLevel) * Settings.SettingsManager.PoliceSettings.RoadblockWantedLevelAdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.MinTimeBetweenRoadblocks;//90 seconds at level 3?, 70 at level 5? sounds okay?
             }
         }
     }

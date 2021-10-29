@@ -298,13 +298,13 @@ public class Roadblock
                 return false;
             }
         }
-        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, true, Settings, Weapons);
+        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, false, Settings, Weapons);
         spawnTask.AttemptSpawn();
 
 
         if (addPed)
         {
-            SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, true, Settings, Weapons);
+            SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
             pedSpawn.AttemptSpawn();
             foreach(PedExt person in pedSpawn.CreatedPeople)
             {

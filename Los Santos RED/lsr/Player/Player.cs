@@ -108,7 +108,6 @@ namespace Mod
         public PedExt CurrentLookedAtPed { get; private set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
-    //    public string CurrentSpeedDisplay { get; private set; }
         public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
@@ -147,7 +146,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !IsInVehicle && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -318,11 +317,11 @@ namespace Mod
             {
                 NotifcationText = "Wanted For:" + PrintCriminalHistory();
             }
-
-            if (CurrentVehicle != null && !CurrentVehicle.IsStolen)
+            VehicleExt OwnedVehicle = TrackedVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == OwnedVehicleHandle);
+            if (OwnedVehicle != null)
             {
-                string Make = CurrentVehicle.MakeName();
-                string Model = CurrentVehicle.ModelName();
+                string Make = OwnedVehicle.MakeName();
+                string Model = OwnedVehicle.ModelName();
                 string VehicleName = "";
                 if (Make != "")
                 {
@@ -334,9 +333,8 @@ namespace Mod
                 }
 
                 NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
-                NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", CurrentVehicle.CarPlate.PlateNumber);
+                NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", OwnedVehicle.CarPlate.PlateNumber);
             }
-
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), NotifcationText);
         }
         public void Dispose()
@@ -714,8 +712,17 @@ namespace Mod
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void BribePolice(int bribeAmount)
         {
-            Respawning.BribePolice(bribeAmount);
-            Scanner.OnBribedPolice();
+            if(Respawning.BribePolice(bribeAmount))
+            {
+                Scanner.OnBribedPolice();
+            }
+        }
+        public void PayFine()
+        {
+            if (Respawning.PayFine())
+            {
+                Scanner.OnInvestigationExpire();
+            }
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
@@ -818,7 +825,10 @@ namespace Mod
             BeingArrested = true;
             GameTimeLastBusted = Game.GameTime;
             HandsAreUp = false;
-            Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);//needs to move
+            if (WantedLevel > 1)
+            {
+                Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);//needs to move
+            }
             Game.LocalPlayer.HasControl = false;
 
             Scanner.OnPlayerBusted();
@@ -852,29 +862,36 @@ namespace Mod
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
-                    if(!CurrentVehicle.HasBeenEnteredByPlayer)
+                    if (CurrentVehicle.Handle == OwnedVehicleHandle && CurrentVehicle.Vehicle.Exists())
                     {
-                        CurrentVehicle.AttemptToLock();
-                        GameFiber.Yield();
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
                     }
-                    
-                    if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
+                    else
                     {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
-                        CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
-                        MyLockPick.PickLock();
-                    }
-                    else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
-                    {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                        CarJack MyJack = new CarJack(this, CurrentVehicle, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
-                        MyJack.Start();
-                    }
-                    else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
-                    {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start", 3);
-                        CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
-                        MyBreakIn.BreakIn();
+                        if (!CurrentVehicle.HasBeenEnteredByPlayer)
+                        {
+                            CurrentVehicle.AttemptToLock();
+                            GameFiber.Yield();
+                        }
+                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
+                            CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
+                            MyLockPick.PickLock();
+                        }
+                        else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
+                            CarJack MyJack = new CarJack(this, CurrentVehicle, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
+                            MyJack.Start();
+                        }
+                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start", 3);
+                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
+                            MyBreakIn.BreakIn();
+                        }
                     }
                 }
                 else
@@ -1330,7 +1347,26 @@ namespace Mod
             UpdateLookedAtPed();
             GameFiber.Yield();
         }
-
-
+        public void TakeOwnershipOfNearestCar()
+        {
+            Vehicle vehicleToCheck = (Vehicle)Rage.World.GetClosestEntity(Character.Position, 10f, GetEntitiesFlags.ConsiderCars | GetEntitiesFlags.ExcludeOccupiedVehicles);
+            VehicleExt FoundVehicle;
+            if (vehicleToCheck != null)
+            {
+                FoundVehicle = TrackedVehicles.Where(x => x.Vehicle.Handle == vehicleToCheck.Handle).FirstOrDefault();
+                if (FoundVehicle == null)
+                {
+                    FoundVehicle = new VehicleExt(vehicleToCheck, Settings);
+                    TrackedVehicles.Add(FoundVehicle);
+                }
+                FoundVehicle.SetNotWanted();
+                OwnedVehicleHandle = FoundVehicle.Vehicle.Handle;
+                DisplayPlayerNotification();
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), "No Vehicle Found");
+            }
+        }
     }
 }

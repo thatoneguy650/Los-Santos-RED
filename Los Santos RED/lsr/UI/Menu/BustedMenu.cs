@@ -16,6 +16,7 @@ public class BustedMenu : Menu
     private UIMenu Menu;
     private GameLocation CurrentSelectedSurrenderLocation;
     private UIMenuItem Bribe;
+    private UIMenuItem PayFine;
     private UIMenuItem ResistArrest;
     private UIMenuListItem Surrender;
     private UIMenuListItem TakeoverRandomPed;
@@ -26,11 +27,15 @@ public class BustedMenu : Menu
     private float SelectedTakeoverRadius;
     private List<GameLocation> PoliceStations;
     private List<DistanceSelect> Distances;
-    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
+    private ISettingsProvideable Settings;
+    private IPoliceRespondable Player;
+    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
+        Player = policeRespondable;
         Menu = new UIMenu("Busted", "Choose Respawn");
         menuPool.Add(Menu);
         CreateBustedMenu();
@@ -44,6 +49,19 @@ public class BustedMenu : Menu
         if(!Menu.Visible)
         {
             UpdateClosestPoliceStationIndex();
+
+            if (Player.WantedLevel == 1)
+            {
+                PayFine.Enabled = true;
+                Bribe.Enabled = false;
+            }
+            else
+            {
+                PayFine.Enabled = false;
+                Bribe.Enabled = true;
+            }
+
+
             Menu.Visible = true;
         }
     }
@@ -51,8 +69,7 @@ public class BustedMenu : Menu
     {
         if (!Menu.Visible)
         {
-            UpdateClosestPoliceStationIndex();
-            Menu.Visible = true;
+            Show();
         }
         else
         {
@@ -65,10 +82,16 @@ public class BustedMenu : Menu
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         ResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+        PayFine = new UIMenuItem("Pay Fine", $"Pay a fine of ${Settings.SettingsManager.PoliceSettings.GeneralFineAmount} to be released.");
         Surrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PoliceStations);
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);   
+
+
+
+
         Menu.AddItem(ResistArrest);
         Menu.AddItem(Bribe);
+        Menu.AddItem(PayFine);
         Menu.AddItem(Surrender);
         Menu.AddItem(TakeoverRandomPed);
         Menu.OnItemSelect += OnItemSelect;
@@ -86,6 +109,10 @@ public class BustedMenu : Menu
             {
                 Respawning.BribePolice(BribeAmount);
             }
+        }
+        else if (selectedItem == PayFine)
+        {
+            Respawning.PayFine();
         }
         if (selectedItem == Surrender)
         {
