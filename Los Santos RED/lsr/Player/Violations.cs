@@ -392,8 +392,26 @@ namespace LosSantosRED.lsr
             {
                 if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
-                    EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
-                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                    bool shouldAdd = true;
+                    if(Player.RecentlyBribedPolice)
+                    {
+                        if(Violating.ResultingWantedLevel <= 2)
+                        {
+                            shouldAdd = false;
+                        }
+                    }
+                    else if(Player.RecentlyPaidFine)
+                    {
+                        if (Violating.ResultingWantedLevel <= 1)
+                        {
+                            shouldAdd = false;
+                        }
+                    }
+                    if (shouldAdd)
+                    {
+                        EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
+                        Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                    }
                 }
             }
         }

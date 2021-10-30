@@ -17,6 +17,7 @@ public class Respawning// : IRespawning
     private int BailFeePastDue;
     private IRespawnable CurrentPlayer;
     private uint GameTimeLastBribedPolice;
+    private uint GameTimeLastPaidFine;
     private uint GameTimeLastDischargedFromHospital;
     private uint GameTimeLastResistedArrest;
     private uint GameTimeLastRespawned;
@@ -39,6 +40,11 @@ public class Respawning// : IRespawning
     }
     public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= Settings.SettingsManager.RespawnSettings.RecentlyRespawnedTime;
     public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
+
+
+
+    public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 30000;
+    public bool RecentlyPaidFine => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
     public int TimesDied { get; private set; }
     public void Reset()
@@ -64,7 +70,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", "Thanks for the cash, now beat it.");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", "Thanks for the cash, you've got 30 seconds to get lost.");
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
 
@@ -84,9 +90,9 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true);
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", $"Thank you for paying the citation amount of ~r~${FineAmount}~s~, you are free to go.");
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", $"Thank you for paying the citation amount of ~r~${FineAmount}~s~, now get out of my sight real quick.");
             CurrentPlayer.GiveMoney(-1 * FineAmount);
-            GameTimeLastBribedPolice = Game.GameTime;
+            GameTimeLastPaidFine = Game.GameTime;
             return true;
         }
     }

@@ -391,26 +391,26 @@ public class PedExt : IComplexTaskable
 
     private void UpdateCopPerception(IEntityProvideable world)
     {
-        int Updated = 0;
-        foreach(Cop cop in world.PoliceList)
-        {
-            if(cop.Pedestrian.Exists())
-            {
-                Perception copPercetion = PolicePerceptions.FirstOrDefault(x=> x.ObserverPed.Exists() && x.ObserverPed.Handle == cop.Pedestrian.Handle);
-                if(copPercetion == null)
-                {
-                    copPercetion = new Perception(cop.Pedestrian,this.Pedestrian);
-                    PolicePerceptions.Add(copPercetion);
-                }
-                copPercetion.Update();
-                Updated++;
-            }
-            if(Updated >= 3)
-            {
-                GameFiber.Yield();
-            }
-        }
-        PolicePerceptions.RemoveAll(x => !x.ObserverPed.Exists());
+        //int Updated = 0;
+        //foreach(Cop cop in world.PoliceList)
+        //{
+        //    if(cop.Pedestrian.Exists())
+        //    {
+        //        Perception copPercetion = PolicePerceptions.FirstOrDefault(x=> x.ObserverPed.Exists() && x.ObserverPed.Handle == cop.Pedestrian.Handle);
+        //        if(copPercetion == null)
+        //        {
+        //            copPercetion = new Perception(cop.Pedestrian,this.Pedestrian);
+        //            PolicePerceptions.Add(copPercetion);
+        //        }
+        //        copPercetion.Update();
+        //        Updated++;
+        //    }
+        //    if(Updated >= 3)
+        //    {
+        //        GameFiber.Yield();
+        //    }
+        //}
+        //PolicePerceptions.RemoveAll(x => !x.ObserverPed.Exists());
 
     }
 

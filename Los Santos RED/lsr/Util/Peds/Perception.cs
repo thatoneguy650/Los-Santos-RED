@@ -70,8 +70,8 @@ public class Perception
     }
     public void Update()
     {
-        UpdateDistance();
-        UpdateLineOfSight();
+        //UpdateDistance();
+        //UpdateLineOfSight();
     }
     private void SetSeen()
     {
