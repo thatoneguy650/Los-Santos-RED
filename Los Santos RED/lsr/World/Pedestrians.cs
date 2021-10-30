@@ -211,7 +211,7 @@ public class Pedestrians
                 WillFight = true;
                 WillCallPolice = false;
             }
-            else if (Pedestrian.IsPersistent)//must have been spawned by another mod?
+            else if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
                 WillFight = false;
                 WillCallPolice = false;

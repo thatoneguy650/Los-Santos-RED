@@ -18,6 +18,8 @@ public class CivilianSettings
     public int GeneralAccuracy { get; set; } = 10;
     public float SightDistance { get; set; } = 70f;//90f
     public float GunshotHearingDistance { get; set; } = 80f;//100f
+    public bool TaskMissionPeds { get; set; } = false;
+    public bool AllowMissionPedsToInteract { get; set; } = false;
     public CivilianSettings()
     {
 

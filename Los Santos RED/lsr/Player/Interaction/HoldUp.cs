@@ -14,15 +14,14 @@ public class HoldUp : Interaction
     private bool IsTargetting;
     private IInteractionable Player;
     private PedExt Target;
-    private Keys DemandKey = Keys.E;
-    private Keys ForceDown = Keys.L;
-    private Keys Kidnap = Keys.K;
     private bool ForcedCower;
     private bool IsActivelyOrdering;
-    public HoldUp(IInteractionable player, PedExt target)
+    private ISettingsProvideable Settings;
+    public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings)
     {
         Player = player;
         Target = target;
+        Settings = settings;
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
     private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1500;
@@ -61,11 +60,11 @@ public class HoldUp : Interaction
                 {
                     if (!Target.HasBeenMugged && !Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", DemandKey, 1));
+                        Player.ButtonPrompts.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
                     }
                     if (!Player.ButtonPrompts.Any(x => x.Identifier == "ForceDown"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", ForceDown, 2));
+                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
                     }
                 }
                 else

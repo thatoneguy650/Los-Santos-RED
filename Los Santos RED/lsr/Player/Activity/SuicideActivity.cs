@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Player;
+﻿using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Player;
 using Mod;
 using Rage;
 using Rage.Native;
@@ -16,9 +17,11 @@ public class SuicideActivity : DynamicActivity
     private Mod.Player Player;
     private int SuicideScene;
     private float ScenePhase;
-    public SuicideActivity(Mod.Player player)
+    private ISettingsProvideable Settings;
+    public SuicideActivity(Mod.Player player, ISettingsProvideable settings)
     {
         Player = player;
+        Settings = settings;
     }
     public override string DebugString => "";
     public override void Cancel()
@@ -79,8 +82,8 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPrompts.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", System.Windows.Forms.Keys.E, 1));
-                    Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", System.Windows.Forms.Keys.O, 2));
+                    Player.ButtonPrompts.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                    Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2));
                     AddedPrompts = true;
                 }    
                 if (Player.ButtonPrompts.Any(x => x.Identifier == "CommitSuicide" && x.IsPressedNow))
@@ -113,8 +116,8 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPrompts.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", System.Windows.Forms.Keys.E, 1));
-                    Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", System.Windows.Forms.Keys.O, 2));
+                    Player.ButtonPrompts.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                    Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2));
                     AddedPrompts = true;
                 }
                 if (Player.ButtonPrompts.Any(x => x.Identifier == "CommitSuicide" && x.IsPressedNow))

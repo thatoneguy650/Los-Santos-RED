@@ -51,4 +51,5 @@ public class Crime
     public bool AngersCivilians { get; set; } = false;
     public bool ScaresCivilians { get; set; } = true;
     public int Priority { get; set; } = 99;
+    public bool Enabled { get; set; } = true;
 }

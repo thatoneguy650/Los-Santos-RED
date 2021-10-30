@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Data;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -62,7 +63,7 @@ namespace LosSantosRED.lsr
             if (myPed.IsCop)
             {
                 GameTimeLastHurtCop = Game.GameTime;
-                //CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
+                //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
                 Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
                 EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added", 5);
             }
@@ -79,7 +80,7 @@ namespace LosSantosRED.lsr
                 GameTimeLastKilledCop = Game.GameTime;
                 GameTimeLastHurtCop = Game.GameTime;
                 Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
-                //CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
+                //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
                 EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added", 5);
             }
             else
@@ -105,7 +106,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedBrandishing = 0;
             ResetViolations();
         }
-        public void TrafficUpdate()
+        public void UpdateTraffic()
         {
             ResetTrafficViolations();
             VehicleIsSuspicious = false;
@@ -124,7 +125,7 @@ namespace LosSantosRED.lsr
             {
                 ResetViolations();
                 CheckViolations();
-                AddCrimes();
+                AddObservedAndReported();
             }
         }
         private void ResetViolations()
@@ -142,26 +143,33 @@ namespace LosSantosRED.lsr
             CheckTheftCrimes();
             CheckOtherCrimes();
         }
+        private void AddViolating(Crime crime)
+        {
+            if(crime != null && crime.Enabled && !CrimesViolating.Contains(crime))
+            {
+                AddViolating(crime);
+            }
+        }
         private void CheckPedDamageCrimes()
         {
             //if (RecentlyKilledCop)
             //{
-            //    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
+            //    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
             //}
 
             //if (RecentlyHurtCop)
             //{
-            //    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
+            //    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
             //}
 
             if (RecentlyKilledCivilian || NearCivilianMurderVictim)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));//.IsCurrentlyViolating = true;
             }
 
             if (RecentlyHurtCivilian)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingCivilians"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingCivilians"));//.IsCurrentlyViolating = true;
             }
         }
         private void CheckWeaponCrimes()
@@ -170,27 +178,27 @@ namespace LosSantosRED.lsr
             {
                 if (!(Player.Character.IsCurrentWeaponSilenced || Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));//.IsCurrentlyViolating = true;
                     if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceCanHearPlayer)
                     {
-                        CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));//.IsCurrentlyViolating = true;
+                        AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));//.IsCurrentlyViolating = true;
                     }
                 }
             }
             if (CheckBrandishing() && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
                 if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 4)
                 {
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//.IsCurrentlyViolating = true;
                 }
                 if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 3)
                 {
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingHeavyWeapon"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingHeavyWeapon"));//.IsCurrentlyViolating = true;
                 }
                 if (Player.CurrentWeapon != null && Player.CurrentWeapon.Category == WeaponCategory.Melee)
                 {
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
                 }
             }
         }
@@ -221,51 +229,51 @@ namespace LosSantosRED.lsr
         {
             if (Player.IsWanted && Player.IsInVehicle && Player.IsInAirVehicle)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "GotInAirVehicleDuringChase"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "GotInAirVehicleDuringChase"));//.IsCurrentlyViolating = true;
             }
             if (Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen && Player.IsInVehicle)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsHoldingUp)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "Mugging"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Mugging"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsBreakingIntoCar)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsChangingLicensePlates)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ChangingPlates"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ChangingPlates"));//.IsCurrentlyViolating = true;
             }
         }
         private void CheckOtherCrimes()
         {
             if (Player.IsCommitingSuicide)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x=> x.ID == "AttemptingSuicide"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x=> x.ID == "AttemptingSuicide"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "TrespessingOnGovtProperty"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "TrespessingOnGovtProperty"));//.IsCurrentlyViolating = true;
             }
             if (Player.Investigation.IsSuspicious)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.Character.Speed >= 2.0f && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
             if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group)))
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             }
             if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 2.0f && !Player.IsInVehicle)
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
             }
         }
         private void CheckTrafficViolations()
@@ -275,39 +283,39 @@ namespace LosSantosRED.lsr
             if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear)//needed for non humans that are returned from this native
             {
                 isDrivingSuspiciously = true;
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
             }
             if (RecentlyHitVehicle)
             {
                 isDrivingSuspiciously = true;
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
             }
             if (!TreatAsCop)
             {
                 if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     isDrivingSuspiciously = true;
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingAgainstTraffic"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingAgainstTraffic"));//.IsCurrentlyViolating = true;
                 }
                 if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     isDrivingSuspiciously = true;
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingOnPavement"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingOnPavement"));//.IsCurrentlyViolating = true;
                 }
                 if (VehicleIsSuspicious)
                 {
                     isDrivingSuspiciously = true;
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "NonRoadworthyVehicle"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "NonRoadworthyVehicle"));//.IsCurrentlyViolating = true;
                 }
                 if (IsSpeeding)
                 {
                     isDrivingSuspiciously = true;
-                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FelonySpeeding"));//.IsCurrentlyViolating = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FelonySpeeding"));//.IsCurrentlyViolating = true;
                 }
             }
             if (Player.IsIntoxicated && isDrivingSuspiciously)// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
             {
-                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrunkDriving"));//.IsCurrentlyViolating = true;
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrunkDriving"));//.IsCurrentlyViolating = true;
             }
         }
         private void UpdateTrafficStats()
@@ -317,7 +325,7 @@ namespace LosSantosRED.lsr
             IsSpeeding = false;
             if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
-                if (!IsRoadWorthy(Player.CurrentVehicle.Vehicle) || IsDamaged(Player.CurrentVehicle.Vehicle))
+                if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
                 {
                     VehicleIsSuspicious = true;
                 }
@@ -378,7 +386,7 @@ namespace LosSantosRED.lsr
                 IsSpeeding = Player.VehicleSpeedMPH > SpeedLimit + 25f;
             }
         }
-        private void AddCrimes()
+        private void AddObservedAndReported()
         {
             foreach (Crime Violating in CrimesViolating)
             {
@@ -389,21 +397,21 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private bool IsDamaged(Vehicle myCar)
+        private bool IsDamaged(VehicleExt myCar)
         {
-            if (!myCar.Exists())
+            if (!myCar.Vehicle.Exists())
             {
                 return false;
             }
-            if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
+            if (myCar.Vehicle.Health <= 300 || (myCar.Vehicle.EngineHealth <= 300 && myCar.Engine.IsRunning))//can only see smoke and shit if its running
             {
                 return true;
             }
-            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar.Vehicle))
             {
                 return true;
             }
-            foreach (VehicleDoor myDoor in myCar.GetDoors())
+            foreach (VehicleDoor myDoor in myCar.Vehicle.GetDoors())
             {
                 if (myDoor.IsDamaged)
                 {
@@ -412,46 +420,46 @@ namespace LosSantosRED.lsr
             }
             if (TimeReporter.IsNight)
             {
-                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
                 {
                     return true;
                 }
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 0, false))
             {
                 return true;
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 1, false))
             {
                 return true;
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 2, false))
             {
                 return true;
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 3, false))
             {
                 return true;
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 4, false))
             {
                 return true;
             }
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 5, false))
             {
                 return true;
             }
             return false;
         }
-        private bool IsRoadWorthy(Vehicle myCar)
+        private bool IsRoadWorthy(VehicleExt myCar)
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (TimeReporter.IsNight)
+            if (TimeReporter.IsNight && myCar.Engine.IsRunning)
             {
                 unsafe
                 {
-                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar, &LightsOn, &HighbeamsOn);
+                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar.Vehicle, &LightsOn, &HighbeamsOn);
                 }
                 if (!LightsOn)
                 {
@@ -461,12 +469,12 @@ namespace LosSantosRED.lsr
                 {
                     return false;
                 }
-                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
                 {
                     return false;
                 }
             }
-            if (myCar.LicensePlate == "        ")
+            if (myCar.Vehicle.LicensePlate == "        ")
             {
                 return false;
             }

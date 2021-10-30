@@ -13,13 +13,12 @@ public class Conversation : Interaction
     private PedExt Ped;
     private IInteractionable Player;
     private bool CancelledConversation;
-    private Keys PositiveReplyKey = Keys.E;
-    private Keys NegativeReplyKey = Keys.L;
-    private Keys CancelKey = Keys.K;
-    public Conversation(IInteractionable player, PedExt ped)
+    private ISettingsProvideable Settings;
+    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings)
     {
         Player = player;
         Ped = ped;
+        Settings = settings;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     private bool CanContinueConversation => Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
@@ -61,9 +60,9 @@ public class Conversation : Interaction
         {
             if (!Player.ButtonPrompts.Any(x => x.Group == "Conversation"))
             {
-                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "Conversation","PositiveReply", PositiveReplyKey, 1));
-                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "Conversation","NegativeReply", NegativeReplyKey, 2));
-                Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Conversation", "Cancel", CancelKey, 3) );
+                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "Conversation","PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "Conversation","NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+                Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Conversation", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3) );
             }
         }
         if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))

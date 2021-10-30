@@ -387,6 +387,22 @@ namespace Mod
                 Scanner.Reset();
                 OwnedVehicleHandle = 0;
                 Update();
+
+                GameFiber.StartNew(delegate
+                {
+                    uint GameTimeLastResetWanted = Game.GameTime;
+                    while (Game.GameTime - GameTimeLastResetWanted <= 5000)
+                    {
+                        if (Game.LocalPlayer.WantedLevel != 0)
+                        {
+                            SetWantedLevel(0, "Player Reset with resetWanted: resetting afterwards", true);
+                        }
+                        GameFiber.Yield();
+                    }
+
+                }, "Wanted Level Stopper");
+
+
             }
             if (resetTimesDied)
             {
@@ -509,7 +525,7 @@ namespace Mod
                 if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
-                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Keys.E, 1));
+                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
                 }
             }
             else
@@ -521,7 +537,7 @@ namespace Mod
                 if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
-                    ButtonPrompts.Add(new ButtonPrompt($"{ClosestScenario?.Name}", "StartScenario", $"StartScenario", Keys.P, 2));
+                    ButtonPrompts.Add(new ButtonPrompt($"{ClosestScenario?.Name}", "StartScenario", $"StartScenario", Settings.SettingsManager.KeySettings.ScenarioStart, 2));
                 }
             }
             else
@@ -555,7 +571,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Conversation(this, CurrentLookedAtPed);
+                Interaction = new Conversation(this, CurrentLookedAtPed, Settings);
                 Interaction.Start();
             }
         }
@@ -568,7 +584,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsHoldingUp = true;
-                Interaction = new HoldUp(this, CurrentTargetedPed);
+                Interaction = new HoldUp(this, CurrentTargetedPed, Settings);
                 Interaction.Start();
             }
         }
@@ -608,7 +624,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new SuicideActivity(this);
+                DynamicActivity = new SuicideActivity(this, Settings);
                 DynamicActivity.Start();
             }
         }
@@ -704,7 +720,7 @@ namespace Mod
         public void RaiseHands() => Surrendering.RaiseHands();//needs to move
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
         public void StopVanillaSearchMode() => SearchMode.StopVanilla();
-        public void TrafficViolationsUpdate() => Violations.TrafficUpdate();
+        public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
         public void UnSetArrestedAnimation(Ped character) => Surrendering.UnSetArrestedAnimation(character);//needs to move
         public void ViolationsUpdate() => Violations.Update();
         public void ResetScanner() => Scanner.Reset();
