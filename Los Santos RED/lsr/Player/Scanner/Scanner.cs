@@ -129,7 +129,7 @@ namespace LosSantosRED.lsr
             Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
             if (ToAnnounce != null)
             {
-                if (!ToAnnounce.HasVeryRecentlyBeenPlayed && (ToAnnounce.CanBeReportedMultipleTimes || ToAnnounce.TimesPlayed == 0))
+                if (!ToAnnounce.HasVeryRecentlyBeenPlayed && ((ToAnnounce.CanBeReportedMultipleTimes && ToAnnounce.TimesPlayed <= 2) || ToAnnounce.TimesPlayed == 0))
                 {
                     if (reportInformation.SeenByOfficers)
                     {

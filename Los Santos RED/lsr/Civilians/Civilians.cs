@@ -32,7 +32,7 @@ public class Civilians
         int PedsUpdated = 0;
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
-            ped.Update(Player, Vector3.Zero);
+            ped.Update(Player, Vector3.Zero, World);
             PedsUpdated++;
             if (PedsUpdated > 4)//10)//3//10//25
             {

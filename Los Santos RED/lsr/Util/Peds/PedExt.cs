@@ -27,6 +27,7 @@ public class PedExt : IComplexTaskable
     private Entity LastHurtBy;
     private uint GameTimeLastExitedVehicle;
     private ISettingsProvideable Settings;
+    private List<Perception> PolicePerceptions = new List<Perception>();
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
@@ -106,6 +107,7 @@ public class PedExt : IComplexTaskable
         }
     }
     public string Name { get; set; }
+    public List<Perception> PublicPolicePerceptions => PolicePerceptions;
     public bool CanSeePlayer { get; private set; } = false;
     public float ClosestDistanceToPlayer { get; private set; } = 2000f;
     public float DistanceToPlayer { get; private set; } = 999f;
@@ -303,7 +305,7 @@ public class PedExt : IComplexTaskable
         {
             if (IsCop)
             {
-                return 750;//500
+                return 750;//750
             }
             else
             {
@@ -358,7 +360,7 @@ public class PedExt : IComplexTaskable
 
     }
     public bool SeenPlayerWithin(int msSince) => CanSeePlayer || Game.GameTime - GameTimeLastSeenPlayer <= msSince;
-    public void Update(IPoliceRespondable playerToCheck,Vector3 placeLastSeen)
+    public void Update(IPoliceRespondable playerToCheck,Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = playerToCheck;
         if (Pedestrian.Exists() && Pedestrian.IsAlive)
@@ -369,8 +371,12 @@ public class PedExt : IComplexTaskable
                 {
                     UpdateVehicleState();
                 } 
-                UpdateDistance(placeLastSeen, playerToCheck.RootPosition);
-                UpdateLineOfSight();
+                //else
+                //{
+                //    UpdateCopPerception(world);
+                //}
+                UpdatePlayerDistance(placeLastSeen, playerToCheck.RootPosition);
+                UpdatePlayerLineOfSight();
                 UpdateCrimes(playerToCheck);
                 GameTimeLastUpdated = Game.GameTime;
             }
@@ -382,6 +388,32 @@ public class PedExt : IComplexTaskable
         }
         CurrentHealthState.Update(playerToCheck);
     }
+
+    private void UpdateCopPerception(IEntityProvideable world)
+    {
+        int Updated = 0;
+        foreach(Cop cop in world.PoliceList)
+        {
+            if(cop.Pedestrian.Exists())
+            {
+                Perception copPercetion = PolicePerceptions.FirstOrDefault(x=> x.ObserverPed.Exists() && x.ObserverPed.Handle == cop.Pedestrian.Handle);
+                if(copPercetion == null)
+                {
+                    copPercetion = new Perception(cop.Pedestrian,this.Pedestrian);
+                    PolicePerceptions.Add(copPercetion);
+                }
+                copPercetion.Update();
+                Updated++;
+            }
+            if(Updated >= 3)
+            {
+                GameFiber.Yield();
+            }
+        }
+        PolicePerceptions.RemoveAll(x => !x.ObserverPed.Exists());
+
+    }
+
     public void UpdateTask()
     {
         if (CurrentTask != null)
@@ -494,14 +526,13 @@ public class PedExt : IComplexTaskable
         GameTimeContinuoslySeenPlayerSince = 0;
         CanSeePlayer = false;
     }
-    private void UpdateDistance(Vector3 placeLastSeen, Vector3 playerPos)
+    private void UpdatePlayerDistance(Vector3 placeLastSeen, Vector3 playerPos)
     {
-        if (!NeedsDistanceCheck)
+        if (!NeedsDistanceCheck || !Pedestrian.Exists())
         {
             return;
         }
         Vector3 PlayerPosToCheck = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
-
         DistanceToPlayer = Pedestrian.DistanceTo2D(PlayerPosToCheck);// Game.LocalPlayer.Character.Position);
         if (IsCop)
         {
@@ -544,9 +575,9 @@ public class PedExt : IComplexTaskable
         }
         GameTimeLastDistanceCheck = Game.GameTime;
     }
-    private void UpdateLineOfSight()
+    private void UpdatePlayerLineOfSight()
     {
-        if (NeedsLOSCheck)
+        if (NeedsLOSCheck && Pedestrian.Exists())
         {
             bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;

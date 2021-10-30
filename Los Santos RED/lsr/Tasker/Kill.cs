@@ -30,7 +30,7 @@ public class Kill : ComplexTask
             int DesiredStyle = (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
             NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, DesiredStyle);
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
+            Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
             //EntryPoint.WriteToConsole(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
         }
         

@@ -62,5 +62,9 @@ public class Dispatcher
     {
         LEDispatcher.RemoveRoadblock();
     }
+    public void SpawnCop(Vector3 Position)
+    {
+        LEDispatcher.SpawnCop(Position);
+    }
 }
 

@@ -13,8 +13,8 @@ namespace LosSantosRED.lsr.Interface
         void RespawnAtHospital(GameLocation currentSelectedHospitalLocation);
         void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory);
         void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation);
-        void BribePolice(int bribeAmount);
+        bool BribePolice(int bribeAmount);
         void ResistArrest();
-        void PayFine();
+        bool PayFine();
     }
 }

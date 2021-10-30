@@ -283,9 +283,7 @@ namespace Mod
         public string DebugLine11 { get; set; }
         public Scanner DebugScanner => Scanner;//temp for testing with debug
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
-
         public PoolHandle OwnedVehicleHandle { get; set; }
-
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -385,22 +383,22 @@ namespace Mod
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
                 Scanner.Reset();
-                OwnedVehicleHandle = 0;
+                //OwnedVehicleHandle = 0;
                 Update();
 
-                GameFiber.StartNew(delegate
-                {
-                    uint GameTimeLastResetWanted = Game.GameTime;
-                    while (Game.GameTime - GameTimeLastResetWanted <= 5000)
-                    {
-                        if (Game.LocalPlayer.WantedLevel != 0)
-                        {
-                            SetWantedLevel(0, "Player Reset with resetWanted: resetting afterwards", true);
-                        }
-                        GameFiber.Yield();
-                    }
+                //GameFiber.StartNew(delegate
+                //{
+                //    uint GameTimeLastResetWanted = Game.GameTime;
+                //    while (Game.GameTime - GameTimeLastResetWanted <= 5000)
+                //    {
+                //        if (Game.LocalPlayer.WantedLevel != 0)
+                //        {
+                //            SetWantedLevel(0, "Player Reset with resetWanted: resetting afterwards", true);
+                //        }
+                //        GameFiber.Yield();
+                //    }
 
-                }, "Wanted Level Stopper");
+                //}, "Wanted Level Stopper");
 
 
             }
@@ -561,7 +559,6 @@ namespace Mod
             }
             //EntryPoint.WriteToConsole("Player Made Sober");
         }
-        //Interactions
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -588,7 +585,6 @@ namespace Mod
                 Interaction.Start();
             }
         }
-        //Dynamic Activities
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -709,7 +705,6 @@ namespace Mod
                 IsPerformingActivity = false;
             }
         }
-        //Delegates
         public void ArrestWarrantUpdate() => CriminalHistory.Update();
         public void CheckInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
         public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
@@ -728,19 +723,23 @@ namespace Mod
         public void RespawnAtHospital(GameLocation currentSelectedHospitalLocation) => Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
         public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory) => Respawning.RespawnAtCurrentLocation(withInvicibility, resetWanted, clearCriminalHistory);
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
-        public void BribePolice(int bribeAmount)
+        public bool BribePolice(int bribeAmount)
         {
-            if(Respawning.BribePolice(bribeAmount))
+            bool toReturn = Respawning.BribePolice(bribeAmount);
+            if (toReturn)
             {
                 Scanner.OnBribedPolice();
             }
+            return toReturn;
         }
-        public void PayFine()
+        public bool PayFine()
         {
-            if (Respawning.PayFine())
+            bool toReturn = Respawning.PayFine();
+            if (toReturn)
             {
                 Scanner.OnPaidFine();
             }
+            return toReturn;
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
@@ -749,8 +748,6 @@ namespace Mod
         {
             TrackedVehicles.Clear();
         }
-
-        //Events
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
         public void OnInvestigationExpire()
         {
@@ -776,6 +773,12 @@ namespace Mod
                 PoliceResponse.OnLostWanted();
                 EntityProvider.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
                 EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+
+                //NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
+                //NativeFunction.Natives.SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(Game.LocalPlayer, true);
+
+
+
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
             {
@@ -792,6 +795,11 @@ namespace Mod
                 {
                     Investigation.Reset();
                     PoliceResponse.OnBecameWanted();
+                    //NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
+                    //NativeFunction.Natives.SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(Game.LocalPlayer, false);
+                    
+
+
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
             }
@@ -988,7 +996,6 @@ namespace Mod
                 }
             }
         }
-        //General Updates
         public void UpdateCurrentVehicle() //should this be public?
         {
             bool IsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -1070,34 +1077,6 @@ namespace Mod
                 GameFiber.Yield();
             }
         }
-        //private void UpdateSpeedDispay()
-        //{
-        //    if (CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
-        //    {
-        //        CurrentSpeedDisplay = "";
-        //        if (!CurrentVehicle.Engine.IsRunning)
-        //        {
-        //            CurrentSpeedDisplay = "ENGINE OFF";
-        //        }
-        //        else
-        //        {
-        //            string ColorPrefx = "~s~";
-        //            if (IsSpeeding)
-        //            {
-        //                ColorPrefx = "~r~";
-        //            }
-        //            if (CurrentLocation.CurrentStreet != null)
-        //            {
-        //                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({CurrentLocation.CurrentStreet.SpeedLimitMPH})";
-        //            }
-        //        }
-        //        if (IsViolatingAnyTrafficLaws)
-        //        {
-        //            CurrentSpeedDisplay += " !";
-        //        }
-        //        CurrentSpeedDisplay += "~n~" + CurrentVehicle.FuelTank.UIText;
-        //    }
-        //}
         public void UpdateStateData()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1272,7 +1251,7 @@ namespace Mod
 
                 foreach(VehicleExt ownedCar in TrackedVehicles.Where(x=> x.Vehicle.Exists() && x.Vehicle.Handle == OwnedVehicleHandle))
                 {
-                    if(ownedCar.Vehicle.DistanceTo2D(Position) >= 500f && ownedCar.Vehicle.IsPersistent)
+                    if(ownedCar.Vehicle.DistanceTo2D(Position) >= 1000f && ownedCar.Vehicle.IsPersistent)
                     {
                         ownedCar.Vehicle.IsPersistent = false;
                     }

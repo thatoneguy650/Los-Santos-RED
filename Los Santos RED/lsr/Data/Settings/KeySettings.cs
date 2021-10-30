@@ -21,7 +21,7 @@ public class KeySettings
     public Keys InteractStart { get; set; } = Keys.O;
     public Keys InteractPositiveOrYes { get; set; } = Keys.J;
     public Keys InteractNegativeOrNo { get; set; } = Keys.K;
-    public Keys InteractCancel { get; set; } = Keys.K;
+    public Keys InteractCancel { get; set; } = Keys.L;
     public Keys ScenarioStart { get; set; } = Keys.P;
 
     public KeySettings()

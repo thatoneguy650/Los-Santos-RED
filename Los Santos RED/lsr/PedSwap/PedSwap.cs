@@ -386,6 +386,30 @@ public class PedSwap : IPedSwap
             FormerPlayer.Tasks.Wander();
         }
     }
+    public void InlineModelSwap()
+    {
+        string ModelToChange;
+        PedVariation pedVariation;
+        if (TargetPedModelName != "")
+        {
+            ModelToChange = TargetPedModelName;
+            pedVariation = TargetPedVariation;
+        }
+        else
+        {
+            ModelToChange = InitialModel.Name;
+            pedVariation = InitialVariation;
+        }
+
+
+        //if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        //{
+        //    SetPlayerOffset();
+        //}
+        NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+        NativeHelper.ChangeModel(ModelToChange);
+        pedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+    }
     private void PostTakeover(string ModelToChange)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
@@ -417,6 +441,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
+            Player.OwnedVehicleHandle = 0;
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
 

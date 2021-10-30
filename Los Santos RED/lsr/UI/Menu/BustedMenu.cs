@@ -107,7 +107,14 @@ public class BustedMenu : Menu
         {
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
             {
-                Respawning.BribePolice(BribeAmount);
+                if (Respawning.BribePolice(BribeAmount))
+                {
+                    //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, true);
+                    //GameFiber.Yield();
+                    //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, false);
+                    //PedSwap.InlineModelSwap();
+
+                }
             }
         }
         else if (selectedItem == PayFine)

@@ -145,9 +145,9 @@ namespace LosSantosRED.lsr
         }
         private void AddViolating(Crime crime)
         {
-            if(crime != null && crime.Enabled && !CrimesViolating.Contains(crime))
+            if(crime != null && crime.Enabled)
             {
-                AddViolating(crime);
+                CrimesViolating.Add(crime);
             }
         }
         private void CheckPedDamageCrimes()

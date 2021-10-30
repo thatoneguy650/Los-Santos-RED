@@ -12,5 +12,6 @@ namespace LosSantosRED.lsr.Interface
         void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
         void BecomeRandomPed(bool DeleteOld);
         void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation);
+        void InlineModelSwap();
     }
 }

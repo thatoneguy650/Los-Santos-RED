@@ -332,30 +332,30 @@ namespace LosSantosRED.lsr
                     while (IsRunning)
                     {
                         Debug.Update();
-                        if (Game.IsKeyDown(Keys.NumPad5))
-                        {
-                            EntryPoint.WriteToConsole("=================================== CORE", 3);
-                            foreach (ModTask modTask in CoreTasks)
-                            {
-                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                            }
-                            EntryPoint.WriteToConsole("=================================== SECONDARY", 3);
-                            foreach (ModTask modTask in SecondaryTasks)
-                            {
-                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                            }
-                            EntryPoint.WriteToConsole("=================================== TERTIARY", 3);
-                            foreach (ModTask modTask in TertiaryTasks)
-                            {
-                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                            }
-                            EntryPoint.WriteToConsole("=================================== QUATERNARY", 3);
-                            foreach (ModTask modTask in QuaternaryTasks)
-                            {
-                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                            }
-                            EntryPoint.WriteToConsole("===================================", 3);
-                        }
+                        //if (Game.IsKeyDown(Keys.NumPad5))
+                        //{
+                        //    EntryPoint.WriteToConsole("=================================== CORE", 3);
+                        //    foreach (ModTask modTask in CoreTasks)
+                        //    {
+                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                        //    }
+                        //    EntryPoint.WriteToConsole("=================================== SECONDARY", 3);
+                        //    foreach (ModTask modTask in SecondaryTasks)
+                        //    {
+                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                        //    }
+                        //    EntryPoint.WriteToConsole("=================================== TERTIARY", 3);
+                        //    foreach (ModTask modTask in TertiaryTasks)
+                        //    {
+                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                        //    }
+                        //    EntryPoint.WriteToConsole("=================================== QUATERNARY", 3);
+                        //    foreach (ModTask modTask in QuaternaryTasks)
+                        //    {
+                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                        //    }
+                        //    EntryPoint.WriteToConsole("===================================", 3);
+                        //}
                         GameFiber.Yield();
                     }
                 }
