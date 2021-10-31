@@ -13,6 +13,7 @@ public class Tasker
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
+    private List<PedExt> OtherTargets;
     public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings)
     {
         PedProvider = pedProvider;
@@ -22,10 +23,10 @@ public class Tasker
     }
     public void RunPoliceTasks()
     {
-        List<PedExt> otherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.AnyPoliceSeenViolationCommitted).ToList();
+        UpdateOtherTargets();
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
-            Cop.UpdateTask(otherTargets);
+            Cop.UpdateTask(OtherTargets);
             GameFiber.Yield();
         }
     }
@@ -41,6 +42,7 @@ public class Tasker
     {
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
+            UpdateOtherTargets();
             foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))
             {
                 UpdateCurrentTask(Cop);
@@ -70,42 +72,28 @@ public class Tasker
             GameFiber.Yield();
         }
     }
+    private void UpdateOtherTargets()
+    {
+        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.DistanceToPlayer <= 150f).ToList();
+    }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
-            if (Player.IsWanted)
+            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 200f)
             {
-                if (Player.IsInSearchMode)
+                if (Cop.CurrentTask?.Name != "ApprehendOther")
                 {
-                    if (Cop.CurrentTask?.Name != "Locate")
-                    {
-                        Cop.CurrentTask = new Locate(Cop, Player);
-                        Cop.CurrentTask.Start();
-                    }
+                    Cop.CurrentTask = new ApprehendOther(Cop, Player);
+                    Cop.CurrentTask.OtherTargets = OtherTargets;
+                    Cop.CurrentTask.Start();
                 }
-                else
+            }
+            else
+            {
+                if (Player.IsWanted)
                 {
-                    if (Cop.DistanceToPlayer <= 150f)//200f
-                    {
-                        if (Player.PoliceResponse.IsDeadlyChase && (Player.PoliceResponse.IsWeaponsFree || !Player.IsAttemptingToSurrender))
-                        {
-                            if (Cop.CurrentTask?.Name != "Kill")
-                            {
-                                Cop.CurrentTask = new Kill(Cop, Player);
-                                Cop.CurrentTask.Start();
-                            }
-                        }
-                        else
-                        {
-                            if (Cop.CurrentTask?.Name != "Chase")
-                            {
-                                Cop.CurrentTask = new Chase(Cop, Player);
-                                Cop.CurrentTask.Start();
-                            }
-                        }
-                    }
-                    else// if (Cop.DistanceToPlayer <= Player.ActiveDistance)//1000f
+                    if (Player.IsInSearchMode)
                     {
                         if (Cop.CurrentTask?.Name != "Locate")
                         {
@@ -113,32 +101,54 @@ public class Tasker
                             Cop.CurrentTask.Start();
                         }
                     }
+                    else
+                    {
+                        if (Cop.DistanceToPlayer <= 150f)//200f
+                        {
+                            if (Player.PoliceResponse.IsDeadlyChase && (Player.PoliceResponse.IsWeaponsFree || !Player.IsAttemptingToSurrender))
+                            {
+                                if (Cop.CurrentTask?.Name != "Kill")
+                                {
+                                    Cop.CurrentTask = new Kill(Cop, Player);
+                                    Cop.CurrentTask.Start();
+                                }
+                            }
+                            else
+                            {
+                                if (Cop.CurrentTask?.Name != "Chase")
+                                {
+                                    Cop.CurrentTask = new Chase(Cop, Player);
+                                    Cop.CurrentTask.Start();
+                                }
+                            }
+                        }
+                        else// if (Cop.DistanceToPlayer <= Player.ActiveDistance)//1000f
+                        {
+                            if (Cop.CurrentTask?.Name != "Locate")
+                            {
+                                Cop.CurrentTask = new Locate(Cop, Player);
+                                Cop.CurrentTask.Start();
+                            }
+                        }
+                    }
                 }
-            }
-            else if (Player.Investigation.IsActive)
-            {
-                if (Cop.CurrentTask?.Name != "Investigate")
+                else if (Player.Investigation.IsActive)
                 {
-                    Cop.CurrentTask = new Investigate(Cop, Player);
-                    Cop.CurrentTask.Start();
+                    if (Cop.CurrentTask?.Name != "Investigate")
+                    {
+                        Cop.CurrentTask = new Investigate(Cop, Player);
+                        Cop.CurrentTask.Start();
+                    }
                 }
-            }
-            else
-            {
-                if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
+                else
                 {
-                    Cop.CurrentTask = new Idle(Cop, Player);
-                    Cop.CurrentTask.Start();
-                }
-                //else
-                //{
-                //    if (Cop.CurrentTask != null && Cop.Pedestrian.Exists())
-                //    {
-                //        Cop.Pedestrian.Tasks.Clear();
-                //        Cop.CurrentTask = null;
-                //    }
+                    if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
+                    {
+                        Cop.CurrentTask = new Idle(Cop, Player);
+                        Cop.CurrentTask.Start();
+                    }
 
-                //}
+                }
             }
         }
         else

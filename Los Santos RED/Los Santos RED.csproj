@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApprehendOther.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />
@@ -158,12 +159,14 @@
     <Compile Include="lsr\Services\Firefighter.cs" />
     <Compile Include="lsr\Tasker\CallIn.cs" />
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
+    <Compile Include="lsr\Tasker\eComatAttributes.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />
     <Compile Include="lsr\Tasker\Flee.cs" />
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
+    <Compile Include="lsr\Util\Peds\PedCrimes.cs" />
     <Compile Include="lsr\Util\Peds\Perception.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />

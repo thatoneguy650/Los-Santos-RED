@@ -708,8 +708,8 @@ namespace Mod
             }
         }
         public void ArrestWarrantUpdate() => CriminalHistory.Update();
-        public void CheckInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
-        public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
+        public void AddInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
+        public void AddKilled(PedExt MyPed) => Violations.AddKilled(MyPed);
         public void DropWeapon() => WeaponDropping.DropWeapon();
         public void LocationUpdate() => CurrentLocation.Update(Character);
         public void ScannerUpdate() => Scanner.Tick();

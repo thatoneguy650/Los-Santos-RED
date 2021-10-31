@@ -32,6 +32,10 @@ public class Cop : PedExt
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool WasModSpawned { get; private set; }
+   // public bool AutoSetWeapons => WeaponInventory.ShouldAutoSetWeaponState;
+    public string CopDebugString => WeaponInventory.DebugWeaponState;
+    //public void SetLessLethalWeapons() => WeaponInventory.SetLessLethal();
+    //public void SetDefaultWeapons() => WeaponInventory.SetDefault();
     public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);

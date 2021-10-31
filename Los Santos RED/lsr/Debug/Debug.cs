@@ -176,10 +176,10 @@ public class Debug
 
 
 
-            if (ped.AnyPoliceSeenViolationCommitted)
-            {
-                Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 4f), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
-            }
+            //if (ped.AnyPoliceSeenViolationCommitted)
+            //{
+            //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 4f), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
+            //}
         }
 
 
@@ -234,11 +234,11 @@ public class Debug
         {
             if(ped.Pedestrian.Inventory.EquippedWeapon != null)
             {
-                EntryPoint.WriteToConsole($"WantedLevel = {ped.ViolationWantedLevel} AnyPoliceSeenViolationCommitted {ped.AnyPoliceSeenViolationCommitted} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.ViolationWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}", 5);
             }
             else
             {
-                EntryPoint.WriteToConsole($"WantedLevel = {ped.ViolationWantedLevel} AnyPoliceSeenViolationCommitted {ped.AnyPoliceSeenViolationCommitted} Reason {ped.ViolationWantedLevelReason}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.ViolationWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}", 5);
             }
             
         }
@@ -247,7 +247,7 @@ public class Debug
     {
         GameFiber.StartNew(delegate
         {
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(-10f));
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
             coolguy.BlockPermanentEvents = true;
             coolguy.KeepTasks = true;
 
@@ -259,8 +259,24 @@ public class Debug
             {
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
             }
-            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
-            while (coolguy.Exists() && coolguy.IsAlive && !Game.IsKeyDownRightNow(Keys.P))
+            if (RandomItems.RandomPercent(50))
+            {
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            }
+            else
+            {
+                Cop tofight = World.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                if(tofight != null && tofight.Pedestrian.Exists())
+                {
+                    coolguy.Tasks.FightAgainst(tofight.Pedestrian);
+                }
+                else
+                {
+                    coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                }
+            }
+            //coolguy.Tasks.FightAgainstClosestHatedTarget(100f, -1);
+            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {
                 Game.DisplayHelp($"Press P to delete ghost cop");
                 GameFiber.Sleep(25);
@@ -300,65 +316,9 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        if (!RageTargetPed.Exists())
-        {
-            RageTargetPed = new Ped(Vector3.Zero);
-            RageTargetPed.IsPersistent = true;
-        }
-        EntryPoint.WriteToConsole($"Num6: RageTargetPed {RageTargetPed.Exists()} ", 5);
-        
-
-
-        NativeFunction.Natives.CLEAR_PLAYER_WANTED_LEVEL(Game.LocalPlayer);
-        EntryPoint.WriteToConsole($"Num6: CLEAR_PLAYER_WANTED_LEVEL", 5);
         foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
-            bool inCombat = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(cop.Pedestrian, Game.LocalPlayer.Character);
-            bool inCombatInverse = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(Game.LocalPlayer.Character, cop.Pedestrian);
-            bool runningArrestTask = NativeFunction.Natives.IS_PED_RUNNING_ARREST_TASK<bool>(cop.Pedestrian);
-            bool runningArrestTask2 = false;
-            if (inCombat)
-            {
-                cop.Pedestrian.Tasks.Clear();
-                //cop.Pedestrian.Tasks.ClearSecondary();
-                //cop.Pedestrian.Tasks.StandStill(-1);
-                //cop.Pedestrian.KeepTasks = true;
-                cop.Pedestrian.Alertness = 0;
-
-                //ulong oldhash = cop.Pedestrian.Model.Hash;
-
-                //unsafe
-                //{
-                //    var PedPtr = (ulong)cop.Pedestrian.MemoryAddress;
-                //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
-                //    *((ulong*)(SkinPtr + 0x18)) = 0;
-                //}
-                //unsafe
-                //{
-                //    var PedPtr = (ulong)cop.Pedestrian.MemoryAddress;
-                //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
-                //    *((ulong*)(SkinPtr + 0x18)) = oldhash;
-                //}
-
-
-                //if (RageTargetPed.Exists())
-                //{
-                //    NativeFunction.Natives.TASK_ARREST_PED(cop.Pedestrian, RageTargetPed);
-                //    runningArrestTask2 = NativeFunction.Natives.IS_PED_RUNNING_ARREST_TASK<bool>(cop.Pedestrian);
-                //}
-                //Model orig = cop.Pedestrian.Model;
-                //cop.Pedestrian.Model = orig;
-                //if (RageTargetPed.Exists())
-                //{
-                //    cop.Pedestrian.Tasks.FightAgainst(RageTargetPed);
-                //}
-            }
-
-
-
-
-
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Handle}-{cop.DistanceToPlayer} M inCombat {inCombat} inCombatInverse {inCombatInverse} CombatTarget {cop.Pedestrian?.CombatTarget?.Handle}", 5);
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}", 5);
         }
     }
     private void DebugNumpad7()

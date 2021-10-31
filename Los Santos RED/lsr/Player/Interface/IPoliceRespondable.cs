@@ -47,8 +47,8 @@ namespace LosSantosRED.lsr.Interface
         uint HasBeenWantedFor { get; }
         Vector3 RootPosition { get; }
 
-        void CheckInjured(PedExt myPed);
-        void CheckMurdered(PedExt myPed);
+        void AddInjured(PedExt myPed);
+        void AddKilled(PedExt myPed);
         void Arrest();
       //  void StoreCriminalHistory();
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime);

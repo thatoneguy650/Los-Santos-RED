@@ -45,11 +45,13 @@ public abstract class ComplexTask
             }
         }
     }
+    public bool IsReadyForWeaponUpdates { get; set; }
     public uint GameTimeLastRan { get; set; }
     public string Name { get; set; }
     public string SubTaskName { get; set; }
     public uint RunInterval { get; set; }
     public List<PedExt> OtherTargets { get; set; }
+    public PedExt OtherTarget { get; set; }
     public string DebugString { get; set; }
     public bool ShouldUpdate => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan >= RunInterval;
     public abstract void Start();

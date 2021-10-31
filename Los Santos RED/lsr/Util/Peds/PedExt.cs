@@ -27,7 +27,8 @@ public class PedExt : IComplexTaskable
     private Entity LastHurtBy;
     private uint GameTimeLastExitedVehicle;
     private ISettingsProvideable Settings;
-    private List<Perception> PolicePerceptions = new List<Perception>();
+    // private List<Perception> PolicePerceptions = new List<Perception>();
+    private PedCrimes PedCrimes;
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
@@ -39,6 +40,7 @@ public class PedExt : IComplexTaskable
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
+        PedCrimes = new PedCrimes(this);
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian, settings)
     {
@@ -57,9 +59,9 @@ public class PedExt : IComplexTaskable
     public bool HasSpokenWithPlayer { get; set; }
     public bool CanBeTasked { get; set; } = true;
     public bool CanBeAmbientTasked { get; set; } = true;
-    public int WantedLevel { get; private set; } = 0;
-    public int ViolationWantedLevel { get; private set; } = 0;
-    public string ViolationWantedLevelReason { get; private set; }
+    public int WantedLevel => PedCrimes.ObservedWantedLevel;
+    public int ViolationWantedLevel => PedCrimes.CommittingWantedLevel;
+    public string ViolationWantedLevelReason => PedCrimes.CommittingWantedLevelReason;
     public bool ShouldUpdateTask { get; set; } = true;
     public bool HasBeenHurtByPlayer = false;
     public bool CanRecognizePlayer
@@ -110,8 +112,7 @@ public class PedExt : IComplexTaskable
         }
     }
     public string Name { get; set; }
-    public List<Perception> PublicPolicePerceptions => PolicePerceptions;
-    public bool AnyPoliceSeenViolationCommitted { get; private set; } = false;
+   // public List<Perception> PublicPolicePerceptions => PolicePerceptions;
     public bool CanSeePlayer { get; private set; } = false;
     public float ClosestDistanceToPlayer { get; private set; } = 2000f;
     public float DistanceToPlayer { get; private set; } = 999f;
@@ -400,66 +401,16 @@ public class PedExt : IComplexTaskable
     {   
         if (DistanceToPlayer <= 150f)
         {
-            UpdateViolations();
-            if (ViolationWantedLevel != 0)
+            PedCrimes.Update(world);
+            if (PedCrimes.CommittingWantedLevel != 0)
             {
-                if (!AnyPoliceSeenViolationCommitted)
+                if (PedCrimes.ObservedWantedLevel == 0)
                 {
                     CheckPoliceSight(world);
                 }
             }
         }
     }
-    private void UpdateViolations()
-    {
-        WeaponDescriptor CurrentWeapon = Pedestrian.Inventory.EquippedWeapon;
-        if (Pedestrian.IsShooting)
-        {
-            ViolationWantedLevelReason = "Shooting";
-            ViolationWantedLevel = 3;
-        }   
-        else if (IsVisiblyArmed())
-        {
-            ViolationWantedLevelReason = "CarryingWeapon";
-            ViolationWantedLevel = 2;
-        }
-        else if (Pedestrian.IsInCombat || Pedestrian.IsInMeleeCombat)
-        {
-            ViolationWantedLevelReason = "InCombat";
-            ViolationWantedLevel = 1;
-        }
-        else
-        {
-            ViolationWantedLevelReason = "";
-            ViolationWantedLevel = 0;
-        }
-    }
-
-    private bool IsVisiblyArmed()
-    {
-        WeaponDescriptor CurrentWeapon = Pedestrian.Inventory.EquippedWeapon;
-        if (CurrentWeapon == null)
-        {
-            return false;
-        }
-        else if (CurrentWeapon.Hash == (WeaponHash)2725352035
-            || CurrentWeapon.Hash == (WeaponHash)966099553
-            || CurrentWeapon.Hash == (WeaponHash)0x787F0BB//weapon_snowball
-            || CurrentWeapon.Hash == (WeaponHash)0x060EC506//weapon_fireextinguisher
-            || CurrentWeapon.Hash == (WeaponHash)0x34A67B97//weapon_petrolcan
-            || CurrentWeapon.Hash == (WeaponHash)0xBA536372//weapon_hazardcan
-            || CurrentWeapon.Hash == (WeaponHash)0x8BB05FD7//weapon_flashlight
-            || CurrentWeapon.Hash == (WeaponHash)0x23C9F95C)//weapon_ball
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-
     private void CheckPoliceSight(IEntityProvideable world)
     {
         foreach (Cop cop in world.PoliceList)
@@ -471,11 +422,15 @@ public class PedExt : IComplexTaskable
                 {
                     DistanceTo = 999f;
                 }
-                if (DistanceTo <= 90f && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, Pedestrian))//55f
+                if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, Pedestrian))//55f
                 {
-                    WantedLevel = ViolationWantedLevel;
-                    AnyPoliceSeenViolationCommitted = true;
+                    PedCrimes.SetHeard();
+                    PedCrimes.SetObserved();
                     return;
+                }
+                if(DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
+                {
+                    PedCrimes.SetHeard();
                 }
             }
         }

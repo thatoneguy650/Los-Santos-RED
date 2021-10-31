@@ -26,15 +26,16 @@ public class Idle : ComplexTask
     {
         get
         {
-            if(OtherTargets != null && OtherTargets.Any())
-            {
-                return Task.OtherTarget;
-            }
+            //if(OtherTargets != null && OtherTargets.Any())
+            //{
+            //    return Task.OtherTarget;
+            //}
             //else if(NativeFunction.Natives.GET_PED_ALERTNESS<int>(Ped.Pedestrian) > 0)
             //{
             //    return Task.Nothing;
             //}
-            else if (Ped.DistanceToPlayer <= 75f && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)//(Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+          //  else 
+            if (Ped.DistanceToPlayer <= 75f && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)//(Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
             {
                 return Task.GetInCar;
             }
@@ -128,11 +129,11 @@ public class Idle : ComplexTask
             SubTaskName = "Nothing";
             Nothing(IsFirstRun);
         }
-        else if (CurrentTask == Task.OtherTarget)
-        {
-            SubTaskName = "OtherTarget";
-            OtherTarget(IsFirstRun);
-        }
+        //else if (CurrentTask == Task.OtherTarget)
+        //{
+        //    SubTaskName = "OtherTarget";
+        //    OtherTarget(IsFirstRun);
+        //}
         GameTimeLastRan = Game.GameTime;
     }
     private void Wander(bool IsFirstRun)
@@ -227,68 +228,68 @@ public class Idle : ComplexTask
         }
     }
 
-    private void OtherTarget(bool IsFirstRun)
-    {
-        PedExt ClosestPed = OtherTargets.Where(x=> x.Pedestrian.Exists()).OrderByDescending(x => x.WantedLevel).OrderBy(x => x.Pedestrian.DistanceTo2D(Ped.Pedestrian)).FirstOrDefault();
-        if (IsFirstRun)
-        {
-            OtherTargetPed = ClosestPed;
-            EntryPoint.WriteToConsole($"COP EVENT: OtherTarget Idle Start: {Ped.Pedestrian.Handle}", 3);
-            if(ClosestPed != null && ClosestPed.Pedestrian.Exists())
-            {
-                EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                      OtherTarget Start Target Handle: {ClosestPed.Pedestrian.Handle}", 3);
-            }
-            NeedsUpdates = true;
-            RunInterval = 2000;
-            ClearTasks(true);
-            OtherTargetTask();
-        }
-        if(OtherTargetPed != null && !OtherTargetPed.Pedestrian.Exists())
-        {
-            OtherTargetPed = null;
-        }
-        if(ClosestPed == null)
-        {
-            OtherTargetPed = null;
-        }
-        if(ClosestPed != null && OtherTargetPed == null)
-        {
-            OtherTargetPed = ClosestPed;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                      OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
-            OtherTargetTask();
-        }
-        if(ClosestPed != null && OtherTargetPed != null && ClosestPed.Pedestrian.Exists() && OtherTargetPed.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTargetPed.Pedestrian.Handle)
-        {
-            OtherTargetPed = ClosestPed;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                  OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
-            OtherTargetTask();
-        }
-        if (Ped.Pedestrian.Exists())
-        {
-            string stuff = $"COP EVENT {Ped.Pedestrian.Handle}: OtherTarget Idle ";
-            if(OtherTargetPed != null)
-            {
-                stuff += $"OtherTargetPed {OtherTargetPed != null} {OtherTargetPed.Pedestrian.Exists()}";
-            }
-            if (OtherTargets != null)
-            {
-                stuff += $"     OtherTargets: {OtherTargets.Count()}";
-            }
-            EntryPoint.WriteToConsole(stuff, 3);
-        }
-    }
-    private void OtherTargetTask()
-    {
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.KeepTasks = true;
-        if (Ped.Pedestrian.Exists())
-        {
-            if(OtherTargetPed != null && OtherTargetPed.Pedestrian.Exists())
-            {
-                Ped.Pedestrian.Tasks.FightAgainst(OtherTargetPed.Pedestrian, -1);
-            }
-        }
-    }
+    //private void OtherTarget(bool IsFirstRun)
+    //{
+    //    PedExt ClosestPed = OtherTargets.Where(x=> x.Pedestrian.Exists()).OrderByDescending(x => x.WantedLevel).OrderBy(x => x.Pedestrian.DistanceTo2D(Ped.Pedestrian)).FirstOrDefault();
+    //    if (IsFirstRun)
+    //    {
+    //        OtherTargetPed = ClosestPed;
+    //        EntryPoint.WriteToConsole($"COP EVENT: OtherTarget Idle Start: {Ped.Pedestrian.Handle}", 3);
+    //        if(ClosestPed != null && ClosestPed.Pedestrian.Exists())
+    //        {
+    //            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                      OtherTarget Start Target Handle: {ClosestPed.Pedestrian.Handle}", 3);
+    //        }
+    //        NeedsUpdates = true;
+    //        RunInterval = 2000;
+    //        ClearTasks(true);
+    //        OtherTargetTask();
+    //    }
+    //    if(OtherTargetPed != null && !OtherTargetPed.Pedestrian.Exists())
+    //    {
+    //        OtherTargetPed = null;
+    //    }
+    //    if(ClosestPed == null)
+    //    {
+    //        OtherTargetPed = null;
+    //    }
+    //    if(ClosestPed != null && OtherTargetPed == null)
+    //    {
+    //        OtherTargetPed = ClosestPed;
+    //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                      OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
+    //        OtherTargetTask();
+    //    }
+    //    if(ClosestPed != null && OtherTargetPed != null && ClosestPed.Pedestrian.Exists() && OtherTargetPed.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTargetPed.Pedestrian.Handle)
+    //    {
+    //        OtherTargetPed = ClosestPed;
+    //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                  OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
+    //        OtherTargetTask();
+    //    }
+    //    if (Ped.Pedestrian.Exists())
+    //    {
+    //        string stuff = $"COP EVENT {Ped.Pedestrian.Handle}: OtherTarget Idle ";
+    //        if(OtherTargetPed != null)
+    //        {
+    //            stuff += $"OtherTargetPed {OtherTargetPed != null} {OtherTargetPed.Pedestrian.Exists()}";
+    //        }
+    //        if (OtherTargets != null)
+    //        {
+    //            stuff += $"     OtherTargets: {OtherTargets.Count()}";
+    //        }
+    //        EntryPoint.WriteToConsole(stuff, 3);
+    //    }
+    //}
+    //private void OtherTargetTask()
+    //{
+    //    Ped.Pedestrian.BlockPermanentEvents = true;
+    //    Ped.Pedestrian.KeepTasks = true;
+    //    if (Ped.Pedestrian.Exists())
+    //    {
+    //        if(OtherTargetPed != null && OtherTargetPed.Pedestrian.Exists())
+    //        {
+    //            Ped.Pedestrian.Tasks.FightAgainst(OtherTargetPed.Pedestrian, -1);
+    //        }
+    //    }
+    //}
 
 
     private void SetSiren()

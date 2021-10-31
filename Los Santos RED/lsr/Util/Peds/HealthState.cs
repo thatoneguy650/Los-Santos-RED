@@ -124,12 +124,12 @@ public class HealthState
         }
         if (MyPed.Pedestrian.IsDead && MyPed.CheckKilledBy(Game.LocalPlayer.Character))
         {
-            CurrentPlayer.CheckMurdered(MyPed);
+            CurrentPlayer.AddKilled(MyPed);
         }
         else if (MyPed.Pedestrian.IsAlive && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(Game.LocalPlayer.Character))
         {
             MyPed.HasBeenHurtByPlayer = true;
-            CurrentPlayer.CheckInjured(MyPed);
+            CurrentPlayer.AddInjured(MyPed);
         }
     }
     private BodyLocation GetDamageLocation(Ped Pedestrian)
