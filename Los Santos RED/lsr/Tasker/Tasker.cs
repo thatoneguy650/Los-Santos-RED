@@ -22,9 +22,10 @@ public class Tasker
     }
     public void RunPoliceTasks()
     {
+        List<PedExt> otherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.AnyPoliceSeenViolationCommitted).ToList();
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
-            Cop.UpdateTask();
+            Cop.UpdateTask(otherTargets);
             GameFiber.Yield();
         }
     }
@@ -32,7 +33,7 @@ public class Tasker
     {
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
-            Ped.UpdateTask();
+            Ped.UpdateTask(null);
             GameFiber.Yield();
         }
     }

@@ -49,6 +49,8 @@ public abstract class ComplexTask
     public string Name { get; set; }
     public string SubTaskName { get; set; }
     public uint RunInterval { get; set; }
+    public List<PedExt> OtherTargets { get; set; }
+    public string DebugString { get; set; }
     public bool ShouldUpdate => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan >= RunInterval;
     public abstract void Start();
     public abstract void Stop();

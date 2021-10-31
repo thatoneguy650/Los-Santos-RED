@@ -70,8 +70,8 @@ public class Perception
     }
     public void Update()
     {
-        //UpdateDistance();
-        //UpdateLineOfSight();
+        UpdateDistance();
+        UpdateLineOfSight();
     }
     private void SetSeen()
     {
@@ -92,50 +92,25 @@ public class Perception
     {
         if (TargetPed.Exists())
         {
-            Vector3 PosToCheck = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(TargetPed, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", TargetPed, 57005));
+            Vector3 PosToCheck = TargetPed.Position;
             DistanceTo = ObserverPed.DistanceTo2D(PosToCheck);
             if (DistanceTo <= 0.1f)
             {
                 DistanceTo = 999f;
-            }
-            if (DistanceTo <= ClosestDistanceTo)
-            {
-                ClosestDistanceTo = DistanceTo;
-            }
-            //if (DistanceTo <= (Settings.SettingsManager.CivilianSettings.GunshotHearingDistance))//45f
-            //{
-            //    WithinWeaponsAudioRange = true;
-            //}
-            //else
-            //{
-            //    WithinWeaponsAudioRange = false;
-            //}
-            if (!IsBehind(TargetPed))
-            {
-                if (GameTimeBehind == 0)
-                {
-                    GameTimeBehind = Game.GameTime;
-                }
-            }
-            else
-            {
-                GameTimeBehind = 0;
             }
         }
         GameTimeLastDistanceCheck = Game.GameTime;
     }
     private void UpdateLineOfSight()
     {
-            bool InVehicle = TargetPed.IsInAnyVehicle(false);
-            Entity ToCheck = InVehicle ? (Entity)TargetPed.CurrentVehicle : (Entity)TargetPed;
-            if (DistanceTo <= 90f && IsInFrontOf(TargetPed) && !ObserverPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", ObserverPed, ToCheck))//55f
-            {
-                SetSeen();
-            }
-            else
-            {
-                SetUnseen();
-            }
+        if (DistanceTo <= 90f && IsInFrontOf(TargetPed) && !ObserverPed.IsDead)// && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", ObserverPed, ToCheck))//55f
+        {
+            SetSeen();
+        }
+        else
+        {
+            SetUnseen();
+        }
     }
     private bool IsBehind(Entity entity)
     {
