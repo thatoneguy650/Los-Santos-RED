@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr
         private List<uint> NotificationHandles = new List<uint>();
         private Dispatch OfficerDown;
         private Dispatch OfficerNeedsAssistance;
+        private Dispatch OfficersNeeded;
         private List<AudioSet> OfficersReport;
         private Dispatch OnFoot;
         private Dispatch PedHitAndRun;
@@ -159,15 +160,14 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnAppliedWantedStats", 3);
         }
-        public void OnBribedPolice()
+        public void OnArmyDeployed()
         {
-            if (!ResumePatrol.HasRecentlyBeenPlayed)
+            if (CurrentPlayer.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
             {
-                AddToQueue(ResumePatrol);
+                AddToQueue(RequestMilitaryUnits);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
-        public void OnPaidFine()
+        public void OnBribedPolice()
         {
             if (!ResumePatrol.HasRecentlyBeenPlayed)
             {
@@ -182,6 +182,13 @@ namespace LosSantosRED.lsr
                 AddToQueue(OnFoot);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
+        }
+        public void OnHelicoptersDeployed()
+        {
+            if (CurrentPlayer.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+            {
+                AddToQueue(RequestAirSupport);
+            }
         }
         public void OnInvestigationExpire()
         {
@@ -198,6 +205,21 @@ namespace LosSantosRED.lsr
                 AddToQueue(LethalForceAuthorized);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnLethalForceAuthorized", 3);
+        }
+        public void OnNooseDeployed()
+        {
+            if (CurrentPlayer.IsWanted && !RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+            {
+                AddToQueue(RequestNOOSEUnits);
+            }
+        }
+        public void OnPaidFine()
+        {
+            if (!ResumePatrol.HasRecentlyBeenPlayed)
+            {
+                AddToQueue(ResumePatrol);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
         public void OnPlayerBusted()
         {
@@ -268,27 +290,6 @@ namespace LosSantosRED.lsr
                 AddToQueue(WeaponsFree);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
-        }
-        public void OnArmyDeployed()
-        {
-            if (CurrentPlayer.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
-            {
-                AddToQueue(RequestMilitaryUnits);
-            }
-        }
-        public void OnNooseDeployed()
-        {
-            if (CurrentPlayer.IsWanted && !RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
-            {
-                AddToQueue(RequestNOOSEUnits);
-            }
-        }
-        public void OnHelicoptersDeployed()
-        {
-            if (CurrentPlayer.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
-            {
-                AddToQueue(RequestAirSupport);
-            }
         }
         public void Reset()
         {
@@ -1048,6 +1049,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("PublicIntoxication",PublicIntoxication),
 
             new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),
+            new CrimeDispatch("OfficersNeeded",OfficersNeeded),
         };
             DispatchList = new List<Dispatch>
         {
@@ -1096,6 +1098,7 @@ namespace LosSantosRED.lsr
             ,Kidnapping
             ,PublicIntoxication
             ,OfficerNeedsAssistance
+            ,OfficersNeeded
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -1702,6 +1705,20 @@ namespace LosSantosRED.lsr
             },
             };
 
+            OfficersNeeded = new Dispatch()
+            {
+                Name = "Officers Needed",
+                LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysBeInterrupted = true,
+
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { assistance_required.Officersneeded.FileName},"officers needed"),
+                 new AudioSet(new List<string>() { assistance_required.Officersrequired.FileName},"officers required"),
+            },
+            };
+
+
             AnnounceStolenVehicle = new Dispatch()
             {
                 Name = "Stolen Vehicle Reported",
@@ -1802,9 +1819,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot1.FileName },"suspect is on on foot"),
             },
         };
-
-
-
 
             NoFurtherUnitsNeeded = new Dispatch()
             {

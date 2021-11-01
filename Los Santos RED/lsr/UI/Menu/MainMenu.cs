@@ -13,6 +13,7 @@ public class MainMenu : Menu
     private SettingsMenu SettingsMenu;
     private UIMenu Main;
     private IActionable Player;
+    private UIMenuItem CallPolice;
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
     private UIMenuItem TakeVehicleOwnership;
@@ -71,14 +72,22 @@ public class MainMenu : Menu
     {
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
+
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
+        CallPolice = new UIMenuItem("Call Police", "Need some help?");
+
+        CallPolice.RightBadge = UIMenuItem.BadgeStyle.Ammo;
+
+
+
 
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
-        ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Car;
+        TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
 
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Gun;
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
+        Main.AddItem(CallPolice);
         Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(ShowStatus);
         Main.AddItem(UnloadMod);
@@ -96,6 +105,10 @@ public class MainMenu : Menu
         else if (selectedItem == TakeVehicleOwnership)
         {
             Player.TakeOwnershipOfNearestCar();
+        }
+        if (selectedItem == CallPolice)
+        {
+            Player.CallPolice();
         }
         Main.Visible = false;
     }

@@ -28,5 +28,6 @@ namespace LosSantosRED.lsr.Interface
         void StopDynamicActivity();
         void ChangePlate(LicensePlate selectedItem);
         void TakeOwnershipOfNearestCar();
+        void CallPolice();
     }
 }

@@ -74,18 +74,25 @@ public class Tasker
     }
     private void UpdateOtherTargets()
     {
-        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.DistanceToPlayer <= 150f).ToList();
+        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.DistanceToPlayer <= 100f).ToList();
+        if(OtherTargets.Any())
+        {
+            Game.LocalPlayer.IsIgnoredByPolice = true;
+        }
+        else
+        {
+            Game.LocalPlayer.IsIgnoredByPolice = false;
+        }
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
-            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 200f)
+            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 100f)
             {
                 if (Cop.CurrentTask?.Name != "ApprehendOther")
                 {
-                    Cop.CurrentTask = new ApprehendOther(Cop, Player);
-                    Cop.CurrentTask.OtherTargets = OtherTargets;
+                    Cop.CurrentTask = new ApprehendOther(Cop, Player) { OtherTargets = OtherTargets };
                     Cop.CurrentTask.Start();
                 }
             }

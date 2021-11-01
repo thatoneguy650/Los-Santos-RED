@@ -81,6 +81,8 @@ public class Investigate : ComplexTask
     }
     private void Wander()
     {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = false;
         if (Ped.Pedestrian.Exists())
         {
@@ -97,6 +99,8 @@ public class Investigate : ComplexTask
     }
     private void GoTo()
     {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = true;
         if (CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
         {
@@ -106,7 +110,7 @@ public class Investigate : ComplexTask
             {
                 if (Ped.IsDriver)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, Player.PoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 25f, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 }
             }
             else
@@ -118,7 +122,7 @@ public class Investigate : ComplexTask
         if(Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {
             HasReachedReportedPosition = true;
-            //EntryPoint.WriteToConsole(string.Format("Investigation Position Reached: {0}", Ped.Pedestrian.Handle));
+            EntryPoint.WriteToConsole(string.Format("Investigation Position Reached: {0}", Ped.Pedestrian.Handle),5);
         }
         //EntryPoint.WriteToConsole(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
     }

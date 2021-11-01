@@ -41,7 +41,7 @@ public class WeaponInventory
     {
         if (ShouldAutoSetWeaponState && NeedsWeaponCheck)//NeedsWeaponCheck is new....
         {
-            if (Cop.CurrentTask?.Name == "ApprehendOther" && Cop.CurrentTask.IsReadyForWeaponUpdates)
+            if (Cop.CurrentTask?.Name == "ApprehendOther")// && Cop.CurrentTask.IsReadyForWeaponUpdates)
             {
                 if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.WantedLevel >= 3)
                 {

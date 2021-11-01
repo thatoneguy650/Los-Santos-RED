@@ -80,6 +80,9 @@ public class Pedestrians
             return Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
+
+    public bool AnyOtherTargetsTasked => Police.Any(x => x.CurrentTask?.OtherTarget != null);
+
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))

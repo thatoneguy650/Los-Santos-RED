@@ -81,6 +81,10 @@ public class Crimes : ICrimes
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false),
             new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40),
             new Crime("Harassment", "Harassment", 1, false, 41, false),
+
+
+            new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false),
+
         };
     }
 }

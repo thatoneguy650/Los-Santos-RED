@@ -10,14 +10,16 @@ public class Investigation
 {
     private uint GameTimeLastInvestigationExpired;
     private uint GameTimeStartedInvestigation;
+    private Blip InvestigationBlip;
     private float NearInvestigationDistance;
     private IPoliceRespondable Player;
-    private Blip InvestigationBlip;
     private ISettingsProvideable Settings;
-    public Investigation(IPoliceRespondable player, ISettingsProvideable settings)
+    private IEntityProvideable World;
+    public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
         Settings = settings;
+        World = world;
         Distance = Settings.SettingsManager.PlayerSettings.Investigation_ActiveDistance;
         NearInvestigationDistance = Settings.SettingsManager.PlayerSettings.Investigation_SuspiciousDistance;
     }
@@ -28,22 +30,22 @@ public class Investigation
     public bool IsActive { get; private set; }
     public bool IsSuspicious => IsActive && NearInvestigationPosition && HaveDescription;
     public Vector3 Position { get; private set; }
+    private bool IsOutsideInvestigationRange => Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.PlayerSettings.Investigation_MaxDistance;
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.PlayerSettings.Investigation_TimeLimit;//60000;//short for testing was 180000
-    private bool IsOutsideInvestigationRange => Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.PlayerSettings.Investigation_MaxDistance;//1500f;
     private bool NearInvestigationPosition => Position != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(Position) <= NearInvestigationDistance;
+    public void Dispose()
+    {
+        if (InvestigationBlip.Exists())
+        {
+            InvestigationBlip.Delete();
+        }
+    }
     public void Reset()
     {
         IsActive = false;
         HaveDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = 0;
-        if (InvestigationBlip.Exists())
-        {
-            InvestigationBlip.Delete();
-        }
-    }
-    public void Dispose()
-    {
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();
@@ -65,7 +67,7 @@ public class Investigation
     {
         if (IsActive && Player.IsNotWanted)
         {
-            if (IsTimedOut || IsOutsideInvestigationRange) //remove after 3 minutes
+            if ((IsTimedOut && !World.AnyWantedCiviliansNearPlayer) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
             }

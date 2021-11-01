@@ -11,16 +11,62 @@ public class PedCrimes
 {
     private bool IsShootingCheckerActive = false;
     private PedExt PedExt;
-    public bool FightingPolice { get; set; } = false;
-    public bool Shooting { get; set; } = false;
-    public bool CarryingWeapon { get; set; } = false;
-    public bool Fighting { get; set; } = false;
-    public int ObservedWantedLevel { get; set; } = 0;
-    public int CommittingWantedLevel{ get; set; } = 0;
-    public string CommittingWantedLevelReason { get; set; } = "";
     public PedCrimes(PedExt pedExt)
     {
         PedExt = pedExt;
+    }
+    public bool CarryingWeapon { get; set; } = false;
+    public int CommittingWantedLevel { get; set; } = 0;
+    public string CommittingWantedLevelReason { get; set; } = "";
+    public bool Fighting { get; set; } = false;
+    public bool FightingPolice { get; set; } = false;
+    public int ObservedWantedLevel { get; set; } = 0;
+    public bool Shooting { get; set; } = false;
+    public void SetHeard()
+    {
+        if (Shooting)
+        {
+            CommittingWantedLevelReason = "Shooting";
+            CommittingWantedLevel = 3;
+            if (CommittingWantedLevel > ObservedWantedLevel)//only goes up for peds!
+            {
+                ObservedWantedLevel = CommittingWantedLevel;
+            }
+        }
+
+    }
+    public void SetObserved()
+    {
+        if (CommittingWantedLevel > ObservedWantedLevel)//only goes up for peds!
+        {
+            ObservedWantedLevel = CommittingWantedLevel;
+        }
+    }
+    public void ShootingChecker()
+    {
+        if (!IsShootingCheckerActive)
+        {
+            GameFiber.StartNew(delegate
+            {
+                IsShootingCheckerActive = true;
+                EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
+                uint GameTimeLastShot = 0;
+                while (PedExt.Pedestrian.Exists())// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
+                {
+                    if (PedExt.Pedestrian.IsShooting)
+                    {
+                        Shooting = true;
+                        GameTimeLastShot = Game.GameTime;
+                    }
+                    else if (Game.GameTime - GameTimeLastShot >= 5000)
+                    {
+                        Shooting = false;
+                    }
+                    GameFiber.Yield();
+                }
+                IsShootingCheckerActive = false;
+            }, "Ped Shooting Checker");
+        }
     }
     public void Update(IEntityProvideable world)
     {
@@ -35,6 +81,11 @@ public class PedCrimes
         if(CarryingWeapon)
         {
             ShootingChecker();
+        }
+
+        if(PedExt.IsInVehicle)
+        {
+            CarryingWeapon = false;
         }
         if(PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
         {
@@ -91,39 +142,6 @@ public class PedCrimes
         }
 
     }
-    public void ShootingChecker()
-    {
-        if(!IsShootingCheckerActive)
-        {
-            GameFiber.StartNew(delegate
-            {
-                IsShootingCheckerActive = true;
-                EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
-                uint GameTimeLastShot = 0;
-                while (PedExt.Pedestrian.Exists())// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
-                {
-                    if(PedExt.Pedestrian.IsShooting)
-                    {
-                        Shooting = true;
-                        GameTimeLastShot = Game.GameTime;
-                    }
-                    else if(Game.GameTime - GameTimeLastShot >= 5000)
-                    {
-                        Shooting = false;
-                    }
-                    GameFiber.Yield();
-                }
-                IsShootingCheckerActive = false;
-            }, "Ped Shooting Checker");
-        }
-    }
-    public void SetObserved()
-    {
-        if (CommittingWantedLevel > ObservedWantedLevel)//only goes up for peds!
-        {
-            ObservedWantedLevel = CommittingWantedLevel;
-        }
-    }
     private bool IsVisiblyArmed()
     {
         WeaponDescriptor CurrentWeapon = PedExt.Pedestrian.Inventory.EquippedWeapon;
@@ -146,20 +164,6 @@ public class PedCrimes
         {
             return true;
         }
-    }
-
-    public void SetHeard()
-    {
-        if (Shooting)
-        {
-            CommittingWantedLevelReason = "Shooting";
-            CommittingWantedLevel = 3;
-            if (CommittingWantedLevel > ObservedWantedLevel)//only goes up for peds!
-            {
-                ObservedWantedLevel = CommittingWantedLevel;
-            }
-        }
-        
     }
 }
 
