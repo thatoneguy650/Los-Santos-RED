@@ -23,13 +23,13 @@ namespace Mod
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons)
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
             Jurisdictions = jurisdictions;
             Settings = settings;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public bool AnyWantedCiviliansNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);

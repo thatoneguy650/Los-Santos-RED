@@ -43,7 +43,8 @@ public class WeaponInventory
         {
             if (Cop.CurrentTask?.Name == "ApprehendOther")// && Cop.CurrentTask.IsReadyForWeaponUpdates)
             {
-                if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.WantedLevel >= 3)
+                HasHeavyWeaponOnPerson = true;
+                if (Cop.CurrentTask.SubTaskName == "Fighting")
                 {
                     SetDeadly();
                 }
@@ -51,10 +52,26 @@ public class WeaponInventory
                 {
                     SetLessLethal();
                 }
+                //if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.WantedLevel <= 2)
+                //{
+                //    SetLessLethal();//SetDeadly();
+                //}
+                //else
+                //{
+                //    if (!IsSetDefault)
+                //    {
+                //        SetDefault();
+                //    }
+                //}
+                //else
+                //{
+                //    SetLessLethal();
+                //}
 
             }
             else
             {
+                HasHeavyWeaponOnPerson = false;
                 if (WantedLevel == 0)
                 {
                     if (!IsSetDefault)

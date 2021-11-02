@@ -11,7 +11,7 @@ public class Cop : PedExt
     private ISettingsProvideable Settings;
     private Voice Voice;
     private WeaponInventory WeaponInventory;
-    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned) : base(pedestrian, settings)
+    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes) : base(pedestrian, settings, crimes)
     {
         IsCop = true;
         Health = health;
@@ -33,6 +33,10 @@ public class Cop : PedExt
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool WasModSpawned { get; private set; }
+    //public bool ShouldAutoSetWeaponState => WeaponInventory.ShouldAutoSetWeaponState;
+    //public void SetLessLethalWeapons() => WeaponInventory.SetLessLethal();
+    //public void SetDeadlyWeapons() => WeaponInventory.SetDeadly();
+    //public void SetDefaultWeapons() => WeaponInventory.SetDefault();
     public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);

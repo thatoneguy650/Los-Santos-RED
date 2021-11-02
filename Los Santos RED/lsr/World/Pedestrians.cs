@@ -24,7 +24,8 @@ public class Pedestrians
     private IPedGroups RelationshipGroups;
     private List<Entity> WorldPeds = new List<Entity>();
     private IWeapons Weapons;
-    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons)
+    private ICrimes Crimes;
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes)
     {
         Agencies = agencies;
         Zones = zones;
@@ -33,6 +34,7 @@ public class Pedestrians
         Names = names;
         RelationshipGroups = relationshipGroups;
         Weapons = weapons;
+        Crimes = crimes;
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
@@ -221,14 +223,14 @@ public class Pedestrians
                 canBeAmbientTasked = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)) { CanBeAmbientTasked = canBeAmbientTasked });
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name), Crimes) { CanBeAmbientTasked = canBeAmbientTasked });
     }
     private void AddCop(Ped Pedestrian)
     {
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false);
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes);
             myCop.IssueWeapons(Weapons);
             if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
             {

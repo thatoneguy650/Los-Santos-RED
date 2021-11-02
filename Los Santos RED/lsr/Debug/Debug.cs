@@ -135,26 +135,23 @@ public class Debug
         //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f))
         //{
         //    Color Color = Color.Yellow;
-        //    if(ped.ViolationWantedLevel == 0)
+        //    if (ped.CurrentlyViolatingWantedLevel == 0)
         //    {
         //        Color = Color.Green;
         //    }
-        //    else if (ped.ViolationWantedLevel == 1)
+        //    else if (ped.CurrentlyViolatingWantedLevel == 1)
         //    {
         //        Color = Color.Yellow;
         //    }
-        //    else if (ped.ViolationWantedLevel == 2)
+        //    else if (ped.CurrentlyViolatingWantedLevel == 2)
         //    {
         //        Color = Color.Orange;
         //    }
-        //    else if (ped.ViolationWantedLevel > 2)
+        //    else if (ped.CurrentlyViolatingWantedLevel > 2)
         //    {
         //        Color = Color.Red;
         //    }
         //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
-
-
-
         //    Color Color2 = Color.Yellow;
         //    if (ped.WantedLevel == 0)
         //    {
@@ -173,81 +170,45 @@ public class Debug
         //        Color2 = Color.Red;
         //    }
         //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color2);
-
-
-
-        //    //if (ped.AnyPoliceSeenViolationCommitted)
-        //    //{
-        //    //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 4f), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
-        //    //}
         //}
 
-
-        //if(Player.IsNotWanted)
+        //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         //{
-        //    foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        //    Color Color;
+        //    if (cop.CurrentTask == null)
         //    {
-        //        bool inCombat = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(cop.Pedestrian, Game.LocalPlayer.Character);
-
-        //        if (inCombat)
-        //        {
-        //            TaskStatus myts = cop.Pedestrian.Tasks.CurrentTaskStatus;
-
-        //            string activetasks = "";
-        //            foreach (eTaskTypeIndex eTaskTypeIndex in (eTaskTypeIndex[])Enum.GetValues(typeof(eTaskTypeIndex)))
-        //            {
-        //                if (NativeFunction.Natives.GET_IS_TASK_ACTIVE<bool>(cop.Pedestrian, (int)eTaskTypeIndex))
-        //                {
-        //                    activetasks += "," + eTaskTypeIndex.ToString();
-        //                }
-        //            }
-
-
-        //            cop.Pedestrian.Tasks.Clear();
-        //            cop.CurrentTask = null;
-        //            cop.Pedestrian.Alertness = 0;
-        //            EntryPoint.WriteToConsole($"Cop {cop.Handle} Reset Combat, {myts}, {activetasks}", 4);
-        //        }
+        //        Color = Color.Black;
         //    }
+        //    else if (cop.CurrentTask?.Name == "Investigate")
+        //    {
+        //        Color = Color.White;
+        //    }
+        //    else if (cop.CurrentTask?.Name == "Idle")
+        //    {
+        //        Color = Color.Orange;
+        //    }
+        //    else if (cop.CurrentTask?.Name == "Locate")
+        //    {
+        //        Color = Color.Green;
+        //    }
+        //    else if (cop.CurrentTask?.Name == "Chase")
+        //    {
+        //        Color = Color.Blue;
+        //    }
+        //    else if (cop.CurrentTask?.Name == "Kill")
+        //    {
+        //        Color = Color.Red;
+        //    }
+        //    else if (cop.CurrentTask?.Name == "ApprehendOther")
+        //    {
+        //        Color = Color.Pink;
+        //    } 
+        //    else
+        //    {
+        //        Color = Color.Yellow;
+        //    }
+        //    Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
         //}
-
-        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
-        {
-            Color Color;
-            if (cop.CurrentTask == null)
-            {
-                Color = Color.Black;
-            }
-            else if (cop.CurrentTask?.Name == "Investigate")
-            {
-                Color = Color.White;
-            }
-            else if (cop.CurrentTask?.Name == "Idle")
-            {
-                Color = Color.Orange;
-            }
-            else if (cop.CurrentTask?.Name == "Locate")
-            {
-                Color = Color.Green;
-            }
-            else if (cop.CurrentTask?.Name == "Chase")
-            {
-                Color = Color.Blue;
-            }
-            else if (cop.CurrentTask?.Name == "Kill")
-            {
-                Color = Color.Red;
-            }
-            else if (cop.CurrentTask?.Name == "ApprehendOther")
-            {
-                Color = Color.Pink;
-            } 
-            else
-            {
-                Color = Color.Yellow;
-            }
-            Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
-        }
 
     }
     private void DebugNumpad0()
@@ -270,11 +231,11 @@ public class Debug
         {
             if(ped.Pedestrian.Inventory.EquippedWeapon != null)
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.ViolationWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
             }
             else
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.ViolationWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
             }
             
         }
@@ -295,8 +256,16 @@ public class Debug
             {
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
             }
-            Cop tofight = World.PoliceList.Where(x => x.Pedestrian.DistanceTo2D(coolguy) <= 40f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+             Cop tofight = World.PoliceList.Where(x => x.Pedestrian.DistanceTo2D(coolguy) <= 40f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
+            //if (RandomItems.RandomPercent(50))
+            //{
+            //    coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            //}
+            //else
+            //{
+            //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+            //}
 
             if (tofight == null || RandomItems.RandomPercent(50))
             {
@@ -305,7 +274,7 @@ public class Debug
             else
             {
                 //Cop tofight = World.PoliceList.Where(x=> x.Pedestrian.DistanceTo2D(coolguy) <= 40f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-                if(tofight != null && tofight.Pedestrian.Exists())
+                if (tofight != null && tofight.Pedestrian.Exists())
                 {
                     coolguy.Tasks.FightAgainst(tofight.Pedestrian);
                 }

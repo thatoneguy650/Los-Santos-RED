@@ -27,7 +27,7 @@ public class Fight : ComplexTask
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
-            Ped.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
+            Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
             GameTimeLastRan = Game.GameTime;
         }
     }

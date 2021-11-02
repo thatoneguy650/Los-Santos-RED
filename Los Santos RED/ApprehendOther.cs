@@ -14,10 +14,10 @@ public class ApprehendOther : ComplexTask
     private Task myCurrentTask = Task.Nothing;
     private uint GameTimeClearedIdle;
     private bool IsArresting = true;
-
+    private float CurrentDistanceToTarget = 999f;
     private enum Task
     {
-        ApprehendOther,
+        Main,
         Nothing,
     }
     private Task CurrentTaskDynamic
@@ -26,7 +26,7 @@ public class ApprehendOther : ComplexTask
         {
             if (OtherTargets != null && OtherTargets.Any())
             {
-                return Task.ApprehendOther;
+                return Task.Main;
             }
             else
             {
@@ -97,7 +97,7 @@ public class ApprehendOther : ComplexTask
     }
     private void ExecuteCurrentSubTask(bool IsFirstRun)
     {
-        if (myCurrentTask == Task.ApprehendOther)
+        if (myCurrentTask == Task.Main)
         {
             //SubTaskName = "ApprehendOther";
             ApprehendClosest(IsFirstRun);
@@ -131,8 +131,7 @@ public class ApprehendOther : ComplexTask
                 EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                      ApprehendClosest Start Target Handle: {ClosestPed.Pedestrian.Handle}", 3);
             }
             NeedsUpdates = true;
-           // RunInterval = 500;// 2000;
-            //NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
+            RunInterval = 500;
             if (IsArresting && OtherTarget != null && OtherTarget.WantedLevel > 2)
             {
                 IsArresting = false;
@@ -140,43 +139,83 @@ public class ApprehendOther : ComplexTask
             ClearTasks(false);
             OtherTargetTask();
         }
+        if(OtherTarget?.Handle != ClosestPed?.Handle)
+        {
+            SubTaskName = "";
+        }
+        OtherTarget = ClosestPed;
         if (OtherTarget != null && !OtherTarget.Pedestrian.Exists())
         {
             OtherTarget = null;
         }
-        if (ClosestPed == null)
+        else
         {
-            OtherTarget = null;
+            if (Ped != null && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists())
+            {
+                CurrentDistanceToTarget = OtherTarget.Pedestrian.DistanceTo2D(Ped.Pedestrian);
+            }
+            else
+            {
+                CurrentDistanceToTarget = 999f;
+            }
         }
-        if (ClosestPed != null && OtherTarget == null)
-        {
-            OtherTarget = ClosestPed;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
-            ClearTasks(false);
-            OtherTargetTask();
-        }
-        else if (ClosestPed != null && OtherTarget != null && ClosestPed.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTarget.Pedestrian.Handle)
-        {
-            OtherTarget = ClosestPed;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
-            ClearTasks(false);
-            OtherTargetTask();
-        }
-        else if(IsArresting && OtherTarget != null && OtherTarget.WantedLevel >= 3)
+
+        if(IsArresting && OtherTarget != null && OtherTarget.WantedLevel >= 3)
         {
             IsArresting = false;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
-            ClearTasks(false);
-            OtherTargetTask();
         }
         else if (!IsArresting && OtherTarget != null && OtherTarget.WantedLevel < 3)
         {
             IsArresting = true;
-            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
-            ClearTasks(false);
+        }
+
+
+        if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+        {
+            SubTaskName = "";
+        }
+
+        if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
+        {   
             OtherTargetTask();
         }
-        //else if(Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+
+        if (OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Pedestrian.IsStunned)
+        {
+            OtherTarget.Pedestrian.Health = 0;
+            OtherTarget.Pedestrian.Kill();//for now simulate arrested?
+            EntryPoint.WriteToConsole($"Should kill {OtherTarget.Pedestrian.Handle}", 3);
+        }
+
+        //if (ClosestPed != null && OtherTarget == null)
+        //{
+        //    OtherTarget = ClosestPed;
+        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
+        //    ClearTasks(false);
+        //    OtherTargetTask();
+        //}
+        //else if (ClosestPed != null && OtherTarget != null && ClosestPed.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTarget.Pedestrian.Handle)
+        //{
+        //    OtherTarget = ClosestPed;
+        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
+        //    ClearTasks(false);
+        //    OtherTargetTask();
+        //}
+        //else if(IsArresting && OtherTarget != null && OtherTarget.WantedLevel >= 3)
+        //{
+        //    IsArresting = false;
+        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
+        //    ClearTasks(false);
+        //    OtherTargetTask();
+        //}
+        //else if (!IsArresting && OtherTarget != null && OtherTarget.WantedLevel < 3)
+        //{
+        //    IsArresting = true;
+        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
+        //    ClearTasks(false);
+        //    OtherTargetTask();
+        //}
+        //else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
         //{
         //    if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
         //    {
@@ -186,12 +225,8 @@ public class ApprehendOther : ComplexTask
         //}
 
 
-        if(OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Pedestrian.IsStunned)
-        {
-            OtherTarget.Pedestrian.Health = 0;
-            OtherTarget.Pedestrian.Kill();//for now simulate arrested?
-            EntryPoint.WriteToConsole($"Should kill {OtherTarget.Pedestrian.Handle}", 3);
-        }
+
+
     }
     private void OtherTargetTask()
     {
@@ -208,61 +243,22 @@ public class ApprehendOther : ComplexTask
         {
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
-                //Ped.Pedestrian.Tasks.FightAgainst(OtherTarget.Pedestrian, -1);
                 IsReadyForWeaponUpdates = true;
-                ////EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Applied Task To Chase: {OtherTarget.Pedestrian.Handle}", 3);
-                ///
-                
-
-                float CurrentDistance = OtherTarget.Pedestrian.DistanceTo2D(Ped.Pedestrian);
-                //if (Ped.IsInVehicle)
-                //{
-                //    if (CurrentDistance >= 15f)
-                //    {
-                //        if (Ped.IsDriver)
-                //        {
-                //            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian.Position.X, OtherTarget.Pedestrian.Position.Y, OtherTarget.Pedestrian.Position.Z, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
-                //            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE: {OtherTarget.Pedestrian.Handle}", 3);
-
-                //            SubTaskName = "DrivingTo";
-
-                //        }
-                //    }
-                //    else
-                //    {
-                //        unsafe
-                //        {
-                //            int lol = 0;
-                //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                //            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                //            NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
-                //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                //        }
-                //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest TASK_LEAVE_VEHICLE: {OtherTarget.Pedestrian.Handle}", 3);
-
-                //        SubTaskName = "GettingOutOfCar";
-                //    }
-                //}
-                //else
-                if(CurrentDistance <= 15f)
+                if (IsArresting)
                 {
-                    if (IsArresting)
+                    //Ped.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;//for weird edge cases where they have thier pistol out for a fraction of a second before they get the tyazer and fire..
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, true);
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, false);
+                    if (CurrentDistanceToTarget >= 10f)
                     {
-                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, true);
-                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, false);
-                        if (CurrentDistance >= 12f)
+                        if (SubTaskName != "ArrestingFar")
                         {
                             unsafe
                             {
                                 int lol = 0;
                                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, 2.0f, 1073741824, 1); //Original and works ok//7f
                                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -270,7 +266,10 @@ public class ApprehendOther : ComplexTask
                             }
                             SubTaskName = "ArrestingFar";
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (SubTaskName != "ArrestingClose")
                         {
                             unsafe
                             {
@@ -284,12 +283,16 @@ public class ApprehendOther : ComplexTask
                             }
                             SubTaskName = "ArrestingClose";
                         }
-                        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Set Arrest Task Sequence: {OtherTarget.Pedestrian.Handle}", 3);
-                        //NativeFunction.Natives.TASK_ARREST_PED(Ped.Pedestrian, OtherTarget.Pedestrian);
-                        // Ped.Pedestrian.Tasks.FightAgainst(OtherTarget.Pedestrian, -1);
                     }
-                    else
+                    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Set Arrest Task Sequence: {OtherTarget.Pedestrian.Handle}", 3);
+                    //NativeFunction.Natives.TASK_ARREST_PED(Ped.Pedestrian, OtherTarget.Pedestrian);
+                    // Ped.Pedestrian.Tasks.FightAgainst(OtherTarget.Pedestrian, -1);
+                }
+                else
+                {
+                    if (SubTaskName != "Fighting")
                     {
+                        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
@@ -297,7 +300,6 @@ public class ApprehendOther : ComplexTask
                         SubTaskName = "Fighting";
                     }
                 }
-                EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Ran For: {OtherTarget.Pedestrian.Handle}", 3);
             }
         }
     }

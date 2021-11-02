@@ -53,6 +53,8 @@ namespace Mod
         private ITimeControllable TimeControllable;
         private WeaponDropping WeaponDropping;
         private IWeapons Weapons;
+        private uint GameTimeLastCheckedAmbientCrimes;
+
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -67,7 +69,7 @@ namespace Mod
             Scenarios = scenarios;
             GameTimeStartedPlaying = Game.GameTime;
             Scanner = new Scanner(provider, this, audio, Settings);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this);
@@ -321,7 +323,40 @@ namespace Mod
         }
         public void CallPolice()
         {
-            AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true);
+            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 90f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            if(violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+            {
+                Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+                if(ToCallIn != null)
+                {
+                    AddCrime(ToCallIn, false, Position, null, null, false, true);
+                }
+                else
+                {
+                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true);
+                }
+            }
+            else
+            {
+                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true);
+            }
+        }
+        public void CallInAmbientCrimes()
+        {
+            //dont like this at all
+            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.RecentlySeenPlayer).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            bool HasReporters = EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 90f && x.WillCallPolice && x.Pedestrian.Exists() && x.Pedestrian.IsAlive);
+            if (HasReporters)
+            {
+                if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+                {
+                    Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+                    if (ToCallIn != null)
+                    {
+                        AddCrime(ToCallIn, false, Position, null, null, false, true);
+                    }
+                }
+            }
         }
         public void ChangePlate(int Index)
         {
@@ -838,7 +873,7 @@ namespace Mod
             }
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes);
             }
             HealthState.Update();
             IsStunned = Game.LocalPlayer.Character.IsStunned;
@@ -855,7 +890,11 @@ namespace Mod
 
             RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
 
-
+            if(Game.GameTime - GameTimeLastCheckedAmbientCrimes >= 10000)
+            {
+                //CallInAmbientCrimes();
+                GameTimeLastCheckedAmbientCrimes = Game.GameTime;
+            }
 
             //works fine, just turned off for now
             //if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see

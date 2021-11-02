@@ -17,7 +17,7 @@ public class PoliceSettings
     public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;
-    public int GeneralAccuracy { get; set; } = 8;//10;
+    public int GeneralAccuracy { get; set; } = 15;//8//10;
     public float AutoRecognizeDistance { get; set; } = 15f;//20f
     public float AlwaysRecognizeDistance { get; set; } = 7f;
     public int RecentlySeenTime { get; set; } = 10000;//17000

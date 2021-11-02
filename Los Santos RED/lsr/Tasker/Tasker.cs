@@ -74,24 +74,25 @@ public class Tasker
     }
     private void UpdateOtherTargets()
     {
-        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.WantedLevel > Player.WantedLevel && x.DistanceToPlayer <= 100f).ToList();
-        if(OtherTargets.Any())
-        {
-            Game.LocalPlayer.IsIgnoredByPolice = true;
-        }
-        else
-        {
-            Game.LocalPlayer.IsIgnoredByPolice = false;
-        }
+        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 60f).ToList();
+        //if (OtherTargets.Any())//will reset tasks, if you set it on update they will constantly reset tasks, might need to be set once? or at the beginning and then only turned off when needed?, cant be set very well
+        //{
+        //    Game.LocalPlayer.IsIgnoredByPolice = true;
+        //}
+        //else
+        //{
+        //    Game.LocalPlayer.IsIgnoredByPolice = false;
+        //}
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
-            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 100f)
+            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 60f)
             {
                 if (Cop.CurrentTask?.Name != "ApprehendOther")
                 {
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to ApprehendOther", 3);
                     Cop.CurrentTask = new ApprehendOther(Cop, Player) { OtherTargets = OtherTargets };
                     Cop.CurrentTask.Start();
                 }
@@ -104,6 +105,7 @@ public class Tasker
                     {
                         if (Cop.CurrentTask?.Name != "Locate")
                         {
+                            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                             Cop.CurrentTask = new Locate(Cop, Player);
                             Cop.CurrentTask.Start();
                         }
@@ -116,6 +118,7 @@ public class Tasker
                             {
                                 if (Cop.CurrentTask?.Name != "Kill")
                                 {
+                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
                                     Cop.CurrentTask = new Kill(Cop, Player);
                                     Cop.CurrentTask.Start();
                                 }
@@ -124,6 +127,7 @@ public class Tasker
                             {
                                 if (Cop.CurrentTask?.Name != "Chase")
                                 {
+                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
                                     Cop.CurrentTask = new Chase(Cop, Player);
                                     Cop.CurrentTask.Start();
                                 }
@@ -133,6 +137,7 @@ public class Tasker
                         {
                             if (Cop.CurrentTask?.Name != "Locate")
                             {
+                                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                                 Cop.CurrentTask = new Locate(Cop, Player);
                                 Cop.CurrentTask.Start();
                             }
@@ -143,6 +148,7 @@ public class Tasker
                 {
                     if (Cop.CurrentTask?.Name != "Investigate")
                     {
+                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
                         Cop.CurrentTask = new Investigate(Cop, Player);
                         Cop.CurrentTask.Start();
                     }
@@ -151,6 +157,7 @@ public class Tasker
                 {
                     if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
                     {
+                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                         Cop.CurrentTask = new Idle(Cop, Player);
                         Cop.CurrentTask.Start();
                     }
@@ -162,16 +169,18 @@ public class Tasker
         {
             if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
             {
+                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                 Cop.CurrentTask = new Idle(Cop, Player);
                 Cop.CurrentTask.Start();
             }
             else
             {
-                if(Cop.CurrentTask != null && Cop.Pedestrian.Exists())
-                {
-                    Cop.Pedestrian.Tasks.Clear();
-                    Cop.CurrentTask = null;
-                }
+                //if(Cop.CurrentTask != null && Cop.Pedestrian.Exists())
+                //{
+                //    EntryPoint.WriteToConsole($"TASKER: Cop Task Changed from {Cop.CurrentTask?.Name} to null", 3);
+                //    Cop.Pedestrian.Tasks.Clear();
+                //    Cop.CurrentTask = null;
+                //}
                 
             }
         }
@@ -184,7 +193,6 @@ public class Tasker
             //bool SeenAnyReportableCrime = Civilian.CrimesWitnessed.Any(x => x.CanBeReportedByCivilians);
             bool SeenScaryCrime = Civilian.CrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians);
             bool SeenAngryCrime = Civilian.CrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians);
-
             if (SeenScaryCrime || SeenAngryCrime)
             {
                 if (Civilian.WillCallPolice)

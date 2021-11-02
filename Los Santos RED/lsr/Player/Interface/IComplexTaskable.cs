@@ -27,5 +27,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; }
         ComplexTask CurrentTask { get; }
         bool IsRunningOwnFiber { get; set; }
+
     }
 }

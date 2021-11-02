@@ -29,16 +29,16 @@ public class PedExt : IComplexTaskable
     private PedCrimes PedCrimes;
     private IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes)
     {
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
-        PedCrimes = new PedCrimes(this);
+        PedCrimes = new PedCrimes(this, crimes);
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian, settings)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup, ICrimes crimes) : this(_Pedestrian, settings, crimes)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
@@ -240,13 +240,16 @@ public class PedExt : IComplexTaskable
     }
     public int TimesInsultedByPlayer { get; set; }
     public VehicleExt VehicleLastSeenPlayerIn { get; set; }
-    public int ViolationWantedLevel => PedCrimes.CommittingWantedLevel;
-    public string ViolationWantedLevelReason => PedCrimes.CommittingWantedLevelReason;
-    public int WantedLevel => PedCrimes.ObservedWantedLevel;
+    public int CurrentlyViolatingWantedLevel => PedCrimes.CurrentlyViolatingWantedLevel;
+    public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
+    public List<Crime> CrimesCurrentlyViolating => PedCrimes.CrimesCurrentlyViolating;
+    public int WantedLevel => PedCrimes.WantedLevel;
     public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
     public bool WillCallPolice { get; set; } = true;
     public bool WillFight { get; set; } = false;
     public bool WithinWeaponsAudioRange { get; private set; } = false;
+   // public bool ShouldAutoSetWeaponState { get; set; } = true;
+
     private int DistanceUpdate
     {
         get
@@ -392,13 +395,13 @@ public class PedExt : IComplexTaskable
                 }
                 if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, Pedestrian))//55f
                 {
-                    PedCrimes.SetHeard();
-                    PedCrimes.SetObserved();
+                    PedCrimes.OnPedSeenByPolice();
+                    PedCrimes.OnPedHeardByPolice();
                     return;
                 }
                 if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
                 {
-                    PedCrimes.SetHeard();
+                    PedCrimes.OnPedHeardByPolice();
                 }
             }
         }
@@ -417,9 +420,9 @@ public class PedExt : IComplexTaskable
         if (DistanceToPlayer <= 150f && PedGroup != null && PedGroup?.InternalName != "SECURITY_GUARD" && PedGroup?.InternalName != "PRIVATE_SECURITY" && PedGroup?.InternalName != "FIREMAN" && PedGroup?.InternalName != "MEDIC")
         {
             PedCrimes.Update(world);
-            if (PedCrimes.CommittingWantedLevel != 0)
+            if (PedCrimes.CurrentlyViolatingWantedLevel != 0)
             {
-                if (PedCrimes.ObservedWantedLevel == 0)
+                if (PedCrimes.WantedLevel == 0)
                 {
                     CheckPoliceSight(world);
                 }
