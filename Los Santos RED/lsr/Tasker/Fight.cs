@@ -26,7 +26,10 @@ public class Fight : ComplexTask
             EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
+            if(ToIssue != null)
+            {
+                Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
+            }     
             Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
             GameTimeLastRan = Game.GameTime;
         }

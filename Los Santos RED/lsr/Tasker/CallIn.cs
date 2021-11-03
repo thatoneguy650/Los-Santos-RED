@@ -61,7 +61,7 @@ public class CallIn : ComplexTask
             Crime ToReport = Ped.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
             foreach(Crime toReport in Ped.CrimesWitnessed)
             {
-                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f, true);
+                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
             }
             //if(ToReport == null)
             //{

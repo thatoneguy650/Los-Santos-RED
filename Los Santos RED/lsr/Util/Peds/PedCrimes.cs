@@ -20,41 +20,46 @@ public class PedCrimes
         PedExt = pedExt;
         Crimes = crimes;
     }
-    public int WantedLevel { get; set; } = 0;
+    public int WantedLevel { get; private set; } = 0;
     public bool IsWanted => WantedLevel > 0;
     public bool IsNotWanted => WantedLevel == 0;
+    public bool IsDeadlyChase => CrimesObserved.Any(x => x.ResultsInLethalForce);
     public int CurrentlyViolatingWantedLevel => CrimesViolating.Any() ? CrimesViolating.Max(x => x.ResultingWantedLevel) : 0;
     public string CurrentlyViolatingWantedLevelReason => CrimesViolating.OrderBy(x=> x.Priority).FirstOrDefault()?.Name;
     public List<Crime> CrimesCurrentlyViolating => CrimesViolating;
+    public bool IsCurrentlyViolatingAnyCrimes => CrimesViolating.Any();
+    public List<Crime> CrimesObservedViolating => CrimesObserved;
     public void OnPedSeenByPolice()
     {
-        if (CrimesViolating.Any())
+        int WantedLevelToAssign = 0;
+        foreach (Crime crime in CrimesViolating)
         {
-            Crime HighestCrime = CrimesViolating.OrderByDescending(x => x.ResultingWantedLevel).FirstOrDefault();
-            if (HighestCrime != null)
+            if (crime.ResultingWantedLevel > WantedLevelToAssign)
             {
-                int WantedLevelToAssign = HighestCrime.ResultingWantedLevel;
-                if (WantedLevelToAssign > WantedLevel)
-                {
-                    WantedLevel = WantedLevelToAssign;
-                }
+                WantedLevelToAssign = crime.ResultingWantedLevel;
             }
+            AddObserved(crime);
+        }
+        if (WantedLevelToAssign > WantedLevel)
+        {
+            WantedLevel = WantedLevelToAssign;
         }
     }
     public void OnPedHeardByPolice()
     {
-        if (CrimesViolating.Any())
+        int WantedLevelToAssign = 0;
+        foreach(Crime crime in CrimesViolating.Where(x=> x.CanReportBySound))
         {
-            Crime HighestCrime = CrimesViolating.Where(x => x.CanReportBySound).OrderByDescending(x => x.ResultingWantedLevel).FirstOrDefault();
-            if (HighestCrime != null)
+            if(crime.ResultingWantedLevel > WantedLevelToAssign)
             {
-                int WantedLevelToAssign = HighestCrime.ResultingWantedLevel;
-                if (WantedLevelToAssign > WantedLevel)
-                {
-                    WantedLevel = WantedLevelToAssign;
-                }
+                WantedLevelToAssign = crime.ResultingWantedLevel;
             }
+            AddObserved(crime);
         }
+        if (WantedLevelToAssign > WantedLevel)
+        {
+            WantedLevel = WantedLevelToAssign;
+        }  
     }
     public void ShootingChecker()
     {
@@ -90,6 +95,7 @@ public class PedCrimes
         {
             OnPedSeenByPolice();
         }
+
     }
     private void CheckCrimes(IEntityProvideable world)
     {
@@ -120,7 +126,11 @@ public class PedCrimes
 
         if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
         {
-            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "HurtingCivilians"));
+            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
+            if(isVisiblyArmed)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));  
+            }
             foreach (Cop cop in world.PoliceList)
             {
                 if (cop.Pedestrian.Exists())

@@ -246,42 +246,61 @@ public class ApprehendOther : ComplexTask
                 IsReadyForWeaponUpdates = true;
                 if (IsArresting)
                 {
-                    //Ped.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;//for weird edge cases where they have thier pistol out for a fraction of a second before they get the tyazer and fire..
-                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, true);
-                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, false);
-                    if (CurrentDistanceToTarget >= 10f)
+                    if (OtherTarget.IsInVehicle)
                     {
-                        if (SubTaskName != "ArrestingFar")
+                        if (SubTaskName != "ArrestingInVehicle")
                         {
                             unsafe
                             {
                                 int lol = 0;
                                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, 2.0f, 1073741824, 1); //Original and works ok//7f
+                                NativeFunction.CallByName<bool>("TASK_ARREST_PED", 0, OtherTarget.Pedestrian);
                                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                             }
-                            SubTaskName = "ArrestingFar";
+                            SubTaskName = "ArrestingInVehicle";
                         }
                     }
                     else
                     {
-                        if (SubTaskName != "ArrestingClose")
+                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, true);
+                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, false);
+                        if (CurrentDistanceToTarget >= 10f)
                         {
-                            unsafe
+                            if (SubTaskName != "ArrestingFar")
                             {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                unsafe
+                                {
+                                    int lol = 0;
+                                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, 2.0f, 1073741824, 1); //Original and works ok//7f
+                                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                }
+                                SubTaskName = "ArrestingFar";
                             }
-                            SubTaskName = "ArrestingClose";
+                        }
+                        else
+                        {
+                            if (SubTaskName != "ArrestingClose")
+                            {
+                                unsafe
+                                {
+                                    int lol = 0;
+                                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                }
+                                SubTaskName = "ArrestingClose";
+                            }
                         }
                     }
                     EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Set Arrest Task Sequence: {OtherTarget.Pedestrian.Handle}", 3);

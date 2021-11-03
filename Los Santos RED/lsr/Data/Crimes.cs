@@ -40,13 +40,13 @@ public class Crimes : ICrimes
         {
 
             new Crime("KillingPolice", "Police Fatality", 3, true, 1, false) { CanViolateWithoutPerception = true },
-            new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2) { CanReportBySound = true },
+            new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, false) { CanReportBySound = true },
             new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, false) { CanReportBySound = true },
             new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false),
-            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5) { CanViolateWithoutPerception = true },
+            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5,false) { CanViolateWithoutPerception = true },
             new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, false, true, true),
             new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false),
-            new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8),
+            new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, false),
             new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true },
             new Crime("Kidnapping", "Kidnapping", 2, false, 10, false, false, false),
 
@@ -58,7 +58,7 @@ public class Crimes : ICrimes
 
             new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, true, true, true),
             new Crime("Mugging", "Mugging", 2, false, 12, true, true, true),
-            new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 13),
+            new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 13, false),
             new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 14, true, true, true),
             new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 15, true, true, true),
             
@@ -68,6 +68,10 @@ public class Crimes : ICrimes
             new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 19, true, true, true),
             new Crime("DrunkDriving", "Drunk Driving", 2, false, 20, true, false, false),
 
+
+            
+            new Crime("AssaultingWithDeadlyWeapon", "Assaulting With A Deadly Weapon", 2, false, 21, true),
+            new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true),
 
             new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, false, false) { IsTrafficViolation = true },
             new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, false, false, false),
@@ -79,8 +83,11 @@ public class Crimes : ICrimes
             new Crime("FelonySpeeding", "Speeding", 1, false, 37, false, false, false) { IsTrafficViolation = true },
             new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, false),
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false),
-            new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40),
+            new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40, false),
             new Crime("Harassment", "Harassment", 1, false, 41, false),
+
+
+
 
 
             new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false),

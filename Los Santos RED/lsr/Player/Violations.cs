@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastHurtCop = Game.GameTime;
                 //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
-                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
                 EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added", 5);
             }
             else
@@ -79,7 +79,7 @@ namespace LosSantosRED.lsr
                 PlayerKilledCops.Add(myPed);
                 GameTimeLastKilledCop = Game.GameTime;
                 GameTimeLastHurtCop = Game.GameTime;
-                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
                 //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
                 EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added", 5);
             }
@@ -410,7 +410,7 @@ namespace LosSantosRED.lsr
                     if (shouldAdd)
                     {
                         EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
-                        Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
+                        Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
                     }
                 }
             }

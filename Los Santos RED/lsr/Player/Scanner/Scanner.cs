@@ -35,6 +35,10 @@ namespace LosSantosRED.lsr
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
         private Dispatch DrivingAtStolenVehicle;
         private Dispatch DrunkDriving;
+
+        private Dispatch AssaultingCivilians;
+        private Dispatch AssaultingCiviliansWithDeadlyWeapon;
+
         private bool ExecutingQueue;
         private Dispatch FelonySpeeding;
         private uint GameTimeLastAnnouncedDispatch;
@@ -1050,6 +1054,14 @@ namespace LosSantosRED.lsr
 
             new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),
             new CrimeDispatch("OfficersNeeded",OfficersNeeded),
+
+            new CrimeDispatch("AssaultingCivilians",AssaultingCivilians),
+            new CrimeDispatch("AssaultingWithDeadlyWeapon",AssaultingCiviliansWithDeadlyWeapon),
+            
+
+
+
+
         };
             DispatchList = new List<Dispatch>
         {
@@ -1099,6 +1111,8 @@ namespace LosSantosRED.lsr
             ,PublicIntoxication
             ,OfficerNeedsAssistance
             ,OfficersNeeded
+            ,AssaultingCivilians
+            ,AssaultingCiviliansWithDeadlyWeapon
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -1667,6 +1681,34 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_02.A502DUI.FileName},"a 502 dui"),
             },
             };
+
+
+            AssaultingCivilians = new Dispatch()
+            {
+                Name = "Assault on a Civilian",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_assault.Apossibleassault.FileName},"a possible assault"),
+                new AudioSet(new List<string>() { crime_assault.Apossibleassault1.FileName},"a possible assault"),
+                new AudioSet(new List<string>() { crime_assault_on_a_civilian.Anassaultonacivilian.FileName},"an assault on a civilian"),
+                new AudioSet(new List<string>() { crime_assault_and_battery.AnAE.FileName},"an A&B"),
+                new AudioSet(new List<string>() { crime_assault_and_battery.Anassaultandbattery.FileName},"an assault and battery"),
+            },
+            };
+            AssaultingCiviliansWithDeadlyWeapon = new Dispatch()
+            {
+                Name = "Assault With a Deadly Weapon",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_assault_with_a_deadly_weapon.Assaultwithadeadlyweapon.FileName},"an assault with a deadly weapon"),
+                new AudioSet(new List<string>() { crime_assault_with_a_deadly_weapon.AnADW.FileName},"an ADW"),
+            },
+            };
+
 
             Kidnapping = new Dispatch()
             {

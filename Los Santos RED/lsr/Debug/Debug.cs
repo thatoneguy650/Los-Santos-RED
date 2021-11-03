@@ -299,27 +299,28 @@ public class Debug
     {
         // IS_PED_IN_COMBAT
 
-        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
-        {
-            bool inCombat = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(cop.Pedestrian, Game.LocalPlayer.Character);
-            bool inCombatInverse = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(Game.LocalPlayer.Character, cop.Pedestrian);
+        //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        //{
+        //    bool inCombat = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(cop.Pedestrian, Game.LocalPlayer.Character);
+        //    bool inCombatInverse = NativeFunction.Natives.IS_PED_IN_COMBAT<bool>(Game.LocalPlayer.Character, cop.Pedestrian);
 
-            string activetasks = "";
+        //    string activetasks = "";
 
-            foreach (eTaskTypeIndex eTaskTypeIndex in (eTaskTypeIndex[])Enum.GetValues(typeof(eTaskTypeIndex)))
-            {
-                if (NativeFunction.Natives.GET_IS_TASK_ACTIVE<bool>(cop.Pedestrian, (int)eTaskTypeIndex))
-                {
-                    activetasks += "," + eTaskTypeIndex.ToString();
-                }
-            }
-
-
+        //    foreach (eTaskTypeIndex eTaskTypeIndex in (eTaskTypeIndex[])Enum.GetValues(typeof(eTaskTypeIndex)))
+        //    {
+        //        if (NativeFunction.Natives.GET_IS_TASK_ACTIVE<bool>(cop.Pedestrian, (int)eTaskTypeIndex))
+        //        {
+        //            activetasks += "," + eTaskTypeIndex.ToString();
+        //        }
+        //    }
 
 
 
-            EntryPoint.WriteToConsole($"Num5: Cop {cop.Handle} inCombat {inCombat} inCombatInverse {inCombatInverse} ", 5);
-        }
+
+
+        //    EntryPoint.WriteToConsole($"Num5: Cop {cop.Handle} inCombat {inCombat} inCombatInverse {inCombatInverse} ", 5);
+        //}
+        NativeFunction.Natives.SET_PED_TO_RAGDOLL_WITH_FALL(Game.LocalPlayer.Character, 1500, 2000, 1, Game.LocalPlayer.Character.ForwardVector, 1f, 0f, 0f, 0f, 0f, 0f, 0f);
 
     }
     private void DebugNumpad6()

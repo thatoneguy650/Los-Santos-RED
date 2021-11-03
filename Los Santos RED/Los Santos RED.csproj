@@ -99,7 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApprehendOther.cs" />
+    <Compile Include="lsr\Tasker\ApprehendOther.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />

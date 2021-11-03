@@ -29,6 +29,10 @@ public class PedExt : IComplexTaskable
     private PedCrimes PedCrimes;
     private IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastWitnessedCivilianCrime;
+    private Crime WorstCivilianCrimeWitnessed;
+    private PedExt LastWitnessedCivilianCrimePed;
+    private Vector3 LastWitnessedCivilianCrimePosition;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes)
     {
         Pedestrian = _Pedestrian;
@@ -248,8 +252,8 @@ public class PedExt : IComplexTaskable
     public bool WillCallPolice { get; set; } = true;
     public bool WillFight { get; set; } = false;
     public bool WithinWeaponsAudioRange { get; private set; } = false;
-   // public bool ShouldAutoSetWeaponState { get; set; } = true;
-
+    // public bool ShouldAutoSetWeaponState { get; set; } = true;
+    public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     private int DistanceUpdate
     {
         get
@@ -360,6 +364,10 @@ public class PedExt : IComplexTaskable
                 else
                 {
                     GetPoliceInvolvement(world);
+                    if (PlayerToCheck.IsNotWanted)
+                    {
+                        CheckIfNeedsToCallPolice(world,playerToCheck);
+                    }
                 }
                 UpdatePlayerDistance(placeLastSeen, playerToCheck.RootPosition);
                 UpdatePlayerLineOfSight();
@@ -428,6 +436,55 @@ public class PedExt : IComplexTaskable
                 }
             }
         }
+    }
+    private void CheckIfNeedsToCallPolice(IEntityProvideable world, IPoliceRespondable playerToCheck)
+    {
+        if (PedCrimes.IsNotWanted && !PedCrimes.IsCurrentlyViolatingAnyCrimes && WillCallPolice)
+        {
+            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCrimes))
+            {
+                if (!Pedestrian.Exists())
+                {
+                    break;
+                }
+                else
+                {
+                    Crime ToCallIn = null;
+                    float distanceToCriminal = Pedestrian.DistanceTo2D(criminal.Pedestrian);
+                    if (distanceToCriminal <= 50f && criminal.IsThisPedInFrontOf(Pedestrian))
+                    {
+                        ToCallIn = criminal.CrimesCurrentlyViolating.Where(x=> x.CanBeReportedByCivilians).OrderByDescending(x => x.ResultingWantedLevel).ThenBy(x => x.Priority).FirstOrDefault();
+                    }
+                    else if (distanceToCriminal <= 100f)
+                    {
+                        ToCallIn = criminal.CrimesCurrentlyViolating.Where(x=> x.CanBeReportedByCivilians && x.CanReportBySound).OrderByDescending(x => x.ResultingWantedLevel).ThenBy(x => x.Priority).FirstOrDefault();
+                    }
+                    if(ToCallIn != null && (WorstCivilianCrimeWitnessed == null || (WorstCivilianCrimeWitnessed != null && ToCallIn.ID != WorstCivilianCrimeWitnessed.ID)))
+                    {
+                        LastWitnessedCivilianCrimePosition = criminal.Pedestrian.Position;
+                        WorstCivilianCrimeWitnessed = ToCallIn;
+                        GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                        LastWitnessedCivilianCrimePed = criminal;
+                    }       
+                }
+            }
+            //check if i should call the police on anyone else!
+        }
+        if(LastWitnessedCivilianCrimePed != null && LastWitnessedCivilianCrimePed.Pedestrian.Exists() && LastWitnessedCivilianCrimePed.Pedestrian.IsDead)
+        {
+            GameTimeLastWitnessedCivilianCrime = 0;
+            WorstCivilianCrimeWitnessed = null;
+            LastWitnessedCivilianCrimePosition = Vector3.Zero;
+            LastWitnessedCivilianCrimePed = null;
+        }
+        if (WorstCivilianCrimeWitnessed != null && GameTimeLastWitnessedCivilianCrime != 0 && Game.GameTime - GameTimeLastWitnessedCivilianCrime > 12000)
+        {
+            playerToCheck.AddCrime(WorstCivilianCrimeWitnessed, false, LastWitnessedCivilianCrimePosition, null, null, false, true, true);
+
+            EntryPoint.WriteToConsole($"Handle {Pedestrian.Handle} Add Other Civ Crime {WorstCivilianCrimeWitnessed.Name} for: {LastWitnessedCivilianCrimePed.Handle}", 5);
+            WorstCivilianCrimeWitnessed = null;
+        }
+        
     }
     private bool IsBehind(Entity Target)
     {

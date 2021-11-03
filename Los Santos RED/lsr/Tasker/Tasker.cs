@@ -74,7 +74,7 @@ public class Tasker
     }
     private void UpdateOtherTargets()
     {
-        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 60f).ToList();
+        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 150f).ToList();
         //if (OtherTargets.Any())//will reset tasks, if you set it on update they will constantly reset tasks, might need to be set once? or at the beginning and then only turned off when needed?, cant be set very well
         //{
         //    Game.LocalPlayer.IsIgnoredByPolice = true;
@@ -88,7 +88,7 @@ public class Tasker
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
-            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 60f)
+            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 150f)
             {
                 if (Cop.CurrentTask?.Name != "ApprehendOther")
                 {
@@ -209,7 +209,33 @@ public class Tasker
                     {
                         if (Civilian.CurrentTask?.Name != "Fight")
                         {
-                            WeaponInformation ToIssue = Civilian.IsGangMember ? Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol) : Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+                            WeaponInformation ToIssue;
+                            if(Civilian.IsGangMember)
+                            {
+                                if(RandomItems.RandomPercent(70))
+                                {
+                                    ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol);
+                                }
+                                else
+                                {
+                                    ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+                                }
+                            }
+                            else if(RandomItems.RandomPercent(40))
+                            {
+                                ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol);
+                            }
+                            else
+                            {
+                                if (RandomItems.RandomPercent(65))
+                                {
+                                    ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+                                }
+                                else
+                                {
+                                    ToIssue = null;
+                                }
+                            }
                             Civilian.CurrentTask = new Fight(Civilian, Player, ToIssue); ;
                             Civilian.CurrentTask.Start();
                         }

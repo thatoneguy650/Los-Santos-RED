@@ -287,10 +287,13 @@ namespace Mod
         public float VehicleSpeedMPH => VehicleSpeed * 2.23694f;
         public Violations Violations { get; private set; }
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
-        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
+        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
-            PoliceResponse.AddCrime(crimeObserved, description);
+            if (isForPlayer)
+            {
+                PoliceResponse.AddCrime(crimeObserved, description);
+            }
             if(AnnounceCrime)
             {
                 Scanner.AnnounceCrime(crimeObserved, description);
@@ -329,35 +332,35 @@ namespace Mod
                 Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
                 if(ToCallIn != null)
                 {
-                    AddCrime(ToCallIn, false, Position, null, null, false, true);
+                    AddCrime(ToCallIn, false, Position, null, null, false, true, true);
                 }
                 else
                 {
-                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true);
+                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
                 }
             }
             else
             {
-                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true);
+                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
             }
         }
-        public void CallInAmbientCrimes()
-        {
-            //dont like this at all
-            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.RecentlySeenPlayer).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-            bool HasReporters = EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 90f && x.WillCallPolice && x.Pedestrian.Exists() && x.Pedestrian.IsAlive);
-            if (HasReporters)
-            {
-                if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-                {
-                    Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-                    if (ToCallIn != null)
-                    {
-                        AddCrime(ToCallIn, false, Position, null, null, false, true);
-                    }
-                }
-            }
-        }
+        //public void CallInAmbientCrimes()
+        //{
+        //    //dont like this at all
+        //    PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.RecentlySeenPlayer).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+        //    bool HasReporters = EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 90f && x.WillCallPolice && x.Pedestrian.Exists() && x.Pedestrian.IsAlive);
+        //    if (HasReporters)
+        //    {
+        //        if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+        //        {
+        //            Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+        //            if (ToCallIn != null)
+        //            {
+        //                AddCrime(ToCallIn, false, Position, null, null, false, true);
+        //            }
+        //        }
+        //    }
+        //}
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -412,11 +415,33 @@ namespace Mod
             {
                 NotifcationText = "Wanted For:" + PrintCriminalHistory();
             }
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), NotifcationText);
+            DisplayPlayerVehicleNotification();
+        }
+        public void DisplayPlayerVehicleNotification()
+        {
+            string NotifcationText = "";
+            VehicleExt VehicleToDescribe = null;
+            bool usingOwned = true;
             VehicleExt OwnedVehicle = TrackedVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Handle == OwnedVehicleHandle);
-            if (OwnedVehicle != null)
+            if (IsInVehicle)
             {
-                string Make = OwnedVehicle.MakeName();
-                string Model = OwnedVehicle.ModelName();
+                if(OwnedVehicle != null && CurrentVehicle != null && OwnedVehicle.Handle == CurrentVehicle.Handle)
+                {
+                    VehicleToDescribe = OwnedVehicle;
+                }
+                else
+                {
+                    VehicleToDescribe = CurrentVehicle;
+                    usingOwned = false;
+                }
+            }
+
+                
+            if (VehicleToDescribe != null)
+            {
+                string Make = VehicleToDescribe.MakeName();
+                string Model = VehicleToDescribe.ModelName();
                 string VehicleName = "";
                 if (Make != "")
                 {
@@ -427,10 +452,34 @@ namespace Mod
                     VehicleName += " " + Model;
                 }
 
-                NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
-                NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", OwnedVehicle.CarPlate.PlateNumber);
+                string VehicleNameColor = "~p~";
+                string VehicleString = "";
+                if(usingOwned)
+                {
+                    NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
+                }
+                else if (!VehicleToDescribe.IsStolen)
+                {
+                    NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
+                }
+                else
+                {
+                    NotifcationText += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
+                }
+                if (VehicleToDescribe.CarPlate != null && VehicleToDescribe.CarPlate.IsWanted)
+                {
+                    NotifcationText += $"~n~Plate: ~r~{VehicleToDescribe.CarPlate.PlateNumber}~n~~s~Status: ~r~Wanted~s~";
+                }
+                else
+                {
+                    NotifcationText += $"~n~Plate: ~p~{VehicleToDescribe.CarPlate.PlateNumber}~n~~s~Status: ~p~Clean~s~";
+                }
             }
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), NotifcationText);
+            
+            if (NotifcationText != "")
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), NotifcationText);
+            }
         }
         public void Dispose()
         {

@@ -51,7 +51,7 @@ namespace LosSantosRED.lsr.Interface
         void AddKilled(PedExt myPed);
         void Arrest();
       //  void StoreCriminalHistory();
-        void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime);
+        void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void ResetScanner();
         void OnAppliedWantedStats();
         void OnWantedActiveMode();

@@ -12,9 +12,11 @@ public class FireSettings
     public FireSettings()
     {
         #if DEBUG
-            ShowSpawnedBlips =  true;
+            ShowSpawnedBlips = true;
+            ManageDispatching = false;
+            ManageTasking = false;
         #else
-            ShowSpawnedBlips = false;
+          ShowSpawnedBlips = false;
         #endif
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class CivilianSettings
 {
     public bool ManageCivilianTasking { get; set; } = true;
-    public float FightPercentage { get; set; } = 7f;//5f
+    public float FightPercentage { get; set; } = 7f;//7f//5f
     public float CallPolicePercentage { get; set; } = 65f;//55f
     public float SecurityFightPercentage { get; set; } = 30f;//70f
     public float GangFightPercentage { get; set; } = 85f;
