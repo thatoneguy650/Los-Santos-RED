@@ -8,14 +8,16 @@ namespace LosSantosRED.lsr
     public class Police
     {
         private IPoliceRespondable Player;
+        private IPerceptable Perceptable;
         private uint PoliceLastSeenVehicleHandle;
         private IEntityProvideable World;
         private ISettingsProvideable Settings;
-        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, ISettingsProvideable settings)
+        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings)
         {
             World = world;
             Player = currentPlayer;
             Settings = settings;
+            Perceptable = perceptable;
         }
         public void Update()
         {
@@ -33,7 +35,7 @@ namespace LosSantosRED.lsr
             {
                 if (Cop.Pedestrian.Exists())
                 {
-                    Cop.Update(Player, Player.PlacePoliceLastSeenPlayer, World);
+                    Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                     if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                     {
                         Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);

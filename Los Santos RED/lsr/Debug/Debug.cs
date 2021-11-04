@@ -132,46 +132,76 @@ public class Debug
                 Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
             }
         }
-        //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f))
-        //{
-        //    Color Color = Color.Yellow;
-        //    if (ped.CurrentlyViolatingWantedLevel == 0)
-        //    {
-        //        Color = Color.Green;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel == 1)
-        //    {
-        //        Color = Color.Yellow;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel == 2)
-        //    {
-        //        Color = Color.Orange;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel > 2)
-        //    {
-        //        Color = Color.Red;
-        //    }
-        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
-        //    Color Color2 = Color.Yellow;
-        //    if (ped.WantedLevel == 0)
-        //    {
-        //        Color2 = Color.Green;
-        //    }
-        //    else if (ped.WantedLevel == 1)
-        //    {
-        //        Color2 = Color.Yellow;
-        //    }
-        //    else if (ped.WantedLevel == 2)
-        //    {
-        //        Color2 = Color.Orange;
-        //    }
-        //    else if (ped.WantedLevel > 2)
-        //    {
-        //        Color2 = Color.Red;
-        //    }
-        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color2);
-        //}
-
+        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f))
+        {
+            Color Color = Color.Yellow;
+            if (ped.CurrentlyViolatingWantedLevel == 0)
+            {
+                Color = Color.Green;
+            }
+            else if (ped.CurrentlyViolatingWantedLevel == 1)
+            {
+                Color = Color.Yellow;
+            }
+            else if (ped.CurrentlyViolatingWantedLevel == 2)
+            {
+                Color = Color.Orange;
+            }
+            else if (ped.CurrentlyViolatingWantedLevel > 2)
+            {
+                Color = Color.Red;
+            }
+            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
+            Color Color2 = Color.Yellow;
+            if (ped.WantedLevel == 0)
+            {
+                Color2 = Color.Green;
+            }
+            else if (ped.WantedLevel == 1)
+            {
+                Color2 = Color.Yellow;
+            }
+            else if (ped.WantedLevel == 2)
+            {
+                Color2 = Color.Orange;
+            }
+            else if (ped.WantedLevel > 2)
+            {
+                Color2 = Color.Red;
+            }
+            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2.5f), Vector3.Zero, Rotator.Zero, 1f, Color2);
+            Color Color3 = Color.Yellow;
+            if (ped.HasSeenPlayerCommitCrime)
+            {
+                Color3 = Color.Red;
+            }
+            else if (ped.CanRecognizePlayer)
+            {
+                Color3 = Color.Orange;
+            }
+            else if (ped.CanSeePlayer)
+            {
+                Color3 = Color.Green;
+            }
+            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
+        }
+        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        {
+            Color Color3 = Color.Yellow;
+            if (cop.HasSeenPlayerCommitCrime)
+            {
+                Color3 = Color.Red;
+            }
+            else if (cop.CanRecognizePlayer)
+            {
+                Color3 = Color.Orange;
+            }
+            else if (cop.CanSeePlayer)
+            {
+                Color3 = Color.Green;
+            }
+            Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
+        }
         //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         //{
         //    Color Color;
@@ -202,7 +232,7 @@ public class Debug
         //    else if (cop.CurrentTask?.Name == "ApprehendOther")
         //    {
         //        Color = Color.Pink;
-        //    } 
+        //    }
         //    else
         //    {
         //        Color = Color.Yellow;

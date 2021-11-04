@@ -122,11 +122,11 @@ public class WeaponInventory
         if ((!IsSetDefault || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             EntryPoint.WriteToConsole($"COP EVENT {Cop.Pedestrian.Handle}: SETTING DEFAULT WEAPON LOADOUT", 3);
-            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, false);
             }
-            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
@@ -149,12 +149,12 @@ public class WeaponInventory
     {
         if ((!IsSetDeadly || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))//this apparently can still crash somehow?
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
             }
-            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
                 LongGun.ApplyVariation(Cop.Pedestrian);
@@ -182,11 +182,11 @@ public class WeaponInventory
     {
         if ((!IsSetLessLethal || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
             }
-            else if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
+            else if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
             {
                 Cop.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
             }
@@ -205,7 +205,7 @@ public class WeaponInventory
     {
         if ((!IsSetUnarmed || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
+            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);

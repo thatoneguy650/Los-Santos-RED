@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 public class Civilians
 {
     private IEntityProvideable World;
-    private IPoliceRespondable Player;
-    public Civilians(IEntityProvideable world, IPoliceRespondable currentPlayer)
+    private IPoliceRespondable PoliceRespondable;
+    private IPerceptable Perceptable;
+    public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable)
     {
         World = world;
-        Player = currentPlayer;
+        PoliceRespondable = policeRespondable;
+        Perceptable = perceptable;
     }
     public int PersistentCount
     {
@@ -32,7 +34,7 @@ public class Civilians
         int PedsUpdated = 0;
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
-            ped.Update(Player, Vector3.Zero, World);
+            ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
             PedsUpdated++;
             if (PedsUpdated > 4)//10)//3//10//25
             {

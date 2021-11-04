@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\ApprehendOther.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
@@ -166,8 +167,8 @@
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
-    <Compile Include="lsr\Util\Peds\PedCrimes.cs" />
-    <Compile Include="lsr\Util\Peds\Perception.cs" />
+    <Compile Include="lsr\Util\Peds\Perception and Crimes\PedCrimes.cs" />
+    <Compile Include="lsr\Util\Peds\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
     <Compile Include="lsr\Util\Vehicle\SHVehicleLockStatus.cs" />

@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -111,6 +111,7 @@ namespace Mod
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public bool CurrentWeaponIsOneHanded { get; private set; }
+        public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
@@ -326,23 +327,23 @@ namespace Mod
         }
         public void CallPolice()
         {
-            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 90f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-            if(violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-            {
-                Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-                if(ToCallIn != null)
-                {
-                    AddCrime(ToCallIn, false, Position, null, null, false, true, true);
-                }
-                else
-                {
-                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
-                }
-            }
-            else
-            {
-                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
-            }
+            //PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 90f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            //if(violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+            //{
+            //    Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+            //    if(ToCallIn != null)
+            //    {
+            //        AddCrime(ToCallIn, false, Position, null, null, false, true, true);
+            //    }
+            //    else
+            //    {
+            //        AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
+            //    }
+            //}
+            //else
+            //{
+            //    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
+            //}
         }
         //public void CallInAmbientCrimes()
         //{

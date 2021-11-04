@@ -200,5 +200,29 @@ namespace ExtensionsMethods
             return source.OrderBy(x => Guid.NewGuid());
         }
 
+
+        public static bool IsThisPedInFrontOf(this Ped myPed, Ped ToCheck)
+        {
+            float Result = GetDotVectorResult(ToCheck, myPed);
+            if (Result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private static float GetDotVectorResult(Entity source, Entity target)
+        {
+            if (source.Exists() && target.Exists())
+            {
+                Vector3 dir = (target.Position - source.Position).ToNormalized();
+                return Vector3.Dot(dir, source.ForwardVector);
+            }
+            else return -1.0f;
+        }
+
+
     }
 }

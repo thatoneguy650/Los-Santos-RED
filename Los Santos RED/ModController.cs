@@ -113,9 +113,9 @@ namespace LosSantosRED.lsr
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
             Player.Setup();
             GameFiber.Yield();
-            Police = new Police(World, Player, Settings);
+            Police = new Police(World, Player, Player, Settings);
             GameFiber.Yield();
-            Civilians = new Civilians(World, Player);
+            Civilians = new Civilians(World, Player, Player);
             GameFiber.Yield();
             PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes);
             GameFiber.Yield();
