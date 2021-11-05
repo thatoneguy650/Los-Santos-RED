@@ -155,6 +155,15 @@ public class Vehicles
         }
         return ToReturn;
     }
+    public VehicleExt GetVehicleExt(uint handle)
+    {
+        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == handle);
+        if (ToReturn == null)
+        {
+            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == handle);
+        }
+        return ToReturn;
+    }
     public bool AddToList(Vehicle vehicle)
     {
         if (vehicle.Exists())

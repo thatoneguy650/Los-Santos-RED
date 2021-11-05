@@ -136,7 +136,8 @@ public class HoldUp : Interaction
     {
         IsActivelyOrdering = true;
         SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, true);
-        Target.Pedestrian.Tasks.Cower(-1);
+        //Target.Pedestrian.Tasks.Cower(-1);
+        NativeFunction.Natives.TASK_COWER(Target.Pedestrian, -1);
         SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
         GameFiber.Sleep(2000);
         IsActivelyOrdering = false;

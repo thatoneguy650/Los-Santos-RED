@@ -418,7 +418,79 @@ namespace LSR.Vehicles
                                     + (c1.G - c2.G) * (c1.G - c2.G)
                                     + (c1.B - c2.B) * (c1.B - c2.B));
         }
-
-
+        public string IsSuspicious(bool IsNight)
+        {
+            List<string> SuspiciousReasons = new List<string>();
+            bool LightsOn;
+            bool HighbeamsOn;
+            if (!Vehicle.Exists())
+            {
+                return "";
+            }
+            if (Vehicle.Health <= 300 || (Vehicle.EngineHealth <= 300 && Engine.IsRunning))//can only see smoke and shit if its running
+            {
+                SuspiciousReasons.Add("General Appearance");
+            }
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+            {
+                SuspiciousReasons.Add("Broken Windows");
+            }
+            foreach (VehicleDoor myDoor in Vehicle.GetDoors())
+            {
+                if (myDoor.IsDamaged)
+                {
+                    SuspiciousReasons.Add("Damaged Doors");
+                    break;
+                }
+            }
+            if (IsNight && Engine.IsRunning)
+            {
+                if (IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", Vehicle))
+                {
+                    SuspiciousReasons.Add("Damaged Lights");
+                }
+                unsafe
+                {
+                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", Vehicle, &LightsOn, &HighbeamsOn);
+                }
+                if (!LightsOn)
+                {
+                    SuspiciousReasons.Add("No Lights");
+                }
+                if (HighbeamsOn)
+                {
+                    SuspiciousReasons.Add("Highbeams");
+                }
+            }
+            if (Vehicle.LicensePlate == "        ")
+            {
+                SuspiciousReasons.Add("No Plate");
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 0, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 1, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 2, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 3, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 4, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", Vehicle, 5, false))
+            {
+                SuspiciousReasons.Add("Busted Tires");
+            }
+            return string.Join(", ", SuspiciousReasons);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using System;
 using System.Linq;
 
 namespace LosSantosRED.lsr
@@ -31,23 +32,31 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            foreach (Cop Cop in World.PoliceList)//THIS TAKE 5 and order by is new, maybe dont need to updated to cops so frequently? maybe i do well see
+            foreach (Cop Cop in World.PoliceList)
             {
-                if (Cop.Pedestrian.Exists())
+                try
                 {
-                    Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
-                    if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
+                    if (Cop.Pedestrian.Exists())
                     {
-                        Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
+                        Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
+                        if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
+                        {
+                            Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
+                        }
+                        if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
+                        {
+                            Cop.UpdateSpeech(Player);
+                        }
+                        if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
+                        {
+                            Cop.UpdateAssists(Player.IsWanted);
+                        }
                     }
-                    if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
-                    {
-                        Cop.UpdateSpeech(Player);
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
-                    {
-                        Cop.UpdateAssists(Player.IsWanted);
-                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Cop Data");
                 }
                 GameFiber.Yield();
             }

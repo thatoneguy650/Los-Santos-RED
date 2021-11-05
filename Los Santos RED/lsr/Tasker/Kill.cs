@@ -30,7 +30,8 @@ public class Kill : ComplexTask
             int DesiredStyle = (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
             NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, DesiredStyle);
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            //Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
             //EntryPoint.WriteToConsole(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
         }
         
@@ -55,7 +56,8 @@ public class Kill : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
-            Ped.Pedestrian.Tasks.Clear();
+            //Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
             Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);

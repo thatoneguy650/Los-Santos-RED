@@ -74,7 +74,7 @@ namespace LosSantosRED.lsr
             Dispatcher.Dispose();
             VanillaManager.Dispose();
             Debug.Dispose();
-            Game.DisplayNotification("Instant Action Deactivated");
+            Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
         }
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
@@ -85,7 +85,6 @@ namespace LosSantosRED.lsr
         {
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
-            //return Player;
         }
         public void ReloadSettingsFromFile()
         {
@@ -129,7 +128,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this,Settings);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this,Settings, Tasker);
             GameFiber.Yield();
             World.AddBlipsToMap();
             GameFiber.Yield();
@@ -162,7 +161,9 @@ namespace LosSantosRED.lsr
                 StartDebugLogic();
                 GameFiber.Yield();
             #endif
-            Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
         private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
         {
@@ -277,9 +278,9 @@ namespace LosSantosRED.lsr
 
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 2), 
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2), 
                 new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 4),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
                 new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
             };
 
@@ -306,10 +307,6 @@ namespace LosSantosRED.lsr
                             }
                         }
                         FPS.ComputeAverage(Game.FrameRate);
-                        //if (!Game.IsPaused && (Game.FrameRate < 45))// || FPS.Average <= 55))
-                        //{
-                        //    EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask} & {LastRanQuaternaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {PrevLastRanSecondaryTask} & {PrevLastRanTertiaryTask} & {PrevLastRanQuaternaryTask}", 3);
-                        //}
                         TickStopWatch.Reset();
                         GameFiber.Yield();
                     }
@@ -332,30 +329,6 @@ namespace LosSantosRED.lsr
                     while (IsRunning)
                     {
                         Debug.Update();
-                        //if (Game.IsKeyDown(Keys.NumPad5))
-                        //{
-                        //    EntryPoint.WriteToConsole("=================================== CORE", 3);
-                        //    foreach (ModTask modTask in CoreTasks)
-                        //    {
-                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                        //    }
-                        //    EntryPoint.WriteToConsole("=================================== SECONDARY", 3);
-                        //    foreach (ModTask modTask in SecondaryTasks)
-                        //    {
-                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                        //    }
-                        //    EntryPoint.WriteToConsole("=================================== TERTIARY", 3);
-                        //    foreach (ModTask modTask in TertiaryTasks)
-                        //    {
-                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                        //    }
-                        //    EntryPoint.WriteToConsole("=================================== QUATERNARY", 3);
-                        //    foreach (ModTask modTask in QuaternaryTasks)
-                        //    {
-                        //        EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
-                        //    }
-                        //    EntryPoint.WriteToConsole("===================================", 3);
-                        //}
                         GameFiber.Yield();
                     }
                 }

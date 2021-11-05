@@ -122,19 +122,17 @@ public class WeaponInventory
         if ((!IsSetDefault || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             EntryPoint.WriteToConsole($"COP EVENT {Cop.Pedestrian.Handle}: SETTING DEFAULT WEAPON LOADOUT", 3);
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)WeaponHash.StunGun, false))//(Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
-                Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, false);
+                //Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, false);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)WeaponHash.StunGun, 100, false, false);
             }
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))//if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
-                Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
+                //Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
             }
-            //if (setCurrent && Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
-            //{
-            //    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
-           // }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys       
             IsSetLessLethal = false;
@@ -149,14 +147,16 @@ public class WeaponInventory
     {
         if ((!IsSetDeadly || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))//this apparently can still crash somehow?
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))//if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))//this apparently can still crash somehow?
             {
-                Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
+                //Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
             }
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))//if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
             {
-                Cop.Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
+               // Cop.Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(Cop.Pedestrian);
             }
             if (LongGun != null && HasHeavyWeaponOnPerson && !Cop.IsInVehicle)
@@ -182,13 +182,17 @@ public class WeaponInventory
     {
         if ((!IsSetLessLethal || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)WeaponHash.StunGun, false))//if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
-                Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
+                //Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)WeaponHash.StunGun, 100, false, true);
             }
-            else if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Cop.Pedestrian, out currentWeapon, true);
+            if(currentWeapon != (uint)WeaponHash.StunGun)//if(!NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Cop.Pedestrian, (uint)WeaponHash.StunGun, false))//else if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
             {
-                Cop.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
+                //Cop.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
+                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Cop.Pedestrian, (uint)WeaponHash.StunGun, true);
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
             //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, false);//cant use vehicle in combat
@@ -205,7 +209,9 @@ public class WeaponInventory
     {
         if ((!IsSetUnarmed || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
-            if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Cop.Pedestrian, out currentWeapon, true);
+            if (currentWeapon != 2725352035)//if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.Weapons != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);

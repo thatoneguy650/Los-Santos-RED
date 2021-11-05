@@ -159,6 +159,7 @@ public class PlayerPerception
         {
             SetTargetSeen();
         }
+        UpdateWitnessedCrimes();
     }
     private float GetDotVectorResult(Entity source, Entity target)
     {
@@ -320,7 +321,7 @@ public class PlayerPerception
             EntryPoint.WriteToConsole($"AddCrime Handle {Originator.Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenTargetCommitCrime}, CrimeToAdd.Name {CrimeToAdd.Name}", 5);
         }
     }
-    private void UpdateWitnessedCrimes()
+    public void UpdateWitnessedCrimes()
     {
         foreach (Crime committing in Target.CivilianReportableCrimesViolating)
         {

@@ -374,7 +374,8 @@ public class PedSwap : IPedSwap
         }
         if (FormerPlayer.IsInAnyVehicle(false))
         {
-            FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
+            //FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
+            NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Normal);
         }
         if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
         {
@@ -382,8 +383,10 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            FormerPlayer.Tasks.ClearImmediately();
-            FormerPlayer.Tasks.Wander();
+            //FormerPlayer.Tasks.ClearImmediately();
+            NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(FormerPlayer);
+            //FormerPlayer.Tasks.Wander();
+            NativeFunction.Natives.TASK_WANDER_STANDARD(FormerPlayer, 0, 0);
         }
     }
     public void InlineModelSwap()
@@ -478,7 +481,8 @@ public class PedSwap : IPedSwap
                 {
                     GameFiber.Yield();
                 }
-                Game.LocalPlayer.Character.Tasks.Clear();
+                //Game.LocalPlayer.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             }, "ScenarioWatcher");
         }
     }

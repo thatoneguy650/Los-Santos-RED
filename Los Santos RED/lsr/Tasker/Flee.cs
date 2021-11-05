@@ -22,7 +22,8 @@ public class Flee : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
-            Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
+            //Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
+            NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 100f, -1, false, false);
             GameTimeLastRan = Game.GameTime;
         }
     }

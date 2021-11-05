@@ -30,7 +30,8 @@ public class SurrenderActivity : DynamicActivity
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
         Player.HandsAreUp = false; // You put your hands down
-        Game.LocalPlayer.Character.Tasks.Clear();
+        //Game.LocalPlayer.Character.Tasks.Clear();
+        NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
         Player.IsPerformingActivity = false;
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
@@ -187,11 +188,13 @@ public class SurrenderActivity : DynamicActivity
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
                 GameFiber.Wait(1000);//1250
-                PedToArrest.Tasks.Clear();
+                //PedToArrest.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
             }
             else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
             {
-                PedToArrest.Tasks.Clear();
+                //PedToArrest.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
             }
         }, "UnSetArrestedAnimation");
     }

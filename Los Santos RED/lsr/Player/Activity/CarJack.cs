@@ -138,7 +138,8 @@ public class CarJack
                 if (ScenePhase <= 0.35f)
                 {
                     Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
-                    Game.LocalPlayer.Character.Tasks.Clear();
+                    //Game.LocalPlayer.Character.Tasks.Clear();
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
                     NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
                     break;
                 }
@@ -148,7 +149,8 @@ public class CarJack
                 if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) <= 0.4f)
                 {
                     Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
-                    Game.LocalPlayer.Character.Tasks.Clear();
+                    //Game.LocalPlayer.Character.Tasks.Clear();
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
                     NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
                     break;
                 }
@@ -186,7 +188,8 @@ public class CarJack
             {
                 Driver.Pedestrian.BlockPermanentEvents = false;
                 Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
-                Game.LocalPlayer.Character.Tasks.Clear();
+                //Game.LocalPlayer.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             }
         }
         else
@@ -195,7 +198,8 @@ public class CarJack
             {
                 Driver.Pedestrian.BlockPermanentEvents = false;
                 Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
-                Game.LocalPlayer.Character.Tasks.Clear();
+                //Game.LocalPlayer.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             }
             else
             {
@@ -236,8 +240,10 @@ public class CarJack
             //EntryPoint.WriteToConsole("CarjackAnimation Driver Out of Vehicle");
             if (Driver.Pedestrian.IsAlive)
             {
-                Driver.Pedestrian.Tasks.ClearImmediately();
-                Driver.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 500f, 0);
+                //Driver.Pedestrian.Tasks.ClearImmediately();
+                NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Driver.Pedestrian);
+                //Driver.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 500f, 0);
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Driver.Pedestrian, Player.Character, 500f, -1, false, false);
                 Driver.Pedestrian.IsRagdoll = false;
                 Driver.Pedestrian.BlockPermanentEvents = false;
             }
@@ -404,9 +410,11 @@ public class CarJack
 
         if (!GetCarjackingAnimations())//couldnt find animations
         {
-            Game.LocalPlayer.Character.Tasks.ClearImmediately();
+            //Game.LocalPlayer.Character.Tasks.ClearImmediately();
+            NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
             GameFiber.Sleep(200);
-            Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+            //Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+            NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
             return false;
         }
 

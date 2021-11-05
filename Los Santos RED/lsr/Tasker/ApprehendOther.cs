@@ -61,10 +61,12 @@ public class ApprehendOther : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
-            Ped.Pedestrian.Tasks.Clear();
+            //Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
-            Ped.Pedestrian.Tasks.Clear();
+            //Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             if (resetAlertness)
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
@@ -315,7 +317,9 @@ public class ApprehendOther : ComplexTask
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
-                        Ped.Pedestrian.Tasks.FightAgainst(OtherTarget.Pedestrian, -1);
+                        //Ped.Pedestrian.Tasks.FightAgainst(OtherTarget.Pedestrian, -1);
+                        NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
+
                         SubTaskName = "Fighting";
                     }
                 }

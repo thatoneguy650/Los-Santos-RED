@@ -140,7 +140,8 @@ public class SuicideActivity : DynamicActivity
     private void Exit()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Suicide");
-        Player.Character.Tasks.Clear();
+        //Player.Character.Tasks.Clear();
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.IsPerformingActivity = false;
         Player.IsCommitingSuicide = false;
     }

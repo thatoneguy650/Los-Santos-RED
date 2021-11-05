@@ -22,17 +22,17 @@ public class PedExt : IComplexTaskable
     private PlayerPerception PlayerPerception;
     private IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
-        PedCrimes = new PedCrimes(this, crimes, settings);
+        PedCrimes = new PedCrimes(this, crimes, settings, weapons);
         PlayerPerception = new PlayerPerception(this, null, settings);
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup, ICrimes crimes) : this(_Pedestrian, settings, crimes)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup, ICrimes crimes, IWeapons weapons) : this(_Pedestrian, settings, crimes, weapons)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
@@ -87,6 +87,7 @@ public class PedExt : IComplexTaskable
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
+    public bool IsWanted => PedCrimes.IsWanted;
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
@@ -121,6 +122,7 @@ public class PedExt : IComplexTaskable
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;
+    public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = true;
     public bool WillFight { get; set; } = false;
@@ -192,7 +194,8 @@ public class PedExt : IComplexTaskable
         catch (Exception ex)
         {
             //EntryPoint.WriteToConsole($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
-            return CheckHurtBy(ToCheck);
+            //return CheckHurtBy(ToCheck);
+            return false;
         }
 
     }
@@ -207,11 +210,8 @@ public class PedExt : IComplexTaskable
                 if (NeedsFullUpdate)
                 {
                     PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (IsCop)
-                    {
-                        UpdateVehicleState();
-                    }
-                    else
+                    UpdateVehicleState();
+                    if (!IsCop)
                     {
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {

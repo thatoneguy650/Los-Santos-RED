@@ -14,6 +14,10 @@ public class Tasker
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
     private List<PedExt> OtherTargets;
+    private Cop PlayerGuard;
+    private uint GameTimeLastGeneratedCrime;
+    private uint RandomCrimeRandomTime;
+    private bool IsTimeToCreateCrime => Game.GameTime - GameTimeLastGeneratedCrime >= (Settings.SettingsManager.CivilianSettings.MinimumTimeBetweenRandomCrimes + RandomCrimeRandomTime);
     public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings)
     {
         PedProvider = pedProvider;
@@ -26,7 +30,15 @@ public class Tasker
         UpdateOtherTargets();
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
-            Cop.UpdateTask(OtherTargets);
+            try
+            {
+                Cop.UpdateTask(OtherTargets);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Cop Task");
+            }
             GameFiber.Yield();
         }
     }
@@ -34,35 +46,63 @@ public class Tasker
     {
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
-            Ped.UpdateTask(null);
+            try
+            { 
+                Ped.UpdateTask(null);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Task");
+            }
             GameFiber.Yield();
         }
     }
-    public void UpdatePoliceTasks()
+    public void SetPoliceTasks()
     {
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
             UpdateOtherTargets();
             foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))
             {
-                UpdateCurrentTask(Cop);
+                try
+                {
+                    UpdateCurrentTask(Cop);
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Cop Task");
+                }
                 GameFiber.Yield();
             }
         }
     }
-    public void UpdateCivilianTasks()
+    public void SetCivilianTasks()
     {
+        if (Settings.SettingsManager.CivilianSettings.AllowRandomCrimes && IsTimeToCreateCrime)
+        {
+             CreateCrime();
+        }
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
-                if (Civilian.DistanceToPlayer <= 75f)
-                {
-                    UpdateCurrentTask(Civilian);
+                try
+                { 
+                    if (Civilian.DistanceToPlayer <= 75f)
+                    {
+                        UpdateCurrentTask(Civilian);
+                    }
+                    else if (Civilian.CurrentTask != null)
+                    {
+                        Civilian.CurrentTask = null;
+                    }
                 }
-                else if (Civilian.CurrentTask != null)
+                catch (Exception e)
                 {
-                    Civilian.CurrentTask = null;
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
             foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 100f))
@@ -72,9 +112,54 @@ public class Tasker
             GameFiber.Yield();
         }
     }
+    public void CreateCrime()
+    {
+        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 40f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//150f
+        if (Criminal != null && Criminal.Pedestrian.Exists())
+        {
+            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 40f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f).FirstOrDefault();//150f
+            if (Victim != null && Victim.Pedestrian.Exists())
+            {
+                Criminal.CanBeAmbientTasked = false;
+                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim);
+                Criminal.CurrentTask.Start();
+                EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
+                GameTimeLastGeneratedCrime = Game.GameTime;
+                RandomCrimeRandomTime = RandomItems.GetRandomNumber(0, 240000);//between 0 and 4 minutes randomly added
+            }
+        }
+    }
     private void UpdateOtherTargets()
     {
-        OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 150f).ToList();
+        //OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 150f).ToList();
+        List<PedExt> PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWanted && x.DistanceToPlayer <= 150f).ToList();
+        if(Player.IsBusted)
+        {
+            if (PossibleTargets.Any(x => x.IsDeadlyChase))
+            {
+                OtherTargets = PossibleTargets.Where(x => x.IsDeadlyChase).ToList();
+            }
+            else
+            {
+                Cop toGuardPlayer = PedProvider.PoliceList.Where(x=> x.DistanceToPlayer <= 30f && !x.IsInVehicle).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                if (toGuardPlayer != null)
+                {
+                    PlayerGuard = toGuardPlayer;
+                }
+                OtherTargets = PossibleTargets;
+            }
+        }
+        else
+        {
+            if(Player.PoliceResponse.IsDeadlyChase)
+            {
+                OtherTargets = PossibleTargets.Where(x=> x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).ToList();
+            }
+            else
+            {
+                OtherTargets = PossibleTargets.Where(x => x.WantedLevel > Player.WantedLevel).ToList();
+            }
+        }
         //if (OtherTargets.Any())//will reset tasks, if you set it on update they will constantly reset tasks, might need to be set once? or at the beginning and then only turned off when needed?, cant be set very well
         //{
         //    Game.LocalPlayer.IsIgnoredByPolice = true;
@@ -88,7 +173,7 @@ public class Tasker
     {
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
-            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 150f)
+            if (OtherTargets.Any() && Cop.DistanceToPlayer <= 150f && (PlayerGuard == null || Cop.Handle != PlayerGuard.Handle))
             {
                 if (Cop.CurrentTask?.Name != "ApprehendOther")
                 {
@@ -308,6 +393,37 @@ public class Tasker
         //    }
         //}
         //Civilian.GameTimeLastUpdatedTask = Game.GameTime;
+    }
+    private WeaponInformation GetWeaponToIssue(bool IsGangMember)
+    {
+        WeaponInformation ToIssue;
+        if (IsGangMember)
+        {
+            if (RandomItems.RandomPercent(70))
+            {
+                ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol);
+            }
+            else
+            {
+                ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+            }
+        }
+        else if (RandomItems.RandomPercent(40))
+        {
+            ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol);
+        }
+        else
+        {
+            if (RandomItems.RandomPercent(65))
+            {
+                ToIssue = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+            }
+            else
+            {
+                ToIssue = null;
+            }
+        }
+        return ToIssue;
     }
 }
 

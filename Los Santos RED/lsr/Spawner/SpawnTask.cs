@@ -136,18 +136,18 @@ public class SpawnTask
             if (Agency.ResponseType == ResponseType.LawEnforcement)
             {
                 NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null);
+                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons);
                 PrimaryCop.IssueWeapons(Weapons);
                 Person = PrimaryCop;
             }
             else if (Agency.ResponseType == ResponseType.EMS)
             {
-                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null);
+                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons);
                 Person = PrimaryEmt;
             }
             else if (Agency.ResponseType == ResponseType.Fire)
             {
-                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null);
+                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons);
                 Person = PrimaryFirefighter;
             }
             CreatedPeople.Add(Person);

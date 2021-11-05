@@ -76,11 +76,13 @@ public class Idle : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
-            Ped.Pedestrian.Tasks.Clear();
+            //Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
-            Ped.Pedestrian.Tasks.Clear();
-            if(resetAlertness)
+            //Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            if (resetAlertness)
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
             }
@@ -177,7 +179,8 @@ public class Idle : ComplexTask
             }
             else
             {
-                Ped.Pedestrian.Tasks.Wander();
+                //Ped.Pedestrian.Tasks.Wander();
+                NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             }
         }
     }

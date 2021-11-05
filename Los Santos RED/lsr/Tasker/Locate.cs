@@ -90,7 +90,8 @@ public class Locate : ComplexTask
             }
             else
             {
-                Ped.Pedestrian.Tasks.Wander();
+                //Ped.Pedestrian.Tasks.Wander();
+                NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             }
             EntryPoint.WriteToConsole(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
         }
@@ -122,7 +123,8 @@ public class Locate : ComplexTask
             }
             else
             {
-                Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
+                //Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
+                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, -1, 0f, 0f);
             }
             //EntryPoint.WriteToConsole(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle),5);
         }

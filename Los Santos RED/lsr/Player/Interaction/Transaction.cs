@@ -32,7 +32,8 @@ public class Transaction : Interaction
         Player.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
         {
-            Ped.Pedestrian.Tasks.Clear();
+            // Ped.Pedestrian.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
         NativeFunction.CallByName<bool>("STOP_GAMEPLAY_HINT", true);
     }

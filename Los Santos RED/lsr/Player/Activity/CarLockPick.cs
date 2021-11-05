@@ -98,7 +98,8 @@ public class CarLockPick
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
             EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}", 3);//some IV pack cars fail even with the door open.....
-            Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+            //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+            NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
             return false;
         }
 
@@ -169,7 +170,8 @@ public class CarLockPick
 
         if (!Continue)
         {
-            Game.LocalPlayer.Character.Tasks.Clear();
+            //Game.LocalPlayer.Character.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             if (Screwdriver != null && Screwdriver.Exists())
             {
                 Screwdriver.Delete();
@@ -201,7 +203,8 @@ public class CarLockPick
     }
     private bool FinishLockPick()
     {
-        Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+        //Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+        NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
         if (Screwdriver != null && Screwdriver.Exists())
         {
             Screwdriver.Delete();

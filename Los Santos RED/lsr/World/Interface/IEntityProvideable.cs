@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyHelicopterUnitsSpawned { get; }
         PedExt GetPedExt(uint handle);
         VehicleExt GetVehicleExt(Vehicle vehicleTryingToEnter);
+        VehicleExt GetVehicleExt(uint Handle);
         void ClearSpawned();
         int PoliceHelicoptersCount { get; }
         int PoliceBoatsCount { get; }

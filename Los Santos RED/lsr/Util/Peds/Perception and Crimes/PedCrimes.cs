@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
+using LSR.Vehicles;
 
 public class PedCrimes
 {
@@ -21,13 +22,17 @@ public class PedCrimes
     private Crime WorstCivilianCrimeWitnessed;
     private uint GameTimeLastWitnessedCivilianCrime;
     private PedExt LastWitnessedCivilianCrimePed;
+    private uint LastWitnessedCivilianCrimeVehicleHandle;
+    private uint LastWitnessedCivilianCrimeWeaponHandle;
+    private IWeapons Weapons;
 
     private bool ShouldCheck => PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC";
-    public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings)
+    public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons)
     {
         PedExt = pedExt;
         Crimes = crimes;
         Settings = settings;
+        Weapons = weapons;
     }
     public int WantedLevel { get; private set; } = 0;
     public bool IsWanted => WantedLevel > 0;
@@ -189,6 +194,23 @@ public class PedCrimes
                         WorstCivilianCrimeWitnessed = ToCallIn;
                         GameTimeLastWitnessedCivilianCrime = Game.GameTime;
                         LastWitnessedCivilianCrimePed = criminal;
+                        Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
+                        if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
+                        {
+                            LastWitnessedCivilianCrimeVehicleHandle = criminal.Pedestrian.CurrentVehicle.Handle;
+                        }
+                        else if(tryingToEnter.Exists())
+                        {
+                            LastWitnessedCivilianCrimeVehicleHandle = tryingToEnter.Handle;
+                        }
+
+                        uint currentWeapon;
+                        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
+                        if(currentWeapon != 2725352035 && currentWeapon != 0)
+                        {
+                            LastWitnessedCivilianCrimeWeaponHandle = currentWeapon;
+                        }
+
                         EntryPoint.WriteToConsole($"Handle {PedExt.Pedestrian.Handle} Add Other Civ Crime {WorstCivilianCrimeWitnessed.Name} for: {LastWitnessedCivilianCrimePed.Handle}", 5);
                     }
                 }
@@ -204,8 +226,10 @@ public class PedCrimes
         }
         if (WorstCivilianCrimeWitnessed != null && GameTimeLastWitnessedCivilianCrime != 0 && Game.GameTime - GameTimeLastWitnessedCivilianCrime > 3000)//12000
         {
-            playerToCheck.AddCrime(WorstCivilianCrimeWitnessed, false, LastWitnessedCivilianCrimePosition, null, null, false, true, true);
 
+            VehicleExt carWitnessed = world.GetVehicleExt(LastWitnessedCivilianCrimeVehicleHandle);
+            WeaponInformation weaponWith = Weapons.GetWeapon((ulong)LastWitnessedCivilianCrimeWeaponHandle);
+            playerToCheck.AddCrime(WorstCivilianCrimeWitnessed, false, LastWitnessedCivilianCrimePosition, carWitnessed, weaponWith, false, true, true) ;
             EntryPoint.WriteToConsole($"Handle {PedExt.Pedestrian.Handle} Call IN Other Civ Crime {WorstCivilianCrimeWitnessed.Name} for: {LastWitnessedCivilianCrimePed.Handle}", 5);
             WorstCivilianCrimeWitnessed = null;
         }
@@ -256,6 +280,10 @@ public class PedCrimes
                     }
                 }
             }
+        }
+        if(PedExt.Pedestrian.IsJacking)
+        {
+            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
         }
     }
     private bool IsVisiblyArmed()

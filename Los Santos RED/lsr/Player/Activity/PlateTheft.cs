@@ -158,7 +158,8 @@ public class PlateTheft : DynamicActivity
         }
         if (!Continue)
         {
-            PedToMove.Tasks.Clear();
+            //PedToMove.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(PedToMove);
             return false;
         }
         return true;
@@ -194,7 +195,8 @@ public class PlateTheft : DynamicActivity
             }
             else
             {
-                Player.Character.Tasks.Clear();
+                //Player.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
 
 

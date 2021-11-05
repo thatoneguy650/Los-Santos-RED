@@ -68,8 +68,8 @@ namespace Mod
             RadioStations = radioStations;
             Scenarios = scenarios;
             GameTimeStartedPlaying = Game.GameTime;
-            Scanner = new Scanner(provider, this, audio, Settings);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes), Settings);
+            Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this);
@@ -304,6 +304,11 @@ namespace Mod
                 Investigation.Start();       
             }
         }
+        public void AnnounceCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
+        {
+            CrimeSceneDescription description = new CrimeSceneDescription(false, isObservedByPolice, Location, false) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved };
+            Scanner.AnnounceCrime(crimeObserved, description);
+        }
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void AddInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
         public void AddKilled(PedExt MyPed) => Violations.AddKilled(MyPed);
@@ -469,11 +474,11 @@ namespace Mod
                 }
                 if (VehicleToDescribe.CarPlate != null && VehicleToDescribe.CarPlate.IsWanted)
                 {
-                    NotifcationText += $"~n~Plate: ~r~{VehicleToDescribe.CarPlate.PlateNumber}~n~~s~Status: ~r~Wanted~s~";
+                    NotifcationText += $"~n~Plate: ~r~{VehicleToDescribe.CarPlate.PlateNumber} ~r~(Wanted)~s~";
                 }
                 else
                 {
-                    NotifcationText += $"~n~Plate: ~p~{VehicleToDescribe.CarPlate.PlateNumber}~n~~s~Status: ~p~Clean~s~";
+                    NotifcationText += $"~n~Plate: ~p~{VehicleToDescribe.CarPlate.PlateNumber} ~s~";
                 }
             }
             
@@ -903,7 +908,8 @@ namespace Mod
             if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
             {
                 BeingArrested = true;
-                Game.LocalPlayer.Character.Tasks.Clear();
+                //Game.LocalPlayer.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             }
             if (BeingArrested && !IsBusted)
             {
@@ -923,7 +929,7 @@ namespace Mod
             }
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons);
             }
             HealthState.Update();
             IsStunned = Game.LocalPlayer.Character.IsStunned;

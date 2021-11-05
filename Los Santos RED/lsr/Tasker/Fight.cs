@@ -28,18 +28,23 @@ public class Fight : ComplexTask
             Ped.Pedestrian.KeepTasks = true;
             if(ToIssue != null)
             {
-                Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
-            }     
-            Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Ped.Pedestrian, (uint)ToIssue.Hash, ToIssue.AmmoAmount, false, false);
+
+
+                //Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
+            }
+            //Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
+            NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
             GameTimeLastRan = Game.GameTime;
         }
     }
     public override void Update()
     {
-        if(Ped.Pedestrian.Exists() && Player.IsWanted)
-        {
-            Ped.Pedestrian.Tasks.Clear();
-        }
+        //if(Ped.Pedestrian.Exists() && Player.IsWanted)
+        //{
+        //    //Ped.Pedestrian.Tasks.Clear();
+        //    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+        //}
     }
     public override void Stop()
     {

@@ -80,7 +80,8 @@ namespace LosSantosRED.lsr.Player
             {
                 Bottle.Detach();
             }
-            Player.Character.Tasks.Clear();
+            //Player.Character.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.IsPerformingActivity = false;
             GameFiber.Sleep(5000);
             if (Bottle.Exists())

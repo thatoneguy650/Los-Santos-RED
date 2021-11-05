@@ -158,7 +158,8 @@ namespace LosSantosRED.lsr.Player
             {
                 SmokedItem.Detach();
             }
-            Player.Character.Tasks.Clear();
+            //Player.Character.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.IsPerformingActivity = false;
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
@@ -201,7 +202,8 @@ namespace LosSantosRED.lsr.Player
         private void InactiveIdle()
         {
             AttachSmokedItemToMouth();
-            Player.Character.Tasks.Clear();
+            //Player.Character.Tasks.Clear();
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             IsActivelySmoking = false;
             uint GameTimeStartedIdle = Game.GameTime;
             while (!IsCancelled && !ShouldContinue && Game.GameTime - GameTimeStartedIdle <= 120000)//two minutes and your ciggy burns out

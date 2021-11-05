@@ -8,14 +8,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
-    private static int LogLevel = 1;//most non spammy stuff + all debug
-    /*enum? Use built in trace stuff?
-     *  0 = Errors
-        1 = ?
-        2 = ?
-        3 = On Demand
-        4 = Debug
-        5 = Common Trace */
+    private static int LogLevel = 1;
     public static ModController ModController { get; set; }
     public static void Main()
     {
@@ -30,10 +23,12 @@ public static class EntryPoint
     }
     private static void Loop()
     {
-        Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Press F10 to Start");
+        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+        Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
         while (true)
         {
-            if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10))
+            if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
             {
                 ModController = new ModController();
                 ModController.Start(); 

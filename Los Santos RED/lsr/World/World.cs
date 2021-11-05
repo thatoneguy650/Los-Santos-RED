@@ -99,6 +99,7 @@ namespace Mod
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
+        public VehicleExt GetVehicleExt(uint handle) => Vehicles.GetVehicleExt(handle);
         public void PrunePedestrians() => Pedestrians.Prune();
         public void PruneVehicles() => Vehicles.Prune();
         public void RemoveBlips()

@@ -159,6 +159,7 @@
     <Compile Include="lsr\Services\EMT.cs" />
     <Compile Include="lsr\Services\Firefighter.cs" />
     <Compile Include="lsr\Tasker\CallIn.cs" />
+    <Compile Include="lsr\Tasker\CommitCrime.cs" />
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
     <Compile Include="lsr\Tasker\eComatAttributes.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />

@@ -351,7 +351,8 @@ public class Respawning// : IRespawning
         {
             Game.LocalPlayer.Character.IsRagdoll = true;
         }
-        Game.LocalPlayer.Character.Tasks.ClearImmediately();
+        //Game.LocalPlayer.Character.Tasks.ClearImmediately();
+        NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }
     private void SetPoliceFee(string PoliceStationName, int BailFee)
     {

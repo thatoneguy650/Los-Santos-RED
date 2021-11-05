@@ -98,12 +98,14 @@ namespace LosSantosRED.lsr
         private Dispatch WeaponsFree;
         private IEntityProvideable World;
         private ZoneScannerAudio ZoneScannerAudio;
-        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings)
+        private ITimeReportable Time;
+        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
             AudioPlayer = audioPlayer;
             CurrentPlayer = currentPlayer;
             World = world;
             Settings = settings;
+            Time = time;
             VehicleScannerAudio = new VehicleScannerAudio();
             VehicleScannerAudio.ReadConfig();
             StreetScannerAudio = new StreetScannerAudio();
@@ -198,8 +200,14 @@ namespace LosSantosRED.lsr
         {
             if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed)
             {
+                Reset();
                 AddToQueue(NoFurtherUnitsNeeded);
             }
+            else
+            {
+                Reset();
+            }
+            
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnInvestigationExpire", 3);
         }
         public void OnLethalForceAuthorized()
@@ -344,7 +352,12 @@ namespace LosSantosRED.lsr
                         while (DispatchQueue.Count > 0)
                         {
                             Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
-                            BuildDispatch(Item);
+                            bool AddToPlayed = true;
+                            if(CurrentPlayer.IsNotWanted && Item.LatestInformation.SeenByOfficers)
+                            {
+                                AddToPlayed = false;
+                            }
+                            BuildDispatch(Item, AddToPlayed);
                             if (DispatchQueue.Contains(Item))
                                 DispatchQueue.Remove(Item);
                         }
@@ -555,7 +568,7 @@ namespace LosSantosRED.lsr
                 //EntryPoint.WriteToConsole("ScannerScript " + ToAdd.Name);
             }
         }
-        private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
+        private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate, Dispatch DispatchToPlay)
         {
             if (VehicleToDescribe == null)
                 return;
@@ -632,6 +645,13 @@ namespace LosSantosRED.lsr
                     dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
+
+
+                if(DispatchToPlay.Name == "Suspicious Vehicle")
+                {
+                    dispatchEvent.NotificationText += "~n~~s~For: " + VehicleToDescribe.IsSuspicious(Time.IsNight) + "~s~";
+                }
+
 
                 //EntryPoint.WriteToConsole(string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
             }
@@ -791,7 +811,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void BuildDispatch(Dispatch DispatchToPlay)
+        private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed)
         {
 
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
@@ -847,7 +867,7 @@ namespace LosSantosRED.lsr
             }
             if (DispatchToPlay.IncludeDrivingVehicle)
             {
-                AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, !DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate);
+                AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, !DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate, DispatchToPlay);
                 GameFiber.Yield();
             }
             if (DispatchToPlay.IncludeRapSheet)
@@ -959,15 +979,20 @@ namespace LosSantosRED.lsr
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
             EventToPlay.Subtitles = FirstCharToUpper(EventToPlay.Subtitles);
             EventToPlay.Priority = DispatchToPlay.Priority;
-            DispatchToPlay.SetPlayed();
-            if (DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.Priority < HighestOfficerReportedPriority)
+
+            if (addtoPlayed)
             {
-                HighestOfficerReportedPriority = DispatchToPlay.Priority;
+                DispatchToPlay.SetPlayed();
+                if (DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.Priority < HighestOfficerReportedPriority)
+                {
+                    HighestOfficerReportedPriority = DispatchToPlay.Priority;
+                }
+                else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
+                {
+                    HighestCivilianReportedPriority = DispatchToPlay.Priority;
+                }
             }
-            else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
-            {
-                HighestCivilianReportedPriority = DispatchToPlay.Priority;
-            }
+
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
         }
         private void CheckDispatch()

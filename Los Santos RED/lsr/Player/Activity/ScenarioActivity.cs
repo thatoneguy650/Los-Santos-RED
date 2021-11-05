@@ -57,7 +57,8 @@ namespace LosSantosRED.lsr.Player
                 //NativeFunction.Natives.SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(Player.Character, 0, 0, 0);
                 // NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Player.Character, 0, 0, 0);
                 // NativeFunction.Natives.TASK_AGITATED_ACTION(Player.Character, Player.Character);
-                Player.Character.Tasks.Clear();
+                //Player.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
             catch
             {

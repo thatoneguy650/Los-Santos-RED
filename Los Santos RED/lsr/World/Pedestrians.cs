@@ -223,14 +223,14 @@ public class Pedestrians
                 canBeAmbientTasked = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name), Crimes) { CanBeAmbientTasked = canBeAmbientTasked });
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked });
     }
     private void AddCop(Ped Pedestrian)
     {
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes);
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons);
             myCop.IssueWeapons(Weapons);
             if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
             {
@@ -294,19 +294,22 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
+        if (Pedestrian.Exists() && !Pedestrian.IsPersistent)
         {
-            Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
+            if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
+            {
+                Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
+            }
+            if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
+            {
+                int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
+                Pedestrian.MaxHealth = DesiredHealth;
+                Pedestrian.Health = DesiredHealth;
+                Pedestrian.Armor = 0;
+            }
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
+            NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
         }
-        if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
-        {
-            int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
-            Pedestrian.MaxHealth = DesiredHealth;
-            Pedestrian.Health = DesiredHealth;
-            Pedestrian.Armor = 0;
-        }
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-        NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
     private void SetCopStats(Ped Pedestrian)
     {
