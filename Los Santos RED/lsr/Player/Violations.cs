@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();//CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
-        public string LawsViolatingDisplay => string.Join(",", CrimesViolating.Select(x => x.Name));
+        public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.Select(x => x.Name));
         public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance);
         public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtCivilianTime;
         public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtPoliceTime;
@@ -280,24 +280,24 @@ namespace LosSantosRED.lsr
         {
             bool isDrivingSuspiciously = false;
             UpdateTrafficStats();
-            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear)//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear && Player.VehicleSpeedMPH >= 20f)//needed for non humans that are returned from this native
             {
                 isDrivingSuspiciously = true;
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
             }
-            if (RecentlyHitVehicle)
+            if (RecentlyHitVehicle && Player.VehicleSpeedMPH >= 20f)
             {
                 isDrivingSuspiciously = true;
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
             }
             if (!TreatAsCop)
             {
-                if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.Character.CurrentVehicle.Speed >= 10f)))
+                if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.VehicleSpeedMPH >= 20f)))
                 {
                     isDrivingSuspiciously = true;
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingAgainstTraffic"));//.IsCurrentlyViolating = true;
                 }
-                if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Player.Character.CurrentVehicle.Speed >= 10f)))
+                if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Player.VehicleSpeedMPH >= 20f)))
                 {
                     isDrivingSuspiciously = true;
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingOnPavement"));//.IsCurrentlyViolating = true;

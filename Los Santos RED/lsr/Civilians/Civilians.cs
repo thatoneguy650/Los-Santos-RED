@@ -27,7 +27,7 @@ public class Civilians
     }
     public void ResetWitnessedCrimes()
     {
-        World.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
+        World.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
     }
     public void Update()
     {

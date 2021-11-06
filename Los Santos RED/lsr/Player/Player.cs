@@ -123,6 +123,7 @@ namespace Mod
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";
         public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";
         public string DebugLine11 { get; set; }
+        public string LawsViolating => Violations.LawsViolatingDisplay;
         public Scanner DebugScanner => Scanner;
         //move or delete?
         //should be private but needed?
@@ -1316,14 +1317,8 @@ namespace Mod
             {
                 CriminalHistory.OnLostWanted();
                 PoliceResponse.OnLostWanted();
-                EntityProvider.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
+                EntityProvider.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                 EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
-
-                //NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
-                //NativeFunction.Natives.SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(Game.LocalPlayer, true);
-
-
-
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
             {

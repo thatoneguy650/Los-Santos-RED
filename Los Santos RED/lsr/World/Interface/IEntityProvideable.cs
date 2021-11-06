@@ -30,7 +30,7 @@ namespace LosSantosRED.lsr.Interface
         int CivilianVehicleCount { get; }
         bool IsMPMapLoaded { get; }
         bool AnyWantedCiviliansNearPlayer { get; }
-
+        void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x, ResponseType responseType);
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);

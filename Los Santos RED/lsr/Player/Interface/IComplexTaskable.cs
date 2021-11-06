@@ -18,7 +18,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         Ped Pedestrian { get; }
         int LastSeatIndex { get; }
-        List<Crime> CrimesWitnessed { get; }
+        List<Crime> PlayerCrimesWitnessed { get; }
         VehicleExt VehicleLastSeenPlayerIn { get; }
         WeaponInformation WeaponLastSeenPlayerWith { get; }
         bool EverSeenPlayer { get; }

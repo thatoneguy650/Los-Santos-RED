@@ -76,11 +76,9 @@ public class Idle : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
-            //Ped.Pedestrian.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
-            //Ped.Pedestrian.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             if (resetAlertness)
             {
@@ -108,9 +106,7 @@ public class Idle : ComplexTask
             {
                 ExecuteCurrentSubTask(false);
             }
-
             Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
-
             SetSiren();
         }
     }
@@ -169,7 +165,7 @@ public class Idle : ComplexTask
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal, 10f);
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

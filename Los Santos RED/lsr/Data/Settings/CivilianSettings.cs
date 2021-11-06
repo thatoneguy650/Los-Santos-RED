@@ -22,6 +22,10 @@ public class CivilianSettings
     public bool AllowMissionPedsToInteract { get; set; } = false;
     public bool AllowRandomCrimes { get; set; } = true;
     public uint MinimumTimeBetweenRandomCrimes { get; set; } = 300000;
+    public bool CheckCivilianCrimes { get; set; } = true;
+    public bool AllowCivilinsToCallPoliceOnOtherCivilians { get; set; } = true;
+    public bool ShowRandomCriminalBlips { get; set; } = true;
+
     public CivilianSettings()
     {
 

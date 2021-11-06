@@ -18,6 +18,8 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         VehicleExt CurrentVehicle { get; }
         PoolHandle OwnedVehicleHandle { get; set; }
+        int WantedLevel { get; }
+        Ped Character { get; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

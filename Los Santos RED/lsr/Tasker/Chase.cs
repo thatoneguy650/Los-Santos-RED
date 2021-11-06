@@ -174,7 +174,7 @@ public class Chase : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && ShouldUpdate)
         {
-            if (Ped.Pedestrian.IsInAnyPoliceVehicle)
+            if (Ped.Pedestrian.IsInAnyPoliceVehicle && !CopsVehicle.Exists())
             {
                 CopsVehicle = Ped.Pedestrian.CurrentVehicle;
             }
@@ -298,7 +298,8 @@ public class Chase : ComplexTask
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
                                                                                                                                          // NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //doesnt really work
-                    NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car
+                                                                                                                                         //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car
+                    NativeFunction.CallByName<bool>("TASK_ARREST_PED", 0, Player.Character);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

@@ -63,7 +63,7 @@ public class PedExt : IComplexTaskable
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
     public List<Crime> CrimesCurrentlyViolating => PedCrimes.CrimesCurrentlyViolating;
-    public List<Crime> CrimesWitnessed => PlayerPerception.CrimesWitnessed;
+    public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
     public int CurrentlyViolatingWantedLevel => PedCrimes.CurrentlyViolatingWantedLevel;
     public ComplexTask CurrentTask { get; set; }
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {PlayerPerception.DistanceToTarget} See {PlayerPerception.CanSeeTarget} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
@@ -81,6 +81,7 @@ public class PedExt : IComplexTaskable
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
     public bool IsCop { get; set; } = false;
     public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
+    public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsDriver { get; private set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public bool IsGangMember { get; set; } = false;
@@ -176,6 +177,24 @@ public class PedExt : IComplexTaskable
             }
         }
         return false;
+    }
+    public bool WasKilledBy(Ped ToCheck)
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsDead && ToCheck.Exists() && Pedestrian.Handle != ToCheck.Handle && Killer.Exists())
+        {
+            if (Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.Handle == Killer.Handle))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void SetWantedLevel(int toSet)
+    {
+        if(PedCrimes.WantedLevel < toSet)
+        {
+            PedCrimes.WantedLevel = toSet;
+        }
     }
     public bool CheckKilledBy(Ped ToCheck)
     {

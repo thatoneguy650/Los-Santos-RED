@@ -263,11 +263,11 @@ public class Debug
         {
             if(ped.Pedestrian.Inventory.EquippedWeapon != null)
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
             }
             else
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
             }
             
         }

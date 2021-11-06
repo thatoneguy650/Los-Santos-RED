@@ -84,6 +84,10 @@ namespace Mod
             {
                 Pedestrians.Firefighters.Add((Firefighter)pedExt);
             }
+            else 
+            {
+                Pedestrians.Civilians.Add(pedExt);
+            }
         }
         public void AddEntity(VehicleExt vehicle, ResponseType responseType) => Vehicles.AddToList(vehicle, responseType);
         public bool AnyCopsNearPosition(Vector3 position, float radius) => Pedestrians.AnyCopsNearPosition(position, radius);

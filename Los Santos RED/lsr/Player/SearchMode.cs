@@ -204,6 +204,8 @@ namespace LosSantosRED.lsr
                     CreateGhostCop();
                     return;//new to split up the create and move/los call?
                 }
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, 2725352035, true);
+                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
                 if (IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
                 {
                     MoveGhostCopToPosition(TargetIsInVehicle);

@@ -14,6 +14,7 @@ public class ApprehendOther : ComplexTask
     private Task myCurrentTask = Task.Nothing;
     private uint GameTimeClearedIdle;
     private bool IsArresting = true;
+    private float MoveRate = 1.0f;
     private float CurrentDistanceToTarget = 999f;
     private enum Task
     {
@@ -44,6 +45,7 @@ public class ApprehendOther : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole($"TASKER: ApprehendOther Start: {Ped.Pedestrian.Handle}", 5);
+            MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
             ClearTasks(false);
             Update();
         }
@@ -188,47 +190,6 @@ public class ApprehendOther : ComplexTask
             OtherTarget.Pedestrian.Kill();//for now simulate arrested?
             EntryPoint.WriteToConsole($"Should kill {OtherTarget.Pedestrian.Handle}", 3);
         }
-
-        //if (ClosestPed != null && OtherTarget == null)
-        //{
-        //    OtherTarget = ClosestPed;
-        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
-        //    ClearTasks(false);
-        //    OtherTargetTask();
-        //}
-        //else if (ClosestPed != null && OtherTarget != null && ClosestPed.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTarget.Pedestrian.Handle)
-        //{
-        //    OtherTarget = ClosestPed;
-        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendOther Target Changed to: {OtherTarget.Pedestrian.Handle}", 3);
-        //    ClearTasks(false);
-        //    OtherTargetTask();
-        //}
-        //else if(IsArresting && OtherTarget != null && OtherTarget.WantedLevel >= 3)
-        //{
-        //    IsArresting = false;
-        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
-        //    ClearTasks(false);
-        //    OtherTargetTask();
-        //}
-        //else if (!IsArresting && OtherTarget != null && OtherTarget.WantedLevel < 3)
-        //{
-        //    IsArresting = true;
-        //    EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Target Mode Changed (Kill) for: {OtherTarget.Pedestrian.Handle}", 3);
-        //    ClearTasks(false);
-        //    OtherTargetTask();
-        //}
-        //else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-        //{
-        //    if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-        //    {
-        //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}: ApprehendClosest Ped Lost Task for: {OtherTarget.Pedestrian.Handle}", 3);
-        //        OtherTargetTask();
-        //    }
-        //}
-
-
-
-
     }
     private void OtherTargetTask()
     {
@@ -245,6 +206,7 @@ public class ApprehendOther : ComplexTask
         {
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
+                NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
                 IsReadyForWeaponUpdates = true;
                 if (IsArresting)
                 {

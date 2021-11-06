@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -41,6 +42,9 @@ public class PedSwap : IPedSwap
     private Vehicle TargetPedVehicle;
     private PedVariation InitialVariation;
     private Model InitialModel;
+    private Vehicle CurrentPedVehicle;
+    private int CurrentPedVehicleSeat;
+
     public int CurrentPedMoney { get; private set; }
     public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
@@ -89,14 +93,12 @@ public class PedSwap : IPedSwap
             }
             else
             {
+                PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons);
+                toCreate.SetWantedLevel(Player.WantedLevel);
+                Entities.AddEntity(toCreate);
                 TaskFormerPed(CurrentPed);
             }
             PostTakeover(LastModelHash);
-
-
-
-
-
 
             GameFiber.StartNew(delegate
             {
@@ -316,6 +318,12 @@ public class PedSwap : IPedSwap
     {
         CurrentPedMoney = Player.Money;
         CurrentPedPosition = Player.Position;
+
+        if(Player.Character.IsInAnyVehicle(false) && Player.Character.CurrentVehicle.Exists())
+        {
+            CurrentPedVehicle = Player.Character.CurrentVehicle;
+            CurrentPedVehicleSeat = Game.LocalPlayer.Character.SeatIndex;
+        }
         TargetPedModel = TargetPed.Model;
         TargetPedModelName = TargetPed.Model.Name;
         TargetPedIsMale = TargetPed.IsMale;
@@ -324,6 +332,7 @@ public class PedSwap : IPedSwap
         TargetPedRelationshipGroup = TargetPed.RelationshipGroup;
         TargetPedAlreadyTakenOver = false;
         TargetPedHash = TargetPed.Model.Hash;
+
 
         World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
@@ -351,10 +360,10 @@ public class PedSwap : IPedSwap
             TargetPedVehicle = TargetPed.CurrentVehicle;
         }
         TargetPedUsingScenario = NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(TargetPed);//bool Scenario = false;
-        if (Game.LocalPlayer.Character.LastVehicle.Exists())
-        {
-            Game.LocalPlayer.Character.LastVehicle.Delete();
-        }
+        //if (Game.LocalPlayer.Character.LastVehicle.Exists())
+        //{
+        //    Game.LocalPlayer.Character.LastVehicle.Delete();
+        //}
         CurrentPed = Game.LocalPlayer.Character;
         if (TargetPed.IsInAnyVehicle(false))
         {
@@ -372,10 +381,27 @@ public class PedSwap : IPedSwap
         {
             return;
         }
+
+        if(CurrentPedVehicle != null && CurrentPedVehicle.Exists())
+        {
+            FormerPlayer.WarpIntoVehicle(CurrentPedVehicle, CurrentPedVehicleSeat);
+        }
+
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(FormerPlayer, (int)eCombatAttributes.BF_AlwaysFight, true);
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(FormerPlayer, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
+        FormerPlayer.BlockPermanentEvents = true;
+        FormerPlayer.KeepTasks = true;
         if (FormerPlayer.IsInAnyVehicle(false))
         {
             //FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
-            NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Normal);
+            if (Player.IsWanted)
+            {
+                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Emergency);
+            }
+            else
+            {
+                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal);
+            }
         }
         if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
         {
@@ -384,9 +410,35 @@ public class PedSwap : IPedSwap
         else
         {
             //FormerPlayer.Tasks.ClearImmediately();
-            NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(FormerPlayer);
+           // NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(FormerPlayer);
             //FormerPlayer.Tasks.Wander();
-            NativeFunction.Natives.TASK_WANDER_STANDARD(FormerPlayer, 0, 0);
+            if (Player.IsWanted)
+            {
+                Cop toAttack = Entities.PoliceList.Where(x=> x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(FormerPlayer)).FirstOrDefault();
+                if(toAttack != null)
+                {
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, toAttack.Pedestrian, 0, 16);
+                        NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, toAttack.Pedestrian.Position.X, toAttack.Pedestrian.Position.Y, toAttack.Pedestrian.Position.Z, 500f, -1, false, false);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
+                }
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(FormerPlayer, 100f, 0);
+            }
+            else
+            {
+                NativeFunction.Natives.TASK_WANDER_STANDARD(FormerPlayer, 0, 0);
+            }
         }
     }
     public void InlineModelSwap()

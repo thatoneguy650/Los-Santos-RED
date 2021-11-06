@@ -18,6 +18,11 @@ public class UISettings
     public float PlayerStatusScale { get; set; } = 0.4f;
     public int PlayerStatusJustificationID { get; set; } = 2;
 
+    public float CrimesStatusPositionX { get; set; } = 0.65f;
+    public float CrimesStatusPositionY { get; set; } = 0.98f;
+    public float CrimesStatusScale { get; set; } = 0.4f;
+    public int CrimesStatusJustificationID { get; set; } = 2;
+
 
     public float StreetPositionX { get; set; } = 0.87f;
     public float StreetPositionY { get; set; } = 0.98f;
@@ -42,6 +47,10 @@ public class UISettings
     public bool ShowZoneDisplay { get; set; } = true;
     public bool ShowStreetDisplay { get; set; } = true;
     public bool ShowPlayerDisplay { get; set; } = true;
+
+
+    public bool ShowCrimesDisplay { get; set; } = true;
+
     public bool SetBustedEffect { get; set; } = true;
     public bool PlayWastedSounds { get; set; } = true;
     public bool DisplayBustedMessage { get; set; } = true;

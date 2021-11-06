@@ -89,12 +89,14 @@ public class Investigate : ComplexTask
             if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
                 //4 | 16 | 32 | 262144
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Emergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)VehicleDrivingFlags.Emergency, 10f);
             }
             else
             {
                 //Ped.Pedestrian.Tasks.Wander();
-                NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                Vector3 Pos = Ped.Pedestrian.Position;
+                NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Pos.X, Pos.Y, Pos.Z, 45f, 0f, 0f);
             }
             EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
         }
@@ -108,26 +110,43 @@ public class Investigate : ComplexTask
         {
             HasReachedReportedPosition = false;
             CurrentTaskedPosition = Player.Investigation.Position;
-            if (Ped.Pedestrian.IsInAnyVehicle(false))
-            {
-                if (Ped.IsDriver)
-                {
-                    //4 | 16 | 32 | 262144
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 20f, (int)VehicleDrivingFlags.Emergency , 20f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
-                }
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 500f, -1, 0f, 2f);
-            }
+            UpdateGoTo();
             EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle),5);
         }
-        if(Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
+        float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
+        if (DistanceTo <= 25f)
         {
             HasReachedReportedPosition = true;
             EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle),5);
         }
+        else if (DistanceTo < 50f)
+        {
+            UpdateGoTo();
+        }
         //EntryPoint.WriteToConsole(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
+    }
+    private void UpdateGoTo()
+    {
+        if (Ped.Pedestrian.IsInAnyVehicle(false))
+        {
+            if (Ped.IsDriver)
+            {
+                if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) >= 50f)
+                {
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 20f, (int)VehicleDrivingFlags.Emergency, 20f);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)VehicleDrivingFlags.Emergency, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
+                }
+                //4 | 16 | 32 | 262144
+                //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+            }
+        }
+        else
+        {
+            NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 500f, -1, 0f, 2f);
+        }
     }
     private void SetSiren()
     {

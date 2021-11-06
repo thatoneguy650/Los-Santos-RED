@@ -44,5 +44,6 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedKMH { get; }
         Investigation Investigation { get; }
         bool HasCriminalHistory { get; }
+        string LawsViolating { get; }
     }
 }
