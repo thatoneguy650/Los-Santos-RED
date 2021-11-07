@@ -186,9 +186,12 @@ public class ApprehendOther : ComplexTask
 
         if (OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Pedestrian.IsStunned)
         {
-            OtherTarget.Pedestrian.Health = 0;
-            OtherTarget.Pedestrian.Kill();//for now simulate arrested?
-            EntryPoint.WriteToConsole($"Should kill {OtherTarget.Pedestrian.Handle}", 3);
+            //NativeFunction.Natives.CLEAR_PED_TASKS(OtherTarget.Pedestrian);
+            SetArrestedAnimation(OtherTarget.Pedestrian, false, false);
+            OtherTarget.SetWantedLevel(0);
+            //OtherTarget.Pedestrian.Health = 0;
+            //OtherTarget.Pedestrian.Kill();//for now simulate arrested?
+            //EntryPoint.WriteToConsole($"Should kill {OtherTarget.Pedestrian.Handle}", 3);
         }
     }
     private void OtherTargetTask()
@@ -232,7 +235,25 @@ public class ApprehendOther : ComplexTask
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
                         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, false);
-                        if (CurrentDistanceToTarget >= 10f)
+
+                        if(CurrentDistanceToTarget <= 7f && OtherTarget.Pedestrian.IsStunned)
+                        {
+                            if (SubTaskName != "ArrestingStunned")
+                            {
+                                unsafe
+                                {
+                                    int lol = 0;
+                                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                                    NativeFunction.CallByName<bool>("TASK_ARREST_PED", 0, OtherTarget.Pedestrian);
+                                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                }
+                                SubTaskName = "ArrestingStunned";
+                            }
+                        }
+                        else if (CurrentDistanceToTarget >= 10f)
                         {
                             if (SubTaskName != "ArrestingFar")
                             {
@@ -288,7 +309,72 @@ public class ApprehendOther : ComplexTask
             }
         }
     }
+    private void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded, bool StayStanding)
+    {
+        GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+        {
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
 
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+
+            while (PedToArrest.Exists() && (PedToArrest.IsRagdoll || PedToArrest.IsStunned))
+            {
+                GameFiber.Yield();
+            }
+
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+
+
+            if (PedToArrest.IsInAnyVehicle(false))
+            {
+                Vehicle oldVehicle = PedToArrest.CurrentVehicle;
+                if (PedToArrest.Exists() && oldVehicle.Exists())
+                {
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Tasked to leave the vehicle");
+                    NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                    GameFiber.Wait(2500);
+                }
+            }
+            if (StayStanding)
+            {
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
+                {
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Standing Animation");
+                }
+            }
+            else
+            {
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
+                {
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Kneel Animation");
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                    GameFiber.Wait(6000);
+
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Player.IsBusted))
+                    {
+                        return;
+                    }
+
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                }
+            }
+            PedToArrest.KeepTasks = true;
+
+            if (MarkAsNoLongerNeeded)
+            {
+                PedToArrest.IsPersistent = false;
+            }
+        }, "SetArrestedAnimation");
+    }
 
     private void SetSiren()
     {

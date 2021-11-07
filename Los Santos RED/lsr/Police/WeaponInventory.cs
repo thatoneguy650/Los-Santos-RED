@@ -41,7 +41,7 @@ public class WeaponInventory
     {
         if (ShouldAutoSetWeaponState && NeedsWeaponCheck)//NeedsWeaponCheck is new....
         {
-            if (Cop.CurrentTask?.Name == "ApprehendOther")// && Cop.CurrentTask.IsReadyForWeaponUpdates)
+            if (Cop.CurrentTask?.Name == "ApprehendOther" || Cop.CurrentTask?.Name == "AIApprehend")// && Cop.CurrentTask.IsReadyForWeaponUpdates)
             {
                 HasHeavyWeaponOnPerson = true;
                 if (Cop.CurrentTask.SubTaskName == "Fighting")

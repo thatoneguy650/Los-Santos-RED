@@ -33,8 +33,8 @@ public class PoliceSettings
     public int MinArmor { get; set; } = 0;
     public int MaxArmor { get; set; } = 50;
     public int SpawnLimit_Default { get; set; } = 5;
-    public int SpawnLimit_Investigation { get; set; } = 6;
-    public int SpawnLimit_Wanted1 { get; set; } = 7;
+    public int SpawnLimit_Investigation { get; set; } = 8;//6
+    public int SpawnLimit_Wanted1 { get; set; } = 8;//7
     public int SpawnLimit_Wanted2 { get; set; } = 10;
     public int SpawnLimit_Wanted3 { get; set; } = 18;
     public int SpawnLimit_Wanted4 { get; set; } = 25;

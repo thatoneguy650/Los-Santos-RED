@@ -38,6 +38,7 @@ namespace Mod
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
         public bool IsMPMapLoaded { get; private set; }
+        public List<VehicleExt> PoliceVehicleList => Vehicles.PoliceVehicleList;
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public int PoliceVehicleCount => Vehicles.PoliceVehiclesCount;

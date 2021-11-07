@@ -263,11 +263,11 @@ public class Debug
         {
             if(ped.Pedestrian.Inventory.EquippedWeapon != null)
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
             }
             else
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
             }
             
         }
@@ -280,7 +280,7 @@ public class Debug
             coolguy.BlockPermanentEvents = true;
             coolguy.KeepTasks = true;
 
-            if(RandomItems.RandomPercent(30))
+            if (RandomItems.RandomPercent(30))
             {
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
             }
@@ -288,37 +288,17 @@ public class Debug
             {
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
             }
-             Cop tofight = World.PoliceList.Where(x => x.Pedestrian.DistanceTo2D(coolguy) <= 40f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-
-            //if (RandomItems.RandomPercent(50))
-            //{
-            //    coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
-            //}
-            //else
-            //{
-            //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-            //}
-
-            if (tofight == null || RandomItems.RandomPercent(50))
-            {
-                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
-            }
-            else
-            {
-                //Cop tofight = World.PoliceList.Where(x=> x.Pedestrian.DistanceTo2D(coolguy) <= 40f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-                if (tofight != null && tofight.Pedestrian.Exists())
-                {
-                    coolguy.Tasks.FightAgainst(tofight.Pedestrian);
-                }
-                else
-                {
-                    coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                }
-            }
-            //coolguy.Tasks.FightAgainstClosestHatedTarget(100f, -1);
+            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {
-                Game.DisplayHelp($"Attackers Spawned! Press P to Delete");
+                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+
+
+                if (Game.IsKeyDownRightNow(Keys.O))
+                {
+                    coolguy.Tasks.Clear();
+                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                }
                 GameFiber.Sleep(25);
             }
             if (coolguy.Exists())
@@ -329,6 +309,44 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        GameFiber.StartNew(delegate
+        {
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+            coolguy.BlockPermanentEvents = true;
+            coolguy.KeepTasks = true;
+
+            if (RandomItems.RandomPercent(30))
+            {
+                coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+            }
+            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+            {
+                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+
+
+                if(Game.IsKeyDownRightNow(Keys.O))
+                {
+                    coolguy.Tasks.Clear();
+                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                }
+                GameFiber.Sleep(25);
+            }
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+        }, "Run Debug Logic");
+
+
+
+
+
+
+
+
+
+
         // IS_PED_IN_COMBAT
 
         //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
@@ -352,7 +370,7 @@ public class Debug
 
         //    EntryPoint.WriteToConsole($"Num5: Cop {cop.Handle} inCombat {inCombat} inCombatInverse {inCombatInverse} ", 5);
         //}
-        NativeFunction.Natives.SET_PED_TO_RAGDOLL_WITH_FALL(Game.LocalPlayer.Character, 1500, 2000, 1, Game.LocalPlayer.Character.ForwardVector, 1f, 0f, 0f, 0f, 0f, 0f, 0f);
+        //NativeFunction.Natives.SET_PED_TO_RAGDOLL_WITH_FALL(Game.LocalPlayer.Character, 1500, 2000, 1, Game.LocalPlayer.Character.ForwardVector, 1f, 0f, 0f, 0f, 0f, 0f, 0f);
 
     }
     private void DebugNumpad6()

@@ -30,6 +30,8 @@ namespace LosSantosRED.lsr.Interface
         int CivilianVehicleCount { get; }
         bool IsMPMapLoaded { get; }
         bool AnyWantedCiviliansNearPlayer { get; }
+        List<VehicleExt> PoliceVehicleList { get; }
+
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x, ResponseType responseType);

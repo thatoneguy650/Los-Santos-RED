@@ -45,6 +45,14 @@ public class PedCrimes
     public bool IsCurrentlyViolatingAnyCrimes => CrimesViolating.Any();
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => CrimesViolating.Any(x=> x.CanBeReportedByCivilians);
     public List<Crime> CrimesObservedViolating => CrimesObserved;
+    public void Reset()
+    {
+        CrimesViolating.Clear();
+        CrimesObserved.Clear();
+        IsShootingCheckerActive = false;
+        WantedLevel = 0;
+
+    }
     public void OnPedSeenByPolice()
     {
         int WantedLevelToAssign = 0;
@@ -108,18 +116,21 @@ public class PedCrimes
         if (ShouldCheck && Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes)
         {
             ResetViolations();
-            CheckCrimes(world,player);
-            if (WantedLevel > 0)
+            if (!PedExt.IsArrested)
             {
-                OnPedSeenByPolice();
-            }
-            else
-            {
-                CheckPoliceSight(world);
-            }
-            if(player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
-            {
-                CheckIfNeedsToCallPolice(world, player);
+                CheckCrimes(world, player);
+                if (WantedLevel > 0)
+                {
+                    OnPedSeenByPolice();
+                }
+                else
+                {
+                    CheckPoliceSight(world);
+                }
+                if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
+                {
+                    CheckIfNeedsToCallPolice(world, player);
+                }
             }
         }
     }
@@ -133,6 +144,12 @@ public class PedCrimes
                 if (DistanceTo <= 0.1f)
                 {
                     DistanceTo = 999f;
+                }
+                if(DistanceTo <= 10f)//right next to them = they can see ALL!
+                {
+                    OnPedSeenByPolice();
+                    OnPedHeardByPolice();
+                    return;
                 }
                 if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
                 {
@@ -239,74 +256,77 @@ public class PedCrimes
     }
     private void CheckCrimes(IEntityProvideable world, IPoliceRespondable player)
     {
-        bool isVisiblyArmed = IsVisiblyArmed();
-        if (isVisiblyArmed)
+        if (!PedExt.IsArrested)
         {
-            if (!PedExt.IsInVehicle)
+            bool isVisiblyArmed = IsVisiblyArmed();
+            if (isVisiblyArmed)
             {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));
-            }
-        }
-        if (isVisiblyArmed)
-        {
-            ShootingChecker();
-            if (IsShooting)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));
-                if (world.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
+                if (!PedExt.IsInVehicle)
                 {
-                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));
                 }
             }
-        }
-        else
-        {
-            IsShootingCheckerActive = false;
-        }
-        //foreach(PedExt civie in world.CivilianList)
-        //{
-        //    if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.WasKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
-        //    {
-        //        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
-        //        return;
-        //    }
-        //}
-
-        if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
-        {
-            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
-            if(isVisiblyArmed)
+            if (isVisiblyArmed)
             {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));  
-            }
-            foreach (Cop cop in world.PoliceList)
-            {
-                if (cop.Pedestrian.Exists())
+                ShootingChecker();
+                if (IsShooting)
                 {
-                    if (PedExt.Pedestrian.CombatTarget.Exists() && PedExt.Pedestrian.CombatTarget.Handle == cop.Pedestrian.Handle)
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));
+                    if (world.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
                     {
-                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
-                        break;
+                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));
                     }
                 }
             }
-        }
-        if(PedExt.Pedestrian.IsJacking)
-        {
-            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
-            GameTimeLastCommittedGTA = Game.GameTime;
-        }
-        if (Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle)
-        {
-            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
-        }
-        if (CrimesViolating.Any())
-        {
-            GameTimeLastCommittedCrime = Game.GameTime;
-        }
-        if(player.Investigation.IsActive && Game.GameTime - GameTimeLastCommittedCrime <= 25000 && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
-        {
-            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
+            else
+            {
+                IsShootingCheckerActive = false;
+            }
+            //foreach(PedExt civie in world.CivilianList)
+            //{
+            //    if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.WasKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
+            //    {
+            //        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
+            //        return;
+            //    }
+            //}
+
+            if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
+                if (isVisiblyArmed)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
+                }
+                foreach (Cop cop in world.PoliceList)
+                {
+                    if (cop.Pedestrian.Exists())
+                    {
+                        if (PedExt.Pedestrian.CombatTarget.Exists() && PedExt.Pedestrian.CombatTarget.Handle == cop.Pedestrian.Handle)
+                        {
+                            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
+                            break;
+                        }
+                    }
+                }
+            }
+            if (PedExt.Pedestrian.IsJacking)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
+                GameTimeLastCommittedGTA = Game.GameTime;
+            }
+            if (Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle && PedExt.IsDriver)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
+            }
+            if (CrimesViolating.Any())
+            {
+                GameTimeLastCommittedCrime = Game.GameTime;
+            }
+            if (!PedExt.IsArrested && player.Investigation.IsActive && Game.GameTime - GameTimeLastCommittedCrime <= 25000 && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
+            }
         }
     }
     private bool IsVisiblyArmed()

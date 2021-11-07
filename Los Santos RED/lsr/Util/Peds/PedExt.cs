@@ -79,6 +79,7 @@ public class PedExt : IComplexTaskable
     public bool HasSpokenWithPlayer { get; set; }
     public int Health { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
+    public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
     public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
@@ -156,6 +157,9 @@ public class PedExt : IComplexTaskable
             }
         }
     }
+
+    public bool IsArrested { get; set; }
+
     public bool CheckHurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)
@@ -194,6 +198,10 @@ public class PedExt : IComplexTaskable
         if(PedCrimes.WantedLevel < toSet)
         {
             PedCrimes.WantedLevel = toSet;
+        }
+        if (toSet == 0)
+        {
+            PedCrimes.Reset();
         }
     }
     public bool CheckKilledBy(Ped ToCheck)
@@ -243,11 +251,19 @@ public class PedExt : IComplexTaskable
             CurrentHealthState.Update(policeRespondable);
         }
     }
-    public void UpdateTask(List<PedExt> otherTargets)
+    //public void UpdateTask(List<PedExt> otherTargets)
+    //{
+    //    if (CurrentTask != null)
+    //    {
+    //        CurrentTask.OtherTargets = otherTargets;
+    //        CurrentTask.Update();
+    //    }
+    //}
+    public void UpdateTask(PedExt otherTarget)
     {
         if (CurrentTask != null)
         {
-            CurrentTask.OtherTargets = otherTargets;
+            CurrentTask.OtherTarget = otherTarget;
             CurrentTask.Update();
         }
     }

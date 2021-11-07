@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IComplexTaskable
     {
+        bool IsBusted { get; set; }
         bool IsInVehicle { get; }
         bool IsInHelicopter { get; }
         bool IsInBoat { get; }
@@ -28,5 +29,6 @@ namespace LosSantosRED.lsr.Interface
         ComplexTask CurrentTask { get; }
         bool IsRunningOwnFiber { get; set; }
 
+        void SetWantedLevel(int v);
     }
 }

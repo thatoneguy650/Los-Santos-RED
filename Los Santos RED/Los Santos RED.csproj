@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
+    <Compile Include="lsr\Tasker\AIApprehend.cs" />
     <Compile Include="lsr\Tasker\ApprehendOther.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="lsr\Tasker\eComatAttributes.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />
     <Compile Include="lsr\Tasker\Flee.cs" />
+    <Compile Include="lsr\Tasker\GetArrested.cs" />
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
