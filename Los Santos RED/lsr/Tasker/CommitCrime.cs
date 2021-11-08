@@ -30,21 +30,12 @@ public class CommitCrime : ComplexTask
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
 
-
-
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
-
-
             //int hashArg;
             //NativeFunction.Natives.ADD_RELATIONSHIP_GROUP("Criminals", out hashArg);
-
-
-
-
             //Ped.Pedestrian.RelationshipGroup = new RelationshipGroup("Criminals");
             //Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.c, Relationship.Neutral);
-
 
             if (ToIssue != null)
             {
@@ -86,7 +77,7 @@ public class CommitCrime : ComplexTask
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Target.Pedestrian, 0, 16);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 500f, -1, false, false);
+                    //NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 500f, -1, false, false);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

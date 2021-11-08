@@ -263,11 +263,11 @@ public class Debug
         {
             if(ped.Pedestrian.Inventory.EquippedWeapon != null)
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName}", 5);
             }
             else
             {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}", 5);
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName}", 5);
             }
             
         }
@@ -382,13 +382,44 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        Crime ToAnnounce = Crimes.CrimeList.Where(x => x.ID == "NonRoadworthyVehicle").FirstOrDefault();
-        if (ToAnnounce != null)
+
+        Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
+        Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        if (PedToArrest.Exists())
         {
-            Player.CurrentVehicle.HasBeenDescribedByDispatch = false;
-            Player.DebugScanner.AnnounceCrime(ToAnnounce, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true) { VehicleSeen = Player.CurrentVehicle });
-            EntryPoint.WriteToConsole($"Announcing {ToAnnounce.Name}", 3);
+            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+            {
+                EntryPoint.WriteToConsole($"TASK_GO_STRAIGHT_TO_COORD START!", 3);
+                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 500f, -1, 0f, 2f);
+
+                GameFiber.Wait(20000);
+
+                if (PedToArrest.Exists())
+                {
+                    PedToArrest.Delete();
+                }
+            }, "UnSetArrestedAnimation");
         }
+
+        //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
+        //{
+        //    EntryPoint.WriteToConsole($"    Ped: {ped.Pedestrian.Handle}", 3);
+        //    foreach (WitnessedCrime wc in ped.OtherCrimesWitnessed)
+        //    {
+        //        EntryPoint.WriteToConsole($"            Witnessed Crime: {wc.Crime.Name} {wc.Perpetrator.Pedestrian.Handle}", 3);
+        //    }
+        //}
+
+
+        //SetArrestedAnimation(Game.LocalPlayer.Character, false, false);
+
+        //Crime ToAnnounce = Crimes.CrimeList.Where(x => x.ID == "NonRoadworthyVehicle").FirstOrDefault();
+        //if (ToAnnounce != null)
+        //{
+        //    Player.CurrentVehicle.HasBeenDescribedByDispatch = false;
+        //    Player.DebugScanner.AnnounceCrime(ToAnnounce, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true) { VehicleSeen = Player.CurrentVehicle });
+        //    EntryPoint.WriteToConsole($"Announcing {ToAnnounce.Name}", 3);
+        //}
 
 
         //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, true);
@@ -396,11 +427,144 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Tasker.CreateCrime();
+        //UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
+        Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        if (PedToArrest.Exists())
+        {
+            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+            {
+                EntryPoint.WriteToConsole($"TASK_FOLLOW_NAV_MESH_TO_COORD START!", 3);
+                NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 2.0f, -1, 5f, true, 0f);
+
+                GameFiber.Wait(20000);
+
+                if(PedToArrest.Exists())
+                {
+                    PedToArrest.Delete();
+                }
+            }, "UnSetArrestedAnimation");
+        }
+        //Tasker.CreateCrime();
         //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, false);
         //NativeHelper.ChangeModel("a_f_m_bevhills_02");
         //NativeHelper.ChangeModel("player_zero");
         //EntryPoint.WriteToConsole($"!SET_PED_AS_COP", 5);
+    }
+    private void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded, bool StayStanding)
+    {
+        //SubTaskName = "SetArrested";
+        GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+        {
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
+
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+
+            while (PedToArrest.Exists() && (PedToArrest.IsRagdoll || PedToArrest.IsStunned))
+            {
+                GameFiber.Yield();
+            }
+
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+
+
+            if (PedToArrest.IsInAnyVehicle(false))
+            {
+                Vehicle oldVehicle = PedToArrest.CurrentVehicle;
+                if (PedToArrest.Exists() && oldVehicle.Exists())
+                {
+                    NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                    GameFiber.Wait(2500);
+                }
+            }
+
+            NativeFunction.Natives.SET_PED_DROPS_WEAPON(PedToArrest);
+            //Ped.SetWantedLevel(0);
+
+            if (StayStanding)
+            {
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
+                {
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                }
+            }
+            else
+            {
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
+                {
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                    GameFiber.Wait(6000);
+
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Player.IsBusted))
+                    {
+                        return;
+                    }
+
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                }
+            }
+            PedToArrest.KeepTasks = true;
+
+            if (MarkAsNoLongerNeeded)
+            {
+                PedToArrest.IsPersistent = false;
+            }
+            //GameTimeFinishedArrestedAnimation = Game.GameTime;
+            //PlayedArrestAnimation = true;
+            //EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);
+
+        }, "SetArrestedAnimation");
+    }
+    public void UnSetArrestedAnimation(Ped PedToArrest)
+    {
+       // SubTaskName = "UnSetArrested";
+        GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+        {
+            AnimationDictionary.RequestAnimationDictionay("random@arrests");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
+            AnimationDictionary.RequestAnimationDictionay("mp_arresting");
+            if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
+            {
+                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+                //GameFiber.Wait(1000);
+
+
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
+
+
+
+
+                //while (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", PedToArrest, "random@arrests", "kneeling_arrest_escape") < 1.0f)
+                //{
+                //    GameFiber.Yield();
+                //}
+
+
+
+
+
+                GameFiber.Wait(2000);//1250
+
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 4.0f, -4.0f, -1, 50, 0, 0, 1, 0);
+                GameFiber.Wait(7000);//1250
+                NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
+            }
+            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
+            }
+            //PlayedUnArrestAnimation = true;
+            //EntryPoint.WriteToConsole($"TASKER: GetArrested Played UNArrest Animation: {Ped.Pedestrian.Handle}", 3);
+        }, "UnSetArrestedAnimation");
     }
     private void SetPlayerOffset()
     {
@@ -439,7 +603,7 @@ public class Debug
     }
     private void DebugNumpad9()
     {
- 
+        Tasker.CreateCrime();
     }
     private void DrawDebugArrowsOnPeds()
     {
@@ -704,6 +868,7 @@ public class Debug
             }
         }
     }
+
     enum eTaskTypeIndex
     {
  //    CTaskHandsUp = 0,

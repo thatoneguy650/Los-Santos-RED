@@ -14,14 +14,19 @@ public class MainMenu : Menu
     private UIMenu Main;
     private IActionable Player;
     private UIMenuItem CallPolice;
+
+    private UIMenuItem GenerateCrime;
+
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
     private UIMenuItem TakeVehicleOwnership;
     private ISettingsProvideable Settings;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings)
+    private ITaskerable Tasker;
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker)
     {
         Player = player;
         Settings = settings;
+        Tasker = tasker;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(Main);
         SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
@@ -77,8 +82,8 @@ public class MainMenu : Menu
         CallPolice = new UIMenuItem("Call Police", "Need some help?");
 
         CallPolice.RightBadge = UIMenuItem.BadgeStyle.Ammo;
-
-
+        GenerateCrime = new UIMenuItem("Generate Crime", "Attempt to generate a random crime around the player");
+        GenerateCrime.RightBadge = UIMenuItem.BadgeStyle.Alert;
 
 
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
@@ -88,6 +93,7 @@ public class MainMenu : Menu
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Gun;
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
         Main.AddItem(CallPolice);
+        Main.AddItem(GenerateCrime);
         Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(ShowStatus);
         Main.AddItem(UnloadMod);
@@ -106,9 +112,13 @@ public class MainMenu : Menu
         {
             Player.TakeOwnershipOfNearestCar();
         }
-        if (selectedItem == CallPolice)
+        else if (selectedItem == CallPolice)
         {
             Player.CallPolice();
+        }
+        else if (selectedItem == GenerateCrime)
+        {
+            Tasker.CreateCrime();
         }
         Main.Visible = false;
     }

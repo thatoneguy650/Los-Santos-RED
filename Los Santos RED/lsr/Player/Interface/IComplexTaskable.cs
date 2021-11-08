@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Pedestrian { get; }
         int LastSeatIndex { get; }
         List<Crime> PlayerCrimesWitnessed { get; }
+        List<WitnessedCrime> OtherCrimesWitnessed { get; }
         VehicleExt VehicleLastSeenPlayerIn { get; }
         WeaponInformation WeaponLastSeenPlayerWith { get; }
         bool EverSeenPlayer { get; }
@@ -28,6 +29,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; }
         ComplexTask CurrentTask { get; }
         bool IsRunningOwnFiber { get; set; }
+        int WantedLevel { get; }
 
         void SetWantedLevel(int v);
     }

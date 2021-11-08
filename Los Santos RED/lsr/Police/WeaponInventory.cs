@@ -42,41 +42,24 @@ public class WeaponInventory
         if (ShouldAutoSetWeaponState && NeedsWeaponCheck)//NeedsWeaponCheck is new....
         {
             if (Cop.CurrentTask?.Name == "ApprehendOther" || Cop.CurrentTask?.Name == "AIApprehend")// && Cop.CurrentTask.IsReadyForWeaponUpdates)
-            {
-                HasHeavyWeaponOnPerson = true;
-                if (Cop.CurrentTask.SubTaskName == "Fighting")
+            {     
+                if (Cop.CurrentTask?.SubTaskName == "Fighting")
                 {
-                    SetDeadly();
+                    SetDeadly(true);
                 }
                 else
                 {
-                    SetLessLethal();
+                    SetLessLethal(false);
                 }
-                //if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.WantedLevel <= 2)
-                //{
-                //    SetLessLethal();//SetDeadly();
-                //}
-                //else
-                //{
-                //    if (!IsSetDefault)
-                //    {
-                //        SetDefault();
-                //    }
-                //}
-                //else
-                //{
-                //    SetLessLethal();
-                //}
-
             }
             else
-            {
-                HasHeavyWeaponOnPerson = false;
+            {      
                 if (WantedLevel == 0)
                 {
                     if (!IsSetDefault)
                     {
                         SetDefault();
+                        HasHeavyWeaponOnPerson = false;
                     }
 
                 }
@@ -93,12 +76,12 @@ public class WeaponInventory
                             }
                             else
                             {
-                                SetDeadly();
+                                SetDeadly(false);
                             }
                         }
                         else
                         {
-                            SetDeadly();
+                            SetDeadly(false);
                         }
                     }
                     else
@@ -109,7 +92,7 @@ public class WeaponInventory
                         }
                         else
                         {
-                            SetLessLethal();
+                            SetLessLethal(true);
                         }
                     }
                 }
@@ -143,7 +126,7 @@ public class WeaponInventory
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
-    public void SetDeadly()
+    public void SetDeadly(bool ForceLong)
     {
         if ((!IsSetDeadly || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
@@ -159,7 +142,7 @@ public class WeaponInventory
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(Cop.Pedestrian);
             }
-            if (LongGun != null && HasHeavyWeaponOnPerson && !Cop.IsInVehicle)
+            if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong) && !Cop.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, LongGun.GetHash(), true);
             }
@@ -178,7 +161,7 @@ public class WeaponInventory
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
-    public void SetLessLethal()
+    public void SetLessLethal(bool disableDriveby)
     {
         if ((!IsSetLessLethal || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
@@ -196,7 +179,10 @@ public class WeaponInventory
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
             //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, false);//cant use vehicle in combat
-            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
+            if (disableDriveby)
+            {
+                NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
+            }
             IsSetLessLethal = true;
             IsSetUnarmed = false;
             IsSetDeadly = false;

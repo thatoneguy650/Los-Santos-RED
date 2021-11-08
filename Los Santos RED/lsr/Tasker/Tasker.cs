@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Tasker
+public class Tasker : ITaskerable
 {
     private IEntityProvideable PedProvider;
     private ITargetable Player;
@@ -84,38 +84,6 @@ public class Tasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Cop Task");
                 }
                 GameFiber.Yield();
-            }
-        }
-    }
-    private bool ShouldGuardPlayer(List<PedExt> PossibleTargets)
-    {
-        if (Player.IsBusted)
-        {
-            if (PossibleTargets.Any(x => x.IsDeadlyChase))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            if (Player.PoliceResponse.IsDeadlyChase)
-            {
-                return true;
-            }
-            else
-            {
-                if(PossibleTargets.Any(x=> x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
             }
         }
     }
@@ -212,68 +180,7 @@ public class Tasker
     private void UpdateOtherTargets()
     {
         PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWanted && x.DistanceToPlayer <= 150f).ToList();
-
         ClosestCopToPlayer = PedProvider.PoliceList.Where(x => !x.IsInVehicle && x.DistanceToPlayer <= 30f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        
-
-
-        //List<uint> AssignedCriminals = new List<uint>();
-        //shouldGuardPlayer = ShouldGuardPlayer(PossibleTargets);
-
-
-        ////OtherTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.WantedLevel > Player.WantedLevel || Player.IsBusted) && x.DistanceToPlayer <= 150f).ToList();
-        //List<PedExt> PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWanted && x.DistanceToPlayer <= 150f).ToList();
-        //if(Player.IsBusted)
-        //{
-        //    if (PossibleTargets.Any(x => x.IsDeadlyChase))
-        //    {
-        //        OtherTargets = PossibleTargets.Where(x => x.IsDeadlyChase).ToList();
-        //        PlayerGuard = null;
-        //    }
-        //    else
-        //    {
-        //        Cop toGuardPlayer = PedProvider.PoliceList.Where(x=> x.DistanceToPlayer <= 30f && !x.IsInVehicle).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        //        if (toGuardPlayer != null)
-        //        {
-        //            PlayerGuard = toGuardPlayer;
-        //        }
-        //        OtherTargets = PossibleTargets;
-        //    }
-        //}
-        //else
-        //{
-        //    if(Player.PoliceResponse.IsDeadlyChase)
-        //    {
-        //        PlayerGuard = null;
-        //        OtherTargets = PossibleTargets.Where(x=> x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).ToList();
-        //    }
-        //    else
-        //    {
-        //        PlayerGuard = null;
-        //        OtherTargets = PossibleTargets.Where(x => x.WantedLevel > Player.WantedLevel).ToList();
-        //    }
-        //}
-        //if (Player.IsWanted)
-        //{
-        //    if (OtherTargets.Any() && !IsIgnoredByPolice)
-        //    {
-        //        IsIgnoredByPolice = true;
-        //        Game.LocalPlayer.IsIgnoredByPolice = true;
-        //    }
-        //    else if (!OtherTargets.Any() && IsIgnoredByPolice)
-        //    {
-        //        IsIgnoredByPolice = false;
-        //        Game.LocalPlayer.IsIgnoredByPolice = false;
-        //    }
-        //}
-        //else
-        //{
-        //    if (IsIgnoredByPolice)
-        //    {
-        //        IsIgnoredByPolice = false;
-        //        Game.LocalPlayer.IsIgnoredByPolice = false;
-        //    }
-        //}
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
@@ -356,7 +263,7 @@ public class Tasker
                     if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
                     {
                         EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                        Cop.CurrentTask = new Idle(Cop, Player);
+                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider);
                         Cop.CurrentTask.Start();
                     }
 
@@ -368,7 +275,7 @@ public class Tasker
             if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
             {
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                Cop.CurrentTask = new Idle(Cop, Player);
+                Cop.CurrentTask = new Idle(Cop, Player, PedProvider);
                 Cop.CurrentTask.Start();
             }
             else
@@ -390,23 +297,23 @@ public class Tasker
         {
             if (Civilian.CurrentTask?.Name != "GetArrested")
             {
-                VehicleExt ToGoTo = PedProvider.PoliceVehicleList.Where(x => x.Vehicle.Exists() && (x.Vehicle.IsSeatFree(1) || x.Vehicle.IsSeatFree(2)) && x.Vehicle.Speed == 0f).OrderBy(x => x.Vehicle.DistanceTo2D(Civilian.Pedestrian)).FirstOrDefault();
-                Civilian.CurrentTask = new GetArrested(Civilian, Player, ToGoTo);
+                //VehicleExt ToGoTo = PedProvider.PoliceVehicleList.Where(x => x.Vehicle.Exists() && (x.Vehicle.IsSeatFree(1) || x.Vehicle.IsSeatFree(2)) && x.Vehicle.Speed == 0f).OrderBy(x => x.Vehicle.DistanceTo2D(Civilian.Pedestrian)).FirstOrDefault();
+                Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider);
                 Civilian.CurrentTask.Start();
             }
         }
         else if (Civilian.DistanceToPlayer <= 75f && Civilian.CanBeTasked && Civilian.CanBeAmbientTasked)//50f
         {
-            //bool SeenAnyReportableCrime = Civilian.CrimesWitnessed.Any(x => x.CanBeReportedByCivilians);
-            bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians);
-            bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians);
+            WitnessedCrime HighestPriority = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
             if (SeenScaryCrime || SeenAngryCrime)
             {
                 if (Civilian.WillCallPolice)
                 {
                     if (Civilian.CurrentTask?.Name != "CallIn")
                     {
-                        Civilian.CurrentTask = new CallIn(Civilian, Player);
+                        Civilian.CurrentTask = new CallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
                     }
                 }
@@ -416,7 +323,7 @@ public class Tasker
                     {
                         if (Civilian.CurrentTask?.Name != "Fight")
                         {
-                            Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)); ;
+                            Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
                             Civilian.CurrentTask.Start();
                         }
                     }
@@ -424,7 +331,7 @@ public class Tasker
                     {
                         if (Civilian.CurrentTask?.Name != "Flee")
                         {
-                            Civilian.CurrentTask = new Flee(Civilian, Player);
+                            Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                             Civilian.CurrentTask.Start();
                         }
                     }
@@ -433,7 +340,7 @@ public class Tasker
                 {
                     if (Civilian.CurrentTask?.Name != "Flee")
                     {
-                        Civilian.CurrentTask = new Flee(Civilian, Player);
+                        Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
                     }
                 }
@@ -442,10 +349,10 @@ public class Tasker
             {
                 if (Civilian.CurrentTask?.Name != "Fight")
                 {
-                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)); ;
+                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
                     Civilian.CurrentTask.Start();
                 }
-            }     
+            }   
         }
         Civilian.GameTimeLastUpdatedTask = Game.GameTime;
     }

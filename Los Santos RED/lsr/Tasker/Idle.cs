@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -13,7 +14,9 @@ public class Idle : ComplexTask
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
     private uint GameTimeClearedIdle;
-    private PedExt OtherTargetPed;
+    private int SeatTryingToEnter;
+    private VehicleExt VehicleTryingToEnter;
+    private IEntityProvideable World;
 
     private enum Task
     {
@@ -26,22 +29,20 @@ public class Idle : ComplexTask
     {
         get
         {
-            //if(OtherTargets != null && OtherTargets.Any())
-            //{
-            //    return Task.OtherTarget;
-            //}
-            //else if(NativeFunction.Natives.GET_PED_ALERTNESS<int>(Ped.Pedestrian) > 0)
-            //{
-            //    return Task.Nothing;
-            //}
-          //  else 
-            if (Ped.DistanceToPlayer <= 75f && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)//(Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+            if(!Ped.Pedestrian.IsInAnyVehicle(false))
             {
-                return Task.GetInCar;
-            }
-            else if (CurrentTask == Task.GetInCar && !Ped.Pedestrian.IsInAnyVehicle(false))
-            {
-                return Task.GetInCar;
+                if(Ped.DistanceToPlayer <= 75f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+                {
+                    return Task.GetInCar;
+                }
+                else if (CurrentTask == Task.GetInCar)
+                {
+                    return Task.GetInCar;
+                }
+                else
+                {
+                    return Task.Wander;
+                }
             }
             else
             {
@@ -49,10 +50,11 @@ public class Idle : ComplexTask
             }
         }
     }
-    public Idle(IComplexTaskable cop, ITargetable player) : base(player, cop, 1500)
+    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world) : base(player, cop, 1500)//1500
     {
         Name = "Idle";
         SubTaskName = "";
+        World = world;
     }
     public override void Start()
     {
@@ -60,7 +62,68 @@ public class Idle : ComplexTask
         {
             EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}", 5);
             ClearTasks(true);
+            if(Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
+            {
+                VehicleTryingToEnter = World.GetVehicleExt(Ped.Pedestrian.LastVehicle.Handle);
+                if (VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
+                {
+                    int? PossileSeat;
+                    if (VehicleTryingToEnter.Vehicle.Model.NumberOfSeats == 1)
+                    {
+                        PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, -1);
+                        if (PossileSeat != null)
+                        {
+                            SeatTryingToEnter = PossileSeat ?? default(int);
+                        }
+                    }
+                    else
+                    {
+                        PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, 0);
+                        if (PossileSeat != null)
+                        {
+                            SeatTryingToEnter = PossileSeat ?? default(int);
+                        }
+                    }
+                }
+                else
+                {
+                    GetClosesetPoliceVehicle();
+                }
+            }
+            else
+            {
+                GetClosesetPoliceVehicle();
+            }
+
+            if(VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
+            {
+                EntryPoint.WriteToConsole($"COP EVENT: {Ped.Pedestrian.Handle} Get in Car START {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}  ", 3);
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"COP EVENT: {Ped.Pedestrian.Handle} Get in Car START NONE Seat {SeatTryingToEnter}  ", 3);
+            }
             Update();
+        }
+    }
+    private void GetClosesetPoliceVehicle()
+    {
+        VehicleTryingToEnter = World.PoliceVehicleList.Where(x => x.Vehicle.Exists() && ((x.Vehicle.Model.NumberOfSeats > 1 && x.Vehicle.GetFreeSeatIndex(-1, 0) != null) || (x.Vehicle.Model.NumberOfSeats == 1 && x.Vehicle.GetFreeSeatIndex(-1, -1) != null)) && x.Vehicle.Speed == 0f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)).FirstOrDefault();
+        if (VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
+        {
+            int? PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, 0);
+            if (PossileSeat != null)
+            {
+                SeatTryingToEnter = PossileSeat ?? default(int);
+            }
+        }
+        if (VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
+        {
+            EntryPoint.WriteToConsole($"COP EVENT: {Ped.Pedestrian.Handle} Get in Car UPDATE {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}  ", 3);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"COP EVENT: {Ped.Pedestrian.Handle} Get in Car UPDATE NONE Seat {SeatTryingToEnter}  ", 3);
         }
     }
     private void ClearTasks(bool resetAlertness)//temp public
@@ -84,7 +147,6 @@ public class Idle : ComplexTask
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
             }
-            // Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             if (WasInVehicle && !Ped.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
             {
                 Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
@@ -114,48 +176,47 @@ public class Idle : ComplexTask
     {
         if (CurrentTask == Task.Wander)
         {
+            RunInterval = 1500;
             SubTaskName = "Wander";
             Wander(IsFirstRun);
         }
         else if (CurrentTask == Task.GetInCar)
         {
+            RunInterval = 500;
             SubTaskName = "GetInCar";
             GetInCar(IsFirstRun);
         }
         else if (CurrentTask == Task.Nothing)
         {
+            RunInterval = 1500;
             SubTaskName = "Nothing";
             Nothing(IsFirstRun);
         }
-        //else if (CurrentTask == Task.OtherTarget)
-        //{
-        //    SubTaskName = "OtherTarget";
-        //    OtherTarget(IsFirstRun);
-        //}
         GameTimeLastRan = Game.GameTime;
     }
     private void Wander(bool IsFirstRun)
     {
-        
-        if (IsFirstRun)
+        if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
-            NeedsUpdates = true;
-            ClearTasks(true);
-            WanderTask();
+            if (IsFirstRun)
+            {
+                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
+                NeedsUpdates = true;
+                ClearTasks(true);
+                WanderTask();
+            }
+            else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
+            {
+                WanderTask();
+            }
         }
-        else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-        {
-            WanderTask();
-        }
-
     }
     private void WanderTask()
     {
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.KeepTasks = true;
         if (Ped.Pedestrian.Exists())
         {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
@@ -182,39 +243,48 @@ public class Idle : ComplexTask
     }
     private void GetInCar(bool IsFirstRun)
     {
-        
-        if (IsFirstRun)
+        if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"COP EVENT: Get in Car Idle Start: {Ped.Pedestrian.Handle}", 3);
-            NeedsUpdates = true;
-            GetInCarTask();
-        }
-        else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-        {
-            GetInCarTask();
+            if (IsFirstRun)
+            {
+                EntryPoint.WriteToConsole($"COP EVENT: Get in Car Idle Start: {Ped.Pedestrian.Handle}", 3);
+                NeedsUpdates = true;
+                GetInCarTask();
+            }
+            else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            {
+                GetInCarTask();
+            }
+            if(VehicleTryingToEnter == null)//|| !VehicleTryingToEnter.Vehicle.Exists() || !VehicleTryingToEnter.Vehicle.IsSeatFree(SeatTryingToEnter))
+            {
+                GetClosesetPoliceVehicle();
+                GetInCarTask();
+            }
+            else if (!VehicleTryingToEnter.Vehicle.Exists())
+            {
+                GetClosesetPoliceVehicle();
+                GetInCarTask();
+            }
+            else if (!VehicleTryingToEnter.Vehicle.IsSeatFree(SeatTryingToEnter))
+            {
+                GetClosesetPoliceVehicle();
+                GetInCarTask();
+            }
+            //instead need to keep checking if the seat is free!!!!!!
         }
     }
     private void GetInCarTask()
     {
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.KeepTasks = true;
-        if (Ped.Pedestrian.LastVehicle.Exists())
+        if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists()) //if (Ped.Pedestrian.Exists() && Ped.Pedestrian.LastVehicle.Exists())
         {
-            int SeatIndex = Ped.LastSeatIndex;
-            if (!Ped.Pedestrian.LastVehicle.IsSeatFree(Ped.LastSeatIndex))
-            {
-                int? PossileSeat = Ped.Pedestrian.LastVehicle.GetFreeSeatIndex(-1, 0);
-                if(PossileSeat != null)
-                {
-                    SeatIndex = PossileSeat ?? default(int);
-                }
-            }
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             unsafe
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Ped.Pedestrian.LastVehicle, -1, SeatIndex, 1f, 9);
-                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
+                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, 12000);// RandomItems.MyRand.Next(4000, 8000));
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -225,85 +295,23 @@ public class Idle : ComplexTask
     }
     private void Nothing(bool IsFirstRun)
     {
-        EntryPoint.WriteToConsole($"COP EVENT: Nothing Idle Start: {Ped.Pedestrian.Handle}", 3);
-        if (IsFirstRun)
+        if (Ped.Pedestrian.Exists())
         {
-            ClearTasks(false);
-            GameTimeClearedIdle = Game.GameTime;
-        }
-        else if (Game.GameTime - GameTimeClearedIdle >= 10000)
-        {
-            NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
+            EntryPoint.WriteToConsole($"COP EVENT: Nothing Idle Start: {Ped.Pedestrian.Handle}", 3);
+            if (IsFirstRun)
+            {
+                ClearTasks(false);
+                GameTimeClearedIdle = Game.GameTime;
+            }
+            else if (Game.GameTime - GameTimeClearedIdle >= 10000)
+            {
+                NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
+            }
         }
     }
-
-    //private void OtherTarget(bool IsFirstRun)
-    //{
-    //    PedExt ClosestPed = OtherTargets.Where(x=> x.Pedestrian.Exists()).OrderByDescending(x => x.WantedLevel).OrderBy(x => x.Pedestrian.DistanceTo2D(Ped.Pedestrian)).FirstOrDefault();
-    //    if (IsFirstRun)
-    //    {
-    //        OtherTargetPed = ClosestPed;
-    //        EntryPoint.WriteToConsole($"COP EVENT: OtherTarget Idle Start: {Ped.Pedestrian.Handle}", 3);
-    //        if(ClosestPed != null && ClosestPed.Pedestrian.Exists())
-    //        {
-    //            EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                      OtherTarget Start Target Handle: {ClosestPed.Pedestrian.Handle}", 3);
-    //        }
-    //        NeedsUpdates = true;
-    //        RunInterval = 2000;
-    //        ClearTasks(true);
-    //        OtherTargetTask();
-    //    }
-    //    if(OtherTargetPed != null && !OtherTargetPed.Pedestrian.Exists())
-    //    {
-    //        OtherTargetPed = null;
-    //    }
-    //    if(ClosestPed == null)
-    //    {
-    //        OtherTargetPed = null;
-    //    }
-    //    if(ClosestPed != null && OtherTargetPed == null)
-    //    {
-    //        OtherTargetPed = ClosestPed;
-    //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                      OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
-    //        OtherTargetTask();
-    //    }
-    //    if(ClosestPed != null && OtherTargetPed != null && ClosestPed.Pedestrian.Exists() && OtherTargetPed.Pedestrian.Exists() && ClosestPed.Pedestrian.Handle != OtherTargetPed.Pedestrian.Handle)
-    //    {
-    //        OtherTargetPed = ClosestPed;
-    //        EntryPoint.WriteToConsole($"COP EVENT {Ped.Pedestrian.Handle}:                                  OtherTarget Idle Ped Target Changed: {OtherTargetPed.Pedestrian.Handle}", 3);
-    //        OtherTargetTask();
-    //    }
-    //    if (Ped.Pedestrian.Exists())
-    //    {
-    //        string stuff = $"COP EVENT {Ped.Pedestrian.Handle}: OtherTarget Idle ";
-    //        if(OtherTargetPed != null)
-    //        {
-    //            stuff += $"OtherTargetPed {OtherTargetPed != null} {OtherTargetPed.Pedestrian.Exists()}";
-    //        }
-    //        if (OtherTargets != null)
-    //        {
-    //            stuff += $"     OtherTargets: {OtherTargets.Count()}";
-    //        }
-    //        EntryPoint.WriteToConsole(stuff, 3);
-    //    }
-    //}
-    //private void OtherTargetTask()
-    //{
-    //    Ped.Pedestrian.BlockPermanentEvents = true;
-    //    Ped.Pedestrian.KeepTasks = true;
-    //    if (Ped.Pedestrian.Exists())
-    //    {
-    //        if(OtherTargetPed != null && OtherTargetPed.Pedestrian.Exists())
-    //        {
-    //            Ped.Pedestrian.Tasks.FightAgainst(OtherTargetPed.Pedestrian, -1);
-    //        }
-    //    }
-    //}
-
-
     private void SetSiren()
     {
-        if (Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
