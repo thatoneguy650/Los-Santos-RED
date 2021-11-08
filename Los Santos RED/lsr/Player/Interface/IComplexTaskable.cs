@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Interface
         ComplexTask CurrentTask { get; }
         bool IsRunningOwnFiber { get; set; }
         int WantedLevel { get; }
+        bool IsMovingFast { get; }
 
         void SetWantedLevel(int v);
     }

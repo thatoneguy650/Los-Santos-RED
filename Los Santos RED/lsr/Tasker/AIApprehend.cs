@@ -32,7 +32,7 @@ public class AIApprehend : ComplexTask
     private uint GameTimeTargetLastMovedFast;
     private uint GameTimeLastBustedTarget;
     private uint GameTimeLastReleasedTarget;
-    private bool IsTargetMovingFast => GameTimeTargetLastMovedFast != 0 && Game.GameTime - GameTimeTargetLastMovedFast <= 2000;
+    
     private enum Task
     {
         VehicleChase,
@@ -74,12 +74,10 @@ public class AIApprehend : ComplexTask
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
     private bool ShouldChasePedInVehicle => DistanceToTarget >= 35f;//25f
     private bool ShouldGetBackInCar => CopsVehicle.Exists() && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
-    private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !IsTargetMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
-    private bool ShouldExitPoliceVehicle => DistanceToTarget < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !IsTargetMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
+    private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !OtherTarget.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
+    private bool ShouldExitPoliceVehicle => DistanceToTarget < 20f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f//private bool ShouldExitPoliceVehicle => DistanceToTarget < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Ped.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
     private bool ChaseRecentlyStarted => GameTimeChaseStarted != 0 && Game.GameTime - GameTimeChaseStarted <= 3000;
     private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
-    private bool ShouldShoot => !OtherTarget.IsBusted && OtherTarget.WantedLevel > 1;
-    private bool ShouldAim => OtherTarget.WantedLevel > 1;
     public AIDynamic CurrentAIDynamic
     {
         get
@@ -171,7 +169,14 @@ public class AIApprehend : ComplexTask
         }
         else if (CurrentAIDynamic == AIDynamic.Cop_OnFoot_Player_OnFoot)
         {
-            return Task.FootChase;
+            if (DistanceToTarget >= 50f && ShouldGetBackInCar)//this is new, was only footchase in here before, cant wait to see the bugs....
+            {
+                return Task.EnterVehicle;
+            }
+            else
+            {
+                return Task.FootChase;
+            }
         }
         else
         {
@@ -218,29 +223,6 @@ public class AIApprehend : ComplexTask
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
                 DistanceToTarget = OtherTarget.Pedestrian.DistanceTo2D(Ped.Pedestrian);
-                if (OtherTarget.IsInVehicle && OtherTarget.Pedestrian.CurrentVehicle.Exists())
-                {
-                    if (OtherTarget.Pedestrian.CurrentVehicle.Speed >= 2.0f)
-                    {
-                        GameTimeTargetLastMovedFast = Game.GameTime;
-                    }
-                    else
-                    {
-                        GameTimeTargetLastMovedFast = 0;
-                    }
-                }
-                else
-                {
-                    if (OtherTarget.Pedestrian.Speed >= 7.0f)
-                    {
-                        GameTimeTargetLastMovedFast = Game.GameTime;
-                    }
-                    else
-                    {
-                        GameTimeTargetLastMovedFast = 0;
-                    }
-
-                }
                 if (Ped.Pedestrian.IsInAnyPoliceVehicle && !CopsVehicle.Exists())
                 {
                     CopsVehicle = Ped.Pedestrian.CurrentVehicle;
@@ -411,6 +393,10 @@ public class AIApprehend : ComplexTask
         {
             OtherTarget.IsBusted = true;
             OtherTarget.IsArrested = true;
+            if (Ped.Pedestrian.Exists())
+            {
+                OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
+            }
             EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
         }
     }

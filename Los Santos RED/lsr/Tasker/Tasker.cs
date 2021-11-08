@@ -146,7 +146,39 @@ public class Tasker : ITaskerable
             }
         }
     }
+
     private PedExt PedToAttack(Cop Cop)
+    {
+        PedExt MainTarget = null;
+        if (Cop.Pedestrian.Exists() && Cop.DistanceToPlayer <= 200f)
+        {
+            if (Player.IsBusted)
+            {
+                if (PossibleTargets.Any(x => x.IsDeadlyChase))
+                {
+                    MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x=>x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                }
+                else
+                {
+                    if (ClosestCopToPlayer == null || Cop.Handle != ClosestCopToPlayer.Handle)
+                    {
+                        MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                    }
+                }
+
+            }
+            else if (Player.PoliceResponse.IsDeadlyChase)
+            {
+                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+            }
+            else
+            {
+                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+            }
+        }
+        return MainTarget;
+    }
+    private PedExt PedToAttack_Old(Cop Cop)
     {
         PedExt MainTarget = null;
         if (Cop.Pedestrian.Exists() && Cop.DistanceToPlayer <= 200f)
@@ -179,8 +211,8 @@ public class Tasker : ITaskerable
     }
     private void UpdateOtherTargets()
     {
-        PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWanted && x.DistanceToPlayer <= 150f).ToList();
-        ClosestCopToPlayer = PedProvider.PoliceList.Where(x => !x.IsInVehicle && x.DistanceToPlayer <= 30f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWanted && x.DistanceToPlayer <= 200f).ToList();//150f
+        ClosestCopToPlayer = PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
@@ -386,6 +418,128 @@ public class Tasker : ITaskerable
             }
         }
         return ToIssue;
+    }
+
+
+
+
+    private void CopToPerpAssigning()
+    {
+        foreach (PedExt criminal in PossibleTargets.Where(x => x.Pedestrian.Exists()))
+        {
+
+        }
+        //List<uint> PerpsAssigned = new List<uint>();
+        //foreach(Cop cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f))
+        //{
+        //    float closestDistance = 999f;
+        //    PedExt ClosestCriminal = null;
+
+
+        //    float closestBustedDistance = 999f;
+        //    PedExt ClosestBustedCriminal = null;
+
+        //    float closestDeadlyDistance = 999f;
+        //    PedExt ClosestDeadlyCriminal = null;
+
+        //    float closestDeadlyBustedDistance = 999f;
+        //    PedExt ClosestDeadlyBustedCriminal = null;
+        //    foreach (PedExt criminal in PossibleTargets.Where(x=> x.Pedestrian.Exists()))
+        //    {
+        //        float distanceToCriminal = cop.Pedestrian.DistanceTo2D(criminal.Pedestrian);
+        //        if (criminal.IsDeadlyChase)
+        //        {
+        //            if (criminal.IsBusted)
+        //            {
+        //                if (distanceToCriminal <= closestDeadlyBustedDistance)
+        //                {
+        //                    closestDeadlyBustedDistance = distanceToCriminal;
+        //                    ClosestDeadlyBustedCriminal = criminal;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (distanceToCriminal <= closestDeadlyDistance)
+        //                {
+        //                    closestDeadlyDistance = distanceToCriminal;
+        //                    ClosestDeadlyCriminal = criminal;
+        //                }
+        //            }
+        //        }
+        //        if(criminal.IsBusted)
+        //        {
+        //            if (distanceToCriminal <= closestBustedDistance)
+        //            {
+        //                closestBustedDistance = distanceToCriminal;
+        //                ClosestBustedCriminal = criminal;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (distanceToCriminal <= closestDistance)
+        //            {
+        //                closestDistance = distanceToCriminal;
+        //                ClosestCriminal = criminal;
+        //            }
+        //        }
+
+        //    }
+
+        //    if(ClosestDeadlyCriminal != null)
+        //    {
+        //        if(Player.PoliceResponse.IsDeadlyChase)
+        //        {
+        //            if(closestDeadlyDistance <= cop.DistanceToPlayer)
+        //            {
+        //                //go after ped
+        //            }
+        //            else
+        //            {
+        //                //go after player?
+        //            }
+        //        }
+        //    }
+        //    else if (ClosestDeadlyBustedCriminal != null)
+        //    {
+
+        //    }
+
+        //}
+    }
+    private PedExt PedToAttackNew(Cop Cop)
+    {
+        PedExt MainTarget = null;
+
+        if (Cop.Pedestrian.Exists() && Cop.DistanceToPlayer <= 200f)
+        {
+            float closestDistance = 999f;
+            PedExt ClosestCrimnal = null;
+
+            float closestDeadlyDistance = 999f;
+            PedExt ClosestDeadlyCrimnal = null;
+
+            foreach (PedExt criminal in PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted))
+            {
+                float distanceToCriminal = Cop.Pedestrian.DistanceTo2D(criminal.Pedestrian);
+                if (criminal.IsDeadlyChase)
+                {
+                    closestDeadlyDistance = distanceToCriminal;
+                }
+                if (distanceToCriminal <= closestDeadlyDistance)
+                {
+                    closestDeadlyDistance = distanceToCriminal;
+                    ClosestDeadlyCrimnal = criminal;
+                }
+                if (distanceToCriminal <= closestDistance)
+                {
+                    closestDistance = distanceToCriminal;
+                    ClosestCrimnal = criminal;
+                }
+            }
+        }
+        return MainTarget;
+
+        //assign first deadly or not, then closeset, if busted, make sure none o\thers are assigned to him already!
     }
 
 }

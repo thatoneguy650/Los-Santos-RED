@@ -139,7 +139,15 @@ public class Chase : ComplexTask
         }
         else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_OnFoot)
         {
-            return Task.FootChase;
+            if (Ped.DistanceToPlayer >= 50f && ShouldGetBackInCar)//this is new, was only footchase in here before, cant wait to see the bugs....
+            {
+                return Task.EnterVehicle;
+            }
+            else
+            {
+                return Task.FootChase;
+            }
+            //return Task.FootChase;
         }
         else
         {

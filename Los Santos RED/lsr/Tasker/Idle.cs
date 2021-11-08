@@ -111,11 +111,23 @@ public class Idle : ComplexTask
         VehicleTryingToEnter = World.PoliceVehicleList.Where(x => x.Vehicle.Exists() && ((x.Vehicle.Model.NumberOfSeats > 1 && x.Vehicle.GetFreeSeatIndex(-1, 0) != null) || (x.Vehicle.Model.NumberOfSeats == 1 && x.Vehicle.GetFreeSeatIndex(-1, -1) != null)) && x.Vehicle.Speed == 0f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)).FirstOrDefault();
         if (VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
-            int? PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, 0);
-            if (PossileSeat != null)
+            if(VehicleTryingToEnter.Vehicle.Model.NumberOfSeats > 1)
             {
-                SeatTryingToEnter = PossileSeat ?? default(int);
+                int? PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, 0);
+                if (PossileSeat != null)
+                {
+                    SeatTryingToEnter = PossileSeat ?? default(int);
+                }
             }
+            else
+            {
+                int? PossileSeat = VehicleTryingToEnter.Vehicle.GetFreeSeatIndex(-1, -1);
+                if (PossileSeat != null)
+                {
+                    SeatTryingToEnter = PossileSeat ?? default(int);
+                }
+            }
+
         }
         if (VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
@@ -284,7 +296,7 @@ public class Idle : ComplexTask
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, 12000);// RandomItems.MyRand.Next(4000, 8000));
+                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

@@ -23,6 +23,7 @@ public class PedExt : IComplexTaskable
     private IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;
     private uint GameTimeLastEnteredVehicle;
+    private uint GameTimeLastMovedFast;
 
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
@@ -42,6 +43,7 @@ public class PedExt : IComplexTaskable
         Name = _Name;
         PedGroup = gameGroup;
     }
+    public uint ArrestingPedHandle { get; set; } = 0;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract);
     public bool CanBeTasked { get; set; } = true;
@@ -92,6 +94,7 @@ public class PedExt : IComplexTaskable
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
+    public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
     public bool IsWanted => PedCrimes.IsWanted;
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
@@ -286,6 +289,14 @@ public class PedExt : IComplexTaskable
             {
                 IsOnBike = Pedestrian.IsOnBike;
             }
+            if (Pedestrian.CurrentVehicle.Speed >= 2.0f)
+            {
+                GameTimeLastMovedFast = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastMovedFast = 0;
+            }
         }
         else
         {
@@ -293,7 +304,15 @@ public class PedExt : IComplexTaskable
             IsOnBike = false;
             IsDriver = false;
             IsInBoat = false;
-        }
+            if (Pedestrian.Speed >= 7.0f)
+            {
+                GameTimeLastMovedFast = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastMovedFast = 0;
+            }
+        }  
     }
 }
 
