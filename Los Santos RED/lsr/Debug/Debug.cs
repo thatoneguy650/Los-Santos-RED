@@ -311,7 +311,7 @@ public class Debug
     {
         GameFiber.StartNew(delegate
         {
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(-20f).Around2D(10f));
             coolguy.BlockPermanentEvents = true;
             coolguy.KeepTasks = true;
 
@@ -319,10 +319,14 @@ public class Debug
             {
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
             }
-            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
-            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+            else if (RandomItems.RandomPercent(30))
             {
-                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+                coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
+            }
+            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P) && ModController.IsRunning)
+            {
+               // Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
 
 
                 if(Game.IsKeyDownRightNow(Keys.O))
@@ -603,7 +607,8 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        Tasker.CreateCrime();
+        //Tasker.CreateCrime();
+        World.ClearSpawnedVehicles();
     }
     private void DrawDebugArrowsOnPeds()
     {

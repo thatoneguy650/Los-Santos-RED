@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();//CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
-        public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.Select(x => x.Name));
+        public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
         public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance);
         public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtCivilianTime;
         public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtPoliceTime;

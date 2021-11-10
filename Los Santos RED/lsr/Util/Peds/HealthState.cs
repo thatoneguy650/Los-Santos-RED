@@ -122,14 +122,21 @@ public class HealthState
         {
             return;
         }
-        if (MyPed.Pedestrian.IsDead && MyPed.CheckKilledBy(Game.LocalPlayer.Character))
+        if (MyPed.Pedestrian.IsDead)
         {
-            CurrentPlayer.AddKilled(MyPed);
+            MyPed.LogSourceOfDeath();
+            if (MyPed.CheckKilledBy(CurrentPlayer.Character))
+            {
+                CurrentPlayer.AddKilled(MyPed);
+            }
         }
-        else if (MyPed.Pedestrian.IsAlive && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(Game.LocalPlayer.Character))
+        else
         {
-            MyPed.HasBeenHurtByPlayer = true;
-            CurrentPlayer.AddInjured(MyPed);
+            if (!MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character))
+            {
+                MyPed.HasBeenHurtByPlayer = true;
+                CurrentPlayer.AddInjured(MyPed);
+            }
         }
     }
     private BodyLocation GetDamageLocation(Ped Pedestrian)

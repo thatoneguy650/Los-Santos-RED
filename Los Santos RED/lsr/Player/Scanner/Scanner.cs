@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr
                     {
                         if (CurrentPlayer.IsNotWanted)
                         {
-                            if (ToAnnounce.Priority <= HighestCivilianReportedPriority)
+                            if (ToAnnounce.Priority < HighestCivilianReportedPriority || (ToAnnounce.Priority == HighestCivilianReportedPriority && !ToAnnounce.HasRecentlyBeenPlayed))
                             {
                                 AddToQueue(ToAnnounce, reportInformation);
                             }

@@ -15,9 +15,9 @@ public class PedCrimes
     private PedExt PedExt;
     private List<Crime> CrimesViolating = new List<Crime>();
     private List<Crime> CrimesObserved = new List<Crime>();
-
+    private bool EverCommittedCrime = false;
     private List<WitnessedCrime> OtherPedCrimesObserved = new List<WitnessedCrime>();
-
+    private uint GameTimeBecameWanted;
     private ICrimes Crimes;
     private bool IsShooting = false;
     private ISettingsProvideable Settings;
@@ -261,8 +261,20 @@ public class PedCrimes
     }
     private void CheckCrimes(IEntityProvideable world, IPoliceRespondable player)
     {
-        if (!PedExt.IsArrested)
+        if (!PedExt.IsBusted)
         {
+            if (IsWanted)
+            {
+                if (GameTimeBecameWanted == 0)
+                {
+                    GameTimeBecameWanted = Game.GameTime;
+                }
+                if(!CrimesObserved.Any(x => x.ID == "ResistingArrest") && Game.GameTime - GameTimeBecameWanted >= 10000)
+                {
+                    AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                    
+                }
+            }
             bool isVisiblyArmed = IsVisiblyArmed();
             if (isVisiblyArmed)
             {
@@ -287,15 +299,39 @@ public class PedCrimes
             {
                 IsShootingCheckerActive = false;
             }
-            //foreach(PedExt civie in world.CivilianList)
-            //{
-            //    if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.WasKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
-            //    {
-            //        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
-            //        return;
-            //    }
-            //}
+            if (!IsDeadlyChase && EverCommittedCrime)
+            {
+                foreach (PedExt civie in world.CivilianList)
+                {
+                    if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.CheckKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
+                    {
+                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
+                        return;
+                    }
+                }
+            }
 
+
+
+            if (PedExt.IsInVehicle && PedExt.WasSetCriminal)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
+            }
+
+            if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
+            {
+                foreach (Cop cop in world.PoliceList)
+                {
+                    if (cop.Pedestrian.Exists() && cop.Pedestrian.IsDead)
+                    {
+                        if (cop.CheckKilledBy(PedExt.Pedestrian))//this is already logged so only comparing uints? no game calls
+                        {
+                            AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//add killing police observed, then get outta here
+                            break;
+                        }
+                    }
+                }
+            }
             if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
@@ -327,8 +363,12 @@ public class PedCrimes
             if (CrimesViolating.Any())
             {
                 GameTimeLastCommittedCrime = Game.GameTime;
+                if(!EverCommittedCrime)
+                {
+                    EverCommittedCrime = true;
+                }
             }
-            if (!PedExt.IsArrested && player.Investigation.IsActive && Game.GameTime - GameTimeLastCommittedCrime <= 25000 && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
+            if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 60000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
             }

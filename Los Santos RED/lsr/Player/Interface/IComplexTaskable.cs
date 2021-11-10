@@ -31,6 +31,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsRunningOwnFiber { get; set; }
         int WantedLevel { get; }
         bool IsMovingFast { get; }
+        bool RecentlyGotOutOfVehicle { get; }
+        bool RecentlyGotInVehicle { get; }
+        bool IsArrested { get; }
+        uint Handle { get; }
 
         void SetWantedLevel(int v);
     }

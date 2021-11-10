@@ -42,6 +42,7 @@ public class AIApprehend : ComplexTask
         CarJack,
         FootChase,
         Nothing,
+        StopCar
     }
     private enum eVehicleMissionType
     {
@@ -72,12 +73,13 @@ public class AIApprehend : ComplexTask
     }
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
-    private bool ShouldChasePedInVehicle => DistanceToTarget >= 35f;//25f
-    private bool ShouldGetBackInCar => CopsVehicle.Exists() && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
+    private bool ShouldChasePedInVehicle => DistanceToTarget >= 55f; //DistanceToTarget >= 35f;//25f
+    private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && CopsVehicle.Exists() && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !OtherTarget.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
-    private bool ShouldExitPoliceVehicle => DistanceToTarget < 20f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f//private bool ShouldExitPoliceVehicle => DistanceToTarget < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Ped.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
-    private bool ChaseRecentlyStarted => GameTimeChaseStarted != 0 && Game.GameTime - GameTimeChaseStarted <= 3000;
-    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
+    public bool ShouldStopCar => DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
+    private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f//private bool ShouldExitPoliceVehicle => DistanceToTarget < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Ped.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
+    private bool ChaseRecentlyStarted => false;//GameTimeChaseStarted != 0 && Game.GameTime - GameTimeChaseStarted <= 3000;
+    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 1;//500;//20000
     public AIDynamic CurrentAIDynamic
     {
         get
@@ -130,6 +132,10 @@ public class AIApprehend : ComplexTask
                 if (ShouldChasePedInVehicle)
                 {
                     return Task.VehicleChasePed;
+                }
+                else if (ShouldStopCar)//is new
+                {
+                    return Task.StopCar;
                 }
                 else if (ShouldExitPoliceVehicle)
                 {
@@ -242,6 +248,7 @@ public class AIApprehend : ComplexTask
                 if (Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
                 {
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)VehicleDrivingFlags.Emergency);
                     SetSiren();
                     if (Ped.Pedestrian.CurrentVehicle.Exists())
                     {
@@ -308,6 +315,12 @@ public class AIApprehend : ComplexTask
             SubTaskName = "Nothing";
             VehicleChasePed();
         }
+        else if (CurrentTask == Task.StopCar)
+        {
+            RunInterval = 500;
+            SubTaskName = "StopCar";
+            StopCar();
+        }
         GameTimeLastRan = Game.GameTime;
     }
     private void GoToPlayersCar()
@@ -361,52 +374,44 @@ public class AIApprehend : ComplexTask
     }
     private void FootChase()
     {
-        if (IsFirstRun)
+        if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
         {
-            IsFirstRun = false;
-            NeedsUpdates = true;
-            EntryPoint.WriteToConsole($"COP EVENT: OtherTarget Idle Start: {Ped.Pedestrian.Handle}", 3);
-            NeedsUpdates = true;
+            if (IsFirstRun)
+            {
+                IsFirstRun = false;
+                NeedsUpdates = true;
+                EntryPoint.WriteToConsole($"COP EVENT: AI Apprehend Start: {Ped.Pedestrian.Handle}", 3);
+            }
+            FootChaseLoop();   
+            if (OtherTarget.Pedestrian.IsStunned && !OtherTarget.IsBusted)
+            {
+                OtherTarget.IsBusted = true;
+                if (Ped.Pedestrian.Exists())
+                {
+                    OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
+                }
+                EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
+            }
+        }
+    }
+    private void FootChaseLoop()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a error?
+            {
+                SubTaskName = "";
+            }
             if (IsArresting && OtherTarget != null && OtherTarget.IsDeadlyChase)
             {
                 IsArresting = false;
             }
-            OtherTargetTask();
-        }
-        if (IsArresting && OtherTarget != null && OtherTarget.IsDeadlyChase)
-        {
-            IsArresting = false;
-        }
-        else if (!IsArresting && OtherTarget != null && !OtherTarget.IsDeadlyChase)
-        {
-            IsArresting = true;
-        }
-        if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a error?
-        {
-            SubTaskName = "";
-        }
-        if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-        {
-            OtherTargetTask();
-        }
-        if (OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Pedestrian.IsStunned && !OtherTarget.IsBusted)
-        {
-            OtherTarget.IsBusted = true;
-            OtherTarget.IsArrested = true;
-            if (Ped.Pedestrian.Exists())
+            else if (!IsArresting && OtherTarget != null && !OtherTarget.IsDeadlyChase)
             {
-                OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
+                IsArresting = true;
             }
-            EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
-        }
-    }
-    private void OtherTargetTask()
-    {
-        if (Ped.Pedestrian.Exists())
-        {
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-
             NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
@@ -688,6 +693,22 @@ public class AIApprehend : ComplexTask
         }
         //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Target.Pedestrian, 7, 30f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);
         EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
+    }
+    private void StopCar()
+    {
+        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            NeedsUpdates = false;
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, 2000);
+            EntryPoint.WriteToConsole($"AIApprehend Stop Car: {Ped.Pedestrian.Handle}", 5);
+        }
+        else
+        {
+            NeedsUpdates = true;
+            return;
+        }
     }
     private void SetSiren()
     {

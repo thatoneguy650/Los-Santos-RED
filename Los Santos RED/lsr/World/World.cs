@@ -97,6 +97,8 @@ namespace Mod
             Pedestrians.ClearSpawned();
             Vehicles.ClearSpawned();
         }
+        public void ClearSpawnedVehicles() => Vehicles.ClearSpawned();
+        public void ClearSpawnedPedestrians() => Pedestrians.ClearSpawned();
         public void Dispose()
         {
             RemoveBlips();

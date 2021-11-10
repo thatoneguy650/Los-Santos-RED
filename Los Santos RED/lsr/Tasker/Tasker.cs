@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Tasker : ITaskerable
+public class Tasker : ITaskerable, ITaskerReportable
 {
     private IEntityProvideable PedProvider;
     private ITargetable Player;
@@ -24,6 +24,7 @@ public class Tasker : ITaskerable
     private List<PedExt> PossibleTargets;
     private Cop ClosestCopToPlayer;
 
+    private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
     private bool IsTimeToCreateCrime => Game.GameTime - GameTimeLastGeneratedCrime >= (Settings.SettingsManager.CivilianSettings.MinimumTimeBetweenRandomCrimes + RandomCrimeRandomTime);
     public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings)
     {
@@ -37,6 +38,7 @@ public class Tasker : ITaskerable
     public void RunPoliceTasks()
     {
         UpdateOtherTargets();
+        ExpireSeatAssignments();
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
             try
@@ -53,6 +55,7 @@ public class Tasker : ITaskerable
     }
     public void RunCiviliansTasks()
     {
+        ExpireSeatAssignments();
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
             try
@@ -72,6 +75,7 @@ public class Tasker : ITaskerable
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
             UpdateOtherTargets();
+            ExpireSeatAssignments();
             foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))
             {
                 try
@@ -95,6 +99,7 @@ public class Tasker : ITaskerable
         }
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
+            ExpireSeatAssignments();
             foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
                 try
@@ -123,10 +128,10 @@ public class Tasker : ITaskerable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 85f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//150f
+        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
-            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 85f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
+            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 55f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
             if (Victim != null && Victim.Pedestrian.Exists())
             {
                 if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
@@ -138,7 +143,8 @@ public class Tasker : ITaskerable
                 }
                 
                 Criminal.CanBeAmbientTasked = false;
-                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim);
+                Criminal.WasSetCriminal = true;
+                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim, PedProvider);
                 Criminal.CurrentTask.Start();
                 EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
                 GameTimeLastGeneratedCrime = Game.GameTime;
@@ -146,7 +152,48 @@ public class Tasker : ITaskerable
             }
         }
     }
-
+    public bool IsSeatAssigned(IComplexTaskable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);
+    public bool AddSeatAssignment(IComplexTaskable ped, VehicleExt vehicle, int seat)
+    {
+        if(ped == null || !ped.Pedestrian.Exists() || vehicle == null || !vehicle.Vehicle.Exists())
+        {
+            return false;
+        }
+        if(SeatAssignments.Any(x=> x.Vehicle != null && x.Vehicle.Handle == vehicle.Handle && x.Seat == seat))
+        {
+            return false;
+        }
+        SeatAssignments.Add(new AssignedSeat(ped,vehicle,seat));
+        return true;
+    }
+    public void RemoveSeatAssignment(IComplexTaskable ped)
+    {
+        if (ped != null)
+        {
+            SeatAssignments.RemoveAll(x => x.Ped != null && x.Ped.Handle == ped.Handle);
+        }
+    }
+    public void PrintAllSeatAssignments()
+    {
+        EntryPoint.WriteToConsole($"TASKER: SEAT ASSIGNMENTS ==============================================", 3);
+        foreach (AssignedSeat assignedseat in SeatAssignments)
+        {
+            EntryPoint.WriteToConsole($"TASKER: Ped {assignedseat.Ped.Handle} Veh {assignedseat.Vehicle.Handle} Seat {assignedseat.Seat}", 3);
+        }
+        EntryPoint.WriteToConsole($"TASKER: SEAT ASSIGNMENTS ==============================================", 3);
+    }
+    private void ExpireSeatAssignments()
+    {
+        //foreach (AssignedSeat assignedseat in SeatAssignments)
+        //{
+        //    if(assignedseat.Vehicle == null || assignedseat.Ped == null || !assignedseat.Vehicle.Vehicle.Exists() || !assignedseat.Ped.Pedestrian.Exists() || assignedseat.Ped.Pedestrian.IsDead)
+        //    {
+        //        EntryPoint.WriteToConsole($"TASKER: EXPIRED ASSIGNMENT Ped {assignedseat.Ped.Handle} Veh {assignedseat.Vehicle.Handle} Seat {assignedseat.Seat}", 3);
+        //    }
+            
+        //}
+        SeatAssignments.RemoveAll(x => x.Vehicle == null || x.Ped == null || !x.Vehicle.Vehicle.Exists() || !x.Ped.Pedestrian.Exists() || x.Ped.Pedestrian.IsDead);
+    }
     private PedExt PedToAttack(Cop Cop)
     {
         PedExt MainTarget = null;
@@ -169,11 +216,21 @@ public class Tasker : ITaskerable
             }
             else if (Player.PoliceResponse.IsDeadlyChase)
             {
-                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault(); //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                if(MainTarget != null && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer)
+                {
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
+                    MainTarget = null;
+                }
             }
             else
             {
-                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x=> x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+                if (Player.IsWanted && MainTarget != null && !MainTarget.IsDeadlyChase && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer)
+                {
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Non Deadly)", 3);
+                    MainTarget = null;
+                }
             }
         }
         return MainTarget;
@@ -295,7 +352,7 @@ public class Tasker : ITaskerable
                     if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
                     {
                         EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider);
+                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this);
                         Cop.CurrentTask.Start();
                     }
 
@@ -307,7 +364,7 @@ public class Tasker : ITaskerable
             if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
             {
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                Cop.CurrentTask = new Idle(Cop, Player, PedProvider);
+                Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this);
                 Cop.CurrentTask.Start();
             }
             else
@@ -330,7 +387,7 @@ public class Tasker : ITaskerable
             if (Civilian.CurrentTask?.Name != "GetArrested")
             {
                 //VehicleExt ToGoTo = PedProvider.PoliceVehicleList.Where(x => x.Vehicle.Exists() && (x.Vehicle.IsSeatFree(1) || x.Vehicle.IsSeatFree(2)) && x.Vehicle.Speed == 0f).OrderBy(x => x.Vehicle.DistanceTo2D(Civilian.Pedestrian)).FirstOrDefault();
-                Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider);
+                Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider, this);
                 Civilian.CurrentTask.Start();
             }
         }

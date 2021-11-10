@@ -159,6 +159,7 @@
     <Compile Include="lsr\Police\Voice.cs" />
     <Compile Include="lsr\Services\EMT.cs" />
     <Compile Include="lsr\Services\Firefighter.cs" />
+    <Compile Include="lsr\Tasker\AssignedSeat.cs" />
     <Compile Include="lsr\Tasker\CallIn.cs" />
     <Compile Include="lsr\Tasker\CommitCrime.cs" />
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="lsr\Tasker\Flee.cs" />
     <Compile Include="lsr\Tasker\GetArrested.cs" />
     <Compile Include="lsr\Tasker\ITaskerable.cs" />
+    <Compile Include="lsr\Tasker\ITaskerReportable.cs" />
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />

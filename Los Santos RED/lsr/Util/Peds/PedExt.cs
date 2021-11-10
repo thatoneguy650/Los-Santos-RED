@@ -24,7 +24,7 @@ public class PedExt : IComplexTaskable
     private ISettingsProvideable Settings;
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastMovedFast;
-
+    
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
         Pedestrian = _Pedestrian;
@@ -91,6 +91,7 @@ public class PedExt : IComplexTaskable
     public bool IsDriver { get; private set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public bool IsGangMember { get; set; } = false;
+    public bool WasSetCriminal { get; set; } = false;
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
@@ -123,8 +124,8 @@ public class PedExt : IComplexTaskable
     public Ped Pedestrian { get; private set; }
     public PedGroup PedGroup { get; private set; }
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
-    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 5000;
-    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 10000;
+    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 3000;
+    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 3000;
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; set; }
@@ -187,17 +188,6 @@ public class PedExt : IComplexTaskable
         }
         return false;
     }
-    public bool WasKilledBy(Ped ToCheck)
-    {
-        if (Pedestrian.Exists() && Pedestrian.IsDead && ToCheck.Exists() && Pedestrian.Handle != ToCheck.Handle && Killer.Exists())
-        {
-            if (Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.Handle == Killer.Handle))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
     public void SetWantedLevel(int toSet)
     {
         if(PedCrimes.WantedLevel < toSet)
@@ -206,6 +196,7 @@ public class PedExt : IComplexTaskable
         }
         if (toSet == 0)
         {
+            IsArrested = true;
             PedCrimes.Reset();
         }
     }
@@ -215,8 +206,8 @@ public class PedExt : IComplexTaskable
         {
             if (Pedestrian.Exists() && Pedestrian.IsDead && Pedestrian.Handle != ToCheck.Handle)
             {
-                Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                if (Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.Handle == Killer.Handle))
+                //Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
+                if (Killer.Exists() && Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == Killer.Handle))
                 {
                     return true;
                 }
@@ -230,6 +221,20 @@ public class PedExt : IComplexTaskable
             return false;
         }
 
+    }
+    public void LogSourceOfDeath()
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsDead)
+        {
+            try
+            {
+                Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}",5);
+            }
+        }
     }
     public bool SeenPlayerWithin(int msSince) => PlayerPerception.SeenTargetWithin(msSince);
     public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
