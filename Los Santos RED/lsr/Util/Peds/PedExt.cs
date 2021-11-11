@@ -277,10 +277,12 @@ public class PedExt : IComplexTaskable
         {
             if (IsInVehicle)//got in
             {
+                EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Got In Vehicle", 5);
                 GameTimeLastEnteredVehicle = Game.GameTime;
             }
             else//got out
             {
+                EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Go Out of Vehicle", 5);
                 GameTimeLastExitedVehicle = Game.GameTime;
             }
         }

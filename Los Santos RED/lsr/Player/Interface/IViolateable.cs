@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedMPH { get; }
         bool RecentlyBribedPolice { get; }
         bool RecentlyPaidFine { get; }
+        bool ShouldCheckViolations { get; }
 
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
     }

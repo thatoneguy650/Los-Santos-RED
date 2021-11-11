@@ -1,4 +1,6 @@
 ﻿using LSR.Vehicles;
+using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAiming { get; }
         bool IsMoving { get; }
         bool IsPerformingActivity { get; set; }
+        Ped Character { get; }
 
         void RaiseHands();
         void LowerHands();
@@ -32,5 +35,6 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void StartConversation();
         void StartScenario();
+        void SurrenderToPolice(GameLocation location);
     }
 }

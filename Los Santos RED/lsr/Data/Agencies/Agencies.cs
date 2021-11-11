@@ -162,7 +162,7 @@ public class Agencies : IAgencies
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 4, MaxOccupants = 6 },
             new DispatchableVehicle("riot", 0, 70) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 2, MaxOccupants = 3 },
-            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3,MaxOccupants = 4 }};
+            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 4,MaxOccupants = 4 }};
         List<DispatchableVehicle> HighwayPatrolVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1 },
             new DispatchableVehicle("police4", 30, 30) };
@@ -205,16 +205,17 @@ public class Agencies : IAgencies
             new DispatchableVehicle("police", 100,75),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
+            new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         List<DispatchableVehicle> SheriffHeliVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buzzard2", 0,25) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 },
-            new DispatchableVehicle("polmav", 0,75) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
+            new DispatchableVehicle("buzzard2", 0,25) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("polmav", 0,75) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         List<DispatchableVehicle> ArmyVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("crusader", 75,50) { MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
-            new DispatchableVehicle("barracks", 25,50) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
-            new DispatchableVehicle("rhino", 0,10) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
-            new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
-            new DispatchableVehicle("valkyrie2", 0,50) { MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("crusader", 10,15) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("barracks", 15,10) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("squaddie", 75,75) { MinOccupants = 1,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("rhino", 0, 25) { MinOccupants = 2,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
+            new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 4 },
+            new DispatchableVehicle("valkyrie2", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 4 },
         };
         List<DispatchableVehicle> OldSnowyVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeold1", 50, 50),

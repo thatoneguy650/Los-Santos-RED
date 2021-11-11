@@ -13,6 +13,7 @@ public class LEDispatcher
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
+    private readonly int LikelyHoodOfCountySpawn = 10;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
@@ -355,14 +356,14 @@ public class LEDispatcher
         {
             ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, responseType));
         }
-        //if (ZoneAgency == null || RandomItems.RandomPercent(10))
-        //{
-        //    Agency CountyAgency = CountyJurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel);
-        //    if (CountyAgency != null)//randomly spawn the county agency
-        //    {
-        //        ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
-        //    }
-        //}
+        if (ZoneAgency == null || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
+        {
+            Agency CountyAgency = Jurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel, ResponseType.LawEnforcement);
+            if (CountyAgency != null)//randomly spawn the county agency
+            {
+                ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
+            }
+        }
         foreach (Agency ag in ToReturn)
         {
             //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
@@ -468,16 +469,25 @@ public class LEDispatcher
             if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
             {
                 Agency ToSpawn = GetRandomAgency(CenterPosition,ResponseType.LawEnforcement);
-                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
-                DispatchablePerson OfficerType = ToSpawn.GetRandomPed(Player.WantedLevel, VehicleToUse.RequiredPassengerModels);
-                if (Roadblock != null)
+                if (ToSpawn != null)
                 {
-                    Roadblock.Dispose();
+                    DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                    if (VehicleToUse != null)
+                    {
+                        DispatchablePerson OfficerType = ToSpawn.GetRandomPed(Player.WantedLevel, VehicleToUse.RequiredPassengerModels);
+                        if (OfficerType != null)
+                        {
+                            if (Roadblock != null)
+                            {
+                                Roadblock.Dispose();
+                            }
+                            Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons);
+                            Roadblock.SpawnRoadblock();
+                            GameTimeLastSpawnedRoadblock = Game.GameTime;
+                            EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
+                        }
+                    }
                 }
-                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons);
-                Roadblock.SpawnRoadblock();
-                GameTimeLastSpawnedRoadblock = Game.GameTime;
-                EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
             }
         }
     }

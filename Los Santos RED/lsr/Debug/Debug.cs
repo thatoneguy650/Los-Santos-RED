@@ -277,18 +277,22 @@ public class Debug
         GameFiber.StartNew(delegate
         {
             Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
-            coolguy.BlockPermanentEvents = true;
-            coolguy.KeepTasks = true;
+        GameFiber.Yield();
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
 
-            if (RandomItems.RandomPercent(30))
-            {
-                coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+                if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+                }
+                else if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                }
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             }
-            else if (RandomItems.RandomPercent(30))
-            {
-                coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
-            }
-            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {
                 Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
@@ -312,18 +316,22 @@ public class Debug
         GameFiber.StartNew(delegate
         {
             Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(-20f).Around2D(10f));
-            coolguy.BlockPermanentEvents = true;
-            coolguy.KeepTasks = true;
+            GameFiber.Yield();
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
 
-            if (RandomItems.RandomPercent(30))
-            {
-                coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                }
+                else if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
+                }
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             }
-            else if (RandomItems.RandomPercent(30))
-            {
-                coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
-            }
-            coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P) && ModController.IsRunning)
             {
                // Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
@@ -340,6 +348,7 @@ public class Debug
             {
                 coolguy.Delete();
             }
+
         }, "Run Debug Logic");
 
 
@@ -381,29 +390,34 @@ public class Debug
     {
         foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName}", 5);
+            string VehString = "";
+            if(cop.IsInVehicle && cop.Pedestrian.CurrentVehicle.Exists())
+            {
+                VehString = cop.Pedestrian.CurrentVehicle.Model.Name;
+            }
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Vehicle {VehString}", 5);
         }
     }
     private void DebugNumpad7()
     {
+        NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
+        //Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
+        //Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        //if (PedToArrest.Exists())
+        //{
+        //    GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+        //    {
+        //        EntryPoint.WriteToConsole($"TASK_GO_STRAIGHT_TO_COORD START!", 3);
+        //        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 500f, -1, 0f, 2f);
 
-        Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
-        Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
-        if (PedToArrest.Exists())
-        {
-            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
-            {
-                EntryPoint.WriteToConsole($"TASK_GO_STRAIGHT_TO_COORD START!", 3);
-                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 500f, -1, 0f, 2f);
+        //        GameFiber.Wait(20000);
 
-                GameFiber.Wait(20000);
-
-                if (PedToArrest.Exists())
-                {
-                    PedToArrest.Delete();
-                }
-            }, "UnSetArrestedAnimation");
-        }
+        //        if (PedToArrest.Exists())
+        //        {
+        //            PedToArrest.Delete();
+        //        }
+        //    }, "UnSetArrestedAnimation");
+        //}
 
         //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
         //{
@@ -431,24 +445,33 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        //UnSetArrestedAnimation(Game.LocalPlayer.Character);
-        Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
-        Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
-        if (PedToArrest.Exists())
-        {
-            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
-            {
-                EntryPoint.WriteToConsole($"TASK_FOLLOW_NAV_MESH_TO_COORD START!", 3);
-                NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 2.0f, -1, 5f, true, 0f);
+        Player.SetWantedLevel(5, "Cool", true);
+        //Vehicle myCar = new Vehicle("squaddie",Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        //GameFiber.Yield();
+        //if (myCar.Exists())
+        //{
+        //    Game.DisplayHelp($"squaddie spawned with SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1)");
+        //    NativeFunction.Natives.SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1);
+        //}
 
-                GameFiber.Wait(20000);
+        ////UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        //Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
+        //Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        //if (PedToArrest.Exists())
+        //{
+        //    GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+        //    {
+        //        EntryPoint.WriteToConsole($"TASK_FOLLOW_NAV_MESH_TO_COORD START!", 3);
+        //        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedToArrest, ToGoTo.X, ToGoTo.Y, ToGoTo.Z, 2.0f, -1, 5f, true, 0f);
 
-                if(PedToArrest.Exists())
-                {
-                    PedToArrest.Delete();
-                }
-            }, "UnSetArrestedAnimation");
-        }
+        //        GameFiber.Wait(20000);
+
+        //        if(PedToArrest.Exists())
+        //        {
+        //            PedToArrest.Delete();
+        //        }
+        //    }, "UnSetArrestedAnimation");
+        //}
         //Tasker.CreateCrime();
         //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, false);
         //NativeHelper.ChangeModel("a_f_m_bevhills_02");
@@ -607,8 +630,75 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(6);
+
+
+
+        //Vector3 HeliSpot = Game.LocalPlayer.Character.GetOffsetPositionFront(30f);
+        //Vehicle myCar = new Vehicle("valkyrie", new Vector3(HeliSpot.X, HeliSpot.Y, HeliSpot.Z + 100f));
+
+        //GameFiber.Yield();
+        //if (myCar.Exists())
+        //{
+        //    myCar.IsEngineOn = true;
+        //    Ped pilot = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(15f));
+        //    GameFiber.Yield();
+        //    if (pilot.Exists())
+        //    {
+        //        pilot.BlockPermanentEvents = true;
+        //        pilot.KeepTasks = true;
+        //        pilot.WarpIntoVehicle(myCar, -1);
+        //        pilot.Tasks.ChaseWithHelicopter(Game.LocalPlayer.Character, new Vector3(0f, 30f, 50f));
+        //        myCar.IsEngineOn = true;
+        //    }
+        //    Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        //    GameFiber.Yield();
+        //    if(myPed.Exists())
+        //    {
+        //        myPed.WarpIntoVehicle(myCar, 1);
+        //        myPed.BlockPermanentEvents = true;
+        //        myPed.KeepTasks = true;
+
+        //        NativeFunction.Natives.TASK_COMBAT_PED(myPed, Player.Character, 0, 16);
+        //        myPed.RelationshipGroup = RelationshipGroup.HatesPlayer;
+        //        uint valTurret = NativeFunction.Natives.GET_HASH_KEY<uint>("VEHICLE_WEAPON_TURRET_VALKYRIE");
+        //        NativeFunction.Natives.SET_CURRENT_PED_VEHICLE_WEAPON(myPed, valTurret);
+                
+
+
+        //        if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //        {
+        //            NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(myPed, 0, Player.CurrentVehicle.Vehicle, 0f, 0f, 0f, 0f, 0f);
+        //        }
+        //        else
+        //        {
+        //            NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(myPed, Player.Character, 0, 0f, 0f, 0f, 0f, 0f);
+        //        }
+        //    }
+        //    Game.DisplayHelp($"person spawned normally");
+        //    while (!Game.IsKeyDown(Keys.O))
+        //    {
+        //        GameFiber.Yield();
+        //    }
+        //    if (myCar.Exists())
+        //    {
+        //        myCar.Delete();
+        //    }
+        //    if (myPed.Exists())
+        //    {
+        //        myPed.Delete();
+        //    }
+        //    if(pilot.Exists())
+        //    {
+        //        pilot.Delete();
+        //    }
+        //    //NativeFunction.Natives.SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1);
+        //}
+
+        
+        
         //Tasker.CreateCrime();
-        World.ClearSpawnedVehicles();
+        //World.ClearSpawnedVehicles();
     }
     private void DrawDebugArrowsOnPeds()
     {

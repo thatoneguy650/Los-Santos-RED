@@ -71,14 +71,21 @@ public class SpawnTask
                         if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                         {
                             Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
-                            NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(Person.Pedestrian, Person.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);//temp here for ems and fire
+                            //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(Person.Pedestrian, Person.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);//temp here for ems and fire
                             int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                            EntryPoint.WriteToConsole($"SpawnTask: Created {VehicleType.ModelName} {VehicleType.MinOccupants}-{VehicleType.MaxOccupants} Driver: {Person.Pedestrian.Handle} Trying to Add {OccupantsToAdd}", 5);
                             for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                             {
                                 PedExt Passenger = CreatePerson();
                                 if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                {   
+                                    int SeatToAssign = OccupantIndex - 1;
+                                    EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Passenger: {Passenger.Pedestrian.Handle} Seat: {SeatToAssign}", 5);
+                                    Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
+                                }
+                                else
                                 {
-                                    Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
+                                    EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
                                 }
                             }
                         }
@@ -162,7 +169,10 @@ public class SpawnTask
         GameFiber.Yield();
         if (copcar.Exists())
         {
-            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);
+            if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
+            { 
+                NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);
+            }
             VehicleExt CopVehicle = new VehicleExt(copcar, Settings);
             if (copcar.Exists())
             {

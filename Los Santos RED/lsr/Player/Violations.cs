@@ -121,7 +121,7 @@ namespace LosSantosRED.lsr
         public void Update()
         {
             ResetViolations();
-            if (Player.IsAliveAndFree)
+            if (Player.IsAliveAndFree && Player.ShouldCheckViolations)
             {
                 ResetViolations();
                 CheckViolations();
@@ -267,7 +267,7 @@ namespace LosSantosRED.lsr
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
-            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group)))
+            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group) && x.Handle != Player.Character.Handle))
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             }

@@ -63,7 +63,7 @@ public class WeaponDropping
         if (Settings.SettingsManager.PlayerSettings.WeaponDrop_IsEnabled)
         {
             WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-            if (PrevCountWeapons != WeaponCount)
+            if (PrevCountWeapons != WeaponCount && !Player.IsBusted)
             {
                 WeaponInventoryChanged(WeaponCount);
             }

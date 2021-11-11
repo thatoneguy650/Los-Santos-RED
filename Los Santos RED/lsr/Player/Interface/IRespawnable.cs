@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
 
         void GiveMoney(int v);
-        void UnSetArrestedAnimation(Ped character);
+        void UnSetArrestedAnimation();
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory);
         void RaiseHands();
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);

@@ -75,11 +75,11 @@ public class AIApprehend : ComplexTask
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
     private bool ShouldChasePedInVehicle => DistanceToTarget >= 55f; //DistanceToTarget >= 35f;//25f
     private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && CopsVehicle.Exists() && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
-    private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !OtherTarget.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
+    private bool ShouldCarJackTarget => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !OtherTarget.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
     public bool ShouldStopCar => DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f//private bool ShouldExitPoliceVehicle => DistanceToTarget < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Ped.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
     private bool ChaseRecentlyStarted => false;//GameTimeChaseStarted != 0 && Game.GameTime - GameTimeChaseStarted <= 3000;
-    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 1;//500;//20000
+    //private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 1;//500;//20000
     public AIDynamic CurrentAIDynamic
     {
         get
@@ -160,7 +160,7 @@ public class AIApprehend : ComplexTask
         }
         else if (CurrentAIDynamic == AIDynamic.Cop_OnFoot_Player_InVehicle)
         {
-            if (ShouldCarJackPlayer)
+            if (ShouldCarJackTarget)
             {
                 return Task.CarJack;
             }
@@ -313,7 +313,7 @@ public class AIApprehend : ComplexTask
         {
             RunInterval = 500;
             SubTaskName = "Nothing";
-            VehicleChasePed();
+            //VehicleChasePed();
         }
         else if (CurrentTask == Task.StopCar)
         {

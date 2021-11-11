@@ -18,6 +18,7 @@ public class BustedMenu : Menu
     private UIMenuItem Bribe;
     private UIMenuItem PayFine;
     private UIMenuItem ResistArrest;
+    private UIMenuItem SurrenderLong;
     private UIMenuListItem Surrender;
     private UIMenuListItem TakeoverRandomPed;
     private UIMenuItem menuBustedTalk;
@@ -84,6 +85,8 @@ public class BustedMenu : Menu
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         PayFine = new UIMenuItem("Pay Citation", $"Pay a citation of ${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}.");
         Surrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PoliceStations);
+        SurrenderLong = new UIMenuItem("LongSurrender", "Surrender and get out on bail. Lose bail money and your guns. (Drive To Station)");
+
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);   
 
 
@@ -93,6 +96,7 @@ public class BustedMenu : Menu
         Menu.AddItem(Bribe);
         Menu.AddItem(PayFine);
         Menu.AddItem(Surrender);
+        Menu.AddItem(SurrenderLong);
         Menu.AddItem(TakeoverRandomPed);
         Menu.OnItemSelect += OnItemSelect;
         Menu.OnListChange += OnListChange;
@@ -109,10 +113,6 @@ public class BustedMenu : Menu
             {
                 if (Respawning.BribePolice(BribeAmount))
                 {
-                    //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, true);
-                    //GameFiber.Yield();
-                    //NativeFunction.CallByName<bool>("SET_PED_AS_COP", Game.LocalPlayer.Character, false);
-                    //PedSwap.InlineModelSwap();
 
                 }
             }
@@ -124,6 +124,10 @@ public class BustedMenu : Menu
         if (selectedItem == Surrender)
         {
             Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+        }
+        if (selectedItem == SurrenderLong)
+        {
+            Respawning.SetInPoliceCar();
         }
         else if (selectedItem == TakeoverRandomPed)
         {

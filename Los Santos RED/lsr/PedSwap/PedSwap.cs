@@ -221,9 +221,6 @@ public class PedSwap : IPedSwap
             Player.DisplayPlayerNotification();
 
 
-
-
-
             ////this temp bullshit
             //GameFiber.StartNew(delegate
             //{

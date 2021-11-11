@@ -38,6 +38,7 @@ public class Chase : ComplexTask
         CarJack,
         FootChase,
         Nothing,
+        StopCar,
     }
     private enum eVehicleMissionType
     {
@@ -68,11 +69,12 @@ public class Chase : ComplexTask
     }
     private bool ShouldChaseRecklessly => Player.PoliceResponse.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
-    private bool ShouldChasePedInVehicle => Ped.DistanceToPlayer >= 35f;//25f
-    private bool ShouldGetBackInCar => Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
+    private bool ShouldChasePedInVehicle => Ped.DistanceToPlayer >= 55f;//35f;//25f
+    private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
-    private bool ShouldExitPoliceVehicle => Ped.DistanceToPlayer < 35f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
-    private bool ChaseRecentlyStarted => GameTimeChaseStarted != 0 &&  Game.GameTime - GameTimeChaseStarted <= 3000;
+    public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
+    private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;//25f
+    private bool ChaseRecentlyStarted => false;// GameTimeChaseStarted != 0 &&  Game.GameTime - GameTimeChaseStarted <= 3000;
     private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1;
     private bool ShouldAim => Player.WantedLevel > 1;
@@ -100,6 +102,10 @@ public class Chase : ComplexTask
                 if (ShouldChasePedInVehicle)
                 {
                     return Task.VehicleChasePed;
+                }
+                else if (ShouldStopCar)//is new
+                {
+                    return Task.StopCar;
                 }
                 else if (ShouldExitPoliceVehicle)
                 {
@@ -275,6 +281,12 @@ public class Chase : ComplexTask
             RunInterval = 500;
             SubTaskName = "Nothing";
             VehicleChasePed();
+        }
+        else if (CurrentTask == Task.StopCar)
+        {
+            RunInterval = 500;
+            SubTaskName = "StopCar";
+            StopCar();
         }
         GameTimeLastRan = Game.GameTime;
     }
@@ -696,6 +708,22 @@ public class Chase : ComplexTask
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+        }
+    }
+    private void StopCar()
+    {
+        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            NeedsUpdates = false;
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, 2000);
+            EntryPoint.WriteToConsole($"AIApprehend Stop Car: {Ped.Pedestrian.Handle}", 5);
+        }
+        else
+        {
+            NeedsUpdates = true;
+            return;
         }
     }
     public override void Stop()

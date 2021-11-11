@@ -359,7 +359,10 @@ public class GetArrested : ComplexTask
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 }
             }
-            PedToArrest.KeepTasks = true;
+            if(PedToArrest.Exists())
+            {
+                PedToArrest.KeepTasks = true;
+            }
             GameTimeFinishedArrestedAnimation = Game.GameTime;
             PlayedArrestAnimation = true;
             EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);

@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsInVehicle { get; }
         bool IsVisiblyArmed { get; }
+        bool IsBusted { get; }
     }
 }

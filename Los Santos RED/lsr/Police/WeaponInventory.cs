@@ -49,7 +49,7 @@ public class WeaponInventory
                 }
                 else
                 {
-                    SetLessLethal(false);
+                    SetLessLethal(true);
                 }
             }
             else
@@ -142,13 +142,35 @@ public class WeaponInventory
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(Cop.Pedestrian);
             }
-            if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong) && !Cop.IsInVehicle)
+            if (Cop.IsInHelicopter)
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, LongGun.GetHash(), true);
+                if (!IsSetDeadly)//only set this once?
+                {
+                    if (LongGun != null && !Cop.IsDriver)
+                    {
+                        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, LongGun.GetHash(), true);
+                    }
+                    else
+                    {
+                        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, Sidearm.GetHash(), true);
+                    }
+                }
+            }
+            else if (Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.Model.Name.ToLower() == "rhino")
+            {
+                EntryPoint.WriteToConsole($"WEAPON ASSIGNING: Cop {Cop.Pedestrian.Handle} In TANK, DONT ASSIGN", 3);
             }
             else
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, Sidearm.GetHash(), true);
+                if (LongGun != null && (HasHeavyWeaponOnPerson || ForceLong) && !Cop.IsDriver)
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, LongGun.GetHash(), true);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, Sidearm.GetHash(), true);
+                }
+                
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, true);//can use vehicle in combat

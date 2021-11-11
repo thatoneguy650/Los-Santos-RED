@@ -264,7 +264,7 @@ public class Respawning// : IRespawning
     private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
     {
         CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory);
-        CurrentPlayer.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        CurrentPlayer.UnSetArrestedAnimation();
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING

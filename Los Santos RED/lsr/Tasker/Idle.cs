@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 public class Idle : ComplexTask
 {
+    private bool IsReturningToStation = false;
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
     private uint GameTimeClearedIdle;
@@ -20,6 +22,7 @@ public class Idle : ComplexTask
     private ITaskerReportable Tasker;
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
+    private IPlacesOfInterest PlacesOfInterest;
 
     private enum Task
     {
@@ -53,13 +56,13 @@ public class Idle : ComplexTask
             }
         }
     }
-    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker) : base(player, cop, 1500)//1500
+    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "Idle";
         SubTaskName = "";
         World = world;
         Tasker = tasker;
-       
+        PlacesOfInterest = placesOfInterest;
     }
     public override void Start()
     {
@@ -124,11 +127,29 @@ public class Idle : ComplexTask
                 EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
                 NeedsUpdates = true;
                 ClearTasks(true);
+                if(Ped.Pedestrian.CurrentVehicle.Exists())
+                {
+                    foreach(Ped ped in Ped.Pedestrian.CurrentVehicle.Passengers)
+                    {
+                        PedExt pedExt = World.GetPedExt(ped.Handle);
+                        if(pedExt != null && pedExt.IsArrested)
+                        {
+                            IsReturningToStation = true;
+                            break;
+                        }
+                        if(ped.Handle == Player.Character.Handle)
+                        {
+                            IsReturningToStation = true;
+                            break;
+                        }
+                    }
+                }
                 WanderTask();
             }
             else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
             {
                 WanderTask();
+                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
             }
         }
     }
@@ -142,17 +163,44 @@ public class Idle : ComplexTask
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
                 {
-                    unsafe
+                    if(IsReturningToStation)
                     {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal, 10f);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        GameLocation closestPoliceStation = PlacesOfInterest.GetClosestLocation(Ped.Pedestrian.Position, LocationType.Police);
+                        if(closestPoliceStation != null)
+                        {
+                            Vector3 taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.LocationPosition);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)VehicleDrivingFlags.Normal, 20f);
+                        }
+                        else
+                        {
+                            unsafe
+                            {
+                                int lol = 0;
+                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal, 10f);
+                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                            }
+                        }
                     }
+                    else
+                    {
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal, 10f);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                    }
+
                 }
             }
             else
@@ -239,7 +287,7 @@ public class Idle : ComplexTask
         {
             foreach (VehicleExt copCar in World.PoliceVehicleList)
             {
-                if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed == 0f)//stopped 4 door car with at least one seat free in back
+                if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
                 {
                     float DistanceTo = copCar.Vehicle.DistanceTo2D(Ped.Pedestrian);
                     if (DistanceTo <= 50f)
