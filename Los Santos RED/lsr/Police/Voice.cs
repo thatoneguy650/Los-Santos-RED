@@ -30,11 +30,9 @@ public class Voice
     {
         Cop = cop;
     }
-
     public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
     public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
     public int TimeBetweenSpeaking { get; private set; }
-
     public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
     public void RadioIn(IPoliceRespondable currentPlayer)
@@ -45,9 +43,7 @@ public class Voice
             //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
             //if (CurrentGun != null && CurrentGun.IsOneHanded)
             //    AnimationToPlay = "radio_enter";
-
             Speak(currentPlayer);
-
             AnimationDictionary.RequestAnimationDictionay("random@arrests");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
             GameTimeLastRadioed = Game.GameTime;
@@ -55,11 +51,29 @@ public class Voice
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
-        if(currentPlayer.WantedLevel <= 3)
+        if(Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
+        {
+            if(Cop.CurrentTask.OtherTarget.WantedLevel > currentPlayer.WantedLevel || Cop.CurrentTask.OtherTarget.IsDeadlyChase && currentPlayer.PoliceResponse.IsDeadlyChase)
+            {
+                SpeakToTarget();
+            }
+            else
+            {
+                SpeakToPlayer(currentPlayer);
+            }
+        }
+        else
+        {
+            SpeakToPlayer(currentPlayer);
+        }
+    }
+    private void SpeakToPlayer(IPoliceRespondable currentPlayer)
+    {
+        if (currentPlayer.WantedLevel <= 3)
         {
             TimeBetweenSpeaking = 25000;
         }
-        else if(currentPlayer.PoliceResponse.IsWeaponsFree)
+        else if (currentPlayer.PoliceResponse.IsWeaponsFree)
         {
             TimeBetweenSpeaking = 10000;
         }
@@ -73,7 +87,7 @@ public class Voice
             {
                 if (currentPlayer.IsBusted)
                 {
-                    Cop.Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom(),Cop.IsInVehicle);
+                    Cop.Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
                 }
                 else if (currentPlayer.IsDead)
                 {
@@ -98,13 +112,39 @@ public class Voice
                     }
                 }
             }
-            //else
-            //{
-            //    if (!Cop.IsInVehicle)
-            //    {
-            //        Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), false);
-            //    }
-            //}
+            GameTimeLastSpoke = Game.GameTime;
+        }
+    }
+    private void SpeakToTarget()
+    {
+        if (Cop.CurrentTask.OtherTarget.WantedLevel <= 3)
+        {
+            TimeBetweenSpeaking = 25000;
+        }
+        else if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+        {
+            TimeBetweenSpeaking = 18000;
+        }
+        if (CanSpeak)
+        {
+            if (Cop.CurrentTask.OtherTarget.IsWanted)
+            {
+                if (Cop.CurrentTask.OtherTarget.IsBusted)
+                {
+                    Cop.Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
+                }
+                else
+                {
+                    if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+                    {
+                        Cop.Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                    }
+                    else
+                    {
+                        Cop.Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                    }
+                }
+            }
             GameTimeLastSpoke = Game.GameTime;
         }
     }

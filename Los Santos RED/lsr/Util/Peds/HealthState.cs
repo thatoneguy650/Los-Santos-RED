@@ -132,7 +132,7 @@ public class HealthState
         }
         else
         {
-            if (!MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character))
+            if (!Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character))
             {
                 MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.AddInjured(MyPed);

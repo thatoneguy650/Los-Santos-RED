@@ -53,12 +53,13 @@ namespace Mod
         private ITimeControllable TimeControllable;
         private WeaponDropping WeaponDropping;
         private IWeapons Weapons;
-        private uint GameTimeLastCheckedAmbientCrimes;
         private VehicleExt VehicleTryingToEnter;
         private int SeatTryingToEnter;
         private Vehicle VehicleTaskedToEnter;
         private int SeatTaskedToEnter;
         private IPlacesOfInterest PlacesOfInterest;
+        private bool shouldCheckViolations = true;
+        private bool isSetPoliceIgnored = false;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -255,7 +256,7 @@ namespace Mod
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public Vector3 RootPosition { get; set; }
-        public bool ShouldCheckViolations { get; set; } = true;
+        public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && shouldCheckViolations;
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public uint TargettingHandle
@@ -288,6 +289,7 @@ namespace Mod
                 return Time;
             }
         }
+        public bool TreatAsCop { get; set; } = false;
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }
@@ -339,41 +341,24 @@ namespace Mod
         }
         public void CallPolice()
         {
-            //PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 90f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-            //if(violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-            //{
-            //    Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-            //    if(ToCallIn != null)
-            //    {
-            //        AddCrime(ToCallIn, false, Position, null, null, false, true, true);
-            //    }
-            //    else
-            //    {
-            //        AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
-            //    }
-            //}
-            //else
-            //{
-            //    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
-            //}
+            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+            {
+                Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+                if (ToCallIn != null)
+                {
+                    AddCrime(ToCallIn, false, Position, null, null, false, true, true);
+                }
+                else
+                {
+                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
+                }
+            }
+            else
+            {
+                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
+            }
         }
-        //public void CallInAmbientCrimes()
-        //{
-        //    //dont like this at all
-        //    PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.RecentlySeenPlayer).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-        //    bool HasReporters = EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 90f && x.WillCallPolice && x.Pedestrian.Exists() && x.Pedestrian.IsAlive);
-        //    if (HasReporters)
-        //    {
-        //        if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-        //        {
-        //            Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-        //            if (ToCallIn != null)
-        //            {
-        //                AddCrime(ToCallIn, false, Position, null, null, false, true);
-        //            }
-        //        }
-        //    }
-        //}
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -957,35 +942,46 @@ namespace Mod
 
             RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
 
-            if(Game.GameTime - GameTimeLastCheckedAmbientCrimes >= 10000)
+
+            //COULD BE VERY PROBLEMATIC!!!!!!!!!!
+            if(PoliceResponse.IsDeadlyChase && !IsBusted)
             {
-                //CallInAmbientCrimes();
-                GameTimeLastCheckedAmbientCrimes = Game.GameTime;
+                if (isSetPoliceIgnored)
+                {
+                    NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
+                    isSetPoliceIgnored = false;
+                }
+                
+            }
+            else
+            {
+                if(!isSetPoliceIgnored)
+                {
+                    NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
+                    isSetPoliceIgnored = true;
+                }
             }
 
-            //works fine, just turned off for now
-            //if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see
-            //{
-            //    IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
-            //    ClosestScenario = new Scenario("", "Unknown");
-            //    if (IsNearScenario)
-            //    {
-            //        foreach (Scenario scenario in Scenarios.ScenarioList)
-            //        {
-            //            if (NativeFunction.Natives.DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, scenario.InternalName, 2f, true))
-            //            {
-            //                ClosestScenario = scenario;
-            //                break;
-            //            }
-            //        }
-
-            //    }
-            //}
-            //else
-            //{
-            //    IsNearScenario = false;
-            //}
-
+            if (Settings.SettingsManager.PlayerSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
+            {
+                IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
+                ClosestScenario = new Scenario("", "Unknown");
+                if (IsNearScenario)
+                {
+                    foreach (Scenario scenario in Scenarios.ScenarioList)
+                    {
+                        if (NativeFunction.Natives.DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, scenario.InternalName, 2f, true))
+                        {
+                            ClosestScenario = scenario;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                IsNearScenario = false;
+            }
         }
         public void UpdateVehicleData()
         {
@@ -1338,16 +1334,11 @@ namespace Mod
                         EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
                         SetWantedLevel(0, "GAME AUTO SET WANTED", true);
                     }
-                    //Game.LocalPlayer.WantedLevel = 0;
                 }
                 else
                 {
                     Investigation.Reset();
                     PoliceResponse.OnBecameWanted();
-                    //NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
-                    //NativeFunction.Natives.SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(Game.LocalPlayer, false);
-
-
 
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
@@ -1418,7 +1409,7 @@ namespace Mod
                 //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
                 HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
                                                                                                                                                                                      //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
-                                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+                                                                                                                                                                   //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
                 if (result.Hit && result.HitEntity is Ped)
                 {
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
@@ -1521,9 +1512,8 @@ namespace Mod
                 NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
                 NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
 
-
                 GameLocation PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
-                ShouldCheckViolations = false;
+                shouldCheckViolations = false;
                 Character.CanBePulledOutOfVehicles = false;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Character);
                 NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Character);
@@ -1571,7 +1561,7 @@ namespace Mod
                     GameFiber.Yield();
                 }
                 Character.CanBePulledOutOfVehicles = true;
-                ShouldCheckViolations = true;
+                shouldCheckViolations = true;
                 ButtonPrompts.RemoveAll(x => x.Group == "Surrender");
                 if (!IsBusted)
                 {

@@ -227,15 +227,10 @@ public class UI : IMenuProvideable
             {
                 DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
             }
-
             if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
             {
                 DisplayTextOnScreen(GetCrimeDisplay(), Settings.SettingsManager.UISettings.CrimesStatusPositionX, Settings.SettingsManager.UISettings.CrimesStatusPositionY, Settings.SettingsManager.UISettings.CrimesStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesStatusJustificationID);
             }
-
-
-
-
             if (Settings.SettingsManager.UISettings.ShowSpeedDisplay)
             {
                 DisplayTextOnScreen(GetSpeedDisplay(), Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);

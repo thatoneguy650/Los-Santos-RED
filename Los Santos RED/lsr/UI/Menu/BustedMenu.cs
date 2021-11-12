@@ -85,13 +85,9 @@ public class BustedMenu : Menu
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         PayFine = new UIMenuItem("Pay Citation", $"Pay a citation of ${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}.");
         Surrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PoliceStations);
-        SurrenderLong = new UIMenuItem("LongSurrender", "Surrender and get out on bail. Lose bail money and your guns. (Drive To Station)");
-
-        TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);   
-
-
-
-
+        SurrenderLong = new UIMenuItem("Get Booked", "Take a ride and get booked before you get out on bail. (TBD)");
+        TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
+        SurrenderLong.Enabled = false;
         Menu.AddItem(ResistArrest);
         Menu.AddItem(Bribe);
         Menu.AddItem(PayFine);
@@ -147,12 +143,10 @@ public class BustedMenu : Menu
         if (list == Surrender)
         {
             CurrentSelectedSurrenderLocation = PoliceStations[index];
-            //EntryPoint.WriteToConsole($"Current Busted Surrender Location {CurrentSelectedSurrenderLocation.Name}");
         }   
         else if (list == TakeoverRandomPed)
         {
             SelectedTakeoverRadius = Distances[index].Distance;
-            //EntryPoint.WriteToConsole($"Current Busted Takeover Distance {SelectedTakeoverRadius}");
         }
     }
     private void UpdateClosestPoliceStationIndex()

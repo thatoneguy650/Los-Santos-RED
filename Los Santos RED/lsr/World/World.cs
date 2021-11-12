@@ -154,7 +154,6 @@ namespace Mod
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 IsMPMapLoaded = false;
             }
-        }
-        
+        }    
     }
 }

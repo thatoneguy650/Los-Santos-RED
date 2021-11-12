@@ -23,6 +23,7 @@ public class Idle : ComplexTask
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
+    private Vector3 taskedPosition;
 
     private enum Task
     {
@@ -151,6 +152,12 @@ public class Idle : ComplexTask
                 WanderTask();
                 EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
             }
+            if(IsReturningToStation && Ped.Pedestrian.DistanceTo2D(taskedPosition) < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 1.0f)//arrived, wait then drive away
+            {
+                IsReturningToStation = false;
+                WanderTask();
+                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
+            }
         }
     }
     private void WanderTask()
@@ -168,7 +175,7 @@ public class Idle : ComplexTask
                         GameLocation closestPoliceStation = PlacesOfInterest.GetClosestLocation(Ped.Pedestrian.Position, LocationType.Police);
                         if(closestPoliceStation != null)
                         {
-                            Vector3 taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.LocationPosition);
+                            taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.LocationPosition);
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)VehicleDrivingFlags.Normal, 20f);
                         }
                         else

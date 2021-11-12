@@ -79,19 +79,16 @@ public class MainMenu : Menu
         Main.OnListChange += OnListChange;
 
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
+        ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         CallPolice = new UIMenuItem("Call Police", "Need some help?");
-
-        CallPolice.RightBadge = UIMenuItem.BadgeStyle.Ammo;
+        CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
         GenerateCrime = new UIMenuItem("Generate Crime", "Attempt to generate a random crime around the player");
-        GenerateCrime.RightBadge = UIMenuItem.BadgeStyle.Alert;
-
-
+        GenerateCrime.RightBadge = UIMenuItem.BadgeStyle.Gun;
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
-
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
-        ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Gun;
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
+
         Main.AddItem(CallPolice);
         Main.AddItem(GenerateCrime);
         Main.AddItem(TakeVehicleOwnership);

@@ -49,7 +49,7 @@ public class UISettings
     public bool ShowPlayerDisplay { get; set; } = true;
 
 
-    public bool ShowCrimesDisplay { get; set; } = true;
+    public bool ShowCrimesDisplay { get; set; } = false;
 
     public bool SetBustedEffect { get; set; } = true;
     public bool PlayWastedSounds { get; set; } = true;

@@ -12,27 +12,16 @@ using System.Threading.Tasks;
 public class GetArrested : ComplexTask
 {
     private uint GameTimeFinishedArrestedAnimation;
-    private uint GameTimeFinishedUnArrestedAnimation;
     private bool PlayedArrestAnimation = false;
     private bool PlayedUnArrestAnimation = false;
-
-
-
     private uint GameTimeStartedBeingArrested;
     private IEntityProvideable World;
     private ITaskerReportable Tasker;
-
     private int SeatTryingToEnter;
     private VehicleExt VehicleTryingToEnter;
-    
-
-
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
-
     private bool NeedsUpdates;
-
-
     private Task CurrentTask = Task.Wait;
     private enum Task
     {
@@ -149,9 +138,23 @@ public class GetArrested : ComplexTask
     }
     private void Wait(bool IsFirstRun)
     {
-        if (Ped.IsInVehicle && !Ped.IsDriver && Ped.WantedLevel > 0)
+        if(IsFirstRun)
+        {
+            if(Ped.Pedestrian.Exists() && Ped.IsInVehicle && !Ped.IsDriver)
+            {
+                Ped.Pedestrian.CanBePulledOutOfVehicles = false;
+            }
+        }
+
+        if (Ped.IsInVehicle && !Ped.IsDriver && Ped.WantedLevel > 0 && !Ped.IsArrested)
         {
             Ped.SetWantedLevel(0);
+            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
+        }
+        if(Ped.IsArrested && !Ped.IsInVehicle && Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive)
+        {
+            Ped.Pedestrian.Health = 0;
+            Ped.Pedestrian.Kill();
             EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
         }
     }

@@ -29,11 +29,13 @@ public class PlayerSettings
     public uint Violations_RecentlyKilledCivilianTime { get; set; } = 5000;
     public uint Violations_RecentlyKilledPoliceTime { get; set; } = 5000;
     public float Violations_MurderDistance { get; set; } = 9f;
-
     public uint Violations_RecentlyDrivingAgainstTraffiTime { get; set; } = 1000;
     public uint Violations_RecentlyDrivingOnPavementTime { get; set; } = 1000;
     public uint Violations_RecentlyHitPedTime { get; set; } = 1500;
     public uint Violations_RecentlyHitVehicleTime { get; set; } = 1500;
+    public uint Violations_ResistingArrestFastTriggerTime { get; set; } = 5000;
+    public uint Violations_ResistingArrestSlowTriggerTime { get; set; } = 25000;
+    public bool Violations_TreatAsCop { get; set; } = false;
     public float Investigation_ActiveDistance { get; set; } = 800f;
     public uint Investigation_TimeLimit { get; set; } = 60000;
     public float Investigation_MaxDistance { get; set; } = 1500f;
@@ -45,6 +47,7 @@ public class PlayerSettings
     public bool SearchMode_FakeActiveWanted { get; set; } = true;
     public uint SearchMode_SearchTimeMultiplier { get; set; } = 30000;
     public bool ScaleEngineDamage { get; set; } = true;
+    public bool AllowStartRandomScenario { get; set; } = false;
 
     public PlayerSettings()
     {

@@ -152,16 +152,6 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            //if (RecentlyKilledCop)
-            //{
-            //    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
-            //}
-
-            //if (RecentlyHurtCop)
-            //{
-            //    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
-            //}
-
             if (RecentlyKilledCivilian || NearCivilianMurderVictim)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));//.IsCurrentlyViolating = true;
@@ -170,7 +160,7 @@ namespace LosSantosRED.lsr
             if (RecentlyHurtCivilian)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingCivilians"));//.IsCurrentlyViolating = true;
-            }
+            }    
         }
         private void CheckWeaponCrimes()
         {
@@ -262,12 +252,52 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
             }
-            if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.Character.Speed >= 2.0f && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
+            if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && !Player.HandsAreUp)// && ((!Player.IsInVehicle && Player.Character.Speed >= 1.5f) || (Player.IsInVehicle && Player.VehicleSpeedMPH > 40f)) && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
             {
+                if(Player.IsInVehicle)
+                {
+                    if(Player.VehicleSpeedMPH >= 80f)
+                    {
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
+                        {
+                            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                        }
+                    }
+                    else
+                    {
+                        if(Player.VehicleSpeedMPH >= 5f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
+                        {
+                            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+
+                        }
+                    }
+                }
+                else
+                {
+                    if (Player.Character.Exists() && Player.Character.Speed >= 1.2f)
+                    {
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
+                        {
+                            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                        }
+                    }
+                    else
+                    {
+                        if (Player.Character.Exists() && Player.Character.Speed >= 0.5f)
+                        {
+                            if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
+                            {
+                                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                            }
+                        }
+                    }
+                }
+
+
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
-            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group) && x.Handle != Player.Character.Handle))
+            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group) && x.Handle != Player.Character.Handle))
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             }

@@ -23,7 +23,7 @@ public class Cop : PedExt
         }
         Pedestrian.VisionRange = settings.SettingsManager.PoliceSettings.SightDistance;//55F
         Pedestrian.HearingRange = 55;//25 not really used
-        WeaponInventory = new WeaponInventory(this);
+        WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new Voice(this);
         AssistManager = new AssistManager(this);
         Settings = settings;

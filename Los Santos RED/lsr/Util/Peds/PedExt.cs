@@ -16,6 +16,9 @@ public class PedExt : IComplexTaskable
 { 
     private HealthState CurrentHealthState;
     private uint GameTimeLastExitedVehicle;
+
+
+    private uint KillerHandle;
     private Entity Killer;
     private Entity LastHurtBy;
     private PedCrimes PedCrimes;
@@ -166,6 +169,8 @@ public class PedExt : IComplexTaskable
         }
     }
     public bool IsArrested { get; set; }
+    public bool IsInAPC { get; private set; }
+
     public bool CheckHurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)
@@ -207,7 +212,7 @@ public class PedExt : IComplexTaskable
             if (Pedestrian.Exists() && Pedestrian.IsDead && Pedestrian.Handle != ToCheck.Handle)
             {
                 //Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                if (Killer.Exists() && Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == Killer.Handle))
+                if (KillerHandle != 0 && KillerHandle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == KillerHandle))//if (Killer.Exists() && Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == Killer.Handle))
                 {
                     return true;
                 }
@@ -223,6 +228,20 @@ public class PedExt : IComplexTaskable
 
     }
     public void LogSourceOfDeath()
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsDead)
+        {
+            try
+            {
+                KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}", 5);
+            }
+        }
+    }
+    public void LogSourceOfDeathOld()
     {
         if (Pedestrian.Exists() && Pedestrian.IsDead)
         {
@@ -292,6 +311,14 @@ public class PedExt : IComplexTaskable
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
             IsInBoat = Pedestrian.IsInBoat;
+            if(Pedestrian.CurrentVehicle.Model.Name == "rhino")
+            {
+                IsInAPC = true;
+            }
+            else
+            {
+                IsInAPC = false;
+            }
             if (!IsInHelicopter && !IsInBoat)
             {
                 IsOnBike = Pedestrian.IsOnBike;
@@ -311,6 +338,7 @@ public class PedExt : IComplexTaskable
             IsOnBike = false;
             IsDriver = false;
             IsInBoat = false;
+            IsInAPC = false;
             if (Pedestrian.Speed >= 7.0f)
             {
                 GameTimeLastMovedFast = Game.GameTime;
