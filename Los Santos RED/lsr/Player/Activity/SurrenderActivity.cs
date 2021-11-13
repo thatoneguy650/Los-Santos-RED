@@ -58,7 +58,7 @@ public class SurrenderActivity : DynamicActivity
     }
     public void SetArrestedAnimation(bool StayStanding)
     {
-        StayStanding = false;
+        //StayStanding = false;
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
             AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
@@ -76,7 +76,7 @@ public class SurrenderActivity : DynamicActivity
             {
                 return;
             }
-            
+            Player.SetUnarmed();
             if (Player.Character.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = Player.Character.CurrentVehicle;
@@ -95,7 +95,7 @@ public class SurrenderActivity : DynamicActivity
             }
             if (StayStanding)
             {
-                Player.SetUnarmed();
+                //Player.SetUnarmed();
                 if (!NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") == 0f)
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -110,7 +110,7 @@ public class SurrenderActivity : DynamicActivity
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(1000);
-                    NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
+                    //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
                     GameFiber.Wait(5000);//was just 6000 here
                     if (!Player.Character.Exists() || !Player.IsBusted)
                     {

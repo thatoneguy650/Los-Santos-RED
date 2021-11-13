@@ -351,6 +351,23 @@ public class Weapons : IWeapons
         };
         WeaponsList.Add(new WeaponInformation("weapon_raypistol", 60, WeaponCategory.Pistol, 1, 0xAF3696A1, true, false, false) { IsRegular = false, PossibleComponents = RayGunComponents, CanPistolSuicide = false });
 
+        WeaponsList.Add(new WeaponInformation("singleshoth4", 60, WeaponCategory.Pistol, 1, 0x57A4368C, true, false, false) { IsRegular = false, CanPistolSuicide = true });
+
+        WeaponsList.Add(new WeaponInformation("weapon_navyrevolver", 60, WeaponCategory.Pistol, 1, 0x917F6C8C, true, false, false) { IsRegular = false, CanPistolSuicide = true });
+
+
+        List<WeaponComponent> CeramicComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x54D41361)
+            ,new WeaponComponent("Extended Clip", 0x81786CA9)
+            ,new WeaponComponent("Suppressor", 0x9307D6FA)
+        };
+        WeaponsList.Add(new WeaponInformation("weapon_ceramicpistol", 60, WeaponCategory.Pistol, 1, 0x2B5EF5EC, true, false, false) { IsRegular = false, PossibleComponents = CeramicComponents, CanPistolSuicide = false });
+
+
+
+
+
         //Shotgun
         List<WeaponComponent> PumpShotgunComponents = new List<WeaponComponent>
         {
@@ -426,6 +443,18 @@ public class Weapons : IWeapons
 
         WeaponsList.Add(new WeaponInformation("weapon_dbshotgun", 32, WeaponCategory.Shotgun, 2, 4019527611, false, true, false) { CanPistolSuicide = true });
         WeaponsList.Add(new WeaponInformation("weapon_autoshotgun", 32, WeaponCategory.Shotgun, 2, 317205821, false, true, false));
+
+        List<WeaponComponent> CombatShotgunComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Flashlight", 0x7BC4CDDC),
+            new WeaponComponent("Suppressor", 0x837445AA),
+        };
+        WeaponsList.Add(new WeaponInformation("weapon_combatshotgun", 32, WeaponCategory.Shotgun, 2, 0x5A96BA4, false, true, true) { PossibleComponents = CombatShotgunComponents });
+
+        
+
+
+
         //SMG
 
         List<WeaponComponent> MicroSMGComponents = new List<WeaponComponent>
@@ -760,6 +789,18 @@ public class Weapons : IWeapons
             new WeaponComponent("Drum Magazine", 0xC607740E)
         };
         WeaponsList.Add(new WeaponInformation("weapon_compactrifle", 120, WeaponCategory.AR, 3, 1649403952, false, true, false) { PossibleComponents = CompactRifleComponents });
+
+
+        List<WeaponComponent> MilitaryRifleComponents = new List<WeaponComponent>
+        {
+            new WeaponComponent("Default Clip", 0x2D46D83B),
+            new WeaponComponent("Extended Clip", 0x684ACE42),
+            new WeaponComponent("Iron Sights", 0x6B82F395),
+            new WeaponComponent("Scope", 0xAA2C45B4),
+            new WeaponComponent("Flashlight", 0x7BC4CDDC),
+            new WeaponComponent("Suppressor", 0x837445AA),
+        };
+        WeaponsList.Add(new WeaponInformation("weapon_militaryrifle", 120, WeaponCategory.AR, 3, 0x9D1F17E6, false, true, false) { PossibleComponents = MilitaryRifleComponents });
 
         //LMG
 

@@ -261,6 +261,15 @@ namespace LosSantosRED.lsr
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
+                        }
+                    }
+                    else if (Player.VehicleSpeedMPH >= 30f)
+                    {
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestMediumTriggerTime)
+                        {
+                            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST MEDIUM IN VEHICLE", 5);
                         }
                     }
                     else
@@ -268,7 +277,7 @@ namespace LosSantosRED.lsr
                         if(Player.VehicleSpeedMPH >= 5f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-
+                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
                         }
                     }
                 }
@@ -279,6 +288,7 @@ namespace LosSantosRED.lsr
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST", 5);
                         }
                     }
                     else
@@ -288,13 +298,11 @@ namespace LosSantosRED.lsr
                             if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
                             {
                                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+                                EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW", 5);
                             }
                         }
                     }
                 }
-
-
-                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
             if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Game.LocalPlayer.Character.Group) && x.Handle != Player.Character.Handle))
@@ -305,6 +313,14 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
             }
+
+            if(Player.RecentlyFedUpCop)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "InsultingOfficer"));
+                
+            }
+
+
         }
         private void CheckTrafficViolations()
         {
@@ -439,7 +455,7 @@ namespace LosSantosRED.lsr
                     }
                     if (shouldAdd)
                     {
-                        EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED {Violating.Name}", 5);
                         Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
                     }
                 }

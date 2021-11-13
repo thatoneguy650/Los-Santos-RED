@@ -200,7 +200,7 @@ public class AIApprehend : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance} VehicleMissionFlag: {VehicleMissionFlag}", 5);
+            EntryPoint.WriteToConsole($"TASKER: AIApprehend Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance} VehicleMissionFlag: {VehicleMissionFlag}", 5);
             GameTimeChaseStarted = Game.GameTime;
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
@@ -217,8 +217,9 @@ public class AIApprehend : ComplexTask
             {
                 if(OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Handle != CurrentlyChasingHandle)
                 {
+                    EntryPoint.WriteToConsole($"TASKER: Target Changed From: {CurrentlyChasingHandle} to {OtherTarget.Handle}", 5);
                     CurrentlyChasingHandle = OtherTarget.Handle;
-                    TargetChanged = true;
+                    TargetChanged = true;   
                 }
             }
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
@@ -499,6 +500,15 @@ public class AIApprehend : ComplexTask
                 }
                 else
                 {
+
+
+
+                    EntryPoint.WriteToConsole($"AIApprehend {Ped.Pedestrian.Handle} NON ARREST RAN", 5);
+
+
+
+
+
                     if (SubTaskName != "Fighting")
                     {
                         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
@@ -509,6 +519,25 @@ public class AIApprehend : ComplexTask
 
                         SubTaskName = "Fighting";
                     }
+                    
+                    
+                    //if (Ped.Pedestrian.CombatTarget.Exists() && Ped.Pedestrian.CombatTarget.Handle != OtherTarget.Pedestrian.Handle)//THIS IS NEW AS WELL, COULD BE PROBLEMATIC, NEED TO STOP THEM FROM RANDOMLY ATTACKING THE PLAYER LIKE A DUNCE!
+                    //{
+                    //    EntryPoint.WriteToConsole($"AIApprehend {Ped.Pedestrian.Handle} Has Combat Target Other Than assigned Target Current:{Ped.Pedestrian.CombatTarget.Handle} Assigned {OtherTarget.Pedestrian.Handle}", 5);
+                    //    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
+                    //    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
+                    //    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+                    //    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
+                    //    NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
+                    //}
+
+
+
+
+
+
+
+
                 }
             }
         }

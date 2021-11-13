@@ -90,6 +90,12 @@ public class Conversation : Interaction
 
         Ped.TimesInsultedByPlayer++;
         GameFiber.Sleep(200);
+
+
+        if(Ped.IsFedUpWithPlayer && Ped.IsCop)
+        {
+            Player.SetAngeredCop();
+        }
         IsActivelyConversing = false;
     }
     private void Positive()

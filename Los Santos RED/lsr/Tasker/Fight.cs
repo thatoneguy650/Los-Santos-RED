@@ -26,7 +26,13 @@ public class Fight : ComplexTask
             EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            if(ToIssue != null)
+
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
+            NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(Ped.Pedestrian, 0, false);
+
+
+            if (ToIssue != null)
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Ped.Pedestrian, (uint)ToIssue.Hash, ToIssue.AmmoAmount, false, false);
 
@@ -40,6 +46,7 @@ public class Fight : ComplexTask
     }
     public override void Update()
     {
+
         //if(Ped.Pedestrian.Exists() && Player.IsWanted)
         //{
         //    //Ped.Pedestrian.Tasks.Clear();

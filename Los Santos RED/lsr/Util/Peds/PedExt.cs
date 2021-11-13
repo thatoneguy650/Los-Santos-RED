@@ -296,12 +296,12 @@ public class PedExt : IComplexTaskable
         {
             if (IsInVehicle)//got in
             {
-                EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Got In Vehicle", 5);
+                //EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Got In Vehicle", 5);
                 GameTimeLastEnteredVehicle = Game.GameTime;
             }
             else//got out
             {
-                EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Go Out of Vehicle", 5);
+                //EntryPoint.WriteToConsole($"PedExt {Pedestrian.Handle} Go Out of Vehicle", 5);
                 GameTimeLastExitedVehicle = Game.GameTime;
             }
         }
@@ -311,7 +311,7 @@ public class PedExt : IComplexTaskable
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
             IsInBoat = Pedestrian.IsInBoat;
-            if(Pedestrian.CurrentVehicle.Model.Name == "rhino")
+            if(Pedestrian.CurrentVehicle.Model.Name.ToLower() == "rhino")
             {
                 IsInAPC = true;
             }

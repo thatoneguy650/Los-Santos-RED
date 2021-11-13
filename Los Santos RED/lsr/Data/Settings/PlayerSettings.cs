@@ -34,6 +34,7 @@ public class PlayerSettings
     public uint Violations_RecentlyHitPedTime { get; set; } = 1500;
     public uint Violations_RecentlyHitVehicleTime { get; set; } = 1500;
     public uint Violations_ResistingArrestFastTriggerTime { get; set; } = 5000;
+    public uint Violations_ResistingArrestMediumTriggerTime { get; set; } = 10000;
     public uint Violations_ResistingArrestSlowTriggerTime { get; set; } = 25000;
     public bool Violations_TreatAsCop { get; set; } = false;
     public float Investigation_ActiveDistance { get; set; } = 800f;

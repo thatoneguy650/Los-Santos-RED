@@ -60,6 +60,7 @@ namespace Mod
         private IPlacesOfInterest PlacesOfInterest;
         private bool shouldCheckViolations = true;
         private bool isSetPoliceIgnored = false;
+        private uint GameTimeLastFedUpCop;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -254,6 +255,7 @@ namespace Mod
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
+        public bool RecentlyFedUpCop => GameTimeLastFedUpCop != 0 && Game.GameTime - GameTimeLastFedUpCop <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public Vector3 RootPosition { get; set; }
         public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && shouldCheckViolations;
@@ -656,6 +658,10 @@ namespace Mod
         {
             NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias), Amount, 1);
         }
+        public void SetAngeredCop()
+        {
+            GameTimeLastFedUpCop = Game.GameTime;
+        }
         public void SetPlayerToLastWeapon()
         {
             if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
@@ -837,6 +843,7 @@ namespace Mod
         }
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
         public void UnSetArrestedAnimation() => Surrendering.UnSetArrestedAnimation();
+        public void SetArrestedAnimation(bool stayStanding) => Surrendering.SetArrestedAnimation(stayStanding);
         public void Update()
         {
            UpdateData();
@@ -943,24 +950,121 @@ namespace Mod
             RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //COULD BE VERY PROBLEMATIC!!!!!!!!!!
-            if(PoliceResponse.IsDeadlyChase && !IsBusted)
+
+
+
+  
+            if (PoliceResponse.IsDeadlyChase && !IsBusted)
             {
                 if (isSetPoliceIgnored)
                 {
                     NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
                     isSetPoliceIgnored = false;
                 }
-                
+
             }
             else
             {
-                if(!isSetPoliceIgnored)
+                if(EntityProvider.PoliceList.Any(x=> x.CurrentTask?.OtherTarget != null))
                 {
-                    NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
-                    isSetPoliceIgnored = true;
+                    if (!isSetPoliceIgnored)
+                    {
+                        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
+                        isSetPoliceIgnored = true;
+                    }
                 }
+                else
+                {
+                    if (isSetPoliceIgnored)
+                    {
+                        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
+                        isSetPoliceIgnored = false;
+                    }
+                }
+
             }
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             if (Settings.SettingsManager.PlayerSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
             {
@@ -1640,5 +1744,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PlayerArrested: Seat NOT Assigned", 3);
             }
         }
+
+
     }
 }
