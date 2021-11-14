@@ -223,7 +223,12 @@ public class Pedestrians
                 canBeAmbientTasked = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked });
+        PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
+        if(myGroup == null)
+        {
+            myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
+        }
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked });
     }
     private void AddCop(Ped Pedestrian)
     {

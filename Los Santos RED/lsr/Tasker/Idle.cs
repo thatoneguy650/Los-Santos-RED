@@ -276,7 +276,7 @@ public class Idle : ComplexTask
         if (Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
         {
             VehicleExt myCopCar = World.GetVehicleExt(Ped.Pedestrian.LastVehicle);
-            if (myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex))
+            if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex))
             {
                 OpenSeatInClosestAvailablePoliceVehicle = Ped.LastSeatIndex;
                 ClosestAvailablePoliceVehicle = myCopCar;

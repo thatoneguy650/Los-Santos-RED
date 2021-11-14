@@ -259,17 +259,14 @@ public class Debug
     }
     private void DebugNumpad3()
     {
-        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f))
+        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f).OrderBy(x=> x.DistanceToPlayer))
         {
-            if(ped.Pedestrian.Inventory.EquippedWeapon != null)
-            {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {ped.Pedestrian.Inventory.EquippedWeapon.Hash.ToString()} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName}", 5);
-            }
-            else
-            {
-                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName}", 5);
-            }
-            
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
+
+
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
     }
     private void DebugNumpad4()

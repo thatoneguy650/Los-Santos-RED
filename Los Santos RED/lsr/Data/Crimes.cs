@@ -73,7 +73,7 @@ public class Crimes : ICrimes
             new Crime("AssaultingWithDeadlyWeapon", "Assaulting With A Deadly Weapon", 2, false, 21, true),
             new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true),
 
-            new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true),
+            new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false),
 
 
             new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, false, false) { IsTrafficViolation = true },

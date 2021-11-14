@@ -28,6 +28,7 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastMovedFast;
     
+    
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
         Pedestrian = _Pedestrian;
@@ -139,6 +140,7 @@ public class PedExt : IComplexTaskable
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = true;
     public bool WillFight { get; set; } = false;
+    public bool WasEverSetPersistent { get; private set; }
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     private int FullUpdateInterval
     {
@@ -274,6 +276,14 @@ public class PedExt : IComplexTaskable
                             PedCrimes.Update(world, policeRespondable);
                         }
                     }
+                    if(!IsCop && !WasEverSetPersistent && Pedestrian.IsPersistent)
+                    {
+                        CanBeAmbientTasked = false;
+                        WillCallPolice = false;
+                        WillFight = false;
+                        WasEverSetPersistent = true;
+                    }
+
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }

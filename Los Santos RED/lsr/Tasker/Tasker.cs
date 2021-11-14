@@ -342,13 +342,15 @@ public class Tasker : ITaskerable, ITaskerReportable
             WitnessedCrime HighestPriority = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
             bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenMundaneCrime = Civilian.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+
             if (SeenScaryCrime || SeenAngryCrime)
             {
                 if (Civilian.WillCallPolice)
                 {
-                    if (Civilian.CurrentTask?.Name != "CallIn")
+                    if (Civilian.CurrentTask?.Name != "ScaredCallIn")
                     {
-                        Civilian.CurrentTask = new CallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
                     }
                 }
@@ -387,7 +389,18 @@ public class Tasker : ITaskerable, ITaskerReportable
                     Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
                     Civilian.CurrentTask.Start();
                 }
-            }   
+            }
+            else if (SeenMundaneCrime)
+            {
+                if (Civilian.WillCallPolice)
+                {
+                    if (Civilian.CurrentTask?.Name != "CalmCallIn")
+                    {
+                        Civilian.CurrentTask = new CalmCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        Civilian.CurrentTask.Start();
+                    }
+                }
+            }
         }
         Civilian.GameTimeLastUpdatedTask = Game.GameTime;
     }

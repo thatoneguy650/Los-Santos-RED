@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class CallIn : ComplexTask
+public class ScaredCallIn : ComplexTask
 {
     private uint GameTimeStartedCallIn;
-    public CallIn(IComplexTaskable ped, ITargetable player) : base(player, ped, 1000)
+    public ScaredCallIn(IComplexTaskable ped, ITargetable player) : base(player, ped, 1000)
     {
-        Name = "CallIn";
+        Name = "ScaredCallIn";
         SubTaskName = "";
         GameTimeStartedCallIn = Game.GameTime;
     }
@@ -21,7 +21,7 @@ public class CallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}", 3);
+            EntryPoint.WriteToConsole($"TASKER: ScaredCallIn Start: {Ped.Pedestrian.Handle}", 3);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
                 unsafe
@@ -76,7 +76,7 @@ public class CallIn : ComplexTask
         {
             if(Ped.PlayerCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
+                EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
                 foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
                 {
@@ -86,7 +86,7 @@ public class CallIn : ComplexTask
             }
             else if (Ped.OtherCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
+                EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
@@ -94,7 +94,7 @@ public class CallIn : ComplexTask
                 }
                 Ped.OtherCrimesWitnessed.Clear();
             }
-            EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
+            EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
         }     
     }
 }

@@ -25,7 +25,7 @@ public class PedCrimes
     private IWeapons Weapons;
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
-    private bool ShouldCheck => PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC";
+    private bool ShouldCheck => PedExt.PedGroup == null || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC");
     public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons)
     {
         PedExt = pedExt;
@@ -305,6 +305,17 @@ public class PedCrimes
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
             }
+
+            if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+            }
+            if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+            }
+
+
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
             {
                 foreach (Cop cop in world.PoliceList)
@@ -363,19 +374,24 @@ public class PedCrimes
     }
     private bool IsVisiblyArmed()
     {
-        WeaponDescriptor CurrentWeapon = PedExt.Pedestrian.Inventory.EquippedWeapon;
-        if (CurrentWeapon == null)
+       // WeaponDescriptor CurrentWeapon = PedExt.Pedestrian.Inventory.EquippedWeapon;
+
+        uint currentWeapon;
+        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(PedExt.Pedestrian, out currentWeapon, true);
+
+
+        if (currentWeapon == 0)
         {
             return false;
         }
-        else if (CurrentWeapon.Hash == (WeaponHash)2725352035
-            || CurrentWeapon.Hash == (WeaponHash)966099553
-            || CurrentWeapon.Hash == (WeaponHash)0x787F0BB//weapon_snowball
-            || CurrentWeapon.Hash == (WeaponHash)0x060EC506//weapon_fireextinguisher
-            || CurrentWeapon.Hash == (WeaponHash)0x34A67B97//weapon_petrolcan
-            || CurrentWeapon.Hash == (WeaponHash)0xBA536372//weapon_hazardcan
-            || CurrentWeapon.Hash == (WeaponHash)0x8BB05FD7//weapon_flashlight
-            || CurrentWeapon.Hash == (WeaponHash)0x23C9F95C)//weapon_ball
+        else if (currentWeapon == 2725352035
+            || currentWeapon == 966099553
+            || currentWeapon == 0x787F0BB//weapon_snowball
+            || currentWeapon == 0x060EC506//weapon_fireextinguisher
+            || currentWeapon == 0x34A67B97//weapon_petrolcan
+            || currentWeapon == 0xBA536372//weapon_hazardcan
+            || currentWeapon == 0x8BB05FD7//weapon_flashlight
+            || currentWeapon == 0x23C9F95C)//weapon_ball
         {
             return false;
         }
