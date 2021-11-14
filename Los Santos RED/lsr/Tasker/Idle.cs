@@ -193,6 +193,10 @@ public class Idle : ComplexTask
                             }
                         }
                     }
+                    else if (Ped.IsInHelicopter)
+                    {
+                        NativeFunction.CallByName<bool>("TASK_HELI_MISSION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+                    }
                     else
                     {
                         unsafe

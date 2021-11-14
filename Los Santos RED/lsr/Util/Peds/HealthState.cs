@@ -135,9 +135,17 @@ public class HealthState
         {
             if (!Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character,false))
             {
-                MyPed.HasBeenHurtByPlayer = true;
-                CurrentPlayer.AddInjured(MyPed);
-                EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
+                if (Health - CurrentHealth + Armor - CurrentArmor > 5)
+                {
+
+                    MyPed.HasBeenHurtByPlayer = true;
+                    CurrentPlayer.AddInjured(MyPed);
+                    EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player (Small Amount Discarded)", 5);
+                }
             }
         }
     }

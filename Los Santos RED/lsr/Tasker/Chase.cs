@@ -469,37 +469,37 @@ public class Chase : ComplexTask
                 Ped.Pedestrian.KeepTasks = true;
                 if (Ped.IsInHelicopter)
                 {
-                    //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
+                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
                     Vector3 pedPos = Player.Character.Position;
                     if (Player.Character.CurrentVehicle.Exists())
                     {
-                        unsafe
-                        {
-                            int lol = 0;
-                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_HELI_CHASE", 0, Player.Character, 25f, 0f, 25f);
-                            //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
-                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                        }
+                        //unsafe
+                        //{
+                        //    int lol = 0;
+                        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        //    NativeFunction.CallByName<bool>("TASK_HELI_CHASE", 0, Player.Character, 25f, 0f, 25f);
+                        //    //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+                        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        //}
                         //NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, Player.Character.CurrentVehicle, Player.Character, pedPos.X, pedPos.Y, pedPos.Z, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
                     }
                 }
                 else if (Ped.IsInBoat)
                 {
-                    //NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
+                    NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                    //unsafe
+                    //{
+                    //    int lol = 0;
+                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    //    NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
+                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    //}
                 }
                 else
                 {
@@ -520,17 +520,17 @@ public class Chase : ComplexTask
                     else
                     {
                         IsChasingRecklessly = false;
-                        //NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
-                        unsafe
-                        {
-                            int lol = 0;
-                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
-                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                        }
+                        NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                        //unsafe
+                        //{
+                        //    int lol = 0;
+                        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        //    NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
+                        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        //}
                     }
                 }
                 EntryPoint.WriteToConsole($"VehicleChase Vehicle Target: {Ped.Pedestrian.Handle} IsChasingRecklessly: {IsChasingRecklessly}", 5);
@@ -561,17 +561,17 @@ public class Chase : ComplexTask
                         else
                         {
                             IsChasingRecklessly = false;
-                            //NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
-                            unsafe
-                            {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                            }
+                            NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                            //unsafe
+                            //{
+                            //    int lol = 0;
+                            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            //    NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
+                            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                            //}
                         }
                     }
                 }
@@ -684,17 +684,17 @@ public class Chase : ComplexTask
                 }
                 else if (Ped.IsInBoat)
                 {
-                    //NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
+                    NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                    //unsafe
+                    //{
+                    //    int lol = 0;
+                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    //    NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.Character);
+                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    //}
                 }
                 else
                 {
