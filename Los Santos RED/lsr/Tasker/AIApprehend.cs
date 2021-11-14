@@ -503,7 +503,7 @@ public class AIApprehend : ComplexTask
 
 
 
-                    EntryPoint.WriteToConsole($"AIApprehend {Ped.Pedestrian.Handle} NON ARREST RAN", 5);
+                  //  EntryPoint.WriteToConsole($"AIApprehend {Ped.Pedestrian.Handle} NON ARREST RAN", 5);
 
 
 
@@ -552,7 +552,7 @@ public class AIApprehend : ComplexTask
             Ped.Pedestrian.KeepTasks = true;
             if (Ped.IsInHelicopter)
             {
-                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, OtherTarget.Pedestrian, -50f, 50f, 60f);
+                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, OtherTarget.Pedestrian, 25f, 25f, 60f);
             }
             else if (Ped.IsInBoat)
             {
@@ -591,7 +591,7 @@ public class AIApprehend : ComplexTask
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
             if (Ped.IsInHelicopter)
             {
-                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, OtherTarget.Pedestrian, -50f, 50f, 60f);
+                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, OtherTarget.Pedestrian, 25f, 25f, 60f);
             }
             else if (Ped.IsInBoat)
             {

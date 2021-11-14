@@ -288,6 +288,10 @@ namespace Mod
                 else if (IsInVehicle)
                 {
                     Time += Settings.SettingsManager.PlayerSettings.Recognize_VehiclePenalty;
+                    if(NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character,359,true))//isduckinginvehicle?
+                    {
+                        Time += 5000;
+                    }
                 }
                 return Time;
             }
@@ -537,6 +541,7 @@ namespace Mod
         {
             PoliceResponse.Reset();
             Scanner.OnInvestigationExpire();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnInvestigationExpire", 3);
         }
         public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
         {

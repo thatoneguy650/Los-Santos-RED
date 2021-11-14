@@ -66,5 +66,9 @@ public class Dispatcher
     {
         LEDispatcher.SpawnCop(Position);
     }
+    public void SpawnHelicopterCop(Vector3 Position)
+    {
+        LEDispatcher.SpawnHelicopterCop(Position);
+    }
 }
 

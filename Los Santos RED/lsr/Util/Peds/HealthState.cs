@@ -128,14 +128,16 @@ public class HealthState
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
                 CurrentPlayer.AddKilled(MyPed);
+                EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Killed By Player", 5);
             }
         }
         else
         {
-            if (!Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character))
+            if (!Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !MyPed.HasBeenHurtByPlayer && MyPed.CheckHurtBy(CurrentPlayer.Character,false))
             {
                 MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.AddInjured(MyPed);
+                EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
             }
         }
     }
@@ -344,30 +346,6 @@ public class HealthState
             RandomPick -= SpawnChance;
         }
         return InjuryType.Normal;
-
-
-
-        //int RandomNumber = RandomItems.MyRand.Next(1, 101);
-        //if (RandomNumber <= Settings.SettingsManager.DamageSettings.HealthState_NormalDamagePercent)
-        //{
-        //    return InjuryType.Normal;
-        //}
-        //else if (RandomNumber <= 70)
-        //{
-        //    return InjuryType.Graze;
-        //}
-        //else if (RandomNumber <= 92)
-        //{
-        //    return InjuryType.Critical;
-        //}
-        //else if (RandomNumber <= 100 && CanBeFatal)
-        //{
-        //    return InjuryType.Fatal;
-        //}
-        //else
-        //{
-        //    return InjuryType.Normal;
-        //}
     }
     private void SetRagdoll(int NewHealth)
     {

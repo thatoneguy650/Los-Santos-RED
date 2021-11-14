@@ -27,7 +27,7 @@ public class PedExt : IComplexTaskable
     private ISettingsProvideable Settings;
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastMovedFast;
-    
+    private bool hasCheckedWeapon = false;
     
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
@@ -61,7 +61,7 @@ public class PedExt : IComplexTaskable
             {
                 return true;
             }
-            else if (Pedestrian.IsDead && CurrentHealthState.HasLoggedDeath)
+            else if (Pedestrian.IsDead && CurrentHealthState.HasLoggedDeath)// && DistanceToPlayer >= 250f)
             {
                 return true;
             }
@@ -173,19 +173,18 @@ public class PedExt : IComplexTaskable
     public bool IsArrested { get; set; }
     public bool IsInAPC { get; private set; }
 
-    public bool CheckHurtBy(Ped ToCheck)
+    public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)
         {
             return true;
         }
-        if (Pedestrian.Handle != ToCheck.Handle)
+        if (!OnlyLast && Pedestrian.Handle != ToCheck.Handle)
         {
             if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck, true))
             {
                 LastHurtBy = ToCheck;
                 return true;
-
             }
             else if (ToCheck.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck.CurrentVehicle, true))
             {
@@ -224,8 +223,8 @@ public class PedExt : IComplexTaskable
         catch (Exception ex)
         {
             //EntryPoint.WriteToConsole($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
-            //return CheckHurtBy(ToCheck);
-            return false;
+            return CheckHurtBy(ToCheck,false);//turned back on for now.......
+            //return false;
         }
 
     }
@@ -236,6 +235,7 @@ public class PedExt : IComplexTaskable
             try
             {
                 KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
+                EntryPoint.WriteToConsole($"LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}", 5);
             }
             catch (Exception ex)
             {
@@ -275,6 +275,12 @@ public class PedExt : IComplexTaskable
                         {
                             PedCrimes.Update(world, policeRespondable);
                         }
+
+
+
+                        WeaponChecker();
+
+
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.IsPersistent)
                     {
@@ -296,6 +302,24 @@ public class PedExt : IComplexTaskable
         {
             CurrentTask.OtherTarget = otherTarget;
             CurrentTask.Update();
+        }
+    }
+    private void WeaponChecker()
+    {
+        if(WasEverSetPersistent && !hasCheckedWeapon && Pedestrian.Exists())
+        {
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(Pedestrian);
+            if(RG == 124147476)//lslifedealer glitched?
+            {
+                uint currentWeapon;
+                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Pedestrian, out currentWeapon, true);
+                if (currentWeapon != 2725352035)
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true);
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);
+                }
+            }
+            hasCheckedWeapon = true;
         }
     }
     private void UpdateVehicleState()

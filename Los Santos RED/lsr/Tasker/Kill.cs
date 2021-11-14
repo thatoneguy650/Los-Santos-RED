@@ -20,7 +20,6 @@ public class Kill : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            //EntryPoint.WriteToConsole($"TASKER: Kill Start: {Ped.Pedestrian.Handle}");
             ClearTasks();
             NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
@@ -28,8 +27,7 @@ public class Kill : ComplexTask
             NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
             NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-
-            if (Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInBoat))
+            if (Ped.IsDriver)
             {
                 if (Ped.IsInHelicopter)
                 {
@@ -47,46 +45,18 @@ public class Kill : ComplexTask
                 {
                     NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
                 }
-            }
-            else
-            {
-
-                if(!Ped.IsDriver && (Ped.IsInHelicopter || Ped.IsInBoat))
-                {
-
-                    if (Ped.IsInHelicopter)
-                    {
-                        NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
-                        int valTurret = NativeFunction.Natives.GET_HASH_KEY<int>("VEHICLE_WEAPON_TURRET_VALKYRIE");
-                        NativeFunction.Natives.SET_CURRENT_PED_VEHICLE_WEAPON(Ped.Pedestrian, valTurret);
-                    }
-
-
-                    if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !TargettingCar)
-                    {
-                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(Ped.Pedestrian, 0, Player.CurrentVehicle.Vehicle, 0f, 0f, 0f, 0f, 0f);
-                        TargettingCar = true;
-                        EntryPoint.WriteToConsole($"Kill: {Ped.Pedestrian.Handle} Start Targetting Player Vehicle", 5);
-                    }
-                    else if (TargettingCar)
-                    {
-                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(Ped.Pedestrian, Player.Character, 0, 0f, 0f, 0f, 0f, 0f);
-                        TargettingCar = false;
-                        EntryPoint.WriteToConsole($"Kill: {Ped.Pedestrian.Handle} Start Targetting Player Ped", 5);
-                    }
-                    //NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
-                }
                 else
                 {
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
                     int DesiredStyle = (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
                     NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, DesiredStyle);
-                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-                    NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
                 }
             }
-        }
-        
+            else
+            {
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+            }
+        }  
     }
     public override void Update()
     {
@@ -104,21 +74,6 @@ public class Kill : ComplexTask
                     else
                     {
                         NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);
-                    }
-                }
-                else
-                {
-                    if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !TargettingCar)
-                    {
-                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(Ped.Pedestrian, 0, Player.CurrentVehicle.Vehicle, 0f, 0f, 0f, 0f, 0f);
-                        TargettingCar = true;
-                        EntryPoint.WriteToConsole($"Kill: {Ped.Pedestrian.Handle} Updated Targetting Player Vehicle", 5);
-                    }
-                    else if(TargettingCar)
-                    {
-                        NativeFunction.Natives.SET_MOUNTED_WEAPON_TARGET(Ped.Pedestrian, Player.Character, 0, 0f, 0f, 0f, 0f, 0f);
-                        TargettingCar = false;
-                        EntryPoint.WriteToConsole($"Kill: {Ped.Pedestrian.Handle} Updated Targetting Player Ped",5);
                     }
                 }
             }

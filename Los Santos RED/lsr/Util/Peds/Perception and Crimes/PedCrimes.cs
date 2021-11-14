@@ -251,6 +251,73 @@ public class PedCrimes
             }
         }
     }
+    private void CheckOtherPedCrimesOLD(IEntityProvideable world, IPoliceRespondable playerToCheck)
+    {
+        if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
+        {
+            OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
+            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive))
+            {
+                if (!PedExt.Pedestrian.Exists())
+                {
+                    break;
+                }
+                else
+                {
+                    float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
+                    uint VehicleWitnessed = 0;
+                    uint WeaponWitnessed = 0;
+                    Vector3 LocationWitnessed = criminal.Pedestrian.Position;
+                    VehicleExt fullVehicle = null;
+                    WeaponInformation fullWeapon = null;
+                    if (distanceToCriminal <= 60f)
+                    {
+                        Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
+                        if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
+                        {
+                            VehicleWitnessed = criminal.Pedestrian.CurrentVehicle.Handle;
+                        }
+                        else if (tryingToEnter.Exists())
+                        {
+                            VehicleWitnessed = tryingToEnter.Handle;
+                        }
+                        uint currentWeapon;
+                        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
+                        if (currentWeapon != 2725352035 && currentWeapon != 0)
+                        {
+                            WeaponWitnessed = currentWeapon;
+                        }
+                        fullVehicle = world.GetVehicleExt(VehicleWitnessed);
+                        fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
+                    }
+                    else
+                    {
+                        VehicleWitnessed = 0;
+                        WeaponWitnessed = 0;
+                        LocationWitnessed = Vector3.Zero;
+                        fullVehicle = null;
+                        fullWeapon = null;
+                    }
+                    if (distanceToCriminal <= 60f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))
+                    {
+                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+                        {
+                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                        }
+                    }
+                    else if (distanceToCriminal <= 100f)
+                    {
+                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
+                        {
+                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                        }
+                    }
+                }
+            }
+        }
+    }
     private void CheckCrimes(IEntityProvideable world, IPoliceRespondable player)
     {
         if (!PedExt.IsBusted)
@@ -283,6 +350,7 @@ public class PedCrimes
                     if (world.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));
+                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//add TerroristActivity just for 4 stars on some peds
                     }
                 }
             }
@@ -325,6 +393,7 @@ public class PedCrimes
                         if (cop.CheckKilledBy(PedExt.Pedestrian))//this is already logged so only comparing uints? no game calls
                         {
                             AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//add killing police observed, then get outta here
+                            AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//add TerroristActivity just for 4 stars on some peds
                             break;
                         }
                     }

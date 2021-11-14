@@ -318,7 +318,7 @@ public class PlayerPerception
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenTargetCommitCrime = Game.GameTime;
-            EntryPoint.WriteToConsole($"AddCrime Handle {Originator.Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenTargetCommitCrime}, CrimeToAdd.Name {CrimeToAdd.Name}", 5);
+            EntryPoint.WriteToConsole($"AddWitnessedCrime Handle {Originator.Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenTargetCommitCrime}, CrimeToAdd.Name {CrimeToAdd.Name}", 5);
         }
     }
     public void UpdateWitnessedCrimes()

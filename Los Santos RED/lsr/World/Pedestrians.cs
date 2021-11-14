@@ -82,9 +82,7 @@ public class Pedestrians
             return Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
-
     public bool AnyOtherTargetsTasked => Police.Any(x => x.CurrentTask?.OtherTarget != null);
-
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
@@ -153,15 +151,15 @@ public class Pedestrians
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
-        foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead))
+        foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
         {
             Cop.Pedestrian.IsPersistent = false;
         }
-        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.IsDead))
+        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
         {
             EMT.Pedestrian.IsPersistent = false;
         }
-        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.IsDead))
+        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
         {
             Firefighter.Pedestrian.IsPersistent = false;
         }
@@ -334,8 +332,8 @@ public class Pedestrians
             int DesiredArmor = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor);
             Pedestrian.Armor = DesiredArmor;
         }
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-        NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
+        //NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
+        //NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {

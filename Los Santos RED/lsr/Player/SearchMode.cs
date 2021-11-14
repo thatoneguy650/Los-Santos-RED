@@ -356,6 +356,10 @@ namespace LosSantosRED.lsr
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
                     NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
+                    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 272, true);//CPED_CONFIG_FLAG_DontBlipCop 
+                    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 330, true);//CPED_CONFIG_FLAG_DontBlip 
+
+
                 }
             }
         }
