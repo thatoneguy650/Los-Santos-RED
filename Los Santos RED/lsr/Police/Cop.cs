@@ -11,6 +11,7 @@ public class Cop : PedExt
     private ISettingsProvideable Settings;
     private Voice Voice;
     private WeaponInventory WeaponInventory;
+    private bool WasAlreadySetPersistent = false;
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons) : base(pedestrian, settings, crimes, weapons)
     {
         IsCop = true;
@@ -24,6 +25,10 @@ public class Cop : PedExt
         Pedestrian.VisionRange = settings.SettingsManager.PoliceSettings.SightDistance;//55F
         Pedestrian.HearingRange = 55;//25 not really used
         Settings = settings;
+        if(Pedestrian.IsPersistent)
+        {
+            WasAlreadySetPersistent = true;
+        }
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new Voice(this);
         AssistManager = new AssistManager(this);
@@ -33,6 +38,7 @@ public class Cop : PedExt
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
+    public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
     public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);

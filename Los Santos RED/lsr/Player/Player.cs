@@ -61,7 +61,7 @@ namespace Mod
         private bool shouldCheckViolations = true;
         private bool isSetPoliceIgnored = false;
         private uint GameTimeLastFedUpCop;
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -77,10 +77,11 @@ namespace Mod
             PlacesOfInterest = placesOfInterest;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons), Settings);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, EntityProvider);
             Violations = new Violations(this, TimeControllable, Crimes, Settings);
+            Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings);
             PoliceResponse = new PoliceResponse(this, Settings);

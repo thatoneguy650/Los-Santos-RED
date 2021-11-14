@@ -236,7 +236,7 @@ public class Pedestrians
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.Color;
-                myBlip.Scale = 0.6f;
+                myBlip.Scale = 0.6f;myBlip.Name = "Cop";
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);

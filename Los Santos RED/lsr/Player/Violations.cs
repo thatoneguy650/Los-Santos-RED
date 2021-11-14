@@ -106,6 +106,10 @@ namespace LosSantosRED.lsr
             GameTimeStartedBrandishing = 0;
             ResetViolations();
         }
+        public void Setup()
+        {
+            AnimationDictionary.RequestAnimationDictionay("switch@franklin@002110_04_magd_3_weed_exchange");
+        }
         public void UpdateTraffic()
         {
             ResetTrafficViolations();
@@ -319,7 +323,14 @@ namespace LosSantosRED.lsr
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "InsultingOfficer"));
                 
             }
-
+            if(NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+            }
+            if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+            }
 
         }
         private void CheckTrafficViolations()

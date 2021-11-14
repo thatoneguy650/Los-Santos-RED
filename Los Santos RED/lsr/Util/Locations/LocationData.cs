@@ -17,19 +17,23 @@ namespace LosSantosRED.lsr.Locations
         private IZones Zones;
         private Zone PreviousZone;
         private uint GameTimeEnteredZone;
+        private int InteriorID;
+        private IInteriors Interiors;
 
-        public LocationData(Ped characterToLocate, IStreets streets, IZones zones)
+        public LocationData(Ped characterToLocate, IStreets streets, IZones zones, IInteriors interiors)
         {
             Streets = streets;
             Zones = zones;
+            Interiors = interiors;
             CharacterToLocate = characterToLocate;
         }
-
+        public Interior CurrentInterior { get; private set; }
         public Ped CharacterToLocate { get; set; }
         public Street CurrentStreet { get; private set; }
         public Street CurrentCrossStreet { get; private set; }
         public Zone CurrentZone { get; private set; }
         public bool IsOffroad { get; private set; }
+        public bool IsInside => CurrentInterior != null && CurrentInterior.ID != 0;
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public void Update(Ped characterToLocate)
         {
@@ -41,16 +45,20 @@ namespace LosSantosRED.lsr.Locations
             {
                 GetZone();
                 GameFiber.Yield();
+                GetInterior();
+                GameFiber.Yield();
                 GetNode();
                 GameFiber.Yield();
                 GetStreets();
                 GameFiber.Yield();
+                
             }
             else
             {
                 CurrentZone = null;
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
+                CurrentInterior = null;
             }
         }
         private void GetZone()
@@ -58,8 +66,6 @@ namespace LosSantosRED.lsr.Locations
             if (CharacterToLocate.Exists())
             {
                 CurrentZone = Zones.GetZone(CharacterToLocate.Position);
-
-
                 if(PreviousZone == null || CurrentZone != PreviousZone)
                 {
                     GameTimeEnteredZone = Game.GameTime;
@@ -69,7 +75,7 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetNode()
         {
-            if (CharacterToLocate.Exists())
+            if (CharacterToLocate.Exists() && !IsInside)
             {
                 ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
                 if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 15f
@@ -88,7 +94,7 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetStreets()
         {
-            if (IsOffroad)
+            if (IsOffroad || IsInside)
             {
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
@@ -142,6 +148,22 @@ namespace LosSantosRED.lsr.Locations
             if (CurrentStreet == null)
             {
                 CurrentStreet = new Street("Calle Sin Nombre", 60f, "MPH");
+            }
+        }
+        private void GetInterior()
+        {
+            InteriorID = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(CharacterToLocate);
+            if(InteriorID == 0)
+            {
+                CurrentInterior = new Interior(0,"");
+            }
+            else
+            {
+                CurrentInterior = Interiors.GetInterior(InteriorID);
+                if(CurrentInterior == null)
+                {
+                    CurrentInterior = new Interior(InteriorID, "");
+                }
             }
         }
     }

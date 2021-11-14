@@ -402,17 +402,24 @@ public class Debug
             {
                 combat = " Combat: " + cop.Pedestrian.CombatTarget.Handle.ToString();
             }
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat}", 5);
+
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(cop.Pedestrian, out currentWeapon, true);
+            string Weapon = $" Weapon: {currentWeapon}";
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon}", 5);
         }
     }
     private void DebugNumpad7()
     {
-        Player.SetArrestedAnimation(RandomItems.RandomPercent(50));
+
+        AnimationDictionary.RequestAnimationDictionay("switch@franklin@002110_04_magd_3_weed_exchange");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 8.0f, -8.0f, 3000, 16, 0, false, false, false);
+        //Player.SetArrestedAnimation(RandomItems.RandomPercent(50));
 
 
 
 
-       // NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
+        // NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
         //Ped PedToArrest = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
         //Vector3 ToGoTo = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
         //if (PedToArrest.Exists())
@@ -457,8 +464,12 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Player.UnSetArrestedAnimation();
-       // Player.SetWantedLevel(5, "Cool", true);
+
+        AnimationDictionary.RequestAnimationDictionay("switch@franklin@002110_04_magd_3_weed_exchange");
+             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 8.0f, -8.0f, 3000, 16, 0, false, false, false);
+
+        // Player.UnSetArrestedAnimation();
+        // Player.SetWantedLevel(5, "Cool", true);
         //Vehicle myCar = new Vehicle("squaddie",Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
         //GameFiber.Yield();
         //if (myCar.Exists())

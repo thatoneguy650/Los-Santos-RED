@@ -99,6 +99,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\Data\Interface\IInteriors.cs" />
+    <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\AIApprehend.cs" />
     <Compile Include="lsr\Old\ApprehendOther.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
+    <Compile Include="lsr\Util\Locations\Interior.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PedCrimes.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\WitnessedCrime.cs" />

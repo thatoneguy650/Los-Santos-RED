@@ -56,6 +56,7 @@ namespace LosSantosRED.lsr
         private Mod.World World;
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
+        private Interiors Interiors;
         public ModController()
         {
         }
@@ -109,7 +110,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -236,6 +237,11 @@ namespace LosSantosRED.lsr
             GameSaves = new GameSaves();
             GameSaves.ReadConfig();
             GameFiber.Yield();
+
+            Interiors = new Interiors();
+            Interiors.ReadConfig();
+            GameFiber.Yield();
+
         }
         private void SetupModTasks()
         {

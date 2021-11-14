@@ -300,6 +300,12 @@ public class UI : IMenuProvideable
         {
             StreetDisplay += $" at {DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} ~s~";
         }
+
+        if(DisplayablePlayer.CurrentLocation.IsInside)
+        {
+            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) ~s~";
+        }
+
         return StreetDisplay;
     }
     private string GetPlayerDisplay()

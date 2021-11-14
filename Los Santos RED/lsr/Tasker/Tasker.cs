@@ -293,7 +293,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                         }
                     }
                 }
-                else if (Player.Investigation.IsActive)
+                else if (Player.Investigation.IsActive && Cop.IsIdleTaskable)
                 {
                     if (Cop.CurrentTask?.Name != "Investigate")
                     {
@@ -304,27 +304,22 @@ public class Tasker : ITaskerable, ITaskerReportable
                 }
                 else
                 {
-                    if (Cop.CurrentTask?.Name != "Idle")// && Cop.WasModSpawned)
+                    if (Cop.CurrentTask?.Name != "Idle" && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
                     {
                         EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                         Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                         Cop.CurrentTask.Start();
                     }
-
                 }
             }
         }
         else
         {
-            if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
+            if (Cop.CurrentTask?.Name != "Idle" && Cop.IsIdleTaskable)
             {
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                 Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                 Cop.CurrentTask.Start();
-            }
-            else
-            {
-                
             }
         }
         Cop.GameTimeLastUpdatedTask = Game.GameTime;

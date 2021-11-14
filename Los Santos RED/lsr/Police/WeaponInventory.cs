@@ -140,7 +140,9 @@ public class WeaponInventory
             }
             if (Cop.IsInHelicopter || Cop.IsInAPC)
             {
-                if (!IsSetDeadly)//only set this once?
+                uint currentWeapon;
+                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Cop.Pedestrian, out currentWeapon, true);
+                if (!IsSetDeadly || currentWeapon != 0)//only set this once?
                 {
                     if (LongGun != null && !Cop.IsDriver)
                     {

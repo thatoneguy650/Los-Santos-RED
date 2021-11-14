@@ -37,6 +37,7 @@ namespace LosSantosRED.lsr
         private Dispatch DrunkDriving;
 
         private Dispatch AssaultingCivilians;
+        private Dispatch DealingDrugs;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
 
         private bool ExecutingQueue;
@@ -1082,7 +1083,7 @@ namespace LosSantosRED.lsr
 
             new CrimeDispatch("AssaultingCivilians",AssaultingCivilians),
             new CrimeDispatch("AssaultingWithDeadlyWeapon",AssaultingCiviliansWithDeadlyWeapon),
-            
+            new CrimeDispatch("DealingDrugs",DealingDrugs),
 
 
 
@@ -1138,6 +1139,7 @@ namespace LosSantosRED.lsr
             ,OfficersNeeded
             ,AssaultingCivilians
             ,AssaultingCiviliansWithDeadlyWeapon
+            ,DealingDrugs
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -1722,6 +1724,23 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_assault_and_battery.Anassaultandbattery.FileName},"an assault and battery"),
             },
             };
+
+
+            DealingDrugs = new Dispatch()
+            {
+                Name = "Dealing Drugs",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_drug_deal.Adrugdeal.FileName},"a drug deal"),
+                new AudioSet(new List<string>() { crime_drug_deal.Adrugdealinprogress.FileName},"a drug deal in progress"),
+                new AudioSet(new List<string>() { crime_drug_deal.Apossibledrugdeal.FileName},"a possible drug deal"),
+                new AudioSet(new List<string>() { crime_drug_deal.Narcoticstrafficking.FileName},"narcotics trafficing"),
+            },
+            };
+
+
             AssaultingCiviliansWithDeadlyWeapon = new Dispatch()
             {
                 Name = "Assault With a Deadly Weapon",
