@@ -92,6 +92,16 @@ public class PlacesOfInterest : IPlacesOfInterest
                                                                                                                                                           new Vector3(-1792.259f,804.6542f,138.5133f),new Vector3(-1796.816f,810.0197f,138.5144f),
                                                                                                                                                           new Vector3(-1794.411f,813.2302f,138.5146f),new Vector3(-1789.586f,808.2133f,138.5163f)}),
 
+
+
+            new GameLocation(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, LocationType.FoodStand, "Del Perro Beach Hot Dog") { MerchantType = MerchantType.HotDog },
+            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.FoodStand, "Del Perro Food Market"){ MerchantType = MerchantType.Beer },
+            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.FoodStand, "Slice N Dice Pizza"){ MerchantType = MerchantType.Pizza },
+            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.FoodStand, "Sharkies Bites"){ MerchantType = MerchantType.Cigarette },
+            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burgers"){ MerchantType = MerchantType.Hamburger },
+            new GameLocation(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, LocationType.FoodStand, "Vespucci Hot Dogs"){ MerchantType = MerchantType.HotDog },
+
+
     };
     }
 }

@@ -15,7 +15,7 @@ public class GameLocation
     public LocationType Type;
     public string Name;
     public List<Vector3> GasPumps = new List<Vector3>();
-
+    public MerchantType MerchantType = MerchantType.None;
     public GameLocation()
     {
 

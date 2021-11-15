@@ -177,6 +177,7 @@
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Locations\Interior.cs" />
+    <Compile Include="lsr\Util\Peds\MerchantType.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PedCrimes.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\WitnessedCrime.cs" />

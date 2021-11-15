@@ -769,6 +769,19 @@ namespace Mod
                 Interaction.Start();
             }
         }
+        public void StartTransaction()
+        {
+            if (!IsInteracting && CanConverseWithLookedAtPed)
+            {
+                if (Interaction != null)
+                {
+                    Interaction.Dispose();
+                }
+                IsConversing = true;
+                Interaction = new Transaction(this, CurrentLookedAtPed, Settings);
+                Interaction.Start();
+            }
+        }
         public void StartScenario()
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -1475,10 +1488,16 @@ namespace Mod
                     ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
                     ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
                 }
+                if (CurrentLookedAtPed.IsMerchant && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
+                    ButtonPrompts.Add(new ButtonPrompt($"Purchase from {CurrentLookedAtPed.FormattedName}", "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                }
             }
             else
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
+                ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
             }
             if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
             {

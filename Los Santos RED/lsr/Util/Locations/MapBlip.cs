@@ -44,6 +44,10 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return BlipSprite.Dead;
                 }
+                else if (Type == LocationType.FoodStand)
+                {
+                    return BlipSprite.Restaurant;
+                }
                 else
                 {
                     return BlipSprite.PointOfInterest;

@@ -23,12 +23,17 @@ namespace Mod
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
+        private ICrimes Crimes;
+        private IWeapons Weapons;
+        private List<GameLocation> ActiveLocations = new List<GameLocation>();
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
             Jurisdictions = jurisdictions;
             Settings = settings;
+            Weapons = weapons;
+            Crimes = crimes;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
@@ -154,6 +159,44 @@ namespace Mod
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
                 IsMPMapLoaded = false;
             }
-        }    
+        }
+        public void CreateMerchants()
+        {
+            foreach(GameLocation gl in PlacesOfInterest.GetLocations(LocationType.FoodStand))
+            {
+                if(gl.LocationPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
+                {
+                    if(!ActiveLocations.Contains(gl))
+                    {
+                        ActiveLocations.Add(gl);
+                        SetupFoodStand(gl);
+                    }
+                }
+                else
+                {
+                    if(ActiveLocations.Contains(gl))
+                    {
+                        ActiveLocations.Remove(gl);
+                    }
+                }
+            }
+
+        }
+        private void SetupFoodStand(GameLocation gameLocation)//where does this go?
+        {
+            Ped ped = new Ped(new Vector3(gameLocation.LocationPosition.X, gameLocation.LocationPosition.Y, gameLocation.LocationPosition.Z), gameLocation.Heading);
+            GameFiber.Yield();
+            if (ped.Exists())
+            {
+                ped.IsPersistent = false;
+                ped.RandomizeVariation();
+                ped.Tasks.StandStill(-1);
+                ped.KeepTasks = true;
+                GameFiber.Yield();
+                PedExt Person = new PedExt(ped, Settings, false,false,false, gameLocation.Name + " Vendor", new PedGroup(gameLocation.Name, gameLocation.Name, gameLocation.Name + " Vendor", false), Crimes, Weapons);
+                Person.MerchantType = gameLocation.MerchantType;
+                AddEntity(Person);
+            }
+        }
     }
 }

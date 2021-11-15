@@ -16,7 +16,7 @@ public class PedExt : IComplexTaskable
 { 
     private HealthState CurrentHealthState;
     private uint GameTimeLastExitedVehicle;
-
+    private Vector3 SpawnPosition;
 
     private uint KillerHandle;
     private Entity Killer;
@@ -34,6 +34,7 @@ public class PedExt : IComplexTaskable
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
+        SpawnPosition = Pedestrian.Position;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
@@ -95,6 +96,7 @@ public class PedExt : IComplexTaskable
     public bool IsDriver { get; private set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public bool IsGangMember { get; set; } = false;
+    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
     public bool WasSetCriminal { get; set; } = false;
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
@@ -172,7 +174,8 @@ public class PedExt : IComplexTaskable
     }
     public bool IsArrested { get; set; }
     public bool IsInAPC { get; private set; }
-
+    public bool IsMerchant => MerchantType != MerchantType.None && IsNearSpawnPosition;
+    public MerchantType MerchantType { get; set; } = MerchantType.None;
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)

@@ -276,6 +276,9 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 8),//500
                 new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 9),//1000
+
+                new ModTask(2000, "World.CreateMerchants", World.CreateMerchants, 10),//1000
+
                 //new ModTask(1000, "Time.Tick", Time.Tick, 10),
             };
 

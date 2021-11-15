@@ -20,5 +20,8 @@ namespace LosSantosRED.lsr.Interface
         bool CanConverse { get; }
 
         void SetAngeredCop();
+        void GiveMoney(int v);
+        void StartSmoking();
+        void DrinkBeer();
     }
 }

@@ -10,8 +10,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 public class Debug
@@ -271,11 +273,19 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        SpawnAttackHeli();
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string text1 = NativeHelper.GetKeyboardInput("");
+        string text2 = NativeHelper.GetKeyboardInput("");
+        WriteToLog($",new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\"),");
     }
     private void DebugNumpad7()
     {
-        Dispatcher.SpawnHelicopterCop(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        if (Player.CurrentLookedAtPed != null)
+        {
+            Player.CurrentLookedAtPed.MerchantType = MerchantType.HotDog;
+        }
+        //Dispatcher.SpawnHelicopterCop(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
     }
     public void DebugNumpad8()
     {
@@ -289,6 +299,13 @@ public class Debug
             CurrentWanted++;
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
+    }
+    private void WriteToLog(String TextToLog)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(TextToLog + System.Environment.NewLine);
+        File.AppendAllText("Plugins\\LosSantosRED\\" + "Locations.txt", sb.ToString());
+        sb.Clear();
     }
     private void DrawDebugArrowsOnPeds()
     {

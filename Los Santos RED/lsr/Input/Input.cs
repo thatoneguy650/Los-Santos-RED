@@ -64,6 +64,10 @@ namespace LosSantosRED.lsr
             {
                 Player.StartConversation();
             }
+            else if (Player.ButtonPrompts.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
+            {
+                Player.StartTransaction();
+            }
         }
         private void ScenarioCheck()
         {
