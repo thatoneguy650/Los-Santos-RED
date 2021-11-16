@@ -212,7 +212,10 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
             NativeFunction.Natives.x80C8B1846639BB19(0);
             NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-            Game.TimeScale = 1f;
+            if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+            {
+                Game.TimeScale = 1f;
+            }
             NativeFunction.Natives.xB4EDDC19532BFB85();
             Game.HandleRespawn();
             NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
@@ -505,7 +508,10 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        Game.TimeScale = 1f;
+        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        {
+            Game.TimeScale = 1f;
+        }
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
         NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);

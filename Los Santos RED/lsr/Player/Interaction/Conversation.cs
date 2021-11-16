@@ -21,34 +21,34 @@ public class Conversation : Interaction
         Settings = settings;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
-    private bool CanContinueConversation => Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
+    private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public override void Dispose()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Conversation");
         Player.IsConversing = false;
-        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
+        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
         {
-            //Ped.Pedestrian.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
     }
     public override void Start()
     {
-        Player.IsConversing = true;
-        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-        //EntryPoint.WriteToConsole($"Conversation Started");
-        GameFiber.StartNew(delegate
+        if (Ped.Pedestrian.Exists())
         {
-            Greet();
-            Tick();
-            Dispose();
-        }, "Conversation");
+            Player.IsConversing = true;
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+            GameFiber.StartNew(delegate
+            {
+                Greet();
+                Tick();
+                Dispose();
+            }, "Conversation");
+        }
     }
     private bool CanSay(Ped ToSpeak, string Speech)
     {
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
-        //EntryPoint.WriteToConsole($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
         return CanSay;
     }
     private void CheckInput()
@@ -190,19 +190,10 @@ public class Conversation : Interaction
         {
             SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true);
         }
-        //GENERIC_INSULT_MED works on player
-        //GENERIC_INSULT_MED works on peds?
     }
     private void SaySmallTalk(Ped ToReply, bool IsReply)
     {
-        //Main Character?
-        //CULT_TALK
-        //PED_RANT_RESP
-
-        SayAvailableAmbient(ToReply, new List<string>() { "PED_RANT_RESP", "CULT_TALK", "PED_RANT_01", "PHONE_CONV1_CHAT1" }, true);
-        //CHAT_STATE does not work on most?
-        //CHAT_RESP On Main and Character mostly say whatever?
-        //GENERIC_WHATEVER main is basically and insult
+        SayAvailableAmbient(ToReply, new List<string>() { "PED_RANT_RESP", "CULT_TALK", "PED_RANT_01", "PHONE_CONV1_CHAT1","CHAT_STATE","CHAT_RESP" }, true);
     }
     private void Greet()
     {

@@ -32,7 +32,7 @@ public class UI : IMenuProvideable
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
     
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -41,7 +41,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
-        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker);
+        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, consumableSubstances);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         
@@ -303,9 +303,17 @@ public class UI : IMenuProvideable
 
         if(DisplayablePlayer.CurrentLocation.IsInside)
         {
-            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) ~s~";
+            if(DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
+            {
+                #if DEBUG
+                                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) ~s~";
+                #endif
+            }
+            else
+            {
+                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}~s~";
+            }
         }
-
         return StreetDisplay;
     }
     private string GetPlayerDisplay()

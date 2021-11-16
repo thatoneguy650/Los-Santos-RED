@@ -14,6 +14,8 @@ public class PedSwapMenu : Menu
     {
         PedSwap = pedSwap;
         PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
+        PedSwapUIMenu.OnItemSelect += OnActionItemSelect;
+        PedSwapUIMenu.OnListChange += OnListChange;
         CreatePedSwap();
     }
     public float SelectedTakeoverRadius { get; set; }
@@ -53,8 +55,7 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
 
-        PedSwapUIMenu.OnItemSelect += OnActionItemSelect;
-        PedSwapUIMenu.OnListChange += OnListChange;
+
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

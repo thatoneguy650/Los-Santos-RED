@@ -20,6 +20,7 @@ public class ActionMenu : Menu
     {
         Player = player;
         Actions = menuPool.AddSubMenu(parentMenu, "Actions");
+        Actions.OnItemSelect += OnActionItemSelect;
         CreateActionsMenu();
     }
     public int SelectedPlateIndex { get; set; }
@@ -105,7 +106,7 @@ public class ActionMenu : Menu
         Actions.AddItem(SmokePot);
         Actions.AddItem(StopConsuming);
 
-        Actions.OnItemSelect += OnActionItemSelect;
+        
        // Actions.OnListChange += OnListChange;
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -124,7 +125,7 @@ public class ActionMenu : Menu
         }
         else if (selectedItem == Drink)
         {
-            Player.DrinkBeer();
+            Player.StartDrinkingActivity();
         }
         else if (selectedItem == Smoke)
         {

@@ -16,10 +16,11 @@ namespace LosSantosRED.lsr.Interface
         string AutoTuneStation { get; set; }
         bool CanPerformActivities { get; }
         List<LicensePlate> SpareLicensePlates { get; }
+        List<ConsumableInventoryItem> ConsumableItems { get; }
 
         void StartSmokingPot();
         void StartSmoking();
-        void DrinkBeer();
+        void StartDrinkingActivity();
         void CommitSuicide();
         void DisplayPlayerNotification();
         void GiveMoney(int v);
@@ -29,5 +30,8 @@ namespace LosSantosRED.lsr.Interface
         void ChangePlate(LicensePlate selectedItem);
         void TakeOwnershipOfNearestCar();
         void CallPolice();
+        //void StartEatingActivity(ConsumableSubstance selectedStuff);
+        void RemoveFromInventory(ConsumableSubstance selectedStuff, int v);
+        void StartConsumingActivity(ConsumableSubstance selectedStuff);
     }
 }

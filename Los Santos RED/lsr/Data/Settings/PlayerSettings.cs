@@ -49,6 +49,7 @@ public class PlayerSettings
     public uint SearchMode_SearchTimeMultiplier { get; set; } = 30000;
     public bool ScaleEngineDamage { get; set; } = true;
     public bool AllowStartRandomScenario { get; set; } = false;
+    public bool SetSlowMoOnDeath { get; set; } = true;
 
     public PlayerSettings()
     {

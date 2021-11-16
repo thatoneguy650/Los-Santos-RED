@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 [Serializable()]
 public class GameLocation
 {
-    public Vector3 LocationPosition;
-    public float Heading;
-    public LocationType Type;
-    public string Name;
-    public List<Vector3> GasPumps = new List<Vector3>();
-    public MerchantType MerchantType = MerchantType.None;
+    public Vector3 LocationPosition { get; set; }
+    public float Heading { get; set; }
+    public LocationType Type { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public List<Vector3> GasPumps { get; set; } = new List<Vector3>();
+    public List<ConsumableSubstance> SellableItems { get; set; } = new List<ConsumableSubstance>();
     public GameLocation()
     {
 
@@ -26,6 +27,14 @@ public class GameLocation
         Heading = _Heading;
         Type = _Type;
         Name = _Name;
+    }
+    public GameLocation(Vector3 _LocationPosition, float _Heading, LocationType _Type, String _Name, string _Description)
+    {
+        LocationPosition = _LocationPosition;
+        Heading = _Heading;
+        Type = _Type;
+        Name = _Name;
+        Description = _Description;
     }
     public GameLocation(Vector3 _LocationPosition, float _Heading, LocationType _Type, String _Name, List<Vector3> _GasPumps)
     {

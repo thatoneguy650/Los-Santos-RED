@@ -33,7 +33,8 @@ public class Debug
     private Settings Settings;
     private Ped RageTargetPed;
     private Tasker Tasker;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker)
+    private ConsumableSubstances ConsumableSubstances;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, ConsumableSubstances consumableSubstances)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -45,6 +46,7 @@ public class Debug
         ModController = modController;
         Settings = settings;
         Tasker = tasker;
+        ConsumableSubstances = consumableSubstances;
     }
     public void Dispose()
     {
@@ -281,10 +283,17 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        if (Player.CurrentLookedAtPed != null)
+        ConsumableSubstance toadd = ConsumableSubstances.Consumables.PickRandom();
+        if(toadd != null)
         {
-            Player.CurrentLookedAtPed.MerchantType = MerchantType.HotDog;
+            Player.AddToInventory(toadd,1);
+            EntryPoint.WriteToConsole($"ADDED {toadd.Name} {toadd.Type}", 5);
         }
+        
+        //if (Player.CurrentLookedAtPed != null)
+        //{
+        //    Player.CurrentLookedAtPed.MerchantType = MerchantType.HotDog;
+        //}
         //Dispatcher.SpawnHelicopterCop(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
     }
     public void DebugNumpad8()

@@ -40,6 +40,7 @@ public class Pedestrians
     public List<Cop> Police { get; private set; } = new List<Cop>();
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
+    public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
     public bool AnyArmyUnitsSpawned
     {
         get
@@ -120,6 +121,14 @@ public class Pedestrians
             }
         }
         Firefighters.Clear();
+        foreach (Merchant merchant in Merchants)
+        {
+            if (merchant.Pedestrian.Exists())
+            {
+                merchant.Pedestrian.Delete();
+            }
+        }
+        Merchants.Clear();
     }
     public PedExt GetPedExt(uint Handle)
     {
@@ -142,6 +151,11 @@ public class Pedestrians
         {
             return pedExt;
         }
+        pedExt = Merchants.FirstOrDefault(x => x.Handle == Handle);
+        if (pedExt != null)
+        {
+            return pedExt;
+        }
         return Civilians.FirstOrDefault(x => x.Handle == Handle);
  
     }
@@ -150,6 +164,7 @@ public class Pedestrians
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
+        Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
         {
@@ -166,6 +181,7 @@ public class Pedestrians
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
+        Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
     }
     public void Scan()

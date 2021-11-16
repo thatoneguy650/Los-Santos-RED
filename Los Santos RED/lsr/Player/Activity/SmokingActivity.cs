@@ -34,11 +34,18 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
         private ISettingsProvideable Settings;
+        private ConsumableSubstance ConsumableSubstance;
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
+        }
+        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ConsumableSubstance consumableSubstance) : base()
+        {
+            Player = consumable;
+            Settings = settings;
+            ConsumableSubstance = consumableSubstance;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override void Cancel()
@@ -239,7 +246,7 @@ namespace LosSantosRED.lsr.Player
             int MouthBoneID;
             Vector3 MouthOffset;
             Rotator MouthRotator;
-            string PropModelName;
+            string PropModelName = "ng_proc_cigarette01a";
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two")
             {
                 if (RandomItems.RandomPercent(50))
@@ -316,48 +323,34 @@ namespace LosSantosRED.lsr.Player
                 MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
                 MouthRotator = new Rotator(0.0f, -180f, 0f);
             }
-            if (IsPot)
+
+            if(ConsumableSubstance != null)
             {
-                PropModelName = Settings.SettingsManager.ActivitySettings.Marijuana_PossibleProps.PickRandom();
+                PropModelName = ConsumableSubstance.ModelName;
+                if (ConsumableSubstance.IsIntoxicating)
+                {
+                    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
+                    IntoxicatingEffect.Start();
+                }
             }
             else
             {
-                PropModelName = Settings.SettingsManager.ActivitySettings.Cigarette_PossibleProps.PickRandom();
+                if (IsPot)
+                {
+                    PropModelName = Settings.SettingsManager.ActivitySettings.Marijuana_PossibleProps.PickRandom();
+                    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
+                    IntoxicatingEffect.Start();
+                }
+                else
+                {
+                    PropModelName = Settings.SettingsManager.ActivitySettings.Cigarette_PossibleProps.PickRandom();
+                }
             }
-
-
-
-            // TEMP CROPLA
-
-            //if (IsPot)
-            //{
-            //    PropModelName = "P_CS_Joint_01";
-            //}
-            //else
-            //{
-            //    PropModelName = "Prop_AMB_Ciggy_01";
-            //}
-
-            //HandBoneID = 28422;
-            //HandOffset = new Vector3(-0.8f, 0.0f, 0.0f);
-            //HandRotator = new Rotator(0.0f, 0.0f, 0.0f);
-
-
-            //MouthBoneID = 31086;
-            //MouthOffset = new Vector3(-0.02f, 0.13f, 0.0f);
-            //MouthRotator = new Rotator(0.0f, 0.0f, 0.0f);
-
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, MouthBoneID, MouthOffset, MouthRotator, PropModelName);
-
-            if (IsPot)
-            {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
-                IntoxicatingEffect.Start();
-            }
         }
         private void UpdatePosition()
         {

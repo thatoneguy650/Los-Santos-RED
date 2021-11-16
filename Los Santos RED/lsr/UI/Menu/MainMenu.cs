@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class MainMenu : Menu
 {
-
+    private InventoryMenu InventoryMenu;
     private ActionMenu ActionMenu;
     private PedSwapMenu PedSwapMenu;
     private SaveMenu SaveMenu;
@@ -22,17 +22,20 @@ public class MainMenu : Menu
     private UIMenuItem TakeVehicleOwnership;
     private ISettingsProvideable Settings;
     private ITaskerable Tasker;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker)
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IConsumableSubstances consumableSubstances)
     {
         Player = player;
         Settings = settings;
         Tasker = tasker;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(Main);
+        Main.OnItemSelect += OnItemSelect;
+        Main.OnListChange += OnListChange;
         SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player);
+        InventoryMenu = new InventoryMenu(menuPool, Main, Player, consumableSubstances);
         CreateMainMenu();
     }
     public override void Hide()
@@ -40,14 +43,17 @@ public class MainMenu : Menu
         Main.Visible = false;
         ActionMenu.Hide();
         SaveMenu.Hide();
+        InventoryMenu.Hide();
     }
     public override void Show()
     {
         if (!Main.Visible)
         {
             ActionMenu.Update();
+            InventoryMenu.Update();
             Main.Visible = true;
             ActionMenu.Hide();
+            InventoryMenu.Hide();
             SettingsMenu.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -58,8 +64,12 @@ public class MainMenu : Menu
         if (!Main.Visible)
         {
             ActionMenu.Update();
+            InventoryMenu.Update();
+
             Main.Visible = true;
+
             ActionMenu.Hide();
+            InventoryMenu.Hide();
             SettingsMenu.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -67,7 +77,9 @@ public class MainMenu : Menu
         else
         {
             Main.Visible = false;
+
             ActionMenu.Hide();
+            InventoryMenu.Hide();
             SettingsMenu.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -75,8 +87,7 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
-        Main.OnItemSelect += OnItemSelect;
-        Main.OnListChange += OnListChange;
+
 
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;

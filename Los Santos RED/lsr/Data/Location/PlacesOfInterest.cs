@@ -16,6 +16,13 @@ public class PlacesOfInterest : IPlacesOfInterest
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
     private List<GameLocation> LocationsList;
+    private IConsumableSubstances ConsumableSubstances;
+
+    public PlacesOfInterest(IConsumableSubstances consumableSubstances)
+    {
+        ConsumableSubstances = consumableSubstances;
+    }
+
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
@@ -42,6 +49,39 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig()
     {
+
+
+        ConsumableSubstance Cigarette = ConsumableSubstances.Get("Redwood Cigarette");
+        ConsumableSubstance Joint = ConsumableSubstances.Get("Joint");
+        ConsumableSubstance Cigar = ConsumableSubstances.Get("Estancia Cigar");
+        ConsumableSubstance Donut = ConsumableSubstances.Get("Donut");
+        ConsumableSubstance Pizza = ConsumableSubstances.Get("Slice of Pizza");
+        ConsumableSubstance HotDog = ConsumableSubstances.Get("Hot Dog");
+        ConsumableSubstance Hamburger = ConsumableSubstances.Get("Hamburger");
+
+        ConsumableSubstance fortyoz = ConsumableSubstances.Get("40 oz");
+        ConsumableSubstance ambeer = ConsumableSubstances.Get("Bottle of A.M.");
+        ConsumableSubstance pibbeer = ConsumableSubstances.Get("Bottle of PiBwasser");
+        ConsumableSubstance barrachobeer = ConsumableSubstances.Get("Bottle of Barracho");
+        ConsumableSubstance blarneysbeer = ConsumableSubstances.Get("Bottle of Blarneys");
+        ConsumableSubstance jakeysbeer = ConsumableSubstances.Get("Bottle of Jakeys");
+        ConsumableSubstance loggerbeer = ConsumableSubstances.Get("Bottle of Logger");
+        ConsumableSubstance patriotbeer = ConsumableSubstances.Get("Bottle of Patriot");
+        ConsumableSubstance pridebeer = ConsumableSubstances.Get("Bottle of Pride");
+        ConsumableSubstance strongbeer = ConsumableSubstances.Get("Bottle of Stronz");
+        ConsumableSubstance duschebeer = ConsumableSubstances.Get("Bottle of Dusche");
+
+        ConsumableSubstance canexola = ConsumableSubstances.Get("Can of eCola");
+        ConsumableSubstance cansprunk = ConsumableSubstances.Get("Can of Sprunk");
+        ConsumableSubstance cupecola = ConsumableSubstances.Get("Cup of eCola");
+        ConsumableSubstance cupsprunk = ConsumableSubstances.Get("Cup of Sprunk");
+
+        ConsumableSubstance coffee = ConsumableSubstances.Get("Cup of Coffee");
+
+        ConsumableSubstance fries = ConsumableSubstances.Get("French Fries");
+        ConsumableSubstance banana = ConsumableSubstances.Get("Banana");
+        ConsumableSubstance chips = ConsumableSubstances.Get("Phat Chips");
+
         LocationsList = new List<GameLocation>
         {
             //Hospital
@@ -66,10 +106,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station"),
             //Stores
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f, LocationType.ConvenienceStore, "Rob's Liquors"),
-            new GameLocation(new Vector3(-709.68f, -923.198f, 19.0193f), 22.23846f, LocationType.ConvenienceStore, "LTD Little Seoul"),
-            new GameLocation(new Vector3(2560f, 385f, 107f), 22.23846f, LocationType.ConvenienceStore, "24/7 Store 2"),
-            new GameLocation(new Vector3(547f, 2678f, 41f), 22.23846f, LocationType.ConvenienceStore, "24/7 Supermarket Harmony"),
-            new GameLocation(new Vector3(-3236.767f,1005.609f,12.33137f), 122.6316f, LocationType.ConvenienceStore, "24/7 Supermarket Chumash"),
+            new GameLocation(new Vector3(-709.68f, -923.198f, 19.0193f), 22.23846f, LocationType.ConvenienceStore, "LTD Little Seoul","A one-stop shop!"),
+            new GameLocation(new Vector3(2560f, 385f, 107f), 22.23846f, LocationType.ConvenienceStore, "24/7 Supermarket #3664","As fast as you"),
+            new GameLocation(new Vector3(547f, 2678f, 41f), 22.23846f, LocationType.ConvenienceStore, "24/7 Supermarket Harmony","As fast as you"),
+            new GameLocation(new Vector3(-3236.767f,1005.609f,12.33137f), 122.6316f, LocationType.ConvenienceStore, "24/7 Supermarket Chumash","As fast as you"),
             new GameLocation(new Vector3(2683.969f,3282.098f,55.24052f), 89.53969f, LocationType.GasStation, "24/7 Supermarket Grande Senora" ,new List<Vector3>() { new Vector3(2678.073f, 3265.522f, 54.7076f),new Vector3(2681.173f, 3262.774f, 54.70736f) }),
             new GameLocation(new Vector3(1725f, 6410f, 35f), 22.23846f, LocationType.GasStation, "24/7 Mount Chilliad (Gas)",new List<Vector3>() { new Vector3(1706.173f, 6412.223f, 32.22713f), new Vector3(1701.657f, 6414.528f, 32.1186f), new Vector3(1697.71f, 6416.565f, 32.08189f),new Vector3(1706.173f, 6412.223f, 32.22713f)
                                                                                                                                                 , new Vector3(1697.869f,6420.53f,32.05283f), new Vector3(1701.852f,6418.417f,32.05503f), new Vector3(1705.852f,6416.659f,32.05479f) }),
@@ -94,12 +134,12 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-            new GameLocation(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, LocationType.FoodStand, "Del Perro Beach Hot Dog") { MerchantType = MerchantType.HotDog },
-            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.FoodStand, "Del Perro Food Market"){ MerchantType = MerchantType.Beer },
-            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.FoodStand, "Slice N Dice Pizza"){ MerchantType = MerchantType.Pizza },
-            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.FoodStand, "Sharkies Bites"){ MerchantType = MerchantType.Cigarette },
-            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burgers"){ MerchantType = MerchantType.Hamburger },
-            new GameLocation(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, LocationType.FoodStand, "Vespucci Hot Dogs"){ MerchantType = MerchantType.HotDog },
+            new GameLocation(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, LocationType.FoodStand, "Del Perro Beach Hot Dog","Mostly Meat!") { SellableItems = new List<ConsumableSubstance>(){ HotDog, cansprunk, banana } },
+            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.FoodStand, "Del Perro Food Market","No Robberies Please!"){ SellableItems = new List<ConsumableSubstance>(){ Joint, Cigarette, Cigar,cupsprunk, fortyoz, barrachobeer, pibbeer, blarneysbeer, loggerbeer, patriotbeer, pridebeer, strongbeer } },
+            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.FoodStand, "Slice N Dice Pizza","Slice UP!"){ SellableItems = new List<ConsumableSubstance>(){ Pizza, cupsprunk, ambeer, pibbeer, barrachobeer, blarneysbeer, jakeysbeer, strongbeer, duschebeer }},
+            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.FoodStand, "Sharkies Bites","Take A Bite Today!"){ SellableItems = new List<ConsumableSubstance>(){ HotDog, chips, Donut, cupecola, coffee } },
+            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burgers","Extra BEEFY!"){ SellableItems = new List<ConsumableSubstance>(){ Hamburger, fries, cansprunk } },
+            new GameLocation(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, LocationType.FoodStand, "Vespucci Hot Dogs","Vegan? No. Meat? Yes."){ SellableItems = new List<ConsumableSubstance>(){ HotDog, chips, canexola } },
 
 
     };

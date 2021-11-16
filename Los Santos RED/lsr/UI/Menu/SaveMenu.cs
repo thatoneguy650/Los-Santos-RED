@@ -23,6 +23,8 @@ public class SaveMenu : Menu
         Weapons = weapons;
         PedSwap = pedSwap;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
+
+        Saves.OnItemSelect += OnActionItemSelect;
         CreateSavesMenu();
     }
     public override void Hide()
@@ -56,7 +58,6 @@ public class SaveMenu : Menu
         SaveGameItem = new UIMenuItem("Save Player", "Save current player");
         Saves.AddItem(GameSaveMenuList);
         Saves.AddItem(SaveGameItem);
-        Saves.OnItemSelect += OnActionItemSelect;
 
         GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
     }

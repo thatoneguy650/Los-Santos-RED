@@ -174,8 +174,6 @@ public class PedExt : IComplexTaskable
     }
     public bool IsArrested { get; set; }
     public bool IsInAPC { get; private set; }
-    public bool IsMerchant => MerchantType != MerchantType.None && IsNearSpawnPosition;
-    public MerchantType MerchantType { get; set; } = MerchantType.None;
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)

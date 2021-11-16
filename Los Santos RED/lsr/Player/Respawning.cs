@@ -268,7 +268,10 @@ public class Respawning// : IRespawning
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING
-        Game.TimeScale = 1f;
+        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        {
+            Game.TimeScale = 1f;
+        }
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
         NativeFunction.Natives.x80C8B1846639BB19(0);//_SET_CAM_EFFECT (0 = cancelled)
 

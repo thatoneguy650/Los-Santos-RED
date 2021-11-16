@@ -119,6 +119,7 @@ namespace Mod
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public bool CurrentWeaponIsOneHanded { get; private set; }
+        public List<ConsumableInventoryItem> ConsumableItems => Inventory.Consumables;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
@@ -138,6 +139,10 @@ namespace Mod
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
+
+        public void AddToInventory(ConsumableSubstance toadd, int v) => Inventory.Add(toadd, v);
+
+
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
@@ -501,9 +506,37 @@ namespace Mod
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             MakeSober();
             Game.LocalPlayer.WantedLevel = 0;
-            Game.TimeScale = 1f;
+            if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+            {
+                Game.TimeScale = 1f;
+            }
         }
-        public void DrinkBeer()
+        public void RemoveFromInventory(ConsumableSubstance consumableSubstance, int amount) => Inventory.Remove(consumableSubstance, amount);
+        public void StartConsumingActivity(ConsumableSubstance consumableSubstance)
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                if(consumableSubstance.Type == eConsumableType.Drink)
+                {
+                    DynamicActivity = new DrinkingActivity(this, Settings, consumableSubstance);
+                }
+                else if (consumableSubstance.Type == eConsumableType.Eat)
+                {
+                    DynamicActivity = new EatingActivity(this, Settings, consumableSubstance);
+                }
+                else if (consumableSubstance.Type == eConsumableType.Smoke)
+                {
+                    DynamicActivity = new SmokingActivity(this, Settings, consumableSubstance);
+                }
+                DynamicActivity?.Start();
+            }
+        }
+        public void StartDrinkingActivity()
         {
             if (!IsPerformingActivity && CanPerformActivities)
             {
@@ -778,7 +811,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Transaction(this, CurrentLookedAtPed, Settings);
+                Interaction = new Transaction(this, (Merchant)CurrentLookedAtPed, Settings);
                 Interaction.Start();
             }
         }
@@ -1419,7 +1452,13 @@ namespace Mod
             Game.LocalPlayer.Character.Kill();
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
-            Game.TimeScale = 0.4f;
+
+            if(Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+            {
+                Game.TimeScale = 0.4f;
+            }
+
+            
             Scanner.OnSuspectWasted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
         }
@@ -1488,7 +1527,7 @@ namespace Mod
                     ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
                     ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
                 }
-                if (CurrentLookedAtPed.IsMerchant && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
+                if (CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
                     ButtonPrompts.Add(new ButtonPrompt($"Purchase from {CurrentLookedAtPed.FormattedName}", "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
@@ -1625,7 +1664,10 @@ namespace Mod
                 NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
                 NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING
-                Game.TimeScale = 1f;
+                if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+                {
+                    Game.TimeScale = 1f;
+                }
                 NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
                 NativeFunction.Natives.x80C8B1846639BB19(0);//_SET_CAM_EFFECT (0 = cancelled)
                 NativeFunction.Natives.SET_PED_ALERTNESS(Character, 0);
@@ -1769,7 +1811,5 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PlayerArrested: Seat NOT Assigned", 3);
             }
         }
-
-
     }
 }

@@ -18,10 +18,12 @@ namespace LosSantosRED.lsr.Interface
         List<ButtonPrompt> ButtonPrompts { get; }
         bool IsInVehicle { get; }
         bool CanConverse { get; }
+        int Money { get; }
 
         void SetAngeredCop();
         void GiveMoney(int v);
         void StartSmoking();
-        void DrinkBeer();
+        void StartDrinkingActivity();
+        void AddToInventory(ConsumableSubstance offering, int v);
     }
 }

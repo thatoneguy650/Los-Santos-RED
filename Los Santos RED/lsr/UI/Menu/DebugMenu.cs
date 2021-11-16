@@ -28,6 +28,8 @@ public class DebugMenu : Menu
         RadioStations = radioStations;
         Debug = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(Debug);
+        Debug.OnItemSelect += DebugMenuSelect;
+        Debug.OnListChange += OnListChange;
         CreateDebugMenu();
     }
     public override void Hide()
@@ -54,8 +56,7 @@ public class DebugMenu : Menu
     }
     private void CreateDebugMenu()
     {
-        Debug.OnItemSelect += DebugMenuSelect;
-        Debug.OnListChange += OnListChange;
+
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");

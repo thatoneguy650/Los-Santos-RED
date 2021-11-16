@@ -39,6 +39,8 @@ public class BustedMenu : Menu
         Player = policeRespondable;
         Menu = new UIMenu("Busted", "Choose Respawn");
         menuPool.Add(Menu);
+        Menu.OnItemSelect += OnItemSelect;
+        Menu.OnListChange += OnListChange;
         CreateBustedMenu();
     }
     public override void Hide()
@@ -94,8 +96,7 @@ public class BustedMenu : Menu
         Menu.AddItem(Surrender);
         Menu.AddItem(SurrenderLong);
         Menu.AddItem(TakeoverRandomPed);
-        Menu.OnItemSelect += OnItemSelect;
-        Menu.OnListChange += OnListChange;
+
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Util.Locations;
@@ -26,7 +27,8 @@ namespace Mod
         private ICrimes Crimes;
         private IWeapons Weapons;
         private List<GameLocation> ActiveLocations = new List<GameLocation>();
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes)
+        private IConsumableSubstances ConsumableSubstances;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IConsumableSubstances consumableSubstances)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -34,6 +36,7 @@ namespace Mod
             Settings = settings;
             Weapons = weapons;
             Crimes = crimes;
+            ConsumableSubstances = consumableSubstances;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
@@ -89,6 +92,10 @@ namespace Mod
             else if (pedExt.GetType() == typeof(Firefighter))
             {
                 Pedestrians.Firefighters.Add((Firefighter)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(Merchant))
+            {
+                Pedestrians.Merchants.Add((Merchant)pedExt);
             }
             else 
             {
@@ -193,8 +200,8 @@ namespace Mod
                 ped.Tasks.StandStill(-1);
                 ped.KeepTasks = true;
                 GameFiber.Yield();
-                PedExt Person = new PedExt(ped, Settings, false,false,false, gameLocation.Name + " Vendor", new PedGroup(gameLocation.Name, gameLocation.Name, gameLocation.Name + " Vendor", false), Crimes, Weapons);
-                Person.MerchantType = gameLocation.MerchantType;
+                Merchant Person = new Merchant(ped, Settings, false,false,false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
+                Person.Store = gameLocation;
                 AddEntity(Person);
             }
         }

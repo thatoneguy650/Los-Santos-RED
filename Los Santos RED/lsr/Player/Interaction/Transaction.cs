@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,56 +12,25 @@ public class Transaction : Interaction
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
     private bool IsTasked;
-    private PedExt Ped;
+    private Merchant Ped;
     private IInteractionable Player;
     private bool CancelledConversation;
     private ISettingsProvideable Settings;
     private Rage.Object SellingProp;
-    public Transaction(IInteractionable player, PedExt ped, ISettingsProvideable settings)
+    private MenuPool menuPool;
+    private UIMenu Menu;
+    public Transaction(IInteractionable player, Merchant ped, ISettingsProvideable settings)
     {
         Player = player;
         Ped = ped;
         Settings = settings;
+        menuPool = new MenuPool();
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     private bool CanContinueConversation => Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    private string BuyPrompt => "Buy " + Wares;
-    private string Wares
-    {
-        get
-        {
-            if (Ped.MerchantType == MerchantType.HotDog)
-            {
-                return "Hot Dog";//"prop_cs_hotdog_01"
-            }
-            else if (Ped.MerchantType == MerchantType.Hamburger)
-            {
-                return "Hamburger";//"prop_cs_burger_01"
-            }
-            else if (Ped.MerchantType == MerchantType.Donut)
-            {
-                return "Donut";//"prop_donut_01","prop_donut_02"
-            }
-            else if (Ped.MerchantType == MerchantType.Cigarette)
-            {
-                return "Cigarette";//"ng_proc_cigarette01a"
-            }
-            else if (Ped.MerchantType == MerchantType.Beer)
-            {
-                return "Beer";//"prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03"
-            }
-            else if (Ped.MerchantType == MerchantType.Pizza)
-            {
-                return "Pizza";//"v_res_tt_pizzaplate"
-            }
-            else
-            {
-                return "";
-            }
-        }
-    }
     public override void Dispose()
     {
+        HideMenu();
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
         Player.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
@@ -71,18 +42,127 @@ public class Transaction : Interaction
     }
     public override void Start()
     {
-        Player.IsConversing = true;
-        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-
-        EntryPoint.WriteToConsole($"Transaction START", 3);
-
-        //EntryPoint.WriteToConsole($"Conversation Started");
-        GameFiber.StartNew(delegate
+        if (Ped.Pedestrian.Exists())
         {
-            Greet();
-            Tick();
+            //TransactionMenu = new TransactionMenu(menuPool, Player,Ped.Store.Name,Ped.Store.Name,Ped.Store.SellableItems);
+            Menu = new UIMenu(Ped.Store.Name, Ped.Store.Description);
+            Menu.OnItemSelect += OnItemSelect;
+            menuPool.Add(Menu);
+
+            Player.IsConversing = true;
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+            AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
+            AnimationDictionary.RequestAnimationDictionay("mp_common");
+            EntryPoint.WriteToConsole($"Transaction START", 3);
+            GameFiber.StartNew(delegate
+            {
+                Greet();
+                ShowMenu();
+                Tick();
+                Dispose();
+            }, "Transaction");
+        }
+    }
+    private void Tick()
+    {
+        while (CanContinueConversation)
+        {
+            //CheckInput();
+            Loop();
+            if (CancelledConversation)
+            {
+                Dispose();
+                break;
+            }
+            GameFiber.Yield();
+        }
+        Dispose();
+        GameFiber.Sleep(1000);
+    }
+    private void CreateTransactionMenu()
+    {
+        Menu.Clear();
+        foreach (ConsumableSubstance cii in Ped.Store.SellableItems)
+        {
+            Menu.AddItem(new UIMenuItem(cii.Name, $"{cii.Name} ${cii.Price}"));
+        }
+        
+    }
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        ConsumableSubstance ToAdd = Ped.Store.SellableItems.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
+        if (ToAdd != null && Player.Money >= ToAdd.Price)
+        {
+            Buy(ToAdd);
+            Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
+            EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
+            Player.GiveMoney(-1 * ToAdd.Price);
+        }
+        GameFiber.Sleep(500);
+    }
+    private void HideMenu()
+    {
+        Menu.Visible = false;
+    }
+    private void ShowMenu()
+    {
+        if (!Menu.Visible)
+        {
+            CreateTransactionMenu();
+            Menu.Visible = true;
+        }
+    }
+    private void Loop()
+    {
+        menuPool.ProcessMenus();
+        if(!IsActivelyConversing && !Menu.Visible)
+        {
             Dispose();
-        }, "Conversation");
+        }
+    }
+    private void CheckInput()
+    {
+        //string Buy1 = "";
+        //string Buy2 = "";
+        //if(Item1 != null)
+        //{
+        //    Buy1 = "Buy " + Item1.Name;
+        //}
+        //if(Item2 != null)
+        //{
+        //    Buy2 = "Buy " + Item2.Name;
+        //}
+        //if (IsActivelyConversing)
+        //{
+        //    Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
+        //}
+        //else
+        //{
+        //    if (!Player.ButtonPrompts.Any(x => x.Group == "Transaction"))
+        //    {
+        //        if (Buy1 != "")
+        //        {
+        //            Player.ButtonPrompts.Add(new ButtonPrompt(Buy1, "Transaction", Buy1, Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+        //        }
+        //        if (Buy2 != "")
+        //        {
+        //            Player.ButtonPrompts.Add(new ButtonPrompt(Buy2, "Transaction", Buy2, Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+        //        }
+        //        Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Transaction", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3));
+        //    }
+        //}
+        //if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
+        //{
+        //    CancelledConversation = true;
+        //}
+        //else if (Player.ButtonPrompts.Any(x => x.Identifier == Buy1 && x.IsPressedNow))
+        //{
+        //    Buy(Item1);
+        //}
+        //else if (Player.ButtonPrompts.Any(x => x.Identifier == Buy2 && x.IsPressedNow))
+        //{
+        //    Buy(Item2);
+        //}
     }
     private bool CanSay(Ped ToSpeak, string Speech)
     {
@@ -90,109 +170,62 @@ public class Transaction : Interaction
         //EntryPoint.WriteToConsole($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
         return CanSay;
     }
-    private void CheckInput()
+    private void Buy(ConsumableSubstance item)
     {
-        if (IsActivelyConversing)
-        {
-            Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
-        }
-        else
-        {
-            if (!Player.ButtonPrompts.Any(x => x.Group == "Transaction"))
-            {
-
-                Player.ButtonPrompts.Add(new ButtonPrompt(BuyPrompt, "Transaction", BuyPrompt, Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
-                Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Transaction", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3));
-            }
-        }
-        if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
-        {
-            CancelledConversation = true;
-        }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == BuyPrompt && x.IsPressedNow))
-        {
-            Positive();
-        }
-    }
-    private void Positive()
-    {
+        HideMenu();
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
-
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS" }, true);
-        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE" }, true);
-
-        GameFiber.Sleep(2000);
+        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY","GENERIC_YES","BLOCKED_GENEIRC" }, true);
+        if (Ped.Pedestrian.Exists())
+        {
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+        }
+        GameFiber.Sleep(500);
+        string modelName = item.PackageModel;
+        if(modelName == "")
+        {
+            modelName = item.ModelName;
+        }
+        if (Ped.Pedestrian.Exists() && modelName != "")
+        {
+            SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            if (SellingProp.Exists())
+            {
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.AttachBoneIndex), item.AttachOffset, item.AttachRotation);
+            }
+        }
+        GameFiber.Sleep(500);
+        if (Ped.Pedestrian.Exists())
+        {
+            if (SellingProp.Exists())
+            {
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.AttachBoneIndex), item.AttachOffset, item.AttachRotation);
+            }
+        }
+        GameFiber.Sleep(1000);
+        if (Ped.Pedestrian.Exists())
+        {
+            if (SellingProp.Exists())
+            {
+                SellingProp.Delete();
+            }
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);       
+        }
         IsActivelyConversing = false;
-        CancelledConversation = true;
-        Player.GiveMoney(-5);
-        Dispose();
-        StartActivity();
-    }
-    private void StartActivity()
-    {
-        if(SellingProp.Exists())
-        {
-            SellingProp.Delete();
-        }
-        if (Ped.MerchantType == MerchantType.Cigarette)
-        {
-            Player.StartSmoking();
-        }
-        else if(Ped.MerchantType == MerchantType.Beer)
-        {
-            Player.DrinkBeer();
-        }
-        else 
-        {
-            if(Ped.MerchantType == MerchantType.HotDog)
-            {
-                DoPostAnimation("prop_cs_hotdog_01");
-            }
-            else if (Ped.MerchantType == MerchantType.Hamburger)
-            {
-                DoPostAnimation("prop_cs_burger_01");
-            }
-            if (Ped.MerchantType == MerchantType.Pizza)
-            {
-                DoPostAnimation("v_res_tt_pizzaplate");
-            }
-            if (Ped.MerchantType == MerchantType.Donut)
-            {
-                DoPostAnimation("prop_donut_01");
-            }
-        }
-        EntryPoint.WriteToConsole($"Transaction COMPLETED", 3);
-    }
-    private void DoPostAnimation(string PropName)
-    {
-        Vector3 HandOffset = new Vector3(0.141f, 0.03f, -0.033f);
-        Rotator HandRotator = new Rotator(0.0f, -168f, -84f);
-        SellingProp = new Rage.Object("prop_donut_01", Player.Character.GetOffsetPositionUp(50f));
-        if (SellingProp.Exists())
-        {
-            SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), HandOffset, HandRotator);
-        }
-        AnimationDictionary.RequestAnimationDictionay("amb@code_human_wander_eating_donut@male@idle_a");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "amb@code_human_wander_eating_donut@male@idle_a", "idle_c", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-        GameFiber.Sleep(5000);
-        if (SellingProp.Exists())
-        {
-            SellingProp.Delete();
-        }
-        Player.Character.Health += 20;
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        ShowMenu();
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {
         bool Spoke = false;
         if (CanContinueConversation)
         {
-            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+            foreach (string AmbientSpeech in Possibilities)
             {
                 ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
                 GameFiber.Sleep(100);
-                if (ToSpeak.IsAnySpeechPlaying)
+                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
                 {
                     Spoke = true;
                 }
@@ -203,7 +236,7 @@ public class Transaction : Interaction
                 }
             }
             GameFiber.Sleep(100);
-            while (ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
+            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
             {
                 Spoke = true;
                 GameFiber.Yield();
@@ -296,19 +329,5 @@ public class Transaction : Interaction
         }
         IsActivelyConversing = false;
     }
-    private void Tick()
-    {
-        while (CanContinueConversation)
-        {
-            CheckInput();
-            if (CancelledConversation)
-            {
-                Dispose();
-                break;
-            }
-            GameFiber.Yield();
-        }
-        Dispose();
-        GameFiber.Sleep(1000);
-    }
+
 }
