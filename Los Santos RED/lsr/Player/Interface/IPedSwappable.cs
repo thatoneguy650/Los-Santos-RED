@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace LosSantosRED.lsr.Interface
         PoolHandle OwnedVehicleHandle { get; set; }
         int WantedLevel { get; }
         Ped Character { get; }
+        Inventory Inventory { get; set; }
+        int GroupID { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

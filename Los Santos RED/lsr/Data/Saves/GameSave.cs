@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Player;
 using Rage;
 using Rage.Native;
 using System;
@@ -36,12 +37,16 @@ namespace LosSantosRED.lsr.Data
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation;
             WeaponInventory = new List<StoredWeapon>();
+            InventoryItems.Clear();
+            foreach(ConsumableInventoryItem cii in player.Inventory.Consumables)
+            {
+                InventoryItems.Add(new ConsumableInventoryItem(cii.ConsumableSubstance, cii.Amount));
+            }
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash,Vector3.Zero,weapons.GetWeaponVariation(Game.LocalPlayer.Character,(uint)wd.Hash),wd.Ammo));
             }
         }
-
         public string PlayerName { get; set; }
         public int Money { get; set; }
         public string ModelName { get; set; }
@@ -49,13 +54,11 @@ namespace LosSantosRED.lsr.Data
         public uint OwnedVehicleHandle { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
+        public List<ConsumableInventoryItem> InventoryItems { get; set; } = new List<ConsumableInventoryItem>();
         public void Load(IWeapons weapons,IPedSwap pedSwap)
         {
-            //ResetPlayerState();
-            //LoadModel();
-            // Mod.Player currentPlayer = EntryPoint.ModController.NewPlayer(ModelName, IsMale, PlayerName, Money);
-            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation);
-             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation, InventoryItems);
+            WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyOldGuns.WeaponHash, (short)MyOldGuns.Ammo, false);
@@ -66,34 +69,10 @@ namespace LosSantosRED.lsr.Data
                     {
                         Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Variation);
                     }
-                   // NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
                 }
             }
         }
-        //private void LoadModel()
-        //{
-        //    NativeHelper.SetAsMainPlayer();
-        //    NativeHelper.ChangeModel("player_zero");
-        //    NativeHelper.ChangeModel(ModelName);
-        //    if (CurrentModelVariation != null)
-        //    {
-        //        CurrentModelVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        //    }        
-        //}
-        //private void ResetPlayerState()
-        //{     
-        //    NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-        //    NativeFunction.Natives.x80C8B1846639BB19(0);
-        //    NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-        //    Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        //    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        //    Game.TimeScale = 1f;
-        //    NativeFunction.Natives.xB4EDDC19532BFB85();
-        //    Game.HandleRespawn();
-        //    NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
-        //    NativeFunction.Natives.xC0AA53F866B3134D();
-        //    NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        //}
+
         public override string ToString()
         {
             return $"{PlayerName}";//base.ToString();

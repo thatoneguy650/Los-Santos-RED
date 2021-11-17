@@ -33,7 +33,7 @@ namespace Mod
         private uint GameTimeStartedPlaying;
         private uint GameTimeWantedLevelStarted;
         private HealthState HealthState;
-        private Inventory Inventory;
+        
         private bool isActive = true;
         private bool isAiming;
         private bool isAimingInVehicle;
@@ -106,6 +106,7 @@ namespace Mod
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
         public Ped Character => Game.LocalPlayer.Character;
+        public int GroupID { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
@@ -119,6 +120,7 @@ namespace Mod
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public bool CurrentWeaponIsOneHanded { get; private set; }
+        public Inventory Inventory { get; set; }
         public List<ConsumableInventoryItem> ConsumableItems => Inventory.Consumables;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";
@@ -139,10 +141,7 @@ namespace Mod
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
-
         public void AddToInventory(ConsumableSubstance toadd, int v) => Inventory.Add(toadd, v);
-
-
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
@@ -312,11 +311,8 @@ namespace Mod
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
-            if (isForPlayer)
-            {
-                PoliceResponse.AddCrime(crimeObserved, description);
-            }
-            if(AnnounceCrime)
+            PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
+            if (AnnounceCrime)
             {
                 Scanner.AnnounceCrime(crimeObserved, description);
             }
@@ -380,7 +376,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings);
+                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, EntityProvider);
                 DynamicActivity.Start();
             }
         }
@@ -393,7 +389,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, toChange, Settings);
+                DynamicActivity = new PlateTheft(this, toChange, Settings, EntityProvider);
                 DynamicActivity.Start();
             }
         }
@@ -444,6 +440,13 @@ namespace Mod
                 {
                     VehicleToDescribe = CurrentVehicle;
                     usingOwned = false;
+                }
+            }
+            else
+            {
+                if (OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
+                {
+                    VehicleToDescribe = OwnedVehicle;
                 }
             }
 
@@ -625,11 +628,11 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, Settings);
+                DynamicActivity = new PlateTheft(this, Settings, EntityProvider);
                 DynamicActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory)
         {
             IsDead = false;
             IsBusted = false;
@@ -676,11 +679,15 @@ namespace Mod
             if (clearCriminalHistory)
             {
                 CriminalHistory.Clear();
-            }       
+            }      
+            if(clearInventory)
+            {
+                Inventory.Clear();
+            }
         }
         public void ResetScanner() => Scanner.Reset();
         public void ResistArrest() => Respawning.ResistArrest();
-        public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory) => Respawning.RespawnAtCurrentLocation(withInvicibility, resetWanted, clearCriminalHistory);
+        public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory, bool clearInventory) => Respawning.RespawnAtCurrentLocation(withInvicibility, resetWanted, clearCriminalHistory, clearInventory);
         public void RespawnAtGrave() => Respawning.RespawnAtGrave();
         public void RespawnAtHospital(GameLocation currentSelectedHospitalLocation) => Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
         public void ScannerUpdate() => Scanner.Tick();
@@ -785,7 +792,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Conversation(this, CurrentLookedAtPed, Settings);
+                Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes);
                 Interaction.Start();
             }
         }
@@ -874,18 +881,23 @@ namespace Mod
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
         {
-            Vehicle vehicleToCheck = (Vehicle)Rage.World.GetClosestEntity(Character.Position, 10f, GetEntitiesFlags.ConsiderCars | GetEntitiesFlags.ExcludeOccupiedVehicles);
-            VehicleExt FoundVehicle;
-            if (vehicleToCheck != null)
+            VehicleExt toTakeOwnershipOf = null;
+            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
             {
-                FoundVehicle = TrackedVehicles.Where(x => x.Vehicle.Handle == vehicleToCheck.Handle).FirstOrDefault();
-                if (FoundVehicle == null)
+                toTakeOwnershipOf = CurrentVehicle;
+            }
+            else
+            {
+                toTakeOwnershipOf = EntityProvider.GetClosestVehicleExt(Character.Position, false, 10f);
+            }
+            if(toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
+            {
+                if (!TrackedVehicles.Any(x => x.Vehicle.Handle == toTakeOwnershipOf.Vehicle.Handle))
                 {
-                    FoundVehicle = new VehicleExt(vehicleToCheck, Settings);
-                    TrackedVehicles.Add(FoundVehicle);
+                    TrackedVehicles.Add(toTakeOwnershipOf);
                 }
-                FoundVehicle.SetNotWanted();
-                OwnedVehicleHandle = FoundVehicle.Vehicle.Handle;
+                toTakeOwnershipOf.SetNotWanted();
+                OwnedVehicleHandle = toTakeOwnershipOf.Vehicle.Handle;
                 DisplayPlayerNotification();
             }
             else
@@ -929,6 +941,7 @@ namespace Mod
             if (existingVehicleExt == null)
             {
                 VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
+                EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
                 TrackedVehicles.Add(createdVehicleExt);
                 existingVehicleExt = createdVehicleExt;
             }
@@ -936,6 +949,11 @@ namespace Mod
             {
                 TrackedVehicles.Add(existingVehicleExt);
             }
+
+
+
+
+
             if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
             {
                 existingVehicleExt.SetAsEntered();
@@ -1647,6 +1665,8 @@ namespace Mod
         }
         public void SetInPoliceCar()
         {
+            //this is no good
+
             GameFiber SetPlayerInPoliceCarGF = GameFiber.StartNew(delegate
             {
                 while (Character.Exists() && (Character.IsRagdoll || Character.IsStunned))
@@ -1719,11 +1739,11 @@ namespace Mod
                     {
                         if(WantedLevel > 0)
                         {
-                            Reset(true, true, true, true);
+                            Reset(true, true, true, true, false);
                         }
 
 
-                        if(PoliceStation != null && Character.DistanceTo2D(PoliceStation.LocationPosition) <= 30f && Character.CurrentVehicle.Exists() && Character.CurrentVehicle.Speed <= 0.5f)
+                        if(PoliceStation != null && Character.DistanceTo2D(PoliceStation.EntrancePosition) <= 30f && Character.CurrentVehicle.Exists() && Character.CurrentVehicle.Speed <= 0.5f)
                         {
                             EntryPoint.WriteToConsole($"PlayerArrested: Arrived", 3);
                             break;

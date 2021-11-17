@@ -5,9 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-
+[Serializable()]
 public class ConsumableInventoryItem
 {
+    public ConsumableInventoryItem()
+    {
+
+    }
     public ConsumableInventoryItem(ConsumableSubstance consumableSubstance, int amount)
     {
         ConsumableSubstance = consumableSubstance;

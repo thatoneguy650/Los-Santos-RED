@@ -59,6 +59,7 @@ namespace LosSantosRED.lsr
         private List<uint> NotificationHandles = new List<uint>();
         private Dispatch OfficerDown;
         private Dispatch OfficerNeedsAssistance;
+        private Dispatch Harassment;
         private Dispatch OfficersNeeded;
         private List<AudioSet> OfficersReport;
         private Dispatch OnFoot;
@@ -1078,8 +1079,19 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("Kidnapping",Kidnapping),
             new CrimeDispatch("PublicIntoxication",PublicIntoxication),
 
-            new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),
+
+
+
+            new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),//these are bad
             new CrimeDispatch("OfficersNeeded",OfficersNeeded),
+
+
+            new CrimeDispatch("Harassment",Harassment),
+
+            
+
+
+
 
             new CrimeDispatch("AssaultingCivilians",AssaultingCivilians),
             new CrimeDispatch("AssaultingWithDeadlyWeapon",AssaultingCiviliansWithDeadlyWeapon),
@@ -1135,6 +1147,7 @@ namespace LosSantosRED.lsr
             ,DrunkDriving
             ,Kidnapping
             ,PublicIntoxication
+            ,Harassment
             ,OfficerNeedsAssistance
             ,OfficersNeeded
             ,AssaultingCivilians
@@ -1788,6 +1801,22 @@ namespace LosSantosRED.lsr
             {
                 new AudioSet(new List<string>() { crime_officer_in_need_of_assistance.Anofficerinneedofassistance.FileName},"an officer in need of assistance"),
                  new AudioSet(new List<string>() { crime_officer_in_need_of_assistance.Anofficerrequiringassistance.FileName},"an officer requiring assistance"),
+            },
+            };
+
+            Harassment = new Dispatch()
+            {
+                Name = "Harassment",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_07.Apublicnuisance.FileName},"a public nuisance"),
+                new AudioSet(new List<string>() { crime_disturbance.Apossibledisturbance.FileName},"a possible disturbance"),
+                new AudioSet(new List<string>() { crime_disturbance.Adisturbance.FileName},"a disturbance"),
+                new AudioSet(new List<string>() { crime_disturbance.Adisturbance1.FileName},"a disturbance"),
+
             },
             };
 

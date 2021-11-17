@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         PedVariation CurrentModelVariation { get; }
         bool IsMale { get; }
         int Money { get; }
+        Inventory Inventory { get; set; }
     }
 }

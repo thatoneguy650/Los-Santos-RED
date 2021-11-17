@@ -19,4 +19,6 @@ public class Interior
 
     public int ID { get; set; }
     public string Name { get; set; }
+    public bool IsMPOnly { get; set; } = false;
+    public bool IsSPOnly { get; set; } = false;
 }

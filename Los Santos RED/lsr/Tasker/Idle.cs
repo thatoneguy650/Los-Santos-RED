@@ -175,7 +175,7 @@ public class Idle : ComplexTask
                         GameLocation closestPoliceStation = PlacesOfInterest.GetClosestLocation(Ped.Pedestrian.Position, LocationType.Police);
                         if(closestPoliceStation != null)
                         {
-                            taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.LocationPosition);
+                            taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.EntrancePosition);
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)VehicleDrivingFlags.Normal, 20f);
                         }
                         else

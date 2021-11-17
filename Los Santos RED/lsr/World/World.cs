@@ -72,7 +72,7 @@ namespace Mod
             {
                 foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
                 {
-                    MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
+                    MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.Type);
                     myBlip.AddToMap();
                     GameFiber.Yield();
                 }
@@ -119,6 +119,7 @@ namespace Mod
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
         public VehicleExt GetVehicleExt(uint handle) => Vehicles.GetVehicleExt(handle);
+        public VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance) => Vehicles.GetClosestVehicleExt(position, includePolice, maxDistance);
         public void PrunePedestrians() => Pedestrians.Prune();
         public void PruneVehicles() => Vehicles.Prune();
         public void RemoveBlips()
@@ -171,7 +172,7 @@ namespace Mod
         {
             foreach(GameLocation gl in PlacesOfInterest.GetLocations(LocationType.FoodStand))
             {
-                if(gl.LocationPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
+                if(gl.VendorPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
                 {
                     if(!ActiveLocations.Contains(gl))
                     {
@@ -191,7 +192,7 @@ namespace Mod
         }
         private void SetupFoodStand(GameLocation gameLocation)//where does this go?
         {
-            Ped ped = new Ped(new Vector3(gameLocation.LocationPosition.X, gameLocation.LocationPosition.Y, gameLocation.LocationPosition.Z), gameLocation.Heading);
+            Ped ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
             GameFiber.Yield();
             if (ped.Exists())
             {

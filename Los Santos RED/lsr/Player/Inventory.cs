@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player
 {
+    [Serializable()]
     public class Inventory
     {
         private List<ConsumableInventoryItem> ConsumableList = new List<ConsumableInventoryItem>();
         private IInventoryable Player;
         public List<ConsumableInventoryItem> Consumables => ConsumableList;
+        public Inventory()
+        {
+
+        }
         public Inventory(IInventoryable player)
         {
             Player = player;
@@ -63,6 +68,11 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"{cii.ConsumableSubstance.Name} {cii.ConsumableSubstance.Type} {cii.ConsumableSubstance.ModelName} {cii.Amount}", 5);
             }
             EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
+        }
+
+        public void Clear()
+        {
+            ConsumableList.Clear();
         }
     }
 }

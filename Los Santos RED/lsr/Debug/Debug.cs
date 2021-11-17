@@ -34,6 +34,8 @@ public class Debug
     private Ped RageTargetPed;
     private Tasker Tasker;
     private ConsumableSubstances ConsumableSubstances;
+    private List<InteriorPosition> InteriorPositions = new List<InteriorPosition>();
+    private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, ConsumableSubstances consumableSubstances)
     {
         PlateTypes = plateTypes;
@@ -247,6 +249,63 @@ public class Debug
         //}
 
     }
+
+    public void Setup()
+    {
+        InteriorPositions = new List<InteriorPosition>()
+        {
+            new InteriorPosition("10 Car",new Vector3(229.9559f, -981.7928f, -99.66071f))//works
+            ,new InteriorPosition("Low End Apartment",new Vector3(261.4586f, -998.8196f, -99.00863f))//works
+            ,new InteriorPosition("4 Integrity Way, Apt 30",new Vector3(-35.31277f, -580.4199f, 88.71221f))//works
+            ,new InteriorPosition("Dell Perro Heights, Apt 4",new Vector3(-1468.14f, -541.815f, 73.4442f))//works
+            ,new InteriorPosition("Dell Perro Heights, Apt 7",new Vector3(-1477.14f, -538.7499f, 55.5264f))//works
+            ,new InteriorPosition("Eclipse Towers, Apt 3",new Vector3(-773.407f, 341.766f, 211.397f))//works
+            ,new InteriorPosition("CharCreator",new Vector3(402.5164f, -1002.847f, -99.2587f))//works
+            ,new InteriorPosition("Mission Carpark",new Vector3(405.9228f, -954.1149f, -99.6627f))//works
+            ,new InteriorPosition("Torture Room",new Vector3(136.5146f, -2203.149f, 7.30914f))//works
+            ,new InteriorPosition("Omega's Garage",new Vector3(2331.344f, 2574.073f, 46.68137f))//works
+            ,new InteriorPosition("Motel",new Vector3(152.2605f, -1004.471f, -98.99999f))//works
+            ,new InteriorPosition("Lester's House",new Vector3(1273.9f, -1719.305f, 54.77141f))//works
+            ,new InteriorPosition("FBI Top Floor",new Vector3(134.5835f, -749.339f, 258.152f))//works
+            ,new InteriorPosition("FBI Floor 47",new Vector3(134.5835f, -766.486f, 234.152f))//works
+            ,new InteriorPosition("FBI Floor 49",new Vector3(134.635f, -765.831f, 242.152f))//works
+            ,new InteriorPosition("IAA Office",new Vector3(117.22f, -620.938f, 206.1398f))//works
+   
+        };
+        MPInteriorPositions = new List<InteriorPosition>()
+        {
+            new InteriorPosition("2 Car",new Vector3(173.2903f, -1003.6f, -99.65707f))//doesnt work
+            ,new InteriorPosition("6 Car",new Vector3(197.8153f, -1002.293f, -99.65749f))//doesnt work
+            ,new InteriorPosition("Medium End Apartment",new Vector3(347.2686f, -999.2955f, -99.19622f))//doesnt work
+            ,new InteriorPosition("4 Integrity Way, Apt 28",new Vector3(-18.07856f, -583.6725f, 79.46569f))//doesnt work
+            ,new InteriorPosition("Richard Majestic, Apt 2",new Vector3(-915.811f, -379.432f, 113.6748f))//doesnt work
+            ,new InteriorPosition("Tinsel Towers, Apt 42",new Vector3(-614.86f, 40.6783f, 97.60007f))//doesnt work
+            ,new InteriorPosition("3655 Wild Oats Drive",new Vector3(-169.286f, 486.4938f, 137.4436f))//doesnt work
+            ,new InteriorPosition("2044 North Conker Avenue",new Vector3(340.9412f, 437.1798f, 149.3925f))//doesnt work
+            ,new InteriorPosition("2045 North Conker Avenue",new Vector3(373.023f, 416.105f, 145.7006f))//doesnt work
+            ,new InteriorPosition("2862 Hillcrest Avenue",new Vector3(-676.127f, 588.612f, 145.1698f))//doesnt work
+            ,new InteriorPosition("2868 Hillcrest Avenue",new Vector3(-763.107f, 615.906f, 144.1401f))//doesnt work
+            ,new InteriorPosition("2874 Hillcrest Avenue",new Vector3(-857.798f, 682.563f, 152.6529f))//doesnt work
+            ,new InteriorPosition("2677 Whispymound Drive",new Vector3(120.5f, 549.952f, 184.097f))//doesnt work
+            ,new InteriorPosition("2133 Mad Wayne Thunder",new Vector3(-1288f, 440.748f, 97.69459f))//doesnt work
+            ,new InteriorPosition("Bunker Interior",new Vector3(899.5518f,-3246.038f, -98.04907f))//doesnt work
+            ,new InteriorPosition("Solomon's Office",new Vector3(-1005.84f, -478.92f, 50.02733f))//doesnt work
+            ,new InteriorPosition("Psychiatrist's Office",new Vector3(-1908.024f, -573.4244f, 19.09722f))//doesnt work
+            ,new InteriorPosition("Movie Theatre",new Vector3(-1427.299f, -245.1012f, 16.8039f))//doesnt work
+            ,new InteriorPosition("Madrazos Ranch",new Vector3(1399f, 1150f, 115f))//doesnt work
+            //,new InteriorPosition("Life Invader Office",new Vector3(-1044.193f, -236.9535f, 37.96496f))//doesnt work//wrong coords? doesnt even work in MP
+            ,new InteriorPosition("Smuggler's Run Hangar",new Vector3(-1266.802f, -3014.837f, -49.000f))//doesnt work
+            ,new InteriorPosition("Avenger Interior",new Vector3(520.0f, 4750.0f, -70.0f))//doesnt work
+            ,new InteriorPosition("Facility",new Vector3(345.0041f, 4842.001f, -59.9997f))//doesnt work
+            ,new InteriorPosition("Server Farm",new Vector3(2168.0f, 2920.0f, -84.0f))//doesnt work
+            ,new InteriorPosition("Submarine",new Vector3(514.33f, 4886.18f, -62.59f))//doesnt work
+            ,new InteriorPosition("IAA Facility",new Vector3(2147.91f, 2921.0f, -61.9f))//doesnt work
+            ,new InteriorPosition("Nightclub",new Vector3(-1604.664f, -3012.583f, -78.000f))//doesnt work
+            ,new InteriorPosition("Nightclub Warehouse",new Vector3(-1505.783f, -3012.587f, -80.000f))//doesnt work
+            ,new InteriorPosition("Terrorbyte Interior",new Vector3(-1421.015f, -3012.587f, -80.000f))//doesnt work
+        };
+    }
+
     private void DebugNumpad0()
     {
         Game.LocalPlayer.IsInvincible = true;
@@ -267,11 +326,55 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        SpawnNoGunAttackers();
+        Game.LocalPlayer.IsInvincible = true;
+        Game.DisplayNotification("IsInvincible = True");
+        foreach (InteriorPosition ip in MPInteriorPositions)
+        {
+            if (ip != null)
+            {
+                EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
+                Game.DisplayNotification(ip.Name);
+                Game.LocalPlayer.Character.Position = ip.Position;
+                GameFiber.Sleep(1000);
+                string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
+                toWrite += " { IsMPOnly = true }";
+                WriteToLogLocations(toWrite);
+
+                GameFiber.Sleep(2000);
+            }
+        }
+        Game.LocalPlayer.IsInvincible = false;
+        Game.DisplayNotification("IsInvincible = False");
+        // SpawnNoGunAttackers();
     }
     private void DebugNumpad5()
     {
-        SpawnNoGunAttackers();
+        //string text1 = NativeHelper.GetKeyboardInput("");
+        //string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";
+        //WriteToLogInteriors(toWrite);
+
+
+        //SetInRandomInterior();
+        //Game.LocalPlayer.IsInvincible = true;
+        //Game.DisplayNotification("IsInvincible = True");
+        //foreach (InteriorPosition ip in InteriorPositions)
+        //{
+        //    if (ip != null)
+        //    {
+        //        EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
+        //        Game.DisplayNotification(ip.Name);
+        //        Game.LocalPlayer.Character.Position = ip.Position;
+        //        GameFiber.Sleep(1000);
+        //        string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
+        //        WriteToLog(toWrite);
+
+        //        GameFiber.Sleep(2000);
+        //    }
+        //}
+        //Game.LocalPlayer.IsInvincible = false;
+        //Game.DisplayNotification("IsInvincible = False");
+
+        SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {
@@ -279,7 +382,7 @@ public class Debug
         float Heading = Game.LocalPlayer.Character.Heading;
         string text1 = NativeHelper.GetKeyboardInput("");
         string text2 = NativeHelper.GetKeyboardInput("");
-        WriteToLog($",new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\"),");
+        WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
     private void DebugNumpad7()
     {
@@ -309,11 +412,27 @@ public class Debug
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
     }
-    private void WriteToLog(String TextToLog)
+    private void SetInRandomInterior()
+    {
+      InteriorPosition mypos =  InteriorPositions.PickRandom();
+        if (mypos != null)
+        {
+            EntryPoint.WriteToConsole($"Player Set In {mypos.Name}", 5);
+            Game.LocalPlayer.Character.Position = mypos.Position;
+        }
+    }
+    private void WriteToLogLocations(String TextToLog)
     {
         StringBuilder sb = new StringBuilder();
         sb.Append(TextToLog + System.Environment.NewLine);
         File.AppendAllText("Plugins\\LosSantosRED\\" + "Locations.txt", sb.ToString());
+        sb.Clear();
+    }
+    private void WriteToLogInteriors(String TextToLog)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(TextToLog + System.Environment.NewLine);
+        File.AppendAllText("Plugins\\LosSantosRED\\" + "Interiors.txt", sb.ToString());
         sb.Clear();
     }
     private void DrawDebugArrowsOnPeds()
@@ -992,6 +1111,21 @@ public class Debug
         //}
     }
 
+    public class InteriorPosition
+    {
+        public string Name { get; set; }
+        public Vector3 Position { get; set; }
+        public InteriorPosition()
+        {
+
+        }
+
+        public InteriorPosition(string name, Vector3 position)
+        {
+            Name = name;
+            Position = position;
+        }
+    }
     enum eTaskTypeIndex
     {
  //    CTaskHandsUp = 0,

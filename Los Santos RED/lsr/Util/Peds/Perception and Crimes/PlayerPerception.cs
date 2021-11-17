@@ -311,7 +311,7 @@ public class PlayerPerception
             GameTimeLastLOSCheck = Game.GameTime;
         }
     }
-    private void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
+    public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
         if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
         {
@@ -325,7 +325,7 @@ public class PlayerPerception
     {
         foreach (Crime committing in Target.CivilianReportableCrimesViolating)
         {
-            if (CanSeeTarget && !committing.CanReportBySound)
+            if (CanRecognizeTarget && !committing.CanReportBySound)
             {
                 AddWitnessedCrime(committing, Originator.Pedestrian.Position);
             }

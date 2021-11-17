@@ -9,8 +9,9 @@ public class PoliceSettings
     public int GeneralFineAmount { get; set; } = 500;
     public int RoadblockMinWantedLevel { get; set; } = 3;
     public int RoadblockMaxWantedLevel { get; set; } = 5;
-    public int MinTimeBetweenRoadblocks { get; set; } = 120000;
-    public int RoadblockWantedLevelAdditionalTimeScaler { get; set; } = 30000;
+    public int TimeBetweenRoadblock_Unseen { get; set; } = 999999;
+    public int TimeBetweenRoadblock_Seen_Min { get; set; } = 120000;
+    public int TimeBetweenRoadblock_Seen_AdditionalTimeScaler { get; set; } = 30000;
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
     public bool AllowExclusiveControlOverWantedLevel { get; set; } = true;
@@ -32,13 +33,20 @@ public class PoliceSettings
     public bool OverrideArmor { get; set; } = true;
     public int MinArmor { get; set; } = 0;
     public int MaxArmor { get; set; } = 50;
-    public int SpawnLimit_Default { get; set; } = 5;
-    public int SpawnLimit_Investigation { get; set; } = 6;
-    public int SpawnLimit_Wanted1 { get; set; } = 8;
-    public int SpawnLimit_Wanted2 { get; set; } = 10;
-    public int SpawnLimit_Wanted3 { get; set; } = 18;
-    public int SpawnLimit_Wanted4 { get; set; } = 25;
-    public int SpawnLimit_Wanted5 { get; set; } = 35;
+    public int PedSpawnLimit_Default { get; set; } = 5;
+    public int PedSpawnLimit_Investigation { get; set; } = 6;
+    public int PedSpawnLimit_Wanted1 { get; set; } = 8;
+    public int PedSpawnLimit_Wanted2 { get; set; } = 10;
+    public int PedSpawnLimit_Wanted3 { get; set; } = 18;
+    public int PedSpawnLimit_Wanted4 { get; set; } = 25;
+    public int PedSpawnLimit_Wanted5 { get; set; } = 35;
+    public int VehicleSpawnLimit_Default { get; set; } = 5;
+    public int VehicleSpawnLimit_Investigation { get; set; } = 6;
+    public int VehicleSpawnLimit_Wanted1 { get; set; } = 8;
+    public int VehicleSpawnLimit_Wanted2 { get; set; } = 10;
+    public int VehicleSpawnLimit_Wanted3 { get; set; } = 15;
+    public int VehicleSpawnLimit_Wanted4 { get; set; } = 18;
+    public int VehicleSpawnLimit_Wanted5 { get; set; } = 20;
     public int KillLimit_Wanted4 { get; set; } = 4;
     public int KillLimit_Wanted5 { get; set; } = 10;
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
@@ -46,6 +54,17 @@ public class PoliceSettings
     public float GunshotHearingDistance { get; set; } = 80f;
     public float SightDistance_Helicopter { get; set; } = 150f;
     public float SightDistance_Helicopter_AdditionalAtWanted { get; set; } = 100f;
+    public float MaxDistanceToSpawn_WantedSeen { get; set; } = 550f;
+    public float MaxDistanceToSpawn_WantedUnseen { get; set; } = 350f;
+    public float MaxDistanceToSpawn_NotWanted { get; set; } = 900f;
+    public float MinDistanceToSpawn_WantedUnseen { get; set; } = 250f;
+    public float MinDistanceToSpawn_WantedSeen { get; set; } = 400f;
+    public float MinDistanceToSpawn_NotWanted { get; set; } = 350f;
+    public int TimeBetweenCopSpawn_Unseen { get; set; } = 3000;
+    public int TimeBetweenCopSpawn_Seen_Min { get; set; } = 2000;
+    public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; } = 2000;
+
+
     public PoliceSettings()
     {
         #if DEBUG

@@ -98,18 +98,20 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription)
+        public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer)
         {
             //this is a fucking mess of references and isnt working properly at all
             //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
+
+            PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
-                if (crimeSceneDescription.HaveDescription)
+                if (crimeSceneDescription.HaveDescription && isForPlayer)
                 {
                     PoliceHaveDescription = crimeSceneDescription.HaveDescription;
                 }
-                PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
+                //PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
                 CrimeEvent PreviousViolation;
 
                 if (crimeSceneDescription.SeenByOfficers)
@@ -139,7 +141,7 @@ namespace LosSantosRED.lsr
                         CrimesReported.Add(new CrimeEvent(CrimeInstance, crimeSceneDescription));
                     }
                 }
-                if (crimeSceneDescription.SeenByOfficers && Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
+                if (crimeSceneDescription.SeenByOfficers && Player.WantedLevel != CrimeInstance.ResultingWantedLevel && isForPlayer)
                 {
                     Player.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
                 }

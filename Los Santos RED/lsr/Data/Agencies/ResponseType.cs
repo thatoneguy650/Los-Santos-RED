@@ -10,4 +10,5 @@ public enum ResponseType
     EMS = 1,
     Fire = 2,
     Other = 3,
+    None = 4,
 }

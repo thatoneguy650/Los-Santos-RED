@@ -33,14 +33,30 @@ public class ConsumableSubstances : IConsumableSubstances
     {
         ConsumableSubstancesList = new List<ConsumableSubstance>
         {
+
+            new ConsumableSubstance("Hot Dog",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 5 },
+            new ConsumableSubstance("Hot Sausage",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 5 },
+            new ConsumableSubstance("Hot Pretzel",eConsumableType.Eat,eConsumableCategory.Food,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("3 Mini Pretzels",eConsumableType.Eat,eConsumableCategory.Food,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 3 },
+            new ConsumableSubstance("Nuts",eConsumableType.Eat,eConsumableCategory.Food,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("Bottle of Water",eConsumableType.Drink,eConsumableCategory.Soda,"",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) { Price = 2 },
+
+            new ConsumableSubstance("Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 1 },
+            new ConsumableSubstance("Megacheese Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("Double Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("Kingsize Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("Bacon Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 2 },
+
+
+
             new ConsumableSubstance("Redwood Cigarette",eConsumableType.Smoke,eConsumableCategory.Cigarette,"ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) { Price = 30, AmountPerPackage = 20, PackageModel = "p_fag_packet_01_s" },
             new ConsumableSubstance("Joint",eConsumableType.Smoke,eConsumableCategory.Marijuana,"p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) { Price = 25, AmountPerPackage = 5, IsIntoxicating = true },
             new ConsumableSubstance("Estancia Cigar",eConsumableType.Smoke,eConsumableCategory.Cigarette,"prop_cigar_02",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)) { Price = 50, AmountPerPackage = 20, PackageModel ="p_cigar_pack_02_s" },
 
             new ConsumableSubstance("Donut",eConsumableType.Eat,eConsumableCategory.Food,"prop_donut_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)) { Price = 1 },
             new ConsumableSubstance("Slice of Pizza",eConsumableType.Eat,eConsumableCategory.Food,"v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 3 },
-            new ConsumableSubstance("Hot Dog",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) { Price = 3 },
-            new ConsumableSubstance("Hamburger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 3 },
+            
+            new ConsumableSubstance("Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 3 },
 
             new ConsumableSubstance("40 oz",eConsumableType.Drink,eConsumableCategory.Beer,"prop_cs_beer_bot_40oz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { IsIntoxicating = true, Price = 5 },
             new ConsumableSubstance("Bottle of A.M.",eConsumableType.Drink,eConsumableCategory.Beer,"prop_beer_am",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { IsIntoxicating = true, Price = 4 },
@@ -54,6 +70,9 @@ public class ConsumableSubstances : IConsumableSubstances
             new ConsumableSubstance("Bottle of Stronz",eConsumableType.Drink,eConsumableCategory.Beer,"prop_beer_stz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { IsIntoxicating = true , Price = 4},
             new ConsumableSubstance("Bottle of Dusche",eConsumableType.Drink,eConsumableCategory.Beer,"prop_beerdusche",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { IsIntoxicating = true, Price = 4 },
 
+
+            
+
             new ConsumableSubstance("Can of eCola",eConsumableType.Drink,eConsumableCategory.Soda,"ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) { Price = 1 },
             new ConsumableSubstance("Can of Sprunk",eConsumableType.Drink,eConsumableCategory.Soda,"ng_proc_sodacan_01b",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) { Price = 1 },
             new ConsumableSubstance("Cup of eCola",eConsumableType.Drink,eConsumableCategory.Soda,"ng_proc_sodacup_01a",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) { Price = 2 },
@@ -65,8 +84,14 @@ public class ConsumableSubstances : IConsumableSubstances
             new ConsumableSubstance("Banana",eConsumableType.Eat,eConsumableCategory.Snack,"ng_proc_food_nana1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 3 },
             new ConsumableSubstance("Phat Chips",eConsumableType.Eat,eConsumableCategory.Snack,"ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 2 },
 
-
-         };
+        //            ConsumableSubstance HotDog = ConsumableSubstances.Get("Hot Dog");
+        //ConsumableSubstance HotSausage = ConsumableSubstances.Get("Hot Sausage");
+        //ConsumableSubstance HotPretzel = ConsumableSubstances.Get("Hot Pretzel");
+        //ConsumableSubstance ThreeMiniPretzel = ConsumableSubstances.Get("3 Mini Pretzel");
+        //ConsumableSubstance nuts = ConsumableSubstances.Get("Nuts");
+        //ConsumableSubstance cansprunk = ConsumableSubstances.Get("Can of Sprunk");
+        //ConsumableSubstance bottleofwater = ConsumableSubstances.Get("Bottle of Water");
+    };
     }
     public ConsumableSubstance Get(string name)
     {

@@ -4,7 +4,7 @@ using RAGENativeUI.Elements;
 
 public class InventoryMenu : Menu
 {
-    private UIMenu Inventory;
+    private UIMenu inventoryMenu;
     private IActionable Player;
     private IConsumableSubstances ConsumableSubstances;
 
@@ -12,32 +12,32 @@ public class InventoryMenu : Menu
     {
         Player = player;
         ConsumableSubstances = consumableSubstances;
-        Inventory = menuPool.AddSubMenu(parentMenu,"Inventory");
-        Inventory.OnItemSelect += OnActionItemSelect;
+        inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
+        inventoryMenu.OnItemSelect += OnActionItemSelect;
         CreateInventoryMenu();
     }
     public int SelectedPlateIndex { get; set; }
 
     public override void Hide()
     {
-        Inventory.Visible = false;
+        inventoryMenu.Visible = false;
     }
 
     public override void Show()
     {
         Update();
-        Inventory.Visible = true;
+        inventoryMenu.Visible = true;
     }
     public override void Toggle()
     {
-        if (!Inventory.Visible)
+        if (!inventoryMenu.Visible)
         {
             Update();
-            Inventory.Visible = true;
+            inventoryMenu.Visible = true;
         }
         else
         {
-            Inventory.Visible = false;
+            inventoryMenu.Visible = false;
         }
     }
     public void Update()
@@ -46,10 +46,10 @@ public class InventoryMenu : Menu
     }
     private void CreateInventoryMenu()
     {
-        Inventory.Clear();
+        inventoryMenu.Clear();
         foreach(ConsumableInventoryItem cii in Player.ConsumableItems)
         {
-            Inventory.AddItem(new UIMenuItem(cii.ConsumableSubstance?.Name, $"{cii.ConsumableSubstance?.Type} {cii.ConsumableSubstance?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
+            inventoryMenu.AddItem(new UIMenuItem(cii.ConsumableSubstance?.Name, $"{cii.ConsumableSubstance?.Type} {cii.ConsumableSubstance?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
         }        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -61,6 +61,6 @@ public class InventoryMenu : Menu
             Player.RemoveFromInventory(selectedStuff, 1);
             EntryPoint.WriteToConsole($"Removed {selectedStuff.Name} ", 3);
         }
-        Inventory.Visible = false;
+        inventoryMenu.Visible = false;
     }
 }

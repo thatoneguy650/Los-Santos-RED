@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -44,13 +45,14 @@ public class PedSwap : IPedSwap
     private Model InitialModel;
     private Vehicle CurrentPedVehicle;
     private int CurrentPedVehicleSeat;
-
     public int CurrentPedMoney { get; private set; }
     public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
     {
         InitialModel = Game.LocalPlayer.Character.Model;
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+
+
     }
     public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned)
     {
@@ -137,7 +139,6 @@ public class PedSwap : IPedSwap
     }
     public void BecomeRandomPed(bool DeleteOld)
     {
-
         try
         {
             Ped TargetPed = new Ped();
@@ -167,7 +168,7 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation)
+    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, List<ConsumableInventoryItem> inventoryItems)
     {
         try
         {
@@ -221,6 +222,14 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.xC0AA53F866B3134D();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+
+            Player.Inventory.Clear();
+            foreach (ConsumableInventoryItem cii in inventoryItems)
+            {
+                Player.Inventory.Add(cii.ConsumableSubstance, cii.Amount);
+            }
+
+
             Player.DisplayPlayerNotification();
 
 
@@ -403,7 +412,7 @@ public class PedSwap : IPedSwap
                 NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal);
             }
         }
-        if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
+        else if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
         {
             return;
         }
@@ -543,11 +552,18 @@ public class PedSwap : IPedSwap
     }
     private void MakeAllies(Ped[] PedList)
     {
+        Player.GroupID = NativeFunction.Natives.CREATE_GROUP<int>(0);
+        NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, Player.GroupID);
+        NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(Player.Character, Player.GroupID);
         Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(TargetPedRelationshipGroup, Relationship.Like);
         foreach (Ped PedToAlly in PedList)
         {
-            NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
-            PedToAlly.StaysInVehiclesWhenJacked = true;
+            if (PedToAlly.Exists())
+            {
+                NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(PedToAlly, Player.GroupID);
+                PedToAlly.StaysInVehiclesWhenJacked = true;
+                EntryPoint.WriteToConsole($"MakeAllies {PedToAlly.Handle} {Player.GroupID}", 3);
+            }
         }
     }
     private bool CanTakeoverPed(Ped myPed)

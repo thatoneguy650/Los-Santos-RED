@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Player;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
     {
         void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
         void BecomeRandomPed(bool DeleteOld);
-        void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation);
+        void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation, List<ConsumableInventoryItem> inventoryItems);
         void InlineModelSwap();
     }
 }

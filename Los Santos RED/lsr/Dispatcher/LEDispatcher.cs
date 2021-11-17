@@ -1,11 +1,9 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
-using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 public class LEDispatcher
@@ -48,7 +46,7 @@ public class LEDispatcher
     private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
-    private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit;
+    private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.PoliceVehicleCount < SpawnedCopLimit;
     private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     public void SpawnCop(Vector3 position)
     {
@@ -124,11 +122,11 @@ public class LEDispatcher
             {
                 if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
-                    return 350f;
+                    return Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedUnseen;
                 }
                 else
                 {
-                    return 550f;
+                    return Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen;
                 }
             }
             else if (Player.Investigation.IsActive)
@@ -137,7 +135,7 @@ public class LEDispatcher
             }
             else
             {
-                return 900f;//1250f//1500f
+                return Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_NotWanted;
             }
         }
     }
@@ -149,11 +147,11 @@ public class LEDispatcher
             {
                 if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
-                    return 250f - (TotalWantedLevel * -40);
+                    return Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_WantedUnseen - (TotalWantedLevel * -40);
                 }
                 else
                 {
-                    return 400f - (TotalWantedLevel * -40);
+                    return Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_WantedSeen - (TotalWantedLevel * -40);
                 }
             }
             else if (Player.Investigation.IsActive)
@@ -162,7 +160,7 @@ public class LEDispatcher
             }
             else
             {
-                return 350f;//450f;//750f
+                return Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_NotWanted;
             }
         }
     }
@@ -172,35 +170,73 @@ public class LEDispatcher
         {
             if (TotalWantedLevel == 5)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Wanted5;//35;//35
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted5;//35;//35
             }
             else if (TotalWantedLevel == 4)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Wanted4;//25;//25
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted4;//25;//25
             }
             else if (TotalWantedLevel == 3)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Wanted3;//18;//18
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted3;//18;//18
             }
             else if (TotalWantedLevel == 2)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Wanted2;//10;// 12;//10
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted2;//10;// 12;//10
             }
             else if (TotalWantedLevel == 1)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Wanted1;//7;// 10;//7
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted1;//7;// 10;//7
             }
             else if (Player.Investigation.IsActive)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Investigation;//6;// 9;//6
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Investigation;//6;// 9;//6
             }
             if (TotalWantedLevel == 0)
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Default;//5;// 8;//5
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Default;//5;// 8;//5
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.SpawnLimit_Default;//5;//15
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Default;//5;//15
+            }
+        }
+    }
+    private int SpawnedCopVehicleLimit
+    {
+        get
+        {
+            if (TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted5;//35;//35
+            }
+            else if (TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted4;//25;//25
+            }
+            else if (TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted3;//18;//18
+            }
+            else if (TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted2;//10;// 12;//10
+            }
+            else if (TotalWantedLevel == 1)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted1;//7;// 10;//7
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Investigation;//6;// 9;//6
+            }
+            if (TotalWantedLevel == 0)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Default;//5;// 8;//5
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Default;//5;//15
             }
         }
     }
@@ -210,11 +246,11 @@ public class LEDispatcher
         {
             if (!Player.AnyPoliceRecentlySeenPlayer)
             {
-                return 3000;
+                return Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Unseen;// 3000;
             }
             else
             {
-                return ((5 - TotalWantedLevel) * 2000) + 2000;
+                return ((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;//2000;
             }
         }
     }
@@ -224,11 +260,11 @@ public class LEDispatcher
         {
             if (!Player.AnyPoliceRecentlySeenPlayer)
             {
-                return 999999;
+                return Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Unseen;//999999;
             }
             else
             {
-                return ((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.RoadblockWantedLevelAdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.MinTimeBetweenRoadblocks;//90 seconds at level 3?, 70 at level 5? sounds okay?
+                return ((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_Min;//90 seconds at level 3?, 70 at level 5? sounds okay?
             }
         }
     }
@@ -304,7 +340,6 @@ public class LEDispatcher
         }
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
-            //to be readd :(
             SpawnRoadblock();
         }
         if (LastAgencySpawned != null)

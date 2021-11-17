@@ -15,6 +15,7 @@ public class Investigation
     private IPoliceRespondable Player;
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
+    private Vector3 CurrentAssignedPosition;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
@@ -59,6 +60,7 @@ public class Investigation
         }
         else if (IsActive)
         {
+            CurrentAssignedPosition = Player.PoliceResponse.PlaceLastReportedCrime;
             Position = NativeHelper.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
             HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
         }
@@ -74,6 +76,20 @@ public class Investigation
             if (NearInvestigationPosition && HaveDescription && Player.AnyPoliceCanRecognizePlayer && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)
             {
                 Player.PoliceResponse.ApplyReportedCrimes();
+            }
+            if(CurrentAssignedPosition.DistanceTo2D(Player.PoliceResponse.PlaceLastReportedCrime) >= 10f)
+            {
+                CurrentAssignedPosition = Player.PoliceResponse.PlaceLastReportedCrime;
+                Position = NativeHelper.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
+                if(InvestigationBlip.Exists())
+                {
+                    InvestigationBlip.Position = Position;
+                    EntryPoint.WriteToConsole($"Investigation Position Changed, Updated Blip!", 5);
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"Investigation Position Changed! NO BLIP!", 5);
+                }
             }
         }
     }
@@ -92,6 +108,7 @@ public class Investigation
     private void SetActive()
     {
         IsActive = true;
+        CurrentAssignedPosition = Player.PoliceResponse.PlaceLastReportedCrime;
         Position = NativeHelper.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
         HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
         GameTimeStartedInvestigation = Game.GameTime;

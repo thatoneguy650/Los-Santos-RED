@@ -227,7 +227,7 @@ public class PedCrimes
                     {
                         VehicleWitnessed = 0;
                         WeaponWitnessed = 0;
-                        LocationWitnessed = Vector3.Zero;
+                        //LocationWitnessed = Vector3.Zero;
                         fullVehicle = null;
                         fullWeapon = null;
                     }
@@ -294,7 +294,7 @@ public class PedCrimes
                     {
                         VehicleWitnessed = 0;
                         WeaponWitnessed = 0;
-                        LocationWitnessed = Vector3.Zero;
+                        //LocationWitnessed = Vector3.Zero;
                         fullVehicle = null;
                         fullWeapon = null;
                     }

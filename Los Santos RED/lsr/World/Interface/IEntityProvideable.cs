@@ -38,5 +38,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);
         void LoadMPMap();
         void LoadSPMap();
+        VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance);
     }
 }

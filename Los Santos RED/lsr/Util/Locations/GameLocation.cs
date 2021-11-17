@@ -10,39 +10,36 @@ using System.Threading.Tasks;
 [Serializable()]
 public class GameLocation
 {
-    public Vector3 LocationPosition { get; set; }
-    public float Heading { get; set; }
+    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
+    public float VendorHeading { get; set; } = 0f;
+    public Vector3 EntrancePosition { get; set; }
+    public float EntranceHeading { get; set; }
     public LocationType Type { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public List<Vector3> GasPumps { get; set; } = new List<Vector3>();
+    //public List<Vector3> GasPumps { get; set; } = new List<Vector3>();
     public List<ConsumableSubstance> SellableItems { get; set; } = new List<ConsumableSubstance>();
     public GameLocation()
     {
 
     }
-    public GameLocation(Vector3 _LocationPosition, float _Heading, LocationType _Type, String _Name)
+    public GameLocation(Vector3 _EntrancePosition, float _EntranceHeading, Vector3 _VendorPosition, float _VendorHeading, LocationType _Type, string _Name, string _Description)
     {
-        LocationPosition = _LocationPosition;
-        Heading = _Heading;
-        Type = _Type;
-        Name = _Name;
-    }
-    public GameLocation(Vector3 _LocationPosition, float _Heading, LocationType _Type, String _Name, string _Description)
-    {
-        LocationPosition = _LocationPosition;
-        Heading = _Heading;
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
+        VendorPosition = _VendorPosition;
+        VendorHeading = _VendorHeading;
         Type = _Type;
         Name = _Name;
         Description = _Description;
     }
-    public GameLocation(Vector3 _LocationPosition, float _Heading, LocationType _Type, String _Name, List<Vector3> _GasPumps)
+    public GameLocation(Vector3 _EntrancePosition, float _EntranceHeading, LocationType _Type, string _Name, string _Description)
     {
-        LocationPosition = _LocationPosition;
-        Heading = _Heading;
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
         Type = _Type;
         Name = _Name;
-        GasPumps = _GasPumps;
+        Description = _Description;
     }
     public override string ToString()
     {

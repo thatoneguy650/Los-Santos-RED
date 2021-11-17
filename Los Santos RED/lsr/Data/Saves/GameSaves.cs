@@ -37,11 +37,12 @@ public class GameSaves : IGameSaves
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap)
-    {
+    {       
         gameSave.Load(weapons, pedSwap);
     }
     public GameSave GetSave(ISaveable player)
     {
+        GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
         return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
     }
     public void DeleteSave(string playerName, string modelName)
@@ -51,6 +52,7 @@ public class GameSaves : IGameSaves
         {
             GameSaveList.Remove(toDelete);
         }
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     private void DefaultConfig()
     {

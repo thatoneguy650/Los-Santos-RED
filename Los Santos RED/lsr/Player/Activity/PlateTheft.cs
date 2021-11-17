@@ -19,13 +19,15 @@ public class PlateTheft : DynamicActivity
     private Vector3 CarPosition;
     private Vector3 ChangeSpot;
     private ISettingsProvideable Settings;
+    private IEntityProvideable World;
     private bool IsChangingPlate => PlateToAdd != null;
-    public PlateTheft(IPlateChangeable player, ISettingsProvideable settings)
+    public PlateTheft(IPlateChangeable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
         Settings = settings;
+        World = world;
     }
-    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange, ISettingsProvideable settings) : this(player, settings)
+    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange, ISettingsProvideable settings, IEntityProvideable world) : this(player, settings, world)
     {
         PlateToAdd = plateToChange;
     }
@@ -121,21 +123,21 @@ public class PlateTheft : DynamicActivity
         else
             return Vector3.Zero;
     }
-    private VehicleExt GetTargetVehicle()
-    {
-        VehicleWithPlate = (Vehicle)Rage.World.GetClosestEntity(Player.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
-        if (VehicleWithPlate != null)// && VehicleWithPlate.LicensePlate != "        ")
-        {
-            TargetVehicle = Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
-            if (TargetVehicle == null)
-            {
-                TargetVehicle = new VehicleExt(VehicleWithPlate, Settings);
-                Player.TrackedVehicles.Add(TargetVehicle);
-            }
-            return TargetVehicle;
-        }
-        return null;
-    }
+    //private VehicleExt GetTargetVehicle()
+    //{
+    //    VehicleWithPlate = (Vehicle)Rage.World.GetClosestEntity(Player.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
+    //    if (VehicleWithPlate != null)// && VehicleWithPlate.LicensePlate != "        ")
+    //    {
+    //        TargetVehicle = Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
+    //        if (TargetVehicle == null)
+    //        {
+    //            TargetVehicle = new VehicleExt(VehicleWithPlate, Settings);
+    //            Player.TrackedVehicles.Add(TargetVehicle);
+    //        }
+    //        return TargetVehicle;
+    //    }
+    //    return null;
+    //}
     private bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
         bool Continue = true;
@@ -257,7 +259,7 @@ public class PlateTheft : DynamicActivity
     }
     private void Setup()
     {
-        TargetVehicle = GetTargetVehicle();
+        TargetVehicle = World.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
         if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
         {
             CarPosition = TargetVehicle.Vehicle.Position;

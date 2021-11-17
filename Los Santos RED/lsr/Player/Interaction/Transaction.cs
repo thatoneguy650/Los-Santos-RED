@@ -33,10 +33,9 @@ public class Transaction : Interaction
         HideMenu();
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
         Player.IsConversing = false;
-        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
+        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive)
         {
-            //Ped.Pedestrian.Tasks.Clear();
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Ped.Store.VendorHeading, -1);
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
     }
@@ -44,7 +43,6 @@ public class Transaction : Interaction
     {
         if (Ped.Pedestrian.Exists())
         {
-            //TransactionMenu = new TransactionMenu(menuPool, Player,Ped.Store.Name,Ped.Store.Name,Ped.Store.SellableItems);
             Menu = new UIMenu(Ped.Store.Name, Ped.Store.Description);
             Menu.OnItemSelect += OnItemSelect;
             menuPool.Add(Menu);
@@ -84,13 +82,16 @@ public class Transaction : Interaction
         Menu.Clear();
         foreach (ConsumableSubstance cii in Ped.Store.SellableItems)
         {
-            Menu.AddItem(new UIMenuItem(cii.Name, $"{cii.Name} ${cii.Price}"));
+            if (cii != null)
+            {
+                Menu.AddItem(new UIMenuItem(cii.Name, $"{cii.Name} ${cii.Price}"));
+            }
         }
         
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ConsumableSubstance ToAdd = Ped.Store.SellableItems.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
+        ConsumableSubstance ToAdd = Ped.Store.SellableItems.Where(x => x != null && x.Name == selectedItem.Text).FirstOrDefault();
         if (ToAdd != null && Player.Money >= ToAdd.Price)
         {
             Buy(ToAdd);
@@ -119,50 +120,6 @@ public class Transaction : Interaction
         {
             Dispose();
         }
-    }
-    private void CheckInput()
-    {
-        //string Buy1 = "";
-        //string Buy2 = "";
-        //if(Item1 != null)
-        //{
-        //    Buy1 = "Buy " + Item1.Name;
-        //}
-        //if(Item2 != null)
-        //{
-        //    Buy2 = "Buy " + Item2.Name;
-        //}
-        //if (IsActivelyConversing)
-        //{
-        //    Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
-        //}
-        //else
-        //{
-        //    if (!Player.ButtonPrompts.Any(x => x.Group == "Transaction"))
-        //    {
-        //        if (Buy1 != "")
-        //        {
-        //            Player.ButtonPrompts.Add(new ButtonPrompt(Buy1, "Transaction", Buy1, Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
-        //        }
-        //        if (Buy2 != "")
-        //        {
-        //            Player.ButtonPrompts.Add(new ButtonPrompt(Buy2, "Transaction", Buy2, Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
-        //        }
-        //        Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Transaction", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3));
-        //    }
-        //}
-        //if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
-        //{
-        //    CancelledConversation = true;
-        //}
-        //else if (Player.ButtonPrompts.Any(x => x.Identifier == Buy1 && x.IsPressedNow))
-        //{
-        //    Buy(Item1);
-        //}
-        //else if (Player.ButtonPrompts.Any(x => x.Identifier == Buy2 && x.IsPressedNow))
-        //{
-        //    Buy(Item2);
-        //}
     }
     private bool CanSay(Ped ToSpeak, string Speech)
     {

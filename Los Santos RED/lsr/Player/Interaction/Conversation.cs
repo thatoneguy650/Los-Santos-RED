@@ -14,11 +14,13 @@ public class Conversation : Interaction
     private IInteractionable Player;
     private bool CancelledConversation;
     private ISettingsProvideable Settings;
-    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings)
+    private ICrimes Crimes;
+    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes)
     {
         Player = player;
         Ped = ped;
         Settings = settings;
+        Crimes = crimes;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
@@ -92,9 +94,17 @@ public class Conversation : Interaction
         GameFiber.Sleep(200);
 
 
-        if(Ped.IsFedUpWithPlayer && Ped.IsCop)
+        if(Ped.IsFedUpWithPlayer)
         {
-            Player.SetAngeredCop();
+            if (Ped.IsCop)
+            {
+                Player.SetAngeredCop();
+            }
+            else
+            {
+                Ped.AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), Player.Character.Position);
+            }
+            CancelledConversation = true;
         }
         IsActivelyConversing = false;
     }

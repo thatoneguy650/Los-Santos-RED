@@ -121,6 +121,7 @@ public class BustedMenu : Menu
         if (selectedItem == Surrender)
         {
             Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+            EntryPoint.WriteToConsole($"SurrenderToPolice {CurrentSelectedSurrenderLocation.Name} {CurrentSelectedSurrenderLocation.EntrancePosition}", 5);
         }
         if (selectedItem == SurrenderLong)
         {

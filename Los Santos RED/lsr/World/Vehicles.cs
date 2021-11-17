@@ -99,12 +99,15 @@ public class Vehicles
     {
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && !x.WasSpawnedEmpty))
         {
-            if (PoliceCar.Vehicle.Exists() && PoliceCar.Vehicle.IsEmpty)
+            if (PoliceCar.Vehicle.Exists())
             {
-                if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                if(!PoliceCar.Vehicle.Occupants.Any(x=> x.Exists() && x.IsAlive))
                 {
-                    PoliceCar.Vehicle.Delete();
-                    GameFiber.Yield();
+                    if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                    {
+                        PoliceCar.Vehicle.Delete();
+                        GameFiber.Yield();
+                    }
                 }
             }
         }
@@ -146,6 +149,47 @@ public class Vehicles
             }
         }
         PoliceVehicles.Clear();
+    }
+    public VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance)
+    {
+        if(position == Vector3.Zero)
+        {
+            return null;
+        }
+        VehicleExt civilianCar = CivilianVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+        float civilianDistance = 999f;
+        float policeDistance = 999f;
+        if (civilianCar != null && civilianCar.Vehicle.Exists())
+        {
+            civilianDistance = civilianCar.Vehicle.DistanceTo2D(position);
+        }
+        if (includePolice)
+        {
+            VehicleExt policeCar = PoliceVehicles.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(position)).FirstOrDefault();
+            if(policeCar != null && policeCar.Vehicle.Exists())
+            {
+                policeDistance = policeCar.Vehicle.DistanceTo2D(position);
+            }
+            if (policeDistance < civilianDistance)
+            {
+                if(policeDistance <= maxDistance)
+                {
+                    return policeCar;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        if (civilianDistance <= maxDistance)
+        {
+            return civilianCar;
+        }
+        else
+        {
+            return null;
+        }
     }
     public VehicleExt GetVehicleExt(Vehicle vehicle)
     {
