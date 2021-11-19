@@ -45,7 +45,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyBribedPolice { get; }
         bool RecentlyPaidFine { get; }
         bool ShouldCheckViolations { get; }
-        bool TreatAsCop { get; }
+      //  bool TreatAsCop { get; }
         bool RecentlyFedUpCop { get; }
         int GroupID { get; }
 

@@ -239,7 +239,7 @@ namespace LosSantosRED.lsr
                                 {
                                     if (TargetIsInVehicle)
                                     {
-                                        CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 2f), new Vector3(6f, 0f, 2f), new Vector3(-6f, 0f, 2f) }.PickRandom();
+                                        CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 8f), new Vector3(6f, 0f, 8f), new Vector3(-6f, 0f, 8f) }.PickRandom();//CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 2f), new Vector3(6f, 0f, 2f), new Vector3(-6f, 0f, 2f) }.PickRandom();
                                     }
                                     else
                                     {

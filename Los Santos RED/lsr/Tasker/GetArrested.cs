@@ -145,18 +145,17 @@ public class GetArrested : ComplexTask
                 Ped.Pedestrian.CanBePulledOutOfVehicles = false;
             }
         }
-
-        if (Ped.IsInVehicle && !Ped.IsDriver && Ped.WantedLevel > 0 && !Ped.IsArrested)
+        if (Ped.IsInVehicle && !Ped.IsDriver && Ped.IsBusted && !Ped.IsArrested)
         {
-            Ped.SetWantedLevel(0);
+            Ped.IsArrested = true;
             EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
         }
-        if(Ped.IsArrested && !Ped.IsInVehicle && Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive)
-        {
-            Ped.Pedestrian.Health = 0;
-            Ped.Pedestrian.Kill();
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
-        }
+        //if(Ped.IsArrested && !Ped.IsInVehicle && Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive)
+        //{
+        //    Ped.Pedestrian.Health = 0;
+        //    Ped.Pedestrian.Kill();
+        //    EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
+        //}
     }
     private void GetInCar(bool IsFirstRun)
     {

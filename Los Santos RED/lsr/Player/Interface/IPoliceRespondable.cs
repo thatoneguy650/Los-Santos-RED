@@ -46,6 +46,8 @@ namespace LosSantosRED.lsr.Interface
         float SearchModePercentage { get; }
         uint HasBeenWantedFor { get; }
         Vector3 RootPosition { get; }
+        bool IsAttemptingToSurrender { get; }
+        bool IsCop { get; }
 
         void AddInjured(PedExt myPed);
         void AddKilled(PedExt myPed);

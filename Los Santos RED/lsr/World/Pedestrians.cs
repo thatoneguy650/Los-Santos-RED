@@ -161,22 +161,37 @@ public class Pedestrians
     }
     public void Prune()
     {
-        Police.RemoveAll(x => x.CanRemove);
-        EMTs.RemoveAll(x => x.CanRemove);
-        Firefighters.RemoveAll(x => x.CanRemove);
-        Merchants.RemoveAll(x => x.CanRemove);
-        Civilians.RemoveAll(x => x.CanRemove);
-        foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
+        //Police.RemoveAll(x => x.CanRemove);
+        //EMTs.RemoveAll(x => x.CanRemove);
+        //Firefighters.RemoveAll(x => x.CanRemove);
+        //Merchants.RemoveAll(x => x.CanRemove);
+        //Civilians.RemoveAll(x => x.CanRemove);
+        foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             Cop.Pedestrian.IsPersistent = false;
+            Blip myblip = Cop.Pedestrian.GetAttachedBlip();
+            if(myblip.Exists())
+            { 
+                myblip.Delete();
+            }
         }
-        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
+        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             EMT.Pedestrian.IsPersistent = false;
+            Blip myblip = EMT.Pedestrian.GetAttachedBlip();
+            if (myblip.Exists())
+            {
+                myblip.Delete();
+            }
         }
-        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.IsDead && x.DistanceToPlayer >= 250f))
+        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             Firefighter.Pedestrian.IsPersistent = false;
+            Blip myblip = Firefighter.Pedestrian.GetAttachedBlip();
+            if (myblip.Exists())
+            {
+                myblip.Delete();
+            }
         }
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);

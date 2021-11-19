@@ -58,7 +58,6 @@ namespace Mod
         private Vehicle VehicleTaskedToEnter;
         private int SeatTaskedToEnter;
         private IPlacesOfInterest PlacesOfInterest;
-        private bool shouldCheckViolations = true;
         private bool isSetPoliceIgnored = false;
         private uint GameTimeLastFedUpCop;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors)
@@ -97,11 +96,12 @@ namespace Mod
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public string AutoTuneStation { get; set; } = "NONE";
         public bool BeingArrested { get; private set; }
+        public bool IsCop { get; set; } = false;
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse; // && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;//off for performance checking
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
-        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
+        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
         public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle && !IsMovingDynamically;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
@@ -130,11 +130,12 @@ namespace Mod
         public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
-        public string DebugLine8 => $"PlacePoliceLastSeenPlayer {PlacePoliceLastSeenPlayer}";
+        public string DebugLine8 => $"LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";
         public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";
         public string DebugLine11 { get; set; }
         public string LawsViolating => Violations.LawsViolatingDisplay;
+        public Cop AliasedCop { get; set; }
         public Scanner DebugScanner => Scanner;
         //move or delete?
         //should be private but needed?
@@ -143,6 +144,8 @@ namespace Mod
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public void AddToInventory(ConsumableSubstance toadd, int v) => Inventory.Add(toadd, v);
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
+        public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
+        public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
         public Investigation Investigation { get; private set; }
@@ -263,7 +266,7 @@ namespace Mod
         public bool RecentlyFedUpCop => GameTimeLastFedUpCop != 0 && Game.GameTime - GameTimeLastFedUpCop <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public Vector3 RootPosition { get; set; }
-        public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && shouldCheckViolations;
+        public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !IsCop;
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public uint TargettingHandle
@@ -300,7 +303,6 @@ namespace Mod
                 return Time;
             }
         }
-        public bool TreatAsCop { get; set; } = false;
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }
@@ -318,7 +320,7 @@ namespace Mod
             }
             if (!isObservedByPolice && IsNotWanted)
             {
-                Investigation.Start();       
+                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription);       
             }
         }
         public void AnnounceCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
@@ -349,23 +351,58 @@ namespace Mod
         }
         public void CallPolice()
         {
+            Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
             PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            CrimeSceneDescription description;
             if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
             {
-                Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-                if (ToCallIn != null)
-                {
-                    AddCrime(ToCallIn, false, Position, null, null, false, true, true);
-                }
-                else
-                {
-                    AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
-                }
+                description = new CrimeSceneDescription(!violatingCiv.IsInVehicle, IsCop, violatingCiv.Pedestrian.Position, false) { VehicleSeen = null, WeaponSeen = null };
+                ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
             }
             else
             {
-                AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), false, Position, null, null, false, true, false);
+                description = new CrimeSceneDescription(false, IsCop, Position);
             }
+
+            if (IsCop)
+            {
+                Scanner.Reset();
+                Scanner.AnnounceCrime(ToCallIn, description);
+                Investigation.Start(Position, false);
+            }
+            else
+            {
+                AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
+            }
+
+            //if (IsCop)
+            //{
+            //    CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
+            //    Scanner.AnnounceCrime(crimeObserved, description);
+               
+            //        Investigation.Start(Position, false);
+                
+            //}
+            //else
+            //{
+            //    PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            //    if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+            //    {
+            //        Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+            //        if (ToCallIn != null)
+            //        {
+            //            AddCrime(ToCallIn, IsCop, Position, null, null, false, true, false);
+            //        }
+            //        else
+            //        {
+            //            AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), IsCop, Position, null, null, false, true, false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), IsCop, Position, null, null, false, true, false);
+            //    }
+            //}
         }
         public void ChangePlate(int Index)
         {
@@ -509,6 +546,7 @@ namespace Mod
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             MakeSober();
             Game.LocalPlayer.WantedLevel = 0;
+            NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
             if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = 1f;
@@ -734,8 +772,6 @@ namespace Mod
             {
                 OwnedVehicleHandle = Game.LocalPlayer.Character.CurrentVehicle.Handle;
             }
-
-
             if (Settings.SettingsManager.PlayerSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -1569,6 +1605,31 @@ namespace Mod
                 ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
             }
 
+            if(IsCop && AliasedCop != null && AliasedCop.Pedestrian.Exists())
+            {
+                if(AliasedCop.CanBeTasked)
+                {
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"TakeoverAIControl"))
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "AIControl");
+                        ButtonPrompts.Add(new ButtonPrompt($"Takeover Control", "AIControl", $"TakeoverAIControl", Settings.SettingsManager.KeySettings.ScenarioStart, 2));
+                    }
+                }
+                else
+                {
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"RelinquishAIControl"))
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "AIControl");
+                        ButtonPrompts.Add(new ButtonPrompt($"Relinquish Control", "AIControl", $"RelinquishAIControl", Settings.SettingsManager.KeySettings.ScenarioStart, 2));
+                    }
+                }
+
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "AIControl");
+            }
+
 
 
         }
@@ -1704,7 +1765,7 @@ namespace Mod
                 NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
 
                 GameLocation PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
-                shouldCheckViolations = false;
+               // shouldCheckViolations = false;
                 Character.CanBePulledOutOfVehicles = false;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Character);
                 NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Character);
@@ -1752,7 +1813,7 @@ namespace Mod
                     GameFiber.Yield();
                 }
                 Character.CanBePulledOutOfVehicles = true;
-                shouldCheckViolations = true;
+               // shouldCheckViolations = true;
                 ButtonPrompts.RemoveAll(x => x.Group == "Surrender");
                 if (!IsBusted)
                 {

@@ -22,12 +22,12 @@ namespace LSR.Vehicles
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
-        public Engine Engine { get; set; }
+       public Engine Engine { get; set; }
         public FuelTank FuelTank { get; set; }  
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
-        public bool WasModSpawned { get; set; }
+        public bool WasModSpawned { get; set; } = false;
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }

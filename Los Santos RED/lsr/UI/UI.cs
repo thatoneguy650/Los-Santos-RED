@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ExtensionsMethods;
 
 public class UI : IMenuProvideable
 {
@@ -31,7 +32,15 @@ public class UI : IMenuProvideable
     private IJurisdictions Jurisdictions;
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
-    
+    private string currentVehicleStatusDisplay = "";
+    private string currentStreetDisplay = "";
+    private string currentZoneDisplay = "";
+    private uint GameTimeVehicleStatusDisplayChanged = 0;
+    private uint GameTimeStreetDisplayChanged = 0;
+    private uint GameTimeZoneDisplayChanged = 0;
+    private int zoneDisplayAlpha;
+    private int streetDisplayAlpha;
+
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances)
     {
         DisplayablePlayer = displayablePlayer;
@@ -46,15 +55,7 @@ public class UI : IMenuProvideable
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         
     }
-    private enum GTAFont
-    {
-        FontChaletLondon = 0,
-        FontHouseScript = 1,
-        FontMonospace = 2,
-        FontWingDings = 3,
-        FontChaletComprimeCologne = 4,
-        FontPricedown = 7
-    };
+
     private enum GTAHudComponent
     {
         HUD = 0,
@@ -158,14 +159,14 @@ public class UI : IMenuProvideable
             }
         }
     }
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
     {
         NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
         NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
-        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
+        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
 
         NativeFunction.Natives.SetTextJustification((int)Justification);
-        NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+        NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
 
         if (Justification == GTATextJustification.Right)
         {
@@ -180,6 +181,30 @@ public class UI : IMenuProvideable
         NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
         NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
         return;
+    }
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
+    {
+        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, 255);
+        //NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
+        //NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
+        //NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
+
+        //NativeFunction.Natives.SetTextJustification((int)Justification);
+        //NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+
+        //if (Justification == GTATextJustification.Right)
+        //{
+        //    NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
+        //}
+        //else
+        //{
+        //    NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+        //}
+        //NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
+        //NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
+        //NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
+        //NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
+        //return;
     }
     private void ForceVanillaUI()
     {
@@ -223,35 +248,103 @@ public class UI : IMenuProvideable
             {
                 HideVanillaVehicleUI();
             }
-            if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
-            {
-                DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
-            }
             if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
             {
-                DisplayTextOnScreen(GetCrimeDisplay(), Settings.SettingsManager.UISettings.CrimesStatusPositionX, Settings.SettingsManager.UISettings.CrimesStatusPositionY, Settings.SettingsManager.UISettings.CrimesStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesStatusJustificationID);
+                DisplayTextOnScreen(GetViolatingDisplay(), Settings.SettingsManager.UISettings.CrimesViolatingPositionX, Settings.SettingsManager.UISettings.CrimesViolatingPositionY, Settings.SettingsManager.UISettings.CrimesViolatingScale, Color.White, Settings.SettingsManager.UISettings.CrimesViolatingFont, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesViolatingJustificationID);
             }
-            if (Settings.SettingsManager.UISettings.ShowSpeedDisplay)
+            if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
-                DisplayTextOnScreen(GetSpeedDisplay(), Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
+                string newVehicleStatus = GetVehicleStatusDisplay();
+                if(newVehicleStatus != currentVehicleStatusDisplay)
+                {
+                    currentVehicleStatusDisplay = newVehicleStatus;
+                    GameTimeVehicleStatusDisplayChanged = Game.GameTime;
+                }
+                int alpha = 255;
+                if(Settings.SettingsManager.UISettings.FadeVehicleStatusDisplay)
+                {
+                    alpha = CalculateAlpha(GameTimeVehicleStatusDisplayChanged, Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade);          
+                }
+                DisplayTextOnScreen(currentVehicleStatusDisplay, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID, alpha);
             }
-            if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
+            if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
-                DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
+                DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
             }
             if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
             {
-                DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID);
+                string newStreetDisplay = GetStreetDisplay();
+                if (newStreetDisplay != currentStreetDisplay)
+                {
+                    //EntryPoint.WriteToConsole($"GameTimeStreetDisplayChanged WAS '{currentStreetDisplay}' BECAME '{newStreetDisplay}' ", 5);
+                    currentStreetDisplay = newStreetDisplay;
+                    GameTimeStreetDisplayChanged = Game.GameTime;
+                    
+                }
+                streetDisplayAlpha = 255;
+                if (Settings.SettingsManager.UISettings.FadeStreetDisplay)
+                {
+                    streetDisplayAlpha = CalculateAlpha(GameTimeStreetDisplayChanged, Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade);
+                }
+                DisplayTextOnScreen(currentStreetDisplay, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, streetDisplayAlpha);
+            }
+            if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
+            {
+                string newZoneDisplay = GetZoneDisplay();
+                if (newZoneDisplay != currentZoneDisplay)
+                {
+                   // EntryPoint.WriteToConsole($"GameTimeZoneDisplayChanged WAS '{currentZoneDisplay}' BECAME '{newZoneDisplay}' ", 5);
+                    currentZoneDisplay = newZoneDisplay;
+                    GameTimeZoneDisplayChanged = Game.GameTime;
+                }
+                zoneDisplayAlpha = 255;
+                if (Settings.SettingsManager.UISettings.FadeZoneDisplay)
+                {
+                    zoneDisplayAlpha = CalculateAlpha(GameTimeZoneDisplayChanged, Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade);
+                    if (Settings.SettingsManager.UISettings.FadeStreetDisplay && streetDisplayAlpha != 0)
+                    {
+                        currentZoneDisplay = newZoneDisplay;
+                        zoneDisplayAlpha = streetDisplayAlpha;
+                    }  
+                }
+                DisplayTextOnScreen(currentZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, zoneDisplayAlpha);
             }
         }
     }
-    private string GetSpeedDisplay()
+    private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
+    {
+        uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;
+        if (TimeSinceChanged < timeToShow)
+        {
+            return 255;
+        }
+        else if (TimeSinceChanged < timeToShow + fadeTime)
+        {
+            float percentVisible = 1f - (1f * (TimeSinceChanged - timeToShow)) / (1f * (fadeTime));
+            float alphafloat = percentVisible * 255f;
+            return ((int)Math.Floor(alphafloat)).Clamp(0, 255);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    private string GetViolatingDisplay()
+    {
+        string CrimeDisplay = "";
+        if (DisplayablePlayer.LawsViolating != "")
+        {
+            CrimeDisplay += "Violating: " + DisplayablePlayer.LawsViolating;
+        }
+        return CrimeDisplay;
+    }
+    private string GetVehicleStatusDisplay()
     {
         string CurrentSpeedDisplay = "";
         if (DisplayablePlayer.CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
         {
             CurrentSpeedDisplay = "";
-            if (!DisplayablePlayer.CurrentVehicle.Engine.IsRunning)
+            if (DisplayablePlayer.CurrentVehicle.IsCar && !DisplayablePlayer.CurrentVehicle.Engine.IsRunning)
             {
                 CurrentSpeedDisplay = "ENGINE OFF";
             }
@@ -266,24 +359,74 @@ public class UI : IMenuProvideable
                 {
                     if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)})";
+                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} ~s~MPH)";
                     }
                     else if(Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)})";
+                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} ~s~KM/H)";
                     }
                 }
             }
-            if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
-            {
-                CurrentSpeedDisplay += " !";
-            }
+            //if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
+            //{
+            //    CurrentSpeedDisplay += " !";
+            //}
             if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
             {
                 CurrentSpeedDisplay += "~n~" + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }
         }
         return CurrentSpeedDisplay;
+    }
+    private string GetPlayerDisplay()
+    {
+        string PlayerDisplay = "";
+        if(DisplayablePlayer.IsWanted)
+        {
+            if(DisplayablePlayer.IsInSearchMode)
+            {
+                PlayerDisplay += $"~o~ Attempting To Locate~s~";
+            }
+            else
+            {
+                if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
+                {
+                    PlayerDisplay += $"~r~ Active Pursuit (Weapons Free)~s~";
+                }
+                else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
+                {
+                    PlayerDisplay += $"~r~ Active Pursuit (Lethal Force Authorized)~s~";
+                }
+                else
+                {
+                    PlayerDisplay += $"~r~ Active Pursuit~s~";
+                }
+            }
+        }
+        else if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
+        {   
+            if(DisplayablePlayer.Investigation.IsSuspicious)
+            {
+                PlayerDisplay += $"~r~ Police Responding, Description Issued~s~";
+            }
+            else if(DisplayablePlayer.Investigation.IsNearPosition)
+            {
+                PlayerDisplay += $"~o~ Police Responding~s~";
+            }
+        }
+        else if (DisplayablePlayer.HasCriminalHistory)
+        {
+            if(DisplayablePlayer.HasDeadlyCriminalHistory)
+            {
+                PlayerDisplay += $"~r~ APB Issued~s~";
+            }
+            else
+            {
+                PlayerDisplay += $"~o~ BOLO Issued~s~";
+            }
+            
+        }
+        return PlayerDisplay;
     }
     private string GetStreetDisplay()
     {
@@ -301,13 +444,13 @@ public class UI : IMenuProvideable
             StreetDisplay += $" at {DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} ~s~";
         }
 
-        if(DisplayablePlayer.CurrentLocation.IsInside)
+        if (DisplayablePlayer.CurrentLocation.IsInside)
         {
-            if(DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
+            if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
             {
-                #if DEBUG
+#if DEBUG
                                 StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) ~s~";
-                #endif
+#endif
             }
             else
             {
@@ -315,35 +458,6 @@ public class UI : IMenuProvideable
             }
         }
         return StreetDisplay;
-    }
-    private string GetPlayerDisplay()
-    {
-        string PlayerDisplay = "";
-        if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
-        {   
-            if(DisplayablePlayer.Investigation.IsSuspicious)
-            {
-                PlayerDisplay += $"~r~ Active Investigation~s~";
-            }
-            else
-            {
-                PlayerDisplay += $"~o~ Active Investigation~s~";
-            }
-        }
-        else if (DisplayablePlayer.HasCriminalHistory)
-        {
-            PlayerDisplay += $"~y~ BOLO Issued~s~";
-        }
-        return PlayerDisplay;
-    }
-    private string GetCrimeDisplay()
-    {
-        string CrimeDisplay = "";
-        if (DisplayablePlayer.LawsViolating != "")
-        {
-            CrimeDisplay += "Violating: " + DisplayablePlayer.LawsViolating;
-        }
-        return CrimeDisplay;
     }
     private string GetZoneDisplay()
     {

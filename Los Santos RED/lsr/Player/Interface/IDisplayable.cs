@@ -45,5 +45,10 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         bool HasCriminalHistory { get; }
         string LawsViolating { get; }
+        int CriminalHistoryMaxWantedLevel { get; }
+        bool HasDeadlyCriminalHistory { get; }
+        bool IsWanted { get; }
+        bool IsInSearchMode { get; }
+        PoliceResponse PoliceResponse { get; }
     }
 }

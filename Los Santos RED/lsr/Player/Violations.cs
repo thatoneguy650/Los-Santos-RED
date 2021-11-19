@@ -117,7 +117,7 @@ namespace LosSantosRED.lsr
             TreatAsCop = false;
             IsSpeeding = false;
             IsRunningRedLight = false;
-            if (Player.IsAliveAndFree && ShouldCheckTrafficViolations)
+            if (Player.IsAliveAndFree && Player.ShouldCheckViolations && ShouldCheckTrafficViolations)
             {
                 CheckTrafficViolations();
             }

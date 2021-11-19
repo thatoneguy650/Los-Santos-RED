@@ -248,6 +248,12 @@ public class Debug
         //    Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
         //}
 
+        //if(Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
+        //{
+        //    Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //}
+
+
     }
 
     public void Setup()
@@ -326,25 +332,26 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        Game.LocalPlayer.IsInvincible = true;
-        Game.DisplayNotification("IsInvincible = True");
-        foreach (InteriorPosition ip in MPInteriorPositions)
-        {
-            if (ip != null)
-            {
-                EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
-                Game.DisplayNotification(ip.Name);
-                Game.LocalPlayer.Character.Position = ip.Position;
-                GameFiber.Sleep(1000);
-                string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
-                toWrite += " { IsMPOnly = true }";
-                WriteToLogLocations(toWrite);
+        Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
+        //Game.LocalPlayer.IsInvincible = true;
+        //Game.DisplayNotification("IsInvincible = True");
+        //foreach (InteriorPosition ip in MPInteriorPositions)
+        //{
+        //    if (ip != null)
+        //    {
+        //        EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
+        //        Game.DisplayNotification(ip.Name);
+        //        Game.LocalPlayer.Character.Position = ip.Position;
+        //        GameFiber.Sleep(1000);
+        //        string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
+        //        toWrite += " { IsMPOnly = true }";
+        //        WriteToLogLocations(toWrite);
 
-                GameFiber.Sleep(2000);
-            }
-        }
-        Game.LocalPlayer.IsInvincible = false;
-        Game.DisplayNotification("IsInvincible = False");
+        //        GameFiber.Sleep(2000);
+        //    }
+        //}
+        //Game.LocalPlayer.IsInvincible = false;
+        //Game.DisplayNotification("IsInvincible = False");
         // SpawnNoGunAttackers();
     }
     private void DebugNumpad5()
@@ -401,6 +408,7 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        Player.OnSuspectEluded();
         Player.SetWantedLevel(0, "Clear Wanted Debug", true);
     }
     private void DebugNumpad9()
@@ -901,13 +909,19 @@ public class Debug
     }
     private void WriteCivilianAndCopState()
     {
+        //EntryPoint.WriteToConsole($"============================================ TRACKED VEHICLES START", 5);
+        //foreach (VehicleExt veh in World.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x=> x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        //{
+        //    EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)}", 5);
+        //}
+        //EntryPoint.WriteToConsole($"============================================ TRACKED VEHICLES END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVIES START", 5);
         foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
         EntryPoint.WriteToConsole($"============================================ COPS START", 5);
@@ -930,7 +944,7 @@ public class Debug
             bool hasVehicleWeapon = false;
             hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
             string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
-            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon}", 5);
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ COPS END", 5);
     }

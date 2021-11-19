@@ -8,6 +8,7 @@ public class PedSwapMenu : Menu
     private UIMenu PedSwapUIMenu;
     private UIMenuListItem TakeoverRandomPed;
     private UIMenuItem BecomeRandomPed;
+    private UIMenuItem BecomeRandomCop;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
     public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap)
@@ -51,11 +52,10 @@ public class PedSwapMenu : Menu
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
         BecomeRandomPed = new UIMenuItem("Become Random Pedestrian", "Becomes a random ped model.");
-
+        BecomeRandomCop = new UIMenuItem("Become Random Cop", "Becomes a random cop around the player (Alpha)");
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
-
-
+        PedSwapUIMenu.AddItem(BecomeRandomCop);
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -73,6 +73,10 @@ public class PedSwapMenu : Menu
         else if (selectedItem == BecomeRandomPed)
         {
             PedSwap.BecomeRandomPed(false);
+        }
+        else if (selectedItem == BecomeRandomCop)
+        {
+            PedSwap.BecomeRandomCop(false);
         }
         PedSwapUIMenu.Visible = false;
     }

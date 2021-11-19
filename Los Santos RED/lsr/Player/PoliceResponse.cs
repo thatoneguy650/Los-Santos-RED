@@ -103,7 +103,7 @@ namespace LosSantosRED.lsr
             //this is a fucking mess of references and isnt working properly at all
             //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
-
+            EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} PlaceLastReportedCrime {PlaceLastReportedCrime} New PlaceLastReportedCrime {crimeSceneDescription.PlaceSeen} HaveDescription {crimeSceneDescription.HaveDescription}", 3);
             PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {

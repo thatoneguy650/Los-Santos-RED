@@ -50,7 +50,6 @@ public class PedCrimes
         CrimesObserved.Clear();
         IsShootingCheckerActive = false;
         WantedLevel = 0;
-
     }
     public void OnPedSeenByPolice()
     {

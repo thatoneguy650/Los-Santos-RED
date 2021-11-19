@@ -25,6 +25,8 @@ namespace LosSantosRED.lsr
         private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
         private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_SearchRadiusIncrement : Settings.SettingsManager.PlayerSettings.CriminalHistory_MinimumSearchRadius;// 400f;
         public bool HasHistory => CurrentHistory != null;
+        public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.ResultsInLethalForce);
+        public int MaxWantedLevel => LastWantedMaxLevel;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
             CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));

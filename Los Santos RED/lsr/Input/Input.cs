@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr
             ButtonPromptCheck();
             ConversationCheck();
             ScenarioCheck();
+            ControlCheck();
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
             MenuCheck();
@@ -74,6 +75,20 @@ namespace LosSantosRED.lsr
             if (Player.ButtonPrompts.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
                 Player.StartScenario();
+            }
+        }
+        private void ControlCheck()
+        {
+            if (Player.ButtonPrompts.Any(x => x.Group == "AIControl" && x.IsPressedNow))//string for now...
+            {
+                if(Player.AliasedCop != null)
+                {
+                    Player.AliasedCop.CanBeTasked = !Player.AliasedCop.CanBeTasked;
+                    if(!Player.AliasedCop.CanBeTasked)
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    }
+                }
             }
         }
         private void SurrenderCheck()

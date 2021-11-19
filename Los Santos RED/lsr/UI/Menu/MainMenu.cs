@@ -91,8 +91,18 @@ public class MainMenu : Menu
 
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-        CallPolice = new UIMenuItem("Call Police", "Need some help?");
-        CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
+
+        if(Player.IsCop)
+        {
+            CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
+            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        }
+        else
+        {
+            CallPolice = new UIMenuItem("Call Police", "Need some help?");
+            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        }
+
         GenerateCrime = new UIMenuItem("Generate Crime", "Attempt to generate a random crime around the player");
         GenerateCrime.RightBadge = UIMenuItem.BadgeStyle.Gun;
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");

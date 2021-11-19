@@ -176,6 +176,7 @@ public class SpawnTask
             VehicleExt CopVehicle = new VehicleExt(copcar, Settings);
             if (copcar.Exists())
             {
+                CopVehicle.WasModSpawned = true;
                 copcar.IsPersistent = true;
                 CopVehicle.UpdateLivery(Agency);
                 CopVehicle.UpgradePerformance();

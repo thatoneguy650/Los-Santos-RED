@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         bool CanPerformActivities { get; }
         List<LicensePlate> SpareLicensePlates { get; }
         List<ConsumableInventoryItem> ConsumableItems { get; }
+        bool IsCop { get; }
 
         void StartSmokingPot();
         void StartSmoking();

@@ -41,10 +41,13 @@ public class Cop : PedExt
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
     public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
+
+    public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
+    public IssuableWeapon LongGun => WeaponInventory.LongGun;
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel);
+    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool IsAttemptingToSurrender) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel, IsAttemptingToSurrender);
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Speak(currentPlayer);

@@ -291,7 +291,7 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedSearchMode()
         {
-            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any())
+            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any() && !World.AnyCopsNearPosition(CurrentPlayer.Position,100f))
             {
                 AddToQueue(SuspectEvaded, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
             }
@@ -974,7 +974,7 @@ namespace LosSantosRED.lsr
                 AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
                 GameFiber.Yield();
             }
-            if (CurrentPlayer.Investigation.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            if (CurrentPlayer.PoliceResponse.PoliceHaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
             {
                 AddHaveDescription(EventToPlay);
             }

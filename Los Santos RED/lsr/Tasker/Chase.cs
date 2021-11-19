@@ -28,7 +28,7 @@ public class Chase : ComplexTask
     private bool hasOwnFiber = false;
     private bool IsChasingSlowly = false;
     private bool prevIsChasingSlowly = false;
-
+    private IEntityProvideable World;
     private enum Task
     {
         VehicleChase,
@@ -69,7 +69,7 @@ public class Chase : ComplexTask
     }
     private bool ShouldChaseRecklessly => Player.PoliceResponse.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
-    private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter);//35f;//25f
+    private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.PoliceList.Count(x=> x.DistanceToPlayer <= 30f && !x.IsInVehicle) > 1);//35f;//25f
     private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
@@ -160,17 +160,11 @@ public class Chase : ComplexTask
             return Task.Nothing;
         }
     }
-    public Chase(IComplexTaskable cop, ITargetable player) : base(player, cop, 500)//was 500
+    public Chase(IComplexTaskable cop, ITargetable player, IEntityProvideable world) : base(player, cop, 500)//was 500
     {
         Name = "Chase";
         SubTaskName = "";
-    }
-    public Chase(IComplexTaskable cop, ITargetable player, float chaseDistance, int vehicleMissionFlag) : base(player, cop, 500)//was 500
-    {
-        Name = "Chase";
-        SubTaskName = "";
-        ChaseDistance = chaseDistance;
-        VehicleMissionFlag = vehicleMissionFlag;
+        World = world;
     }
     public override void Start()
     {
@@ -389,6 +383,7 @@ public class Chase : ComplexTask
         float MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
         float RunSpeed = 500f;
         bool prevIsChasingSlowly = IsChasingSlowly;
+        CurrentSubTask = SubTask.None;
         GameFiber.StartNew(delegate
         {
             while(hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase)

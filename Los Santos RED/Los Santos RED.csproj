@@ -105,6 +105,7 @@
     <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
+    <Compile Include="lsr\UI\eGTAFont.cs" />
     <Compile Include="lsr\UI\Menu\InventoryMenu.cs" />
     <Compile Include="lsr\Old\TransactionMenu.cs" />
     <Compile Include="lsr\Util\Peds\eConsumableCategory.cs" />

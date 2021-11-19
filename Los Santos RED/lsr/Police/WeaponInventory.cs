@@ -16,8 +16,8 @@ public class WeaponInventory
     private bool IsSetLessLethal;
     private bool IsSetUnarmed;
     private bool IsSetDefault;
-    private IssuableWeapon LongGun;
-    private IssuableWeapon Sidearm;
+    public IssuableWeapon LongGun { get; private set; }
+    public IssuableWeapon Sidearm { get; private set; }
     private bool HasHeavyWeaponOnPerson;
     private ISettingsProvideable Settings;
     private int DesiredAccuracy => IsSetLessLethal ? 30 : Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
@@ -57,7 +57,7 @@ public class WeaponInventory
 
 
     }
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
+    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender)
     {
         uint currentVehicleWeapon;
         bool hasVehicleWeapon = false;
@@ -105,7 +105,7 @@ public class WeaponInventory
                         if (Cop.IsInVehicle)
                         {
                             HasHeavyWeaponOnPerson = true;
-                            if (WantedLevel < 4)
+                            if (WantedLevel < 4 || isAttemptingToSurrender)
                             {
                                 SetUnarmed();
                             }

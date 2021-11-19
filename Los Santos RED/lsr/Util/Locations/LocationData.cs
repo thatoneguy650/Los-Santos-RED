@@ -35,6 +35,7 @@ namespace LosSantosRED.lsr.Locations
         public bool IsOffroad { get; private set; }
         public bool IsInside => CurrentInterior != null && CurrentInterior.ID != 0;
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
+        public Vector3 ClosestRoadNode => ClosestNode;
         public void Update(Ped characterToLocate)
         {
             if(characterToLocate.Exists())
@@ -147,7 +148,7 @@ namespace LosSantosRED.lsr.Locations
 
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street("Calle Sin Nombre", 60f, "MPH");
+                CurrentStreet = new Street(CurrentStreetName, 60f, "MPH");
             }
         }
         private void GetInterior()

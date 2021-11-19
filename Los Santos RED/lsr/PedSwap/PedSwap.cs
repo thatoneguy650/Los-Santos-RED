@@ -29,6 +29,8 @@ public class PedSwap : IPedSwap
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
+    private bool CurrentPedIsDead;
+    private bool CurrentPedIsBusted;
     private PedVariation TargetPedVariation;
     private bool TargetPedIsMale;
     private string LastModelHash;
@@ -58,7 +60,7 @@ public class PedSwap : IPedSwap
     {
         try
         {
-            Ped TargetPed = FindPedToSwapWith(Radius, Nearest);
+            Ped TargetPed = FindPedToSwapWith(Radius, Nearest); //new Ped(Player.Position.Around2D(15f));//FindPedToSwapWith(Radius, Nearest);//turned off for now so im close
             if (TargetPed == null)
             {
                 if (createRandomPedIfNoneReturned)
@@ -87,8 +89,9 @@ public class PedSwap : IPedSwap
                 }
             }
             StoreTargetPedData(TargetPed);
-            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
-            CurrentPed.IsPersistent = false;
+            //NativeFunction.Natives.SET_PED_AS_COP(Player.Character, false);//causes old ped to be deleted!
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            CurrentPed.IsPersistent = true;
             if (DeleteOld)
             {
                 CurrentPed.Delete();
@@ -96,12 +99,20 @@ public class PedSwap : IPedSwap
             else
             {
                 PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons);
-                toCreate.SetWantedLevel(Player.WantedLevel);
+                int WantedToSet = Player.WantedLevel;
+                if(Player.WantedLevel == 3)
+                {
+                    WantedToSet++;//just make it deadly chase if its 3, get it over with, most likely i should add crimes here or there might be unexpected issues
+                }
+                toCreate.SetWantedLevel(WantedToSet);
+                toCreate.IsBusted = CurrentPedIsBusted;
                 Entities.AddEntity(toCreate);
-                TaskFormerPed(CurrentPed);
+                if(CurrentPedIsBusted)
+                {
+                    TaskFormerPed(CurrentPed);
+                }
             }
             PostTakeover(LastModelHash);
-
             GameFiber.StartNew(delegate
             {
                 uint GameTimeLastTakenOver = Game.GameTime;
@@ -122,20 +133,66 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
         }
     }
-    private void GiveHistory()
+    public void BecomeRandomCop(bool deleteOld)
     {
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomWeapon))
+        Cop toSwapWith = FindCopToSwapWith(2000f, true);
+        if (toSwapWith == null || !toSwapWith.Pedestrian.Exists())
         {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon();
-            if (myGun != null)
+            EntryPoint.WriteToConsole("NO COP FOUND, PROBABLY FUCKING BULLSHIT", 5);
+            return;
+        }
+        Ped TargetPed = toSwapWith.Pedestrian;
+        StoreTargetPedData(TargetPed);
+        Player.AliasedCop = toSwapWith;
+       // toSwapWith.CanBeTasked = false;
+        //Entities.RemoveEntity(toSwapWith);
+
+        NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
+        NativeFunction.Natives.SET_PED_AS_COP(Player.Character, true);//causes old ped to be deleted!
+        CurrentPed.IsPersistent = false;
+        if (CurrentPedIsDead && CurrentPed.Exists() && CurrentPed.IsAlive)
+        {
+            CurrentPed.Kill();
+            CurrentPed.Health = 0;
+        }
+        if (deleteOld)
+        {
+            CurrentPed.Delete();
+        }
+        else
+        {
+            PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons);
+            int WantedToSet = Player.WantedLevel;
+            if (Player.WantedLevel == 3)
             {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, false);
+                WantedToSet++;//just make it deadly chase if its 3, get it over with, most likely i should add crimes here or there might be unexpected issues
+            }
+            toCreate.SetWantedLevel(WantedToSet);
+            toCreate.IsBusted = CurrentPedIsBusted;
+            Entities.AddEntity(toCreate);
+            if (CurrentPedIsBusted)
+            {
+                TaskFormerPed(CurrentPed);
             }
         }
-        if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
+        PostTakeover(LastModelHash);
+        IssuableWeapon Sidearm = toSwapWith.Sidearm;
+        IssuableWeapon LongGun = toSwapWith.LongGun;
+        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)WeaponHash.StunGun, false))
         {
-            Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, (uint)WeaponHash.StunGun, 100, false, false);
         }
+        if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)Sidearm.GetHash(), false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, (uint)Sidearm.GetHash(), 200, false, false);
+            Sidearm.ApplyVariation(Player.Character);
+        }
+        if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)LongGun.GetHash(), false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, (uint)LongGun.GetHash(), 200, false, false);
+            LongGun.ApplyVariation(Player.Character);
+        }
+        Player.IsCop = true;
     }
     public void BecomeRandomPed(bool DeleteOld)
     {
@@ -153,6 +210,9 @@ public class PedSwap : IPedSwap
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
             StoreTargetPedData(TargetPed);
+
+            //NativeFunction.Natives.SET_PED_AS_COP(Player.Character, false);//causes old ped to be deleted!
+
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
@@ -193,6 +253,10 @@ public class PedSwap : IPedSwap
             }
             NativeHelper.ChangeModel(modelName);
             Ped PedBecame = Game.LocalPlayer.Character;
+
+
+          //  NativeFunction.Natives.SET_PED_AS_COP(Player.Character, false);//causes old ped to be deleted!
+
             if (variation != null)
             {
                 variation.ReplacePedComponentVariation(PedBecame);
@@ -264,6 +328,21 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+    private void GiveHistory()
+    {
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomWeapon))
+        {
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon();
+            if (myGun != null)
+            {
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, false);
+            }
+        }
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
+        {
+            Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
+        }
+    }
     public void Dispose()
     {
         Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
@@ -323,10 +402,26 @@ public class PedSwap : IPedSwap
             return PedToReturn;
         }
     }
+    private Cop FindCopToSwapWith(float Radius, bool Nearest)
+    {
+        Cop PedToReturn = null;
+        if (Nearest)
+        {
+            PedToReturn = Entities.PoliceList.Where(x => x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+        }
+        else
+        {
+            PedToReturn = Entities.PoliceList.Where(x => x.DistanceToPlayer <= Radius && x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).PickRandom();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+        }
+        return PedToReturn;
+    }
     private void StoreTargetPedData(Ped TargetPed)
     {
         CurrentPedMoney = Player.Money;
         CurrentPedPosition = Player.Position;
+        CurrentPedIsDead = Player.Character.IsDead;
+        CurrentPedIsBusted = Player.IsBusted;
+
 
         if(Player.Character.IsInAnyVehicle(false) && Player.Character.CurrentVehicle.Exists())
         {
@@ -386,7 +481,7 @@ public class PedSwap : IPedSwap
     }
     private void TaskFormerPed(Ped FormerPlayer)
     {
-        if (FormerPlayer.IsDead)
+        if (FormerPlayer.IsDead || FormerPlayer)
         {
             return;
         }
@@ -395,7 +490,6 @@ public class PedSwap : IPedSwap
         {
             FormerPlayer.WarpIntoVehicle(CurrentPedVehicle, CurrentPedVehicleSeat);
         }
-
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(FormerPlayer, (int)eCombatAttributes.BF_AlwaysFight, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(FormerPlayer, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
         FormerPlayer.BlockPermanentEvents = true;
@@ -491,8 +585,12 @@ public class PedSwap : IPedSwap
 
         if (TargetPedInVehicle)
         {
-            Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-            NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
+            
+            if (TargetPedVehicle.Exists())
+            {
+                Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
+                NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
+            }
             Player.UpdateCurrentVehicle();
             if(Player.CurrentVehicle != null)
             {
@@ -521,6 +619,7 @@ public class PedSwap : IPedSwap
         {
             Game.TimeScale = 1f;
         }
+        Player.IsCop = false;
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
         NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
@@ -699,7 +798,6 @@ public class PedSwap : IPedSwap
         else
             return "player_zero";     
     }
-
     private class TakenOverPed
     {
         public TakenOverPed(Ped _Pedestrian, PoolHandle _OriginalHandle)

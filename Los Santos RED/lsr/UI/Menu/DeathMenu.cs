@@ -97,11 +97,11 @@ public class DeathMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, true, true, true);
+                PedSwap.TakeoverPed(500f, true, false, true, true);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true, true);
             }
 
             GameSaves.DeleteSave(Player.PlayerName, Player.ModelName);

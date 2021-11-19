@@ -30,8 +30,10 @@ public class Vehicles
         Settings = settings;
     }
     public List<VehicleExt> PoliceVehicleList => PoliceVehicles;
+    public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
     public int PoliceVehiclesCount => PoliceVehicles.Count();
     public int CivilianVehiclesCount => CivilianVehicles.Count();
+
     public int PoliceHelicoptersCount
     {
         get

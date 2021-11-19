@@ -23,6 +23,9 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         Inventory Inventory { get; set; }
         int GroupID { get; set; }
+        bool IsCop { get; set; }
+        bool IsBusted { get; }
+        Cop AliasedCop { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

@@ -7,31 +7,45 @@ using System.Threading.Tasks;
 public class UISettings
 {
     public bool UIEnabled { get; set; } = true;
-    public float VehicleStatusPositionX { get; set; } = 0.7f;
+    public bool ShowCrimesDisplay { get; set; } = false;
+    public float CrimesViolatingPositionX { get; set; } = 0.65f;
+    public float CrimesViolatingPositionY { get; set; } = 0.98f;
+    public float CrimesViolatingScale { get; set; } = 0.4f;
+    public int CrimesViolatingJustificationID { get; set; } = 2;
+    public GTAFont CrimesViolatingFont { get; set; } = GTAFont.FontChaletComprimeCologne;
+    public bool ShowVehicleStatusDisplay { get; set; } = true;
+    public bool FadeVehicleStatusDisplay { get; set; } = true;
+    public uint VehicleStatusTimeToShow { get; set; } = 5000;
+    public uint VehicleStatusTimeToFade { get; set; } = 1500; 
+    public float VehicleStatusPositionX { get; set; } = 0.81f;//0.7f;
     public float VehicleStatusPositionY { get; set; } = 0.98f;
-    public float VehicleStatusScale { get; set; } = 0.4f;
+    public float VehicleStatusScale { get; set; } = 0.52f;//0.5f;
     public int VehicleStatusJustificationID { get; set; } = 2;
-
-
-    public float PlayerStatusPositionX { get; set; } = 0.6f;
+    public GTAFont VehicleStatusFont { get; set; } = GTAFont.FontHouseScript;
+    public bool ShowPlayerDisplay { get; set; } = true;
+    public float PlayerStatusPositionX { get; set; } = 0.84f;//= 0.6f;
     public float PlayerStatusPositionY { get; set; } = 0.98f;
-    public float PlayerStatusScale { get; set; } = 0.4f;
+    public float PlayerStatusScale { get; set; } = 0.52f;//0.5f;
     public int PlayerStatusJustificationID { get; set; } = 2;
-
-    public float CrimesStatusPositionX { get; set; } = 0.65f;
-    public float CrimesStatusPositionY { get; set; } = 0.98f;
-    public float CrimesStatusScale { get; set; } = 0.4f;
-    public int CrimesStatusJustificationID { get; set; } = 2;
-
-
+    public GTAFont PlayerStatusFont { get; set; } = GTAFont.FontHouseScript;
+    public bool ShowStreetDisplay { get; set; } = true;
+    public bool FadeStreetDisplay { get; set; } = true;
+    public uint StreetDisplayTimeToShow { get; set; } = 7500;
+    public uint StreetDisplayTimeToFade { get; set; } = 1500;
     public float StreetPositionX { get; set; } = 0.87f;
     public float StreetPositionY { get; set; } = 0.98f;
-    public float StreetScale { get; set; } = 0.5f;
+    public float StreetScale { get; set; } = 0.52f;//0.5f;
     public int StreetJustificationID { get; set; } = 2;
+    public GTAFont StreetFont { get; set; } = GTAFont.FontHouseScript;
+    public bool ShowZoneDisplay { get; set; } = true;
+    public bool FadeZoneDisplay { get; set; } = true;
+    public uint ZoneDisplayTimeToShow { get; set; } = 7500;
+    public uint ZoneDisplayTimeToFade { get; set; } = 1500;
     public float ZonePositionX { get; set; } = 0.90f;
     public float ZonePositionY { get; set; } = 0.98f;
-    public float ZoneScale { get; set; } = 0.5f;
+    public float ZoneScale { get; set; } = 0.55f;//0.5f;
     public int ZoneJustificationID { get; set; } = 2;
+    public GTAFont ZoneFont { get; set; } = GTAFont.FontHouseScript;
     public bool AlwaysShowCash { get; set; } = true;
     public bool AlwaysShowRadar { get; set; } = true;
     public bool AlwaysShowHUD { get; set; } = true;
@@ -43,13 +57,10 @@ public class UISettings
     #endif
     public bool ShowVanillaVehicleUI { get; set; } = false;
     public bool ShowVanillaAreaUI { get; set; } = false;
-    public bool ShowSpeedDisplay { get; set; } = true;
-    public bool ShowZoneDisplay { get; set; } = true;
-    public bool ShowStreetDisplay { get; set; } = true;
-    public bool ShowPlayerDisplay { get; set; } = true;
 
 
-    public bool ShowCrimesDisplay { get; set; } = false;
+
+
 
     public bool SetBustedEffect { get; set; } = true;
     public bool PlayWastedSounds { get; set; } = true;

@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         void BecomeRandomPed(bool DeleteOld);
         void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation, List<ConsumableInventoryItem> inventoryItems);
         void InlineModelSwap();
+        void BecomeRandomCop(bool v);
     }
 }

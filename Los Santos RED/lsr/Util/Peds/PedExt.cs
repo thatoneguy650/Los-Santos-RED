@@ -69,6 +69,7 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
+    public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
     public List<Crime> CrimesCurrentlyViolating => PedCrimes.CrimesCurrentlyViolating;
@@ -202,11 +203,11 @@ public class PedExt : IComplexTaskable
         {
             PedCrimes.WantedLevel = toSet;
         }
-        if (toSet == 0)
-        {
-            IsArrested = true;
-            PedCrimes.Reset();
-        }
+        //if (toSet == 0)
+        //{
+        //    IsArrested = true;
+        //    PedCrimes.Reset();
+        //}
     }
     public bool CheckKilledBy(Ped ToCheck)
     {
@@ -277,12 +278,15 @@ public class PedExt : IComplexTaskable
                         {
                             PedCrimes.Update(world, policeRespondable);
                         }
-
-
-
+                        if (policeRespondable.IsCop && PlayerPerception.DistanceToTarget <= 5f)
+                        {
+                            if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
+                            {
+                                IsBusted = true;
+                                EntryPoint.WriteToConsole($"Player bust {Pedestrian.Handle}", 3);
+                            }
+                        }
                         WeaponChecker();
-
-
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.IsPersistent)
                     {
@@ -291,7 +295,6 @@ public class PedExt : IComplexTaskable
                         WillFight = false;
                         WasEverSetPersistent = true;
                     }
-
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }

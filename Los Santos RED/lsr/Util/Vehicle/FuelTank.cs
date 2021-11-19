@@ -26,7 +26,7 @@ public class FuelTank
     {
         get
         {
-           return string.Format(" Fuel {0}", (VehicleExt.Vehicle.FuelLevel / 100f).ToString("P2"));
+           return string.Format(" Fuel: {0}", (VehicleExt.Vehicle.FuelLevel / 100f).ToString("P2"));
         }
     }   
     public void Update()

@@ -68,8 +68,7 @@ public class Engine
         Toggle(!IsRunning);
     }
     public void Toggle(bool DesiredStatus)
-    {
-        
+    {     
         if (CanToggle)
         {
             EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning), 3);
