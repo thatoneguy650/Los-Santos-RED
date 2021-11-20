@@ -356,6 +356,7 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        SpawnModelChecker2();
         //string text1 = NativeHelper.GetKeyboardInput("");
         //string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";
         //WriteToLogInteriors(toWrite);
@@ -381,15 +382,16 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        SpawnGunAttackers();
+        //SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {
-        Vector3 pos = Game.LocalPlayer.Character.Position;
-        float Heading = Game.LocalPlayer.Character.Heading;
-        string text1 = NativeHelper.GetKeyboardInput("");
-        string text2 = NativeHelper.GetKeyboardInput("");
-        WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
+        SpawnModelChecker();
+        //Vector3 pos = Game.LocalPlayer.Character.Position;
+        //float Heading = Game.LocalPlayer.Character.Heading;
+        //string text1 = NativeHelper.GetKeyboardInput("");
+        //string text2 = NativeHelper.GetKeyboardInput("");
+        //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
     private void DebugNumpad7()
     {
@@ -408,8 +410,8 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Player.OnSuspectEluded();
-        Player.SetWantedLevel(0, "Clear Wanted Debug", true);
+        //Player.OnSuspectEluded();
+        //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
     }
     private void DebugNumpad9()
     {
@@ -679,6 +681,70 @@ public class Debug
         NativeFunction.CallByName<bool>("REMOVE_IPL", "prologuerd");
         NativeFunction.CallByName<bool>("REMOVE_IPL", "prologuerdb");
         NativeFunction.CallByName<bool>("REMOVE_IPL", "prologuerd_lod");
+    }
+    private void SpawnModelChecker()
+    {
+        Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
+        GameFiber.Yield();
+        if (!completelynewnameAsd.Exists())
+        {
+            return;
+        }
+        completelynewnameAsd.Model.LoadAndWait();
+        string tempModelName = completelynewnameAsd.Model.Name;
+        completelynewnameAsd.RandomizeVariation();
+        EntryPoint.WriteToConsole($"SpawnModelChecker! 1 {tempModelName}", 5);
+        GameFiber.Sleep(5000);
+        if(completelynewnameAsd.Exists())
+        {
+            tempModelName = completelynewnameAsd.Model.Name;
+            EntryPoint.WriteToConsole($"SpawnModelChecker! 2 {tempModelName}", 5);
+        }
+        GameFiber.Sleep(500);
+        if(completelynewnameAsd.Exists())
+        {
+            completelynewnameAsd.Delete();
+        }
+    }
+    private void SpawnModelChecker2()
+    {
+        Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
+        GameFiber.Yield();
+        if (!completelynewnameAsd.Exists())
+        {
+            return;
+        }
+        completelynewnameAsd.Model.LoadAndWait();
+        string tempModelName = completelynewnameAsd.Model.Name;
+        completelynewnameAsd.RandomizeVariation();
+        EntryPoint.WriteToConsole($"SpawnModelChecker! 1 {tempModelName}", 5);
+        GameFiber.Sleep(5000);
+        if (completelynewnameAsd.Exists())
+        {
+            tempModelName = completelynewnameAsd.Model.Name;
+            EntryPoint.WriteToConsole($"SpawnModelChecker! 2 {tempModelName}", 5);
+        }
+        GameFiber.Sleep(500);
+
+
+        unsafe
+        {
+            var PedPtr = (ulong)completelynewnameAsd.MemoryAddress;
+            ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+            *((ulong*)(SkinPtr + 0x18)) = 411102470;
+        }
+        GameFiber.Sleep(5000);
+        if (completelynewnameAsd.Exists())
+        {
+            tempModelName = completelynewnameAsd.Model.Name;
+            EntryPoint.WriteToConsole($"SpawnModelChecker! 3 {tempModelName}", 5);
+        }
+        GameFiber.Sleep(500);
+        if (completelynewnameAsd.Exists())
+        {
+            completelynewnameAsd.Delete();
+        }
+        //411102470
     }
     private void SpawnAttackHeli1()
     {

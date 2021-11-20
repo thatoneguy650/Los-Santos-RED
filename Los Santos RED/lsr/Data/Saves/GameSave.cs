@@ -55,9 +55,9 @@ namespace LosSantosRED.lsr.Data
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<ConsumableInventoryItem> InventoryItems { get; set; } = new List<ConsumableInventoryItem>();
-        public void Load(IWeapons weapons,IPedSwap pedSwap)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player)
         {
-            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation, InventoryItems);
+            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation);
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {
@@ -70,6 +70,11 @@ namespace LosSantosRED.lsr.Data
                         Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Variation);
                     }
                 }
+            }
+            player.Inventory.Clear();
+            foreach (ConsumableInventoryItem cii in InventoryItems)
+            {
+                player.Inventory.Add(cii.ConsumableSubstance, cii.Amount);
             }
         }
 

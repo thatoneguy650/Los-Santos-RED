@@ -29,23 +29,23 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastMovedFast;
     private bool hasCheckedWeapon = false;
     
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
         Health = Pedestrian.Health;
         SpawnPosition = Pedestrian.Position;
+        Name = _Name;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
         PlayerPerception = new PlayerPerception(this, null, settings);
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup, ICrimes crimes, IWeapons weapons) : this(_Pedestrian, settings, crimes, weapons)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup, ICrimes crimes, IWeapons weapons) : this(_Pedestrian, settings, crimes, weapons, _Name)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
         IsGangMember = _IsGangMember;
-        Name = _Name;
         PedGroup = gameGroup;
     }
     public uint ArrestingPedHandle { get; set; } = 0;
@@ -128,7 +128,7 @@ public class PedExt : IComplexTaskable
         }
     }
     public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 700;
-    public Ped Pedestrian { get; private set; }
+    public Ped Pedestrian { get; set; }
     public PedGroup PedGroup { get; private set; }
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
     public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 3000;

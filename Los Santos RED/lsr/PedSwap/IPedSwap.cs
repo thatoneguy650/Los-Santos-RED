@@ -10,10 +10,9 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPedSwap
     {
-        void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
-        void BecomeRandomPed(bool DeleteOld);
-        void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation, List<ConsumableInventoryItem> inventoryItems);
-        void InlineModelSwap();
-        void BecomeRandomCop(bool v);
+        void BecomeExistingPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
+        void BecomeRandomPed();
+        void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation);
+        void BecomeRandomCop();
     }
 }

@@ -63,20 +63,20 @@ public class PedSwapMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, false, true, false);
+                PedSwap.BecomeExistingPed(500f, true, false, true, false);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true, false);
+                PedSwap.BecomeExistingPed(SelectedTakeoverRadius, false, false, true, false);
             }
         }
         else if (selectedItem == BecomeRandomPed)
         {
-            PedSwap.BecomeRandomPed(false);
+            PedSwap.BecomeRandomPed();
         }
         else if (selectedItem == BecomeRandomCop)
         {
-            PedSwap.BecomeRandomCop(false);
+            PedSwap.BecomeRandomCop();
         }
         PedSwapUIMenu.Visible = false;
     }

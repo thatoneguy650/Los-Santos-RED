@@ -20,7 +20,8 @@ public class SpawnTask
     private DispatchableVehicle VehicleType;
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons)
+    private INameProvideable Names;
+    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
     {
         Agency = agency;
         PersonType = officerType;
@@ -31,6 +32,7 @@ public class SpawnTask
         Heading = heading;
         Settings = settings;
         Weapons = weapons;
+        Names = names;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -132,6 +134,10 @@ public class SpawnTask
                 PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
             }
             GameFiber.Yield();
+            if(!ped.Exists())
+            {
+                return null;
+            }
             ped.IsPersistent = true;
             if (AddBlip && ped.Exists())
             {
@@ -143,18 +149,18 @@ public class SpawnTask
             if (Agency.ResponseType == ResponseType.LawEnforcement)
             {
                 NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons);
+                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
                 PrimaryCop.IssueWeapons(Weapons);
                 Person = PrimaryCop;
             }
             else if (Agency.ResponseType == ResponseType.EMS)
             {
-                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons);
+                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
                 Person = PrimaryEmt;
             }
             else if (Agency.ResponseType == ResponseType.Fire)
             {
-                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons);
+                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons,Names.GetRandomName(ped.IsMale));
                 Person = PrimaryFirefighter;
             }
             CreatedPeople.Add(Person);

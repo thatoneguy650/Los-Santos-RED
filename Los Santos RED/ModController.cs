@@ -122,15 +122,15 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, ConsumableSubstances);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, ConsumableSubstances, Player);
             GameFiber.Yield();
             Input = new Input(Player, Settings,UI);
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this,Settings, Tasker, ConsumableSubstances);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, ConsumableSubstances);
             Debug.Setup();
             GameFiber.Yield();
             World.AddBlipsToMap();
@@ -141,7 +141,7 @@ namespace LosSantosRED.lsr
             GameSave CurrentSave = GameSaves.GetSave(Player);
             if (CurrentSave != null)
             {
-                CurrentSave.Load(Weapons, PedSwap);
+                CurrentSave.Load(Weapons, PedSwap, Player);
                 GameFiber.Yield();
             }
 
@@ -160,8 +160,8 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartInputLogic();
             GameFiber.Yield();
-            #if DEBUG
-                StartDebugLogic();
+#if DEBUG
+            StartDebugLogic();
                 GameFiber.Yield();
             #endif
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

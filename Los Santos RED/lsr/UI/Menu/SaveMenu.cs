@@ -12,16 +12,18 @@ public class SaveMenu : Menu
     private UIMenu Saves;
     private UIMenuItem SaveGameItem;
     private UIMenuListScrollerItem<GameSave> GameSaveMenuList;
-    private ISaveable Player;
+    private ISaveable PlayerSave;
     private IWeapons Weapons;
     private IGameSaves GameSaves;
     private IPedSwap PedSwap;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable player, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap)
+    private IInventoryable PlayerInvetory;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory)
     {
-        Player = player;
+        PlayerSave = playersave;
         GameSaves = gameSaves;
         Weapons = weapons;
         PedSwap = pedSwap;
+        PlayerInvetory = playerinventory;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
 
         Saves.OnItemSelect += OnActionItemSelect;
@@ -65,11 +67,11 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem,Weapons,PedSwap);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory);
         }
         else if (selectedItem == SaveGameItem)
         {
-            GameSaves.Save(Player, Weapons);
+            GameSaves.Save(PlayerSave, Weapons);
         }
         Saves.Visible = false;
         GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....

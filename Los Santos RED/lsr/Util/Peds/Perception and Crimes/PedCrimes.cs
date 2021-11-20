@@ -124,6 +124,10 @@ public class PedCrimes
                 else
                 {
                     CheckPoliceSight(world);
+                    if(player.IsCop)
+                    {
+                        CheckPlayerSight(player);
+                    }
                 }
                 if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
                 {
@@ -160,6 +164,31 @@ public class PedCrimes
                     OnPedHeardByPolice();
                 }
             }
+        }
+        
+    }
+    private void CheckPlayerSight(IPoliceRespondable player)
+    {
+        float DistanceTo = PedExt.DistanceToPlayer;
+        if (DistanceTo <= 0.1f)
+        {
+            DistanceTo = 999f;
+        }
+        if (DistanceTo <= 10f)//right next to them = they can see ALL!
+        {
+            OnPedSeenByPolice();
+            OnPedHeardByPolice();
+            return;
+        }
+        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(player.Character) && !player.Character.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", player.Character, PedExt.Pedestrian))//55f
+        {
+            OnPedSeenByPolice();
+            OnPedHeardByPolice();
+            return;
+        }
+        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
+        {
+            OnPedHeardByPolice();
         }
     }
     private bool IsThisPedInFrontOf(Ped ToCheck)

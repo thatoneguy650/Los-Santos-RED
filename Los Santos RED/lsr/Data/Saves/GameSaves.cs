@@ -36,9 +36,9 @@ public class GameSaves : IGameSaves
         mySave.Save(player, weapons);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player)
     {       
-        gameSave.Load(weapons, pedSwap);
+        gameSave.Load(weapons, pedSwap, player);
     }
     public GameSave GetSave(ISaveable player)
     {

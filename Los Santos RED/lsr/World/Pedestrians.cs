@@ -157,7 +157,7 @@ public class Pedestrians
             return pedExt;
         }
         return Civilians.FirstOrDefault(x => x.Handle == Handle);
- 
+
     }
     public void Prune()
     {
@@ -193,6 +193,7 @@ public class Pedestrians
                 myblip.Delete();
             }
         }
+        Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
@@ -264,7 +265,7 @@ public class Pedestrians
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons);
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale));
             myCop.IssueWeapons(Weapons);
             if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
             {

@@ -12,7 +12,7 @@ public class Cop : PedExt
     private Voice Voice;
     private WeaponInventory WeaponInventory;
     private bool WasAlreadySetPersistent = false;
-    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons) : base(pedestrian, settings, crimes, weapons)
+    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name) : base(pedestrian, settings, crimes, weapons, name)
     {
         IsCop = true;
         Health = health;
@@ -31,8 +31,7 @@ public class Cop : PedExt
         }
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new Voice(this);
-        AssistManager = new AssistManager(this);
-        
+        AssistManager = new AssistManager(this); 
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public string CopDebugString => WeaponInventory.DebugWeaponState;
@@ -41,7 +40,6 @@ public class Cop : PedExt
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
     public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
-
     public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
     public IssuableWeapon LongGun => WeaponInventory.LongGun;
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);

@@ -41,7 +41,7 @@ public class UI : IMenuProvideable
     private int zoneDisplayAlpha;
     private int streetDisplayAlpha;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances, IInventoryable playerinventory)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -50,7 +50,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
-        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, consumableSubstances);
+        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, consumableSubstances, playerinventory);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         

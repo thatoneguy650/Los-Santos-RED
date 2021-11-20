@@ -33,8 +33,9 @@ public class Roadblock
     private bool IsDisposed;
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
+    private INameProvideable Names;
     private float RotatedNodeHeading => NodeHeading - 90f;
-    public Roadblock(IDispatchable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, ISettingsProvideable settings, IWeapons weapons)
+    public Roadblock(IDispatchable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
     {
         Player = player;
         World = world;
@@ -46,6 +47,7 @@ public class Roadblock
         VehicleModel = new Model(Vehicle.ModelName);
         SpikeStripModel = new Model(SpikeStripName);
         Weapons = weapons;
+        Names = names;
     }
     public Vector3 CenterPosition => NodeCenter;
     public void Dispose()
@@ -298,13 +300,13 @@ public class Roadblock
                 return false;
             }
         }
-        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, false, Settings, Weapons);
+        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, false, Settings, Weapons, Names);
         spawnTask.AttemptSpawn();
 
 
         if (addPed)
         {
-            SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons);
+            SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
             pedSpawn.AttemptSpawn();
             foreach(PedExt person in pedSpawn.CreatedPeople)
             {

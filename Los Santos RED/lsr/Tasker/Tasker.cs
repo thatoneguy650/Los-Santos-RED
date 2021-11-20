@@ -50,6 +50,19 @@ public class Tasker : ITaskerable, ITaskerReportable
             }
             GameFiber.Yield();
         }
+        //if(Player.IsCop && Player.AliasedCop != null && Player.AliasedCop.CanBeTasked)
+        //{
+        //    Player.AliasedCop.UpdateTask(PedToAttack(Player.AliasedCop));
+        //}
+
+        //if(Player.CurrentTask != null && Player.CurrentTask.ShouldUpdate)
+        //{
+
+        //    MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+
+
+        //    Player.UpdateTask(PedToAttack(Cop));
+        //}
     }
     public void RunCiviliansTasks()
     {
@@ -87,7 +100,12 @@ public class Tasker : ITaskerable, ITaskerReportable
                 }
                 GameFiber.Yield();
             }
+            //if (Player.IsCop && Player.AliasedCop != null && Player.AliasedCop.CanBeTasked)
+            //{
+            //    UpdateCurrentTask(Player.AliasedCop);
+            //}
         }
+
     }
     public void SetCivilianTasks()
     {
@@ -126,10 +144,10 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
+        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
-            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 55f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
+            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
             if (Victim != null && Victim.Pedestrian.Exists())
             {
                 if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
@@ -218,6 +236,10 @@ public class Tasker : ITaskerable, ITaskerReportable
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Too many police already on busted person, sending away", 3);
                 MainTarget = null;
             }
+        }
+        if(MainTarget != null && MainTarget.Pedestrian.Exists() && MainTarget.Pedestrian.Handle == Game.LocalPlayer.Character.Handle)//for ped swappiung, they get confused!
+        {
+            MainTarget = null;
         }
         return MainTarget;
     }

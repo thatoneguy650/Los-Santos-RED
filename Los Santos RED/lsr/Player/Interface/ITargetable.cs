@@ -25,6 +25,10 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; }
         bool IsNotWanted { get; }
+        ComplexTask CurrentTask { get; }
+        Cop AliasedCop { get; }
+        bool IsCop { get; }
+
         void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool IsForPlayer);
     }
 }

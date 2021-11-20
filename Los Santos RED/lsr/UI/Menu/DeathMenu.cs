@@ -97,14 +97,16 @@ public class DeathMenu : Menu
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.TakeoverPed(500f, true, false, true, true);
+                PedSwap.BecomeExistingPed(500f, true, false, true, true);
             }
             else
             {
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true, true);
+                PedSwap.BecomeExistingPed(SelectedTakeoverRadius, false, false, true, true);
             }
-
-            GameSaves.DeleteSave(Player.PlayerName, Player.ModelName);
+            if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
+            {
+                GameSaves.DeleteSave(Player.PlayerName, Player.ModelName);
+            }
         }
         Menu.Visible = false;
     }

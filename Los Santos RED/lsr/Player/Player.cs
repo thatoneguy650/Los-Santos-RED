@@ -75,7 +75,7 @@ namespace Mod
             GameTimeStartedPlaying = Game.GameTime;
             PlacesOfInterest = placesOfInterest;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons), Settings);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons,PlayerName), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, EntityProvider);
@@ -120,6 +120,7 @@ namespace Mod
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public bool CurrentWeaponIsOneHanded { get; private set; }
+        public ComplexTask CurrentTask { get; set; }
         public Inventory Inventory { get; set; }
         public List<ConsumableInventoryItem> ConsumableItems => Inventory.Consumables;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
@@ -130,7 +131,7 @@ namespace Mod
         public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
-        public string DebugLine8 => $"LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
+        public string DebugLine8 => $"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";
         public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";
         public string DebugLine11 { get; set; }
@@ -985,11 +986,6 @@ namespace Mod
             {
                 TrackedVehicles.Add(existingVehicleExt);
             }
-
-
-
-
-
             if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
             {
                 existingVehicleExt.SetAsEntered();
@@ -1038,7 +1034,7 @@ namespace Mod
             }
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName);
             }
             HealthState.Update();
             IsStunned = Game.LocalPlayer.Character.IsStunned;
@@ -1303,6 +1299,11 @@ namespace Mod
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
             }
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());
+
+            //if(IsCop && AliasedCop != null)
+            //{
+            //    AliasedCop.Update(this, this, PlacePoliceLastSeenPlayer, EntityProvider);
+            //}
         }
         public void UpdateWeaponData()
         {
@@ -1415,7 +1416,7 @@ namespace Mod
                     }
                     else
                     {
-                        if (!CurrentVehicle.HasBeenEnteredByPlayer)
+                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
                         {
                             CurrentVehicle.AttemptToLock();
                             GameFiber.Yield();
