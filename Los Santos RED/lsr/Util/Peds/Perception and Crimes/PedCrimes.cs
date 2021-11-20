@@ -25,6 +25,7 @@ public class PedCrimes
     private IWeapons Weapons;
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
+    private List<Ped> AlreadyCalledInPeds = new List<Ped>();
     private bool ShouldCheck => PedExt.PedGroup == null || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC");
     public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons)
     {
@@ -217,7 +218,7 @@ public class PedCrimes
         if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
         {
             OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
-            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive))
+            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
             {
                 if (!PedExt.Pedestrian.Exists())
                 {
@@ -274,7 +275,7 @@ public class PedCrimes
                             AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
                             GameTimeLastWitnessedCivilianCrime = Game.GameTime;
                         }
-                    }
+                    }        
                 }
             }
         }

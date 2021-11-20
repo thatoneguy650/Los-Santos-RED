@@ -33,6 +33,9 @@ public class UI : IMenuProvideable
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
     private string currentVehicleStatusDisplay = "";
+
+    private string lastVehicleStatusDisplay = "";
+
     private string currentStreetDisplay = "";
     private string currentZoneDisplay = "";
     private uint GameTimeVehicleStatusDisplayChanged = 0;
@@ -42,21 +45,23 @@ public class UI : IMenuProvideable
     private int streetDisplayAlpha;
     private bool DrawTexture = true;
     private Texture ToDraw;
-    private Texture Sign10MPH;
-    private Texture Sign15MPH;
-    private Texture Sign20MPH;
-    private Texture Sign25MPH;
-    private Texture Sign30MPH;
-    private Texture Sign35MPH;
-    private Texture Sign40MPH;
-    private Texture Sign45MPH;
-    private Texture Sign50MPH;
-    private Texture Sign55MPH;
-    private Texture Sign60MPH;
-    private Texture Sign65MPH;
-    private Texture Sign70MPH;
-    private Texture Sign75MPH;
-    private Texture Sign80MPH;
+    private Texture Sign10;
+    private Texture Sign15;
+    private Texture Sign20;
+    private Texture Sign25;
+    private Texture Sign30;
+    private Texture Sign35;
+    private Texture Sign40;
+    private Texture Sign45;
+    private Texture Sign50;
+    private Texture Sign55;
+    private Texture Sign60;
+    private Texture Sign65;
+    private Texture Sign70;
+    private Texture Sign75;
+    private Texture Sign80;
+    private uint GameTimeVehicleStatusDisplayStopped;
+
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances, IInventoryable playerinventory)
     {
         DisplayablePlayer = displayablePlayer;
@@ -108,21 +113,21 @@ public class UI : IMenuProvideable
     public void Setup()
     {
         Game.RawFrameRender += Draw;
-        Sign10MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
-        Sign15MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
-        Sign20MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
-        Sign25MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
-        Sign30MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
-        Sign35MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
-        Sign40MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
-        Sign45MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
-        Sign50MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
-        Sign55MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
-        Sign60MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
-        Sign65MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
-        Sign70MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
-        Sign75MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
-        Sign80MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+        Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
+        Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
+        Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
+        Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
+        Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
+        Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
+        Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
+        Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
+        Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
+        Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
+        Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
+        Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
+        Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
+        Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
+        Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
     }
     public void Dispose()
     {
@@ -227,7 +232,7 @@ public class UI : IMenuProvideable
     }
     public void Draw(object sender, GraphicsEventArgs args)
     {
-        if(DrawTexture && !Game.IsPaused)
+        if(DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen())
         {
             if (ToDraw != null)
             {  
@@ -291,16 +296,18 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
                 string newVehicleStatus = GetVehicleStatusDisplay();
-                if(newVehicleStatus != currentVehicleStatusDisplay)
+                if (newVehicleStatus != currentVehicleStatusDisplay)
                 {
                     currentVehicleStatusDisplay = newVehicleStatus;
                     GameTimeVehicleStatusDisplayChanged = Game.GameTime;
                 }
+
                 int alpha = 255;
-                if(Settings.SettingsManager.UISettings.FadeVehicleStatusDisplay)
+                if(Settings.SettingsManager.UISettings.FadeVehicleStatusDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeVehicleStatusDisplayDuringWantedAndInvestigation))
                 {
                     alpha = CalculateAlpha(GameTimeVehicleStatusDisplayChanged, Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade);          
                 }
+
                 DisplayTextOnScreen(currentVehicleStatusDisplay, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID, alpha);
             }
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
@@ -315,10 +322,9 @@ public class UI : IMenuProvideable
                     //EntryPoint.WriteToConsole($"GameTimeStreetDisplayChanged WAS '{currentStreetDisplay}' BECAME '{newStreetDisplay}' ", 5);
                     currentStreetDisplay = newStreetDisplay;
                     GameTimeStreetDisplayChanged = Game.GameTime;
-                    
                 }
                 streetDisplayAlpha = 255;
-                if (Settings.SettingsManager.UISettings.FadeStreetDisplay)
+                if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
                 {
                     streetDisplayAlpha = CalculateAlpha(GameTimeStreetDisplayChanged, Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade);
                 }
@@ -329,12 +335,11 @@ public class UI : IMenuProvideable
                 string newZoneDisplay = GetZoneDisplay();
                 if (newZoneDisplay != currentZoneDisplay)
                 {
-                   // EntryPoint.WriteToConsole($"GameTimeZoneDisplayChanged WAS '{currentZoneDisplay}' BECAME '{newZoneDisplay}' ", 5);
                     currentZoneDisplay = newZoneDisplay;
                     GameTimeZoneDisplayChanged = Game.GameTime;
                 }
                 zoneDisplayAlpha = 255;
-                if (Settings.SettingsManager.UISettings.FadeZoneDisplay)
+                if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation))
                 {
                     zoneDisplayAlpha = CalculateAlpha(GameTimeZoneDisplayChanged, Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade);
                     if (Settings.SettingsManager.UISettings.FadeStreetDisplay && streetDisplayAlpha != 0)
@@ -347,82 +352,78 @@ public class UI : IMenuProvideable
             }
         }
     }
-
     private void DisplaySpeedLimitSign()
     {
         if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null)
         {
+            float speedLimit = 60f;
             if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
             {
-                float speedLimitMPH = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH;
-                if (speedLimitMPH <= 10f)
-                {
-                    ToDraw = Sign10MPH;
-                }
-                else if (speedLimitMPH <= 15f)
-                {
-                    ToDraw = Sign15MPH;
-                }
-                else if (speedLimitMPH <= 20f)
-                {
-                    ToDraw = Sign20MPH;
-                }
-                else if (speedLimitMPH <= 25f)
-                {
-                    ToDraw = Sign25MPH;
-                }
-                else if (speedLimitMPH <= 30f)
-                {
-                    ToDraw = Sign30MPH;
-                }
-                else if (speedLimitMPH <= 35f)
-                {
-                    ToDraw = Sign35MPH;
-                }
-                else if (speedLimitMPH <= 40f)
-                {
-                    ToDraw = Sign40MPH;
-                }
-                else if (speedLimitMPH <= 45f)
-                {
-                    ToDraw = Sign45MPH;
-                }
-                else if (speedLimitMPH <= 50f)
-                {
-                    ToDraw = Sign50MPH;
-                }
-                else if (speedLimitMPH <= 55f)
-                {
-                    ToDraw = Sign55MPH;
-                }
-                else if (speedLimitMPH <= 60f)
-                {
-                    ToDraw = Sign60MPH;
-                }
-                else if (speedLimitMPH <= 65f)
-                {
-                    ToDraw = Sign65MPH;
-                }
-                else if (speedLimitMPH <= 70f)
-                {
-                    ToDraw = Sign70MPH;
-                }
-                else if (speedLimitMPH <= 75f)
-                {
-                    ToDraw = Sign75MPH;
-                }
-                else if (speedLimitMPH <= 80f)
-                {
-                    ToDraw = Sign80MPH;
-                }
-                else
-                {
-                    ToDraw = null;
-                }
+                speedLimit = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH;
             }
             else if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
             {
-                ToDraw = null;
+                speedLimit = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH;
+            }
+            if (speedLimit <= 10f)
+            {
+                ToDraw = Sign10;
+            }
+            else if (speedLimit <= 15f)
+            {
+                ToDraw = Sign15;
+            }
+            else if (speedLimit <= 20f)
+            {
+                ToDraw = Sign20;
+            }
+            else if (speedLimit <= 25f)
+            {
+                ToDraw = Sign25;
+            }
+            else if (speedLimit <= 30f)
+            {
+                ToDraw = Sign30;
+            }
+            else if (speedLimit <= 35f)
+            {
+                ToDraw = Sign35;
+            }
+            else if (speedLimit <= 40f)
+            {
+                ToDraw = Sign40;
+            }
+            else if (speedLimit <= 45f)
+            {
+                ToDraw = Sign45;
+            }
+            else if (speedLimit <= 50f)
+            {
+                ToDraw = Sign50;
+            }
+            else if (speedLimit <= 55f)
+            {
+                ToDraw = Sign55;
+            }
+            else if (speedLimit <= 60f)
+            {
+                ToDraw = Sign60;
+            }
+            else if (speedLimit <= 65f)
+            {
+                ToDraw = Sign65;
+            }
+            else if (speedLimit <= 70f)
+            {
+                ToDraw = Sign70;
+            }
+            else if (speedLimit <= 75f)
+            {
+                ToDraw = Sign75;
+            }
+            else if (speedLimit <= 80f)
+            {
+                ToDraw = Sign80;
             }
             else
             {
@@ -433,7 +434,7 @@ public class UI : IMenuProvideable
         {
             ToDraw = null;
         }
-        if(ToDraw != null)
+        if (ToDraw != null)
         {
             DrawTexture = true;
         }
@@ -442,7 +443,6 @@ public class UI : IMenuProvideable
             DrawTexture = false;
         }
     }
-
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {
         uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;
@@ -499,13 +499,13 @@ public class UI : IMenuProvideable
                     }
                 }
             }
-            //if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
-            //{
-            //    CurrentSpeedDisplay += " !";
-            //}
+            if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
+            {
+                CurrentSpeedDisplay += " !";
+            }
             if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
             {
-                CurrentSpeedDisplay += "~n~" + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
+                CurrentSpeedDisplay += "~s~ " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }
         }
         return CurrentSpeedDisplay;
@@ -597,7 +597,16 @@ public class UI : IMenuProvideable
         {
             return "";
         }
-        return DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName + " ~s~- " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
+        string toDisplay = DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
+        if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && " ~s~- " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
+        {
+            toDisplay += "~s~ / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
+        }
+        if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && " ~s~- " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != "")
+        {
+            toDisplay += "~s~ - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
+        }
+        return toDisplay;
     }
     private void HideVanillaVehicleUI()
     {

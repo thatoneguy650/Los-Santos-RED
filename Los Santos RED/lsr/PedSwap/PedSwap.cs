@@ -31,7 +31,7 @@ public class PedSwap : IPedSwap
     private string CurrentPedName;
     private PedVariation TargetPedVariation;
     private bool TargetPedIsMale;
-    private string LastModelHash;
+    //private string LastModelHash;
     private string TargetPedModelName;
     private Model TargetPedModel;
     private RelationshipGroup TargetPedRelationshipGroup;
@@ -42,22 +42,25 @@ public class PedSwap : IPedSwap
     private bool TargetPedUsingScenario;
     private Vehicle TargetPedVehicle;
     private PedVariation InitialVariation;
-    private Model InitialModel;
+    
     private Vehicle CurrentPedVehicle;
     private int CurrentPedVehicleSeat;
-    private Model ExistingModel;
-
+    
+    private Model InitialModel;
+    private Model CurrentModelPlayerIs;
     public int CurrentPedMoney { get; private set; }
     public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
     {
         InitialModel = Game.LocalPlayer.Character.Model;
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+        CurrentModelPlayerIs = InitialModel;
     }
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try
         {
+            ResetOffsetForCurrentModel();
             Ped TargetPed = FindPedToSwapWith(radius, nearest); //new Ped(Player.Position.Around2D(15f));//FindPedToSwapWith(Radius, Nearest);//turned off for now so im close
             if (!TargetPed.Exists())
             {
@@ -67,17 +70,34 @@ public class PedSwap : IPedSwap
                 }
                 return;      
             }
+            EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
             StoreTargetPedData(TargetPed);
 
+
+            EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+            //ResetOffsetForCurrentModel();
+
+            EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            ResetExistingModelHash();
+            //ResetExistingModelHash();
+
+            EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
             HandlePreviousPed(deleteOld);
-            PostTakeover(LastModelHash, true, "", 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
             TemporarilyStopWanted();
+
+            EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -88,25 +108,41 @@ public class PedSwap : IPedSwap
     {
         try
         {
+            ResetOffsetForCurrentModel();
             Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f),Game.LocalPlayer.Character.Heading);
+            
             GameFiber.Yield();
             if (!TargetPed.Exists())
             {
                 return;
             }
-            string tempModelName = TargetPed.Model.Name;
-            //TargetPed.MakePersistent();
+            EntryPoint.WriteToConsole($"BecomeRandomPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeRandomPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
 
+            EntryPoint.WriteToConsole($"BecomeRandomPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeRandomPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+            //ResetOffsetForCurrentModel();
+
+            EntryPoint.WriteToConsole($"BecomeRandomPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeRandomPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            ResetExistingModelHash();
+            //ResetExistingModelHash();
+
+            EntryPoint.WriteToConsole($"BecomeRandomPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeRandomPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
             HandlePreviousPed(false);
-            PostTakeover(LastModelHash, true, "", 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
             TemporarilyStopWanted();
+            EntryPoint.WriteToConsole($"BecomeRandomPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -115,6 +151,7 @@ public class PedSwap : IPedSwap
     }
     public void BecomeRandomCop()
     {
+        ResetOffsetForCurrentModel();
         Cop toSwapWith = FindCopToSwapWith(2000f, true);
         if (toSwapWith == null || !toSwapWith.Pedestrian.Exists())
         {
@@ -122,71 +159,89 @@ public class PedSwap : IPedSwap
         }
         //Player.AliasedCop = toSwapWith;
         Ped TargetPed = toSwapWith.Pedestrian;
-       // TargetPed.MakePersistent();
-        StoreTargetPedData(TargetPed);  
+
+        EntryPoint.WriteToConsole($"BecomeRandomCop: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        EntryPoint.WriteToConsole($"BecomeRandomCop: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+        // TargetPed.MakePersistent();
+        StoreTargetPedData(TargetPed);
+
+        EntryPoint.WriteToConsole($"BecomeRandomCop2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        EntryPoint.WriteToConsole($"BecomeRandomCop2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+        //ResetOffsetForCurrentModel();
 
         NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
         NativeFunction.Natives.SET_PED_AS_COP(Player.Character, true);//causes old ped to be deleted!
 
-        
-        
-        Player.IsCop = true;
-        ResetExistingModelHash();
+        EntryPoint.WriteToConsole($"BecomeRandomCop3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        EntryPoint.WriteToConsole($"BecomeRandomCop3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
+        Player.IsCop = true;
+        //ResetExistingModelHash();
+
+        EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
         HandlePreviousPed(false);
-        PostTakeover(LastModelHash, true, "", 0);
+        PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+
+        EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+
 
         //extra cop takeover
         IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
 
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer");
+        Entities.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons);
         //Entities.AddEntity(Player.AliasedCop);
         //Player.AliasedCop?.CurrentTask?.Update();
     }
-
-    private void ResetExistingModelHash()
-    {
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && ExistingModel != 0 && CurrentPed.Exists())
-        {
-            unsafe
-            {
-                var PedPtr = (ulong)CurrentPed.MemoryAddress;
-                ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
-                *((ulong*)(SkinPtr + 0x18)) = ExistingModel.Hash;
-            }
-        }
-    }
-
     public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation)
     {
         try
         {
-            Ped PedToBecome = new Ped(modelName, Game.LocalPlayer.Character.GetOffsetPositionFront(15f), Game.LocalPlayer.Character.Heading);
+            ResetOffsetForCurrentModel();
+            Ped TargetPed = new Ped(modelName, Game.LocalPlayer.Character.GetOffsetPositionFront(15f), Game.LocalPlayer.Character.Heading);
             GameFiber.Yield();
-            if (!PedToBecome.Exists())
+            if (!TargetPed.Exists())
             {
                 return;
             }
-            //PedToBecome.MakePersistent();
             if (variation != null)
             {
-                variation.ReplacePedComponentVariation(PedToBecome);
+                variation.ReplacePedComponentVariation(TargetPed);
             }
+            EntryPoint.WriteToConsole($"BecomeSavedPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeSavedPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
-            StoreTargetPedData(PedToBecome);
+            StoreTargetPedData(TargetPed);
 
-            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, PedToBecome, false, false);
+            EntryPoint.WriteToConsole($"BecomeSavedPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeSavedPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+           // ResetOffsetForCurrentModel();
+
+            EntryPoint.WriteToConsole($"BecomeSavedPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeSavedPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
-            ResetExistingModelHash();
+            //ResetExistingModelHash();
+
+            EntryPoint.WriteToConsole($"BecomeSavedPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            EntryPoint.WriteToConsole($"BecomeSavedPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
 
             HandlePreviousPed(false);
-            PostTakeover(LastModelHash, false, playerName, money);
+            PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
+
+            EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -274,6 +329,18 @@ public class PedSwap : IPedSwap
     //        EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
     //    }
     //}
+    private void ResetOffsetForCurrentModel()
+    {
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
+        {
+            unsafe
+            {
+                var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+                ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+                *((ulong*)(SkinPtr + 0x18)) = CurrentModelPlayerIs.Hash;
+            }
+        }
+    }
     private void IssueWeapons(IssuableWeapon sidearm, IssuableWeapon longGun)
     {
         if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)WeaponHash.StunGun, false))
@@ -367,7 +434,10 @@ public class PedSwap : IPedSwap
 
 
 
-        ResetExistingModelHash();
+        ResetOffsetForCurrentModel();
+
+
+       // ResetExistingModelHash();
 
 
         NativeHelper.ChangeModel(InitialModel.Name);
@@ -434,14 +504,10 @@ public class PedSwap : IPedSwap
     }
     private void StoreTargetPedData(Ped TargetPed)
     {
-        if (TargetPedModel == 0)
-        {
-            ExistingModel = InitialModel;
-        }
-        else
-        {
-            ExistingModel = TargetPedModel;
-        }
+
+
+        CurrentModelPlayerIs = TargetPed.Model;
+
 
 
 
@@ -474,19 +540,29 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
             Game.HandleRespawn();
         }
-        if (TargetPedHash == 225514697 || TargetPedHash == 2602752943 || TargetPedHash == 2608926626)
-        {
-            TargetPedAlreadyTakenOver = true;
-            NativeHelper.ChangeModel(TargetPedModel.Name);
-            if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-            {
-                TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-            }
-        }
-        if (!TargetPedAlreadyTakenOver)
-        {
-            LastModelHash = TargetPed.Model.Name;
-        }
+
+
+
+
+        //if (TargetPedHash == 225514697 || TargetPedHash == 2602752943 || TargetPedHash == 2608926626)
+        //{
+        //    TargetPedAlreadyTakenOver = true;
+        //    NativeHelper.ChangeModel(TargetPedModel.Name);
+        //    if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+        //    {
+        //        TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+        //    }
+        //}
+        //if (!TargetPedAlreadyTakenOver)
+        //{
+        //    LastModelHash = TargetPed.Model.Name;
+        //}
+
+        //LastModelHash = TargetPed.Model.Name;
+
+
+
+
         TargetPedInVehicle = TargetPed.IsInAnyVehicle(false);//bool wasInVehicle = TargetPed.IsInAnyVehicle(false);
         if (TargetPedInVehicle)
         {
@@ -606,7 +682,7 @@ public class PedSwap : IPedSwap
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-        if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
             NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));

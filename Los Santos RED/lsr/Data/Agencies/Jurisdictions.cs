@@ -45,11 +45,42 @@ public class Jurisdictions : IJurisdictions
     {
         if (ZoneJurisdictionsList.Any())
         {
-            ZoneJurisdiction cool = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
-            if (cool != null)
+            //ZoneJurisdiction cool = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
+            //if (cool != null)
+            //{
+            //    return AgencyProvider.GetAgency(cool.AgencyInitials);
+            //}
+
+            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(x=>x.Priority))
             {
-                return AgencyProvider.GetAgency(cool.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                if (Agency != null && Agency.ResponseType == responseType)
+                {
+                    return Agency;
+                }
             }
+            return null;
+
+
+
+
+
+        }
+        return null;
+    }
+    public Agency GetNthAgency(string ZoneName, ResponseType responseType, int itemNumber)
+    {
+        if (ZoneJurisdictionsList.Any())
+        {
+            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Skip(itemNumber-1).OrderBy(x => x.Priority))
+            {
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
+                if (Agency != null && Agency.ResponseType == responseType)
+                {
+                    return Agency;
+                }
+            }
+            return null;
         }
         return null;
     }

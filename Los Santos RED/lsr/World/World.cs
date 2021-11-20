@@ -63,6 +63,7 @@ namespace Mod
             foreach (Zone zone in Zones.ZoneList)
             {
                 zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName,ResponseType.LawEnforcement)?.ColorInitials;
+                zone.AssignedSecondLEAgencyInitials = Jurisdictions.GetNthAgency(zone.InternalGameName, ResponseType.LawEnforcement, 2)?.ColorInitials;
                 GameFiber.Yield();
             }
         }

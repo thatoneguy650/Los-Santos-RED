@@ -47,8 +47,10 @@ public class PoliceSettings
     public int VehicleSpawnLimit_Wanted3 { get; set; } = 15;
     public int VehicleSpawnLimit_Wanted4 { get; set; } = 18;
     public int VehicleSpawnLimit_Wanted5 { get; set; } = 20;
+    public bool WantedLevelIncreasesByKillingPolice { get; set; } = true;
     public int KillLimit_Wanted4 { get; set; } = 4;
     public int KillLimit_Wanted5 { get; set; } = 10;
+    public bool WantedLevelIncreasesOverTime { get; set; } = true;
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
     public float SightDistance { get; set; } = 70f;
     public float GunshotHearingDistance { get; set; } = 80f;
@@ -63,7 +65,8 @@ public class PoliceSettings
     public int TimeBetweenCopSpawn_Unseen { get; set; } = 3000;
     public int TimeBetweenCopSpawn_Seen_Min { get; set; } = 2000;
     public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; } = 2000;
-
+    public bool DeadlyChaseRequiresThreeStars { get; set; } = true;
+    public int MaxWantedLevel { get; set; } = 5;
 
     public PoliceSettings()
     {

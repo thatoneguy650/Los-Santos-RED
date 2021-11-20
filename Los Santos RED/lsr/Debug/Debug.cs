@@ -248,10 +248,10 @@ public class Debug
         //    Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
         //}
 
-        if (Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
-        {
-            Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-        }
+        //if (Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
+        //{
+        //    Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //}
 
 
         //Vector3 position = Game.LocalPlayer.Character.Position;

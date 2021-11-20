@@ -99,7 +99,7 @@ public class Pedestrians
     {
         foreach (Cop Cop in Police)
         {
-            if (Cop.Pedestrian.Exists())
+            if (Cop.Pedestrian.Exists() && Cop.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 Cop.Pedestrian.Delete();
             }
@@ -107,7 +107,7 @@ public class Pedestrians
         Police.Clear();
         foreach (EMT EMT in EMTs)
         {
-            if (EMT.Pedestrian.Exists())
+            if (EMT.Pedestrian.Exists() && EMT.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 EMT.Pedestrian.Delete();
             }
@@ -115,7 +115,7 @@ public class Pedestrians
         EMTs.Clear();
         foreach (Firefighter Firefighter in Firefighters)
         {
-            if (Firefighter.Pedestrian.Exists())
+            if (Firefighter.Pedestrian.Exists() && Firefighter.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 Firefighter.Pedestrian.Delete();
             }
@@ -123,7 +123,7 @@ public class Pedestrians
         Firefighters.Clear();
         foreach (Merchant merchant in Merchants)
         {
-            if (merchant.Pedestrian.Exists())
+            if (merchant.Pedestrian.Exists() && merchant.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 merchant.Pedestrian.Delete();
             }
@@ -193,7 +193,7 @@ public class Pedestrians
                 myblip.Delete();
             }
         }
-        Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
+       // Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);

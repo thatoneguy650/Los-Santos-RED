@@ -56,5 +56,5 @@ public class Zone
         }
     }
     public string AssignedLEAgencyInitials { get; set; }
-
+    public string AssignedSecondLEAgencyInitials { get; set; }
 }

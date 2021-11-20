@@ -799,20 +799,23 @@ namespace Mod
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
-            if (UpdateRecent)
+            if (desiredWantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel)
             {
-                GameTimeLastSetWanted = Game.GameTime;
-            }
-            if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
-            {
-                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
-                Game.LocalPlayer.WantedLevel = desiredWantedLevel;
-                if (desiredWantedLevel > 0)
+                if (UpdateRecent)
                 {
-                    GameTimeWantedLevelStarted = Game.GameTime;
+                    GameTimeLastSetWanted = Game.GameTime;
                 }
-                OnWantedLevelChanged();
-                EntryPoint.WriteToConsole($"Set Wanted: From {WantedLevel} to {desiredWantedLevel} Reason: {Reason}", 3);
+                if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
+                {
+                    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                    Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                    if (desiredWantedLevel > 0)
+                    {
+                        GameTimeWantedLevelStarted = Game.GameTime;
+                    }
+                    OnWantedLevelChanged();
+                    EntryPoint.WriteToConsole($"Set Wanted: From {WantedLevel} to {desiredWantedLevel} Reason: {Reason}", 3);
+                }
             }
         }
         public void ShootAt(Vector3 TargetCoordinate)

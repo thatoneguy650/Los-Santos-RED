@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         Agency GetRandomAgency(County county, int wantedLevel, ResponseType responseType);
         List<Agency> GetAgencies(string internalGameName, int wantedLevel, ResponseType responseType);
         Agency GetMainAgency(string internalGameName, ResponseType responseType);
+        Agency GetNthAgency(string internalGameName, ResponseType lawEnforcement, int v);
     }
 }

@@ -113,7 +113,6 @@ namespace LosSantosRED.lsr
                 }
                 //PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
                 CrimeEvent PreviousViolation;
-
                 if (crimeSceneDescription.SeenByOfficers)
                 {
                     PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
@@ -122,7 +121,6 @@ namespace LosSantosRED.lsr
                 {
                     PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
-               // CrimeSceneDescription crimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
@@ -264,30 +262,33 @@ namespace LosSantosRED.lsr
                         PlayerSeenDuringCurrentWanted = true;
                         PlayerSeenDuringWanted = true;
                     }
-                    if (HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
                         Player.OnRequestedBackUp();
                     }
-                    if (CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
+                    if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
                     {
                         Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
                     }
-                    int PoliceKilled = InstancesOfCrime("KillingPolice");
-                    if (PoliceKilled > 0)
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
                     {
-                        if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+                        int PoliceKilled = InstancesOfCrime("KillingPolice");
+                        if (PoliceKilled > 0)
                         {
-                            Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
-                            IsWeaponsFree = true;
-                            Player.OnWeaponsFree();
-                        }
-                        else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
-                        {
-                            Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
-                            IsWeaponsFree = true;
-                            Player.OnWeaponsFree();
+                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+                            {
+                                Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
+                            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
+                            {
+                                Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
                         }
                     }
                 }

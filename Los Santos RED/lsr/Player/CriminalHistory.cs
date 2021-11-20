@@ -29,7 +29,7 @@ namespace LosSantosRED.lsr
         public int MaxWantedLevel => LastWantedMaxLevel;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
-            CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));
+            CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x=> x.ResultingWantedLevel));
         }
         public void OnLostWanted()
         {
