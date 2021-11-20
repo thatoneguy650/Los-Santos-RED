@@ -75,6 +75,7 @@ namespace LosSantosRED.lsr
             PedSwap.Dispose();
             Dispatcher.Dispose();
             VanillaManager.Dispose();
+            UI.Dispose();
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
         }
@@ -123,6 +124,7 @@ namespace LosSantosRED.lsr
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             GameFiber.Yield();
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, ConsumableSubstances, Player);
+            UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings,UI);
             GameFiber.Yield();

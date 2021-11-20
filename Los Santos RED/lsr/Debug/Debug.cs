@@ -248,10 +248,20 @@ public class Debug
         //    Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
         //}
 
-        //if(Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
+        if (Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
+        {
+            Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        }
+
+
+        //Vector3 position = Game.LocalPlayer.Character.Position;
+        //Vector3 outPos;
+        //NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);
+        //if(outPos != Vector3.Zero)
         //{
-        //    Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //    Rage.Debug.DrawArrowDebug(outPos + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
         //}
+
 
 
     }

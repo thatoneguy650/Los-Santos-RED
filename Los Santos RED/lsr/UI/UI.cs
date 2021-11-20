@@ -40,7 +40,23 @@ public class UI : IMenuProvideable
     private uint GameTimeZoneDisplayChanged = 0;
     private int zoneDisplayAlpha;
     private int streetDisplayAlpha;
-
+    private bool DrawTexture = true;
+    private Texture ToDraw;
+    private Texture Sign10MPH;
+    private Texture Sign15MPH;
+    private Texture Sign20MPH;
+    private Texture Sign25MPH;
+    private Texture Sign30MPH;
+    private Texture Sign35MPH;
+    private Texture Sign40MPH;
+    private Texture Sign45MPH;
+    private Texture Sign50MPH;
+    private Texture Sign55MPH;
+    private Texture Sign60MPH;
+    private Texture Sign65MPH;
+    private Texture Sign70MPH;
+    private Texture Sign75MPH;
+    private Texture Sign80MPH;
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IConsumableSubstances consumableSubstances, IInventoryable playerinventory)
     {
         DisplayablePlayer = displayablePlayer;
@@ -53,7 +69,7 @@ public class UI : IMenuProvideable
         MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, consumableSubstances, playerinventory);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
-        
+
     }
 
     private enum GTAHudComponent
@@ -89,6 +105,29 @@ public class UI : IMenuProvideable
         Left = 1,
         Right = 2,
     };
+    public void Setup()
+    {
+        Game.RawFrameRender += Draw;
+        Sign10MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
+        Sign15MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
+        Sign20MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
+        Sign25MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
+        Sign30MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
+        Sign35MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
+        Sign40MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
+        Sign45MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
+        Sign50MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
+        Sign55MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
+        Sign60MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
+        Sign65MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
+        Sign70MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
+        Sign75MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
+        Sign80MPH = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+    }
+    public void Dispose()
+    {
+        Game.RawFrameRender -= Draw;
+    }
     public void Update()
     {
         ForceVanillaUI();
@@ -184,27 +223,20 @@ public class UI : IMenuProvideable
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
-        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, 255);
-        //NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
-        //NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
-        //NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
-
-        //NativeFunction.Natives.SetTextJustification((int)Justification);
-        //NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-
-        //if (Justification == GTATextJustification.Right)
-        //{
-        //    NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
-        //}
-        //else
-        //{
-        //    NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
-        //}
-        //NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
-        //NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
-        //NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
-        //NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
-        //return;
+        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, 255);       
+    }
+    public void Draw(object sender, GraphicsEventArgs args)
+    {
+        if(DrawTexture && !Game.IsPaused)
+        {
+            if (ToDraw != null)
+            {  
+                float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale;
+                float posX = (Game.Resolution.Height - (ToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
+                float posY = (Game.Resolution.Width - (ToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;         
+                args.Graphics.DrawTexture(ToDraw, new RectangleF(posY, posX, ToDraw.Size.Width * Scale, ToDraw.Size.Height * Scale));
+            }
+        }
     }
     private void ForceVanillaUI()
     {
@@ -251,6 +283,10 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
             {
                 DisplayTextOnScreen(GetViolatingDisplay(), Settings.SettingsManager.UISettings.CrimesViolatingPositionX, Settings.SettingsManager.UISettings.CrimesViolatingPositionY, Settings.SettingsManager.UISettings.CrimesViolatingScale, Color.White, Settings.SettingsManager.UISettings.CrimesViolatingFont, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesViolatingJustificationID);
+            }
+            if(Settings.SettingsManager.UISettings.ShowSpeedLimitDisplay)
+            {
+                DisplaySpeedLimitSign();
             }
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
@@ -311,6 +347,102 @@ public class UI : IMenuProvideable
             }
         }
     }
+
+    private void DisplaySpeedLimitSign()
+    {
+        if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null)
+        {
+            if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
+            {
+                float speedLimitMPH = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH;
+                if (speedLimitMPH <= 10f)
+                {
+                    ToDraw = Sign10MPH;
+                }
+                else if (speedLimitMPH <= 15f)
+                {
+                    ToDraw = Sign15MPH;
+                }
+                else if (speedLimitMPH <= 20f)
+                {
+                    ToDraw = Sign20MPH;
+                }
+                else if (speedLimitMPH <= 25f)
+                {
+                    ToDraw = Sign25MPH;
+                }
+                else if (speedLimitMPH <= 30f)
+                {
+                    ToDraw = Sign30MPH;
+                }
+                else if (speedLimitMPH <= 35f)
+                {
+                    ToDraw = Sign35MPH;
+                }
+                else if (speedLimitMPH <= 40f)
+                {
+                    ToDraw = Sign40MPH;
+                }
+                else if (speedLimitMPH <= 45f)
+                {
+                    ToDraw = Sign45MPH;
+                }
+                else if (speedLimitMPH <= 50f)
+                {
+                    ToDraw = Sign50MPH;
+                }
+                else if (speedLimitMPH <= 55f)
+                {
+                    ToDraw = Sign55MPH;
+                }
+                else if (speedLimitMPH <= 60f)
+                {
+                    ToDraw = Sign60MPH;
+                }
+                else if (speedLimitMPH <= 65f)
+                {
+                    ToDraw = Sign65MPH;
+                }
+                else if (speedLimitMPH <= 70f)
+                {
+                    ToDraw = Sign70MPH;
+                }
+                else if (speedLimitMPH <= 75f)
+                {
+                    ToDraw = Sign75MPH;
+                }
+                else if (speedLimitMPH <= 80f)
+                {
+                    ToDraw = Sign80MPH;
+                }
+                else
+                {
+                    ToDraw = null;
+                }
+            }
+            else if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
+            {
+                ToDraw = null;
+            }
+            else
+            {
+                ToDraw = null;
+            }
+        }
+        else
+        {
+            ToDraw = null;
+        }
+        if(ToDraw != null)
+        {
+            DrawTexture = true;
+        }
+        else
+        {
+            DrawTexture = false;
+        }
+    }
+
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {
         uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;
@@ -359,11 +491,11 @@ public class UI : IMenuProvideable
                 {
                     if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} ~s~MPH)";
+                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH";// ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} ~s~MPH)";
                     }
                     else if(Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} ~s~KM/H)";
+                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H";// ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} ~s~KM/H)";
                     }
                 }
             }

@@ -13,6 +13,17 @@ public class UISettings
     public float CrimesViolatingScale { get; set; } = 0.4f;
     public int CrimesViolatingJustificationID { get; set; } = 2;
     public GTAFont CrimesViolatingFont { get; set; } = GTAFont.FontChaletComprimeCologne;
+
+
+
+    public bool ShowSpeedLimitDisplay { get; set; } = true;
+    public float SpeedLimitPositionX { get; set; } = 0.78f;//0.7f;
+    public float SpeedLimitPositionY { get; set; } = 0.98f;
+    public float SpeedLimitScale { get; set; } = 0.5f;
+
+
+
+
     public bool ShowVehicleStatusDisplay { get; set; } = true;
     public bool FadeVehicleStatusDisplay { get; set; } = true;
     public uint VehicleStatusTimeToShow { get; set; } = 5000;
@@ -72,6 +83,7 @@ public class UISettings
     public bool AllowScreenEffectReset { get; set; } = true;
     public string SpeedDisplayUnits { get; set; } = "MPH";
     public bool DisplayButtonPrompts { get; set; } = true;
+
 
     public UISettings()
     {
