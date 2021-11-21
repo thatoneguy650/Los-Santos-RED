@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
                 else if (Type == LocationType.FoodStand)
                 {
-                    return BlipSprite.Restaurant;
+                    return BlipSprite.Bar;
                 }
                 else
                 {
@@ -54,7 +54,7 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
             }
         }
-        public void AddToMap()
+        public Blip AddToMap()
         {
             Blip MyLocationBlip = new Blip(LocationPosition)
             {
@@ -63,6 +63,7 @@ namespace LosSantosRED.lsr.Util.Locations
             MyLocationBlip.Sprite = Icon;
             MyLocationBlip.Color = Color.White;
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            return MyLocationBlip;
         }
     }
 }

@@ -69,6 +69,10 @@ namespace LosSantosRED.lsr
             {
                 Player.StartTransaction();
             }
+            else if (Player.ButtonPrompts.Any(x => x.Group == "StartSimpleTransaction" && x.IsPressedNow))//string for now...
+            {
+                Player.StartSimpleTransaction();
+            }
         }
         private void ScenarioCheck()
         {
@@ -76,6 +80,7 @@ namespace LosSantosRED.lsr
             {
                 Player.StartScenario();
             }
+
         }
         private void ControlCheck()
         {

@@ -19,7 +19,7 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.OnListChange += OnListChange;
         CreatePedSwap();
     }
-    public float SelectedTakeoverRadius { get; set; }
+    public float SelectedTakeoverRadius { get; set; } = -1f;
     public override void Hide()
     {
         PedSwapUIMenu.Visible = false;

@@ -354,7 +354,7 @@ public class UI : IMenuProvideable
     }
     private void DisplaySpeedLimitSign()
     {
-        if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null)
+        if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
         {
             float speedLimit = 60f;
             if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
@@ -598,11 +598,11 @@ public class UI : IMenuProvideable
             return "";
         }
         string toDisplay = DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
-        if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && " ~s~- " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
+        if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
         {
             toDisplay += "~s~ / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
         }
-        if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && " ~s~- " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != "")
+        if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != "")
         {
             toDisplay += "~s~ - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
         }

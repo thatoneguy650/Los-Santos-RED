@@ -38,5 +38,6 @@ namespace LosSantosRED.lsr.Interface
         void StartScenario();
         void SurrenderToPolice(GameLocation location);
         void StartTransaction();
+        void StartSimpleTransaction();
     }
 }

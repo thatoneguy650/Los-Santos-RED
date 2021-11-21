@@ -34,7 +34,7 @@ public class MainMenu : Menu
         SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
-        ActionMenu = new ActionMenu(menuPool, Main, Player);
+        ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
         InventoryMenu = new InventoryMenu(menuPool, Main, Player, consumableSubstances);
         CreateMainMenu();
     }

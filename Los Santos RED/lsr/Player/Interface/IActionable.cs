@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace LosSantosRED.lsr.Interface
         List<LicensePlate> SpareLicensePlates { get; }
         List<ConsumableInventoryItem> ConsumableItems { get; }
         bool IsCop { get; }
-
+        LocationData CurrentLocation { get; }
         void StartSmokingPot();
         void StartSmoking();
         void StartDrinkingActivity();

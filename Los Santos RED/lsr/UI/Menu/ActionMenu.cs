@@ -16,9 +16,11 @@ public class ActionMenu : Menu
     private UIMenuItem SmokePot;
     private UIMenuItem StopConsuming;
     private UIMenuItem Suicide;
-    public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player)
+    private ISettingsProvideable Settings;
+    public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings)
     {
         Player = player;
+        Settings = settings;
         Actions = menuPool.AddSubMenu(parentMenu, "Actions");
         Actions.OnItemSelect += OnActionItemSelect;
         CreateActionsMenu();
@@ -55,18 +57,24 @@ public class ActionMenu : Menu
             Suicide.Enabled = true;
             ChangePlate.Enabled = true;
             RemovePlate.Enabled = true;
-            Drink.Enabled = true;
-            Smoke.Enabled = true;
-            SmokePot.Enabled = true;
+            if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+            {
+                Drink.Enabled = true;
+                Smoke.Enabled = true;
+                SmokePot.Enabled = true;
+            }
         }
         else
         {
             Suicide.Enabled = false;
             ChangePlate.Enabled = false;
             RemovePlate.Enabled = false;
-            Drink.Enabled = false;
-            Smoke.Enabled = false;
-            SmokePot.Enabled = false;
+            if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+            {
+                Drink.Enabled = false;
+                Smoke.Enabled = false;
+                SmokePot.Enabled = false;
+            }
         }
         if (Player.IsPerformingActivity)
         {
@@ -78,14 +86,14 @@ public class ActionMenu : Menu
         }
 
 
-        EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
-        foreach (LicensePlate lp in ChangePlate.Items)
-        {
+        //EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
+        //foreach (LicensePlate lp in ChangePlate.Items)
+        //{
 
-            EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
+        //    EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
 
-        }
-        EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
+        //}
+        //EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
     }
     private void CreateActionsMenu()
     {
@@ -93,17 +101,24 @@ public class ActionMenu : Menu
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        Drink = new UIMenuItem("Drink", "Start Drinking");
-        Smoke = new UIMenuItem("Smoke", "Start Smoking");
-        SmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
+
+        if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+        {
+            Drink = new UIMenuItem("Drink", "Start Drinking");
+            Smoke = new UIMenuItem("Smoke", "Start Smoking");
+            SmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
+        }
         StopConsuming = new UIMenuItem("Stop", "Stop Consuming Activity");
 
         Actions.AddItem(Suicide);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
-        Actions.AddItem(Drink);
+        if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+        {
+            Actions.AddItem(Drink);
         Actions.AddItem(Smoke);
         Actions.AddItem(SmokePot);
+        }
         Actions.AddItem(StopConsuming);
 
         

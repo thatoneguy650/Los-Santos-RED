@@ -50,6 +50,7 @@ public class PlayerSettings
     public bool ScaleEngineDamage { get; set; } = true;
     public bool AllowStartRandomScenario { get; set; } = false;
     public bool SetSlowMoOnDeath { get; set; } = true;
+    public bool AllowConsumeWithoutInventory { get; set; } = false;
 
     public PlayerSettings()
     {

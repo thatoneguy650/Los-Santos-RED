@@ -36,6 +36,7 @@ public class Debug
     private ConsumableSubstances ConsumableSubstances;
     private List<InteriorPosition> InteriorPositions = new List<InteriorPosition>();
     private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
+    private uint GameTimeLastScannedForStands;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, ConsumableSubstances consumableSubstances)
     {
         PlateTypes = plateTypes;
@@ -261,11 +262,39 @@ public class Debug
         //{
         //    Rage.Debug.DrawArrowDebug(outPos + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
         //}
+        //int standsfound = 0;
+        //if (Game.GameTime - GameTimeLastScannedForStands >= 1000)
+        //{
 
-
+        //    Rage.Object[] objects = Rage.World.GetAllObjects();
+        //    foreach (Rage.Object obj in objects)
+        //    {
+        //        if (obj.Exists())
+        //        {
+        //            //if(obj.DistanceTo2D(Game.LocalPlayer.Character) <= 20f)
+        //            //{
+        //            //    EntryPoint.WriteToConsole($"Scanned for Stands MODEL {obj.Model.Name.ToLower()}", 5);
+                        
+        //            //}
+        //            if (obj.Model.Hash == Game.GetHashKey("prop_hotdogstand_01") || obj.Model.Hash == Game.GetHashKey("prop_burgerstand_01"))
+        //            {
+        //                //if(!obj.GetAttachedBlip().Exists())
+        //                //{
+        //                //    obj.AttachBlip();
+        //                //}
+        //                standsfound++;
+        //            }
+        //        }
+        //    }
+        //    if(standsfound > 0 )
+        //    {
+        //        Game.DisplayNotification($"Stand Found {standsfound}");
+        //    }
+        //    EntryPoint.WriteToConsole($"Scanned for Stands Found {standsfound}", 5);
+        //    GameTimeLastScannedForStands = Game.GameTime;
+        //}
 
     }
-
     public void Setup()
     {
         InteriorPositions = new List<InteriorPosition>()
@@ -321,7 +350,6 @@ public class Debug
             ,new InteriorPosition("Terrorbyte Interior",new Vector3(-1421.015f, -3012.587f, -80.000f))//doesnt work
         };
     }
-
     private void DebugNumpad0()
     {
         Game.LocalPlayer.IsInvincible = true;

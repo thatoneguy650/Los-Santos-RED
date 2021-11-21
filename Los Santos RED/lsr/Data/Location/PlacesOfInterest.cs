@@ -87,6 +87,27 @@ public class PlacesOfInterest : IPlacesOfInterest
         ConsumableSubstance banana = ConsumableSubstances.Get("Banana");
         ConsumableSubstance chips = ConsumableSubstances.Get("Phat Chips");
 
+
+        ConsumableSubstance tripleburger = ConsumableSubstances.Get("Triple Burger");
+        ConsumableSubstance bacontriplecheese = ConsumableSubstances.Get("Bacon Triple Cheese Melt");
+        ConsumableSubstance jumboshake = ConsumableSubstances.Get("Jumbo Shake");
+
+
+
+
+
+        List<ConsumableSubstance> HotDogMenu = new List<ConsumableSubstance>() { HotDog, HotSausage, HotPretzel, ThreeMiniPretzel, nuts, cansprunk, bottleofwater };
+        List<ConsumableSubstance> BurgerMenu = new List<ConsumableSubstance>() { Burger, CheeseBurger, DoubleBurger, KingsizeBurger, BaconBurger, fries, canecola, cansprunk, bottleofwater };
+        List<ConsumableSubstance> PizzaMenu = new List<ConsumableSubstance>() { Pizza, cupsprunk, ambeer, pibbeer, barrachobeer, blarneysbeer, jakeysbeer, strongbeer, duschebeer };
+        List<ConsumableSubstance> DonutMenu = new List<ConsumableSubstance>() { HotDog, chips, Donut, canecola, cupecola, coffee };
+        List<ConsumableSubstance> StoreMenu = new List<ConsumableSubstance>() { Joint, Cigarette, Cigar, cupsprunk, banana, Donut, HotPretzel, fortyoz, barrachobeer, pibbeer, blarneysbeer, loggerbeer, patriotbeer, pridebeer, strongbeer };
+        List<ConsumableSubstance> FruitMenu = new List<ConsumableSubstance>() { banana, Joint, bottleofwater, nuts, chips, canecola, cansprunk };
+
+
+        List<ConsumableSubstance> UpNAtomMenu = new List<ConsumableSubstance>() { tripleburger, bacontriplecheese, jumboshake, fries, BaconBurger, fries, cupecola, cupsprunk, coffee, bottleofwater };
+
+
+
         LocationsList = new List<GameLocation>
         {
             //Hospital
@@ -143,15 +164,30 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-            new GameLocation(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f,new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, LocationType.FoodStand, "Del Perro Beach Hot Dog","Mostly Meat!") { SellableItems = new List<ConsumableSubstance>(){ HotDog,HotSausage,HotPretzel,ThreeMiniPretzel,nuts, cansprunk, bottleofwater } },
-            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.FoodStand, "Del Perro Food Market","No Robberies Please!"){ SellableItems = new List<ConsumableSubstance>(){ Joint, Cigarette, Cigar,cupsprunk, banana,Donut, HotPretzel, fortyoz, barrachobeer, pibbeer, blarneysbeer, loggerbeer, patriotbeer, pridebeer, strongbeer } },
-            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f,new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.FoodStand, "Slice N Dice Pizza","Slice UP!"){ SellableItems = new List<ConsumableSubstance>(){ Pizza, cupsprunk, ambeer, pibbeer, barrachobeer, blarneysbeer, jakeysbeer, strongbeer, duschebeer }},
-            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f,new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.FoodStand, "Sharkies Bites","Take A Bite Today!"){ SellableItems = new List<ConsumableSubstance>(){ HotDog, chips, Donut, canecola, cupecola, coffee } },
-            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f,new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burgers","Extra BEEFY!"){ SellableItems = new List<ConsumableSubstance>(){ Burger,CheeseBurger,DoubleBurger, KingsizeBurger,BaconBurger,fries,canecola,cansprunk,bottleofwater } },
-            new GameLocation(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f,new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, LocationType.FoodStand, "Vespucci Hot Dogs","Vegan? No. Meat? Yes."){ SellableItems = new List<ConsumableSubstance>(){ HotDog, HotSausage, HotPretzel, ThreeMiniPretzel, nuts, cansprunk, bottleofwater } },
+            new GameLocation(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f,new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, LocationType.FoodStand, "Del Perro Beach Hot Dog","Mostly Meat!") { SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.FoodStand, "Del Perro Food Market","No Robberies Please!"){ SellableItems = StoreMenu },
+            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f,new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.FoodStand, "Slice N Dice Pizza","Slice UP!"){ SellableItems = PizzaMenu},
+            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f,new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.FoodStand, "Sharkies Bites","Take A Bite Today!"){ SellableItems = DonutMenu },
+            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f,new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burger Bar","Extra BEEFY!"){ SellableItems = BurgerMenu },
+            new GameLocation(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f,new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, LocationType.FoodStand, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f,new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ SellableItems = BurgerMenu },
+            new GameLocation(new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f,new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f, LocationType.FoodStand, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f,new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ SellableItems = BurgerMenu },
+            new GameLocation(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f,new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f, LocationType.FoodStand, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f,new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ SellableItems = BurgerMenu },
+            new GameLocation(new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f,new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ SellableItems = BurgerMenu },
+            new GameLocation(new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f,new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f, LocationType.FoodStand, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(1604.578f, 3828.483f, 34.4987f), 142.3778f,new Vector3(1604.578f, 3828.483f, 34.4987f), 142.3778f, LocationType.FoodStand, "Tough Nut Donut", "Our DoNuts are Crazy!"){ SellableItems = DonutMenu },
+            //new GameLocation(new Vector3(1607.818f, 3822.332f, 34.69806f), 200.7076f,new Vector3(1607.818f, 3822.332f, 34.69806f), 200.7076f, LocationType.FoodStand, "Chihuahua Hot Dog Cart Sandy Shores", "Chihuahua Hot Dog Cart Sandy Shores"),
+            new GameLocation(new Vector3(1604.818f, 3822.332f, 34.69806f), 200.7076f,new Vector3(1607.818f, 3822.332f, 34.69806f), 200.7076f, LocationType.FoodStand, "Chihuahua Hot Dog", "Vegan? No. Meat? Yes."){ SellableItems = HotDogMenu },
+            new GameLocation(new Vector3(2002.043f, 3778.543f, 32.18078f), 28.5946f,new Vector3(2002.043f, 3778.543f, 32.18078f), 28.5946f, LocationType.GasStation, "Sandy Shores Gas", "And Full Service!"),
+            new GameLocation(new Vector3(1087.509f, 6510.788f, 21.0551f), 185.487f,new Vector3(1087.509f, 6510.788f, 21.0551f), 185.487f, LocationType.FoodStand, "Roadside Fruit", "Should Be OK To Eat") { SellableItems = FruitMenu },
+            new GameLocation(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f,new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f, LocationType.FoodStand, "Attack-A-Taco", "Heavy Shelling!") { SellableItems = DonutMenu },
 
+            new GameLocation(new Vector3(95.41846f, 285.0295f, 110.2042f), 251.8247f,new Vector3(95.41846f, 285.0295f, 110.2042f), 251.8247f, LocationType.DriveThru, "Up-N-Atom Burger", "Up-N-Atom Burger") {SellableItems = UpNAtomMenu},
+            //new GameLocation(new Vector3(90.41846f, 285.0295f, 110.2042f), 251.8247f,new Vector3(95.41846f, 285.0295f, 110.2042f), 251.8247f, LocationType.FoodStand, "Up-N-Atom Burger", "Up-N-Atom Burger") {SellableItems = BurgerMenu},
 
-    };
+        };
     }
 }
 

@@ -58,15 +58,12 @@ public class Interiors : IInteriors
             new Interior(59138,"Ammunation"),
             new Interior(22786,"Binco"),
 
-
             new Interior(50178,"Rob's Liquors"),
             new Interior(10754,"Sub Urban"),
             new Interior(35586,"Ammunation"),
             new Interior(1282,"Ponsonby"),
             new Interior(37378,"Bob Mullet Hair & Beauty"),
             new Interior(14338,"Ponsonby"),
-
-
 
             new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,
             new Interior(39682,"Torture Room") { IsSPOnly = true } ,
@@ -87,61 +84,51 @@ public class Interiors : IInteriors
             new Interior(94722,"Booking Room") { IsSPOnly = true } 
 
             ,new Interior(146433, "10 Car") { IsMPOnly = true }
-,new Interior(149761, "Low End Apartment") { IsMPOnly = true }
-,new Interior(141313, "4 Integrity Way, Apt 30") { IsMPOnly = true }
-,new Interior(145921, "Dell Perro Heights, Apt 4") { IsMPOnly = true }
-,new Interior(145665, "Dell Perro Heights, Apt 7") { IsMPOnly = true }
-,new Interior(146945, "Eclipse Towers, Apt 3") { IsMPOnly = true }
-,new Interior(94722, "CharCreator") { IsMPOnly = true }
-,new Interior(25090, "Mission Carpark") { IsMPOnly = true }
-,new Interior(156929, "Torture Room") { IsMPOnly = true }
-,new Interior(178433, "Omega's Garage") { IsMPOnly = true }
-,new Interior(149505, "Motel") { IsMPOnly = true }
-,new Interior(250881, "Lester's House") { IsMPOnly = true }
-,new Interior(136449, "FBI Top Floor") { IsMPOnly = true }
-,new Interior(135937, "FBI Floor 47") { IsMPOnly = true }
-,new Interior(135937, "FBI Floor 49") { IsMPOnly = true }
-,new Interior(135681, "IAA Office") { IsMPOnly = true }
-
-
+            ,new Interior(149761, "Low End Apartment") { IsMPOnly = true }
+            ,new Interior(141313, "4 Integrity Way, Apt 30") { IsMPOnly = true }
+            ,new Interior(145921, "Dell Perro Heights, Apt 4") { IsMPOnly = true }
+            ,new Interior(145665, "Dell Perro Heights, Apt 7") { IsMPOnly = true }
+            ,new Interior(146945, "Eclipse Towers, Apt 3") { IsMPOnly = true }
+            ,new Interior(94722, "CharCreator") { IsMPOnly = true }
+            ,new Interior(25090, "Mission Carpark") { IsMPOnly = true }
+            ,new Interior(156929, "Torture Room") { IsMPOnly = true }
+            ,new Interior(178433, "Omega's Garage") { IsMPOnly = true }
+            ,new Interior(149505, "Motel") { IsMPOnly = true }
+            ,new Interior(250881, "Lester's House") { IsMPOnly = true }
+            ,new Interior(136449, "FBI Top Floor") { IsMPOnly = true }
+            ,new Interior(135937, "FBI Floor 47") { IsMPOnly = true }
+            ,new Interior(135937, "FBI Floor 49") { IsMPOnly = true }
+            ,new Interior(135681, "IAA Office") { IsMPOnly = true }
 
             ,new Interior(149249, "2 Car") { IsMPOnly = true }
-,new Interior(148737, "6 Car") { IsMPOnly = true }
-,new Interior(148225, "Medium End Apartment") { IsMPOnly = true }
-,new Interior(147201, "4 Integrity Way, Apt 28") { IsMPOnly = true }
-,new Interior(146177, "Richard Majestic, Apt 2") { IsMPOnly = true }
-,new Interior(146689, "Tinsel Towers, Apt 42") { IsMPOnly = true }
-,new Interior(207105, "3655 Wild Oats Drive") { IsMPOnly = true }
-,new Interior(206081, "2044 North Conker Avenue") { IsMPOnly = true }
-,new Interior(206337, "2045 North Conker Avenue") { IsMPOnly = true }
-,new Interior(208129, "2862 Hillcrest Avenue") { IsMPOnly = true }
-,new Interior(207617, "2868 Hillcrest Avenue") { IsMPOnly = true }
-,new Interior(207361, "2874 Hillcrest Avenue") { IsMPOnly = true }
-,new Interior(206593, "2677 Whispymound Drive") { IsMPOnly = true }
-,new Interior(208385, "2133 Mad Wayne Thunder") { IsMPOnly = true }
-,new Interior(258561, "Bunker Interior") { IsMPOnly = true }
-,new Interior(164865, "Solomon's Office") { IsMPOnly = true }
-,new Interior(170497, "Psychiatrist's Office") { IsMPOnly = true }
-,new Interior(165889, "Movie Theatre") { IsMPOnly = true }
-,new Interior(205825, "Madrazos Ranch") { IsMPOnly = true }
-//,new Interior(0, "Life Invader Office") { IsMPOnly = true }
-,new Interior(260353, "Smuggler's Run Hangar") { IsMPOnly = true }
-,new Interior(262145, "Avenger Interior") { IsMPOnly = true }
-,new Interior(269313, "Facility") { IsMPOnly = true }
-,new Interior(270337, "Server Farm") { IsMPOnly = true }
-,new Interior(271105, "Submarine") { IsMPOnly = true }
-,new Interior(270081, "IAA Facility") { IsMPOnly = true }
-,new Interior(271617, "Nightclub") { IsMPOnly = true }
-,new Interior(271873, "Nightclub Warehouse") { IsMPOnly = true }
-,new Interior(272129, "Terrorbyte Interior") { IsMPOnly = true }
-
-
-
-
-
-
-
-
+            ,new Interior(148737, "6 Car") { IsMPOnly = true }
+            ,new Interior(148225, "Medium End Apartment") { IsMPOnly = true }
+            ,new Interior(147201, "4 Integrity Way, Apt 28") { IsMPOnly = true }
+            ,new Interior(146177, "Richard Majestic, Apt 2") { IsMPOnly = true }
+            ,new Interior(146689, "Tinsel Towers, Apt 42") { IsMPOnly = true }
+            ,new Interior(207105, "3655 Wild Oats Drive") { IsMPOnly = true }
+            ,new Interior(206081, "2044 North Conker Avenue") { IsMPOnly = true }
+            ,new Interior(206337, "2045 North Conker Avenue") { IsMPOnly = true }
+            ,new Interior(208129, "2862 Hillcrest Avenue") { IsMPOnly = true }
+            ,new Interior(207617, "2868 Hillcrest Avenue") { IsMPOnly = true }
+            ,new Interior(207361, "2874 Hillcrest Avenue") { IsMPOnly = true }
+            ,new Interior(206593, "2677 Whispymound Drive") { IsMPOnly = true }
+            ,new Interior(208385, "2133 Mad Wayne Thunder") { IsMPOnly = true }
+            ,new Interior(258561, "Bunker Interior") { IsMPOnly = true }
+            ,new Interior(164865, "Solomon's Office") { IsMPOnly = true }
+            ,new Interior(170497, "Psychiatrist's Office") { IsMPOnly = true }
+            ,new Interior(165889, "Movie Theatre") { IsMPOnly = true }
+            ,new Interior(205825, "Madrazos Ranch") { IsMPOnly = true }
+            //,new Interior(0, "Life Invader Office") { IsMPOnly = true }
+            ,new Interior(260353, "Smuggler's Run Hangar") { IsMPOnly = true }
+            ,new Interior(262145, "Avenger Interior") { IsMPOnly = true }
+            ,new Interior(269313, "Facility") { IsMPOnly = true }
+            ,new Interior(270337, "Server Farm") { IsMPOnly = true }
+            ,new Interior(271105, "Submarine") { IsMPOnly = true }
+            ,new Interior(270081, "IAA Facility") { IsMPOnly = true }
+            ,new Interior(271617, "Nightclub") { IsMPOnly = true }
+            ,new Interior(271873, "Nightclub Warehouse") { IsMPOnly = true }
+            ,new Interior(272129, "Terrorbyte Interior") { IsMPOnly = true }
 
             //i went from the bottom right of the map up and left, still need to do soem hawick stuff and above LS
 

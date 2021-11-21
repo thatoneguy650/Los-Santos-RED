@@ -708,6 +708,7 @@ public class PedSwap : IPedSwap
                 if (Player.CurrentVehicle.Vehicle.Exists())
                 {
                     Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
+                    Player.CurrentVehicle.Vehicle.IsStolen = false;
                 }
             }
         }

@@ -84,6 +84,14 @@ public class ConsumableSubstances : IConsumableSubstances
             new ConsumableSubstance("Banana",eConsumableType.Eat,eConsumableCategory.Snack,"ng_proc_food_nana1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 3 },
             new ConsumableSubstance("Phat Chips",eConsumableType.Eat,eConsumableCategory.Snack,"ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 2 },
 
+
+
+
+            new ConsumableSubstance("Triple Burger",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 4 },
+            new ConsumableSubstance("Bacon Triple Cheese Melt",eConsumableType.Eat,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 3 },
+            new ConsumableSubstance("Jumbo Shake",eConsumableType.Drink,eConsumableCategory.Food,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) { Price = 2 },
+            new ConsumableSubstance("French Fries",eConsumableType.Eat,eConsumableCategory.Snack,"prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { Price = 2 },
+
         //            ConsumableSubstance HotDog = ConsumableSubstances.Get("Hot Dog");
         //ConsumableSubstance HotSausage = ConsumableSubstances.Get("Hot Sausage");
         //ConsumableSubstance HotPretzel = ConsumableSubstances.Get("Hot Pretzel");

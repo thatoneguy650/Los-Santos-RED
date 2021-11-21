@@ -33,6 +33,7 @@ namespace Mod
         private uint GameTimeStartedPlaying;
         private uint GameTimeWantedLevelStarted;
         private HealthState HealthState;
+        private GameLocation ClosestSimpleTransaction;
         
         private bool isActive = true;
         private bool isAiming;
@@ -129,7 +130,7 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => SearchMode.SearchModeDebug;
+        public string DebugLine6 => $" IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}  IsJacking {Game.LocalPlayer.Character.IsJacking}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => $"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";
@@ -176,7 +177,7 @@ namespace Mod
         }
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
-        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
+        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || (Game.LocalPlayer.Character.IsJacking && Game.LocalPlayer.Character.VehicleTryingToEnter.Exists() && Game.LocalPlayer.Character.VehicleTryingToEnter.Handle != OwnedVehicleHandle);
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -772,6 +773,7 @@ namespace Mod
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
             {
                 OwnedVehicleHandle = Game.LocalPlayer.Character.CurrentVehicle.Handle;
+                Game.LocalPlayer.Character.CurrentVehicle.IsStolen = false;
             }
             if (Settings.SettingsManager.PlayerSettings.DisableAutoEngineStart)
             {
@@ -862,6 +864,19 @@ namespace Mod
                 Interaction.Start();
             }
         }
+        public void StartSimpleTransaction()
+        {
+            if (!IsInteracting)
+            {
+                if (Interaction != null)
+                {
+                    Interaction.Dispose();
+                }
+                IsConversing = true;
+                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings);
+                Interaction.Start();
+            }
+        }
         public void StartScenario()
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -937,6 +952,7 @@ namespace Mod
                     TrackedVehicles.Add(toTakeOwnershipOf);
                 }
                 toTakeOwnershipOf.SetNotWanted();
+                toTakeOwnershipOf.Vehicle.IsStolen = false;
                 OwnedVehicleHandle = toTakeOwnershipOf.Vehicle.Handle;
                 DisplayPlayerNotification();
             }
@@ -1122,7 +1138,6 @@ namespace Mod
                 }
 
             }
-            
 
 
 
@@ -1162,7 +1177,18 @@ namespace Mod
 
 
 
-
+            ClosestSimpleTransaction = null;
+            if (!IsMoving && IsAliveAndFree && !IsConversing)
+            {
+                foreach (GameLocation gl in PlacesOfInterest.GetLocations(LocationType.DriveThru))
+                {
+                    if (Character.DistanceTo2D(gl.VendorPosition) <= 4f)
+                    {
+                        ClosestSimpleTransaction = gl;
+                        break;
+                    }
+                }
+            }
 
 
 
@@ -1203,7 +1229,7 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
-                IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.MustBeHotwired;
+                IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
                 if (isHotwiring != IsHotWiring)
                 {
@@ -1580,6 +1606,8 @@ namespace Mod
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
             {
+                ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+
                 if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
@@ -1595,6 +1623,20 @@ namespace Mod
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
                 ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
+
+
+                if(ClosestSimpleTransaction != null)
+                {
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"Purchase {ClosestSimpleTransaction.Name}"))
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+                        ButtonPrompts.Add(new ButtonPrompt($"Purchase from {ClosestSimpleTransaction.Name}", "StartSimpleTransaction", $"Purchase {ClosestSimpleTransaction.Name}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                    }
+                }
+                else
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+                }
             }
             if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
             {
@@ -1896,5 +1938,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PlayerArrested: Seat NOT Assigned", 3);
             }
         }
+
+
     }
 }

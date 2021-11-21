@@ -12,4 +12,5 @@ public enum LocationType : int
     GasStation = 3,
     Grave = 4,
     FoodStand = 5,
+    DriveThru = 6,
 }

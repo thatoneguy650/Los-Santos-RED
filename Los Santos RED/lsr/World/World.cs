@@ -75,7 +75,7 @@ namespace Mod
                 foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
                 {
                     MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.Type);
-                    myBlip.AddToMap();
+                    AddEntity(myBlip.AddToMap());
                     GameFiber.Yield();
                 }
             }
@@ -172,29 +172,42 @@ namespace Mod
         }
         public void CreateMerchants()
         {
-            foreach(GameLocation gl in PlacesOfInterest.GetLocations(LocationType.FoodStand))
+            foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                if(gl.VendorPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
+                if (gl.Type == LocationType.FoodStand)
                 {
-                    if(!ActiveLocations.Contains(gl))
+                    if (gl.VendorPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
                     {
-                        ActiveLocations.Add(gl);
-                        SetupFoodStand(gl);
+                        if (!ActiveLocations.Contains(gl))
+                        {
+                            ActiveLocations.Add(gl);
+                            SetupFoodStand(gl);
+                        }
                     }
-                }
-                else
-                {
-                    if(ActiveLocations.Contains(gl))
+                    else
                     {
-                        ActiveLocations.Remove(gl);
+                        if (ActiveLocations.Contains(gl))
+                        {
+                            ActiveLocations.Remove(gl);
+                        }
                     }
                 }
             }
-
         }
         private void SetupFoodStand(GameLocation gameLocation)//where does this go?
         {
-            Ped ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+            List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01","s_m_m_linecook" ,"s_m_m_strvend_01"};
+            Ped ped;
+            string ModelName = PossibleModels.PickRandom();
+            if(RandomItems.RandomPercent(30))
+            {
+                ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+            }
+            else
+            {
+                ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+            }
+            
             GameFiber.Yield();
             if (ped.Exists())
             {
@@ -204,6 +217,33 @@ namespace Mod
                 ped.KeepTasks = true;
                 GameFiber.Yield();
                 Merchant Person = new Merchant(ped, Settings, false,false,false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
+                Person.Store = gameLocation;
+                AddEntity(Person);
+            }
+        }
+        private void SetupDriveThru(GameLocation gameLocation)//where does this go?
+        {
+            List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook", "s_m_m_strvend_01" };
+            Ped ped;
+            string ModelName = PossibleModels.PickRandom();
+            if (RandomItems.RandomPercent(30))
+            {
+                ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+            }
+            else
+            {
+                ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+            }
+
+            GameFiber.Yield();
+            if (ped.Exists())
+            {
+                ped.IsPersistent = false;
+                ped.RandomizeVariation();
+                ped.Tasks.StandStill(-1);
+                ped.KeepTasks = true;
+                GameFiber.Yield();
+                Merchant Person = new Merchant(ped, Settings, false, false, false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
                 Person.Store = gameLocation;
                 AddEntity(Person);
             }

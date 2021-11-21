@@ -33,7 +33,7 @@ public class DeathMenu : Menu
         Menu.OnListChange += OnListChange;
         CreateDeathMenu();
     }
-    public float SelectedTakeoverRadius { get; set; }
+    public float SelectedTakeoverRadius { get; set; } = -1f;
     public override void Hide()
     {
         Menu.Visible = false;
