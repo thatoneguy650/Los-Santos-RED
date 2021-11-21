@@ -45,16 +45,16 @@ namespace LosSantosRED.lsr.Player
         }
         private void AttachFoodToHand()
         {
-            CreateBottle();
+            CreateFood();
             if (Food.Exists() && !IsAttachedToHand)
             {
                 Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
             }
         }
-        private void CreateBottle()
+        private void CreateFood()
         {
-            if (!Food.Exists())
+            if (!Food.Exists() && Data.PropModelName != "")
             {
                 Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 if (!Food.Exists())

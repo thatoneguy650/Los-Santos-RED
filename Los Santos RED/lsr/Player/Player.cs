@@ -61,6 +61,7 @@ namespace Mod
         private IPlacesOfInterest PlacesOfInterest;
         private bool isSetPoliceIgnored = false;
         private uint GameTimeLastFedUpCop;
+        private bool isJacking = false;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors)
         {
             ModelName = modelName;
@@ -103,7 +104,7 @@ namespace Mod
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse; // && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;//off for performance checking
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
-        public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle && !IsMovingDynamically;
+        public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;// && !IsInVehicle;//THIS IS TURNED OFF TO SEE HOW THE ANIMATIONS LOOK, PROBABLYT WONT WORK!
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
         public Ped Character => Game.LocalPlayer.Character;
@@ -130,10 +131,10 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => $" IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}  IsJacking {Game.LocalPlayer.Character.IsJacking}";//SearchMode.SearchModeDebug;
+        public string DebugLine6 => $" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => $"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
-        public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";
+        public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning} {CurrentVehicle.Vehicle.Handle}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle} OwnedVehicleHandle {OwnedVehicleHandle}";
         public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";
         public string DebugLine11 { get; set; }
         public string LawsViolating => Violations.LawsViolatingDisplay;
@@ -177,7 +178,7 @@ namespace Mod
         }
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
-        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || (Game.LocalPlayer.Character.IsJacking && Game.LocalPlayer.Character.VehicleTryingToEnter.Exists() && Game.LocalPlayer.Character.VehicleTryingToEnter.Handle != OwnedVehicleHandle);
+        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;//(Game.LocalPlayer.Character.IsJacking && (!Game.LocalPlayer.Character.VehicleTryingToEnter.Exists() || Game.LocalPlayer.Character.VehicleTryingToEnter.Handle != OwnedVehicleHandle));
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -991,7 +992,9 @@ namespace Mod
             {
                 CurrentVehicle = null;
                 return;
-            }
+            }           
+
+
             VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
             //GameFiber.Yield();
             if (existingVehicleExt == null)
@@ -1224,12 +1227,42 @@ namespace Mod
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
             if (IsInVehicle)
             {
+
+                if (Character.CurrentVehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicleHandle)
+                {
+                    isJacking = false;
+                }
+                else
+                {
+                    isJacking = Character.IsJacking;
+                }
+
+
+
+
+
+
+
+
+
+
                 IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
                 IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
+
+
+
+
+
+
+
+
+
+
+
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
                 if (isHotwiring != IsHotWiring)
                 {
@@ -1326,6 +1359,19 @@ namespace Mod
                 }
                 IsStill = Game.LocalPlayer.Character.IsStill;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+
+
+                //if(IsGettingIntoAVehicle && Character.VehicleTryingToEnter.Exists() && Character.VehicleTryingToEnter.Handle == OwnedVehicleHandle)
+                //{
+                //    isJacking = false;
+                //}
+                //else
+                //{
+                //    isJacking = Character.IsJacking;
+                //}
+
+                isJacking = Character.IsJacking;
+
             }
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());
 

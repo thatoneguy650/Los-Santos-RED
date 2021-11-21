@@ -81,10 +81,10 @@ public class UISettings
     public bool AllowScreenEffectReset { get; set; } = true;
     public string SpeedDisplayUnits { get; set; } = "MPH";
     public bool DisplayButtonPrompts { get; set; } = true;
-
-
-
-    
+    public bool SetRadarZoomDistance { get; set; } = true;
+    public float RadarZoomDistance_Wanted { get; set; } = 400f;
+    public float RadarZoomDistance_Investigation { get; set; } = 300f;
+    public float RadarZoomDistance_Default { get; set; } = 200f;
 
     public UISettings()
     {

@@ -448,6 +448,7 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        SetRadarZoomeFor20Seconds(1000f);
         //Player.OnSuspectEluded();
         //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
     }
@@ -459,6 +460,22 @@ public class Debug
             CurrentWanted++;
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
+    }
+    private void SetRadarZoomeFor20Seconds(float distance)
+    {
+
+            GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+            {
+                uint GameTimeStartedRadarZoom = Game.GameTime;
+                while (Game.GameTime - GameTimeStartedRadarZoom <= 20000)
+                {
+                    NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(distance);
+                    GameFiber.Yield();
+                }
+                
+
+            }, "SetRadarZoomeFor20Seconds");
+        
     }
     private void SetInRandomInterior()
     {

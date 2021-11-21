@@ -72,7 +72,7 @@ public class Jurisdictions : IJurisdictions
     {
         if (ZoneJurisdictionsList.Any())
         {
-            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Skip(itemNumber-1).OrderBy(x => x.Priority))
+            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Skip(itemNumber - 1).OrderBy(x => x.Priority))
             {
                 Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
                 if (Agency != null && Agency.ResponseType == responseType)
