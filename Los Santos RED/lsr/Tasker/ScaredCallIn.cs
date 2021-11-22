@@ -64,6 +64,14 @@ public class ScaredCallIn : ComplexTask
                 ReportCrime();
             }
         }
+        else
+        {
+            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any()))
+            {
+                ReportCrime();
+                EntryPoint.WriteToConsole($"TASKER: ScaredCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
+            }
+        }
         GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
@@ -95,7 +103,33 @@ public class ScaredCallIn : ComplexTask
                 Ped.OtherCrimesWitnessed.Clear();
             }
             EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
-        }     
+        }
+        else if(!Ped.Pedestrian.Exists())
+        {
+
+            if (Ped.PlayerCrimesWitnessed.Any())
+            {
+                EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
+                Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
+                foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
+                {
+                    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
+                }
+                Ped.PlayerCrimesWitnessed.Clear();
+            }
+            else if (Ped.OtherCrimesWitnessed.Any())
+            {
+                EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime OtherCrimesWithnessed: {Ped.Handle}", 3);
+                WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+                if (toReport != null)
+                {
+                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
+                }
+                Ped.OtherCrimesWitnessed.Clear();
+            }
+            EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime GHOST: {Ped.Handle}", 3);
+        }
+        
     }
 }
 

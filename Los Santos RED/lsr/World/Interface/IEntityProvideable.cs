@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IEntityProvideable
     {
         List<PedExt> CivilianList { get; }
+        List<Merchant> MerchantList { get; }
         List<Cop> PoliceList { get; }
         bool AnyArmyUnitsSpawned { get; }
         bool AnyNooseUnitsSpawned { get; }

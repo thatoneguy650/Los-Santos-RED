@@ -19,10 +19,12 @@ public class Transaction : Interaction
     private Rage.Object SellingProp;
     private MenuPool menuPool;
     private UIMenu Menu;
-    public Transaction(IInteractionable player, Merchant ped, ISettingsProvideable settings)
+    private GameLocation Store;
+    public Transaction(IInteractionable player, Merchant ped, GameLocation store, ISettingsProvideable settings)
     {
         Player = player;
         Ped = ped;
+        Store = store;
         Settings = settings;
         menuPool = new MenuPool();
     }

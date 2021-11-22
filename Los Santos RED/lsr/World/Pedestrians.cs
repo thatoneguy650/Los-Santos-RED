@@ -193,7 +193,14 @@ public class Pedestrians
                 myblip.Delete();
             }
         }
-       // Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
+        foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        {
+            if(Civilian.HasSeenPlayerCommitCrime && Civilian.WillCallPolice && !Civilian.HasLoggedDeath)
+            {
+                Civilian.CurrentTask?.Update();
+            }
+        }
+        // Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
@@ -219,7 +226,7 @@ public class Pedestrians
             }
             else
             {
-                if (!Civilians.Any(x => x.Handle == localHandle))
+                if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle))
                 {
                     AddCivilian(Pedestrian);
                 }
@@ -271,7 +278,12 @@ public class Pedestrians
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.Color;
-                myBlip.Scale = 0.6f;myBlip.Name = "Cop";
+                myBlip.Scale = 0.6f;
+                string CopName = AssignedAgency.ID;
+                myBlip.Name = CopName;
+                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CopName);
+                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);

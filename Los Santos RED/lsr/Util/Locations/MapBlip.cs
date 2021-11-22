@@ -46,7 +46,27 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
                 else if (Type == LocationType.FoodStand)
                 {
+                    return (BlipSprite)480;//radar_vip
+                }
+                else if (Type == LocationType.Headshop)
+                {
+                    return BlipSprite.Stash;
+                }
+                else if (Type == LocationType.Restaurant)
+                {
+                    return (BlipSprite)475;//.Bar;
+                }
+                else if (Type == LocationType.DriveThru)
+                {
+                    return (BlipSprite)523;//.Bar;
+                }
+                else if (Type == LocationType.LiquorStore)
+                {
                     return BlipSprite.Bar;
+                }
+                else if (Type == LocationType.Bank)
+                {
+                    return BlipSprite.Devin;
                 }
                 else
                 {
@@ -63,7 +83,22 @@ namespace LosSantosRED.lsr.Util.Locations
             MyLocationBlip.Sprite = Icon;
             MyLocationBlip.Color = Color.White;
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+
+
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+
             return MyLocationBlip;
         }
+
+
+        //private void SetBlipName(string BlipString, Blip BlipName)
+        //{
+        //    InputArgument arguments  = new InputArgument() { "STRING"};
+        //    Native.Function.Call(Hash._0xF9113A30DE5C6670, arguments); 
+        //    Native.Function.Call(Hash._ADD_TEXT_COMPONENT_STRING, BlipString);        
+        //    Native.Function.Call(Hash._0xBC38B49BCB83BC9B, BlipName);
+        //}
     }
 }

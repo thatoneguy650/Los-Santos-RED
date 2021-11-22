@@ -64,6 +64,7 @@ public class Interiors : IInteriors
             new Interior(1282,"Ponsonby"),
             new Interior(37378,"Bob Mullet Hair & Beauty"),
             new Interior(14338,"Ponsonby"),
+            new Interior(47874, "Ltd Gasoline") { IsSPOnly = true } ,
 
             new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,
             new Interior(39682,"Torture Room") { IsSPOnly = true } ,

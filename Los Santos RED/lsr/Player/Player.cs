@@ -841,6 +841,7 @@ namespace Mod
         }
         public void StartHoldUp()
         {
+            EntryPoint.WriteToConsole("PLAYER StartHoldUp RAN", 5);
             if (!IsInteracting && CanHoldUpTargettedPed)
             {
                 if (Interaction != null)
@@ -861,7 +862,8 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Transaction(this, (Merchant)CurrentLookedAtPed, Settings);
+                Merchant myPed = (Merchant)CurrentLookedAtPed;
+                Interaction = new Transaction(this, myPed, myPed.Store, Settings);
                 Interaction.Start();
             }
         }
@@ -1181,11 +1183,11 @@ namespace Mod
 
 
             ClosestSimpleTransaction = null;
-            if (!IsMoving && IsAliveAndFree && !IsConversing)
+            if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
-                foreach (GameLocation gl in PlacesOfInterest.GetLocations(LocationType.DriveThru))
+                foreach (GameLocation gl in PlacesOfInterest.GetAllStores())
                 {
-                    if (Character.DistanceTo2D(gl.VendorPosition) <= 4f)
+                    if (!gl.HasVendor && gl.CanPurchase && Character.DistanceTo2D(gl.EntrancePosition) <= 3f)
                     {
                         ClosestSimpleTransaction = gl;
                         break;
@@ -1237,30 +1239,12 @@ namespace Mod
                     isJacking = Character.IsJacking;
                 }
 
-
-
-
-
-
-
-
-
-
                 IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
                 IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
-
-
-
-
-
-
-
-
-
 
 
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
@@ -1606,7 +1590,7 @@ namespace Mod
             {
                 CurrentTargetedPed = null;
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}", 5);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle} CanHoldUpTargettedPed {CanHoldUpTargettedPed} CurrentTargetedPed?.CanBeMugged {CurrentTargetedPed?.CanBeMugged}", 5);
         }
         private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
         {

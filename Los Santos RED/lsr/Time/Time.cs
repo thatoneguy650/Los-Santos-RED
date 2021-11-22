@@ -35,6 +35,7 @@ namespace Mod
                 return string.Format("Current Time: {0}:{1}:{2}", NativeFunction.CallByName<int>("GET_CLOCK_HOURS"), NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"), NativeFunction.CallByName<int>("GET_CLOCK_SECONDS"));
             }
         }
+        public int CurrentHour { get; private set; }
         public bool IsNight { get; private set; }
         public void Dispose()
         {
@@ -80,8 +81,8 @@ namespace Mod
             if (Game.GameTime - GameTimeLastSetClock >= Interval)
             {
                 NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
-                var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-                if (HourOfDay >= 19 || HourOfDay <= 6)//7pm to 6 am lights need to be on
+                CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                if (CurrentHour >= 20 || CurrentHour <= 6)//8?7?pm to 6 am lights need to be on
                 {
                     IsNight = true;
                 }

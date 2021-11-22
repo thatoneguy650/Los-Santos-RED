@@ -9,5 +9,6 @@ namespace LosSantosRED.lsr.Interface
     public interface ITimeReportable
     {
         bool IsNight { get; }
+        int CurrentHour { get; }
     }
 }

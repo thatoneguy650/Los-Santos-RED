@@ -46,10 +46,10 @@ public class WeaponInventory
             NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
             Sidearm.ApplyVariation(Cop.Pedestrian);
         }
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)0x394F415C, false))
+        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))
         {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)0x394F415C, 200, false, false);
-           // LongGun.ApplyVariation(Cop.Pedestrian);
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
+            LongGun.ApplyVariation(Cop.Pedestrian);
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys    

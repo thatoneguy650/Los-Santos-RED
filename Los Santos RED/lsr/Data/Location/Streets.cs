@@ -186,7 +186,7 @@ public class Streets : IStreets
             new Street("Richman St", 35f, "MPH"),
             new Street("Ace Jones Dr", 35f, "MPH"),
             new Street("Los Santos Freeway", 65f, "MPH", true),
-            new Street("Senora Rd", 40f, "MPH"),
+            new Street("Senora Rd", 60f, "MPH"),
             new Street("Nowhere Rd", 25f, "MPH"),
             new Street("Smoke Tree Rd", 35f, "MPH"),
             new Street("Cholla Rd", 35f, "MPH"),

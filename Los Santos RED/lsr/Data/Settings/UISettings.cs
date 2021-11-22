@@ -16,7 +16,7 @@ public class UISettings
     public bool ShowSpeedLimitDisplay { get; set; } = true;
     public float SpeedLimitPositionX { get; set; } = 0.78f;//0.7f;
     public float SpeedLimitPositionY { get; set; } = 0.98f;
-    public float SpeedLimitScale { get; set; } = 0.5f;
+    public float SpeedLimitScale { get; set; } = 0.25f;
     public bool ShowVehicleStatusDisplay { get; set; } = true;
     public bool FadeVehicleStatusDisplay { get; set; } = true;
     public bool FadeVehicleStatusDisplayDuringWantedAndInvestigation { get; set; } = false;
@@ -81,13 +81,18 @@ public class UISettings
     public bool AllowScreenEffectReset { get; set; } = true;
     public string SpeedDisplayUnits { get; set; } = "MPH";
     public bool DisplayButtonPrompts { get; set; } = true;
-    public bool SetRadarZoomDistance { get; set; } = true;
-    public float RadarZoomDistance_Wanted { get; set; } = 400f;
-    public float RadarZoomDistance_Investigation { get; set; } = 300f;
-    public float RadarZoomDistance_Default { get; set; } = 200f;
+    public bool SetRadarZoomDistance { get; set; } = false;
+    public float RadarZoomDistance_Wanted { get; set; } = 175f;
+    public float RadarZoomDistance_Investigation { get; set; } = 125f;
+    public float RadarZoomDistance_Default { get; set; } = 75f;
 
     public UISettings()
     {
 
+        #if DEBUG
+                SetRadarZoomDistance = true;
+        #endif
+
+        
     }
 }

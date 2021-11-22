@@ -31,8 +31,10 @@ public class HoldUp : Interaction
     }
     public override void Start()
     {
+        EntryPoint.WriteToConsole("HoldUp Start1", 5);
         if (Target.CanBeTasked)
         {
+            EntryPoint.WriteToConsole("HoldUp Start2",5);
             GameFiber.StartNew(delegate
             {
                 Setup();

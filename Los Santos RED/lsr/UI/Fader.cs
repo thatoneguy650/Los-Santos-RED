@@ -17,7 +17,6 @@ public class Fader
     private uint TimeToFade;
     private bool FadeIsInverse = false;
     private string DebugName = "";
-    private FadeState CurrentFadeState = FadeState.FadedIn;
 
     private enum FadeState
     {
@@ -26,111 +25,185 @@ public class Fader
         FadingIn,
         FadedIn,
     }
-
+    public bool TextChangedLastUpdate { get; private set; } = false;
     public int AlphaValue { get; private set; } = 255;
-    public string TextToShow => ExistingText == "" ? LastText : ExistingText;
+    public string TextToShow { get; private set; } = "";
+    //public string TextToShow => ExistingText == "" ? LastText : ExistingText;
     public Fader(uint timeToShow, uint timeToFade, string debugName)
     {
         TimeToShow = timeToShow;
         TimeToFade = timeToFade;
         DebugName = debugName;
     }
-    private FadeState GetFadeState(string IncomingText)
-    {
-        if (IncomingText != "" && ExistingText != "")
-        {
-            return FadeState.FadingIn;
-        }
-        else if (IncomingText != "")
-        {
+    //public void Update(string IncomingText)
+    //{
 
-            return FadeState.FadingIn;
+
+    //        //AlphaValue = 255;
+    //    if (IncomingText != ExistingText)
+    //    {
+    //        if (IncomingText != "" && ExistingText != "")
+    //        {
+    //            CurrentFadeState = FadeState.FadingIn;
+    //            FadeIsInverse = true;//just changed LET FADE AFTER TIME
+    //            EntryPoint.WriteToConsole($"Fader {DebugName} 1 IncomingText:{IncomingText} ExistingText:{ExistingText} ", 5);
+    //        }
+    //        else if (IncomingText != "")
+    //        {
+    //            CurrentFadeState = FadeState.FadingIn;
+    //            FadeIsInverse = true; //current is null, coming back on fading IN
+    //            EntryPoint.WriteToConsole($"Fader {DebugName} 2 IncomingText:{IncomingText} ExistingText:{ExistingText} ", 5);
+    //        }
+    //        else
+    //        {
+    //            CurrentFadeState = FadeState.FadingOut;
+    //           // FadeIsInverse = false;//old is null, going off fading OUT
+    //           if(IncomingText == "" && AlphaValue == 0)
+    //            {
+    //                ExistingText = "";
+    //            }
+
+
+    //            //if(AlphaValue == 0)
+    //            //{
+    //            //    FadeIsInverse = false;
+    //            //}
+    //            //else
+    //            //{
+    //            //    FadeIsInverse = false;
+    //            //}
+    //            EntryPoint.WriteToConsole($"Fader {DebugName} 3 IncomingText:{IncomingText} ExistingText:{ExistingText} AlphaValue {AlphaValue} ", 5); 
+    //        }
+    //        LastText = ExistingText;
+    //        ExistingText = IncomingText;
+    //        GameTimeDisplayChanged = Game.GameTime;
+    //        EntryPoint.WriteToConsole($"Fader {DebugName} Changed", 5);
+    //     }
+
+    //    //if(FadeIsInverse && AlphaValue == 255)
+    //    //{
+    //    //    FadeIsInverse = false;
+    //    //    EntryPoint.WriteToConsole($"Fader {DebugName} RAN FadeIsInverse && AlphaValue == 255 ", 5);
+    //    //}
+    //    if (ExistingText != "" && !FadeIsInverse)
+    //    {
+    //        AlphaValue = CalculateAlpha(GameTimeDisplayChanged, TimeToShow, TimeToFade);
+    //    }
+    //    else
+    //    {
+    //        uint FadeTime = TimeToFade;
+    //        if (FadeIsInverse)
+    //        {
+    //            FadeTime /= 2;
+    //        }
+    //        AlphaValue = CalculateAlpha(GameTimeDisplayChanged, 0, FadeTime);
+    //    }
+
+
+
+    //    if (FadeIsInverse)
+    //    {
+    //        AlphaValue = 255 - AlphaValue;
+
+    //        if(AlphaValue == 0)
+    //        {
+    //            FadeIsInverse = false;
+    //        }
+    //    }
+    //    //if (AlphaValue == 0)
+    //    //{
+    //    //    ExistingText = "";
+    //    //    EntryPoint.WriteToConsole($"Fader {DebugName} RAN RESET EXISTING TEXT ", 5);
+    //    //}
+    //}
+    //private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
+    //{
+    //    uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;
+    //    if (TimeSinceChanged < timeToShow)
+    //    {
+    //        return 255;
+    //    }
+    //    else if (TimeSinceChanged < timeToShow + fadeTime)
+    //    {
+    //        float percentVisible = 1f - (1f * (TimeSinceChanged - timeToShow)) / (1f * (fadeTime));
+    //        float alphafloat = percentVisible * 255f;
+    //        return ((int)Math.Floor(alphafloat)).Clamp(0, 255);
+    //    }
+    //    else
+    //    {
+    //        return 0;
+    //    }
+    //}
+    public void Update(string IncomingText)
+    {
+        if (IncomingText != ExistingText)
+        {
+            OnTextChanged(IncomingText);
         }
         else
         {
-            return FadeState.FadingOut;
-        }
-    }
-    public void Update(string IncomingText)
-    {
-
-
-            //AlphaValue = 255;
-        if (IncomingText != ExistingText)
-        {
-            if (IncomingText != "" && ExistingText != "")
+            TextChangedLastUpdate = false;
+            if (FadeIsInverse && AlphaValue == 255)//I AM FULLY FADED IN
             {
-                CurrentFadeState = FadeState.FadingIn;
-                FadeIsInverse = true;//just changed LET FADE AFTER TIME
-                EntryPoint.WriteToConsole($"Fader {DebugName} 1 IncomingText:{IncomingText} ExistingText:{ExistingText} ", 5);
+                OnFullyFadedIn();
             }
-            else if (IncomingText != "")
+        }
+        if (FadeIsInverse)
+        {
+            AlphaValue = 255 - CalculateAlpha(GameTimeDisplayChanged, 0, TimeToFade / 2);         
+        }
+        else
+        {
+            if(TextToShow != "" && ExistingText == "")
             {
-                CurrentFadeState = FadeState.FadingIn;
-                FadeIsInverse = true; //current is null, coming back on fading IN
-                EntryPoint.WriteToConsole($"Fader {DebugName} 2 IncomingText:{IncomingText} ExistingText:{ExistingText} ", 5);
+                AlphaValue = CalculateAlpha(GameTimeDisplayChanged, 0, TimeToFade);
             }
             else
             {
-                CurrentFadeState = FadeState.FadingOut;
-               // FadeIsInverse = false;//old is null, going off fading OUT
-               if(IncomingText == "" && AlphaValue == 0)
-                {
-                    ExistingText = "";
-                }
-
-
-                //if(AlphaValue == 0)
-                //{
-                //    FadeIsInverse = false;
-                //}
-                //else
-                //{
-                //    FadeIsInverse = false;
-                //}
-                EntryPoint.WriteToConsole($"Fader {DebugName} 3 IncomingText:{IncomingText} ExistingText:{ExistingText} AlphaValue {AlphaValue} ", 5); 
+                AlphaValue = CalculateAlpha(GameTimeDisplayChanged, TimeToShow, TimeToFade);
             }
-            LastText = ExistingText;
-            ExistingText = IncomingText;
-            GameTimeDisplayChanged = Game.GameTime;
-            EntryPoint.WriteToConsole($"Fader {DebugName} Changed", 5);
-         }
-
-        //if(FadeIsInverse && AlphaValue == 255)
-        //{
-        //    FadeIsInverse = false;
-        //    EntryPoint.WriteToConsole($"Fader {DebugName} RAN FadeIsInverse && AlphaValue == 255 ", 5);
-        //}
-        if (ExistingText != "" && !FadeIsInverse)
+        }
+    }
+    public void UpdateTimeChanged()
+    {
+        GameTimeDisplayChanged = Game.GameTime;
+    }
+    private void OnFullyFadedIn()
+    {
+        FadeIsInverse = false;
+        EntryPoint.WriteToConsole($"Fader {DebugName} OnFullyFadedIn ", 2);
+    }
+    private void OnTextChanged(string incomingText)
+    {
+        EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged IncomingText:{incomingText} ExistingText:{ExistingText} LastText: {LastText} ", 2);
+        if (incomingText != "" && ExistingText != "")
         {
-            AlphaValue = CalculateAlpha(GameTimeDisplayChanged, TimeToShow, TimeToFade);
+            TextToShow = incomingText;
+            FadeIsInverse = true;// false;//just changed LET FADE AFTER TIME
+        }
+        else if (incomingText != "")
+        {
+            TextToShow = incomingText;
+            FadeIsInverse = true; //current is null, coming back on fading IN
         }
         else
         {
-            uint FadeTime = TimeToFade;
-            if (FadeIsInverse)
+            if(ExistingText == "")
             {
-                FadeTime /= 2;
+                TextToShow = incomingText;
             }
-            AlphaValue = CalculateAlpha(GameTimeDisplayChanged, 0, FadeTime);
-        }
-
-
-
-        if (FadeIsInverse)
-        {
-            AlphaValue = 255 - AlphaValue;
-
-            if(AlphaValue == 0)
+            else
             {
-                FadeIsInverse = false;
+                TextToShow = ExistingText;
             }
+            
+            FadeIsInverse = false;//old is null, going off fading OUT
         }
-        //if (AlphaValue == 0)
-        //{
-        //    ExistingText = "";
-        //    EntryPoint.WriteToConsole($"Fader {DebugName} RAN RESET EXISTING TEXT ", 5);
-        //}
+        LastText = ExistingText;
+        ExistingText = incomingText;
+        GameTimeDisplayChanged = Game.GameTime;
+        TextChangedLastUpdate = true;
+        EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged TextToShow:{TextToShow} ", 2);
     }
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {
@@ -150,6 +223,10 @@ public class Fader
             return 0;
         }
     }
+
+
+
+
     //public void Update(string IncomingText)
     //{
     //    //AlphaValue = 255;
@@ -212,5 +289,6 @@ public class Fader
     //        return 0;
     //    }
     //}
+
 }
 

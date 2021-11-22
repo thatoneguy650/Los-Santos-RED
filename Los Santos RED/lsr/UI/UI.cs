@@ -66,6 +66,8 @@ public class UI : IMenuProvideable
     private Fader StreetFader;
     private Fader ZoneFader;
     private Fader VehicleFader;
+    private bool ZoneDisplayingStreetAlpha = false;
+    private bool playerIsInVehicle = false;
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
@@ -284,6 +286,9 @@ public class UI : IMenuProvideable
     {
         if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
+
+
+
             if (Settings.SettingsManager.UISettings.ShowDebug)
             {
                 ShowDebugUI();
@@ -307,109 +312,42 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
                 string newVehicleStatus = GetVehicleStatusDisplay();
-                //if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
-                //{
-                //    VehicleFader.Update(newVehicleStatus);
-                //    DisplayTextOnScreen(VehicleFader.TextToShow, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID, VehicleFader.AlphaValue);
-                //}
-                //else
-                //{
-                    DisplayTextOnScreen(newVehicleStatus, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
-                //}
-
-
-                //if (newVehicleStatus != currentVehicleStatusDisplay)
-                //{
-                //    currentVehicleStatusDisplay = newVehicleStatus;
-                //    GameTimeVehicleStatusDisplayChanged = Game.GameTime;
-                //}
-
-                //int alpha = 255;
-                //if(Settings.SettingsManager.UISettings.FadeVehicleStatusDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeVehicleStatusDisplayDuringWantedAndInvestigation))
-                //{
-                //    alpha = CalculateAlpha(GameTimeVehicleStatusDisplayChanged, Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade);          
-                //}
-
-               // DisplayTextOnScreen(currentVehicleStatusDisplay, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID, alpha);
+                DisplayTextOnScreen(newVehicleStatus, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
             }
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
                 DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
             }
+
+            if(playerIsInVehicle != DisplayablePlayer.IsInVehicle)
+            {
+                if(Settings.SettingsManager.UISettings.FadeZoneDisplay)
+                {
+                    ZoneFader.UpdateTimeChanged();
+                }
+                if (Settings.SettingsManager.UISettings.FadeStreetDisplay)
+                {
+                    StreetFader.UpdateTimeChanged();
+                }
+                playerIsInVehicle = DisplayablePlayer.IsInVehicle;
+            }
+
             if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
             {
                 string newStreetDisplay = GetStreetDisplay();
                 if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
                 {
                     StreetFader.Update(newStreetDisplay);
+                    if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ZoneFader.TextChangedLastUpdate)
+                    {
+                        StreetFader.UpdateTimeChanged();
+                    }
                     DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, StreetFader.AlphaValue);
                 }
                 else
                 {
                     DisplayTextOnScreen(newStreetDisplay, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID);
                 }    
-
-
-                //if (newStreetDisplay != currentStreetDisplay)
-                //{
-                //    if(newStreetDisplay != "" && currentStreetDisplay != "")
-                //    {
-                //        StreetFadeIsInverse = false;//just changed LET FADE AFTER TIME
-                //    }
-                //    else if (newStreetDisplay != "")
-                //    {
-                //        StreetFadeIsInverse = true; //current is null, coming back on fading IN
-                //    }
-                //    else
-                //    {
-                //        StreetFadeIsInverse = false;//old is null, going off fading OUT
-                //    }
-                //    lastStreetDisplay = currentStreetDisplay;
-                //    currentStreetDisplay = newStreetDisplay;
-                //    GameTimeStreetDisplayChanged = Game.GameTime;
-                //}
-                //streetDisplayAlpha = 255;
-                //if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
-                //{
-                //    if (currentStreetDisplay != "" && !StreetFadeIsInverse)
-                //    {
-                //        streetDisplayAlpha = CalculateAlpha(GameTimeStreetDisplayChanged, Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade);
-                //    }
-                //    else
-                //    {
-                //        uint FadeTime = Settings.SettingsManager.UISettings.StreetDisplayTimeToFade;
-                //        if (StreetFadeIsInverse)
-                //        {
-                //            FadeTime = FadeTime / 2;
-                //        }
-                //        streetDisplayAlpha = CalculateAlpha(GameTimeStreetDisplayChanged, 0, FadeTime);
-                //    }
-                //    if(StreetFadeIsInverse)
-                //    {
-                //        streetDisplayAlpha = 255 - streetDisplayAlpha;
-                //    }        
-                //}
-                //if(currentStreetDisplay != "")
-                //{
-                //    DisplayTextOnScreen(currentStreetDisplay, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, streetDisplayAlpha);
-                //}
-                //else
-                //{
-                //    DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, streetDisplayAlpha);
-                //}
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
             if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
             {
@@ -417,56 +355,16 @@ public class UI : IMenuProvideable
                 if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation))
                 {
                     ZoneFader.Update(newZoneDisplay);
-                    if (Settings.SettingsManager.UISettings.FadeStreetDisplay && StreetFader.AlphaValue != 0)
+                    if (Settings.SettingsManager.UISettings.FadeStreetDisplay && StreetFader.TextChangedLastUpdate)
                     {
-                        DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, StreetFader.AlphaValue);
+                        ZoneFader.UpdateTimeChanged();
                     }
-                    else
-                    {
-                        DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, ZoneFader.AlphaValue);
-                    }
+                    DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, ZoneFader.AlphaValue);
                 }
                 else
                 {
                     DisplayTextOnScreen(newZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
                 }
-
-
-
-
-
-
-
-
-
-                //if (newZoneDisplay != currentZoneDisplay)
-                //{
-                //    if (newZoneDisplay != "" && currentZoneDisplay != "")
-                //    {
-                //        ZoneFadeIsInverse = false;//just changed LET FADE AFTER TIME
-                //    }
-                //    else if (newZoneDisplay != "")
-                //    {
-                //        ZoneFadeIsInverse = true; //current is null, coming back on fading IN
-                //    }
-                //    else
-                //    {
-                //        ZoneFadeIsInverse = false;//old is null, going off fading OUT
-                //    }
-                //    currentZoneDisplay = newZoneDisplay;
-                //    GameTimeZoneDisplayChanged = Game.GameTime;
-                //}
-                //zoneDisplayAlpha = 255;
-                //if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation))
-                //{
-                //    zoneDisplayAlpha = CalculateAlpha(GameTimeZoneDisplayChanged, Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade);
-                //    if (Settings.SettingsManager.UISettings.FadeStreetDisplay && streetDisplayAlpha != 0)
-                //    {
-                //        currentZoneDisplay = newZoneDisplay;
-                //        zoneDisplayAlpha = streetDisplayAlpha;
-                //    }  
-                //}
-                //DisplayTextOnScreen(currentZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, zoneDisplayAlpha);
             }
         }
     }
@@ -617,9 +515,25 @@ public class UI : IMenuProvideable
                     }
                 }
             }
+            if(DisplayablePlayer.CurrentVehicle.IsStolen)
+            {
+                CurrentSpeedDisplay += " (Stolen)";
+            }
             if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
             {
                 CurrentSpeedDisplay += " !";
+            }
+            if (DisplayablePlayer.CurrentVehicle.Indicators.HazardsOn)
+            {
+                CurrentSpeedDisplay += " (HAZ)";
+            }
+            else if (DisplayablePlayer.CurrentVehicle.Indicators.RightBlinkerOn)
+            {
+                CurrentSpeedDisplay += " (RI)";
+            }
+            else if (DisplayablePlayer.CurrentVehicle.Indicators.LeftBlinkerOn)
+            {
+                CurrentSpeedDisplay += " (LI)";
             }
             if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
             {
@@ -830,7 +744,8 @@ public class UI : IMenuProvideable
     }
     private void ShowDebugUI()
     {
-        float StartingPoint = 0.1f;
+        //float StartingPoint = 0.1f;
+        float StartingPoint = 0.2f;
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine1}", StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine2}", StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine3}", StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
@@ -842,6 +757,9 @@ public class UI : IMenuProvideable
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine9}", StartingPoint + 0.09f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine10}", StartingPoint + 0.10f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine11}", StartingPoint + 0.11f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        DisplayTextOnScreen($"~s~Street.Text: {StreetFader?.TextToShow} Street.Alpha:{StreetFader?.AlphaValue}", StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"~s~Zone.Text: {ZoneFader?.TextToShow} ~s~Zone.Alpha:{ZoneFader?.AlphaValue}", StartingPoint + 0.13f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
     private void Toggle(Menu toToggle)
     {

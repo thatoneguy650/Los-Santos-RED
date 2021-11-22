@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,7 +57,14 @@ namespace LosSantosRED.lsr.Player
         {
             if (!Food.Exists() && Data.PropModelName != "")
             {
-                Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                try
+                {
+                    Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                }
+                catch(Exception e)
+                {
+                    Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
+                }
                 if (!Food.Exists())
                 {
                     IsCancelled = true;

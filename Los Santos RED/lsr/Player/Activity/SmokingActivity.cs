@@ -90,7 +90,14 @@ namespace LosSantosRED.lsr.Player
         {
             if (!SmokedItem.Exists())
             {
-                SmokedItem = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                try
+                {
+                    SmokedItem = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                }
+                catch (Exception e)
+                {
+                    Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
+                } 
             }
         }
         private void Enter()

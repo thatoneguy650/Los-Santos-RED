@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -116,11 +117,11 @@ public class Tasker : ITaskerable, ITaskerReportable
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             ExpireSeatAssignments();
-            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
                 try
                 { 
-                    if (Civilian.DistanceToPlayer <= 75f)
+                    if (Civilian.DistanceToPlayer <= 200f)
                     {
                         UpdateCurrentTask(Civilian);
                     }
@@ -135,7 +136,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
-            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 100f))
+            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 230f))
             {
                 Civilian.CurrentTask = null;
             }
@@ -155,6 +156,9 @@ public class Tasker : ITaskerable, ITaskerReportable
                     Blip myBlip = Criminal.Pedestrian.AttachBlip();
                     myBlip.Color = Color.Red;
                     myBlip.Scale = 0.6f;
+                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Criminal");
+                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
                     PedProvider.AddEntity(myBlip);
                 }
                 

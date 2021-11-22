@@ -28,7 +28,8 @@ namespace Mod
         private IWeapons Weapons;
         private List<GameLocation> ActiveLocations = new List<GameLocation>();
         private IConsumableSubstances ConsumableSubstances;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IConsumableSubstances consumableSubstances)
+        private ITimeReportable Time;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IConsumableSubstances consumableSubstances, ITimeReportable time)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -37,6 +38,7 @@ namespace Mod
             Weapons = weapons;
             Crimes = crimes;
             ConsumableSubstances = consumableSubstances;
+            Time = time;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
@@ -58,6 +60,9 @@ namespace Mod
         public int TotalSpawnedPolice => Pedestrians.TotalSpawnedPolice;
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
+
+        public List<Merchant> MerchantList => Pedestrians.Merchants.Where(x => x.Pedestrian.Exists()).ToList();
+
         public void Setup()
         {
             foreach (Zone zone in Zones.ZoneList)
@@ -85,9 +90,12 @@ namespace Mod
             {
                 foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
                 {
-                    MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.Type);
-                    AddEntity(myBlip.AddToMap());
-                    GameFiber.Yield();
+                    if (MyLocation.ShouldAlwaysHaveBlip)
+                    {
+                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.Type);
+                        AddEntity(myBlip.AddToMap());
+                        GameFiber.Yield();
+                    }
                 }
             }
         }
@@ -184,55 +192,62 @@ namespace Mod
         public void CreateMerchants()
         {
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
-            {
-                if (gl.Type == LocationType.FoodStand)
+            {           
+                if (gl.IsOpen(Time.CurrentHour) && gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
                 {
-                    if (gl.VendorPosition.DistanceTo2D(Game.LocalPlayer.Character) <= 100f)
+                    if (!ActiveLocations.Contains(gl))
                     {
-                        if (!ActiveLocations.Contains(gl))
-                        {
-                            ActiveLocations.Add(gl);
-                            SetupFoodStand(gl);
-                        }
+                        ActiveLocations.Add(gl);
+                        SetupLocation(gl);
                     }
-                    else
+                }
+                else
+                {
+                    if (ActiveLocations.Contains(gl))
                     {
-                        if (ActiveLocations.Contains(gl))
-                        {
-                            ActiveLocations.Remove(gl);
-                        }
+                        ActiveLocations.Remove(gl);
+                        RemoveLocation(gl);
                     }
                 }
             }
         }
-        private void SetupFoodStand(GameLocation gameLocation)//where does this go?
+        public void SetupLocation(GameLocation gameLocation)
         {
-            List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01","s_m_m_linecook" ,"s_m_m_strvend_01"};
-            Ped ped;
-            string ModelName = PossibleModels.PickRandom();
-            if(RandomItems.RandomPercent(30))
+            if (gameLocation.HasVendor)
             {
-                ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+                SpawnVendor(gameLocation);
             }
-            else
+            if(!gameLocation.ShouldAlwaysHaveBlip)
             {
-                ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-            }
-            
-            GameFiber.Yield();
-            if (ped.Exists())
-            {
-                ped.IsPersistent = false;
-                ped.RandomizeVariation();
-                ped.Tasks.StandStill(-1);
-                ped.KeepTasks = true;
-                GameFiber.Yield();
-                Merchant Person = new Merchant(ped, Settings, false,false,false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
-                Person.Store = gameLocation;
-                AddEntity(Person);
+                SetupBlip(gameLocation);
             }
         }
-        private void SetupDriveThru(GameLocation gameLocation)//where does this go?
+
+        private void SetupBlip(GameLocation gameLocation)
+        {
+            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);
+            Blip createdBlip = myBlip.AddToMap();
+            gameLocation.SetCreatedBlip(createdBlip);
+            AddEntity(createdBlip);
+        }
+
+        private void RemoveLocation(GameLocation gameLocation)
+        {
+            if (!gameLocation.ShouldAlwaysHaveBlip)
+            {
+                RemoveBlip(gameLocation);
+            }
+        }
+
+        private void RemoveBlip(GameLocation gameLocation)
+        {
+            if (gameLocation.CreatedBlip.Exists())
+            {
+                gameLocation.CreatedBlip.Delete();
+            }
+        }
+
+        private void SpawnVendor(GameLocation gameLocation)
         {
             List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook", "s_m_m_strvend_01" };
             Ped ped;
@@ -259,10 +274,46 @@ namespace Mod
                 AddEntity(Person);
             }
         }
-
         public void RemoveEntity(Cop toSwapWith)
         {
             Pedestrians.Police.Remove(toSwapWith);
         }
+
+
+
+
+
+
+
+
+
+
+        //private void SetupFoodStand(GameLocation gameLocation)//where does this go?
+        //{
+        //    List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01","s_m_m_linecook" ,"s_m_m_strvend_01"};
+        //    Ped ped;
+        //    string ModelName = PossibleModels.PickRandom();
+        //    if(RandomItems.RandomPercent(30))
+        //    {
+        //        ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+        //    }
+        //    else
+        //    {
+        //        ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+        //    }
+
+        //    GameFiber.Yield();
+        //    if (ped.Exists())
+        //    {
+        //        ped.IsPersistent = false;
+        //        ped.RandomizeVariation();
+        //        ped.Tasks.StandStill(-1);
+        //        ped.KeepTasks = true;
+        //        GameFiber.Yield();
+        //        Merchant Person = new Merchant(ped, Settings, false,false,false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
+        //        Person.Store = gameLocation;
+        //        AddEntity(Person);
+        //    }
+        //}
     }
 }

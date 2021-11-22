@@ -9,7 +9,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
-    private static int LogLevel = 1;
+    private static int LogLevel = 3;
     public static ModController ModController { get; set; }
     public static void Main()
     {

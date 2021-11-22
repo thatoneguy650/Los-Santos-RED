@@ -50,5 +50,23 @@ public class Civilians
                 GameFiber.Yield();
             }
         }
+        foreach (PedExt ped in World.MerchantList.OrderBy(x => x.GameTimeLastUpdated))
+        {
+            try
+            {
+                ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
+            }
+            PedsUpdated++;
+            if (PedsUpdated > 4)//10)//3//10//25
+            {
+                PedsUpdated = 0;
+                GameFiber.Yield();
+            }
+        }
     }
 }
