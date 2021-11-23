@@ -26,6 +26,7 @@ public class SimpleTransaction : Interaction
     private Vector3 _direction;
     private Camera InterpolationCamera;
     private bool IsDisposed = false;
+    private bool IsUsingCustomCam = false;
 
     public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings)
     {
@@ -44,52 +45,64 @@ public class SimpleTransaction : Interaction
             HideMenu();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
             Player.IsConversing = false;
-            if (!Player.IsInVehicle)
+
+            if (IsUsingCustomCam)
             {
-                Game.LocalPlayer.Character.Position = Store.EntrancePosition;
-                Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
-                Game.LocalPlayer.Character.IsVisible = true;
-                Game.LocalPlayer.HasControl = true;
-                Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), 1.0f, Store.EntranceHeading, 1.0f, 1500);
+                if (!Player.IsInVehicle)
+                {
+                    Game.LocalPlayer.Character.Position = Store.EntrancePosition;
+                    Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
+                    Game.LocalPlayer.Character.IsVisible = true;
+                    Game.LocalPlayer.HasControl = true;
+                    Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), 1.0f, Store.EntranceHeading, 1.0f, 1500);
+                }
+                ReturnToGameplay();
+                GameFiber.Sleep(1500);
+                InterpolationCamera.Active = false;
+                if (StoreCam.Exists())
+                {
+                    StoreCam.Delete();
+                }
+                if (InterpolationCamera.Exists())
+                {
+                    InterpolationCamera.Delete();
+                }
+                Game.LocalPlayer.Character.Tasks.Clear();
             }
-            ReturnToGameplay();
-            GameFiber.Sleep(1500);
-            InterpolationCamera.Active = false;
-            if (StoreCam.Exists())
+            else
             {
-                StoreCam.Delete();
+                NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
             }
-            if (InterpolationCamera.Exists())
-            {
-                InterpolationCamera.Delete();
-            }
-            //NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
-            //IsDisposed = true;
-            Game.LocalPlayer.Character.Tasks.Clear();
-            EntryPoint.WriteToConsole($"Simple Transaction DISPOSE", 3);
+            EntryPoint.WriteToConsole($"Simple Transaction DISPOSE IsUsingCustomCam {IsUsingCustomCam}", 3);
         }
     }
     public override void Start()
     {
-       // Camera.DeleteAllCameras();
         if (Store != null)
         {
             Menu = new UIMenu(Store.Name, Store.Description);
             Menu.OnItemSelect += OnItemSelect;
             menuPool.Add(Menu);
-
             Player.IsConversing = true;
-
-            HighlightStoreWithCamera();
-            if (!Player.IsInVehicle)
+            if(Player.IsInVehicle || Store.Type == LocationType.DriveThru)
             {
-                Game.LocalPlayer.HasControl = false;
-                Game.LocalPlayer.Character.IsVisible = false;
+                IsUsingCustomCam = false;
             }
-
-           // NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
-            //NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(0, Store.VendorPosition.X, Store.VendorPosition.Y, Store.VendorPosition.Z + 2f, true, -1, 2000, 2000);
-            EntryPoint.WriteToConsole($"Simple Transaction START", 3);
+            else
+            {
+                IsUsingCustomCam = true;
+            }
+            if (IsUsingCustomCam)
+            {
+                HighlightStoreWithCamera();
+                Game.LocalPlayer.HasControl = false;
+                Game.LocalPlayer.Character.IsVisible = false;   
+            }
+            else
+            {
+                NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
+            }
+            EntryPoint.WriteToConsole($"Simple Transaction START {IsUsingCustomCam}", 3);
             GameFiber.StartNew(delegate
             {
                 Greet();

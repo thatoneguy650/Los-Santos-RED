@@ -10,9 +10,11 @@ namespace LosSantosRED.lsr.Player
     [Serializable()]
     public class Inventory
     {
+        private List<ModItem> ItemsList = new List<ModItem>();//new not hooked up
         private List<ConsumableInventoryItem> ConsumableList = new List<ConsumableInventoryItem>();
         private IInventoryable Player;
         public List<ConsumableInventoryItem> Consumables => ConsumableList;
+        public List<ModItem> Items => ItemsList;//new not hooked up
         public Inventory()
         {
 
@@ -21,6 +23,13 @@ namespace LosSantosRED.lsr.Player
         {
             Player = player;
         }
+
+
+
+
+
+
+
         public void Add(ConsumableSubstance consumableSubstance, int amount)
         {
             ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);

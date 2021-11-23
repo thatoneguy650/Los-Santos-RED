@@ -58,6 +58,11 @@ public class Interiors : IInteriors
             new Interior(59138,"Ammunation"),
             new Interior(22786,"Binco"),
 
+
+            new Interior(104450,"Liquor Ace"),
+
+            new Interior(62722,"24/7"),
+            new Interior(89602,"Yellow Jacket Inn"),
             new Interior(50178,"Rob's Liquors"),
             new Interior(10754,"Sub Urban"),
             new Interior(35586,"Ammunation"),

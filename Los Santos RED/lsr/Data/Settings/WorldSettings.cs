@@ -9,6 +9,7 @@ public class WorldSettings
     public bool AddPOIBlipsToMap { get; set; } = true;
     public bool UpdateVehiclePlates { get; set; } = true;
     public bool CleanupVehicles { get; set; } = true;
+    public bool RemoveMPShopKeepPed { get; set; } = true;
     public WorldSettings()
     {
 

@@ -19,16 +19,12 @@ public class ConsumableSubstance
         ModelName = modelName;
         ConsumableCategory = category;
     }
-
     public ConsumableSubstance(string name, eConsumableType type, eConsumableCategory category, string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, type, category, modelName)
     {
         AttachBoneIndex = attachBoneIndex;
         AttachOffset = attachOffset;
         AttachRotation = attachRotation;
     }
-
-
-
     public int AttachBoneIndex { get; set; } = 57005;
     public Vector3 AttachOffset { get; set; } = new Vector3(0.12f, 0.0f, -0.06f);
     public Rotator AttachRotation { get; set; } = new Rotator(-77.0f, 23.0f, 0.0f);

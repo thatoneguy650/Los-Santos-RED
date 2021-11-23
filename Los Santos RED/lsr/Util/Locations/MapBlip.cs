@@ -54,7 +54,7 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
                 else if (Type == LocationType.Restaurant)
                 {
-                    return (BlipSprite)475;//.Bar;
+                    return (BlipSprite)621;// 475;//.Bar;(304)(621)
                 }
                 else if (Type == LocationType.DriveThru)
                 {
@@ -67,6 +67,22 @@ namespace LosSantosRED.lsr.Util.Locations
                 else if (Type == LocationType.Bank)
                 {
                     return BlipSprite.Devin;
+                }
+                else if (Type == LocationType.Bar)
+                {
+                    return BlipSprite.Bar;
+                }
+                else if (Type == LocationType.Pharmacy)
+                {
+                    return BlipSprite.CriminalDrugs;
+                }
+                else if (Type == LocationType.Hotel)
+                {
+                    return (BlipSprite)475;
+                }
+                else if (Type == LocationType.HardwareStore)
+                {
+                    return BlipSprite.Repair;
                 }
                 else
                 {

@@ -216,6 +216,11 @@ public class Pedestrians
     {
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
+            if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01")
+            {
+                Pedestrian.Delete();
+                continue;
+            }
             uint localHandle = Pedestrian.Handle;
             if (Pedestrian.IsPoliceArmy())
             {

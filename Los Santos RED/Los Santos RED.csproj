@@ -110,8 +110,9 @@
     <Compile Include="lsr\UI\Fader.cs" />
     <Compile Include="lsr\UI\Menu\InventoryMenu.cs" />
     <Compile Include="lsr\Old\TransactionMenu.cs" />
-    <Compile Include="lsr\Util\Peds\eConsumableCategory.cs" />
-    <Compile Include="lsr\Util\Peds\eConsumableType.cs" />
+    <Compile Include="lsr\Util\Inventory\New\ConsumableModeItem.cs" />
+    <Compile Include="lsr\Util\Inventory\eConsumableCategory.cs" />
+    <Compile Include="lsr\Util\Inventory\eConsumableType.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\AIApprehend.cs" />
     <Compile Include="lsr\Old\ApprehendOther.cs" />
@@ -187,8 +188,10 @@
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
+    <Compile Include="lsr\Util\Inventory\New\InventoryItem.cs" />
+    <Compile Include="lsr\Util\Inventory\New\ModItem.cs" />
     <Compile Include="lsr\Util\Locations\Interior.cs" />
-    <Compile Include="lsr\Util\Peds\ConsumableSubstance.cs" />
+    <Compile Include="lsr\Util\Inventory\ConsumableSubstance.cs" />
     <Compile Include="lsr\Util\Peds\Merchant.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PedCrimes.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PlayerPerception.cs" />
@@ -254,7 +257,7 @@
     <Compile Include="lsr\Player\Interface\IComplexTaskable.cs" />
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />
     <Compile Include="lsr\Tasker\Tasker.cs" />
-    <Compile Include="lsr\Util\Peds\ConsumableInventoryItem.cs" />
+    <Compile Include="lsr\Util\Inventory\ConsumableInventoryItem.cs" />
     <Compile Include="lsr\Util\Peds\PedGroup.cs" />
     <Compile Include="lsr\Util\Peds\RelationshipSnapshot.cs" />
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
