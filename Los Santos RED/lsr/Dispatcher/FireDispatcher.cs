@@ -53,7 +53,7 @@ public class FireDispatcher
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Fire Spawn", 3);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Fire Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
             SpawnLocation spawnLocation = new SpawnLocation();
@@ -94,7 +94,7 @@ public class FireDispatcher
             }
             else
             {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Fire Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Fire Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }

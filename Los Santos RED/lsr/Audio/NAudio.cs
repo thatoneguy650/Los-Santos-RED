@@ -50,7 +50,7 @@ public class Audio : IAudioPlayable
         }
         catch (Exception e)
         {
-            EntryPoint.WriteToConsole("Audio" + e.StackTrace + e.Message,0);
+            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message,0);
         }
     }
     public void Abort()

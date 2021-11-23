@@ -137,7 +137,6 @@ public class HealthState
             {
                 if (Health - CurrentHealth + Armor - CurrentArmor > 5)
                 {
-
                     MyPed.HasBeenHurtByPlayer = true;
                     CurrentPlayer.AddInjured(MyPed);
                     EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);

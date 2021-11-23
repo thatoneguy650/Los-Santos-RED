@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsNight { get; }
         void UnPauseTime();
         void PauseTime();
+        void FastForward(int v);
     }
 }

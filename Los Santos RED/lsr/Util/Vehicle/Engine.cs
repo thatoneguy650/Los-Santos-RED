@@ -41,7 +41,7 @@ public class Engine
                 {
                     ScaledDamage = -4000f;
                 }
-                EntryPoint.WriteToConsole($"ScaleEngineDamage PrevHeath = {Health}, Current = {VehicleToMonitor.Vehicle.EngineHealth}, Difference = {Difference}, ScaledDamage={ScaledDamage}", 3);
+                //EntryPoint.WriteToConsole($"ScaleEngineDamage PrevHeath = {Health}, Current = {VehicleToMonitor.Vehicle.EngineHealth}, Difference = {Difference}, ScaledDamage={ScaledDamage}", 3);
                 VehicleToMonitor.Vehicle.EngineHealth = ScaledDamage;
                 Health = ScaledDamage;
             }
@@ -71,10 +71,10 @@ public class Engine
     {     
         if (CanToggle)
         {
-            EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning), 3);
+            //EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning), 3);
             IsRunning = DesiredStatus;
             Update(false);
-            EntryPoint.WriteToConsole(string.Format("ToggleEngine End {0}", IsRunning), 3);
+            //EntryPoint.WriteToConsole(string.Format("ToggleEngine End {0}", IsRunning), 3);
         }
         
     }

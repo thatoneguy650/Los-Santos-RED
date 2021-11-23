@@ -15,6 +15,8 @@ namespace Mod
 
     public class Time : ITimeControllable, ITimeReportable
     {
+        private int HourToStop = 0;
+        private bool IsFastForwarding = false;
         private int ClockMultiplier = 1;
         private uint GameTimeLastSetClock;
         private int Interval = 1000;
@@ -61,6 +63,30 @@ namespace Mod
                 CheckTimeInterval();
             }
         }
+        public void FastForward(int hoursToFastForward)
+        {
+            if(!IsFastForwarding)
+            {
+                IsFastForwarding = true;
+                Interval = 10;
+                ClockMultiplier = 3;
+                int HoursFastForwarded = 0;
+                int prevCurrentHour = CurrentHour;
+                GameFiber FastForwardTime = GameFiber.StartNew(delegate
+                {
+                    while (HoursFastForwarded < hoursToFastForward)
+                    {
+                        if(prevCurrentHour != CurrentHour)
+                        {
+                            HoursFastForwarded++;
+                        }
+                        GameFiber.Yield();
+                    }
+                    IsFastForwarding = false;
+                }, "FastForwardTime");
+
+            }
+        }
         public void UnPauseTime()
         {
             //EntryPoint.WriteToConsole(string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
@@ -95,36 +121,39 @@ namespace Mod
         }
         private void GetIntervalAndMultiplier()
         {
-            float Speed = Game.LocalPlayer.Character.Speed;
-            if (Speed <= 4.0f)
+            if (!IsFastForwarding)
             {
-                Interval = 1000;
-                ClockMultiplier = 1;
-            }
-            else if (Speed <= 10.0f)
-            {
-                Interval = 100;
-                ClockMultiplier = 1;
-            }
-            else if (Speed <= 15.0f)
-            {
-                Interval = 100;
-                ClockMultiplier = 2;
-            }
-            else if (Speed <= 30.0f)
-            {
-                Interval = 10;
-                ClockMultiplier = 1;
-            }
-            else if (Speed <= 40.0f)
-            {
-                Interval = 10;
-                ClockMultiplier = 2;
-            }
-            else
-            {
-                Interval = 10;
-                ClockMultiplier = 3;
+                float Speed = Game.LocalPlayer.Character.Speed;
+                if (Speed <= 4.0f)
+                {
+                    Interval = 1000;
+                    ClockMultiplier = 1;
+                }
+                else if (Speed <= 10.0f)
+                {
+                    Interval = 100;
+                    ClockMultiplier = 1;
+                }
+                else if (Speed <= 15.0f)
+                {
+                    Interval = 100;
+                    ClockMultiplier = 2;
+                }
+                else if (Speed <= 30.0f)
+                {
+                    Interval = 10;
+                    ClockMultiplier = 1;
+                }
+                else if (Speed <= 40.0f)
+                {
+                    Interval = 10;
+                    ClockMultiplier = 2;
+                }
+                else
+                {
+                    Interval = 10;
+                    ClockMultiplier = 3;
+                }
             }
         }
         private void SetToStoredTime()

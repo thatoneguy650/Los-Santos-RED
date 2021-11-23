@@ -21,7 +21,7 @@ public class CalmCallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: CalmCallIn Start: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: CalmCallIn Start: {Ped.Pedestrian.Handle}", 3);
             unsafe
             {
                 int lol = 0;
@@ -65,7 +65,7 @@ public class CalmCallIn : ComplexTask
         {
             if (Ped.PlayerCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
                 foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
                 {
@@ -75,7 +75,7 @@ public class CalmCallIn : ComplexTask
             }
             else if (Ped.OtherCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
+               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
@@ -83,13 +83,13 @@ public class CalmCallIn : ComplexTask
                 }
                 Ped.OtherCrimesWitnessed.Clear();
             }
-            EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
         }
         else if (!Ped.Pedestrian.Exists())
         {
             if (Ped.PlayerCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Handle}", 3);
+               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
                 foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
                 {
@@ -99,7 +99,7 @@ public class CalmCallIn : ComplexTask
             }
             else if (Ped.OtherCrimesWitnessed.Any())
             {
-                EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
+               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
@@ -107,7 +107,7 @@ public class CalmCallIn : ComplexTask
                 }
                 Ped.OtherCrimesWitnessed.Clear();
             }
-            EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime GHOST: {Ped.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime GHOST: {Ped.Handle}", 3);
         }
     }
 }

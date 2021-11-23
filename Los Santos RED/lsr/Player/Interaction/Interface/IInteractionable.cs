@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         void GiveMoney(int v);
         void StartSmoking();
         void StartDrinkingActivity();
-        void AddToInventory(ConsumableSubstance offering, int v);
+        void AddToInventory(ModItem offering, int v);
+        void StartServiceActivity(ModItem toAdd, GameLocation store);
     }
 }

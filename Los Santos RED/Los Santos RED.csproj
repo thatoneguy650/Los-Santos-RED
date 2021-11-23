@@ -99,23 +99,20 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lsr\Data\ConsumableSubstances.cs" />
-    <Compile Include="lsr\Data\Interface\IConsumableSubstances.cs" />
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
+    <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
+    <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
     <Compile Include="lsr\Player\Interaction\SimpleTransaction.cs" />
     <Compile Include="lsr\UI\eGTAFont.cs" />
     <Compile Include="lsr\UI\Fader.cs" />
     <Compile Include="lsr\UI\Menu\InventoryMenu.cs" />
-    <Compile Include="lsr\Old\TransactionMenu.cs" />
-    <Compile Include="lsr\Util\Inventory\New\ConsumableModeItem.cs" />
     <Compile Include="lsr\Util\Inventory\eConsumableCategory.cs" />
     <Compile Include="lsr\Util\Inventory\eConsumableType.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\AIApprehend.cs" />
-    <Compile Include="lsr\Old\ApprehendOther.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />
@@ -189,7 +186,9 @@
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Inventory\New\InventoryItem.cs" />
+    <Compile Include="lsr\Util\Inventory\New\MenuItem.cs" />
     <Compile Include="lsr\Util\Inventory\New\ModItem.cs" />
+    <Compile Include="lsr\Util\Inventory\New\PhysicalItem.cs" />
     <Compile Include="lsr\Util\Locations\Interior.cs" />
     <Compile Include="lsr\Util\Inventory\ConsumableSubstance.cs" />
     <Compile Include="lsr\Util\Peds\Merchant.cs" />

@@ -142,7 +142,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
             Player.OnWantedActiveMode();
-            EntryPoint.WriteToConsole("SearchMode Start Active Mode",3);
+            //EntryPoint.WriteToConsole("SearchMode Start Active Mode",3);
         }
         private void EndSearchMode()
         {
@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
             Player.SetWantedLevel(0, "Search Mode Timeout", true);
-            EntryPoint.WriteToConsole("SearchMode End Search Mode", 3);
+            //EntryPoint.WriteToConsole("SearchMode End Search Mode", 3);
         }
         private class StopVanillaSeachMode
         {

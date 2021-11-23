@@ -20,26 +20,33 @@ public class Transaction : Interaction
     private MenuPool menuPool;
     private UIMenu Menu;
     private GameLocation Store;
-    public Transaction(IInteractionable player, Merchant ped, GameLocation store, ISettingsProvideable settings)
+    private IModItems ModItems;
+    private bool IsDisposed = false;
+    public Transaction(IInteractionable player, Merchant ped, GameLocation store, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
         Ped = ped;
         Store = store;
         Settings = settings;
+        ModItems = modItems;
         menuPool = new MenuPool();
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     private bool CanContinueConversation => Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public override void Dispose()
     {
-        HideMenu();
-        Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
-        Player.IsConversing = false;
-        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive)
+        if (!IsDisposed)
         {
-            NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Ped.Store.VendorHeading, -1);
+            IsDisposed = true;
+            HideMenu();
+            Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
+            Player.IsConversing = false;
+            if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive)
+            {
+                NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Ped.Store.VendorHeading, -1);
+            }
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
         }
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
     }
     public override void Start()
     {
@@ -67,7 +74,6 @@ public class Transaction : Interaction
     {
         while (CanContinueConversation)
         {
-            //CheckInput();
             Loop();
             if (CancelledConversation)
             {
@@ -82,24 +88,31 @@ public class Transaction : Interaction
     private void CreateTransactionMenu()
     {
         Menu.Clear();
-        foreach (ConsumableSubstance cii in Ped.Store.SellableItems)
+        foreach (MenuItem cii in Store.Menu)
         {
             if (cii != null)
             {
-                Menu.AddItem(new UIMenuItem(cii.Name, $"{cii.Name} ${cii.Price}"));
+                Menu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
             }
         }
-        
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ConsumableSubstance ToAdd = Ped.Store.SellableItems.Where(x => x != null && x.Name == selectedItem.Text).FirstOrDefault();
-        if (ToAdd != null && Player.Money >= ToAdd.Price)
+        ModItem ToAdd = ModItems.Items.Where(x => x != null && x.Name == selectedItem.Text).FirstOrDefault();
+        MenuItem menuItem = Store.Menu.Where(x => x != null && x.ModItemName == selectedItem.Text).FirstOrDefault();
+        if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
         {
             Buy(ToAdd);
-            Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
-            EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
-            Player.GiveMoney(-1 * ToAdd.Price);
+            if (ToAdd.Type != eConsumableType.Service)
+            {
+                Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
+                EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
+            }
+            else if(ToAdd.Type == eConsumableType.Service)
+            {
+                Player.StartServiceActivity(ToAdd, Store);
+            }
+            Player.GiveMoney(-1 * menuItem.Price);
         }
         GameFiber.Sleep(500);
     }
@@ -129,7 +142,7 @@ public class Transaction : Interaction
         //EntryPoint.WriteToConsole($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
         return CanSay;
     }
-    private void Buy(ConsumableSubstance item)
+    private void Buy(ModItem item)
     {
         HideMenu();
         IsActivelyConversing = true;
@@ -141,17 +154,17 @@ public class Transaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
-        string modelName = item.PackageModel;
+        string modelName = item.PhysicalItem?.PackageModelName;
         if(modelName == "")
         {
-            modelName = item.ModelName;
+            modelName = item.PhysicalItem.ModelName;
         }
         if (Ped.Pedestrian.Exists() && modelName != "")
         {
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.AttachBoneIndex), item.AttachOffset, item.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.PhysicalItem.AttachBoneIndex), item.PhysicalItem.AttachOffset, item.PhysicalItem.AttachRotation);
             }
         }
         GameFiber.Sleep(500);
@@ -159,7 +172,7 @@ public class Transaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.AttachBoneIndex), item.AttachOffset, item.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.PhysicalItem.AttachBoneIndex), item.PhysicalItem.AttachOffset, item.PhysicalItem.AttachRotation);
             }
         }
         GameFiber.Sleep(1000);

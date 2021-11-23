@@ -38,9 +38,9 @@ namespace LosSantosRED.lsr.Data
             CurrentModelVariation = player.CurrentModelVariation;
             WeaponInventory = new List<StoredWeapon>();
             InventoryItems.Clear();
-            foreach(ConsumableInventoryItem cii in player.Inventory.Consumables)
+            foreach(InventoryItem cii in player.Inventory.Items)
             {
-                InventoryItems.Add(new ConsumableInventoryItem(cii.ConsumableSubstance, cii.Amount));
+                InventoryItems.Add(new InventoryItem(cii.ModItem, cii.Amount));
             }
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
@@ -54,7 +54,7 @@ namespace LosSantosRED.lsr.Data
         public uint OwnedVehicleHandle { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
-        public List<ConsumableInventoryItem> InventoryItems { get; set; } = new List<ConsumableInventoryItem>();
+        public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player)
         {
             pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation);
@@ -72,9 +72,9 @@ namespace LosSantosRED.lsr.Data
                 }
             }
             player.Inventory.Clear();
-            foreach (ConsumableInventoryItem cii in InventoryItems)
+            foreach (InventoryItem cii in InventoryItems)
             {
-                player.Inventory.Add(cii.ConsumableSubstance, cii.Amount);
+                player.Inventory.Add(cii.ModItem, cii.Amount);
             }
         }
 

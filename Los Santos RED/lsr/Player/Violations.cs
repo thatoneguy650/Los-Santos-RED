@@ -476,7 +476,7 @@ namespace LosSantosRED.lsr
                     }
                     if (shouldAdd)
                     {
-                        EntryPoint.WriteToConsole($"AddObservedAndReported: ADDED {Violating.Name}", 5);
+                        //EntryPoint.WriteToConsole($"AddObservedAndReported: ADDED {Violating.Name}", 5);
                         Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
                     }
                 }

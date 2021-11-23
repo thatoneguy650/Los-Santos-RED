@@ -27,9 +27,8 @@ namespace Mod
         private ICrimes Crimes;
         private IWeapons Weapons;
         private List<GameLocation> ActiveLocations = new List<GameLocation>();
-        private IConsumableSubstances ConsumableSubstances;
         private ITimeReportable Time;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IConsumableSubstances consumableSubstances, ITimeReportable time)
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -37,7 +36,6 @@ namespace Mod
             Settings = settings;
             Weapons = weapons;
             Crimes = crimes;
-            ConsumableSubstances = consumableSubstances;
             Time = time;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);

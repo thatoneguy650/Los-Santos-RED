@@ -18,6 +18,5 @@ public class InventoryItem
     }
     public ModItem ModItem { get; set; }
     public int Amount { get; set; }
-
 }
 

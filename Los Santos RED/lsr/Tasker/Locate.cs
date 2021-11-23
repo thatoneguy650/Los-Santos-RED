@@ -96,7 +96,7 @@ public class Locate : ComplexTask
                 //Ped.Pedestrian.Tasks.Wander();
                 NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             }
-            EntryPoint.WriteToConsole(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
+            //EntryPoint.WriteToConsole(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
         }
     }
     private void GoTo()

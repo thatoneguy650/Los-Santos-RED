@@ -19,17 +19,17 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IIntoxicatable Player;
         private ISettingsProvideable Settings;
-        private ConsumableSubstance ConsumableSubstance;
+        private ModItem ModItem;
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             Settings = settings;
         }
-        public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ConsumableSubstance consumableSubstance) : base()
+        public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem) : base()
         {
             Player = consumable;
             Settings = settings;
-            ConsumableSubstance = consumableSubstance;
+            ModItem = modItem;
         }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
@@ -114,7 +114,7 @@ namespace LosSantosRED.lsr.Player
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                    EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim}",5);
+                    //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim}",5);
                 }
                 GameFiber.Yield();
             }
@@ -158,13 +158,13 @@ namespace LosSantosRED.lsr.Player
             }
 
 
-            if(ConsumableSubstance != null)
+            if(ModItem != null && ModItem.PhysicalItem != null)
             {
-                PropModel = ConsumableSubstance.ModelName;
-                HandBoneID = ConsumableSubstance.AttachBoneIndex;
-                HandOffset = ConsumableSubstance.AttachOffset;
-                HandRotator = ConsumableSubstance.AttachRotation;
-                if(ConsumableSubstance.IsIntoxicating)
+                PropModel = ModItem.PhysicalItem.ModelName;
+                HandBoneID = ModItem.PhysicalItem.AttachBoneIndex;
+                HandOffset = ModItem.PhysicalItem.AttachOffset;
+                HandRotator = ModItem.PhysicalItem.AttachRotation;
+                if(ModItem.IsIntoxicating)
                 {
                     IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
                     IntoxicatingEffect.Start();

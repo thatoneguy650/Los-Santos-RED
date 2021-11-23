@@ -22,7 +22,7 @@ public class MainMenu : Menu
     private UIMenuItem TakeVehicleOwnership;
     private ISettingsProvideable Settings;
     private ITaskerable Tasker;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IConsumableSubstances consumableSubstances, IInventoryable playerinventory)
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems)
     {
         Player = player;
         Settings = settings;
@@ -35,7 +35,7 @@ public class MainMenu : Menu
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
-        InventoryMenu = new InventoryMenu(menuPool, Main, Player, consumableSubstances);
+        InventoryMenu = new InventoryMenu(menuPool, Main, Player, modItems);
         CreateMainMenu();
     }
     public override void Hide()

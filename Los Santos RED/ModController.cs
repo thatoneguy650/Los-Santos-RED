@@ -29,7 +29,6 @@ namespace LosSantosRED.lsr
         private Names Names;
         private PedSwap PedSwap;
         private PlacesOfInterest PlacesOfInterest;
-        private ConsumableSubstances ConsumableSubstances;
         private PlateTypes PlateTypes;
         private Mod.Player Player;
         private Police Police;
@@ -58,6 +57,7 @@ namespace LosSantosRED.lsr
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
         private Interiors Interiors;
+        private ModItems ModItems;
         public ModController()
         {
         }
@@ -109,10 +109,10 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, ConsumableSubstances, Time);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -123,7 +123,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, ConsumableSubstances, Player);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings,UI);
@@ -132,7 +132,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, ConsumableSubstances);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker);
             Debug.Setup();
             GameFiber.Yield();
             World.AddBlipsToMap();
@@ -195,8 +195,9 @@ namespace LosSantosRED.lsr
             Settings.ReadConfig();
             GameFiber.Yield();
 
-            ConsumableSubstances = new ConsumableSubstances();
-            ConsumableSubstances.ReadConfig();
+
+            ModItems = new ModItems();
+            ModItems.ReadConfig();
             GameFiber.Yield();
 
             Zones = new Zones();
@@ -214,7 +215,7 @@ namespace LosSantosRED.lsr
             Names = new Names();
             Names.ReadConfig();
             GameFiber.Yield();
-            PlacesOfInterest = new PlacesOfInterest(ConsumableSubstances);
+            PlacesOfInterest = new PlacesOfInterest();
             PlacesOfInterest.ReadConfig();
             GameFiber.Yield();
             VehicleScannerAudio = new VehicleScannerAudio();

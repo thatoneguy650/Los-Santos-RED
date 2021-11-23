@@ -238,11 +238,11 @@ public class PedExt : IComplexTaskable
             try
             {
                 KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
-                EntryPoint.WriteToConsole($"LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}", 5);
+                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}", 5);
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}", 5);
+                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}", 5);
             }
         }
     }
@@ -256,7 +256,7 @@ public class PedExt : IComplexTaskable
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}",5);
+                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}",5);
             }
         }
     }
@@ -283,7 +283,7 @@ public class PedExt : IComplexTaskable
                             if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
                             {
                                 IsBusted = true;
-                                EntryPoint.WriteToConsole($"Player bust {Pedestrian.Handle}", 3);
+                                EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
                             }
                         }
                         WeaponChecker();

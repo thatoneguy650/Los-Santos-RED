@@ -71,7 +71,7 @@ public class GetArrested : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: START", 3);
+            //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: START", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             GameTimeStartedBeingArrested = Game.GameTime;
@@ -148,7 +148,7 @@ public class GetArrested : ComplexTask
         if (Ped.IsInVehicle && !Ped.IsDriver && Ped.IsBusted && !Ped.IsArrested)
         {
             Ped.IsArrested = true;
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
+            //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: GotArrested in Car", 3);
         }
         //if(Ped.IsArrested && !Ped.IsInVehicle && Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive)
         //{
@@ -163,25 +163,25 @@ public class GetArrested : ComplexTask
         {
             if (IsFirstRun)
             {
-                EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Start", 3);
+                //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Start", 3);
                 NeedsUpdates = true;
             }
             if(VehicleTaskedToEnter == null || !VehicleTaskedToEnter.Exists())
             {
                 GetClosesetPoliceVehicle();
-                EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car, Got New Car, was Blank", 3);
+                //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car, Got New Car, was Blank", 3);
                 GetInCarTask();
             }
             else if (VehicleTryingToEnter != null && VehicleTaskedToEnter.Exists() && !VehicleTaskedToEnter.IsSeatFree(SeatTaskedToEnter) && VehicleTaskedToEnter.GetPedOnSeat(SeatTaskedToEnter).Exists() && VehicleTaskedToEnter.GetPedOnSeat(SeatTaskedToEnter).Handle != Ped.Pedestrian.Handle)// && (VehicleTryingToEnter.Vehicle.Handle != VehicleTaskedToEnter.Handle || SeatTaskedToEnter != SeatTryingToEnter) && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsInAnyVehicle(true))
             {
                 GetClosesetPoliceVehicle();
-                EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Got New Car, was occupied?", 3);
+                //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Got New Car, was occupied?", 3);
                 GetInCarTask();
             }
             else if (VehicleTryingToEnter != null && VehicleTaskedToEnter.Exists() && VehicleTaskedToEnter.Speed > 1.0f)// && (VehicleTryingToEnter.Vehicle.Handle != VehicleTaskedToEnter.Handle || SeatTaskedToEnter != SeatTryingToEnter) && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsInAnyVehicle(true))
             {
                 GetClosesetPoliceVehicle();
-                EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Got New Car, was driving away?", 3);
+                //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car Got New Car, was driving away?", 3);
                 GetInCarTask();
             }
             if (Ped.Pedestrian.IsGettingIntoVehicle)
@@ -194,7 +194,7 @@ public class GetArrested : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car TASK START", 3);
+            //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Get in Car TASK START", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
@@ -252,11 +252,11 @@ public class GetArrested : ComplexTask
         {
             Tasker.RemoveSeatAssignment(Ped);
             Tasker.AddSeatAssignment(Ped, ClosestAvailablePoliceVehicle, OpenSeatInClosestAvailablePoliceVehicle);
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
+            //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
         }
         else
         {
-            EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
+            //EntryPoint.WriteToConsole($"GetArrested {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
         }
 
 
@@ -345,19 +345,19 @@ public class GetArrested : ComplexTask
             }
             if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
             {
-                EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
+                //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 GameFiber.Wait(1000);
                 if (PedToArrest.Exists())
                 {
-                    EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Drop Gun", 3);
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Drop Gun", 3);
                     NativeFunction.Natives.SET_PED_DROPS_WEAPON(PedToArrest);
                     GameFiber.Wait(5000);
                     if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Player.IsBusted))
                     {
                         return;
                     }
-                    EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up Idle", 3);
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up Idle", 3);
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 }
             }
@@ -367,7 +367,7 @@ public class GetArrested : ComplexTask
             }
             GameTimeFinishedArrestedAnimation = Game.GameTime;
             PlayedArrestAnimation = true;
-            EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);
 
         }, "SetArrestedAnimation");
     }
@@ -382,19 +382,19 @@ public class GetArrested : ComplexTask
             AnimationDictionary.RequestAnimationDictionay("mp_arresting");
             if (PedToArrest.Exists())
             {
-                EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start UnSet", 3);
+                //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start UnSet", 3);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
                 GameFiber.Wait(1500);
                 if (PedToArrest.Exists())
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
-                    EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
                     GameFiber.Wait(2000);
                     PlayedUnArrestAnimation = true;
                 }
             }
-            EntryPoint.WriteToConsole($"TASKER: GetArrested Played UNArrest Animation: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: GetArrested Played UNArrest Animation: {Ped.Pedestrian.Handle}", 3);
         }, "UnSetArrestedAnimation");
     }
     private void SetUnarmed()

@@ -34,18 +34,18 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
         private ISettingsProvideable Settings;
-        private ConsumableSubstance ConsumableSubstance;
+        private ModItem ModItem;
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
         }
-        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ConsumableSubstance consumableSubstance) : base()
+        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem) : base()
         {
             Player = consumable;
             Settings = settings;
-            ConsumableSubstance = consumableSubstance;
+            ModItem = modItem;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override void Cancel()
@@ -331,10 +331,10 @@ namespace LosSantosRED.lsr.Player
                 MouthRotator = new Rotator(0.0f, -180f, 0f);
             }
 
-            if(ConsumableSubstance != null)
+            if(ModItem != null)
             {
-                PropModelName = ConsumableSubstance.ModelName;
-                if (ConsumableSubstance.IsIntoxicating)
+                PropModelName = ModItem.PhysicalItem.ModelName;
+                if (ModItem.IsIntoxicating)
                 {
                     IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
                     IntoxicatingEffect.Start();

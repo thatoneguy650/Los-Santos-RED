@@ -369,17 +369,15 @@ public class Roadblock
         position = new Vector3(position.X, position.Y, position.Z + 1.0f);
         if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: SpikeStrip Position Ground Z Found", 3);
+            //EntryPoint.WriteToConsole($"DISPATCHER: SpikeStrip Position Ground Z Found", 3);
             position = new Vector3(position.X, position.Y, GroundZ);
         }
-            Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
-            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
-            SpikeStrip.IsPersistent = true;
-            SpikeStrip.IsGravityDisabled = false;
-            CreatedProps.Add(SpikeStrip);
-            return SpikeStrip.Exists();
-        
-        //return false;
+        Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
+        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
+        SpikeStrip.IsPersistent = true;
+        SpikeStrip.IsGravityDisabled = false;
+        CreatedProps.Add(SpikeStrip);
+        return SpikeStrip.Exists();
     }
 }
 

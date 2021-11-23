@@ -27,12 +27,14 @@ public class SimpleTransaction : Interaction
     private Camera InterpolationCamera;
     private bool IsDisposed = false;
     private bool IsUsingCustomCam = false;
+    private IModItems ModItems;
 
-    public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings)
+    public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
         Store = store;
         Settings = settings;
+        ModItems = modItems;
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
@@ -168,24 +170,31 @@ public class SimpleTransaction : Interaction
     private void CreateTransactionMenu()
     {
         Menu.Clear();
-        foreach (ConsumableSubstance cii in Store.SellableItems)
+        foreach (MenuItem cii in Store.Menu)
         {
             if (cii != null)
             {
-                Menu.AddItem(new UIMenuItem(cii.Name, $"{cii.Name} ${cii.Price}"));
+                Menu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
             }
         }
-
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ConsumableSubstance ToAdd = Store.SellableItems.Where(x => x != null && x.Name == selectedItem.Text).FirstOrDefault();
-        if (ToAdd != null && Player.Money >= ToAdd.Price)
+        ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
+        MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
+        if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
         {
-            Buy(ToAdd);
-            Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
-            EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
-            Player.GiveMoney(-1 * ToAdd.Price);
+            Buy();
+            if (ToAdd.Type != eConsumableType.Service)
+            {
+                Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
+                EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
+            }
+            else if (ToAdd.Type == eConsumableType.Service)
+            {
+                Player.StartServiceActivity(ToAdd, Store);
+            }
+            Player.GiveMoney(-1 * menuItem.Price);
         }
         GameFiber.Sleep(500);
     }
@@ -214,7 +223,7 @@ public class SimpleTransaction : Interaction
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
         return CanSay;
     }
-    private void Buy(ConsumableSubstance item)
+    private void Buy()
     {
         HideMenu();
         IsActivelyConversing = true;

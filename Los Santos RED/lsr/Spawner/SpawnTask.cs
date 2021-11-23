@@ -75,14 +75,14 @@ public class SpawnTask
                             Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
                             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(Person.Pedestrian, Person.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);//temp here for ems and fire
                             int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
-                            EntryPoint.WriteToConsole($"SpawnTask: Created {VehicleType.ModelName} {VehicleType.MinOccupants}-{VehicleType.MaxOccupants} Driver: {Person.Pedestrian.Handle} Trying to Add {OccupantsToAdd}", 5);
+                            //EntryPoint.WriteToConsole($"SpawnTask: Created {VehicleType.ModelName} {VehicleType.MinOccupants}-{VehicleType.MaxOccupants} Driver: {Person.Pedestrian.Handle} Trying to Add {OccupantsToAdd}", 5);
                             for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                             {
                                 PedExt Passenger = CreatePerson();
                                 if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                                 {   
                                     int SeatToAssign = OccupantIndex - 1;
-                                    EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Passenger: {Passenger.Pedestrian.Handle} Seat: {SeatToAssign}", 5);
+                                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Passenger: {Passenger.Pedestrian.Handle} Seat: {SeatToAssign}", 5);
                                     Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
                                 }
                                 else
@@ -170,7 +170,7 @@ public class SpawnTask
     }
     private VehicleExt CreateVehicle()
     {
-        EntryPoint.WriteToConsole($"Attempting to spawn {VehicleType.ModelName}",3);
+        //EntryPoint.WriteToConsole($"Attempting to spawn {VehicleType.ModelName}",3);
         Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
         GameFiber.Yield();
         if (copcar.Exists())

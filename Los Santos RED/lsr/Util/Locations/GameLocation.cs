@@ -21,11 +21,12 @@ public class GameLocation
     public LocationType Type { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public List<ConsumableSubstance> SellableItems { get; set; } = new List<ConsumableSubstance>();
+    //public List<ConsumableSubstance> SellableItems { get; set; } = new List<ConsumableSubstance>();
+    public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
     public bool HasVendor => VendorPosition != Vector3.Zero;
     public bool ShouldAlwaysHaveBlip => Type == LocationType.Police || Type == LocationType.Hospital;
     public Blip CreatedBlip => createdBlip;
-    public bool CanPurchase => SellableItems.Any();
+    public bool CanPurchase => Menu.Any();
     public bool Is247 => CloseTime >= 24;
     public int OpenTime { get; set; } = 6;
     public int CloseTime { get; set; } = 20;

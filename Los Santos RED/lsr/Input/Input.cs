@@ -119,7 +119,7 @@ namespace LosSantosRED.lsr
            // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
             if(Player.ButtonPrompts.Count > 10)
             {
-                EntryPoint.WriteToConsole($"Excessive Button Prompts {Player.ButtonPrompts.Count}", 1);
+                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPrompts.Count}", 1);
             }
             foreach (ButtonPrompt bp in Player.ButtonPrompts)
             {

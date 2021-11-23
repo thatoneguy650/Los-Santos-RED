@@ -6,12 +6,12 @@ public class InventoryMenu : Menu
 {
     private UIMenu inventoryMenu;
     private IActionable Player;
-    private IConsumableSubstances ConsumableSubstances;
+    private IModItems ModItems;
 
-    public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, IConsumableSubstances consumableSubstances)
+    public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, IModItems modItems)
     {
         Player = player;
-        ConsumableSubstances = consumableSubstances;
+        ModItems = modItems;
         inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
         inventoryMenu.OnItemSelect += OnActionItemSelect;
         CreateInventoryMenu();
@@ -47,15 +47,15 @@ public class InventoryMenu : Menu
     private void CreateInventoryMenu()
     {
         inventoryMenu.Clear();
-        foreach(ConsumableInventoryItem cii in Player.ConsumableItems)
+        foreach(InventoryItem cii in Player.InventoryItems)
         {
-            inventoryMenu.AddItem(new UIMenuItem(cii.ConsumableSubstance?.Name, $"{cii.ConsumableSubstance?.Type} {cii.ConsumableSubstance?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
+            inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, $"{cii.ModItem?.Type} {cii.ModItem?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
         }        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ConsumableSubstance selectedStuff = ConsumableSubstances.Get(selectedItem.Text);
-        if(selectedStuff != null)
+        ModItem selectedStuff = ModItems.Get(selectedItem.Text);
+        if(selectedStuff != null && selectedStuff.CanConsume)
         {
             Player.StartConsumingActivity(selectedStuff);
             Player.RemoveFromInventory(selectedStuff, 1);

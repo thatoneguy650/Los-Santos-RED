@@ -70,38 +70,26 @@ public class PedSwap : IPedSwap
                 }
                 return;      
             }
-            EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             StoreTargetPedData(TargetPed);
-
-
-            EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
-            //ResetOffsetForCurrentModel();
-
-            EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            //ResetExistingModelHash();
-
-            EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(deleteOld);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
             TemporarilyStopWanted();
-
-            EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
-            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
         }
     }
     public void BecomeRandomPed()
@@ -109,44 +97,33 @@ public class PedSwap : IPedSwap
         try
         {
             ResetOffsetForCurrentModel();
-            Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f),Game.LocalPlayer.Character.Heading);
-            
+            Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f),Game.LocalPlayer.Character.Heading);    
             GameFiber.Yield();
             if (!TargetPed.Exists())
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"BecomeRandomPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeRandomPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeRandomPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
-
-            EntryPoint.WriteToConsole($"BecomeRandomPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeRandomPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
-            //ResetOffsetForCurrentModel();
-
-            EntryPoint.WriteToConsole($"BecomeRandomPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeRandomPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeRandomPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            //ResetExistingModelHash();
-
-            EntryPoint.WriteToConsole($"BecomeRandomPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeRandomPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeRandomPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
             TemporarilyStopWanted();
-            EntryPoint.WriteToConsole($"BecomeRandomPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeRandomPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
-            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
     public void BecomeRandomCop()
@@ -157,46 +134,27 @@ public class PedSwap : IPedSwap
         {
             return;
         }
-        //Player.AliasedCop = toSwapWith;
         Ped TargetPed = toSwapWith.Pedestrian;
 
-        EntryPoint.WriteToConsole($"BecomeRandomCop: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        EntryPoint.WriteToConsole($"BecomeRandomCop: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
-        // TargetPed.MakePersistent();
+        //EntryPoint.WriteToConsole($"BecomeRandomCop: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        //EntryPoint.WriteToConsole($"BecomeRandomCop: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         StoreTargetPedData(TargetPed);
-
-        EntryPoint.WriteToConsole($"BecomeRandomCop2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        EntryPoint.WriteToConsole($"BecomeRandomCop2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
-        //ResetOffsetForCurrentModel();
-
+        //EntryPoint.WriteToConsole($"BecomeRandomCop2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        //EntryPoint.WriteToConsole($"BecomeRandomCop2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
         NativeFunction.Natives.SET_PED_AS_COP(Player.Character, true);//causes old ped to be deleted!
-
-        EntryPoint.WriteToConsole($"BecomeRandomCop3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        EntryPoint.WriteToConsole($"BecomeRandomCop3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+        //EntryPoint.WriteToConsole($"BecomeRandomCop3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        //EntryPoint.WriteToConsole($"BecomeRandomCop3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         Player.IsCop = true;
-        //ResetExistingModelHash();
-
-        EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+        //EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        //EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         HandlePreviousPed(false);
         PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
-
-        EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-
-
-        //extra cop takeover
+        //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
-
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer");
         Entities.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons);
-        //Entities.AddEntity(Player.AliasedCop);
-        //Player.AliasedCop?.CurrentTask?.Update();
     }
     public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation)
     {
@@ -213,122 +171,30 @@ public class PedSwap : IPedSwap
             {
                 variation.ReplacePedComponentVariation(TargetPed);
             }
-            EntryPoint.WriteToConsole($"BecomeSavedPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeSavedPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeSavedPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
             StoreTargetPedData(TargetPed);
-
-            EntryPoint.WriteToConsole($"BecomeSavedPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeSavedPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
-           // ResetOffsetForCurrentModel();
-
-            EntryPoint.WriteToConsole($"BecomeSavedPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeSavedPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeSavedPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
-            //ResetExistingModelHash();
-
-            EntryPoint.WriteToConsole($"BecomeSavedPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            EntryPoint.WriteToConsole($"BecomeSavedPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-
+            //EntryPoint.WriteToConsole($"BecomeSavedPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
-
-            EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed5: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
-            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-    //public void BecomeSavedPed_OLD(string playerName, bool isMale, int money, string modelName, PedVariation variation, List<ConsumableInventoryItem> inventoryItems)
-    //{
-    //    try
-    //    {
-    //        Ped PedToBecome = new Ped(modelName, Game.LocalPlayer.Character.GetOffsetPositionFront(5f) ,Game.LocalPlayer.Character.Heading);
-    //        Ped ExistingPed = Game.LocalPlayer.Character;
-    //        if (PedToBecome == null)
-    //        {
-    //            return;
-    //        }
-    //        Vector3 MyPos = Game.LocalPlayer.Character.Position;
-    //        float MyHeading = Game.LocalPlayer.Character.Heading;
-
-
-
-
-    //        NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, PedToBecome, false, false);
-    //        Game.LocalPlayer.Character.Position = MyPos;
-    //        Game.LocalPlayer.Character.Heading = MyHeading;
-
-
-
-
-
-
-
-
-
-    //        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
-    //        {
-    //            SetPlayerOffset();
-    //            NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
-    //        }
-    //        NativeHelper.ChangeModel(modelName);
-    //        Ped PedBecame = Game.LocalPlayer.Character;
-    //        //NativeFunction.Natives.SET_PED_AS_COP(Player.Character, false);//causes old ped to be deleted!
-    //        if (variation != null)
-    //        {
-    //            variation.ReplacePedComponentVariation(PedBecame);
-    //        }
-    //        else
-    //        {
-    //            PedBecame.RandomizeVariation();
-    //        }
-
-    //        if (ExistingPed.Exists())
-    //        {
-    //            ExistingPed.Delete();
-    //            EntryPoint.WriteToConsole("Become Saved Ped Deleted CurrentPed", 3);
-    //        }
-    //        EntryPoint.ModController.NewPlayer(modelName, isMale, playerName, money);
-    //        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-    //        NativeFunction.Natives.x80C8B1846639BB19(0);
-    //        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-    //        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
-    //        {
-    //            Game.TimeScale = 1f;
-    //        }
-    //        NativeFunction.Natives.xB4EDDC19532BFB85();
-    //        Game.HandleRespawn();
-    //        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
-    //        NativeFunction.Natives.xC0AA53F866B3134D();
-    //        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-    //        Player.Inventory.Clear();
-    //        foreach (ConsumableInventoryItem cii in inventoryItems)
-    //        {
-    //            Player.Inventory.Add(cii.ConsumableSubstance, cii.Amount);
-    //        }
-    //        Player.DisplayPlayerNotification();
-
-
-
-
-
-
-    //    }
-    //    catch (Exception e3)
-    //    {
-    //        EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
-    //    }
-    //}
     private void ResetOffsetForCurrentModel()
     {
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
@@ -386,8 +252,7 @@ public class PedSwap : IPedSwap
             toCreate.SetWantedLevel(WantedToSet);
             toCreate.IsBusted = CurrentPedIsBusted;
             Entities.AddEntity(toCreate);
-
-            EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
+            //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
             TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
         }
     }
@@ -504,20 +369,12 @@ public class PedSwap : IPedSwap
     }
     private void StoreTargetPedData(Ped TargetPed)
     {
-
-
         CurrentModelPlayerIs = TargetPed.Model;
-
-
-
-
-
         CurrentPedMoney = Player.Money;
         CurrentPedPosition = Player.Position;
         CurrentPedIsDead = Player.Character.IsDead;
         CurrentPedIsBusted = Player.IsBusted;
         CurrentPedName = Player.PlayerName;
-
         if(Player.Character.IsInAnyVehicle(false) && Player.Character.CurrentVehicle.Exists())
         {
             CurrentPedVehicle = Player.Character.CurrentVehicle;
@@ -531,48 +388,19 @@ public class PedSwap : IPedSwap
         TargetPedRelationshipGroup = TargetPed.RelationshipGroup;
         TargetPedAlreadyTakenOver = false;
         TargetPedHash = TargetPed.Model.Hash;
-
-
         World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
-            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
+            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//NETWORK_REQUEST_CONTROL_OF_ENTITY
             NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
             Game.HandleRespawn();
         }
-
-
-
-
-        //if (TargetPedHash == 225514697 || TargetPedHash == 2602752943 || TargetPedHash == 2608926626)
-        //{
-        //    TargetPedAlreadyTakenOver = true;
-        //    NativeHelper.ChangeModel(TargetPedModel.Name);
-        //    if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-        //    {
-        //        TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        //    }
-        //}
-        //if (!TargetPedAlreadyTakenOver)
-        //{
-        //    LastModelHash = TargetPed.Model.Name;
-        //}
-
-        //LastModelHash = TargetPed.Model.Name;
-
-
-
-
-        TargetPedInVehicle = TargetPed.IsInAnyVehicle(false);//bool wasInVehicle = TargetPed.IsInAnyVehicle(false);
+        TargetPedInVehicle = TargetPed.IsInAnyVehicle(false);
         if (TargetPedInVehicle)
         {
             TargetPedVehicle = TargetPed.CurrentVehicle;
         }
         TargetPedUsingScenario = NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(TargetPed);//bool Scenario = false;
-        //if (Game.LocalPlayer.Character.LastVehicle.Exists())
-        //{
-        //    Game.LocalPlayer.Character.LastVehicle.Delete();
-        //}
         CurrentPed = Game.LocalPlayer.Character;
         if (TargetPed.IsInAnyVehicle(false))
         {
@@ -609,20 +437,8 @@ public class PedSwap : IPedSwap
         {
             if (isWanted)
             {
-                //unsafe
-                //{
-                //    int lol = 0;
-                //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                //    NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                //    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, FormerPlayer.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
-                //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
-                //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                //}
                 NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
-                EntryPoint.WriteToConsole($"HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Escape", 5);
-                //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Emergency);
+                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Escape", 5);
             }
             else
             {
@@ -637,8 +453,7 @@ public class PedSwap : IPedSwap
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
-                EntryPoint.WriteToConsole($"HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Wander", 5);
-                //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(FormerPlayer.CurrentVehicle, 10f, (int)VehicleDrivingFlags.Normal);
+                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Wander", 5);
             }
         }
         else if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
@@ -663,19 +478,19 @@ public class PedSwap : IPedSwap
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
-                    EntryPoint.WriteToConsole($"HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Attack", 5);
+                    EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Attack", 5);
                 }
                 else
                 {
                     NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
-                    EntryPoint.WriteToConsole($"HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Flee", 5);
+                    EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Flee", 5);
                 }
                 NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(FormerPlayer, 100f, 0);
             }
             else
             {
                 NativeFunction.Natives.TASK_WANDER_STANDARD(FormerPlayer, 0, 0);
-                EntryPoint.WriteToConsole($"HandlePreviousPed Tasking {FormerPlayer.Handle} Normal Wander", 5);
+                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Normal Wander", 5);
             }
         }
     }
@@ -759,7 +574,6 @@ public class PedSwap : IPedSwap
                 {
                     GameFiber.Yield();
                 }
-                //Game.LocalPlayer.Character.Tasks.Clear();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
             }, "ScenarioWatcher");
         }
@@ -776,7 +590,6 @@ public class PedSwap : IPedSwap
             {
                 NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(PedToAlly, Player.GroupID);
                 PedToAlly.StaysInVehiclesWhenJacked = true;
-                EntryPoint.WriteToConsole($"MakeAllies {PedToAlly.Handle} {Player.GroupID}", 3);
             }
         }
     }

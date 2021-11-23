@@ -10,49 +10,40 @@ namespace LosSantosRED.lsr.Player
     [Serializable()]
     public class Inventory
     {
-        private List<ModItem> ItemsList = new List<ModItem>();//new not hooked up
-        private List<ConsumableInventoryItem> ConsumableList = new List<ConsumableInventoryItem>();
-        private IInventoryable Player;
-        public List<ConsumableInventoryItem> Consumables => ConsumableList;
-        public List<ModItem> Items => ItemsList;//new not hooked up
+        private List<InventoryItem> ItemsList = new List<InventoryItem>();
+        public List<InventoryItem> Items => ItemsList;
         public Inventory()
         {
 
         }
         public Inventory(IInventoryable player)
         {
-            Player = player;
+            //Player = player;
         }
 
-
-
-
-
-
-
-        public void Add(ConsumableSubstance consumableSubstance, int amount)
+        public void Add(ModItem modItem, int amount)
         {
-            ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
             if (ExistingItem == null)
             {
-                ConsumableList.Add(new ConsumableInventoryItem(consumableSubstance,amount));
+                ItemsList.Add(new InventoryItem(modItem, amount));
             }
             else
             {
                 ExistingItem.Amount += amount;
             }
         }
-        public void Remove(ConsumableSubstance consumableSubstance)
+        public void Remove(ModItem modItem)
         {
-            ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
             if (ExistingItem != null)
             {
-                ConsumableList.Remove(ExistingItem);
+                ItemsList.Remove(ExistingItem);
             }
         }
-        public void Remove(ConsumableSubstance consumableSubstance, int amount)
+        public void Remove(ModItem modItem, int amount)
         {
-            ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
             if (ExistingItem != null)
             {
                 if (ExistingItem.Amount > amount)
@@ -61,27 +52,74 @@ namespace LosSantosRED.lsr.Player
                 }
                 else
                 {
-                    ConsumableList.Remove(ExistingItem);
+                    ItemsList.Remove(ExistingItem);
                 }
             }
         }
-        public ConsumableInventoryItem Get(ConsumableSubstance consumableSubstance)
+        public InventoryItem Get(ModItem modItem)
         {
-            return ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+            return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
         }
-        public void PrintInventory()
-        {
-            EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
-            foreach (ConsumableInventoryItem cii in ConsumableList)
-            {
-                EntryPoint.WriteToConsole($"{cii.ConsumableSubstance.Name} {cii.ConsumableSubstance.Type} {cii.ConsumableSubstance.ModelName} {cii.Amount}", 5);
-            }
-            EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
-        }
-
         public void Clear()
         {
-            ConsumableList.Clear();
+            ItemsList.Clear();
         }
+
+
+
+
+        //public void Add(ConsumableSubstance consumableSubstance, int amount)
+        //{
+        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+        //    if (ExistingItem == null)
+        //    {
+        //        ConsumableList.Add(new ConsumableInventoryItem(consumableSubstance,amount));
+        //    }
+        //    else
+        //    {
+        //        ExistingItem.Amount += amount;
+        //    }
+        //}
+        //public void Remove(ConsumableSubstance consumableSubstance)
+        //{
+        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+        //    if (ExistingItem != null)
+        //    {
+        //        ConsumableList.Remove(ExistingItem);
+        //    }
+        //}
+        //public void Remove(ConsumableSubstance consumableSubstance, int amount)
+        //{
+        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+        //    if (ExistingItem != null)
+        //    {
+        //        if (ExistingItem.Amount > amount)
+        //        {
+        //            ExistingItem.Amount -= amount;
+        //        }
+        //        else
+        //        {
+        //            ConsumableList.Remove(ExistingItem);
+        //        }
+        //    }
+        //}
+        //public ConsumableInventoryItem Get(ConsumableSubstance consumableSubstance)
+        //{
+        //    return ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
+        //}
+        //public void PrintInventory()
+        //{
+        //    EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
+        //    foreach (ConsumableInventoryItem cii in ConsumableList)
+        //    {
+        //        EntryPoint.WriteToConsole($"{cii.ConsumableSubstance.Name} {cii.ConsumableSubstance.Type} {cii.ConsumableSubstance.ModelName} {cii.Amount}", 5);
+        //    }
+        //    EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
+        //}
+
+        //public void Clear()
+        //{
+        //    ConsumableList.Clear();
+        //}
     }
 }

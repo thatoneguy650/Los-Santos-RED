@@ -58,19 +58,9 @@ public class UISettings
     public bool AlwaysShowCash { get; set; } = true;
     public bool AlwaysShowRadar { get; set; } = true;
     public bool AlwaysShowHUD { get; set; } = true;
-
-    #if DEBUG
-        public bool ShowDebug { get; set; } = true;
-    #else
-        public bool ShowDebug { get; set; } = false;
-    #endif
+    public bool ShowDebug { get; set; } = false;
     public bool ShowVanillaVehicleUI { get; set; } = false;
     public bool ShowVanillaAreaUI { get; set; } = false;
-
-
-
-
-
     public bool SetBustedEffect { get; set; } = true;
     public bool PlayWastedSounds { get; set; } = true;
     public bool DisplayBustedMessage { get; set; } = true;
@@ -85,14 +75,14 @@ public class UISettings
     public float RadarZoomDistance_Wanted { get; set; } = 175f;
     public float RadarZoomDistance_Investigation { get; set; } = 125f;
     public float RadarZoomDistance_Default { get; set; } = 75f;
-
     public UISettings()
     {
 
         #if DEBUG
                 SetRadarZoomDistance = true;
+                 ShowDebug = false;
         #endif
 
-        
+
     }
 }

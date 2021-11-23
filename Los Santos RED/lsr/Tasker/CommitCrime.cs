@@ -35,7 +35,7 @@ public class CommitCrime : ComplexTask
                 Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
             }
             AttackTarget();
-            EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
         }
     }
     public override void Update()
@@ -45,12 +45,12 @@ public class CommitCrime : ComplexTask
             if (Target == null || !Target.Pedestrian.Exists())
             {
                 GetNewVictim();
-                EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Should Get New Victim DOES NOT EXIST", 3);
+                //EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Should Get New Victim DOES NOT EXIST", 3);
             }
             else if (Target.Pedestrian.Exists() && (Target.Pedestrian.IsDead || Target.Pedestrian.DistanceTo2D(Ped.Pedestrian) >= 65f))
             {
                 GetNewVictim();
-                EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Should Get New Victim DEAD OR FAR AWAY", 3);
+                //EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Should Get New Victim DEAD OR FAR AWAY", 3);
             }
         }
     }
@@ -109,7 +109,7 @@ public class CommitCrime : ComplexTask
                 PreviousTargetHandle = Target.Pedestrian.Handle;
                 NewTargets++;
                 AttackTarget();
-                EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Got New Victim", 3);
+                //EntryPoint.WriteToConsole($"TASKER: Commit Crime: {Ped.Pedestrian.Handle} Got New Victim", 3);
             }
         }
     }

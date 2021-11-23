@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 public enum eConsumableType
 {
-    None = 0,
-    Smoke = 1,
-    Drink = 2,
-    Eat = 3,
+    None = 0,//default?
+    Smoke = 1,//weed and ciggis?
+    Drink = 2,//beer and soda?
+    Eat = 3,//food snacks?
+    Service = 4,//hotel rooms, hookers?
+    Ingest = 5,//pills and drugs?
 }
 

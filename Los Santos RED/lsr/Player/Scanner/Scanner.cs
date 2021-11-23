@@ -878,33 +878,6 @@ namespace LosSantosRED.lsr
             }
             if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && CurrentPlayer.CurrentVehicle != null)//temp current vehicle BS
             {
-                //VehicleExt ActualCar =  World.GetVehicleExt(DispatchToPlay.LatestInformation.VehicleSeen.Vehicle);
-                // ActualCar.WasReportedStolen = true;
-                // ActualCar.OriginalLicensePlate.IsWanted = true;
-                // if (ActualCar.OriginalLicensePlate.PlateNumber == ActualCar.CarPlate.PlateNumber)
-                // {
-                //     ActualCar.CarPlate.IsWanted = true;
-                //     //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
-                // }
-
-
-
-                //EntryPoint.WriteToConsole("-------------------------------", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {ActualCar.Vehicle.Handle}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {ActualCar.IsStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {ActualCar.WasReportedStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {ActualCar.CopsRecognizeAsStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {ActualCar.NeedsToBeReportedStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {ActualCar.GameTimeToReportStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {ActualCar.CarPlate.IsWanted}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {ActualCar.CarPlate.PlateNumber}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {ActualCar.OriginalLicensePlate.IsWanted}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {ActualCar.OriginalLicensePlate.PlateNumber}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {ActualCar.HasOriginalPlate}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {ActualCar.HasBeenDescribedByDispatch}", 3);
-                //EntryPoint.WriteToConsole("-------------------------------", 3);
-
-
                 //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
 
                 CurrentPlayer.CurrentVehicle.WasReportedStolen = true;
@@ -914,38 +887,22 @@ namespace LosSantosRED.lsr
                     CurrentPlayer.CurrentVehicle.CarPlate.IsWanted = true;
                 }
 
-                EntryPoint.WriteToConsole("-------------------------------", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentPlayer.CurrentVehicle.Vehicle.Handle}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentPlayer.CurrentVehicle.IsStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentPlayer.CurrentVehicle.WasReportedStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentPlayer.CurrentVehicle.NeedsToBeReportedStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentPlayer.CurrentVehicle.GameTimeToReportStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentPlayer.CurrentVehicle.CarPlate.IsWanted}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentPlayer.CurrentVehicle.HasOriginalPlate}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
-                EntryPoint.WriteToConsole("-------------------------------", 3);
+                //EntryPoint.WriteToConsole("-------------------------------", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentPlayer.CurrentVehicle.Vehicle.Handle}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentPlayer.CurrentVehicle.IsStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentPlayer.CurrentVehicle.WasReportedStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentPlayer.CurrentVehicle.NeedsToBeReportedStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentPlayer.CurrentVehicle.GameTimeToReportStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentPlayer.CurrentVehicle.CarPlate.IsWanted}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentPlayer.CurrentVehicle.HasOriginalPlate}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+                //EntryPoint.WriteToConsole("-------------------------------", 3);
 
-                //DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
-                //DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.IsWanted = true;
-                //if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
-                //{
-                //    DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
-                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
-                //}
-                //else
-                //{
-                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen");
-                //}
-
-
-                EntryPoint.WriteToConsole($"SCANNER EVENT: Marked Vehicle as Stolen", 3);
-
-
-
+                //EntryPoint.WriteToConsole($"SCANNER EVENT: Marked Vehicle as Stolen", 3);
             }
             if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name == "Carrying Weapon"))
             {
@@ -1219,7 +1176,7 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
         {
-            EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
+            //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
@@ -1257,7 +1214,7 @@ namespace LosSantosRED.lsr
                 {
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
+                        //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
                         AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
                         while (AudioPlayer.IsAudioPlaying)
                         {

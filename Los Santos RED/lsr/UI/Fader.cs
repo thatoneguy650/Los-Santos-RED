@@ -171,11 +171,11 @@ public class Fader
     private void OnFullyFadedIn()
     {
         FadeIsInverse = false;
-        EntryPoint.WriteToConsole($"Fader {DebugName} OnFullyFadedIn ", 2);
+        //EntryPoint.WriteToConsole($"Fader {DebugName} OnFullyFadedIn ", 2);
     }
     private void OnTextChanged(string incomingText)
     {
-        EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged IncomingText:{incomingText} ExistingText:{ExistingText} LastText: {LastText} ", 2);
+        //EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged IncomingText:{incomingText} ExistingText:{ExistingText} LastText: {LastText} ", 2);
         if (incomingText != "" && ExistingText != "")
         {
             TextToShow = incomingText;
@@ -203,7 +203,7 @@ public class Fader
         ExistingText = incomingText;
         GameTimeDisplayChanged = Game.GameTime;
         TextChangedLastUpdate = true;
-        EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged TextToShow:{TextToShow} ", 2);
+        //EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged TextToShow:{TextToShow} ", 2);
     }
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {

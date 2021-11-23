@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +13,37 @@ public class ModItem
     {
 
     }
-    public ModItem(string name, string modelName)
+    public ModItem(string name)
     {
         Name = name;
-        ModelName = modelName;
     }
-    public ModItem(string name, string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, modelName)
+    public ModItem(string name, eConsumableType type)
     {
-        AttachBoneIndex = attachBoneIndex;
-        AttachOffset = attachOffset;
-        AttachRotation = attachRotation;
+        Name = name;
+        Type = type;
     }
-    public int AttachBoneIndex { get; set; } = 57005;
-    public Vector3 AttachOffset { get; set; } = new Vector3(0.12f, 0.0f, -0.06f);
-    public Rotator AttachRotation { get; set; } = new Rotator(-77.0f, 23.0f, 0.0f);
-    public string ModelName { get; set; }
+    public ModItem(string name, eConsumableType type, string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, type)
+    {
+        PhysicalItem = new PhysicalItem(modelName, "", attachBoneIndex, attachOffset, attachRotation);
+    }
+    public ModItem(string name, eConsumableType type, string modelName, string packageModelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, type)
+    {
+        PhysicalItem = new PhysicalItem(modelName, packageModelName, attachBoneIndex, attachOffset, attachRotation);
+    }
+    public ModItem(string name, string modelName, string packageModelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, eConsumableType.None)
+    {
+        PhysicalItem = new PhysicalItem(modelName, packageModelName, attachBoneIndex, attachOffset, attachRotation);
+    }
+    public ModItem(string name, string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, eConsumableType.None)
+    {
+        PhysicalItem = new PhysicalItem(modelName, "", attachBoneIndex, attachOffset, attachRotation);
+    }
+    public PhysicalItem PhysicalItem { get; set; }
     public string Name { get; set; }
     public bool CanStore { get; set; } = true;
     public bool IsIntoxicating { get; set; } = false;
     public int AmountPerPackage { get; set; } = 1;
-    public int Price { get; set; } = 5;
-    public bool HasPackage => PackageModel != "";
-    public string PackageModel { get; set; } = "";
-    public bool IsConsumable { get; set; } = false;
+    public eConsumableType Type { get; set; } = eConsumableType.None;
+    public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest;
 }
 

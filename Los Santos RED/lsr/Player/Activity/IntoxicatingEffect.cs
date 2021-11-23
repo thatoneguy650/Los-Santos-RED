@@ -272,14 +272,14 @@ namespace LosSantosRED.lsr.Player
                     GameTimeStartedSwerving = Game.GameTime;
                     GameTimeToStopSwerving = Game.GameTime + RandomItems.GetRandomNumber(SwerveMinLength, SwerveMaxLength);
                     SteeringBias = RandomItems.GetRandomNumber(-1f * SwerveAtCurrentIntensity, SwerveAtCurrentIntensity);
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE STARTED BIAS: {SwerveAtCurrentIntensity}", 3);
+                    //EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE STARTED BIAS: {SwerveAtCurrentIntensity}", 3);
                 }
             }
             if(IsSwerving && Game.GameTime > GameTimeToStopSwerving)
             {
                 IsSwerving = false;
                 SteeringBias = 0f;
-                EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE ENDED", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE ENDED", 3);
             }
             if (Player.IsDriver && IsSwerving)
             {

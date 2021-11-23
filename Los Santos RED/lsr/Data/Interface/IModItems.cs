@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IConsumableSubstances
+    public interface IModItems
     {
-        List<ConsumableSubstance> Consumables { get; }
+        List<ModItem> Items { get; }
 
-        ConsumableSubstance Get(string text);
+        ModItem Get(string text);
     }
 }

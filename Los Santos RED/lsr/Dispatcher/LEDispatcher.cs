@@ -288,7 +288,7 @@ public class LEDispatcher
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn IsWanted: {TotalIsWanted} WantedLevel:{TotalWantedLevel}", 3);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn IsWanted: {TotalIsWanted} WantedLevel:{TotalWantedLevel}", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
             SpawnLocation spawnLocation = new SpawnLocation();
@@ -336,7 +336,7 @@ public class LEDispatcher
             }
             else
             {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn LE Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 3);
+                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn LE Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 3);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -374,7 +374,7 @@ public class LEDispatcher
             {
                 Roadblock.Dispose();
                 Roadblock = null;
-                EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
+                //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
             }
             GameTimeAttemptedRecall = Game.GameTime;
         }
@@ -515,22 +515,22 @@ public class LEDispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(TotalWantedLevel))
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn",5);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn",5);
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)",5);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)",5);
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)",5);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)",5);
             return true;
         }
         else if (cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close",5);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close",5);
             return true;
         }
         //else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
@@ -542,7 +542,7 @@ public class LEDispatcher
     }
     public void SpawnRoadblock()//temp public
     {
-        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Roadblock", 3);
+        //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Roadblock", 3);
         Vector3 Position = Player.Character.GetOffsetPositionFront(350f);//400f 400 is mostly far enough to not see it
         Street ForwardStreet = Streets.GetStreet(Position);
         if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
@@ -565,7 +565,7 @@ public class LEDispatcher
                             Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names);
                             Roadblock.SpawnRoadblock();
                             GameTimeLastSpawnedRoadblock = Game.GameTime;
-                            EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
+                            //EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
                         }
                     }
                 }
@@ -578,7 +578,7 @@ public class LEDispatcher
         {
             Roadblock.Dispose();
             Roadblock = null;
-            EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
+            //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
         }
     }
 }

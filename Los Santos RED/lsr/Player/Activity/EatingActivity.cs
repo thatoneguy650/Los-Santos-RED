@@ -20,12 +20,12 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IIntoxicatable Player;
         private ISettingsProvideable Settings;
-        private ConsumableSubstance ConsumableSubstance;
-        public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ConsumableSubstance consumableSubstance) : base()
+        private ModItem ModItem;
+        public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem) : base()
         {
             Player = consumable;
             Settings = settings;
-            ConsumableSubstance = consumableSubstance;
+            ModItem = modItem;
         }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
@@ -151,11 +151,10 @@ namespace LosSantosRED.lsr.Player
                 AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
-
-            HandBoneID = ConsumableSubstance.AttachBoneIndex;
-            HandOffset = ConsumableSubstance.AttachOffset;
-            HandRotator = ConsumableSubstance.AttachRotation;
-            PropModel = ConsumableSubstance.ModelName;
+            HandBoneID = ModItem.PhysicalItem.AttachBoneIndex;
+            HandOffset = ModItem.PhysicalItem.AttachOffset;
+            HandRotator = ModItem.PhysicalItem.AttachRotation;
+            PropModel = ModItem.PhysicalItem.ModelName;
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }

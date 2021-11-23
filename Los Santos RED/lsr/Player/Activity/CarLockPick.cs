@@ -40,9 +40,7 @@ public class CarLockPick
             }
             int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
             VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
-
-            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick VehicleClass {VehicleClass}", 3);
-
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick VehicleClass {VehicleClass}", 3);
             if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Helicopter)
             {
                 return false;//maybe add utility?
@@ -75,7 +73,6 @@ public class CarLockPick
                 GameFiber.Yield();
                 if (!LockPickAnimation())
                 {
-                    //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Animation Failed",3);
                     return;
                 }
@@ -94,19 +91,15 @@ public class CarLockPick
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
         Player.SetUnarmed();
-
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
             EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}", 3);//some IV pack cars fail even with the door open.....
-            //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
             NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
             return false;
         }
-
         TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
         bool StartAnimation = true;
-
         while (Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
         {
             if (Player.IsMoveControlPressed)
@@ -116,20 +109,17 @@ public class CarLockPick
             }
             GameFiber.Yield();
         }
-
         if (!StartAnimation)
         {
             TargetVehicle.LockStatus = OriginalLockStatus;
             EntryPoint.WriteToConsole("SetupLockPick Failed, Move Control Pressed", 3);
             return false;
         }
-
         if (TargetVehicle.LockStatus == (VehicleLockStatus)1)
         {
             EntryPoint.WriteToConsole("SetupLockPick Failed, Lock Status = 1", 3);
             return false;
         }
-
         if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
         {
             if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))

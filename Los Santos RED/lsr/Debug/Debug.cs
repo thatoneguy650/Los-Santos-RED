@@ -33,11 +33,10 @@ public class Debug
     private Settings Settings;
     private Ped RageTargetPed;
     private Tasker Tasker;
-    private ConsumableSubstances ConsumableSubstances;
     private List<InteriorPosition> InteriorPositions = new List<InteriorPosition>();
     private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
     private uint GameTimeLastScannedForStands;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, ConsumableSubstances consumableSubstances)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -49,7 +48,6 @@ public class Debug
         ModController = modController;
         Settings = settings;
         Tasker = tasker;
-        ConsumableSubstances = consumableSubstances;
     }
     public void Dispose()
     {
@@ -433,12 +431,12 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        ConsumableSubstance toadd = ConsumableSubstances.Consumables.PickRandom();
-        if(toadd != null)
-        {
-            Player.AddToInventory(toadd,1);
-            EntryPoint.WriteToConsole($"ADDED {toadd.Name} {toadd.Type}", 5);
-        }
+        //ConsumableSubstance toadd = ConsumableSubstances.Consumables.PickRandom();
+        //if(toadd != null)
+        //{
+        //    Player.AddToInventory(toadd,1);
+        //    EntryPoint.WriteToConsole($"ADDED {toadd.Name} {toadd.Type}", 5);
+        //}
         
         //if (Player.CurrentLookedAtPed != null)
         //{
