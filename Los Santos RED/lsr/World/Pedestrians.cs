@@ -102,6 +102,7 @@ public class Pedestrians
             if (Cop.Pedestrian.Exists() && Cop.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 Cop.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
         Police.Clear();
@@ -110,6 +111,7 @@ public class Pedestrians
             if (EMT.Pedestrian.Exists() && EMT.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 EMT.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
         EMTs.Clear();
@@ -118,6 +120,7 @@ public class Pedestrians
             if (Firefighter.Pedestrian.Exists() && Firefighter.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 Firefighter.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
         Firefighters.Clear();
@@ -169,6 +172,7 @@ public class Pedestrians
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             Cop.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
             Blip myblip = Cop.Pedestrian.GetAttachedBlip();
             if(myblip.Exists())
             { 
@@ -178,6 +182,7 @@ public class Pedestrians
         foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             EMT.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
             Blip myblip = EMT.Pedestrian.GetAttachedBlip();
             if (myblip.Exists())
             {
@@ -187,6 +192,7 @@ public class Pedestrians
         foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             Firefighter.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
             Blip myblip = Firefighter.Pedestrian.GetAttachedBlip();
             if (myblip.Exists())
             {
@@ -335,6 +341,10 @@ public class Pedestrians
             if (ToReturn == null)
             {
                 //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                if(Cop.IsPersistent)
+                {
+                    EntryPoint.PersistentPedsDeleted++;
+                }
                 Cop.Delete();
             }
             return ToReturn;

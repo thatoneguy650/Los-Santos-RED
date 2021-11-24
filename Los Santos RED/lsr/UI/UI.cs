@@ -758,8 +758,11 @@ public class UI : IMenuProvideable
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine10}", StartingPoint + 0.10f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{DisplayablePlayer.DebugLine11}", StartingPoint + 0.11f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        DisplayTextOnScreen($"~s~Street.Text: {StreetFader?.TextToShow} Street.Alpha:{StreetFader?.AlphaValue}", StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        DisplayTextOnScreen($"~s~Zone.Text: {ZoneFader?.TextToShow} ~s~Zone.Alpha:{ZoneFader?.AlphaValue}", StartingPoint + 0.13f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //DisplayTextOnScreen($"~s~Street.Text: {StreetFader?.TextToShow} Street.Alpha:{StreetFader?.AlphaValue}", StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //DisplayTextOnScreen($"~s~Zone.Text: {ZoneFader?.TextToShow} ~s~Zone.Alpha:{ZoneFader?.AlphaValue}", StartingPoint + 0.13f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        
+        
+        DisplayTextOnScreen($"PPC: {EntryPoint.PersistentPedsCreated} PPD: {EntryPoint.PersistentPedsDeleted} PPNP: {EntryPoint.PersistentPedsNonPersistent} PVC: {EntryPoint.PersistentVehiclesCreated} PVD: {EntryPoint.PersistentVehiclesDeleted} PVNP: {EntryPoint.PersistentVehiclesNonPersistent}", StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
     private void Toggle(Menu toToggle)
     {

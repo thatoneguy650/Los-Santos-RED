@@ -30,9 +30,20 @@ public class ModItem
     {
         PhysicalItem = new PhysicalItem(modelName, packageModelName, attachBoneIndex, attachOffset, attachRotation);
     }
+    public ModItem(string name, eConsumableType type, string modelName,bool isLarge, string packageModelName, bool packageIsLarge, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, type)
+    {
+        PhysicalItem = new PhysicalItem(modelName, packageModelName, attachBoneIndex, attachOffset, attachRotation);
+        PhysicalItem.PackageIsLarge = packageIsLarge;
+        PhysicalItem.ItemIsLarge = isLarge;
+    }
     public ModItem(string name, string modelName, string packageModelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, eConsumableType.None)
     {
         PhysicalItem = new PhysicalItem(modelName, packageModelName, attachBoneIndex, attachOffset, attachRotation);
+    }
+    public ModItem(string name, string modelName, bool isLarge, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, eConsumableType.None)
+    {
+        PhysicalItem = new PhysicalItem(modelName, "", attachBoneIndex, attachOffset, attachRotation);
+        PhysicalItem.ItemIsLarge = isLarge;
     }
     public ModItem(string name, string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation) : this(name, eConsumableType.None)
     {

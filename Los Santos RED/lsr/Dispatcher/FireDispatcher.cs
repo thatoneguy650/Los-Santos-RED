@@ -143,11 +143,13 @@ public class FireDispatcher
                     {
                         RemoveBlip(Passenger);
                         Passenger.Delete();
+                        EntryPoint.PersistentPedsDeleted++;
                     }
                 }
                 if (ff.Pedestrian.Exists() && ff.Pedestrian.CurrentVehicle.Exists() && ff.Pedestrian.CurrentVehicle != null)
                 {
                     ff.Pedestrian.CurrentVehicle.Delete();
+                    EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
             RemoveBlip(ff.Pedestrian);
@@ -155,6 +157,7 @@ public class FireDispatcher
             {
                 //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 ff.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
     }

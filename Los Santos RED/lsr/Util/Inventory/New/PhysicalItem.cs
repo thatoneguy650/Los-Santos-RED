@@ -27,5 +27,7 @@ public class PhysicalItem
     public string ModelName { get; set; } = "";
     public bool HasPackage => PackageModelName != "";
     public string PackageModelName { get; set; } = "";
+    public bool PackageIsLarge { get; set; } = false;//:)
+    public bool ItemIsLarge { get; set; } = false;
 }
 

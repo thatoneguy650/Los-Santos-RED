@@ -49,7 +49,15 @@ public class InventoryMenu : Menu
         inventoryMenu.Clear();
         foreach(InventoryItem cii in Player.InventoryItems)
         {
-            inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, $"{cii.ModItem?.Type} {cii.ModItem?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
+            if(cii.ModItem != null)
+            {
+                string Verb = cii.ModItem.Type.ToString();
+                if (cii.ModItem.Type == eConsumableType.None)
+                {
+                    Verb = "Use";
+                }
+                inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, $"{Verb} {cii.ModItem?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
+            }
         }        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)

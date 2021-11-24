@@ -61,7 +61,7 @@ public class PedSwap : IPedSwap
         try
         {
             ResetOffsetForCurrentModel();
-            Ped TargetPed = FindPedToSwapWith(radius, nearest); //new Ped(Player.Position.Around2D(15f));//FindPedToSwapWith(Radius, Nearest);//turned off for now so im close
+            Ped TargetPed = FindPedToSwapWith(radius, nearest);
             if (!TargetPed.Exists())
             {
                 if(createRandomPedIfNoneReturned)
@@ -493,6 +493,7 @@ public class PedSwap : IPedSwap
                 EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Normal Wander", 5);
             }
         }
+        FormerPlayer.IsPersistent = false;
     }
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
     {

@@ -32,6 +32,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMPMapLoaded { get; }
         bool AnyWantedCiviliansNearPlayer { get; }
         List<VehicleExt> PoliceVehicleList { get; }
+        int SpawnedPoliceVehicleCount { get; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);

@@ -9,6 +9,12 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
+    public static int PersistentPedsCreated { get; set; } = 0;
+    public static int PersistentPedsNonPersistent { get; set; } = 0;
+    public static int PersistentPedsDeleted { get; set; } = 0;
+    public static int PersistentVehiclesCreated { get; set; } = 0;
+    public static int PersistentVehiclesNonPersistent { get; set; } = 0;
+    public static int PersistentVehiclesDeleted { get; set; } = 0;
     private static int LogLevel = 3;
     public static ModController ModController { get; set; }
     public static void Main()

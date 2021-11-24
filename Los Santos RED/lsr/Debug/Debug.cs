@@ -36,7 +36,11 @@ public class Debug
     private List<InteriorPosition> InteriorPositions = new List<InteriorPosition>();
     private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
     private uint GameTimeLastScannedForStands;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker)
+    private Mod.Time Time;
+    private Camera StoreCam;
+    private Camera InterpolationCamera;
+
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -48,6 +52,7 @@ public class Debug
         ModController = modController;
         Settings = settings;
         Tasker = tasker;
+        Time = time;
     }
     public void Dispose()
     {
@@ -431,13 +436,24 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        HighlightStoreWithCamera();
+
+
+
+      GameFiber.Sleep(5000);
+        ReturnToGameplay();
+        //EntryPoint.WriteToConsole($"CURRENT TIME (PRE) {Time.CurrentTime}", 5);     
+        //Time.FastForward(8);
+        //GameFiber.Sleep(5000);
+        //EntryPoint.WriteToConsole($"CURRENT TIME (POST) {Time.CurrentTime}", 5);
+
         //ConsumableSubstance toadd = ConsumableSubstances.Consumables.PickRandom();
         //if(toadd != null)
         //{
         //    Player.AddToInventory(toadd,1);
         //    EntryPoint.WriteToConsole($"ADDED {toadd.Name} {toadd.Type}", 5);
         //}
-        
+
         //if (Player.CurrentLookedAtPed != null)
         //{
         //    Player.CurrentLookedAtPed.MerchantType = MerchantType.HotDog;
@@ -446,7 +462,7 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        SetRadarZoomeFor20Seconds(1000f);
+       // SetRadarZoomeFor20Seconds(1000f);
         //Player.OnSuspectEluded();
         //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
     }
@@ -459,6 +475,45 @@ public class Debug
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
     }
+
+    private void HighlightStoreWithCamera()
+    {
+
+        Vector3 CameraPos = new Vector3(-216.1503f, -54.80959f, 59.33761f);
+        Rotator HowToRotate = new Rotator(-11.99999f, 0f, -15.95173f);
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        StoreCam.Position = CameraPos;
+        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        StoreCam.Rotation = HowToRotate;
+        if (!InterpolationCamera.Exists())
+        {
+            InterpolationCamera = new Camera(false);
+        }
+        InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+        InterpolationCamera.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+
+    }
+    private void ReturnToGameplay()
+    {
+        if (!InterpolationCamera.Exists())
+        {
+            InterpolationCamera = new Camera(false);
+        }
+        InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+        InterpolationCamera.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
+    }
+
     private void SetRadarZoomeFor20Seconds(float distance)
     {
 

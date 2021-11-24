@@ -31,6 +31,7 @@ public class Vehicles
     }
     public List<VehicleExt> PoliceVehicleList => PoliceVehicles;
     public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
+    public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
     public int PoliceVehiclesCount => PoliceVehicles.Count();
     public int CivilianVehiclesCount => CivilianVehicles.Count();
 
@@ -99,7 +100,7 @@ public class Vehicles
     }
     private void RemoveAbandonedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && !x.WasSpawnedEmpty))
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty))
         {
             if (PoliceCar.Vehicle.Exists())
             {
@@ -107,6 +108,10 @@ public class Vehicles
                 {
                     if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                     {
+                        if (PoliceCar.Vehicle.IsPersistent)
+                        {
+                            EntryPoint.PersistentVehiclesDeleted++;
+                        }
                         PoliceCar.Vehicle.Delete();
                         GameFiber.Yield();
                     }
@@ -134,6 +139,7 @@ public class Vehicles
             if (vehicleExt.Vehicle.Exists())
             {
                 vehicleExt.Vehicle.Delete();
+                EntryPoint.PersistentVehiclesDeleted++;
             }
         }
         foreach (VehicleExt vehicleExt in EMSVehicles)
@@ -141,6 +147,7 @@ public class Vehicles
             if (vehicleExt.Vehicle.Exists())
             {
                 vehicleExt.Vehicle.Delete();
+                EntryPoint.PersistentVehiclesDeleted++;
             }
         }
         foreach (VehicleExt vehicleExt in FireVehicles)
@@ -148,6 +155,7 @@ public class Vehicles
             if (vehicleExt.Vehicle.Exists())
             {
                 vehicleExt.Vehicle.Delete();
+                EntryPoint.PersistentVehiclesDeleted++;
             }
         }
         PoliceVehicles.Clear();
@@ -373,6 +381,10 @@ public class Vehicles
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
+            if (vehicle.IsPersistent)
+            {
+                EntryPoint.PersistentVehiclesDeleted++;
+            }
             vehicle.Delete();
         }
         return ToReturn;

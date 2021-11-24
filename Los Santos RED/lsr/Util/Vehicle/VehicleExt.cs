@@ -331,7 +331,14 @@ namespace LSR.Vehicles
                 if (Vehicle.Exists())
                 {
                     //EntryPoint.WriteToConsole(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
+
+                    if(Vehicle.IsPersistent)
+                    {
+                        EntryPoint.PersistentVehiclesDeleted++;
+                    }
+
                     Vehicle.Delete();
+
                 }
                 return;
             }

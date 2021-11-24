@@ -48,7 +48,7 @@ public class LEDispatcher
     private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
-    private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.PoliceVehicleCount < SpawnedCopLimit;
+    private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     public void SpawnCop(Vector3 position)
     {
@@ -392,11 +392,13 @@ public class LEDispatcher
                     {
                         RemoveBlip(Passenger);
                         Passenger.Delete();
+                        EntryPoint.PersistentPedsDeleted++;
                     }
                 }
                 if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
                 {
                     Cop.Pedestrian.CurrentVehicle.Delete();
+                    EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
             RemoveBlip(Cop.Pedestrian);
@@ -404,6 +406,7 @@ public class LEDispatcher
             {
                 //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 Cop.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
     }

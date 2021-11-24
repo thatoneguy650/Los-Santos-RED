@@ -233,6 +233,7 @@ public class Roadblock
             if (veh.Exists())
             {
                 veh.Delete();
+                EntryPoint.PersistentVehiclesDeleted++;
             }
         }
         foreach (PedExt pedext in CreatedRoadblockPeds)
@@ -240,6 +241,7 @@ public class Roadblock
             if (pedext != null && pedext.Pedestrian.Exists())
             {
                 pedext.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
         foreach (Rage.Object prop in CreatedProps)
@@ -302,12 +304,16 @@ public class Roadblock
         }
         SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, false, Settings, Weapons, Names);
         spawnTask.AttemptSpawn();
-
+        foreach(VehicleExt roadblockCar in spawnTask.CreatedVehicles)
+        {
+            roadblockCar.WasSpawnedEmpty = true;
+        }
 
         if (addPed)
         {
             SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
             pedSpawn.AttemptSpawn();
+
             foreach(PedExt person in pedSpawn.CreatedPeople)
             {
                 World.AddEntity(person);
@@ -335,6 +341,7 @@ public class Roadblock
                 if(!created.Vehicle.IsOnAllWheels)
                 {
                     created.Vehicle.Delete();
+                    EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
             if (created.Vehicle.Exists())

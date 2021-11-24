@@ -30,6 +30,9 @@ public class GameLocation
     public bool Is247 => CloseTime >= 24;
     public int OpenTime { get; set; } = 6;
     public int CloseTime { get; set; } = 20;
+    public bool HasCustomCamera => CameraPosition != Vector3.Zero;
+    public Vector3 CameraPosition { get; set; } = Vector3.Zero;
+    public Rotator CameraRotation { get; set; }
     public void SetCreatedBlip(Blip toset)
     {
         createdBlip = toset;

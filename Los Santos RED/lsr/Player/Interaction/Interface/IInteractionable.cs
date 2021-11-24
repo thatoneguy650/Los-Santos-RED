@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool CanConverse { get; }
         int Money { get; }
+        bool IsPerformingActivity { get; }
 
         void SetAngeredCop();
         void GiveMoney(int v);

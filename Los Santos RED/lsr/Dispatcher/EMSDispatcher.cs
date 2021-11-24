@@ -146,11 +146,13 @@ public class EMSDispatcher
                     {
                         RemoveBlip(Passenger);
                         Passenger.Delete();
+                        EntryPoint.PersistentPedsDeleted++;
                     }
                 }
                 if (emt.Pedestrian.Exists() && emt.Pedestrian.CurrentVehicle.Exists() && emt.Pedestrian.CurrentVehicle != null)
                 {
                     emt.Pedestrian.CurrentVehicle.Delete();
+                    EntryPoint.PersistentVehiclesDeleted++;
                 }
             }
             RemoveBlip(emt.Pedestrian);
@@ -158,6 +160,7 @@ public class EMSDispatcher
             {
                 //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 emt.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
             }
         }
     }

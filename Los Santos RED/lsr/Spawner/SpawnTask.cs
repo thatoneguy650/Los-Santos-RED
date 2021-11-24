@@ -96,13 +96,10 @@ public class SpawnTask
                             if (Vehicle != null && Vehicle.Vehicle.Exists())
                             {
                                 Vehicle.Vehicle.Delete();
+                                EntryPoint.PersistentVehiclesDeleted++;
                                 //EntryPoint.WriteToConsole("Failed to complete spawn, deleting");
                             }
                         }
-                    }
-                    else
-                    {
-                        Vehicle.WasSpawnedEmpty = true;
                     }
                 }
             }
@@ -139,6 +136,7 @@ public class SpawnTask
                 return null;
             }
             ped.IsPersistent = true;
+            EntryPoint.PersistentPedsCreated++;
             if (AddBlip && ped.Exists())
             {
                 Blip myBlip = ped.AttachBlip();
@@ -184,6 +182,7 @@ public class SpawnTask
             {
                 CopVehicle.WasModSpawned = true;
                 copcar.IsPersistent = true;
+                EntryPoint.PersistentVehiclesCreated++;
                 CopVehicle.UpdateLivery(Agency);
                 CopVehicle.UpgradePerformance();
                 CreatedVehicles.Add(CopVehicle);

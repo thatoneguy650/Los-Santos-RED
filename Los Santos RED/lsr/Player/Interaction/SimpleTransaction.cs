@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,7 +20,7 @@ public class SimpleTransaction : Interaction
     private ISettingsProvideable Settings;
     private Rage.Object SellingProp;
     private MenuPool menuPool;
-    private UIMenu Menu;
+    private UIMenu ModItemMenu;
     private Camera StoreCam;
 
     private Quaternion _lookRotation;
@@ -28,13 +29,16 @@ public class SimpleTransaction : Interaction
     private bool IsDisposed = false;
     private bool IsUsingCustomCam = false;
     private IModItems ModItems;
+    private ITimeReportable Time;
+    private int ItemsBought;
 
-    public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings, IModItems modItems)
+    public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time)
     {
         Player = player;
         Store = store;
         Settings = settings;
         ModItems = modItems;
+        Time = time;
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
@@ -50,6 +54,10 @@ public class SimpleTransaction : Interaction
 
             if (IsUsingCustomCam)
             {
+                if (ItemsBought > 0)
+                {
+                    SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+                }
                 if (!Player.IsInVehicle)
                 {
                     Game.LocalPlayer.Character.Position = Store.EntrancePosition;
@@ -82,9 +90,10 @@ public class SimpleTransaction : Interaction
     {
         if (Store != null)
         {
-            Menu = new UIMenu(Store.Name, Store.Description);
-            Menu.OnItemSelect += OnItemSelect;
-            menuPool.Add(Menu);
+            ModItemMenu = new UIMenu(Store.Name, Store.Description);
+            ModItemMenu.OnIndexChange += OnIndexChange;
+            ModItemMenu.OnItemSelect += OnItemSelect;
+            menuPool.Add(ModItemMenu);
             Player.IsConversing = true;
             if(Player.IsInVehicle || Store.Type == LocationType.DriveThru)
             {
@@ -107,6 +116,10 @@ public class SimpleTransaction : Interaction
             EntryPoint.WriteToConsole($"Simple Transaction START {IsUsingCustomCam}", 3);
             GameFiber.StartNew(delegate
             {
+                if(IsUsingCustomCam)
+                {
+                    GameFiber.Sleep(1500);
+                }
                 Greet();
                 ShowMenu();
                 Tick();
@@ -120,13 +133,28 @@ public class SimpleTransaction : Interaction
         {
             StoreCam = new Camera(false);
         }
-        Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading+90f, 10f);
-        InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + 7f);
-        StoreCam.Position = InitialCameraPosition;
+        if(Store.HasCustomCamera)
+        {
+            StoreCam.Position = Store.CameraPosition;
+            StoreCam.Rotation = Store.CameraRotation;
+        }
+        else
+        {
+            float distanceAway = 10f;
+            float distanceAbove = 7f;
+            if (Store.Type == LocationType.Hotel)
+            {
+                distanceAway = 30f;
+                distanceAbove = 20f;
+            }
+            Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, distanceAway);
+            InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
+            StoreCam.Position = InitialCameraPosition;
+            Vector3 ToLookAt = new Vector3(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z + 2f);
+            _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
+            StoreCam.Direction = _direction;
+        }
         StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-        Vector3 ToLookAt = new Vector3(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z + 2f);
-        _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
-        StoreCam.Direction = _direction;
         if (!InterpolationCamera.Exists())
         {
             InterpolationCamera = new Camera(false);
@@ -137,6 +165,7 @@ public class SimpleTransaction : Interaction
         InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
         InterpolationCamera.Active = true;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+
     }
     private void ReturnToGameplay()
     {
@@ -151,6 +180,51 @@ public class SimpleTransaction : Interaction
         InterpolationCamera.Active = true;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
     }
+    //private void HighlightStoreWithCamera()
+    //{
+    //    if (!StoreCam.Exists())
+    //    {
+    //        StoreCam = new Camera(false);
+    //    }
+    //    float distanceAway = 10f;
+    //    float distanceAbove = 7f;
+    //    if(Store.Type == LocationType.Hotel)
+    //    {
+    //        distanceAway = 30f;
+    //        distanceAbove = 20f;
+    //    }
+    //    Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading+90f, distanceAway);
+    //    InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
+    //    StoreCam.Position = InitialCameraPosition;
+    //    StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+    //    Vector3 ToLookAt = new Vector3(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z + 2f);
+    //    _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
+    //    StoreCam.Direction = _direction;
+    //    if (!InterpolationCamera.Exists())
+    //    {
+    //        InterpolationCamera = new Camera(false);
+    //    }
+    //    InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+    //    InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+    //    Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+    //    InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+    //    InterpolationCamera.Active = true;
+    //    NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+
+    //}
+    //private void ReturnToGameplay()
+    //{
+    //    if (!InterpolationCamera.Exists())
+    //    {
+    //        InterpolationCamera = new Camera(false);
+    //    }
+    //    InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+    //    InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+    //    Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+    //    InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+    //    InterpolationCamera.Active = true;
+    //    NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
+    //}
     private void Tick()
     {
         while (CanContinueConversation)
@@ -169,14 +243,15 @@ public class SimpleTransaction : Interaction
     }
     private void CreateTransactionMenu()
     {
-        Menu.Clear();
+        ModItemMenu.Clear();
         foreach (MenuItem cii in Store.Menu)
         {
             if (cii != null)
             {
-                Menu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
+                ModItemMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
             }
         }
+        OnIndexChange(ModItemMenu, ModItemMenu.CurrentSelection);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -184,6 +259,8 @@ public class SimpleTransaction : Interaction
         MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
         {
+            HideMenu();
+            ItemsBought++;
             Buy();
             if (ToAdd.Type != eConsumableType.Service)
             {
@@ -197,25 +274,83 @@ public class SimpleTransaction : Interaction
             Player.GiveMoney(-1 * menuItem.Price);
         }
         GameFiber.Sleep(500);
+        while (Player.IsPerformingActivity)
+        {
+            GameFiber.Sleep(500);
+        }
+        ShowMenu();
+    }
+    private void OnIndexChange(UIMenu sender, int newIndex)
+    {
+        EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange IncomingIndex {newIndex}", 5);
+        if (SellingProp.Exists())
+        {
+            SellingProp.Delete();
+        }
+        UIMenuItem myItem = sender.MenuItems[newIndex];
+        ModItem itemToShow = null;
+        if (myItem != null)
+        {
+            EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
+            itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
+        }
+        if (itemToShow != null && itemToShow.PhysicalItem != null)
+        {
+            PreviewItem(itemToShow);
+        }
+    }
+    private void PreviewItem(ModItem itemToShow)
+    {
+        string ModelToSpawn = itemToShow.PhysicalItem.PackageModelName;
+        bool useClose = !itemToShow.PhysicalItem.PackageIsLarge;
+        if (ModelToSpawn == "")
+        {
+            ModelToSpawn = itemToShow.PhysicalItem.ModelName;
+            useClose = !itemToShow.PhysicalItem.ItemIsLarge;
+        }
+        if (ModelToSpawn != "")
+        {
+            if (useClose)
+            {
+                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+            }
+            else
+            {
+                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
+            }
+            if (SellingProp.Exists())
+            {
+                SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw - 90f);
+                SellingProp.IsGravityDisabled = true;
+            }
+        }
     }
     private void HideMenu()
     {
-        Menu.Visible = false;
+        if (SellingProp.Exists())
+        {
+            SellingProp.Delete();
+        }
+        ModItemMenu.Visible = false;
     }
     private void ShowMenu()
     {
-        if (!Menu.Visible)
+        if (!ModItemMenu.Visible)
         {
             CreateTransactionMenu();
-            Menu.Visible = true;
+            ModItemMenu.Visible = true;
         }
     }
     private void Loop()
     {
         menuPool.ProcessMenus();
-        if (!IsActivelyConversing && !Menu.Visible)
+        if (!IsActivelyConversing && !ModItemMenu.Visible)
         {
             Dispose();
+        }
+        if(SellingProp.Exists())
+        {
+            SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);
         }
     }
     private bool CanSay(Ped ToSpeak, string Speech)
@@ -224,14 +359,12 @@ public class SimpleTransaction : Interaction
         return CanSay;
     }
     private void Buy()
-    {
-        HideMenu();
+    {     
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);    
+        //SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);    
         IsActivelyConversing = false;
-        ShowMenu();
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {

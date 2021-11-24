@@ -51,16 +51,15 @@ namespace Mod
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public int PoliceVehicleCount => Vehicles.PoliceVehiclesCount;
+        public int SpawnedPoliceVehicleCount => Vehicles.SpawnedPoliceVehiclesCount;
         public int CivilianVehicleCount => Vehicles.CivilianVehiclesCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public List<EMT> EMTList => Pedestrians.EMTs.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Firefighter> FirefighterList => Pedestrians.Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
+        public List<Merchant> MerchantList => Pedestrians.Merchants.Where(x => x.Pedestrian.Exists()).ToList();
         public int TotalSpawnedPolice => Pedestrians.TotalSpawnedPolice;
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
-
-        public List<Merchant> MerchantList => Pedestrians.Merchants.Where(x => x.Pedestrian.Exists()).ToList();
-
         public void Setup()
         {
             foreach (Zone zone in Zones.ZoneList)
@@ -98,7 +97,7 @@ namespace Mod
             }
         }
         public void AddEntity(Blip myBlip) => CreatedBlips.Add(myBlip);
-        public void AddEntity(PedExt pedExt)// => Pedestrians.Police.Add(cop);
+        public void AddEntity(PedExt pedExt)
         {
             if(pedExt.GetType() == typeof(Cop))
             {
@@ -197,6 +196,7 @@ namespace Mod
                     {
                         ActiveLocations.Add(gl);
                         SetupLocation(gl);
+                        GameFiber.Yield();
                     }
                 }
                 else
@@ -205,6 +205,7 @@ namespace Mod
                     {
                         ActiveLocations.Remove(gl);
                         RemoveLocation(gl);
+                        GameFiber.Yield();
                     }
                 }
             }

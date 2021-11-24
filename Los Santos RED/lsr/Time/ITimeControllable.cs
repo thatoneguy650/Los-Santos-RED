@@ -9,6 +9,8 @@ namespace LosSantosRED.lsr.Interface
     public interface ITimeControllable : ITimeReportable
     {
         bool IsNight { get; }
+        bool IsFastForwarding { get; }
+
         void UnPauseTime();
         void PauseTime();
         void FastForward(int v);

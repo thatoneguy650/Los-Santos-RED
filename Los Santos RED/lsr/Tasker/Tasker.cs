@@ -21,7 +21,6 @@ public class Tasker : ITaskerable, ITaskerReportable
     private List<PedExt> PossibleTargets;
     private Cop ClosestCopToPlayer;
     private IPlacesOfInterest PlacesOfInterest;
-
     private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
     private bool IsTimeToCreateCrime => Game.GameTime - GameTimeLastGeneratedCrime >= (Settings.SettingsManager.CivilianSettings.MinimumTimeBetweenRandomCrimes + RandomCrimeRandomTime);
     public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
@@ -164,7 +163,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 
                 Criminal.CanBeAmbientTasked = false;
                 Criminal.WasSetCriminal = true;
-                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim, PedProvider);
+                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim.Pedestrian, PedProvider);
                 Criminal.CurrentTask.Start();
                 //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
                 GameTimeLastGeneratedCrime = Game.GameTime;

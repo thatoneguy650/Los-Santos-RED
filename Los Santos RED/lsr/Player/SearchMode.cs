@@ -220,6 +220,7 @@ namespace LosSantosRED.lsr
                 if(GhostCop.Exists())
                 {
                     GhostCop.Delete();
+                    EntryPoint.PersistentPedsDeleted++;
                     PositionSet = Vector3.Zero;
                 }
             }
@@ -327,6 +328,7 @@ namespace LosSantosRED.lsr
                 GameTimeLastGhostCopCreated = Game.GameTime;
                 if (GhostCop.Exists())
                 {
+                    EntryPoint.PersistentPedsCreated++;
                     GhostCop.BlockPermanentEvents = false;
                     GhostCop.IsPersistent = true;
                     GhostCop.IsCollisionEnabled = false;

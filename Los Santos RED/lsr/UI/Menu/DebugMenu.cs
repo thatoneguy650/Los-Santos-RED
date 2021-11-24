@@ -19,9 +19,10 @@ public class DebugMenu : Menu
     private UIMenuItem GiveMoney;
     private UIMenuItem FillHealthAndArmor;
     private UIMenuItem KillPlayer;
-
+    private UIMenuItem LogCameraPositionMenu;
     private UIMenuItem LogInteriorMenu;
     private UIMenuItem LogLocationMenu;
+    private UIMenuItem LogLocationSimpleMenu;
     private UIMenuListItem GetRandomWeapon;
     private IActionable Player;
     private RadioStations RadioStations;
@@ -69,14 +70,18 @@ public class DebugMenu : Menu
         FillHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
         AutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
         LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
+        LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
         LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
+        LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GiveMoney);
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(AutoSetRadioStation);
         Debug.AddItem(LogLocationMenu);
+        Debug.AddItem(LogLocationSimpleMenu);
         Debug.AddItem(LogInteriorMenu);
+        Debug.AddItem(LogCameraPositionMenu);
     }
     private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -106,6 +111,14 @@ public class DebugMenu : Menu
         {
             LogGameLocation();
         }
+        else if (selectedItem == LogLocationSimpleMenu)
+        {
+            LogGameLocationSimple();
+        }
+        else if (selectedItem == LogCameraPositionMenu)
+        {
+            LogCameraPosition();
+        }
         else if (selectedItem == LogInteriorMenu)
         {
             LogGameInterior();
@@ -121,13 +134,35 @@ public class DebugMenu : Menu
         string text2 = NativeHelper.GetKeyboardInput("Name");
         WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
+    private void LogGameLocationSimple()
+    {
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string text1 = NativeHelper.GetKeyboardInput("LocationType");
+        string text2 = NativeHelper.GetKeyboardInput("Name");
+        WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"\"),");
+    }
+    private void LogCameraPosition()
+    {
+        uint CameraHAndle = NativeFunction.Natives.GET_RENDERING_CAM<uint>();
+        Vector3 pos = NativeFunction.Natives.GET_CAM_COORD<Vector3>(CameraHAndle);
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        Vector3 direction = Vector3.Zero;
+        WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
+    }
     private void LogGameInterior()
     {
         string text1 = NativeHelper.GetKeyboardInput("Name");
         string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";
         WriteToLogInteriors(toWrite);
     }
-
+    private void WriteToLogCameraPosition(String TextToLog)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(TextToLog + System.Environment.NewLine);
+        File.AppendAllText("Plugins\\LosSantosRED\\" + "CameraPositions.txt", sb.ToString());
+        sb.Clear();
+    }
     private void WriteToLogLocations(String TextToLog)
     {
         StringBuilder sb = new StringBuilder();

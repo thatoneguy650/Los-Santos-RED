@@ -33,6 +33,56 @@ public class ModItems : IModItems
     {
         ModItemsList = new List<ModItem>
         {
+
+            /*	<PropModel modelName="v_res_tre_pineapple" modelHash="0xce921430" />
+	<PropModel modelName="prop_pineapple" modelHash="0xcda1c62b" />
+	<PropModel modelName="ng_proc_food_bag01a" modelHash="0xf448d6de" />
+	<PropModel modelName="ng_proc_food_bag02a" modelHash="0xa0aba1c9" />
+	<PropModel modelName="ng_proc_food_burg01a" modelHash="0x170638da" />
+	<PropModel modelName="ng_proc_food_burg02a" modelHash="0x21bdd9d2" />
+	<PropModel modelName="ng_proc_food_burg02c" modelHash="0x754d00ef" />
+	<PropModel modelName="ng_proc_food_chips01a" modelHash="0x2f311fd2" />
+	<PropModel modelName="ng_proc_food_chips01b" modelHash="0x3c67ba3f" />
+	<PropModel modelName="ng_proc_food_chips01c" modelHash="0xbd113b84" />
+	<PropModel modelName="ng_proc_food_ornge1a" modelHash="0x5757bc3c" />
+	<PropModel modelName="prop_food_bag2" modelHash="0x57358f6b" />
+	<PropModel modelName="prop_food_bag1" modelHash="0x37d1509b" />
+	<PropModel modelName="prop_food_bs_bag_01" modelHash="0x8d6a84aa" />
+	<PropModel modelName="prop_food_bs_bag_02" modelHash="0x9b412057" />
+	<PropModel modelName="prop_food_bs_bag_03" modelHash="0x837270ba" />
+	<PropModel modelName="prop_food_bs_bag_04" modelHash="0x11f88dcc" />
+	<PropModel modelName="prop_food_bs_burg1" modelHash="0x7d682c79" />
+	<PropModel modelName="prop_food_bs_burg3" modelHash="0x2d488c3f" />
+	<PropModel modelName="prop_food_bs_burger2" modelHash="0x3ad97d39" />
+	<PropModel modelName="prop_food_bs_chips" modelHash="0x56072f5c" />
+	<PropModel modelName="prop_food_bs_coffee" modelHash="0x07a7232a" />
+	<PropModel modelName="prop_food_bs_juice01" modelHash="0x7ecb50cc" />
+	<PropModel modelName="prop_food_bs_juice02" modelHash="0x1a29871e" />
+	<PropModel modelName="prop_food_bs_juice03" modelHash="0x2bdbaa82" />
+	<PropModel modelName="prop_food_bs_tray_02" modelHash="0x8662b9bf" />
+	<PropModel modelName="prop_food_bs_tray_03" modelHash="0x78151d24" />
+	<PropModel modelName="prop_food_burg1" modelHash="0x3482b62e" />
+	<PropModel modelName="prop_food_burg2" modelHash="0xdacb82c1" />
+	<PropModel modelName="prop_food_burg3" modelHash="0x190bff41" />
+	<PropModel modelName="prop_food_cb_bag_01" modelHash="0x0b86b5bb" />
+	<PropModel modelName="prop_food_cb_bag_02" modelHash="0x56424b3d" />
+	<PropModel modelName="prop_food_cb_burg02" modelHash="0x125e5a30" />
+	<PropModel modelName="prop_food_cb_chips" modelHash="0x78f070c0" />
+	<PropModel modelName="prop_food_cb_coffee" modelHash="0xdc9894e1" />
+	<PropModel modelName="prop_food_cb_donuts" modelHash="0x8dcb8036" />
+	<PropModel modelName="prop_food_cb_juice01" modelHash="0xd8e622c5" />
+	<PropModel modelName="prop_food_cb_juice02" modelHash="0xf63a5d6d" />
+	<PropModel modelName="prop_food_cb_nugets" modelHash="0x83475c8d" />
+	<PropModel modelName="prop_food_cb_tray_02" modelHash="0x52c64b49" />
+	<PropModel modelName="prop_food_cb_tray_03" modelHash="0x2cf47fa6" />
+	<PropModel modelName="prop_food_chips" modelHash="0xe0ec50c9" />
+	<PropModel modelName="prop_food_coffee" modelHash="0xb220a1eb" />
+	<PropModel modelName="prop_food_juice01" modelHash="0x53df6ed4" />
+	<PropModel modelName="prop_food_juice02" modelHash="0xe1950a41" />
+	<PropModel modelName="prop_food_tray_02" modelHash="0xa9435803" />
+	<PropModel modelName="prop_food_tray_03" modelHash="0xafe36543" />
+            */
+
             new ModItem("Hot Dog",eConsumableType.Eat,"prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) ,
             new ModItem("Hot Sausage",eConsumableType.Eat,"prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),
             new ModItem("Hot Pretzel",eConsumableType.Eat,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),
@@ -80,10 +130,10 @@ public class ModItems : IModItems
 
             new ModItem("Screwdriver","prop_tool_screwdvr01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
             new ModItem("Hammer","prop_tool_hammer",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
-            new ModItem("Drill","prop_tool_drill",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) ,
-            new ModItem("Pliers","prop_tool_pliers",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
-            new ModItem("Shovel","prop_tool_shovel",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
-            new ModItem("Wrench","prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
+            new ModItem("Drill","prop_tool_drill",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
+            new ModItem("Pliers","prop_tool_pliers",false,57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
+            new ModItem("Shovel","prop_tool_shovel",true,57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
+            new ModItem("Wrench","prop_tool_wrench",true,57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
             
 
             new ModItem("Room: Single Twin",eConsumableType.Service),

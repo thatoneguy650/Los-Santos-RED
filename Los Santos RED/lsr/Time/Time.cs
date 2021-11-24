@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Mod
 {
@@ -16,7 +17,6 @@ namespace Mod
     public class Time : ITimeControllable, ITimeReportable
     {
         private int HourToStop = 0;
-        private bool IsFastForwarding = false;
         private int ClockMultiplier = 1;
         private uint GameTimeLastSetClock;
         private int Interval = 1000;
@@ -39,6 +39,7 @@ namespace Mod
         }
         public int CurrentHour { get; private set; }
         public bool IsNight { get; private set; }
+        public bool IsFastForwarding { get; private set; } = false;
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
@@ -65,24 +66,33 @@ namespace Mod
         }
         public void FastForward(int hoursToFastForward)
         {
-            if(!IsFastForwarding)
+
+            //Game.DisplayHelp($"Fastforward Started Press O to Stop");
+
+            GetIntervalAndMultiplier();
+            if (!IsFastForwarding)
             {
                 IsFastForwarding = true;
-                Interval = 10;
-                ClockMultiplier = 3;
                 int HoursFastForwarded = 0;
                 int prevCurrentHour = CurrentHour;
+                uint GameTimeStartedFastForwarding = Game.GameTime;
+                Game.TimeScale = 10f;
+                EntryPoint.WriteToConsole($"FASTFORWARD START CurrentHour {CurrentHour}  CurrentTime {CurrentTime} HoursFastForwarded {HoursFastForwarded} ClockMultiplier {ClockMultiplier} Interval {Interval}", 5);
                 GameFiber FastForwardTime = GameFiber.StartNew(delegate
                 {
-                    while (HoursFastForwarded < hoursToFastForward)
+                    while (HoursFastForwarded < hoursToFastForward)// && Game.GameTime - GameTimeStartedFastForwarding <= 60000)// && !Game.IsKeyDown(Keys.O))
                     {
                         if(prevCurrentHour != CurrentHour)
                         {
                             HoursFastForwarded++;
+                            prevCurrentHour = CurrentHour;
+                            EntryPoint.WriteToConsole($"FASTFORWARD INCREASE CurrentHour {CurrentHour}  CurrentTime {CurrentTime} HoursFastForwarded {HoursFastForwarded} ClockMultiplier {ClockMultiplier} Interval {Interval}", 5);
                         }
                         GameFiber.Yield();
                     }
                     IsFastForwarding = false;
+                    Game.TimeScale = 1f;
+                    //Game.DisplayHelp($"Fastforward Stopped");
                 }, "FastForwardTime");
 
             }
@@ -154,6 +164,11 @@ namespace Mod
                     Interval = 10;
                     ClockMultiplier = 3;
                 }
+            }
+            else
+            {
+                Interval = 10;
+                ClockMultiplier = 300;
             }
         }
         private void SetToStoredTime()

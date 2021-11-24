@@ -134,7 +134,7 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => $" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
+        public string DebugLine6 => $" IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => $"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning} {CurrentVehicle.Vehicle.Handle}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle} OwnedVehicleHandle {OwnedVehicleHandle}";
@@ -587,7 +587,17 @@ namespace Mod
         {
             if(location.Type == LocationType.Hotel)
             {
-                TimeControllable.FastForward(8);//dopesnt workl, want to wait anyways!?
+                IsPerformingActivity = true;
+                int HoursToRest = (24 - TimeControllable.CurrentHour) + 11;
+                TimeControllable.FastForward(HoursToRest);
+                GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+                {
+                    while (TimeControllable.IsFastForwarding)
+                    {
+                        GameFiber.Yield();
+                    }
+                    IsPerformingActivity = false;
+                }, "FastForwardWatcher");
                 EntryPoint.WriteToConsole($"PLAYER EVENT: StartServiceActivity HOTEL", 3);
             }
         }
@@ -886,7 +896,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings, ModItems);
+                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings, ModItems, TimeControllable);
                 Interaction.Start();
             }
         }
@@ -1485,7 +1495,7 @@ namespace Mod
                     }
                     else
                     {
-                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
+                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop )
                         {
                             CurrentVehicle.AttemptToLock();
                             GameFiber.Yield();
@@ -1502,9 +1512,9 @@ namespace Mod
                             CarJack MyJack = new CarJack(this, CurrentVehicle, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
                             MyJack.Start();
                         }
-                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
+                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
                         {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start", 3);
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
                             CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
                             MyBreakIn.BreakIn();
                         }
