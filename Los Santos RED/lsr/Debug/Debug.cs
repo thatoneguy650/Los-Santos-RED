@@ -512,6 +512,16 @@ public class Debug
         InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
         InterpolationCamera.Active = true;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
+        GameFiber.Sleep(1500);
+        InterpolationCamera.Active = false;
+        if (StoreCam.Exists())
+        {
+            StoreCam.Delete();
+        }
+        if (InterpolationCamera.Exists())
+        {
+            InterpolationCamera.Delete();
+        }
     }
 
     private void SetRadarZoomeFor20Seconds(float distance)

@@ -594,6 +594,10 @@ namespace Mod
                 {
                     while (TimeControllable.IsFastForwarding)
                     {
+                        if(Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth -1)
+                        {
+                            Game.LocalPlayer.Character.Health++;
+                        }
                         GameFiber.Yield();
                     }
                     IsPerformingActivity = false;

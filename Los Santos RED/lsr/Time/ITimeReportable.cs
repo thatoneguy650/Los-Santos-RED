@@ -10,5 +10,7 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsNight { get; }
         int CurrentHour { get; }
+        string CurrentTime { get; }
+        int CurrentDay { get; }
     }
 }

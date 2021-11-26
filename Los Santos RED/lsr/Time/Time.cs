@@ -25,20 +25,22 @@ namespace Mod
         private int StoredClockMinutes;
         private int StoredClockSeconds;
         private ISettingsProvideable Settings;
+        private string TimeTestString = "";
         public Time(ISettingsProvideable settings)
         {
             Settings = settings;
             NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
         }
-        public string CurrentTime
-        {
-            get
-            {
-                return string.Format("Current Time: {0}:{1}:{2}", NativeFunction.CallByName<int>("GET_CLOCK_HOURS"), NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"), NativeFunction.CallByName<int>("GET_CLOCK_SECONDS"));
-            }
-        }
-        public int CurrentHour { get; private set; }
-        public bool IsNight { get; private set; }
+        public string CurrentTime => CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt") + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
+        public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
+        public DateTime CurrentDateTime { get; private set; }
+        public int CurrentHour { get; private set; } = 0;
+        public int CurrentMinute { get; private set; } = 0;
+        public int CurrentSecond { get; private set; } = 0;
+        public int CurrentDay { get; private set; } = 1;
+        public int CurrentYear { get; private set; } = 2021;
+        public int CurrentMonth { get; private set; } = 1;
+        public bool IsNight { get; private set; } = false;
         public bool IsFastForwarding { get; private set; } = false;
         public void Dispose()
         {
@@ -118,6 +120,16 @@ namespace Mod
             {
                 NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
                 CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+                CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+
+
+                CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
+                CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
+                CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
+                //TimeTestString = CurrentYear.ToString() + "-" + CurrentMonth.ToString() + "-" + CurrentDay.ToString() + "-   {}   " + CurrentHour.ToString() + "-" + CurrentMinute.ToString() + "-" + CurrentSecond.ToString() + "-";
+                CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
+
                 if (CurrentHour >= 20 || CurrentHour <= 6)//8?7?pm to 6 am lights need to be on
                 {
                     IsNight = true;

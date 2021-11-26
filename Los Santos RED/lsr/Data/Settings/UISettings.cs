@@ -28,11 +28,16 @@ public class UISettings
     public int VehicleStatusJustificationID { get; set; } = 2;
     public GTAFont VehicleStatusFont { get; set; } = GTAFont.FontHouseScript;
     public bool ShowPlayerDisplay { get; set; } = true;
+    public bool FadePlayerDisplay { get; set; } = false;
+    public bool FadePlayerDisplayDuringWantedAndInvestigation { get; set; } = false;
+    public uint PlayerDisplayTimeToShow { get; set; } = 7500;
+    public uint PlayerDisplayTimeToFade { get; set; } = 1500;
     public float PlayerStatusPositionX { get; set; } = 0.84f;//= 0.6f;
     public float PlayerStatusPositionY { get; set; } = 0.98f;
     public float PlayerStatusScale { get; set; } = 0.52f;//0.5f;
     public int PlayerStatusJustificationID { get; set; } = 2;
     public GTAFont PlayerStatusFont { get; set; } = GTAFont.FontHouseScript;
+    public bool PlayerStatusIncludeTIme { get; set; } = true;
     public bool ShowStreetDisplay { get; set; } = true;
     public bool FadeStreetDisplay { get; set; } = true;
     public bool FadeStreetDisplayDuringWantedAndInvestigation { get; set; } = false;
@@ -75,6 +80,14 @@ public class UISettings
     public float RadarZoomDistance_Wanted { get; set; } = 175f;
     public float RadarZoomDistance_Investigation { get; set; } = 125f;
     public float RadarZoomDistance_Default { get; set; } = 75f;
+    //public bool ShowTimeDisplay { get; set; } = true;
+    //public float TimePositionX { get; set; } = 0.9f;
+    //public float TimePositionY { get; set; } = 0.4f;
+    //public float TimeScale { get; set; } = 0.52f;//0.5f;
+    //public GTAFont TimeFont { get; set; } = GTAFont.FontHouseScript;
+    //public int TimeJustificationID { get; set; } = 2;
+
+
     public UISettings()
     {
 

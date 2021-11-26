@@ -24,15 +24,19 @@ public class DebugMenu : Menu
     private UIMenuItem LogLocationMenu;
     private UIMenuItem LogLocationSimpleMenu;
     private UIMenuListItem GetRandomWeapon;
+    private UIMenuListItem TeleportToPOI;
     private IActionable Player;
     private RadioStations RadioStations;
     private int RandomWeaponCategory;
-    private IWeapons Weapons; 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations)
+    private IWeapons Weapons;
+    private IPlacesOfInterest PlacesOfInterest;
+    private int PlaceOfInterestSelected;
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest)
     {    
         Player = player;
         Weapons = weapons;
         RadioStations = radioStations;
+        PlacesOfInterest = placesOfInterest;
         Debug = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(Debug);
         Debug.OnItemSelect += DebugMenuSelect;
@@ -73,11 +77,16 @@ public class DebugMenu : Menu
         LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
         LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
         LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
+
+
+        TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
+
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GiveMoney);
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(AutoSetRadioStation);
+        Debug.AddItem(TeleportToPOI);
         Debug.AddItem(LogLocationMenu);
         Debug.AddItem(LogLocationSimpleMenu);
         Debug.AddItem(LogInteriorMenu);
@@ -95,6 +104,15 @@ public class DebugMenu : Menu
             if (myGun != null)
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+            }
+        }
+        else if (selectedItem == TeleportToPOI)
+        {
+            GameLocation ToTeleportTo = PlacesOfInterest.GetAllPlaces()[PlaceOfInterestSelected];
+            if(ToTeleportTo != null)
+            {
+                Game.LocalPlayer.Character.Position = ToTeleportTo.EntrancePosition;
+                Game.LocalPlayer.Character.Heading = ToTeleportTo.EntranceHeading;
             }
         }
         else if (selectedItem == GiveMoney)
@@ -125,7 +143,21 @@ public class DebugMenu : Menu
         }
         Debug.Visible = false;
     }
-
+    private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
+    {
+        if (list == GetRandomWeapon)
+        {
+            RandomWeaponCategory = index;
+        }
+        if (list == AutoSetRadioStation)
+        {
+            Player.AutoTuneStation = RadioStations.RadioStationList[index].InternalName;
+        }
+        if (list == TeleportToPOI)
+        {
+            PlaceOfInterestSelected = index;
+        }
+    }
     private void LogGameLocation()
     {
         Vector3 pos = Game.LocalPlayer.Character.Position;
@@ -147,8 +179,8 @@ public class DebugMenu : Menu
         uint CameraHAndle = NativeFunction.Natives.GET_RENDERING_CAM<uint>();
         Vector3 pos = NativeFunction.Natives.GET_CAM_COORD<Vector3>(CameraHAndle);
         Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-        Vector3 direction = Vector3.Zero;
-        WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
+        Vector3 direction = NativeHelper.GetGameplayCameraDirection();
+        WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
     }
     private void LogGameInterior()
     {
@@ -177,16 +209,5 @@ public class DebugMenu : Menu
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
-    private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
-    {
-        if (list == GetRandomWeapon)
-        {
-            RandomWeaponCategory = index;
-        }
-        if (list == AutoSetRadioStation)
-        {
-            Player.AutoTuneStation = RadioStations.RadioStationList[index].InternalName;
-            //EntryPoint.WriteToConsole($"Debug AutoTune Station {Player.AutoTuneStation}");
-        }
-    }
+
 }

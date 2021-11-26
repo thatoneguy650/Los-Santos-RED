@@ -123,7 +123,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings,UI);

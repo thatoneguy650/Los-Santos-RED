@@ -66,27 +66,32 @@ public class UI : IMenuProvideable
     private Fader StreetFader;
     private Fader ZoneFader;
     private Fader VehicleFader;
+    private Fader PlayerFader;
     private bool ZoneDisplayingStreetAlpha = false;
     private bool playerIsInVehicle = false;
+    private ITimeReportable Time;
+    
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeReportable time)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
         Jurisdictions = jurisdictions;
+        Time = time;
         BigMessage = new BigMessageThread(true);
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
         MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, playerinventory, modItems);
-        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations);
+        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
+        PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
     }
 
     private enum GTAHudComponent
@@ -301,6 +306,14 @@ public class UI : IMenuProvideable
             {
                 HideVanillaVehicleUI();
             }
+
+
+            //if (Settings.SettingsManager.UISettings.ShowTimeDisplay)
+            //{
+            //    DisplayTextOnScreen(GetTimeDisplay(), Settings.SettingsManager.UISettings.TimePositionX, Settings.SettingsManager.UISettings.TimePositionY, Settings.SettingsManager.UISettings.TimeScale, Color.White, Settings.SettingsManager.UISettings.TimeFont, (GTATextJustification)Settings.SettingsManager.UISettings.TimeJustificationID);
+            //}
+
+
             if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
             {
                 DisplayTextOnScreen(GetViolatingDisplay(), Settings.SettingsManager.UISettings.CrimesViolatingPositionX, Settings.SettingsManager.UISettings.CrimesViolatingPositionY, Settings.SettingsManager.UISettings.CrimesViolatingScale, Color.White, Settings.SettingsManager.UISettings.CrimesViolatingFont, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesViolatingJustificationID);
@@ -317,6 +330,22 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
                 DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
+
+                string newPlayerDisplay = GetPlayerDisplay();
+                if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation))
+                {
+                    PlayerFader.Update(newPlayerDisplay);
+                    DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID, PlayerFader.AlphaValue);
+                }
+                else
+                {
+                    DisplayTextOnScreen(newPlayerDisplay, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
+                }
+
+
+
+
+
             }
 
             if(playerIsInVehicle != DisplayablePlayer.IsInVehicle)
@@ -368,6 +397,18 @@ public class UI : IMenuProvideable
             }
         }
     }
+
+    private string GetTimeDisplay()
+    {
+        string TimeDisplay = "";
+        if (Time.CurrentDay != 0)
+        {
+            TimeDisplay = Time.CurrentTime;
+
+        } 
+        return TimeDisplay;
+    }
+
     private void DisplaySpeedLimitSign()
     {
         if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
@@ -589,6 +630,17 @@ public class UI : IMenuProvideable
                 PlayerDisplay += $"~o~ BOLO Issued~s~";
             }
             
+        }
+        if(DisplayablePlayer.IsNotWanted)
+        {
+            if (PlayerDisplay == "")
+            {
+                PlayerDisplay = GetTimeDisplay();
+            }
+            else
+            {
+                PlayerDisplay += " " + GetTimeDisplay();
+            }
         }
         return PlayerDisplay;
     }

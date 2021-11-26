@@ -112,7 +112,15 @@ namespace LosSantosRED.lsr.Player
                     if (Food.Exists())
                     {
                         Food.Delete();
-                        Player.Character.Health += 10;
+                        if(Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
+                        {
+                            int ToAdd = 10;
+                            if(Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health < 10)
+                            {
+                                ToAdd = Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health;
+                            }
+                            Player.Character.Health += ToAdd;
+                        }
                     }
                 }
                 if (AnimationTime >= 1.0f)

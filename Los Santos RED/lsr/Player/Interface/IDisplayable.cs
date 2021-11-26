@@ -51,5 +51,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsInSearchMode { get; }
         PoliceResponse PoliceResponse { get; }
         bool IsInVehicle { get; }
+        bool IsNotWanted { get; }
     }
 }

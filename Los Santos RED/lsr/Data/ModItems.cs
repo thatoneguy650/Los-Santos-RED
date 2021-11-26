@@ -88,15 +88,12 @@ public class ModItems : IModItems
             new ModItem("Hot Pretzel",eConsumableType.Eat,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),
             new ModItem("3 Mini Pretzels",eConsumableType.Eat,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),
             new ModItem("Nuts",eConsumableType.Eat,"",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),
-            new ModItem("Bottle of Water",eConsumableType.Drink,"",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)),
+            new ModItem("Bottle of Raine Water",eConsumableType.Drink,"ba_prop_club_water_bottle",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)),
             new ModItem("Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
             new ModItem("Megacheese Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
             new ModItem("Double Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) ,
             new ModItem("Kingsize Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) ,
             new ModItem("Bacon Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) ,
-            new ModItem("Redwood Cigarette",eConsumableType.Smoke,"ng_proc_cigarette01a","p_fag_packet_01_s",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
-            new ModItem("Joint",eConsumableType.Smoke,"p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) { AmountPerPackage = 5, IsIntoxicating = true },
-            new ModItem("Estancia Cigar",eConsumableType.Smoke,"prop_cigar_02","p_cigar_pack_02_s",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)) { AmountPerPackage = 20 },
             new ModItem("Donut",eConsumableType.Eat,"prop_donut_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)) ,
             new ModItem("Slice of Pizza",eConsumableType.Eat,"v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
             new ModItem("Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
@@ -113,10 +110,10 @@ public class ModItems : IModItems
             new ModItem("Bottle of Dusche",eConsumableType.Drink,"prop_beerdusche",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) { IsIntoxicating = true },
             new ModItem("Can of eCola",eConsumableType.Drink,"ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)),
             new ModItem("Can of Sprunk",eConsumableType.Drink,"ng_proc_sodacan_01b",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)),
-            new ModItem("Cup of eCola",eConsumableType.Drink,"ng_proc_sodacup_01a",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
+            new ModItem("Cup of eCola",eConsumableType.Drink,"prop_food_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
             new ModItem("Cup of Sprunk",eConsumableType.Drink,"ng_proc_sodacup_01b",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
-            new ModItem("Cup of Coffee",eConsumableType.Drink,"prop_food_bs_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)),
-            new ModItem("French Fries",eConsumableType.Eat,"prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
+            new ModItem("Cup of Coffee",eConsumableType.Drink,"prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)),
+            new ModItem("French Fries",eConsumableType.Eat,"prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
             new ModItem("Banana",eConsumableType.Eat,"ng_proc_food_nana1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
             new ModItem("Orange",eConsumableType.Eat,"ng_proc_food_ornge1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
             new ModItem("Apple",eConsumableType.Eat,"ng_proc_food_aple1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
@@ -124,8 +121,7 @@ public class ModItems : IModItems
             new ModItem("Phat Chips",eConsumableType.Eat,"ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
             new ModItem("Triple Burger",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
             new ModItem("Bacon Triple Cheese Melt",eConsumableType.Eat,"prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
-            new ModItem("Jumbo Shake",eConsumableType.Drink,"",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
-            new ModItem("French Fries",eConsumableType.Eat,"",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
+            new ModItem("Jumbo Shake",eConsumableType.Drink,"prop_food_juice01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
             new ModItem("Taco",eConsumableType.Eat,"",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
 
             new ModItem("Screwdriver","prop_tool_screwdvr01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
@@ -136,6 +132,27 @@ public class ModItems : IModItems
             new ModItem("Wrench","prop_tool_wrench",true,57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
             
 
+            //BurgerShot
+            new ModItem("Money Shot Meal",eConsumableType.Eat,"prop_food_bs_burg1","prop_food_bs_tray_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
+            new ModItem("The Bleeder Meal",eConsumableType.Eat,"prop_food_bs_burg1","prop_food_bs_tray_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
+            new ModItem("Torpedo Meal",eConsumableType.Eat,"prop_food_bs_burger2","prop_food_bs_tray_03",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
+            new ModItem("Meat Free Meal",eConsumableType.Eat,"prop_food_bs_burger2","prop_food_bs_tray_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
+            new ModItem("Freedom Fries",eConsumableType.Eat,"prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) ,
+            new ModItem("Double Shot Coffee",eConsumableType.Drink,"prop_food_bs_coffee",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
+            new ModItem("Liter of eCola",eConsumableType.Drink,"prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
+            new ModItem("Liter of Sprunk",eConsumableType.Drink,"prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)),
+            
+
+
+
+            //CB
+
+
+            //Generic
+
+
+
+
             new ModItem("Room: Single Twin",eConsumableType.Service),
             new ModItem("Room: Single Queen",eConsumableType.Service),
             new ModItem("Room: Double Queen",eConsumableType.Service),
@@ -145,6 +162,73 @@ public class ModItems : IModItems
             new ModItem("Half And Half",eConsumableType.Service),
             new ModItem("Head",eConsumableType.Service),
             new ModItem("Handy",eConsumableType.Service),
+
+
+
+            //wrapped burger prop_food_bs_burg1
+            //wrapped sandwich prop_food_bs_burger2
+            //empty BS tray prop_food_bs_tray_01
+            //buirger fries BS Tray prop_food_bs_tray_02
+            //sandwich lettuce BS tray prop_food_bs_tray_03
+
+
+            //empty CB tray prop_food_cb_tray_01
+            //burger tray CB prop_food_cb_tray_02
+            //niugget tray CB prop_food_cb_tray_03
+
+
+
+            //generic bag 1 prop_food_bag1
+            //generic bag 2 prop_food_bag2
+            //generic wrapped burger prop_food_burg1
+            //generic wrapped sandwich prop_food_burg2
+            //generic burger box prop_food_burg3
+            //generic fries prop_food_chips
+            //generic coffee prop_food_coffee
+            //generic cup ecola1 prop_food_juice01
+            //generic cup ecola2 prop_food_juice02
+
+            //generic empty tray prop_food_tray_01
+            //geneir cburger tray prop_food_tray_02
+            //generic sandwich tray prop_food_tray_03
+
+
+            //generic red wine prop_wine_red
+            //generic wine bottle prop_wine_bot_01
+            //geneirc wine bottle prop_wine_bot_02
+            //generic wine rose prop_wine_rose
+            //generic wine white prop_wine_white
+            //generic wine red prop_wine_red
+
+            //packed cigarettes redwood prop_ld_fags_01
+            //packed cigarettes Debonaire prop_ld_fags_02
+
+
+            //packed redwood 1 v_ret_ml_cigs
+            //packed redwood 2 v_ret_ml_cigs2
+            //packed debonaire 1 v_ret_ml_cigs3
+            //packed debonaire 2 v_ret_ml_cigs4
+
+            //packed Caradique? v_ret_ml_cigs5
+            //packed 69 Brand v_ret_ml_cigs6
+
+            new ModItem("Redwood Regular",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+            new ModItem("Redwood Mild",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs2",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+            new ModItem("Debonaire",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs3",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+            new ModItem("Debonaire Menthol",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs4",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+            new ModItem("Caradique",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs5",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+            new ModItem("69 Brand",eConsumableType.Smoke,"ng_proc_cigarette01a","v_ret_ml_cigs6",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) {  AmountPerPackage = 20 },
+
+            new ModItem("Joint",eConsumableType.Smoke,"p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)) { AmountPerPackage = 5, IsIntoxicating = true },
+            new ModItem("Estancia Cigar",eConsumableType.Smoke,"prop_cigar_02","p_cigar_pack_02_s",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)) { AmountPerPackage = 20 },
+
+            new ModItem("Lighter","ng_proc_ciglight01a",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
+            
+            //Sandwiches
+            new ModItem("Gut Buster Sandwich",eConsumableType.Eat,"prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) ,
+            new ModItem("Ham and Tuna Sandwich",eConsumableType.Eat,"prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) ,
+            new ModItem("Chef's Salad",eConsumableType.Eat,"prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) ,
+
         };
     }
     public ModItem Get(string name)

@@ -31,7 +31,21 @@ public class SimpleTransaction : Interaction
     private IModItems ModItems;
     private ITimeReportable Time;
     private int ItemsBought;
-
+    private enum eSetPlayerControlFlag
+    {
+        SPC_AMBIENT_SCRIPT = (1 << 1),
+        SPC_CLEAR_TASKS = (1 << 2),
+        SPC_REMOVE_FIRES = (1 << 3),
+        SPC_REMOVE_EXPLOSIONS = (1 << 4),
+        SPC_REMOVE_PROJECTILES = (1 << 5),
+        SPC_DEACTIVATE_GADGETS = (1 << 6),
+        SPC_REENABLE_CONTROL_ON_DEATH = (1 << 7),
+        SPC_LEAVE_CAMERA_CONTROL_ON = (1 << 8),
+        SPC_ALLOW_PLAYER_DAMAGE = (1 << 9),
+        SPC_DONT_STOP_OTHER_CARS_AROUND_PLAYER = (1 << 10),
+        SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
+        SPC_ALLOW_PAD_SHAKE = (1 << 12)
+    };
     public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time)
     {
         Player = player;
@@ -63,12 +77,17 @@ public class SimpleTransaction : Interaction
                     Game.LocalPlayer.Character.Position = Store.EntrancePosition;
                     Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
                     Game.LocalPlayer.Character.IsVisible = true;
-                    Game.LocalPlayer.HasControl = true;
+                    
                     Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), 1.0f, Store.EntranceHeading, 1.0f, 1500);
                 }
                 ReturnToGameplay();
                 GameFiber.Sleep(1500);
                 InterpolationCamera.Active = false;
+                if (!Player.IsInVehicle)
+                {
+                    Game.LocalPlayer.HasControl = true;
+                    NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
+                }
                 if (StoreCam.Exists())
                 {
                     StoreCam.Delete();
@@ -107,7 +126,8 @@ public class SimpleTransaction : Interaction
             {
                 HighlightStoreWithCamera();
                 Game.LocalPlayer.HasControl = false;
-                Game.LocalPlayer.Character.IsVisible = false;   
+                Game.LocalPlayer.Character.IsVisible = false;
+                NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
             }
             else
             {
@@ -137,6 +157,7 @@ public class SimpleTransaction : Interaction
         {
             StoreCam.Position = Store.CameraPosition;
             StoreCam.Rotation = Store.CameraRotation;
+            StoreCam.Direction = Store.CameraDirection;
         }
         else
         {
@@ -301,28 +322,42 @@ public class SimpleTransaction : Interaction
     }
     private void PreviewItem(ModItem itemToShow)
     {
-        string ModelToSpawn = itemToShow.PhysicalItem.PackageModelName;
-        bool useClose = !itemToShow.PhysicalItem.PackageIsLarge;
-        if (ModelToSpawn == "")
+        try
         {
-            ModelToSpawn = itemToShow.PhysicalItem.ModelName;
-            useClose = !itemToShow.PhysicalItem.ItemIsLarge;
+            string ModelToSpawn = itemToShow.PhysicalItem.PackageModelName;
+            bool useClose = !itemToShow.PhysicalItem.PackageIsLarge;
+            if (ModelToSpawn == "")
+            {
+                ModelToSpawn = itemToShow.PhysicalItem.ModelName;
+                useClose = !itemToShow.PhysicalItem.ItemIsLarge;
+            }
+            if (ModelToSpawn != "")
+            {
+                if (useClose)
+                {
+                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+                }
+                else
+                {
+                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
+                }
+                if (SellingProp.Exists())
+                {
+                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw - 45f);
+                    if (SellingProp != null && SellingProp.Exists())
+                    {
+                        NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
+
+
+                        //SellingProp.IsGravityDisabled = true;
+                    }
+                }
+            }
         }
-        if (ModelToSpawn != "")
+        catch(Exception ex)
         {
-            if (useClose)
-            {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
-            }
-            else
-            {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
-            }
-            if (SellingProp.Exists())
-            {
-                SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw - 90f);
-                SellingProp.IsGravityDisabled = true;
-            }
+            Game.DisplayNotification("Error Displaying Item");
+            EntryPoint.WriteToConsole(ex.Message + ";" + ex.StackTrace, 0);
         }
     }
     private void HideMenu()
@@ -362,7 +397,7 @@ public class SimpleTransaction : Interaction
     {     
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        //SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         //SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);    
         IsActivelyConversing = false;
     }
