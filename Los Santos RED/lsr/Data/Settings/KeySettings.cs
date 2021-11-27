@@ -14,7 +14,7 @@ public class KeySettings
     public Keys RightIndicatorKey { get; set; } = Keys.E;
     public Keys LeftIndicatorKey { get; set; } = Keys.Q;
     public Keys HazardKey { get; set; } = Keys.Space;
-    public Keys EngineToggle { get; set; } = Keys.X;
+    public Keys EngineToggle { get; set; } = Keys.Z;// Keys.X;
 
 
 

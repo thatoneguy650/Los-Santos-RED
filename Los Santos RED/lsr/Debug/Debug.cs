@@ -397,7 +397,8 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnModelChecker2();
+        Game.LocalPlayer.Character.Health = RandomItems.MyRand.Next(5, 90);
+        //SpawnModelChecker2();
         //string text1 = NativeHelper.GetKeyboardInput("");
         //string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";
         //WriteToLogInteriors(toWrite);
@@ -427,7 +428,35 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        SpawnModelChecker();
+        int TotalEntities = 0;
+        EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
+        foreach (Entity ent in EntryPoint.SpawnedEntities)
+        {
+            if(ent.Exists())
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead}", 2);
+            }
+        }
+        EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        TotalEntities = 0;
+
+        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
+        foreach (Entity ent in AllEntities)
+        {
+            if (ent.Exists() && ent.IsPersistent)
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead}", 2);
+            }
+        }
+        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        WriteCopState();
+
+        //SpawnModelChecker();
         //Vector3 pos = Game.LocalPlayer.Character.Position;
         //float Heading = Game.LocalPlayer.Character.Heading;
         //string text1 = NativeHelper.GetKeyboardInput("");
@@ -436,12 +465,14 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        HighlightStoreWithCamera();
+        EntryPoint.WriteToConsole($"FASTFORWARD 8 HOURS {Time.CurrentTime}", 5);
+        Time.FastForward(8);
+      //  HighlightStoreWithCamera();
 
 
 
-      GameFiber.Sleep(5000);
-        ReturnToGameplay();
+      //GameFiber.Sleep(5000);
+      //  ReturnToGameplay();
         //EntryPoint.WriteToConsole($"CURRENT TIME (PRE) {Time.CurrentTime}", 5);     
         //Time.FastForward(8);
         //GameFiber.Sleep(5000);
@@ -462,7 +493,11 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-       // SetRadarZoomeFor20Seconds(1000f);
+        EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
+
+        Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+
+        // SetRadarZoomeFor20Seconds(1000f);
         //Player.OnSuspectEluded();
         //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
     }
@@ -1131,6 +1166,38 @@ public class Debug
             EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ COPS END", 5);
+    }
+    private void WriteCopState()
+    {
+        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES START", 2);
+        foreach (VehicleExt veh in World.PoliceVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        {
+            EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsPersistent {veh.Vehicle.IsPersistent}", 2);
+        }
+        EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES END", 2);
+        EntryPoint.WriteToConsole($"============================================ COPS START", 2);
+        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        {
+            string VehString = "";
+            string combat = "";
+            if (cop.IsInVehicle && cop.Pedestrian.CurrentVehicle.Exists())
+            {
+                VehString = cop.Pedestrian.CurrentVehicle.Model.Name;
+            }
+            if (cop.Pedestrian.CombatTarget.Exists())
+            {
+                combat = " Combat: " + cop.Pedestrian.CombatTarget.Handle.ToString();
+            }
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(cop.Pedestrian, out currentWeapon, true);
+            string Weapon = $" Weapon: {currentWeapon}";
+            uint currentVehicleWeapon;
+            bool hasVehicleWeapon = false;
+            hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
+            string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
+            EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask?.OtherTarget?.Handle} Vehicle {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 2);
+        }
+        EntryPoint.WriteToConsole($"============================================ COPS END", 2);
     }
     private void SetIndex()
     {

@@ -14,14 +14,12 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         bool IsInVehicle { get; }
         bool IsPerformingActivity { get; }
-        string AutoTuneStation { get; set; }
         bool CanPerformActivities { get; }
         List<LicensePlate> SpareLicensePlates { get; }
         List<InventoryItem> ConsumableItems { get; }
         bool IsCop { get; }
         LocationData CurrentLocation { get; }
         List<InventoryItem> InventoryItems { get; }
-
         void StartSmokingPot();
         void StartSmoking();
         void StartDrinkingActivity();

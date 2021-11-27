@@ -34,7 +34,6 @@ public class Vehicles
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
     public int PoliceVehiclesCount => PoliceVehicles.Count();
     public int CivilianVehiclesCount => CivilianVehicles.Count();
-
     public int PoliceHelicoptersCount
     {
         get

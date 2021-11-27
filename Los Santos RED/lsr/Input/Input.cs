@@ -140,7 +140,7 @@ namespace LosSantosRED.lsr
         }
         private void WeaponDropCheck()
         {
-            if (IsPressingDropWeapon && Player.CanDropWeapon)
+            if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerSettings.AllowWeaponDropping)
             {
                 Player.DropWeapon();
             }
@@ -151,7 +151,7 @@ namespace LosSantosRED.lsr
             {
                 if(!RecentlyPressedEngineToggle)
                 {
-                    if(IsPressingEngineToggle)
+                    if(IsPressingEngineToggle && Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
                     {
                         Player.CurrentVehicle.Engine.Toggle();
                         GameTimeLastPressedEngineToggle = Game.GameTime;
@@ -159,20 +159,23 @@ namespace LosSantosRED.lsr
                 }
                 if (!RecentlyPressedIndicators)
                 {
-                    if (IsPressingHazards)
+                    if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
                     {
-                        Player.CurrentVehicle.Indicators.ToggleHazards();
-                        GameTimeLastPressedIndicators = Game.GameTime;
-                    }
-                    if (IsPressingLeftIndicator)
-                    {
-                        Player.CurrentVehicle.Indicators.ToggleLeft();
-                        GameTimeLastPressedIndicators = Game.GameTime;
-                    }
-                    if (IsPressingRightIndicator)
-                    {
-                        Player.CurrentVehicle.Indicators.ToggleRight();
-                        GameTimeLastPressedIndicators = Game.GameTime;
+                        if (IsPressingHazards)
+                        {
+                            Player.CurrentVehicle.Indicators.ToggleHazards();
+                            GameTimeLastPressedIndicators = Game.GameTime;
+                        }
+                        if (IsPressingLeftIndicator)
+                        {
+                            Player.CurrentVehicle.Indicators.ToggleLeft();
+                            GameTimeLastPressedIndicators = Game.GameTime;
+                        }
+                        if (IsPressingRightIndicator)
+                        {
+                            Player.CurrentVehicle.Indicators.ToggleRight();
+                            GameTimeLastPressedIndicators = Game.GameTime;
+                        }
                     }
                 }
             }

@@ -8,8 +8,8 @@ public class PlayerSettings
 {
     public uint AlarmedCarTimeToReportStolen { get; set; } = 100000;
     public uint NonAlarmedCarTimeToReportStolen { get; set; } = 600000;
-    public string AutoTuneRadioStation { get; set; } = "RADIO_19_USER";
     public bool KeepRadioStationAutoTuned { get; set; } = false;
+    public string AutoTuneRadioStation { get; set; } = "NONE";    
     public uint Recognize_BaseTime { get; set; } = 2000;
     public uint Recognize_NightPenalty { get; set; } = 3500;
     public uint Recognize_VehiclePenalty { get; set; } = 750;
@@ -23,7 +23,6 @@ public class PlayerSettings
     public int Scanner_DelayMinTime { get; set; } = 1500;
     public int Scanner_DelayMaxTime { get; set; } = 2500;
     public bool Scanner_AllowStatusAnnouncements { get; set; } = true;
-    public bool WeaponDrop_IsEnabled { get; set; } = true;
     public uint Violations_RecentlyHurtCivilianTime { get; set; } = 5000;
     public uint Violations_RecentlyHurtPoliceTime { get; set; } = 5000;
     public uint Violations_RecentlyKilledCivilianTime { get; set; } = 5000;
@@ -47,14 +46,21 @@ public class PlayerSettings
     public float CriminalHistory_SearchRadiusIncrement { get; set; } = 400f;
     public bool SearchMode_FakeActiveWanted { get; set; } = true;
     public uint SearchMode_SearchTimeMultiplier { get; set; } = 30000;
-    public bool ScaleEngineDamage { get; set; } = true;
     public bool AllowStartRandomScenario { get; set; } = false;
     public bool SetSlowMoOnDeath { get; set; } = true;
     public bool AllowConsumeWithoutInventory { get; set; } = false;
+    public bool AllowSetEngineState { get; set; } = true;
+    public bool ScaleEngineDamage { get; set; } = true;
+    public float ScaleEngineDamageMultiplier { get; set; } = 3.0f;
+    public bool AllowSetIndicatorState { get; set; } = true;
+    public bool AllowWeaponDropping { get; set; } = true;
 
     public PlayerSettings()
     {
-
+        #if DEBUG
+                AutoTuneRadioStation = "RADIO_19_USER";
+                KeepRadioStationAutoTuned = true;
+        #endif
     }
 
 }

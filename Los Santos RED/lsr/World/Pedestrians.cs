@@ -139,10 +139,6 @@ public class Pedestrians
         if (pedExt != null)
         {
             return pedExt;
-
-            //List<GameFiber> MyFibers = new List<GameFiber>();
-            //MyFibers.Add(GameFiber.StartNew(delegate { int x; }, "test"));
-            //MyFibers.FirstOrDefault().IsAlive;
        }
         pedExt = EMTs.FirstOrDefault(x => x.Handle == Handle);
         if (pedExt != null)
@@ -298,7 +294,9 @@ public class Pedestrians
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);
+            EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }
+        EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL", 2);
     }
     public Agency GetAgency(Ped Cop, int WantedLevel)
     {

@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -17,51 +18,62 @@ public class Engine
 {
     private float Health = 1000f;
     private VehicleExt VehicleToMonitor;
+    private ISettingsProvideable Settings;
     public bool IsRunning { get; private set; }
     private bool CanToggle => VehicleToMonitor.Vehicle.Speed < 4f;
-    public Engine(VehicleExt vehicleToMonitor)
+    public Engine(VehicleExt vehicleToMonitor, ISettingsProvideable settings)
     {
-        VehicleToMonitor = vehicleToMonitor;  
+        VehicleToMonitor = vehicleToMonitor;
+        Settings = settings;
         if (vehicleToMonitor.Vehicle.Exists())
         {
             Health = vehicleToMonitor.Vehicle.EngineHealth;
             IsRunning = vehicleToMonitor.Vehicle.IsEngineOn;
         }
     }
-    public void Update(bool ScaleEngineDamage)
+    public void Update()
     {
-        if(ScaleEngineDamage)
+        if(Settings.SettingsManager.PlayerSettings.ScaleEngineDamage)
         {
             if(Health > VehicleToMonitor.Vehicle.EngineHealth)
             {
                 float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
-                float ScaledDamage = Health - 3.0f * Difference;
+                float ScaledDamage = Health - Settings.SettingsManager.PlayerSettings.ScaleEngineDamageMultiplier * Difference;
 
                 if(ScaledDamage <= -4000f)
                 {
                     ScaledDamage = -4000f;
                 }
-                //EntryPoint.WriteToConsole($"ScaleEngineDamage PrevHeath = {Health}, Current = {VehicleToMonitor.Vehicle.EngineHealth}, Difference = {Difference}, ScaledDamage={ScaledDamage}", 3);
                 VehicleToMonitor.Vehicle.EngineHealth = ScaledDamage;
                 Health = ScaledDamage;
             }
 
         }
-        if (VehicleToMonitor.Vehicle.IsEngineStarting)
+        if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
         {
-            IsRunning = true;
-        }
-
-        if (!IsRunning)
-        {
-            VehicleToMonitor.Vehicle.IsDriveable = false;
-            VehicleToMonitor.Vehicle.IsEngineOn = false;
+            if (VehicleToMonitor.Vehicle.IsEngineStarting)
+            {
+                IsRunning = true;
+            }
+            if (!IsRunning)
+            {
+                VehicleToMonitor.Vehicle.IsDriveable = false;
+                VehicleToMonitor.Vehicle.IsEngineOn = false;
+            }
+            else
+            {
+                VehicleToMonitor.Vehicle.IsDriveable = true;
+                VehicleToMonitor.Vehicle.IsEngineOn = true;
+            }
         }
         else
         {
-            VehicleToMonitor.Vehicle.IsDriveable = true;
-            VehicleToMonitor.Vehicle.IsEngineOn = true;       
+            if (VehicleToMonitor.Vehicle.IsEngineStarting || VehicleToMonitor.Vehicle.IsEngineOn)
+            {
+                IsRunning = true;
+            }
         }
+
     }
     public void Toggle()
     {
@@ -71,10 +83,8 @@ public class Engine
     {     
         if (CanToggle)
         {
-            //EntryPoint.WriteToConsole(string.Format("ToggleEngine Start {0}", IsRunning), 3);
             IsRunning = DesiredStatus;
-            Update(false);
-            //EntryPoint.WriteToConsole(string.Format("ToggleEngine End {0}", IsRunning), 3);
+            Update();
         }
         
     }

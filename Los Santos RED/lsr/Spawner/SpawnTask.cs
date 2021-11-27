@@ -113,9 +113,11 @@ public class SpawnTask
     private PedExt CreatePerson()
     {
         Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+        EntryPoint.SpawnedEntities.Add(ped);
         GameFiber.Yield();
         if (ped.Exists())
-        { 
+        {
+            EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
             ped.RandomizeVariation();
             if (VehicleType != null && VehicleType.IsMotorcycle)
             {
@@ -170,9 +172,11 @@ public class SpawnTask
     {
         //EntryPoint.WriteToConsole($"Attempting to spawn {VehicleType.ModelName}",3);
         Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
+        EntryPoint.SpawnedEntities.Add(copcar);
         GameFiber.Yield();
         if (copcar.Exists())
         {
+            EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {copcar.Handle}", 2);
             if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
             { 
                 NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);

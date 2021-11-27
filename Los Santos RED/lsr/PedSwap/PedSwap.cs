@@ -97,7 +97,8 @@ public class PedSwap : IPedSwap
         try
         {
             ResetOffsetForCurrentModel();
-            Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f),Game.LocalPlayer.Character.Heading);    
+            Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f),Game.LocalPlayer.Character.Heading);
+            EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
             if (!TargetPed.Exists())
             {
@@ -162,6 +163,7 @@ public class PedSwap : IPedSwap
         {
             ResetOffsetForCurrentModel();
             Ped TargetPed = new Ped(modelName, Game.LocalPlayer.Character.GetOffsetPositionFront(15f), Game.LocalPlayer.Character.Heading);
+            EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
             if (!TargetPed.Exists())
             {

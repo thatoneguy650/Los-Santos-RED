@@ -182,6 +182,11 @@ namespace LosSantosRED.lsr
             public Vector3 DebugPosition => PositionSet;
             public void Tick(bool IsWanted, bool TargetIsInVehicle)
             {
+                if (GhostCop.Exists())
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, 2725352035, true);
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
+                }
                 if (IsWanted)
                 {
                     StopSearchMode = true;
@@ -192,8 +197,15 @@ namespace LosSantosRED.lsr
                 }
                 if (PrevStopSearchMode != StopSearchMode)
                 {
+                    if(!StopSearchMode)
+                    {
+                        MoveGhostCopToOrigin();
+                    }
                     PrevStopSearchMode = StopSearchMode;
                 }
+
+
+
 
                 if (!StopSearchMode)
                 {
@@ -204,8 +216,6 @@ namespace LosSantosRED.lsr
                     CreateGhostCop();
                     return;//new to split up the create and move/los call?
                 }
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, 2725352035, true);
-                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
                 if (IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
                 {
                     MoveGhostCopToPosition(TargetIsInVehicle);
@@ -316,18 +326,23 @@ namespace LosSantosRED.lsr
             }
             private void MoveGhostCopToOrigin()
             {
-                hasGamefiberRunning = false;
-                if (GhostCop != null)
+                if (GhostCop.Exists())
                 {
-                    GhostCop.Position = new Vector3(0f, 0f, 0f);
+                    hasGamefiberRunning = false;
+                    if (GhostCop != null)
+                    {
+                        GhostCop.Position = new Vector3(0f, 0f, 0f);
+                    }
                 }
             }
             private void CreateGhostCop()
             {
                 GhostCop = new Ped(CopModel, new Vector3(0f, 0f, 0f), 0f);
+                EntryPoint.SpawnedEntities.Add(GhostCop);
                 GameTimeLastGhostCopCreated = Game.GameTime;
                 if (GhostCop.Exists())
                 {
+                    EntryPoint.WriteToConsole($"GHOST COP: CREATED {GhostCop.Handle}", 5);
                     EntryPoint.PersistentPedsCreated++;
                     GhostCop.BlockPermanentEvents = false;
                     GhostCop.IsPersistent = true;

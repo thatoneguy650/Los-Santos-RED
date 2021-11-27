@@ -65,13 +65,13 @@ namespace LosSantosRED.lsr.Player
                 {
                     Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
                 }
-                if (!Food.Exists())
+                if (Food.Exists())
                 {
-                    IsCancelled = true;
+                    Food.IsGravityDisabled = false;
                 }
                 else
                 {
-                    Food.IsGravityDisabled = false;
+                    IsCancelled = true;
                 }
             }
         }

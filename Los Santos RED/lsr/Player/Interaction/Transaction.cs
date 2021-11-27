@@ -37,6 +37,7 @@ public class Transaction : Interaction
     {
         if (!IsDisposed)
         {
+            Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
             IsDisposed = true;
             HideMenu();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
@@ -53,6 +54,14 @@ public class Transaction : Interaction
         if (Ped.Pedestrian.Exists())
         {
             Menu = new UIMenu(Ped.Store.Name, Ped.Store.Description);
+
+            if (Store.BannerImage != "")
+            {
+                Menu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+                Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+            }
+
+
             Menu.OnItemSelect += OnItemSelect;
             menuPool.Add(Menu);
 
@@ -215,7 +224,7 @@ public class Transaction : Interaction
             }
             if (!Spoke)
             {
-                Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
+               // Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
             }
         }
         return Spoke;

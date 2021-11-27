@@ -70,6 +70,7 @@ public class UI : IMenuProvideable
     private bool ZoneDisplayingStreetAlpha = false;
     private bool playerIsInVehicle = false;
     private ITimeReportable Time;
+    private string CurrentDefaultTextColor = "~c~";
     
 
     //private bool StreetFadeIsInverse = false;
@@ -86,7 +87,7 @@ public class UI : IMenuProvideable
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
         MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, playerinventory, modItems);
-        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest);
+        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");
@@ -291,7 +292,14 @@ public class UI : IMenuProvideable
     {
         if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
-
+            if(Time.IsNight && Settings.SettingsManager.UISettings.GreyOutWhiteFontAtNight)
+            {
+                CurrentDefaultTextColor = "~c~";
+            }
+            else
+            {
+                CurrentDefaultTextColor = "~s~";
+            }
 
 
             if (Settings.SettingsManager.UISettings.ShowDebug)
@@ -306,13 +314,6 @@ public class UI : IMenuProvideable
             {
                 HideVanillaVehicleUI();
             }
-
-
-            //if (Settings.SettingsManager.UISettings.ShowTimeDisplay)
-            //{
-            //    DisplayTextOnScreen(GetTimeDisplay(), Settings.SettingsManager.UISettings.TimePositionX, Settings.SettingsManager.UISettings.TimePositionY, Settings.SettingsManager.UISettings.TimeScale, Color.White, Settings.SettingsManager.UISettings.TimeFont, (GTATextJustification)Settings.SettingsManager.UISettings.TimeJustificationID);
-            //}
-
 
             if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
             {
@@ -329,8 +330,6 @@ public class UI : IMenuProvideable
             }
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
-                DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
-
                 string newPlayerDisplay = GetPlayerDisplay();
                 if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation))
                 {
@@ -341,13 +340,7 @@ public class UI : IMenuProvideable
                 {
                     DisplayTextOnScreen(newPlayerDisplay, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
                 }
-
-
-
-
-
             }
-
             if(playerIsInVehicle != DisplayablePlayer.IsInVehicle)
             {
                 if(Settings.SettingsManager.UISettings.FadeZoneDisplay)
@@ -360,7 +353,6 @@ public class UI : IMenuProvideable
                 }
                 playerIsInVehicle = DisplayablePlayer.IsInVehicle;
             }
-
             if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
             {
                 string newStreetDisplay = GetStreetDisplay();
@@ -397,18 +389,15 @@ public class UI : IMenuProvideable
             }
         }
     }
-
     private string GetTimeDisplay()
     {
         string TimeDisplay = "";
         if (Time.CurrentDay != 0)
         {
             TimeDisplay = Time.CurrentTime;
-
         } 
         return TimeDisplay;
     }
-
     private void DisplaySpeedLimitSign()
     {
         if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
@@ -532,14 +521,14 @@ public class UI : IMenuProvideable
         string CurrentSpeedDisplay = "";
         if (DisplayablePlayer.CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
         {
-            CurrentSpeedDisplay = "";
-            if (DisplayablePlayer.CurrentVehicle.IsCar && !DisplayablePlayer.CurrentVehicle.Engine.IsRunning)
+            CurrentSpeedDisplay = $" {CurrentDefaultTextColor}" + "";
+            if (DisplayablePlayer.CurrentVehicle.Vehicle.Exists() && DisplayablePlayer.CurrentVehicle.IsCar && !DisplayablePlayer.CurrentVehicle.Engine.IsRunning)
             {
-                CurrentSpeedDisplay = "ENGINE OFF";
+                CurrentSpeedDisplay = $" {CurrentDefaultTextColor}" + "ENGINE OFF";
             }
             else
             {
-                string ColorPrefx = "~s~";
+                string ColorPrefx = CurrentDefaultTextColor;
                 if (DisplayablePlayer.IsSpeeding)
                 {
                     ColorPrefx = "~r~";
@@ -548,37 +537,47 @@ public class UI : IMenuProvideable
                 {
                     if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH";// ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} ~s~MPH)";
+                        if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
+                        {
+                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)}) {CurrentDefaultTextColor}MPH)";
+                        }
+                        else
+                        {
+                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH";
+                        }
                     }
                     else if(Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
                     {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H";// ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} ~s~KM/H)";
+                        if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
+                        {
+                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)}) {CurrentDefaultTextColor}KM/H)";
+                        }
+                        else
+                        {
+                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H";
+                        }
                     }
                 }
             }
-            if(DisplayablePlayer.CurrentVehicle.IsStolen)
-            {
-                CurrentSpeedDisplay += " (Stolen)";
-            }
             if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
             {
-                CurrentSpeedDisplay += " !";
+                CurrentSpeedDisplay += " ~r~!";
             }
             if (DisplayablePlayer.CurrentVehicle.Indicators.HazardsOn)
             {
-                CurrentSpeedDisplay += " (HAZ)";
+                CurrentSpeedDisplay += " ~o~(HAZ)";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.RightBlinkerOn)
             {
-                CurrentSpeedDisplay += " (RI)";
+                CurrentSpeedDisplay += " ~y~(RI)";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.LeftBlinkerOn)
             {
-                CurrentSpeedDisplay += " (LI)";
+                CurrentSpeedDisplay += " ~y~(LI)";
             }
             if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
             {
-                CurrentSpeedDisplay += "~s~ " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
+                CurrentSpeedDisplay += $"{CurrentDefaultTextColor} " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }
         }
         return CurrentSpeedDisplay;
@@ -590,21 +589,21 @@ public class UI : IMenuProvideable
         {
             if(DisplayablePlayer.IsInSearchMode)
             {
-                PlayerDisplay += $"~o~ Attempting To Locate~s~";
+                PlayerDisplay += $"~o~ Attempting To Locate{CurrentDefaultTextColor}";
             }
             else
             {
                 if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit (Weapons Free)~s~";
+                    PlayerDisplay += $"~r~ Active Pursuit (Weapons Free){CurrentDefaultTextColor}";
                 }
                 else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit (Lethal Force Authorized)~s~";
+                    PlayerDisplay += $"~r~ Active Pursuit (Lethal Force Authorized){CurrentDefaultTextColor}";
                 }
                 else
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit~s~";
+                    PlayerDisplay += $"~r~ Active Pursuit{CurrentDefaultTextColor}";
                 }
             }
         }
@@ -612,34 +611,33 @@ public class UI : IMenuProvideable
         {   
             if(DisplayablePlayer.Investigation.IsSuspicious)
             {
-                PlayerDisplay += $"~r~ Police Responding, Description Issued~s~";
+                PlayerDisplay += $"~r~ Police Responding, Description Issued{CurrentDefaultTextColor}";
             }
             else if(DisplayablePlayer.Investigation.IsNearPosition)
             {
-                PlayerDisplay += $"~o~ Police Responding~s~";
+                PlayerDisplay += $"~o~ Police Responding{CurrentDefaultTextColor}";
             }
         }
         else if (DisplayablePlayer.HasCriminalHistory)
         {
             if(DisplayablePlayer.HasDeadlyCriminalHistory)
             {
-                PlayerDisplay += $"~r~ APB Issued~s~";
+                PlayerDisplay += $"~r~ APB Issued{CurrentDefaultTextColor}";
             }
             else
             {
-                PlayerDisplay += $"~o~ BOLO Issued~s~";
+                PlayerDisplay += $"~o~ BOLO Issued{CurrentDefaultTextColor}";
             }
-            
         }
-        if(DisplayablePlayer.IsNotWanted)
+        if(DisplayablePlayer.IsNotWanted && Settings.SettingsManager.UISettings.PlayerStatusIncludeTime)
         {
             if (PlayerDisplay == "")
             {
-                PlayerDisplay = GetTimeDisplay();
+                PlayerDisplay = $"{CurrentDefaultTextColor}" + GetTimeDisplay();
             }
             else
             {
-                PlayerDisplay += " " + GetTimeDisplay();
+                PlayerDisplay += $" {CurrentDefaultTextColor}" + GetTimeDisplay();
             }
         }
         return PlayerDisplay;
@@ -649,46 +647,47 @@ public class UI : IMenuProvideable
         string StreetDisplay = "";
         if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
         {
+            StreetDisplay += $" {CurrentDefaultTextColor}";
             if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
             {
                 StreetDisplay += "~y~";
             }
-            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}~s~";
-        }
-        if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
-        {
-            StreetDisplay += $" at {DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} ~s~";
-        }
+            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{CurrentDefaultTextColor}";
 
-        if (DisplayablePlayer.CurrentLocation.IsInside)
+            if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
+            {
+                StreetDisplay += $" at {CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {CurrentDefaultTextColor}";
+            }
+        }
+        else if (DisplayablePlayer.CurrentLocation.IsInside)
         {
             if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
             {
-#if DEBUG
-                                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) ~s~";
-#endif
+                #if DEBUG
+                    StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) {CurrentDefaultTextColor}";
+                #endif
             }
             else
             {
-                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}~s~";
+                StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{CurrentDefaultTextColor}";
             }
         }
         return StreetDisplay;
     }
     private string GetZoneDisplay()
     {
-        if (DisplayablePlayer.CurrentLocation.CurrentZone == null)
+        string toDisplay = "";
+        if (DisplayablePlayer.CurrentLocation.CurrentZone != null)
         {
-            return "";
-        }
-        string toDisplay = DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
-        if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
-        {
-            toDisplay += "~s~ / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
-        }
-        if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
-        {
-            toDisplay += "~s~ - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
+            toDisplay = $"{CurrentDefaultTextColor}" + DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
+            if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
+            {
+                toDisplay += $"{CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
+            }
+            if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
+            {
+                toDisplay += $"{CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
+            }
         }
         return toDisplay;
     }

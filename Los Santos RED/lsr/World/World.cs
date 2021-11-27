@@ -221,7 +221,6 @@ namespace Mod
                 SetupBlip(gameLocation);
             }
         }
-
         private void SetupBlip(GameLocation gameLocation)
         {
             MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);
@@ -229,7 +228,6 @@ namespace Mod
             gameLocation.SetCreatedBlip(createdBlip);
             AddEntity(createdBlip);
         }
-
         private void RemoveLocation(GameLocation gameLocation)
         {
             if (!gameLocation.ShouldAlwaysHaveBlip)
@@ -237,7 +235,6 @@ namespace Mod
                 RemoveBlip(gameLocation);
             }
         }
-
         private void RemoveBlip(GameLocation gameLocation)
         {
             if (gameLocation.CreatedBlip.Exists())
@@ -245,7 +242,6 @@ namespace Mod
                 gameLocation.CreatedBlip.Delete();
             }
         }
-
         private void SpawnVendor(GameLocation gameLocation)
         {
             List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook", "s_m_m_strvend_01" };
@@ -254,10 +250,14 @@ namespace Mod
             if (RandomItems.RandomPercent(30))
             {
                 ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+                EntryPoint.SpawnedEntities.Add(ped);
+                EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
             }
             else
             {
                 ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+                EntryPoint.SpawnedEntities.Add(ped);
+                EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
             }
 
             GameFiber.Yield();
@@ -273,46 +273,5 @@ namespace Mod
                 AddEntity(Person);
             }
         }
-        public void RemoveEntity(Cop toSwapWith)
-        {
-            Pedestrians.Police.Remove(toSwapWith);
-        }
-
-
-
-
-
-
-
-
-
-
-        //private void SetupFoodStand(GameLocation gameLocation)//where does this go?
-        //{
-        //    List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01","s_m_m_linecook" ,"s_m_m_strvend_01"};
-        //    Ped ped;
-        //    string ModelName = PossibleModels.PickRandom();
-        //    if(RandomItems.RandomPercent(30))
-        //    {
-        //        ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-        //    }
-        //    else
-        //    {
-        //        ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-        //    }
-
-        //    GameFiber.Yield();
-        //    if (ped.Exists())
-        //    {
-        //        ped.IsPersistent = false;
-        //        ped.RandomizeVariation();
-        //        ped.Tasks.StandStill(-1);
-        //        ped.KeepTasks = true;
-        //        GameFiber.Yield();
-        //        Merchant Person = new Merchant(ped, Settings, false,false,false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
-        //        Person.Store = gameLocation;
-        //        AddEntity(Person);
-        //    }
-        //}
     }
 }

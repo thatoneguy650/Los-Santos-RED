@@ -41,6 +41,5 @@ namespace LosSantosRED.lsr.Interface
         void LoadMPMap();
         void LoadSPMap();
         VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance);
-        void RemoveEntity(Cop toSwapWith);
     }
 }

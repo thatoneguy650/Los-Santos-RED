@@ -76,6 +76,7 @@ namespace LosSantosRED.lsr
             Dispatcher.Dispose();
             VanillaManager.Dispose();
             UI.Dispose();
+            Time.Dispose();
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
         }

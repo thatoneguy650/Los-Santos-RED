@@ -98,7 +98,6 @@ namespace Mod
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
-        public string AutoTuneStation { get; set; } = "NONE";
         public bool BeingArrested { get; private set; }
         public bool IsCop { get; set; } = false;
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -588,8 +587,7 @@ namespace Mod
             if(location.Type == LocationType.Hotel)
             {
                 IsPerformingActivity = true;
-                int HoursToRest = (24 - TimeControllable.CurrentHour) + 11;
-                TimeControllable.FastForward(HoursToRest);
+                TimeControllable.FastForward(new DateTime(TimeControllable.CurrentYear,TimeControllable.CurrentMonth,TimeControllable.CurrentDay + 1,11,0,0));
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
                     while (TimeControllable.IsFastForwarding)
@@ -817,13 +815,6 @@ namespace Mod
                 }
 
             }, "IsShootingChecker");
-            if (Settings.SettingsManager.PlayerSettings.KeepRadioStationAutoTuned)
-            {
-                AutoTuneStation = Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation;// "RADIO_19_USER";
-            }
-            #if DEBUG
-                        AutoTuneStation = "RADIO_19_USER";
-            #endif
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
@@ -1038,7 +1029,7 @@ namespace Mod
             {
                 existingVehicleExt.SetAsEntered();
             }
-            existingVehicleExt.Update(AutoTuneStation, Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem, Settings.SettingsManager.PlayerSettings.ScaleEngineDamage);
+            existingVehicleExt.Update();
             if (!existingVehicleExt.IsStolen)
             {
                 if (IsDriver && existingVehicleExt.Vehicle.Handle != OwnedVehicleHandle)

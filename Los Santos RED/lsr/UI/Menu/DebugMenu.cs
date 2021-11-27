@@ -31,12 +31,14 @@ public class DebugMenu : Menu
     private IWeapons Weapons;
     private IPlacesOfInterest PlacesOfInterest;
     private int PlaceOfInterestSelected;
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest)
+    private ISettingsProvideable Settings;
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {    
         Player = player;
         Weapons = weapons;
         RadioStations = radioStations;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
         Debug = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(Debug);
         Debug.OnItemSelect += DebugMenuSelect;
@@ -151,7 +153,7 @@ public class DebugMenu : Menu
         }
         if (list == AutoSetRadioStation)
         {
-            Player.AutoTuneStation = RadioStations.RadioStationList[index].InternalName;
+            Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation = RadioStations.RadioStationList[index].InternalName;
         }
         if (list == TeleportToPOI)
         {

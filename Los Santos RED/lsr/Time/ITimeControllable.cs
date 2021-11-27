@@ -10,9 +10,12 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsNight { get; }
         bool IsFastForwarding { get; }
-
+        int CurrentMonth { get; }
+        int CurrentYear { get; }
+        int CurrentDay { get; }
         void UnPauseTime();
         void PauseTime();
-        void FastForward(int v);
+        void FastForward(int hoursTo);
+        void FastForward(DateTime until);
     }
 }

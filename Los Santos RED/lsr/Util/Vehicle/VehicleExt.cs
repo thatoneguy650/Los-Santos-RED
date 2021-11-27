@@ -169,7 +169,7 @@ namespace LSR.Vehicles
             Radio = new Radio(this);
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
-            Engine = new Engine(this);
+            Engine = new Engine(this, Settings);
         }
         public void SetAsEntered()
         {
@@ -260,14 +260,24 @@ namespace LSR.Vehicles
                 OriginalLicensePlate.IsWanted = false;
             }
         }
-        public void Update(string DesiredStation, bool UpdateFuel, bool ScaleEngineDamage)
+        public void Update()
         {
             if (IsCar)
             {
-                Engine.Update(ScaleEngineDamage);
-                Radio.Update(DesiredStation);
-                Indicators.Update();
-                if (UpdateFuel)
+                Engine.Update();
+                if(Settings.SettingsManager.PlayerSettings.KeepRadioStationAutoTuned)
+                {
+                    Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                }
+                else
+                {
+                    Radio.Update("NONE");
+                }         
+                if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
+                {
+                    Indicators.Update();
+                }
+                if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
                 {
                     FuelTank.Update();
                 }
@@ -331,14 +341,11 @@ namespace LSR.Vehicles
                 if (Vehicle.Exists())
                 {
                     //EntryPoint.WriteToConsole(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
-
                     if(Vehicle.IsPersistent)
                     {
                         EntryPoint.PersistentVehiclesDeleted++;
                     }
-
                     Vehicle.Delete();
-
                 }
                 return;
             }
@@ -377,7 +384,7 @@ namespace LSR.Vehicles
         {
             get
             {
-                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);//this appears to crash?
             }
         }
         public bool WasSpawnedEmpty { get; set; } = false;

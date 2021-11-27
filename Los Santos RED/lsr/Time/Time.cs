@@ -12,11 +12,8 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-
-
     public class Time : ITimeControllable, ITimeReportable
     {
-        private int HourToStop = 0;
         private int ClockMultiplier = 1;
         private uint GameTimeLastSetClock;
         private int Interval = 1000;
@@ -25,13 +22,17 @@ namespace Mod
         private int StoredClockMinutes;
         private int StoredClockSeconds;
         private ISettingsProvideable Settings;
-        private string TimeTestString = "";
+        private int DefaultMultiplier = 1;
+        private int DefaultInterval = 1000;
+        private int FastForwardMultiplier = 300;
+        private int FastForwardInterval = 10;
+        private DateTime TimeToStopFastForwarding;
         public Time(ISettingsProvideable settings)
         {
             Settings = settings;
             NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
         }
-        public string CurrentTime => CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt") + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
+        public string CurrentTime => CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
         public DateTime CurrentDateTime { get; private set; }
         public int CurrentHour { get; private set; } = 0;
@@ -41,7 +42,7 @@ namespace Mod
         public int CurrentYear { get; private set; } = 2021;
         public int CurrentMonth { get; private set; } = 1;
         public bool IsNight { get; private set; } = false;
-        public bool IsFastForwarding { get; private set; } = false;
+        public bool IsFastForwarding { get; private set; } = false;   
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
@@ -50,6 +51,20 @@ namespace Mod
         {
             StoreTime();
             IsPaused = true;
+        }
+        public void UnPauseTime()
+        {
+            IsPaused = false;
+            GameFiber UnPauseTime = GameFiber.StartNew(delegate
+            {
+                uint GameTimeStartedResettingTime = Game.GameTime;
+                while (Game.GameTime - GameTimeStartedResettingTime <= 3000)
+                {
+                    SetToStoredTime();
+                    GameFiber.Yield();
+                }
+            }, "UnPauseTime");
+
         }
         public void Tick()
         {
@@ -66,71 +81,56 @@ namespace Mod
                 CheckTimeInterval();
             }
         }
-        public void FastForward(int hoursToFastForward)
+        public void FastForward(DateTime untilTime)
         {
-
-            //Game.DisplayHelp($"Fastforward Started Press O to Stop");
-
-            GetIntervalAndMultiplier();
             if (!IsFastForwarding)
             {
                 IsFastForwarding = true;
-                int HoursFastForwarded = 0;
-                int prevCurrentHour = CurrentHour;
-                uint GameTimeStartedFastForwarding = Game.GameTime;
-                Game.TimeScale = 10f;
-                EntryPoint.WriteToConsole($"FASTFORWARD START CurrentHour {CurrentHour}  CurrentTime {CurrentTime} HoursFastForwarded {HoursFastForwarded} ClockMultiplier {ClockMultiplier} Interval {Interval}", 5);
-                GameFiber FastForwardTime = GameFiber.StartNew(delegate
-                {
-                    while (HoursFastForwarded < hoursToFastForward)// && Game.GameTime - GameTimeStartedFastForwarding <= 60000)// && !Game.IsKeyDown(Keys.O))
-                    {
-                        if(prevCurrentHour != CurrentHour)
-                        {
-                            HoursFastForwarded++;
-                            prevCurrentHour = CurrentHour;
-                            EntryPoint.WriteToConsole($"FASTFORWARD INCREASE CurrentHour {CurrentHour}  CurrentTime {CurrentTime} HoursFastForwarded {HoursFastForwarded} ClockMultiplier {ClockMultiplier} Interval {Interval}", 5);
-                        }
-                        GameFiber.Yield();
-                    }
-                    IsFastForwarding = false;
-                    Game.TimeScale = 1f;
-                    //Game.DisplayHelp($"Fastforward Stopped");
-                }, "FastForwardTime");
-
+                GetIntervalAndMultiplier();
+                TimeToStopFastForwarding = untilTime;
             }
         }
-        public void UnPauseTime()
+        public void FastForward(int HoursTo)
         {
-            //EntryPoint.WriteToConsole(string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
-            IsPaused = false;
-            GameFiber UnPauseTime = GameFiber.StartNew(delegate
+            if (!IsFastForwarding)
             {
-                uint GameTimeStartedResettingTime = Game.GameTime;
-                while (Game.GameTime - GameTimeStartedResettingTime <= 3000)
-                {
-                    SetToStoredTime();
-                    GameFiber.Yield();
-                }
-            }, "UnPauseTime");
-
+                IsFastForwarding = true;
+                GetIntervalAndMultiplier();
+                TimeToStopFastForwarding = CurrentDateTime.AddHours(HoursTo);
+            }
         }
         private void CheckTimeInterval()
         {
             if (Game.GameTime - GameTimeLastSetClock >= Interval)
             {
-                NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
+                if (IsFastForwarding)
+                {
+                    if (DateTime.Compare(CurrentDateTime.AddSeconds(ClockMultiplier), TimeToStopFastForwarding) >= 0)
+                    {
+                        EntryPoint.WriteToConsole($"CURRENT TIME SLOWING FAST FORWARD {CurrentTime}", 5);
+                        ClockMultiplier = 10;
+
+                    }
+                    if (DateTime.Compare(CurrentDateTime, TimeToStopFastForwarding) >= 0)
+                    {
+                        EntryPoint.WriteToConsole($"CURRENT TIME STOPPING FAST FORWARD {CurrentTime}", 5);
+                        IsFastForwarding = false;
+                        ClockMultiplier = DefaultMultiplier;
+                        Interval = DefaultInterval;
+                    }
+                }
+                if (Settings.SettingsManager.TimeSettings.ScaleTime || IsFastForwarding)
+                {
+                    NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
+                }
                 CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
                 CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
                 CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
-
-
                 CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
                 CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
                 CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
-                //TimeTestString = CurrentYear.ToString() + "-" + CurrentMonth.ToString() + "-" + CurrentDay.ToString() + "-   {}   " + CurrentHour.ToString() + "-" + CurrentMinute.ToString() + "-" + CurrentSecond.ToString() + "-";
                 CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
-
-                if (CurrentHour >= 20 || CurrentHour <= 6)//8?7?pm to 6 am lights need to be on
+                if (CurrentHour > 19 || (CurrentHour == 19 && CurrentMinute >= 30) || CurrentHour < 6 || (CurrentHour == 6 && CurrentMinute < 30))//7:30pm to 6:30 am lights need to be on
                 {
                     IsNight = true;
                 }
@@ -148,7 +148,7 @@ namespace Mod
                 float Speed = Game.LocalPlayer.Character.Speed;
                 if (Speed <= 4.0f)
                 {
-                    Interval = 1000;
+                    Interval = DefaultInterval;
                     ClockMultiplier = 1;
                 }
                 else if (Speed <= 10.0f)
@@ -179,13 +179,12 @@ namespace Mod
             }
             else
             {
-                Interval = 10;
-                ClockMultiplier = 300;
+                Interval = FastForwardInterval;
+                ClockMultiplier = FastForwardMultiplier;
             }
         }
         private void SetToStoredTime()
         {
-            //Mod.Debugging.WriteToLog("StoreTime", string.Format("Time: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
             NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
         }
         private void StoreTime()
@@ -193,7 +192,6 @@ namespace Mod
             StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
             StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
             StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-            //EntryPoint.WriteToConsole(string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         }
     }
 }

@@ -61,6 +61,7 @@ public class SimpleTransaction : Interaction
     {
         if (!IsDisposed)
         {
+            Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
             IsDisposed = true;
             HideMenu();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
@@ -110,6 +111,15 @@ public class SimpleTransaction : Interaction
         if (Store != null)
         {
             ModItemMenu = new UIMenu(Store.Name, Store.Description);
+
+            if(Store.BannerImage != "")
+            {
+                ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+                Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+            }
+
+
+
             ModItemMenu.OnIndexChange += OnIndexChange;
             ModItemMenu.OnItemSelect += OnItemSelect;
             menuPool.Add(ModItemMenu);
@@ -324,6 +334,10 @@ public class SimpleTransaction : Interaction
     {
         try
         {
+            if (SellingProp.Exists())
+            {
+                SellingProp.Delete();
+            }
             string ModelToSpawn = itemToShow.PhysicalItem.PackageModelName;
             bool useClose = !itemToShow.PhysicalItem.PackageIsLarge;
             if (ModelToSpawn == "")
@@ -343,7 +357,7 @@ public class SimpleTransaction : Interaction
                 }
                 if (SellingProp.Exists())
                 {
-                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw - 45f);
+                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
                     if (SellingProp != null && SellingProp.Exists())
                     {
                         NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
@@ -395,6 +409,7 @@ public class SimpleTransaction : Interaction
     }
     private void Buy()
     {     
+
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
         //SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
@@ -428,7 +443,7 @@ public class SimpleTransaction : Interaction
             }
             if (!Spoke)
             {
-                Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
+                //Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
             }
         }
         return Spoke;

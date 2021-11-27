@@ -15,8 +15,9 @@ public static class EntryPoint
     public static int PersistentVehiclesCreated { get; set; } = 0;
     public static int PersistentVehiclesNonPersistent { get; set; } = 0;
     public static int PersistentVehiclesDeleted { get; set; } = 0;
-    private static int LogLevel = 3;
+    private static int LogLevel = 0;
     public static ModController ModController { get; set; }
+    public static List<Entity> SpawnedEntities = new List<Entity>();
     public static void Main()
     {
         #if DEBUG
