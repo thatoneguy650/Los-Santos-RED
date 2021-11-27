@@ -253,7 +253,7 @@ public class UI : IMenuProvideable
     {
         if(DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen())
         {
-            if (ToDraw != null)
+            if (ToDraw != null && ToDraw.Size != null)
             {  
                 float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale;
                 float posX = (Game.Resolution.Height - (ToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;

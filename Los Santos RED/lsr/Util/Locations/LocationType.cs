@@ -21,4 +21,6 @@ public enum LocationType : int
     Pharmacy = 12,
     Bar = 13,
     HardwareStore = 14,
+    CarDealer = 15,
+    PawnShop = 16,
 }

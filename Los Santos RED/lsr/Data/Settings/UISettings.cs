@@ -96,7 +96,7 @@ public class UISettings
 
         #if DEBUG
                 SetRadarZoomDistance = false;
-                 ShowDebug = false;
+                 ShowDebug = true;
         #endif
 
 

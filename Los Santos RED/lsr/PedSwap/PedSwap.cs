@@ -525,14 +525,15 @@ public class PedSwap : IPedSwap
                 Player.CurrentVehicle.IsStolen = false;
                 if (Player.CurrentVehicle.Vehicle.Exists())
                 {
-                    Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
+                    Player.TakeOwnershipOfVehicle(Player.CurrentVehicle);
+                    //Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
                     Player.CurrentVehicle.Vehicle.IsStolen = false;
                 }
             }
         }
         else
         {
-            Player.OwnedVehicleHandle = 0;
+            Player.ClearVehicleOwnership();
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
         if(setRandomDemographics)

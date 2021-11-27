@@ -18,7 +18,8 @@ namespace LosSantosRED.lsr.Interface
         string CurrentModelName { get; set; }
         Vector3 Position { get; }
         VehicleExt CurrentVehicle { get; }
-        PoolHandle OwnedVehicleHandle { get; set; }
+        //PoolHandle OwnedVehicleHandle { get; set; }
+        VehicleExt OwnedVehicle { get;  }
         int WantedLevel { get; }
         Ped Character { get; }
         Inventory Inventory { get; set; }
@@ -34,5 +35,7 @@ namespace LosSantosRED.lsr.Interface
         void AddCrimeToHistory(Crime crime);
         void UpdateCurrentVehicle();
         void SetWantedLevel(int v1, string v2, bool v3);
+        void TakeOwnershipOfVehicle(VehicleExt currentVehicle);
+        void ClearVehicleOwnership();
     }
 }

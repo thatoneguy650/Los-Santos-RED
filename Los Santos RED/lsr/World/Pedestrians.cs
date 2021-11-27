@@ -218,11 +218,11 @@ public class Pedestrians
     {
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
-            if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01")
-            {
-                Pedestrian.Delete();
-                continue;
-            }
+            //if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01")
+            //{
+            //    Pedestrian.Delete();
+            //    continue;
+            //}
             uint localHandle = Pedestrian.Handle;
             if (Pedestrian.IsPoliceArmy())
             {
@@ -296,7 +296,10 @@ public class Pedestrians
             Police.Add(myCop);
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }
-        EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL", 2);
+        else
+        {
+            EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL", 2);
+        }
     }
     public Agency GetAgency(Ped Cop, int WantedLevel)
     {
