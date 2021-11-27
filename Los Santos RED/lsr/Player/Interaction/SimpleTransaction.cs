@@ -325,9 +325,10 @@ public class SimpleTransaction : Interaction
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
             itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
         }
-        if (itemToShow != null && itemToShow.PhysicalItem != null)
+        if (itemToShow != null && itemToShow.PhysicalItem != null && IsUsingCustomCam)
         {
             PreviewItem(itemToShow);
+            GameFiber.Sleep(500);
         }
     }
     private void PreviewItem(ModItem itemToShow)
@@ -367,8 +368,15 @@ public class SimpleTransaction : Interaction
                     }
                 }
             }
+            else
+            {
+                if (SellingProp.Exists())
+                {
+                    SellingProp.Delete();
+                }
+            }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Game.DisplayNotification("Error Displaying Item");
             EntryPoint.WriteToConsole(ex.Message + ";" + ex.StackTrace, 0);

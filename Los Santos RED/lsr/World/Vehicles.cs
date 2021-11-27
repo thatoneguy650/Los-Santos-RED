@@ -57,7 +57,8 @@ public class Vehicles
     }
     public void Scan()
     {
-        RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
+        RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+       // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
     }
     public void CreateNew()
     {

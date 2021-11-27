@@ -179,17 +179,20 @@ public class PedExt : IComplexTaskable
     {
         if (LastHurtBy == ToCheck)
         {
+            EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (LAST) Hurt by {ToCheck.Handle}", 5);
             return true;
         }
         if (!OnlyLast && Pedestrian.Handle != ToCheck.Handle)
         {
             if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck, true))
             {
+                EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW PERSON) Hurt by {ToCheck.Handle}", 5);
                 LastHurtBy = ToCheck;
                 return true;
             }
             else if (ToCheck.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck.CurrentVehicle, true))
             {
+                EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW CAR) Hurt by {ToCheck.Handle}", 5);
                 LastHurtBy = ToCheck;
                 return true;
             }
@@ -213,11 +216,17 @@ public class PedExt : IComplexTaskable
     {
         try
         {
-            if (Pedestrian.Exists() && Pedestrian.IsDead && Pedestrian.Handle != ToCheck.Handle)
+            if (Pedestrian.Exists() && ToCheck.Exists() && Pedestrian.IsDead && Pedestrian.Handle != ToCheck.Handle)
             {
                 //Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
                 if (KillerHandle != 0 && KillerHandle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == KillerHandle))//if (Killer.Exists() && Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == Killer.Handle))
                 {
+                    EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killed by {KillerHandle}", 5);
+                    return true;
+                }
+                else if (KillerHandle == 0 && CheckHurtBy(ToCheck, true))
+                {
+                    EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killer is 0 Last Hurt By {ToCheck.Handle}", 5);
                     return true;
                 }
             }
@@ -226,7 +235,8 @@ public class PedExt : IComplexTaskable
         catch (Exception ex)
         {
             //EntryPoint.WriteToConsole($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
-            return CheckHurtBy(ToCheck,false);//turned back on for now.......
+            EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} ERROR Killer is 0 Last Hurt By {ToCheck.Handle}", 5);
+            return CheckHurtBy(ToCheck,true);//turned back on for now.......
             //return false;
         }
 
@@ -274,6 +284,7 @@ public class PedExt : IComplexTaskable
                     UpdateVehicleState();
                     if (!IsCop)
                     {
+                        WeaponChecker();
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {
                             PedCrimes.Update(world, policeRespondable);
@@ -286,7 +297,6 @@ public class PedExt : IComplexTaskable
                                 EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
                             }
                         }
-                        WeaponChecker();
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.IsPersistent)
                     {

@@ -18,17 +18,20 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastRequestedBackup;
 
         private uint GameTimeLastWantedEnded;
+        
         private uint GameTimePoliceStateStart;
         private uint GameTimeWantedLevelStarted;
         private IPoliceRespondable Player;
         private PoliceState PrevPoliceState;
         private Blip LastSeenLocationBlip;
         private ISettingsProvideable Settings;
+        private ITimeReportable Time;
 
-        public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings)
+        public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time)
         {
             Player = player;
             Settings = settings;
+            Time = time;
         }
         private enum PoliceState
         {
@@ -48,6 +51,7 @@ namespace LosSantosRED.lsr
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
         public bool IsWeaponsFree { get; set; }
+        public DateTime DateTimeLastWantedEnded { get; private set; }
         public Vector3 LastWantedCenterPosition { get; set; }
         public bool LethalForceAuthorized => CrimesObserved.Any(x => x.AssociatedCrime.ResultsInLethalForce);
         public string ObservedCrimesDisplay => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
@@ -103,7 +107,7 @@ namespace LosSantosRED.lsr
             //this is a fucking mess of references and isnt working properly at all
             //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
-            EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} PlaceLastReportedCrime {PlaceLastReportedCrime} New PlaceLastReportedCrime {crimeSceneDescription.PlaceSeen} HaveDescription {crimeSceneDescription.HaveDescription}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} PlaceLastReportedCrime {PlaceLastReportedCrime} New PlaceLastReportedCrime {crimeSceneDescription.PlaceSeen} HaveDescription {crimeSceneDescription.HaveDescription}", 3);
             PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
@@ -129,7 +133,7 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} Instances {crimeSceneDescription.InstancesObserved}", 3);
+                    //EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} Instances {crimeSceneDescription.InstancesObserved}", 3);
                     if (crimeSceneDescription.SeenByOfficers)
                     {
                         CrimesObserved.Add(new CrimeEvent(CrimeInstance, crimeSceneDescription));                     
@@ -214,6 +218,8 @@ namespace LosSantosRED.lsr
                 }
             }
             GameTimeLastWantedEnded = Game.GameTime;
+            DateTimeLastWantedEnded = Time.CurrentDateTime;
+            EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted DateTimeLastWantedEnded {DateTimeLastWantedEnded}",5);
         }
         public void OnWantedLevelIncreased()
         {

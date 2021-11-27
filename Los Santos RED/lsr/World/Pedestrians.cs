@@ -211,8 +211,10 @@ public class Pedestrians
     }
     public void Scan()
     {
-       // WorldPeds = Rage.World.EnumeratePeds();
-        WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();    
+        // WorldPeds = Rage.World.EnumeratePeds();
+
+        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+        //WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();    
     }
     public void CreateNew()
     {

@@ -91,7 +91,7 @@ namespace LosSantosRED.lsr
                     }
                 }
 
-                if(anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
+                if (anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
                 {
                     break;
                 }

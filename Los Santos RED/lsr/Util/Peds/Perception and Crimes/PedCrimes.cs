@@ -462,9 +462,10 @@ public class PedCrimes
                 if(!EverCommittedCrime)
                 {
                     EverCommittedCrime = true;
+                    EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
                 }
             }
-            if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 60000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
+            if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 7000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
             }

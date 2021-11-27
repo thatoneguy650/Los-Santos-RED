@@ -47,7 +47,6 @@ namespace LosSantosRED.lsr
         }
         public void UpdateWanted()
         {
-
             if (IsActive)
             {
                 DetermineMode();
@@ -72,7 +71,7 @@ namespace LosSantosRED.lsr
         }
         private void DetermineMode()
         {
-            if (Player.IsWanted && Player.HasBeenWantedFor >= 5000)
+            if (Player.IsWanted)// && Player.HasBeenWantedFor >= 5000)
             {
                 if (Player.AnyPoliceRecentlySeenPlayer)
                 {
@@ -131,7 +130,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
             Player.OnWantedSearchMode();
-            EntryPoint.WriteToConsole("SearchMode Start Search Mode",3);
+            EntryPoint.WriteToConsole("SearchMode Start Search Mode",5);
         }
         private void StartActiveMode()
         {
@@ -142,7 +141,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
             Player.OnWantedActiveMode();
-            //EntryPoint.WriteToConsole("SearchMode Start Active Mode",3);
+            EntryPoint.WriteToConsole("SEARCH MODE: Start Active Mode",5);
         }
         private void EndSearchMode()
         {
@@ -153,7 +152,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
             Player.SetWantedLevel(0, "Search Mode Timeout", true);
-            //EntryPoint.WriteToConsole("SearchMode End Search Mode", 3);
+            EntryPoint.WriteToConsole("SEARCH MODE: End Search Mode", 5);
         }
         private class StopVanillaSeachMode
         {
@@ -200,6 +199,7 @@ namespace LosSantosRED.lsr
                     if(!StopSearchMode)
                     {
                         MoveGhostCopToOrigin();
+                        EntryPoint.WriteToConsole("SEARCH MODE: MOVING GHOST COP TO ORIGIN 1", 5);
                     }
                     PrevStopSearchMode = StopSearchMode;
                 }
@@ -223,8 +223,57 @@ namespace LosSantosRED.lsr
                 else
                 {
                     MoveGhostCopToOrigin();
+                    EntryPoint.WriteToConsole("SEARCH MODE: MOVING GHOST COP TO ORIGIN 2", 5);
                 }
             }
+
+
+            //public void TickOLD(bool IsWanted, bool TargetIsInVehicle)
+            //{
+            //    if (GhostCop.Exists())
+            //    {
+            //        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, 2725352035, true);
+            //        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
+            //    }
+            //    if (IsWanted)
+            //    {
+            //        StopSearchMode = true;
+            //    }
+            //    else
+            //    {
+            //        StopSearchMode = false;
+            //    }
+            //    if (PrevStopSearchMode != StopSearchMode)
+            //    {
+            //        if (!StopSearchMode)
+            //        {
+            //            MoveGhostCopToOrigin();
+            //        }
+            //        PrevStopSearchMode = StopSearchMode;
+            //    }
+
+
+
+
+            //    if (!StopSearchMode)
+            //    {
+            //        return;
+            //    }
+            //    if (!GhostCop.Exists())
+            //    {
+            //        CreateGhostCop();
+            //        return;//new to split up the create and move/los call?
+            //    }
+            //    if (IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            //    {
+            //        MoveGhostCopToPosition(TargetIsInVehicle);
+            //    }
+            //    else
+            //    {
+            //        MoveGhostCopToOrigin();
+            //    }
+            //}
+
             public void Dispose()
             {
                 if(GhostCop.Exists())
@@ -240,6 +289,7 @@ namespace LosSantosRED.lsr
                 {
                     if (!hasGamefiberRunning)
                     {
+                        EntryPoint.WriteToConsole("SEARCH MODE: GHOST COP FIBER STARTED", 5);
                         GameFiber.StartNew(delegate
                         {
                             hasGamefiberRunning = true;
@@ -261,6 +311,7 @@ namespace LosSantosRED.lsr
 
                                                             }.PickRandom();
                                     }
+                                    EntryPoint.WriteToConsole("SEARCH MODE: GHOST COP CANT SEE MOVING POSITION", 5);
                                 }
                                 Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
                                 PositionSet = DesiredPosition;
@@ -270,10 +321,12 @@ namespace LosSantosRED.lsr
                                 GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
                                 GameFiber.Sleep(100);
                             }
-                            if(!GhostCop.Exists())
-                            {
-                                hasGamefiberRunning = false;
-                            }
+                            hasGamefiberRunning = false;
+                            EntryPoint.WriteToConsole("SEARCH MODE: GHOST COP FIBER ENDED", 5);
+                            //if (!GhostCop.Exists())
+                            //{
+                            //    hasGamefiberRunning = false;
+                            //}
                         }, "Run Ghost Cop");
 
                     }
@@ -328,6 +381,7 @@ namespace LosSantosRED.lsr
             {
                 if (GhostCop.Exists())
                 {
+                    EntryPoint.WriteToConsole("SEARCH MODE: MOVING GHOST COP TO ORIGIN 3", 5);
                     hasGamefiberRunning = false;
                     if (GhostCop != null)
                     {
@@ -373,8 +427,8 @@ namespace LosSantosRED.lsr
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
                     NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
-                    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 272, true);//CPED_CONFIG_FLAG_DontBlipCop 
-                    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 330, true);//CPED_CONFIG_FLAG_DontBlip 
+                    //NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 272, true);//CPED_CONFIG_FLAG_DontBlipCop 
+                    //NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", GhostCop, 330, true);//CPED_CONFIG_FLAG_DontBlip 
 
 
                 }

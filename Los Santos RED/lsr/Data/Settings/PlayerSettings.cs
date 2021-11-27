@@ -42,6 +42,7 @@ public class PlayerSettings
     public float Investigation_SuspiciousDistance { get; set; } = 250f;
     public bool Investigation_CreateBlip { get; set; } = true;
     public uint CriminalHistory_MaxTime { get; set; } = 120000;
+    public int CriminalHistory_MaxCalendarHours { get; set; } = 24;
     public float CriminalHistory_MinimumSearchRadius { get; set; } = 400f;
     public float CriminalHistory_SearchRadiusIncrement { get; set; } = 400f;
     public bool SearchMode_FakeActiveWanted { get; set; } = true;

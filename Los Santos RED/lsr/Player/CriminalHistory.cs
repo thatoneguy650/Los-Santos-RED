@@ -17,10 +17,12 @@ namespace LosSantosRED.lsr
         private BOLO CurrentHistory;
         private IPoliceRespondable Player;
         private ISettingsProvideable Settings;
-        public CriminalHistory(IPoliceRespondable currentPlayer, ISettingsProvideable settings)
+        private ITimeReportable Time;
+        public CriminalHistory(IPoliceRespondable currentPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
             Player = currentPlayer;
             Settings = settings;
+            Time = time;
         }
         private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
         private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_SearchRadiusIncrement : Settings.SettingsManager.PlayerSettings.CriminalHistory_MinimumSearchRadius;// 400f;
@@ -60,7 +62,24 @@ namespace LosSantosRED.lsr
                 if(HasHistory && Player.PoliceResponse.HasBeenNotWantedFor >= Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxTime)// 120000)
                 {
                     Clear();
-                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired", 3);
+                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Real Time)", 3);
+                }
+
+
+
+
+
+                if (HasHistory)// 120000)
+                {
+                    if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxCalendarHours), Time.CurrentDateTime) < 0)
+                    {
+                        EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxCalendarHours)} Current: {Time.CurrentDateTime}", 5);
+                        Clear();
+                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
+                    }
+
+
+
                 }
             }
         }

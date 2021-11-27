@@ -216,10 +216,10 @@ namespace Mod
             {
                 SpawnVendor(gameLocation);
             }
-            if(!gameLocation.ShouldAlwaysHaveBlip)
-            {
-                SetupBlip(gameLocation);
-            }
+            //if(!gameLocation.ShouldAlwaysHaveBlip)
+            //{
+            //    SetupBlip(gameLocation);
+            //}
         }
         private void SetupBlip(GameLocation gameLocation)
         {

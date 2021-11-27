@@ -81,38 +81,6 @@ public class LEDispatcher
             }
         }
     }
-
-    public void SpawnHelicopterCop(Vector3 position)
-    {
-        Vector3 spawnLocation = position;
-        Agency agency = Agencies.GetAgency("LSPD-ASD");// GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
-        GameFiber.Yield();
-        if (agency != null)
-        {
-            DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, true, false, false);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-            GameFiber.Yield();
-            if (VehicleType != null)
-            {
-                DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
-                GameFiber.Yield();
-                if (OfficerType != null)
-                {
-                    try
-                    {
-                        SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, spawnLocation, 0f, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
-                        spawnTask.AttemptSpawn();
-                        GameFiber.Yield();
-                        spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                        spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
-                    }
-                    catch (Exception ex)
-                    {
-                        EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
-                    }
-                }
-            }
-        }
-    }
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;

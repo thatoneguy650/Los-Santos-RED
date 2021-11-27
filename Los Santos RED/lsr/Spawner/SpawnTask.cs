@@ -21,6 +21,7 @@ public class SpawnTask
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private INameProvideable Names;
+    private Vehicle SpawnedVehicle;
     public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
     {
         Agency = agency;
@@ -60,140 +61,205 @@ public class SpawnTask
     }
     public void AttemptSpawn()
     {
-        if (Agency != null)
+        try
         {
-            if (VehicleType != null)
+            if (Agency != null)
             {
-                Vehicle = CreateVehicle();
-                if (Vehicle != null && Vehicle.Vehicle.Exists())
+                if (VehicleType != null)
                 {
-                    if (PersonType != null)
+                    Vehicle = CreateVehicle();
+                    if (Vehicle != null && Vehicle.Vehicle.Exists())
                     {
-                        PedExt Person = CreatePerson();
-                        if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                        if (PersonType != null)
                         {
-                            Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
-                            //NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(Person.Pedestrian, Person.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);//temp here for ems and fire
-                            int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
-                            //EntryPoint.WriteToConsole($"SpawnTask: Created {VehicleType.ModelName} {VehicleType.MinOccupants}-{VehicleType.MaxOccupants} Driver: {Person.Pedestrian.Handle} Trying to Add {OccupantsToAdd}", 5);
-                            for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                            PedExt Person = CreatePerson();
+                            if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
-                                PedExt Passenger = CreatePerson();
-                                if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
-                                {   
-                                    int SeatToAssign = OccupantIndex - 1;
-                                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Passenger: {Passenger.Pedestrian.Handle} Seat: {SeatToAssign}", 5);
-                                    Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
-                                }
-                                else
+                                Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                                int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                                for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                                 {
-                                    EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                    PedExt Passenger = CreatePerson();
+                                    if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                    {
+                                        int SeatToAssign = OccupantIndex - 1;
+                                        Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
+                                    }
+                                    else
+                                    {
+                                        EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (Vehicle != null && Vehicle.Vehicle.Exists())
+                            else
                             {
-                                Vehicle.Vehicle.Delete();
-                                EntryPoint.PersistentVehiclesDeleted++;
-                                //EntryPoint.WriteToConsole("Failed to complete spawn, deleting");
+                                if (Vehicle != null && Vehicle.Vehicle.Exists())
+                                {
+                                    Vehicle.Vehicle.Delete();
+                                    EntryPoint.PersistentVehiclesDeleted++;
+                                    EntryPoint.WriteToConsole("SpawnTask: Failed to complete spawn, deleting", 5);
+                                }
                             }
                         }
                     }
                 }
-            }
-            else if(PersonType != null)
-            {
-                CreatePerson();
-            }
+                else if (PersonType != null)
+                {
+                    CreatePerson();
+                }
 
+            }
+        }
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR {ex.Message} : {ex.StackTrace}", 0);
+            if (Vehicle != null && Vehicle.Vehicle.Exists())
+            {
+                Vehicle.Vehicle.Delete();
+                EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED VEHICLE", 0);
+            }
+            foreach(PedExt person in CreatedPeople)
+            {
+                if(person != null && person.Pedestrian.Exists())
+                {
+                    person.Pedestrian.Delete();
+                    EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED PED", 0);
+                }
+            }
         }
     }
     private PedExt CreatePerson()
     {
-        Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
-        EntryPoint.SpawnedEntities.Add(ped);
-        GameFiber.Yield();
-        if (ped.Exists())
+        try
         {
-            EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
-            ped.RandomizeVariation();
-            if (VehicleType != null && VehicleType.IsMotorcycle)
-            {
-                ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
-            }
-            else
-            {
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
-            }
-            if (PersonType.RequiredVariation != null)
-            {
-                PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
-            }
+            EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {PersonType.ModelName}", 3);
+            Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+            EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
-            if(!ped.Exists())
+            if (ped.Exists())
             {
-                return null;
+                EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
+                ped.RandomizeVariation();
+                //if (VehicleType != null && VehicleType.IsMotorcycle)
+                //{
+                //    ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
+                //    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
+                //}
+                //else
+                //{
+                //    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
+                //}
+                if (PersonType.RequiredVariation != null)
+                {
+                    PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
+                }
+                GameFiber.Yield();
+                if(!ped.Exists())
+                {
+                    return null;
+                }
+                ped.IsPersistent = true;
+                EntryPoint.PersistentPedsCreated++;
+                if (AddBlip && ped.Exists())
+                {
+                    Blip myBlip = ped.AttachBlip();
+                    myBlip.Color = Agency.Color;
+                    myBlip.Scale = 0.6f;
+                }
+                PedExt Person = null;
+                if (Agency.ResponseType == ResponseType.LawEnforcement)
+                {
+                    NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
+                    Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                    PrimaryCop.IssueWeapons(Weapons);
+                    Person = PrimaryCop;
+                }
+                else if (Agency.ResponseType == ResponseType.EMS)
+                {
+                    EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                    Person = PrimaryEmt;
+                }
+                else if (Agency.ResponseType == ResponseType.Fire)
+                {
+                    Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons,Names.GetRandomName(ped.IsMale));
+                    Person = PrimaryFirefighter;
+                }
+                CreatedPeople.Add(Person);
+                return Person;
             }
-            ped.IsPersistent = true;
-            EntryPoint.PersistentPedsCreated++;
-            if (AddBlip && ped.Exists())
-            {
-                Blip myBlip = ped.AttachBlip();
-                myBlip.Color = Agency.Color;
-                myBlip.Scale = 0.6f;
-            }
-            PedExt Person = null;
-            if (Agency.ResponseType == ResponseType.LawEnforcement)
-            {
-                NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
-                PrimaryCop.IssueWeapons(Weapons);
-                Person = PrimaryCop;
-            }
-            else if (Agency.ResponseType == ResponseType.EMS)
-            {
-                EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
-                Person = PrimaryEmt;
-            }
-            else if (Agency.ResponseType == ResponseType.Fire)
-            {
-                Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons,Names.GetRandomName(ped.IsMale));
-                Person = PrimaryFirefighter;
-            }
-            CreatedPeople.Add(Person);
-            return Person;
+            return null;
         }
-        return null;
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            return null;
+        }
     }
     private VehicleExt CreateVehicle()
     {
-        //EntryPoint.WriteToConsole($"Attempting to spawn {VehicleType.ModelName}",3);
-        Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
-        EntryPoint.SpawnedEntities.Add(copcar);
-        GameFiber.Yield();
-        if (copcar.Exists())
+        try
         {
-            EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {copcar.Handle}", 2);
-            if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
-            { 
-                NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(copcar, 5.0f);
-            }
-            VehicleExt CopVehicle = new VehicleExt(copcar, Settings);
-            if (copcar.Exists())
+            EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {VehicleType.ModelName}", 3);
+            SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, Heading);//randomly just errors here and is shitty!
+            GameFiber.Yield();
+            EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
+            GameFiber.Yield();
+            if (SpawnedVehicle.Exists())
             {
-                CopVehicle.WasModSpawned = true;
-                copcar.IsPersistent = true;
-                EntryPoint.PersistentVehiclesCreated++;
-                CopVehicle.UpdateLivery(Agency);
-                CopVehicle.UpgradePerformance();
-                CreatedVehicles.Add(CopVehicle);
-                GameFiber.Yield();
-                return CopVehicle;
+                EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);
+                if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
+                }
+                VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                if (SpawnedVehicle.Exists())
+                {
+                    CopVehicle.WasModSpawned = true;
+                    SpawnedVehicle.IsPersistent = true;
+                    EntryPoint.PersistentVehiclesCreated++;
+                    CopVehicle.UpdateLivery(Agency);
+                    CopVehicle.UpgradePerformance();
+                    CreatedVehicles.Add(CopVehicle);
+                    GameFiber.Yield();
+                    return CopVehicle;
+                }
             }
+            return null;
         }
-        return null;
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace}", 0);
+            if(SpawnedVehicle.Exists())
+            {
+                SpawnedVehicle.Delete();
+            }
+            GameFiber.Yield();
+
+            //SpawnedVehicle = (Vehicle)Rage.World.GetClosestEntity(Position, 5f, GetEntitiesFlags.ConsiderAllVehicles);
+
+
+
+            //if (SpawnedVehicle.Exists())
+            //{
+            //    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);
+            //    if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
+            //    {
+            //        NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
+            //    }
+            //    VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
+            //    if (SpawnedVehicle.Exists())
+            //    {
+            //        CopVehicle.WasModSpawned = true;
+            //        SpawnedVehicle.IsPersistent = true;
+            //        EntryPoint.PersistentVehiclesCreated++;
+            //        CopVehicle.UpdateLivery(Agency);
+            //        CopVehicle.UpgradePerformance();
+            //        CreatedVehicles.Add(CopVehicle);
+            //        GameFiber.Yield();
+            //        return CopVehicle;
+            //    }
+            //}
+            return null;
+        }
     }
 }
