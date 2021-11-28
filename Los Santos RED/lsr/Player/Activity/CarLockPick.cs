@@ -182,6 +182,10 @@ public class CarLockPick
     }
     private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
+        //Vector3 position = Pedestrian.GetOffsetPositionUp(50f);
+        //Model modelToCreate = new Model(Game.GetHashKey("prop_tool_screwdvr01"));
+        //modelToCreate.LoadAndWait();
+        //Rage.Object Screwdriver = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey("prop_tool_screwdvr01"), position.X, position.Y, position.Z, 0f);//
         Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
         if (!Screwdriver.Exists())
         {

@@ -216,10 +216,10 @@ namespace Mod
             {
                 SpawnVendor(gameLocation);
             }
-            //if(!gameLocation.ShouldAlwaysHaveBlip)
-            //{
-            //    SetupBlip(gameLocation);
-            //}
+            if (!gameLocation.ShouldAlwaysHaveBlip)
+            {
+                SetupBlip(gameLocation);
+            }
         }
         private void SetupBlip(GameLocation gameLocation)
         {
@@ -258,15 +258,21 @@ namespace Mod
 
             if (RandomItems.RandomPercent(30))
             {
-                ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-                EntryPoint.SpawnedEntities.Add(ped);
-                EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
+                //ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+                Model modelToCreate = new Model(Game.GetHashKey(ModelName));
+                modelToCreate.LoadAndWait();
+                ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z + 1f, gameLocation.VendorHeading, false, false);
+                //EntryPoint.SpawnedEntities.Add(ped);
+                //EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
             }
             else
             {
-                ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-                EntryPoint.SpawnedEntities.Add(ped);
-                EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
+                //ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
+                Model modelToCreate = new Model(Game.GetHashKey(ModelName));
+                modelToCreate.LoadAndWait();
+                ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z + 1f, gameLocation.VendorHeading, false, false);
+
+               // EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
             }
 
             GameFiber.Yield();
@@ -276,6 +282,7 @@ namespace Mod
                 ped.RandomizeVariation();
                 ped.Tasks.StandStill(-1);
                 ped.KeepTasks = true;
+                EntryPoint.SpawnedEntities.Add(ped);
                 GameFiber.Yield();
                 Merchant Person = new Merchant(ped, Settings, false, false, false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
                 Person.Store = gameLocation;

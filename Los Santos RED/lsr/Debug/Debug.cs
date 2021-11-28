@@ -373,7 +373,11 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
+        Model characterModel = new Model(0xB779A091);
+        characterModel.LoadAndWait();
+        Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(0xB779A091, Position.X, Position.Y, Position.Z, 0f, false, false);
+        // Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
         //Game.LocalPlayer.IsInvincible = true;
         //Game.DisplayNotification("IsInvincible = True");
         //foreach (InteriorPosition ip in MPInteriorPositions)
@@ -397,7 +401,12 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Game.LocalPlayer.Character.Health = RandomItems.MyRand.Next(5, 90);
+        Model characterModel = new Model(0xB779A091);
+        characterModel.LoadAndWait();
+        Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(1127131465, Position.X, Position.Y, Position.Z, 0f, false, false);
+
+        //Game.LocalPlayer.Character.Health = RandomItems.MyRand.Next(5, 90);
         //SpawnModelChecker2();
         //string text1 = NativeHelper.GetKeyboardInput("");
         //string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";

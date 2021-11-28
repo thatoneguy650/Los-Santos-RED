@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr.Player
             {
                 try
                 {
-                    SmokedItem = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                    SmokedItem = new Rage.Object(Game.GetHashKey(Data.PropModelName), Player.Character.GetOffsetPositionUp(50f));
                 }
                 catch (Exception e)
                 {

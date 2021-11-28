@@ -380,6 +380,10 @@ public class Roadblock
             position = new Vector3(position.X, position.Y, GroundZ);
         }
         Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
+        //Model modelToCreate = new Model(Game.GetHashKey("p_ld_stinger_s"));
+        //modelToCreate.LoadAndWait();
+        //Rage.Object SpikeStrip = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey("p_ld_stinger_s"), position.X, position.Y, position.Z, heading);
+
         NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
         SpikeStrip.IsPersistent = true;
         SpikeStrip.IsGravityDisabled = false;

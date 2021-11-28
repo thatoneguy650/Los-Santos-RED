@@ -367,11 +367,11 @@ public class HealthState
             EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 1 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);
             //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 3000, 3000, 0, false, false, false);
         }
-        else if (Health - NewHealth >= 35 && RandomItems.RandomPercent(60))
-        {
-            EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 2 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);
-           // NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
-        }
+        //else if (Health - NewHealth >= 35 && RandomItems.RandomPercent(60))
+        //{
+        //    EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 2 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);
+        //   // NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
+        //}
         //else if (Health - NewHealth >= 15 && RandomItems.RandomPercent(30))
         //{
         //    EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 3 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);

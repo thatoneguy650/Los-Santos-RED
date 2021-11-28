@@ -134,21 +134,24 @@ public class SpawnTask
         {
             EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {PersonType.ModelName}", 3);
             Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+            //Model modelToCreate = new Model(Game.GetHashKey(PersonType.ModelName));
+            //modelToCreate.LoadAndWait();
+            //Ped ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(PersonType.ModelName), Position.X, Position.Y, Position.Z + 1f, Heading, false, false);
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             if (ped.Exists())
             {
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
                 ped.RandomizeVariation();
-                //if (VehicleType != null && VehicleType.IsMotorcycle)
-                //{
-                //    ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
-                //    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
-                //}
-                //else
-                //{
-                //    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
-                //}
+                if (VehicleType != null && VehicleType.IsMotorcycle)
+                {
+                    ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
+                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
+                }
+                else
+                {
+                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
+                }
                 if (PersonType.RequiredVariation != null)
                 {
                     PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
@@ -200,8 +203,12 @@ public class SpawnTask
         try
         {
             EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {VehicleType.ModelName}", 3);
-            SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, Heading);//randomly just errors here and is shitty!
-            GameFiber.Yield();
+            SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, Heading);
+            //Model modelToCreate = new Model(Game.GetHashKey(VehicleType.ModelName));
+            //modelToCreate.LoadAndWait();
+            //SpawnedVehicle = NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey(VehicleType.ModelName), Position.X, Position.Y, Position.Z, Heading, false, false);
+            //PoolHandle SpawnedHandle = NativeFunction.Natives.CREATE_VEHICLE<PoolHandle>(Game.GetHashKey(VehicleType.ModelName), Position.X, Position.Y, Position.Z, Heading, false, false);
+           // EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE?????? {SpawnedHandle}", 2);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
@@ -234,11 +241,7 @@ public class SpawnTask
                 SpawnedVehicle.Delete();
             }
             GameFiber.Yield();
-
             //SpawnedVehicle = (Vehicle)Rage.World.GetClosestEntity(Position, 5f, GetEntitiesFlags.ConsiderAllVehicles);
-
-
-
             //if (SpawnedVehicle.Exists())
             //{
             //    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);

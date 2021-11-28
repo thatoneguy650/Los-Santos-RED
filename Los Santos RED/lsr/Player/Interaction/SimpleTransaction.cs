@@ -328,7 +328,6 @@ public class SimpleTransaction : Interaction
         if (itemToShow != null && itemToShow.PhysicalItem != null && IsUsingCustomCam)
         {
             PreviewItem(itemToShow);
-            GameFiber.Sleep(500);
         }
     }
     private void PreviewItem(ModItem itemToShow)
@@ -350,12 +349,21 @@ public class SimpleTransaction : Interaction
             {
                 if (useClose)
                 {
+                    //Vector3 position = StoreCam.Position + StoreCam.Direction;
+                    //Model modelToCreate = new Model(Game.GetHashKey(ModelToSpawn));
+                    //modelToCreate.LoadAndWait();
+                    //SellingProp = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(ModelToSpawn), position.X, position.Y, position.Z, 0f);
                     SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
                 }
                 else
                 {
+                    //Vector3 position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f);
+                    //Model modelToCreate = new Model(Game.GetHashKey(ModelToSpawn));
+                    //modelToCreate.LoadAndWait();
+                    //SellingProp = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(ModelToSpawn), position.X, position.Y, position.Z, 0f);
                     SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
                 }
+                //GameFiber.Yield();
                 if (SellingProp.Exists())
                 {
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
@@ -367,6 +375,7 @@ public class SimpleTransaction : Interaction
                         //SellingProp.IsGravityDisabled = true;
                     }
                 }
+                EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN", 5);
             }
             else
             {

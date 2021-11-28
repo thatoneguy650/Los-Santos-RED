@@ -170,6 +170,10 @@ public class Transaction : Interaction
         }
         if (Ped.Pedestrian.Exists() && modelName != "")
         {
+            //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
+            //Model modelToCreate = new Model(Game.GetHashKey(modelName));
+            //modelToCreate.LoadAndWait();
+            //SellingProp = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(modelName), position.X, position.Y, position.Z, 0f);
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             if (SellingProp.Exists())
             {

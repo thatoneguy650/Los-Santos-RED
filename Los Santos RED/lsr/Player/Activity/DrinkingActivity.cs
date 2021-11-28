@@ -62,7 +62,11 @@ namespace LosSantosRED.lsr.Player
             if (!Bottle.Exists())
             {
                 try 
-                { 
+                {
+                    //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
+                    //Model modelToCreate = new Model(Game.GetHashKey(Data.PropModelName));
+                    //modelToCreate.LoadAndWait();
+                    //Bottle = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(Data.PropModelName), position.X, position.Y, position.Z, 0f);
                     Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
                 catch (Exception e)

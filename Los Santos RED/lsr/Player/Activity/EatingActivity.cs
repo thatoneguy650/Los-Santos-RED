@@ -59,6 +59,10 @@ namespace LosSantosRED.lsr.Player
             {
                 try
                 {
+                    //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
+                    //Model modelToCreate = new Model(Game.GetHashKey(Data.PropModelName));
+                    //modelToCreate.LoadAndWait();
+                    //Food = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(Data.PropModelName), position.X, position.Y, position.Z, 0f);
                     Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
                 catch(Exception e)
