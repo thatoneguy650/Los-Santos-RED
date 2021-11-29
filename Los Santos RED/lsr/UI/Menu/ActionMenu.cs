@@ -22,6 +22,7 @@ public class ActionMenu : Menu
         Player = player;
         Settings = settings;
         Actions = menuPool.AddSubMenu(parentMenu, "Actions");
+        Actions.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         Actions.OnItemSelect += OnActionItemSelect;
         CreateActionsMenu();
     }

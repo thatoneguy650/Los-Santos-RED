@@ -38,6 +38,7 @@ public class BustedMenu : Menu
         Settings = settings;
         Player = policeRespondable;
         Menu = new UIMenu("Busted", "Choose Respawn");
+        Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         menuPool.Add(Menu);
         Menu.OnItemSelect += OnItemSelect;
         Menu.OnListChange += OnListChange;

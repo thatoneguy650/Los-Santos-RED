@@ -28,6 +28,7 @@ public class DeathMenu : Menu
         Player = player;
         GameSaves = gameSaves;
         Menu = new UIMenu("Wasted", "Choose Respawn");
+        Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         menuPool.Add(Menu);
         Menu.OnItemSelect += OnItemSelect;
         Menu.OnListChange += OnListChange;

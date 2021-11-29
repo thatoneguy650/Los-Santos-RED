@@ -28,6 +28,7 @@ public class MainMenu : Menu
         Settings = settings;
         Tasker = tasker;
         Main = new UIMenu("Los Santos RED", "Select an Option");
+        Main.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         menuPool.Add(Main);
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;

@@ -39,6 +39,10 @@ public class HealthState
     {
         get
         {
+            if(!HasLoggedDeath && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsDead)
+            {
+                return true;
+            }
             if(MyPed.DistanceToPlayer >= 400)
             {
                 return false;
@@ -72,7 +76,7 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
-            if(CurrentHealth == 0)
+            if(CurrentHealth <= 0)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
             }
@@ -93,7 +97,7 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
-            if (CurrentHealth == 0)
+            if (CurrentHealth <= 0)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
             }

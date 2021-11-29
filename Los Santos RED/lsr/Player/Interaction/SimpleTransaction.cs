@@ -111,8 +111,7 @@ public class SimpleTransaction : Interaction
         if (Store != null)
         {
             ModItemMenu = new UIMenu(Store.Name, Store.Description);
-
-            if(Store.BannerImage != "")
+            if (Store.BannerImage != "")
             {
                 ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
                 Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);

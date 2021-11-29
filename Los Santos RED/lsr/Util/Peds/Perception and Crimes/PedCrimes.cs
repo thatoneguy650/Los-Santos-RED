@@ -398,10 +398,10 @@ public class PedCrimes
                     }
                 }
             }
-            if (PedExt.IsInVehicle && PedExt.WasSetCriminal)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
-            }
+            //if (PedExt.IsInVehicle && PedExt.WasSetCriminal)
+            //{
+            //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
+            //}
 
             if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
             {
@@ -452,7 +452,7 @@ public class PedCrimes
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
                 GameTimeLastCommittedGTA = Game.GameTime;
             }
-            if (Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle && PedExt.IsDriver)
+            if (GameTimeLastCommittedGTA != 0 && Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle && PedExt.IsDriver)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
             }

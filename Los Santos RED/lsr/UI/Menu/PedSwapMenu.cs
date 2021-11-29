@@ -15,6 +15,7 @@ public class PedSwapMenu : Menu
     {
         PedSwap = pedSwap;
         PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
+        PedSwapUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         PedSwapUIMenu.OnItemSelect += OnActionItemSelect;
         PedSwapUIMenu.OnListChange += OnListChange;
         CreatePedSwap();

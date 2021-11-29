@@ -41,6 +41,8 @@ public class DebugMenu : Menu
         Settings = settings;
         Debug = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(Debug);
+
+        
         Debug.OnItemSelect += DebugMenuSelect;
         Debug.OnListChange += OnListChange;
         CreateDebugMenu();
