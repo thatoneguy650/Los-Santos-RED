@@ -12,22 +12,22 @@ public class PhysicalItem
     {
 
     }
-    public PhysicalItem(string modelName, string packageModelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation)
+    public PhysicalItem(string modelName)
+    {
+        ModelName = modelName;
+    }
+    public PhysicalItem(string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation)
     {
         AttachBoneIndex = attachBoneIndex;
         AttachOffset = attachOffset;
         AttachRotation = attachRotation;
         ModelName = modelName;
-        PackageModelName = packageModelName;
     }
-
     public int AttachBoneIndex { get; set; } = 57005;
-    public Vector3 AttachOffset { get; set; } = new Vector3(0.12f, 0.0f, -0.06f);
-    public Rotator AttachRotation { get; set; } = new Rotator(-77.0f, 23.0f, 0.0f);
+    public Vector3 AttachOffset { get; set; } = Vector3.Zero;
+    public Rotator AttachRotation { get; set; } = Rotator.Zero;
     public string ModelName { get; set; } = "";
-    public bool HasPackage => PackageModelName != "";
-    public string PackageModelName { get; set; } = "";
-    public bool PackageIsLarge { get; set; } = false;//:)
-    public bool ItemIsLarge { get; set; } = false;
+    public bool IsLarge { get; set; } = false;
+    public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
 }
 

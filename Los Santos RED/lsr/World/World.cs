@@ -189,8 +189,9 @@ namespace Mod
         public void CreateMerchants()
         {
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
-            {           
-                if (gl.IsOpen(Time.CurrentHour) && gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+            {
+                gl.Update();
+                if (gl.IsOpen(Time.CurrentHour) && gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
                     {

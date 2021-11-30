@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
@@ -39,8 +40,15 @@ public static class EntryPoint
         {
             if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
             {
-                ModController = new ModController();
-                ModController.Start(); 
+                if(File.Exists("menyoo.asi"))
+                {
+                    Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~r~Menyoo is not compatible with LSR, please remove it and restart the game");
+                }
+                else
+                {
+                    ModController = new ModController();
+                    ModController.Start();
+                }
             }
             GameFiber.Yield();
         }

@@ -163,10 +163,10 @@ namespace LosSantosRED.lsr.Player
                 AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
-            HandBoneID = ModItem.PhysicalItem.AttachBoneIndex;
-            HandOffset = ModItem.PhysicalItem.AttachOffset;
-            HandRotator = ModItem.PhysicalItem.AttachRotation;
-            PropModel = ModItem.PhysicalItem.ModelName;
+            HandBoneID = ModItem.ModelItem.AttachBoneIndex;
+            HandOffset = ModItem.ModelItem.AttachOffset;
+            HandRotator = ModItem.ModelItem.AttachRotation;
+            PropModel = ModItem.ModelItem.ModelName;
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }

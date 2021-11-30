@@ -130,7 +130,7 @@ namespace Mod
         public ComplexTask CurrentTask { get; set; }
         public Inventory Inventory { get; set; }
         public List<InventoryItem> InventoryItems => Inventory.Items;
-        public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem?.Type != eConsumableType.None).ToList();
+        public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem.CanConsume).ToList();
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
@@ -234,7 +234,7 @@ namespace Mod
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
-        public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
+        public bool IsNotWanted => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() == 0;//Game.LocalPlayer.WantedLevel == 0;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsPerformingActivity { get; set; }
         public bool IsRagdoll { get; private set; }
@@ -243,7 +243,7 @@ namespace Mod
         public bool IsStunned { get; private set; }
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsVisiblyArmed { get; private set; }
-        public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
+        public bool IsWanted => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() > 0; //Game.LocalPlayer.WantedLevel > 0;
         public WeaponHash LastWeaponHash { get; set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
@@ -319,7 +319,7 @@ namespace Mod
         public float VehicleSpeedKMH => VehicleSpeed * 3.6f;
         public float VehicleSpeedMPH => VehicleSpeed * 2.23694f;
         public Violations Violations { get; private set; }
-        public int WantedLevel => Game.LocalPlayer.WantedLevel;
+        public int WantedLevel => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//Game.LocalPlayer.WantedLevel;
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -555,7 +555,11 @@ namespace Mod
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             MakeSober();
+
             Game.LocalPlayer.WantedLevel = 0;
+            NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
+            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 6);
+
             NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
             ClearVehicleOwnership();
             if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
@@ -566,7 +570,7 @@ namespace Mod
         public void RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
         public void StartConsumingActivity(ModItem modItem)
         {
-            if (!IsPerformingActivity && CanPerformActivities && modItem.Type != eConsumableType.None)
+            if (!IsPerformingActivity && CanPerformActivities && modItem.CanConsume)// modItem.Type != eConsumableType.None)
             {
                 if (DynamicActivity != null)
                 {
@@ -796,6 +800,7 @@ namespace Mod
         public void Setup()
         {
             SetWantedLevel(0, "Initial", true);
+            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             CurrentModelName = Game.LocalPlayer.Character.Model.Name;
@@ -832,8 +837,14 @@ namespace Mod
                 }
                 if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
                 {
-                    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
-                    Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+
+                    //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                    //Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+
+                    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+                    NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
+
+
                     if (desiredWantedLevel > 0)
                     {
                         GameTimeWantedLevelStarted = Game.GameTime;
@@ -901,7 +912,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings, ModItems, TimeControllable);
+                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
                 Interaction.Start();
             }
         }
@@ -1099,7 +1110,7 @@ namespace Mod
             {
                 MaxWantedLastLife = WantedLevel;
             }
-            if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            if (PreviousWantedLevel != NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {
                 OnWantedLevelChanged();
             }
@@ -1666,10 +1677,21 @@ namespace Mod
         {
             if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
             {
-                CriminalHistory.OnLostWanted();
-                PoliceResponse.OnLostWanted();
-                EntityProvider.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
-                EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+                if (!RecentlySetWanted)//only allow my process to set the wanted level
+                {
+                    if (Settings.SettingsManager.PoliceSettings.AllowExclusiveControlOverWantedLevel)
+                    {
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
+                        SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
+                    }
+                }
+                else
+                {
+                    CriminalHistory.OnLostWanted();
+                    PoliceResponse.OnLostWanted();
+                    EntityProvider.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+                }
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
             {
@@ -1700,7 +1722,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
-            PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+            PreviousWantedLevel = NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         private void UpdateButtonPrompts()
         {

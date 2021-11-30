@@ -373,10 +373,13 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        Model characterModel = new Model(0xB779A091);
-        characterModel.LoadAndWait();
-        Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
-        NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(0xB779A091, Position.X, Position.Y, Position.Z, 0f, false, false);
+
+        //set in garage
+        Game.LocalPlayer.Character.Position = new Vector3(229.9559f, -981.7928f, -99.66071f);
+        //Model characterModel = new Model(0xB779A091);
+        //characterModel.LoadAndWait();
+        //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        //NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(0xB779A091, Position.X, Position.Y, Position.Z, 0f, false, false);
         // Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
         //Game.LocalPlayer.IsInvincible = true;
         //Game.DisplayNotification("IsInvincible = True");
@@ -401,10 +404,11 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Model characterModel = new Model(0xB779A091);
-        characterModel.LoadAndWait();
-        Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
-        NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(1127131465, Position.X, Position.Y, Position.Z, 0f, false, false);
+        SpawnItemInFrom();
+        //Model characterModel = new Model(0xB779A091);
+        //characterModel.LoadAndWait();
+        //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        //NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(1127131465, Position.X, Position.Y, Position.Z, 0f, false, false);
 
         //Game.LocalPlayer.Character.Health = RandomItems.MyRand.Next(5, 90);
         //SpawnModelChecker2();
@@ -518,6 +522,30 @@ public class Debug
             CurrentWanted++;
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
+    }
+
+
+    private void SpawnItemInFrom()
+    {
+        GameFiber.StartNew(delegate
+        {
+            string ModelName = NativeHelper.GetKeyboardInput("");
+            if (ModelName != "")
+            {
+                Rage.Object myobject = new Rage.Object(ModelName, Game.LocalPlayer.Character.GetOffsetPositionFront(5f));
+                GameFiber.Yield();
+                while (myobject.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+                {
+                    myobject.IsGravityDisabled = true;
+                    Game.DisplayHelp($"Model {ModelName} Spawned! Press P to Delete");
+                    GameFiber.Sleep(25);
+                }
+                if (myobject.Exists())
+                {
+                    myobject.Delete();
+                }
+            }
+        }, "Run Debug Logic");
     }
 
     private void HighlightStoreWithCamera()

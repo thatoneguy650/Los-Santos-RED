@@ -333,12 +333,12 @@ namespace LosSantosRED.lsr.Player
 
             if(ModItem != null)
             {
-                PropModelName = ModItem.PhysicalItem.ModelName;
-                if (ModItem.IsIntoxicating)
-                {
-                    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
-                    IntoxicatingEffect.Start();
-                }
+                PropModelName = ModItem.ModelItem.ModelName;
+                //if (ModItem.IsIntoxicating)
+                //{
+                //    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
+                //    IntoxicatingEffect.Start();
+                //}
             }
             else
             {

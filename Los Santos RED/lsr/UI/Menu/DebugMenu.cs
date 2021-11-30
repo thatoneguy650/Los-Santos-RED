@@ -25,6 +25,7 @@ public class DebugMenu : Menu
     private UIMenuItem LogLocationSimpleMenu;
     private UIMenuListItem GetRandomWeapon;
     private UIMenuListItem TeleportToPOI;
+    private UIMenuItem SetDateToToday;
     private IActionable Player;
     private RadioStations RadioStations;
     private int RandomWeaponCategory;
@@ -32,13 +33,15 @@ public class DebugMenu : Menu
     private IPlacesOfInterest PlacesOfInterest;
     private int PlaceOfInterestSelected;
     private ISettingsProvideable Settings;
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    private ITimeControllable Time;
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time)
     {    
         Player = player;
         Weapons = weapons;
         RadioStations = radioStations;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        Time = time;
         Debug = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(Debug);
 
@@ -85,6 +88,10 @@ public class DebugMenu : Menu
 
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
+        SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
+
+
+
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GiveMoney);
@@ -95,6 +102,7 @@ public class DebugMenu : Menu
         Debug.AddItem(LogLocationSimpleMenu);
         Debug.AddItem(LogInteriorMenu);
         Debug.AddItem(LogCameraPositionMenu);
+        Debug.AddItem(SetDateToToday);
     }
     private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -144,6 +152,10 @@ public class DebugMenu : Menu
         else if (selectedItem == LogInteriorMenu)
         {
             LogGameInterior();
+        }
+        else if (selectedItem == SetDateToToday)
+        {
+            Time.SetDateToToday();
         }
         Debug.Visible = false;
     }

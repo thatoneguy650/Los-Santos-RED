@@ -260,12 +260,12 @@ namespace LosSantosRED.lsr
             {
                 if(Player.IsInVehicle)
                 {
-                    if(Player.VehicleSpeedMPH >= 80f)
+                    if(Player.VehicleSpeedMPH >= 70f)
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
+                            //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
                         }
                     }
                     else if (Player.VehicleSpeedMPH >= 30f)
@@ -273,7 +273,7 @@ namespace LosSantosRED.lsr
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestMediumTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST MEDIUM IN VEHICLE", 5);
+                            //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST MEDIUM IN VEHICLE", 5);
                         }
                     }
                     else
@@ -281,7 +281,7 @@ namespace LosSantosRED.lsr
                         if(Player.VehicleSpeedMPH >= 5f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
+                           // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
                         }
                     }
                 }
@@ -292,7 +292,7 @@ namespace LosSantosRED.lsr
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-                            EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST", 5);
+                           // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST", 5);
                         }
                     }
                     else
@@ -302,7 +302,7 @@ namespace LosSantosRED.lsr
                             if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
                             {
                                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
-                                EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW", 5);
+                                //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW", 5);
                             }
                         }
                     }

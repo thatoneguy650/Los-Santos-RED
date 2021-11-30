@@ -81,6 +81,10 @@ namespace Mod
                 CheckTimeInterval();
             }
         }
+        public void SetDateToToday()
+        {
+            NativeFunction.Natives.SET_CLOCK_DATE(DateTime.Now.Day, DateTime.Now.Month-1, DateTime.Now.Year);
+        }
         public void FastForward(DateTime untilTime)
         {
             if (!IsFastForwarding)

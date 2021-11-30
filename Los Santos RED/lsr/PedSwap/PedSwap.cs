@@ -260,19 +260,20 @@ public class PedSwap : IPedSwap
     }
     private void TemporarilyStopWanted()
     {
-        GameFiber.StartNew(delegate
-        {
-            uint GameTimeLastTakenOver = Game.GameTime;
-            while (Game.GameTime - GameTimeLastTakenOver <= 3000)
-            {
-                if (Game.LocalPlayer.WantedLevel != 0)
-                {
-                    Player.SetWantedLevel(0, "PedSwap resetting afterwards", true);
-                }
-                GameFiber.Yield();
-            }
+        ////not needed with fake wanted level?
+        //GameFiber.StartNew(delegate
+        //{
+        //    uint GameTimeLastTakenOver = Game.GameTime;
+        //    while (Game.GameTime - GameTimeLastTakenOver <= 3000)
+        //    {
+        //        if (Game.LocalPlayer.WantedLevel != 0)
+        //        {
+        //            Player.SetWantedLevel(0, "PedSwap resetting afterwards", true);
+        //        }
+        //        GameFiber.Yield();
+        //    }
 
-        }, "Wanted Level Stopper");
+        //}, "Wanted Level Stopper");
     }
     private void GiveHistory()
     {

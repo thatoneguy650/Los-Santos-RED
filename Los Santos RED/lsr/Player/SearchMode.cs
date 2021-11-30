@@ -65,7 +65,13 @@ namespace LosSantosRED.lsr
             {
                 if (Settings.SettingsManager.PlayerSettings.SearchMode_FakeActiveWanted)
                 {
-                    StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+                    //StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+
+
+
+
+
+                    //ghost cop is turned off from the fake wanted level stuff
                 }
             } 
         }

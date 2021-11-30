@@ -100,11 +100,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
+    <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
+    <Compile Include="lsr\Data\Intoxicants.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
+    <Compile Include="lsr\Util\Inventory\New\ePhysicalItemType.cs" />
+    <Compile Include="lsr\Util\Inventory\New\Intoxicant.cs" />
     <Compile Include="lsr\Player\Interaction\SimpleTransaction.cs" />
     <Compile Include="lsr\UI\eGTAFont.cs" />
     <Compile Include="lsr\UI\Fader.cs" />
@@ -190,7 +194,6 @@
     <Compile Include="lsr\Util\Inventory\New\ModItem.cs" />
     <Compile Include="lsr\Util\Inventory\New\PhysicalItem.cs" />
     <Compile Include="lsr\Util\Locations\Interior.cs" />
-    <Compile Include="lsr\Util\Inventory\ConsumableSubstance.cs" />
     <Compile Include="lsr\Util\Peds\Merchant.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PedCrimes.cs" />
     <Compile Include="lsr\Util\Peds\Perception and Crimes\PlayerPerception.cs" />
@@ -256,7 +259,6 @@
     <Compile Include="lsr\Player\Interface\IComplexTaskable.cs" />
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />
     <Compile Include="lsr\Tasker\Tasker.cs" />
-    <Compile Include="lsr\Util\Inventory\ConsumableInventoryItem.cs" />
     <Compile Include="lsr\Util\Peds\PedGroup.cs" />
     <Compile Include="lsr\Util\Peds\RelationshipSnapshot.cs" />
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="lsr\Util\Locations\MapBlip.cs" />
     <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
     <Compile Include="lsr\Util\Peds\Bone.cs" />
+    <Compile Include="lsr\World\Util\LocationSpawner.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
     <Compile Include="lsr\Util\Peds\PedConfigFlags.cs" />

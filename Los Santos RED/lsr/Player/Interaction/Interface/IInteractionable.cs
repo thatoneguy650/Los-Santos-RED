@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,6 @@ namespace LosSantosRED.lsr.Interface
         void StartDrinkingActivity();
         void AddToInventory(ModItem offering, int v);
         void StartServiceActivity(ModItem toAdd, GameLocation store);
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
     }
 }

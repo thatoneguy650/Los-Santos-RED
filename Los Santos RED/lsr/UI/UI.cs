@@ -69,14 +69,14 @@ public class UI : IMenuProvideable
     private Fader PlayerFader;
     private bool ZoneDisplayingStreetAlpha = false;
     private bool playerIsInVehicle = false;
-    private ITimeReportable Time;
+    private ITimeControllable Time;
     private string CurrentDefaultTextColor = "~c~";
     
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeReportable time)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -87,7 +87,7 @@ public class UI : IMenuProvideable
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
         MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings,tasker, playerinventory, modItems);
-        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings);
+        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 [Serializable()]
 public class GameLocation
 {
+    private float distanceToPlayer = 999f;
     private Blip createdBlip;
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
@@ -21,20 +22,24 @@ public class GameLocation
     public LocationType Type { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    //public List<ConsumableSubstance> SellableItems { get; set; } = new List<ConsumableSubstance>();
     public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
     public bool HasVendor => VendorPosition != Vector3.Zero;
-    public bool ShouldAlwaysHaveBlip => Type == LocationType.Police || Type == LocationType.Hospital;
+    public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
     public Blip CreatedBlip => createdBlip;
     public bool CanPurchase => Menu.Any();
     public bool Is247 => CloseTime >= 24;
     public int OpenTime { get; set; } = 6;
     public int CloseTime { get; set; } = 20;
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
+    public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
+    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
     public string BannerImage { get; set; } = "";
+    public float ItemPreviewHeading { get; set; } = 0f;
+    public float ItemDeliveryHeading { get; set; } = 0f;
     public void SetCreatedBlip(Blip toset)
     {
         createdBlip = toset;
@@ -67,7 +72,42 @@ public class GameLocation
     }
     public bool IsOpen(int currentHour)
     {
-        return CloseTime == 24 || (currentHour >= OpenTime && currentHour <= CloseTime);
+        return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
+    }
+    private uint GameTimeLastCheckedDistance;
+    private uint UpdateIntervalTime
+    {
+        get
+        {
+            if (DistanceToPlayer >= 999f)
+            {
+                return 10000;
+            }
+            else if (DistanceToPlayer >= 500)
+            {
+                return 5000;
+            }
+            else if (DistanceToPlayer >= 200)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
+    }
+    public float DistanceToPlayer => distanceToPlayer;
+
+
+
+    public void Update()
+    {
+        if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= UpdateIntervalTime)
+        {
+            distanceToPlayer = EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+            GameTimeLastCheckedDistance = Game.GameTime;
+        }
     }
 
 }

@@ -48,7 +48,7 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return (BlipSprite)480;//radar_vip
                 }
-                else if (Type == LocationType.Headshop)
+                else if (Type == LocationType.Dispensary)
                 {
                     return BlipSprite.Stash;
                 }
@@ -82,7 +82,27 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
                 else if (Type == LocationType.HardwareStore)
                 {
-                    return BlipSprite.Repair;
+                    return (BlipSprite)566; //BlipSprite.Repair;
+                }
+                else if (Type == LocationType.Headshop)
+                {
+                    return (BlipSprite)96;// BlipSprite.Stash;
+                }
+                else if (Type == LocationType.CarDealer)
+                {
+                    return BlipSprite.GangVehicle;
+                }
+                else if (Type == LocationType.Brothel)
+                {
+                    return BlipSprite.DropOffHooker;
+                }
+                else if (Type == LocationType.Yoga)
+                {
+                    return BlipSprite.Yoga;
+                }
+                else if (Type == LocationType.MassageParlor)
+                {
+                    return (BlipSprite)466;
                 }
                 else
                 {

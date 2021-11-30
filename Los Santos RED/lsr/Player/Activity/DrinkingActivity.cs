@@ -162,17 +162,17 @@ namespace LosSantosRED.lsr.Player
             }
 
 
-            if(ModItem != null && ModItem.PhysicalItem != null)
+            if(ModItem != null && ModItem.ModelItem != null)
             {
-                PropModel = ModItem.PhysicalItem.ModelName;
-                HandBoneID = ModItem.PhysicalItem.AttachBoneIndex;
-                HandOffset = ModItem.PhysicalItem.AttachOffset;
-                HandRotator = ModItem.PhysicalItem.AttachRotation;
-                if(ModItem.IsIntoxicating)
-                {
-                    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
-                    IntoxicatingEffect.Start();
-                }
+                PropModel = ModItem.ModelItem.ModelName;
+                HandBoneID = ModItem.ModelItem.AttachBoneIndex;
+                HandOffset = ModItem.ModelItem.AttachOffset;
+                HandRotator = ModItem.ModelItem.AttachRotation;
+                //if(ModItem.IsIntoxicating)
+                //{
+                //    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
+                //    IntoxicatingEffect.Start();
+                //}
             }
             else
             {   // assume drinking beer if nothing

@@ -112,14 +112,14 @@ public class Transaction : Interaction
         if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
         {
             Buy(ToAdd);
-            if (ToAdd.Type != eConsumableType.Service)
+            if (ToAdd.Type == eConsumableType.Service)
+            {
+                Player.StartServiceActivity(ToAdd, Store);
+            }
+            else if (ToAdd.CanConsume)
             {
                 Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
                 EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
-            }
-            else if(ToAdd.Type == eConsumableType.Service)
-            {
-                Player.StartServiceActivity(ToAdd, Store);
             }
             Player.GiveMoney(-1 * menuItem.Price);
         }
@@ -163,10 +163,10 @@ public class Transaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
-        string modelName = item.PhysicalItem?.PackageModelName;
+        string modelName = item.PackageItem?.ModelName;
         if(modelName == "")
         {
-            modelName = item.PhysicalItem.ModelName;
+            modelName = item.ModelItem?.ModelName;
         }
         if (Ped.Pedestrian.Exists() && modelName != "")
         {
@@ -177,7 +177,7 @@ public class Transaction : Interaction
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.PhysicalItem.AttachBoneIndex), item.PhysicalItem.AttachOffset, item.PhysicalItem.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(500);
@@ -185,7 +185,7 @@ public class Transaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.PhysicalItem.AttachBoneIndex), item.PhysicalItem.AttachOffset, item.PhysicalItem.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(1000);
