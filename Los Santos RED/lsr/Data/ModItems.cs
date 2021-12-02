@@ -216,7 +216,7 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs6",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
             new ModItem("Joint",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana" },
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), IntoxicantName = "Marijuana" },
             new ModItem("Estancia Cigar",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("prop_cigar_02",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),
                 PackageItem = new PhysicalItem("p_cigar_pack_02_s",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),AmountPerPackage = 20 },
@@ -434,62 +434,67 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
             new ModItem("Bong",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
+            new ModItem("Schwag Gram",eConsumableType.None) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+            new ModItem("Mid Gram",eConsumableType.None) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+            new ModItem("Kind Gram",eConsumableType.None) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+
+
+        //wrapped burger prop_food_bs_burg1
+        //wrapped sandwich prop_food_bs_burger2
+        //empty BS tray prop_food_bs_tray_01
+        //buirger fries BS Tray prop_food_bs_tray_02
+        //sandwich lettuce BS tray prop_food_bs_tray_03
+
+
+        //empty CB tray prop_food_cb_tray_01
+        //burger tray CB prop_food_cb_tray_02
+        //niugget tray CB prop_food_cb_tray_03
 
 
 
-            //wrapped burger prop_food_bs_burg1
-            //wrapped sandwich prop_food_bs_burger2
-            //empty BS tray prop_food_bs_tray_01
-            //buirger fries BS Tray prop_food_bs_tray_02
-            //sandwich lettuce BS tray prop_food_bs_tray_03
+        //generic bag 1 prop_food_bag1
+        //generic bag 2 prop_food_bag2
+        //generic wrapped burger prop_food_burg1
+        //generic wrapped sandwich prop_food_burg2
+        //generic burger box prop_food_burg3
+        //generic fries prop_food_chips
+        //generic coffee prop_food_coffee
+        //generic cup ecola1 prop_food_juice01
+        //generic cup ecola2 prop_food_juice02
+
+        //generic empty tray prop_food_tray_01
+        //geneir cburger tray prop_food_tray_02
+        //generic sandwich tray prop_food_tray_03
 
 
-            //empty CB tray prop_food_cb_tray_01
-            //burger tray CB prop_food_cb_tray_02
-            //niugget tray CB prop_food_cb_tray_03
+        //generic red wine prop_wine_red
+        //generic wine bottle prop_wine_bot_01
+        //geneirc wine bottle prop_wine_bot_02
+        //generic wine rose prop_wine_rose
+        //generic wine white prop_wine_white
+        //generic wine red prop_wine_red
+
+        //packed cigarettes redwood prop_ld_fags_01
+        //packed cigarettes Debonaire prop_ld_fags_02
 
 
+        //packed redwood 1 v_ret_ml_cigs
+        //packed redwood 2 v_ret_ml_cigs2
+        //packed debonaire 1 v_ret_ml_cigs3
+        //packed debonaire 2 v_ret_ml_cigs4
 
-            //generic bag 1 prop_food_bag1
-            //generic bag 2 prop_food_bag2
-            //generic wrapped burger prop_food_burg1
-            //generic wrapped sandwich prop_food_burg2
-            //generic burger box prop_food_burg3
-            //generic fries prop_food_chips
-            //generic coffee prop_food_coffee
-            //generic cup ecola1 prop_food_juice01
-            //generic cup ecola2 prop_food_juice02
+        //packed Caradique? v_ret_ml_cigs5
+        //packed 69 Brand v_ret_ml_cigs6
 
-            //generic empty tray prop_food_tray_01
-            //geneir cburger tray prop_food_tray_02
-            //generic sandwich tray prop_food_tray_03
+        //generic single piull bottle prop_cs_pills
+
+        //Sandwiches
 
 
-            //generic red wine prop_wine_red
-            //generic wine bottle prop_wine_bot_01
-            //geneirc wine bottle prop_wine_bot_02
-            //generic wine rose prop_wine_rose
-            //generic wine white prop_wine_white
-            //generic wine red prop_wine_red
-
-            //packed cigarettes redwood prop_ld_fags_01
-            //packed cigarettes Debonaire prop_ld_fags_02
-
-
-            //packed redwood 1 v_ret_ml_cigs
-            //packed redwood 2 v_ret_ml_cigs2
-            //packed debonaire 1 v_ret_ml_cigs3
-            //packed debonaire 2 v_ret_ml_cigs4
-
-            //packed Caradique? v_ret_ml_cigs5
-            //packed 69 Brand v_ret_ml_cigs6
-
-            //generic single piull bottle prop_cs_pills
-            
-            //Sandwiches
-
-
-        };
+    };
     }
 
 }

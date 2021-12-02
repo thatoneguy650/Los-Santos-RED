@@ -245,10 +245,8 @@ namespace Mod
         }
         private void SpawnVendor(GameLocation gameLocation)
         {
-            List<string> PossibleModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
             Ped ped;
-            string ModelName = PossibleModels.PickRandom();
-
+            string ModelName = gameLocation.VendorModels.PickRandom();
             foreach(PedExt possibleCollision in CivilianList)
             {
                 if(possibleCollision.Pedestrian.Exists() && possibleCollision.Pedestrian.DistanceTo2D(gameLocation.VendorPosition) <= 5f)

@@ -19,7 +19,7 @@ public class DispatchableVehicle
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
     public int MaxOccupants { get; set; } = 2;
-    public int MaxWantedLevelSpawn { get; set; } = 5;
+    public int MaxWantedLevelSpawn { get; set; } = 6;
     public int MinOccupants { get; set; } = 1;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public string ModelName { get; set; }

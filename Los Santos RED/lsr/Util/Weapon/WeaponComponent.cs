@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 public class WeaponComponent
 {
-    private uint Hash;
+    public uint Hash { get; set; }
     public string Name { get; set; }
     
     public WeaponComponent()
@@ -22,12 +23,8 @@ public class WeaponComponent
     {
         Name = _Name;
     }
-    public void UpdateHash(uint hash)
-    {
-        Hash = hash;
-    }
-    public uint GetHash()
-    {
-        return Hash;
-    }
+    //public uint GetHash()
+    //{
+    //    return Hash;
+    //}
 }

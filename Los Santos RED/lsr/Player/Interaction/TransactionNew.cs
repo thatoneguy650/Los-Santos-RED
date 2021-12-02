@@ -1,0 +1,477 @@
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
+using Rage;
+using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using System.Drawing;
+
+public class TransactionNew : Interaction
+{
+    private bool IsUsingHintCamera = false;
+    private bool IsUsingCustomCamera = false;
+
+    private uint GameTimeStartedConversing;
+    private bool IsActivelyConversing;
+    private GameLocation Store;
+    private IInteractionable Player;
+    private ISettingsProvideable Settings;
+    private MenuPool menuPool;
+    private UIMenu ModItemMenu;
+    private Camera StoreCam;
+
+    private Vector3 _direction;
+    private Camera InterpolationCamera;
+    private bool IsDisposed = false;
+    private bool IsUsingCustomCam = false;
+    private IModItems ModItems;
+    private ITimeReportable Time;
+    private IEntityProvideable World;
+    private PurchaseMenu PurchaseMenu;
+    private SellMenu SellMenu;
+    private Merchant Ped;
+    private bool IsTasked;
+
+    private bool IsAnyMenuVisible => (ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
+    private enum eSetPlayerControlFlag
+    {
+        SPC_AMBIENT_SCRIPT = (1 << 1),
+        SPC_CLEAR_TASKS = (1 << 2),
+        SPC_REMOVE_FIRES = (1 << 3),
+        SPC_REMOVE_EXPLOSIONS = (1 << 4),
+        SPC_REMOVE_PROJECTILES = (1 << 5),
+        SPC_DEACTIVATE_GADGETS = (1 << 6),
+        SPC_REENABLE_CONTROL_ON_DEATH = (1 << 7),
+        SPC_LEAVE_CAMERA_CONTROL_ON = (1 << 8),
+        SPC_ALLOW_PLAYER_DAMAGE = (1 << 9),
+        SPC_DONT_STOP_OTHER_CARS_AROUND_PLAYER = (1 << 10),
+        SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
+        SPC_ALLOW_PAD_SHAKE = (1 << 12)
+    };
+    public TransactionNew(IInteractionable player, Merchant ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time, IEntityProvideable world)
+    {
+        Ped = ped;
+        Player = player;
+        Store = store;
+        Settings = settings;
+        ModItems = modItems;
+        Time = time;
+        World = world;
+        menuPool = new MenuPool();
+    }
+    public override string DebugString => "";
+    private bool CanContinueConversation => Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f && Player.CanConverse;
+    public override void Start()
+    {
+        try
+        {
+            if (Store != null)
+            {
+                Player.IsConversing = true;
+                GameFiber.StartNew(delegate
+                {
+                    Setup();
+                    SetupCamera();
+                    Greet();
+                    ShowMenu();
+                    Tick();
+                    Dispose();
+                }, "Transaction");
+            }
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification(ex.Message);
+            EntryPoint.WriteToConsole("SIMPLE TRANSACTION ERROR:" + ex.Message + ex.StackTrace, 0);
+        }
+    }
+    public override void Dispose()
+    {
+        if (!IsDisposed)
+        {
+            Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
+            IsDisposed = true;
+            ModItemMenu.Visible = false;
+            PurchaseMenu?.Dispose();
+            SellMenu?.Dispose();
+            Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
+            Player.IsConversing = false;
+            if (IsUsingCustomCam)
+            {
+                if (PurchaseMenu?.BoughtItem == true || SellMenu?.SoldItem == true)
+                {
+                    SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
+                }
+                if (!Player.IsInVehicle)
+                {
+                    Game.LocalPlayer.Character.Position = Store.EntrancePosition;
+                    Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
+                    Game.LocalPlayer.Character.IsVisible = true;
+                    Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), 1.0f, Store.EntranceHeading, 1.0f, 1500);
+                }
+                ReturnToGameplay();
+                if (!Player.IsInVehicle)
+                {
+                    Game.LocalPlayer.HasControl = true;
+                    NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
+                }
+                if (StoreCam.Exists())
+                {
+                    StoreCam.Delete();
+                }
+                if (InterpolationCamera.Exists())
+                {
+                    InterpolationCamera.Delete();
+                }
+                Game.LocalPlayer.Character.Tasks.Clear();
+            }
+            else if (IsUsingHintCamera)
+            {
+                NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+            }
+
+            if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive)
+            {
+                NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Ped.Store.VendorHeading, -1);
+            }
+
+            EntryPoint.WriteToConsole($"Simple Transaction DISPOSE IsUsingCustomCam {IsUsingCustomCam}", 3);
+        }
+    }
+    private void Setup()
+    {
+        ModItemMenu = new UIMenu(Store.Name, Store.Description);
+        if (Store.BannerImage != "")
+        {
+            ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+            Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+        }
+        if(Store.Name == "")
+        {
+            ModItemMenu.RemoveBanner();
+        }
+        ModItemMenu.OnItemSelect += OnItemSelect;
+        menuPool.Add(ModItemMenu);
+    }
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem.Text == "Buy")
+        {
+            PurchaseMenu?.Show();
+        }
+        if (selectedItem.Text == "Sell")
+        {
+            SellMenu?.Show();
+        }
+    }
+    private void ShowMenu()
+    {
+        ModItemMenu.Clear();
+        bool hasPurchaseMenu = false;
+        bool hasSellMenu = false;
+        if (Store.Menu.Any(x => x.Purchaseable))
+        {
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            PurchaseMenu.Setup();
+            hasPurchaseMenu = true;
+        }
+        if (Store.Menu.Any(x => x.Sellable))
+        {
+            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            SellMenu.Setup();
+            hasSellMenu = true;
+        }
+        if (hasSellMenu && hasPurchaseMenu)
+        {
+            ModItemMenu.Visible = true;
+        }
+        else if (hasSellMenu)
+        {
+            SellMenu.Show();
+        }
+        else
+        {
+            PurchaseMenu.Show();
+        }
+    }
+    private void SetupCamera()
+    {
+        if(Ped != null && Ped.Pedestrian.Exists())
+        {
+            IsUsingHintCamera = true;
+            IsUsingCustomCam = false;
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        }
+        else if (Player.IsInVehicle)
+        {
+            IsUsingHintCamera = true;
+            IsUsingCustomCam = false;
+            NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
+        }
+        else
+        {
+            IsUsingCustomCam = true;
+            IsUsingHintCamera = false;
+            Game.LocalPlayer.HasControl = false;
+            if (Store.HasCustomItemPostion)
+            {
+                HighlightLocationWithCamera();
+            }
+            else
+            {
+                HighlightStoreWithCamera();
+            }
+
+            Game.LocalPlayer.Character.IsVisible = false;
+            NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
+        }
+    }
+    private void Tick()
+    {
+        while (CanContinueConversation)
+        {
+            menuPool.ProcessMenus();
+            if (!IsActivelyConversing && !IsAnyMenuVisible)
+            {
+                Dispose();
+            }
+            PurchaseMenu?.Update();
+            SellMenu?.Update();
+            GameFiber.Yield();
+        }
+        Dispose();
+        GameFiber.Sleep(1000);
+    }
+    private void HighlightLocationWithCamera()
+    {
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        if (Store.HasCustomCamera)
+        {
+            StoreCam.Position = Store.CameraPosition;
+            StoreCam.Rotation = Store.CameraRotation;
+            StoreCam.Direction = Store.CameraDirection;
+            Game.FadeScreenOut(1500, true);
+            NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(Store.CameraPosition.X, Store.CameraPosition.Y, Store.CameraPosition.Z, 0f, 0f, 0f);
+            Vector3 ToLookAt = new Vector3(Store.ItemPreviewPosition.X, Store.ItemPreviewPosition.Y, Store.ItemPreviewPosition.Z);
+            _direction = (ToLookAt - Store.CameraPosition).ToNormalized();
+            StoreCam.Direction = _direction;
+            StoreCam.Active = true;
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(1500, true);
+        }
+    }
+    private void HighlightStoreWithCamera()
+    {
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        if (Store.HasCustomCamera)
+        {
+            StoreCam.Position = Store.CameraPosition;
+            StoreCam.Rotation = Store.CameraRotation;
+            StoreCam.Direction = Store.CameraDirection;
+        }
+        else
+        {
+            float distanceAway = 10f;
+            float distanceAbove = 7f;
+            if (Store.Type == LocationType.Hotel)
+            {
+                distanceAway = 30f;
+                distanceAbove = 20f;
+            }
+            Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, distanceAway);
+            InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
+            StoreCam.Position = InitialCameraPosition;
+            Vector3 ToLookAt = new Vector3(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z + 2f);
+            _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
+            StoreCam.Direction = _direction;
+        }
+        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        if (!InterpolationCamera.Exists())
+        {
+            InterpolationCamera = new Camera(false);
+        }
+        InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+        InterpolationCamera.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+        GameFiber.Sleep(1500);
+    }
+    private void ReturnToGameplay()
+    {
+        if (Store.HasCustomItemPostion)
+        {
+            Game.FadeScreenOut(1500, true);
+            StoreCam.Active = false;
+            NativeFunction.Natives.CLEAR_FOCUS();
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(1500, true);
+        }
+        else
+        {
+            if (!InterpolationCamera.Exists())
+            {
+                InterpolationCamera = new Camera(false);
+            }
+            InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
+            InterpolationCamera.Active = true;
+            NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
+            GameFiber.Sleep(1500);
+            InterpolationCamera.Active = false;
+        }
+    }
+    private bool CanSay(Ped ToSpeak, string Speech)
+    {
+        bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
+        return CanSay;
+    }
+    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
+    {
+        bool Spoke = false;
+        if (CanContinueConversation)
+        {
+            foreach (string AmbientSpeech in Possibilities)
+            {
+                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                GameFiber.Sleep(100);
+                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
+                {
+                    Spoke = true;
+                }
+                //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+                if (Spoke)
+                {
+                    break;
+                }
+            }
+            GameFiber.Sleep(100);
+            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
+            {
+                Spoke = true;
+                GameFiber.Yield();
+            }
+            if (!Spoke)
+            {
+                //Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
+            }
+        }
+        return Spoke;
+    }
+    private void Greet()
+    {
+        if(Ped != null && Ped.Pedestrian.Exists())
+        {
+            IsActivelyConversing = true;
+            GameTimeStartedConversing = Game.GameTime;
+            IsActivelyConversing = true;
+            if (Ped.TimesInsultedByPlayer <= 0)
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+            }
+            else
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false);
+            }
+            while (CanContinueConversation && Game.GameTime - GameTimeStartedConversing <= 1000)
+            {
+                GameFiber.Yield();
+            }
+            if (!CanContinueConversation)
+            {
+                return;
+            }
+
+            if (!Ped.IsFedUpWithPlayer)
+            {
+                if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
+                {
+                    IsTasked = false;
+                }
+                else
+                {
+                    IsTasked = true;
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                if (Player.IsInVehicle)
+                {
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
+                }
+                else
+                {
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
+                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                uint GameTimeStartedFacing = Game.GameTime;
+                while (CanContinueConversation && Game.GameTime - GameTimeStartedFacing <= 500)
+                {
+                    GameFiber.Yield();
+                }
+                if (!CanContinueConversation)
+                {
+                    return;
+                }
+                if (Ped.TimesInsultedByPlayer <= 0)
+                {
+                    SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+                }
+                else
+                {
+                    SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
+                }
+                Ped.HasSpokenWithPlayer = true;
+            }
+            IsActivelyConversing = false;
+        }
+        else if (IsUsingHintCamera || Store.ItemPreviewPosition.DistanceTo2D(Store.EntrancePosition) <= 30f)
+        {
+            GameTimeStartedConversing = Game.GameTime;
+            IsActivelyConversing = true;
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+            while (CanContinueConversation && Game.GameTime - GameTimeStartedConversing <= 1000)
+            {
+                GameFiber.Yield();
+            }
+            if (!CanContinueConversation)
+            {
+                return;
+            }
+            IsActivelyConversing = false;
+        }
+    }
+
+
+}

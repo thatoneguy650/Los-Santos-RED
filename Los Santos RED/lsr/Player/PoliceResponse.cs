@@ -206,6 +206,8 @@ namespace LosSantosRED.lsr
             GameTimeWantedStarted = Game.GameTime;
             GameTimeWantedLevelStarted = Game.GameTime;
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
+            RelationshipGroup.Cop.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+            RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
         }
         public void OnLostWanted()
         {
@@ -219,6 +221,8 @@ namespace LosSantosRED.lsr
             }
             GameTimeLastWantedEnded = Game.GameTime;
             DateTimeLastWantedEnded = Time.CurrentDateTime;
+            RelationshipGroup.Cop.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
             EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted DateTimeLastWantedEnded {DateTimeLastWantedEnded}",5);
         }
         public void OnWantedLevelIncreased()
@@ -268,7 +272,7 @@ namespace LosSantosRED.lsr
                         PlayerSeenDuringCurrentWanted = true;
                         PlayerSeenDuringWanted = true;
                     }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
@@ -283,6 +287,12 @@ namespace LosSantosRED.lsr
                         int PoliceKilled = InstancesOfCrime("KillingPolice");
                         if (PoliceKilled > 0)
                         {
+                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+                            {
+                                Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
                             if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
                             {
                                 Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);

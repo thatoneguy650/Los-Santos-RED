@@ -12,7 +12,7 @@ public class EMSSettings
     public EMSSettings()
     {
         #if DEBUG
-            ShowSpawnedBlips =  true;
+            //ShowSpawnedBlips =  true;
             ManageDispatching = false;
             ManageTasking = false;
         #else

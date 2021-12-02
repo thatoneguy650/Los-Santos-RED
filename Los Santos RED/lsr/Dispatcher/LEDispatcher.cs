@@ -138,6 +138,10 @@ public class LEDispatcher
     {
         get
         {
+            if (TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6;//35;//35
+            }
             if (TotalWantedLevel == 5)
             {
                 return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted5;//35;//35
@@ -176,6 +180,10 @@ public class LEDispatcher
     {
         get
         {
+            if (TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted6;//35;//35
+            }
             if (TotalWantedLevel == 5)
             {
                 return Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted5;//35;//35
@@ -220,7 +228,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;//2000;
+                return ((6 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;//((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;//2000;
             }
         }
     }
@@ -234,7 +242,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_Min;//90 seconds at level 3?, 70 at level 5? sounds okay?
+                return ((6 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_Min;//90 seconds at level 3?, 70 at level 5? sounds okay?//((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_Min;//90 seconds at level 3?, 70 at level 5? sounds okay?
             }
         }
     }
@@ -415,10 +423,6 @@ public class LEDispatcher
             {
                 ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
             }
-        }
-        foreach (Agency ag in ToReturn)
-        {
-            //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }

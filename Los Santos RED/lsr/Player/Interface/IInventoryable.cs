@@ -10,5 +10,12 @@ namespace LosSantosRED.lsr.Interface
     public interface IInventoryable
     {
         Inventory Inventory { get; }
+        bool IsPerformingActivity { get; }
+        int Money { get; }
+
+        bool RemoveFromInventory(ModItem toAdd, int v);
+        void GiveMoney(int salesPrice);
+        void AddToInventory(ModItem toAdd, int amountPerPackage);
+        void StartServiceActivity(ModItem toAdd, GameLocation store);
     }
 }

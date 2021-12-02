@@ -56,7 +56,7 @@ public class Agency
     public bool HasMotorcycles => Vehicles.Any(x => x.IsMotorcycle);
     public string ID { get; set; } = "UNK";
     public string LicensePlatePrefix { get; set; } = "";
-    public uint MaxWantedLevelSpawn { get; set; } = 5;
+    public uint MaxWantedLevelSpawn { get; set; } = 6;
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 99;
     public bool SpawnsOnHighway { get; set; } = false;

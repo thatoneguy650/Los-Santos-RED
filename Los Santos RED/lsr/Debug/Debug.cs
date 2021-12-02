@@ -39,8 +39,10 @@ public class Debug
     private Mod.Time Time;
     private Camera StoreCam;
     private Camera InterpolationCamera;
+    private Agencies Agencies;
+    private Weapons Weapons;
 
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -53,6 +55,8 @@ public class Debug
         Settings = settings;
         Tasker = tasker;
         Time = time;
+        Agencies = agencies;
+        Weapons = weapons;
     }
     public void Dispose()
     {
@@ -373,9 +377,9 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-
+        IssueWeapons(Weapons);
         //set in garage
-        Game.LocalPlayer.Character.Position = new Vector3(229.9559f, -981.7928f, -99.66071f);
+        //Game.LocalPlayer.Character.Position = new Vector3(229.9559f, -981.7928f, -99.66071f);
         //Model characterModel = new Model(0xB779A091);
         //characterModel.LoadAndWait();
         //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
@@ -404,7 +408,7 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnItemInFrom();
+        //SpawnItemInFrom();
         //Model characterModel = new Model(0xB779A091);
         //characterModel.LoadAndWait();
         //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
@@ -437,7 +441,7 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        //SpawnGunAttackers();
+        SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {
@@ -517,7 +521,7 @@ public class Debug
     private void DebugNumpad9()
     {
         int CurrentWanted = Player.WantedLevel;
-        if(CurrentWanted < 5)
+        if(CurrentWanted <= 5)
         {
             CurrentWanted++;
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
@@ -1411,6 +1415,27 @@ public class Debug
         //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
+    }
+    public void IssueWeapons(IWeapons weapons)
+    {
+        IssuableWeapon Sidearm = Agencies.GetAgency("NOOSE").GetRandomWeapon(true, weapons);
+        IssuableWeapon LongGun = Agencies.GetAgency("NOOSE").GetRandomWeapon(false, weapons);
+        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, 100, false, false);
+        }
+        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), 200, false, false);
+            Sidearm.ApplyVariation(Game.LocalPlayer.Character);
+        }
+        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), 200, false, false);
+            LongGun.ApplyVariation(Game.LocalPlayer.Character);
+        }
+       // NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Game.LocalPlayer.Character, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
+      //  NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Game.LocalPlayer.Character, 2, true);//can do drivebys    
     }
 
     public class InteriorPosition

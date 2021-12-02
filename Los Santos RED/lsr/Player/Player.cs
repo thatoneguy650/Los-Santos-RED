@@ -34,7 +34,7 @@ namespace Mod
         private uint GameTimeWantedLevelStarted;
         private HealthState HealthState;
         private GameLocation ClosestSimpleTransaction;
-
+        private int wantedLevel = 0;
         private bool isActive = true;
         private bool isAiming;
         private bool isAimingInVehicle;
@@ -137,7 +137,7 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => $" IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
+        public string DebugLine6 => $"IntWantedLevel {WantedLevel} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.SearchModeDebug;//$"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => (CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning} {CurrentVehicle.Vehicle.Handle}" : $"NO VEHICLE") + $" IsGettingInto: {IsGettingIntoAVehicle}, IsIn: {IsInVehicle} OwnedHandle {(OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() ? OwnedVehicle.Vehicle.Handle : 0)}";
@@ -152,6 +152,7 @@ namespace Mod
         public bool HandsAreUp { get; set; }
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public void AddToInventory(ModItem toadd, int v) => Inventory.Add(toadd, v);
+        public bool HasItemInInventory(string Name) => Inventory.Get(Name)?.Amount > 0;
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
         public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;
@@ -234,7 +235,7 @@ namespace Mod
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
-        public bool IsNotWanted => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() == 0;//Game.LocalPlayer.WantedLevel == 0;
+        public bool IsNotWanted => wantedLevel == 0;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() == 0;//Game.LocalPlayer.WantedLevel == 0;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsPerformingActivity { get; set; }
         public bool IsRagdoll { get; private set; }
@@ -243,7 +244,7 @@ namespace Mod
         public bool IsStunned { get; private set; }
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsVisiblyArmed { get; private set; }
-        public bool IsWanted => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() > 0; //Game.LocalPlayer.WantedLevel > 0;
+        public bool IsWanted => wantedLevel > 0;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() > 0; //Game.LocalPlayer.WantedLevel > 0;
         public WeaponHash LastWeaponHash { get; set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
@@ -319,7 +320,7 @@ namespace Mod
         public float VehicleSpeedKMH => VehicleSpeed * 3.6f;
         public float VehicleSpeedMPH => VehicleSpeed * 2.23694f;
         public Violations Violations { get; private set; }
-        public int WantedLevel => NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//Game.LocalPlayer.WantedLevel;
+        public int WantedLevel => wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//Game.LocalPlayer.WantedLevel;
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -567,7 +568,7 @@ namespace Mod
                 Game.TimeScale = 1f;
             }
         }
-        public void RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
+        public bool RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
         public void StartConsumingActivity(ModItem modItem)
         {
             if (!IsPerformingActivity && CanPerformActivities && modItem.CanConsume)// modItem.Type != eConsumableType.None)
@@ -843,7 +844,7 @@ namespace Mod
 
                     NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
                     NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
-
+                    wantedLevel = desiredWantedLevel;
 
                     if (desiredWantedLevel > 0)
                     {
@@ -899,7 +900,7 @@ namespace Mod
                 }
                 IsConversing = true;
                 Merchant myPed = (Merchant)CurrentLookedAtPed;
-                Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems);
+                Interaction = new TransactionNew(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider);
                 Interaction.Start();
             }
         }
@@ -912,7 +913,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new SimpleTransaction(this, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
+                Interaction = new TransactionNew(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
                 Interaction.Start();
             }
         }
@@ -1110,7 +1111,13 @@ namespace Mod
             {
                 MaxWantedLastLife = WantedLevel;
             }
-            if (PreviousWantedLevel != NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            if(NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
+            {
+                NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(wantedLevel);
+            }
+
+
+            if (PreviousWantedLevel != wantedLevel)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {
                 OnWantedLevelChanged();
             }
@@ -1176,35 +1183,35 @@ namespace Mod
 
 
   
-            if (PoliceResponse.IsDeadlyChase && !IsBusted)
-            {
-                if (isSetPoliceIgnored)
-                {
-                    NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
-                    isSetPoliceIgnored = false;
-                }
+            //if (PoliceResponse.IsDeadlyChase && !IsBusted)
+            //{
+            //    if (isSetPoliceIgnored)
+            //    {
+            //        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
+            //        isSetPoliceIgnored = false;
+            //    }
 
-            }
-            else
-            {
-                if(EntityProvider.PoliceList.Any(x=> x.CurrentTask?.OtherTarget != null))
-                {
-                    if (!isSetPoliceIgnored)
-                    {
-                        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
-                        isSetPoliceIgnored = true;
-                    }
-                }
-                else
-                {
-                    if (isSetPoliceIgnored)
-                    {
-                        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
-                        isSetPoliceIgnored = false;
-                    }
-                }
+            //}
+            //else
+            //{
+            //    if(EntityProvider.PoliceList.Any(x=> x.CurrentTask?.OtherTarget != null))
+            //    {
+            //        if (!isSetPoliceIgnored)
+            //        {
+            //            NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
+            //            isSetPoliceIgnored = true;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (isSetPoliceIgnored)
+            //        {
+            //            NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
+            //            isSetPoliceIgnored = false;
+            //        }
+            //    }
 
-            }
+            //}
 
 
 
@@ -1249,7 +1256,7 @@ namespace Mod
             {
                 foreach (GameLocation gl in PlacesOfInterest.GetAllStores())
                 {
-                    if (!gl.HasVendor && gl.CanPurchase && Character.DistanceTo2D(gl.EntrancePosition) <= 3f)
+                    if (!gl.HasVendor && gl.CanTransact && gl.DistanceToPlayer <= 3f)
                     {
                         ClosestSimpleTransaction = gl;
                         break;
@@ -1722,7 +1729,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
-            PreviousWantedLevel = NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+            PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         private void UpdateButtonPrompts()
         {
@@ -1993,6 +2000,7 @@ namespace Mod
             //    }    
             //}, "SetPlayerInPoliceCarGF");
         }
+
         //private void GetInCarTask()
         //{
         //    if (Character.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())

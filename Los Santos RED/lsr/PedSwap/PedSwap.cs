@@ -588,7 +588,7 @@ public class PedSwap : IPedSwap
         Player.GroupID = NativeFunction.Natives.CREATE_GROUP<int>(0);
         NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, Player.GroupID);
         NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(Player.Character, Player.GroupID);
-        Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(TargetPedRelationshipGroup, Relationship.Like);
+        //Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(TargetPedRelationshipGroup, Relationship.Like);
         foreach (Ped PedToAlly in PedList)
         {
             if (PedToAlly.Exists())

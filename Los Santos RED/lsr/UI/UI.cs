@@ -251,15 +251,22 @@ public class UI : IMenuProvideable
     }
     public void Draw(object sender, GraphicsEventArgs args)
     {
-        if(DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen())
+        try
         {
-            if (ToDraw != null && ToDraw.Size != null)
-            {  
-                float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale;
-                float posX = (Game.Resolution.Height - (ToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
-                float posY = (Game.Resolution.Width - (ToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;         
-                args.Graphics.DrawTexture(ToDraw, new RectangleF(posY, posX, ToDraw.Size.Width * Scale, ToDraw.Size.Height * Scale));
+            if (DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen())
+            {
+                if (ToDraw != null && ToDraw.Size != null)
+                {
+                    float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale;
+                    float posX = (Game.Resolution.Height - (ToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
+                    float posY = (Game.Resolution.Width - (ToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
+                    args.Graphics.DrawTexture(ToDraw, new RectangleF(posY, posX, ToDraw.Size.Width * Scale, ToDraw.Size.Height * Scale));
+                }
             }
+        }
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI: Draw ERROR {ex.Message} {ex.StackTrace} ", 0);
         }
     }
     private void ForceVanillaUI()

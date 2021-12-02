@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr.Interface
         void TakeOwnershipOfNearestCar();
         void CallPolice();
         //void StartEatingActivity(ConsumableSubstance selectedStuff);
-        void RemoveFromInventory(ModItem selectedStuff, int v);
+        bool RemoveFromInventory(ModItem selectedStuff, int v);
         void StartConsumingActivity(ModItem selectedStuff);
     }
 }

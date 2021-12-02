@@ -26,7 +26,7 @@ public class GameLocation
     public bool HasVendor => VendorPosition != Vector3.Zero;
     public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
     public Blip CreatedBlip => createdBlip;
-    public bool CanPurchase => Menu.Any();
+    public bool CanTransact => Menu.Any();
     public bool Is247 => CloseTime >= 24;
     public int OpenTime { get; set; } = 6;
     public int CloseTime { get; set; } = 20;
@@ -40,6 +40,7 @@ public class GameLocation
     public string BannerImage { get; set; } = "";
     public float ItemPreviewHeading { get; set; } = 0f;
     public float ItemDeliveryHeading { get; set; } = 0f;
+    public List<string> VendorModels { get; set; } = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
     public void SetCreatedBlip(Blip toset)
     {
         createdBlip = toset;

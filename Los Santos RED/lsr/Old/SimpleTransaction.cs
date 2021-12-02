@@ -15,34 +15,23 @@ public class SimpleTransaction : Interaction
 {
     private bool IsUsingHintCamera = false;
     private bool IsUsingCustomCamera = false;
-    private bool ShouldSpeak = false;
-    private bool ShouldPreviewItem => IsUsingCustomCam;
-
 
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
-    private bool IsTasked;
     private GameLocation Store;
     private IInteractionable Player;
     private bool CancelledConversation;
     private ISettingsProvideable Settings;
-    private Rage.Object SellingProp;
     private MenuPool menuPool;
     private UIMenu ModItemMenu;
     private Camera StoreCam;
 
-    private Quaternion _lookRotation;
     private Vector3 _direction;
     private Camera InterpolationCamera;
     private bool IsDisposed = false;
     private bool IsUsingCustomCam = false;
     private IModItems ModItems;
     private ITimeReportable Time;
-    private int ItemsBought;
-    private bool NeedsToFadeToCamera = false;
-    private Vehicle SellingVehicle;
-    private PreviewType StorePreviewType = PreviewType.None;
-    private Ped SellingPed;
     private IEntityProvideable World;
     private List<Color> Colors = new List<Color>() { Color.White, Color.Red, Color.Green, Color.Gray, Color.DarkGray, Color.Black, Color.Yellow,Color.LightBlue,Color.Navy,Color.Purple,Color.DarkViolet };
 
@@ -50,6 +39,9 @@ public class SimpleTransaction : Interaction
 
     private Color CurrentSelectedColor = Color.Black;
     private Color CurrentDisplayColor = Color.Black;
+    private PurchaseMenu PurchaseMenu;
+    private SellMenu SellMenu;
+    private bool IsAnyMenuVisible => (ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
     private enum eSetPlayerControlFlag
     {
         SPC_AMBIENT_SCRIPT = (1 << 1),
@@ -90,12 +82,14 @@ public class SimpleTransaction : Interaction
         {
             Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
             IsDisposed = true;
-            HideMenu();
+            ModItemMenu.Visible = false;
+            PurchaseMenu?.Dispose();
+            SellMenu?.Dispose();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
             Player.IsConversing = false;
             if (IsUsingCustomCam)
             {
-                if (ItemsBought > 0)
+                if (PurchaseMenu?.BoughtItem == true || SellMenu?.SoldItem == true)
                 {
                     SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
                 }
@@ -135,12 +129,10 @@ public class SimpleTransaction : Interaction
         {
             if (Store != null)
             {
-                Player.IsConversing = true;
-                
+                Player.IsConversing = true;      
                 GameFiber.StartNew(delegate
                 {
-                    SetupMenu();
-                    PreloadModels();
+                    Setup();
                     SetupCamera();
                     Greet();
                     ShowMenu();
@@ -155,7 +147,7 @@ public class SimpleTransaction : Interaction
             EntryPoint.WriteToConsole("SIMPLE TRANSACTION ERROR:" + ex.Message + ex.StackTrace, 0);
         }
     }
-    private void SetupMenu()
+    private void Setup()
     {
         ModItemMenu = new UIMenu(Store.Name, Store.Description);
         if (Store.BannerImage != "")
@@ -163,30 +155,48 @@ public class SimpleTransaction : Interaction
             ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
             Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
         }
-        ModItemMenu.OnIndexChange += OnIndexChange;
         ModItemMenu.OnItemSelect += OnItemSelect;
-        ModItemMenu.OnListChange += OnListChange;
         menuPool.Add(ModItemMenu);
     }
-
-
-
-    private void PreloadModels()
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        foreach (MenuItem menuItem in Store.Menu)//preload all item models so it doesnt bog the menu down
+        if(selectedItem.Text == "Buy")
         {
-            ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
-            if (myItem != null)
-            {
-                if (myItem.PackageItem != null && myItem.PackageItem.ModelName != "")
-                {
-                    new Model(myItem.PackageItem.ModelName).LoadAndWait();
-                }
-                else if (myItem.ModelItem != null && myItem.ModelItem.ModelName != "")
-                {
-                    new Model(myItem.ModelItem.ModelName).LoadAndWait();
-                }
-            }
+            PurchaseMenu?.Show();
+        }
+        if (selectedItem.Text == "Sell")
+        {
+            SellMenu?.Show();
+        }
+    }
+    private void ShowMenu()
+    {
+        ModItemMenu.Clear();
+        bool hasPurchaseMenu = false;
+        bool hasSellMenu = false;
+        if (Store.Menu.Any(x => x.Purchaseable))
+        {
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, null, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            PurchaseMenu.Setup();
+            hasPurchaseMenu = true;
+        }
+        if (Store.Menu.Any(x => x.Sellable))
+        {
+            SellMenu = new SellMenu(menuPool, ModItemMenu, null, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            SellMenu.Setup();
+            hasSellMenu = true;
+        }
+        if (hasSellMenu && hasPurchaseMenu)
+        {
+            ModItemMenu.Visible = true;
+        }
+        else if(hasSellMenu)
+        {
+            SellMenu.Show();
+        }
+        else
+        {
+            PurchaseMenu.Show();
         }
     }
     private void SetupCamera()
@@ -233,230 +243,12 @@ public class SimpleTransaction : Interaction
     private void Loop()
     {
         menuPool.ProcessMenus();
-        if (!IsActivelyConversing && !ModItemMenu.Visible)
+        if (!IsActivelyConversing && !IsAnyMenuVisible)
         {
             Dispose();
         }
-        if (SellingProp.Exists())
-        {
-            SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);
-        }
-        if(SellingVehicle.Exists())
-        {
-            if (CurrentSelectedColor != CurrentDisplayColor)
-            {
-                SellingVehicle.PrimaryColor = CurrentSelectedColor;
-                CurrentDisplayColor = CurrentSelectedColor;
-            }
-            SellingVehicle.SetRotationYaw(SellingVehicle.Rotation.Yaw + 1f);
-        }
-    }
-    private void CreateTransactionMenu()
-    {
-        ModItemMenu.Clear();
-        foreach (MenuItem cii in Store.Menu)
-        {
-            if (cii != null)
-            {
-                ModItem myItem = ModItems.Get(cii.ModItemName);
-                if(myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
-                {
-                    ModItemMenu.AddItem(new UIMenuListItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}", ColorString));
-                }
-                else
-                {
-                    ModItemMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
-                }
-            }
-        }
-        OnIndexChange(ModItemMenu, ModItemMenu.CurrentSelection);
-    }
-    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
-        MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
-        bool ExitAfterPurchase = false;
-        if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
-        {
-            bool subtractCash = true;
-            
-            HideMenu();
-            ItemsBought++;
-            
-            if (ToAdd.Type == eConsumableType.Service)
-            {
-                Player.StartServiceActivity(ToAdd, Store);
-            }
-            else if (ToAdd.CanConsume)
-            {
-                Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
-                EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Amount: {ToAdd.AmountPerPackage}", 5);
-            }
-            else if(ToAdd.ModelItem?.Type == ePhysicalItemType.Vehicle)
-            {
-                subtractCash = PurchaseVehicle(ToAdd);
-                if(!subtractCash)
-                {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Could Not Deliver", "We are sorry we are unable to complete this transation");
-                }
-                ExitAfterPurchase = subtractCash;
-            }
-            if (subtractCash)
-            {
-                Player.GiveMoney(-1 * menuItem.Price);
-            }
-        }
-        GameFiber.Sleep(500);
-        while (Player.IsPerformingActivity)
-        {
-            GameFiber.Sleep(500);
-        }
-        if(ExitAfterPurchase)
-        {
-            Dispose();
-        }
-        else
-        {
-            ShowMenu();
-        }
-    }
-    private bool PurchaseVehicle(ModItem modItem)
-    {
-        bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
-        if(!ItemInDeliveryBay)
-        {
-            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
-            if (NewVehicle.Exists())
-            {
-                VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
-                World.AddEntity(MyNewCar, ResponseType.None);
-                Player.TakeOwnershipOfVehicle(MyNewCar);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "Purchase", "Thank you for your purchase");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-
-    }
-    private void CreatePreview(UIMenuItem myItem)
-    {
-        ClearPreviews();
-        if (myItem != null)
-        {
-            EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
-            ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
-            if (itemToShow != null && ShouldPreviewItem)
-            {
-                if (itemToShow.PackageItem?.Type == ePhysicalItemType.Prop || itemToShow.ModelItem?.Type == ePhysicalItemType.Prop)
-                {
-                    PreviewProp(itemToShow);
-                }
-                else if (itemToShow.ModelItem?.Type == ePhysicalItemType.Vehicle)
-                {
-                    PreviewVehicle(itemToShow);
-                }
-                else if (itemToShow.ModelItem?.Type == ePhysicalItemType.Ped)
-                {
-                    PreviewPed(itemToShow);
-                }
-            }
-        }
-    }
-    private void OnIndexChange(UIMenu sender, int newIndex)
-    {
-        EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange IncomingIndex {newIndex}", 5);
-        CreatePreview(sender.MenuItems[newIndex]);
-    }
-    private void OnListChange(UIMenu sender, UIMenuListItem listItem, int newIndex)
-    {
-        CurrentSelectedColor = Colors[newIndex];
-        EntryPoint.WriteToConsole($"SIMPLE TRANSACTION COLOR CHANGED TO Color {CurrentSelectedColor} ColorString {ColorString[newIndex]} newIndex {newIndex}", 5);
-    }
-    private void PreviewPed(ModItem itemToShow)
-    {
-        if (itemToShow != null && itemToShow.ModelItem != null)
-        {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
-        }
-        GameFiber.Yield();
-    }
-    private void PreviewVehicle(ModItem itemToShow)
-    {
-        if (itemToShow != null && itemToShow.ModelItem != null)
-        {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
-        }
-        GameFiber.Yield();
-        if (SellingVehicle.Exists())
-        {
-
-            SellingVehicle.PrimaryColor = CurrentSelectedColor;
-            CurrentDisplayColor = CurrentSelectedColor;
-            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SellingVehicle, 5.0f);
-        }
-    }
-    private void PreviewProp(ModItem itemToShow)
-    {
-        string ModelToSpawn = "";
-        bool useClose = true;
-        if (itemToShow.PackageItem != null)
-        {
-            ModelToSpawn = itemToShow.PackageItem.ModelName;
-            useClose = !itemToShow.PackageItem.IsLarge;
-        }
-        if (ModelToSpawn == "")
-        {
-            ModelToSpawn = itemToShow.ModelItem.ModelName;
-            useClose = !itemToShow.ModelItem.IsLarge;
-        }
-        if (ModelToSpawn != "")
-        {
-            if (useClose)
-            {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
-            }
-            else
-            {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
-            }
-            if (SellingProp.Exists())
-            {
-                SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
-                if (SellingProp != null && SellingProp.Exists())
-                {
-                    NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
-                }
-            }
-            EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN", 5);
-        }
-        else
-        {
-            if (SellingProp.Exists())
-            {
-                SellingProp.Delete();
-            }
-        }
-    }
-    private void HideMenu()
-    {
-        ClearPreviews();
-        ModItemMenu.Visible = false;
-        Player.ButtonPrompts.Clear();
-    }
-    private void ShowMenu()
-    {
-        if (!ModItemMenu.Visible)
-        {
-            CreateTransactionMenu();
-            ModItemMenu.Visible = true;
-        }
+        PurchaseMenu?.Update();
+        SellMenu?.Update();
     }
     private void HighlightLocationWithCamera()
     {
@@ -544,21 +336,6 @@ public class SimpleTransaction : Interaction
             NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
             GameFiber.Sleep(1500);
             InterpolationCamera.Active = false;
-        }
-    }
-    private void ClearPreviews()
-    {
-        if (SellingProp.Exists())
-        {
-            SellingProp.Delete();
-        }
-        if (SellingVehicle.Exists())
-        {
-            SellingVehicle.Delete();
-        }
-        if (SellingPed.Exists())
-        {
-            SellingPed.Delete();
         }
     }
     private bool CanSay(Ped ToSpeak, string Speech)

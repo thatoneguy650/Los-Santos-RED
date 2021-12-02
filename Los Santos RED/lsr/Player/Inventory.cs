@@ -33,15 +33,20 @@ namespace LosSantosRED.lsr.Player
                 ExistingItem.Amount += amount;
             }
         }
-        public void Remove(ModItem modItem)
+        public bool Remove(ModItem modItem)
         {
             InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
             if (ExistingItem != null)
             {
                 ItemsList.Remove(ExistingItem);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
-        public void Remove(ModItem modItem, int amount)
+        public bool Remove(ModItem modItem, int amount)
         {
             InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
             if (ExistingItem != null)
@@ -54,11 +59,20 @@ namespace LosSantosRED.lsr.Player
                 {
                     ItemsList.Remove(ExistingItem);
                 }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         public InventoryItem Get(ModItem modItem)
         {
             return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+        }
+        public InventoryItem Get(string itemName)
+        {
+            return ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName);
         }
         public void Clear()
         {

@@ -4,7 +4,7 @@
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
     public int MinWantedLevelSpawn { get; set; } = 0;
-    public int MaxWantedLevelSpawn { get; set; } = 5;
+    public int MaxWantedLevelSpawn { get; set; } = 6;
     public PedVariation RequiredVariation { get; set; }
     public bool CanCurrentlySpawn(int WantedLevel)
     {

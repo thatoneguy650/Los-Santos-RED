@@ -101,7 +101,7 @@ public class Transaction : Interaction
         {
             if (cii != null)
             {
-                Menu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.Price}"));
+                Menu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.PurchasePrice}"));
             }
         }
     }
@@ -109,9 +109,9 @@ public class Transaction : Interaction
     {
         ModItem ToAdd = ModItems.Items.Where(x => x != null && x.Name == selectedItem.Text).FirstOrDefault();
         MenuItem menuItem = Store.Menu.Where(x => x != null && x.ModItemName == selectedItem.Text).FirstOrDefault();
-        if (ToAdd != null && menuItem != null && Player.Money >= menuItem.Price)
+        if (ToAdd != null && menuItem != null && Player.Money >= menuItem.PurchasePrice)
         {
-            Buy(ToAdd);
+            StartBuyAnimation(ToAdd);
             if (ToAdd.Type == eConsumableType.Service)
             {
                 Player.StartServiceActivity(ToAdd, Store);
@@ -121,7 +121,7 @@ public class Transaction : Interaction
                 Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
                 EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.Type}  Amount: {ToAdd.AmountPerPackage}", 5);
             }
-            Player.GiveMoney(-1 * menuItem.Price);
+            Player.GiveMoney(-1 * menuItem.PurchasePrice);
         }
         GameFiber.Sleep(500);
     }
@@ -148,10 +148,9 @@ public class Transaction : Interaction
     private bool CanSay(Ped ToSpeak, string Speech)
     {
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
-        //EntryPoint.WriteToConsole($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
         return CanSay;
     }
-    private void Buy(ModItem item)
+    private void StartBuyAnimation(ModItem item)
     {
         HideMenu();
         IsActivelyConversing = true;
@@ -170,10 +169,6 @@ public class Transaction : Interaction
         }
         if (Ped.Pedestrian.Exists() && modelName != "")
         {
-            //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
-            //Model modelToCreate = new Model(Game.GetHashKey(modelName));
-            //modelToCreate.LoadAndWait();
-            //SellingProp = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(modelName), position.X, position.Y, position.Z, 0f);
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             if (SellingProp.Exists())
             {

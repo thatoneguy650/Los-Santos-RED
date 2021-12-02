@@ -40,6 +40,7 @@ public class PoliceSettings
     public int PedSpawnLimit_Wanted3 { get; set; } = 18;
     public int PedSpawnLimit_Wanted4 { get; set; } = 25;
     public int PedSpawnLimit_Wanted5 { get; set; } = 35;
+    public int PedSpawnLimit_Wanted6 { get; set; } = 40;
     public int VehicleSpawnLimit_Default { get; set; } = 5;
     public int VehicleSpawnLimit_Investigation { get; set; } = 6;
     public int VehicleSpawnLimit_Wanted1 { get; set; } = 8;
@@ -47,9 +48,11 @@ public class PoliceSettings
     public int VehicleSpawnLimit_Wanted3 { get; set; } = 15;
     public int VehicleSpawnLimit_Wanted4 { get; set; } = 18;
     public int VehicleSpawnLimit_Wanted5 { get; set; } = 20;
+    public int VehicleSpawnLimit_Wanted6 { get; set; } = 22;
     public bool WantedLevelIncreasesByKillingPolice { get; set; } = true;
     public int KillLimit_Wanted4 { get; set; } = 4;
-    public int KillLimit_Wanted5 { get; set; } = 10;
+    public int KillLimit_Wanted5 { get; set; } = 8;
+    public int KillLimit_Wanted6 { get; set; } = 12;
     public bool WantedLevelIncreasesOverTime { get; set; } = true;
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
     public float SightDistance { get; set; } = 70f;
@@ -66,14 +69,15 @@ public class PoliceSettings
     public int TimeBetweenCopSpawn_Seen_Min { get; set; } = 2000;
     public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; } = 2000;
     public bool DeadlyChaseRequiresThreeStars { get; set; } = true;
-    public int MaxWantedLevel { get; set; } = 5;
+    public int MaxWantedLevel { get; set; } = 6;
 
     public PoliceSettings()
     {
-        #if DEBUG
-                    ShowSpawnedBlips =  true;
-        #else
-                ShowSpawnedBlips = false;
-        #endif
+#if DEBUG
+        //ShowSpawnedBlips = true;
+        ShowVanillaBlips = true;
+#else
+               // ShowSpawnedBlips = false;
+#endif
     }
 }

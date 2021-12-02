@@ -25,6 +25,7 @@ public class IssuableWeapon
     public WeaponVariation Variation { get; set; }
     public void ApplyVariation(Ped WeaponOwner)
     {
+        //EntryPoint.WriteToConsole($"ISSUABLE WEAPON: ApplyVariation {ModelName}", 5);
         if (Variation == null)//getting weird null errors here, 
         {
             return;
@@ -34,7 +35,8 @@ public class IssuableWeapon
         {
             foreach (WeaponComponent ToRemove in PossibleComponents)
             {
-                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, ModelHash, ToRemove.GetHash());
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED(WeaponOwner, ModelHash, ToRemove.Hash);
+                //EntryPoint.WriteToConsole($"ISSUABLE WEAPON: REMOVE_WEAPON_COMPONENT_FROM_PED {ModelName} {ModelHash} {ToRemove.Hash} {ToRemove.Name}", 5);
             }
         }
         foreach (WeaponComponent ToAdd in Variation.Components)
@@ -42,7 +44,12 @@ public class IssuableWeapon
             WeaponComponent MyComponent = Variation.Components.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
             if (MyComponent != null)
             {
-                NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, ModelHash, MyComponent.GetHash());
+                WeaponComponent lookup = PossibleComponents.FirstOrDefault(x => x.Name == MyComponent.Name);
+                if (lookup != null)
+                {
+                    NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED(WeaponOwner, ModelHash, lookup.Hash);
+                }
+                //EntryPoint.WriteToConsole($"ISSUABLE WEAPON: GIVE_WEAPON_COMPONENT_TO_PED {ModelName} {ModelHash} {lookup.Hash} {lookup.Name}", 5);
             }
         }
     }

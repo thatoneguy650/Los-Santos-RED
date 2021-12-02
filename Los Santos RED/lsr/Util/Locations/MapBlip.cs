@@ -104,6 +104,10 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return (BlipSprite)466;
                 }
+                else if (Type == LocationType.DrugDealer)
+                {
+                    return BlipSprite.UGCMission;
+                }
                 else
                 {
                     return BlipSprite.PointOfInterest;

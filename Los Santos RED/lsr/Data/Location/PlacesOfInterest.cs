@@ -52,10 +52,12 @@ public class PlacesOfInterest : IPlacesOfInterest
     private List<MenuItem> WigwamMenu;
     private List<MenuItem> ViceroyMenu;
     private List<MenuItem> CluckinBellMenu;
+    private List<MenuItem> AlDentesMenu;
     private List<MenuItem> BenefactorGallavanterMenu;
     private List<MenuItem> NoodleMenu;
     private List<MenuItem> WeedMenu;
     private List<MenuItem> WeedAndCigMenu;
+    private List<MenuItem> WeedDealerMenu;
 
     public PlacesOfInterest()
     {
@@ -80,7 +82,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public List<GameLocation> GetAllStores()
     {
-        return LocationsList.Where(x => x.CanPurchase).ToList();
+        return LocationsList.Where(x => x.CanTransact).ToList();
     }
     public GameLocation GetClosestLocation(Vector3 Position,LocationType Type)
     {
@@ -162,8 +164,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Bottle of Barracho", 3),
             new MenuItem("Bottle of PiBwasser", 3),
             new MenuItem("Bottle of Blarneys", 3),
-            new MenuItem("Bottle of Logger", 3),
-            new MenuItem("Bottle of Patriot", 3),
+            new MenuItem("Bottle of Logger", 3,1),
+            new MenuItem("Bottle of Patriot", 3,1),
             new MenuItem("Bottle of Pride", 3),
             new MenuItem("Bottle of Stronz", 4),
             new MenuItem("Bottle of A.M.", 4),
@@ -343,6 +345,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("69 Brand", 40),
             new MenuItem("Estancia Cigar", 50),
             new MenuItem("Lighter",5),};
+        WeedDealerMenu = new List<MenuItem>() {
+            new MenuItem("Schwag Gram",6, 1),
+            new MenuItem("Mid Gram",9, 3),
+            new MenuItem("Kind Gram",12, 4),
+            new MenuItem("Joint",3, 1)};
     }
     private void CreateSpecificMenus()
     {
@@ -378,13 +385,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Can of Sprunk", 1),
             new MenuItem("Bottle of Raine Water", 2) };
         ChihuahuaHotDogMenu = new List<MenuItem>() {
-            new MenuItem("Hot Dog", 5),
+            new MenuItem("Hot Dog", 5, 2),
             new MenuItem("Hot Sausage", 5),
             new MenuItem("Hot Pretzel", 2),
             new MenuItem("3 Mini Pretzels", 3),
             new MenuItem("Nuts", 2),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
+            new MenuItem("Can of Sprunk", 1, 1),
+            new MenuItem("Bottle of Raine Water", 2, 1) };
         TacoFarmerMenu = new List<MenuItem>() {
             new MenuItem("Taco", 2),
             new MenuItem("Can of eCola", 1),
@@ -438,7 +445,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Cup Of Coffee",3),
             new MenuItem("Cup of eCola",2),
             new MenuItem("Cup of Sprunk",2), };
-
+        AlDentesMenu = new List<MenuItem>() {
+            new MenuItem("Slice of Pizza", 3, 2),
+            new MenuItem("Cup of Sprunk", 2, 1),
+            new MenuItem("Bottle of A.M.", 3, 1),
+            new MenuItem("Bottle of PiBwasser", 3),
+            new MenuItem("Bottle of PiBwasser", -1,2),
+            new MenuItem("Bottle of Barracho", 4),
+            new MenuItem("Bottle of Blarneys", 4),
+            new MenuItem("Bottle of Jakeys", 3),
+            new MenuItem("Bottle of Stronz", 4),
+            new MenuItem("Bottle of Dusche", 3) };
 
         BenefactorGallavanterMenu = new List<MenuItem>() {
             new MenuItem("Gallivanter Baller",67000),
@@ -619,6 +636,12 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f,new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f, LocationType.FoodStand, "Roadside Fruit", "Should Be OK To Eat") { Menu = FruitMenu },
             new GameLocation(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f,new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, LocationType.FoodStand, "Grapeseed Fruit", "Grapeseed Fruit") { Menu = FruitMenu },
 
+
+            new GameLocation(new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f,new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f, LocationType.DrugDealer, "", ""){ Menu = WeedDealerMenu, VendorModels = new List<string>() { "g_m_y_famdnf_01","g_m_y_famca_01","g_m_y_famfor_01" } },
+
+
+
+
             //Bar
             new GameLocation(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, LocationType.Bar, "Pitchers", "Pitchers") { Menu = BarMenu },
             new GameLocation(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, LocationType.Bar, "Singletons", "Singletons") { Menu = BarMenu },
@@ -673,9 +696,9 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GameLocation(new Vector3(-163.0659f, -1440.267f, 31.42698f), 55.5593f, LocationType.Restaurant, "Wok It Off", "") {Menu = GenericMenu },
 
                 //Italian
-                new GameLocation(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = PizzaMenu },
-                new GameLocation(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = PizzaMenu },
-                new GameLocation(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, LocationType.Restaurant, "Al Dentes", "Al Dentes"){ Menu = PizzaMenu },
+                new GameLocation(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
+                new GameLocation(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
+                new GameLocation(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, LocationType.Restaurant, "Al Dentes", "Al Dentes"){ Menu = AlDentesMenu },
                 new GameLocation(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
                 new GameLocation(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
                 new GameLocation(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, LocationType.Restaurant, "Guidos Takeout 24/7", "Guidos Takeout 24/7") {Menu = PizzaMenu },

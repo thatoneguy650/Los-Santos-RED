@@ -108,7 +108,7 @@ public class Weapons : IWeapons
 
         foreach (WeaponComponent PossibleComponent in MyGun.PossibleComponents)
         {
-            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, WeaponHash, PossibleComponent.GetHash()))
+            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, WeaponHash, PossibleComponent.Hash))
             {
                 ComponentsOnGun.Add(PossibleComponent);
             }
