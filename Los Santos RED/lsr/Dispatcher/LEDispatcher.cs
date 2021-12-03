@@ -57,7 +57,7 @@ public class LEDispatcher
         GameFiber.Yield();
         if (agency != null)
         {
-            DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+            DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
             GameFiber.Yield();
             if (VehicleType != null)
             {
@@ -173,6 +173,90 @@ public class LEDispatcher
             else
             {
                 return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Default;//5;//15
+            }
+        }
+    }
+    private int SpawnedHeliLimit
+    {
+        get
+        {
+            if (TotalWantedLevel == 6)
+            {
+                return 2;
+            }
+            if (TotalWantedLevel == 5)
+            {
+                return 2;
+            }
+            else if (TotalWantedLevel == 4)
+            {
+                return 1;
+            }
+            else if (TotalWantedLevel == 3)
+            {
+                return 1;
+            }
+            else if (TotalWantedLevel == 2)
+            {
+                return 0;
+            }
+            else if (TotalWantedLevel == 1)
+            {
+                return 0;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return 0;
+            }
+            if (TotalWantedLevel == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+    private int SpawnedBoatLimit
+    {
+        get
+        {
+            if (TotalWantedLevel == 6)
+            {
+                return 2;
+            }
+            if (TotalWantedLevel == 5)
+            {
+                return 2;
+            }
+            else if (TotalWantedLevel == 4)
+            {
+                return 1;
+            }
+            else if (TotalWantedLevel == 3)
+            {
+                return 1;
+            }
+            else if (TotalWantedLevel == 2)
+            {
+                return 0;
+            }
+            else if (TotalWantedLevel == 1)
+            {
+                return 0;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return 0;
+            }
+            if (TotalWantedLevel == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 0;
             }
         }
     }
