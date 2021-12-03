@@ -346,9 +346,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Estancia Cigar", 50),
             new MenuItem("Lighter",5),};
         WeedDealerMenu = new List<MenuItem>() {
-            new MenuItem("Schwag Gram",6, 1),
-            new MenuItem("Mid Gram",9, 3),
-            new MenuItem("Kind Gram",12, 4),
+            new MenuItem("Gram of Schwag",6, 1),
+            new MenuItem("Gram of Mids",9, 3),
+            new MenuItem("Gram of Dank",12, 4),
             new MenuItem("Joint",3, 1)};
     }
     private void CreateSpecificMenus()
@@ -456,7 +456,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Bottle of Jakeys", 3),
             new MenuItem("Bottle of Stronz", 4),
             new MenuItem("Bottle of Dusche", 3) };
-
         BenefactorGallavanterMenu = new List<MenuItem>() {
             new MenuItem("Gallivanter Baller",67000),
             new MenuItem("Gallivanter Baller II",90000),
@@ -474,9 +473,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new MenuItem("Benefactor Streiter",156000),
             new MenuItem("Benefactor Schlagen GT",500000),
             new MenuItem("Benefactor Krieger",750000),
-            
-
-
         };
         TwentyFourSevenMenu = ConvenienceStoreMenu;
         GrainOfTruthMenu = ConvenienceAndLiquorStoreMenu;

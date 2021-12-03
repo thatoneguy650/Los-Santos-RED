@@ -362,6 +362,21 @@ public class PedCrimes
                     AddObserved(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                 }
             }
+            if(PedExt.IsDrunk)
+            {
+                if(PedExt.IsInVehicle)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrunkDriving"));
+                }
+                else
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));
+                }
+            }
+            if(PedExt.IsSuicidal)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AttemptingSuicide"));
+            }
             bool isVisiblyArmed = IsVisiblyArmed();
             if (isVisiblyArmed)
             {

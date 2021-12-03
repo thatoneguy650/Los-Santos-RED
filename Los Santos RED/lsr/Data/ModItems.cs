@@ -434,12 +434,27 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
             new ModItem("Bong",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
-            new ModItem("Schwag Gram",eConsumableType.None) {
+
+
+
+
+
+
+            new ModItem("Gram of Schwag",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            new ModItem("Mid Gram",eConsumableType.None) {
+            new ModItem("Gram of Mids",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            new ModItem("Kind Gram",eConsumableType.None) {
+            new ModItem("Gram of Dank",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+
+
+
+
+            //        WeedDealerMenu = new List<MenuItem>() {
+            //new MenuItem("Brick Gram",6, 1),
+            //new MenuItem("Mid Gram",9, 3),
+            //new MenuItem("Dank Gram",12, 4),
+            //new MenuItem("Joint",3, 1)};
 
 
         //wrapped burger prop_food_bs_burg1

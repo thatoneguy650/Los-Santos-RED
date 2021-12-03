@@ -37,7 +37,7 @@ public class Debug
     private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
     private uint GameTimeLastScannedForStands;
     private Mod.Time Time;
-    private Camera StoreCam;
+    private Camera CharCam;
     private Camera InterpolationCamera;
     private Agencies Agencies;
     private Weapons Weapons;
@@ -408,6 +408,29 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
+        GameFiber.Yield();
+        if (!completelynewnameAsd.Exists())
+        {
+            return;
+        }
+        completelynewnameAsd.Model.LoadAndWait();
+        string tempModelName = completelynewnameAsd.Model.Name;
+        completelynewnameAsd.RandomizeVariation();
+        EntryPoint.WriteToConsole($"SpawnModelChecker! 1 {tempModelName} {completelynewnameAsd.Position}", 5);
+        GameFiber.Sleep(5000);
+        if (completelynewnameAsd.Exists())
+        {
+            tempModelName = completelynewnameAsd.Model.Name;
+            EntryPoint.WriteToConsole($"SpawnModelChecker! 2 {tempModelName} {completelynewnameAsd.Position}", 5);
+        }
+        GameFiber.Sleep(500);
+        if (completelynewnameAsd.Exists())
+        {
+            completelynewnameAsd.Delete();
+        }
+
+
         //SpawnItemInFrom();
         //Model characterModel = new Model(0xB779A091);
         //characterModel.LoadAndWait();
@@ -441,7 +464,7 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        SpawnGunAttackers();
+        //SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {
@@ -482,14 +505,88 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        EntryPoint.WriteToConsole($"FASTFORWARD 8 HOURS {Time.CurrentTime}", 5);
-        Time.FastForward(8);
-      //  HighlightStoreWithCamera();
+        Game.FadeScreenOut(2500, true);
+        GameFiber.Sleep(500);
+        Game.LocalPlayer.Character.Position = new Vector3(402.5164f, -1002.847f, -99.2587f);
+        CharCam = new Camera(false);
+        CharCam.Position = new Vector3(402.8473f, -998.3224f, -98.00025f);//new Vector3(402.9562f, -1000.557f, -99.00404f);
+        //CharCam.Rotation = //new Rotator(-4.537422f, 0.05429313f, -0.983484f);
+        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        CharCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+        Vector3 ToLookAt = new Vector3(402.8473f, -996.3224f, -99.00025f);
+        Vector3 _direction = (ToLookAt - CharCam.Position).ToNormalized();
+        CharCam.Direction = _direction;
+        CharCam.Active = true;
+        Ped Model = new Ped("S_M_M_GENTRANSPORT", new Vector3(402.8473f, -996.3224f, -99.00025f), 182.7549f);
+        GameFiber.Yield();
+        if (Model.Exists())
+        {
+            Model.IsPersistent = true;
+            Model.IsVisible = true;
+            EntryPoint.WriteToConsole($"Model Exists {Model.Model.Name} {Model.Position}", 5);
+            Model.BlockPermanentEvents = true;
+        }
+
+        //uint GameTimeStarted = Game.GameTime;
+        //while (Game.GameTime - GameTimeStarted <= 2000)
+        //{
+        //    if (Model.Exists())
+        //    {
+        //        EntryPoint.WriteToConsole($"Model Exists BEFORE {Model.Model.Name} {Model.Position}", 5);
+        //    }
+        //    else
+        //    {
+        //        EntryPoint.WriteToConsole($"Model DOES NOT Exist BEFORE {Model.Model.Name} {Model.Position}", 5);
+        //    }
+        //    GameFiber.Sleep(200);
+        //}
+
+       // GameFiber.Sleep(500);
+        Game.FadeScreenIn(1500, true);
+
+        uint GameTimeStarted = Game.GameTime;
+        while (Game.GameTime - GameTimeStarted <= 5000)
+        {
+            if (Model.Exists())
+            {
+                EntryPoint.WriteToConsole($"Model Exists AFTER {Model.Model.Name} {Model.Position}", 5);
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"Model DOES NOT Exist AFTER {Model.Model.Name} {Model.Position}", 5);
+            }
+            GameFiber.Sleep(200);
+        }
+        CharCam.Active = false;
+
+        if(Model.Exists())
+        {
+            EntryPoint.WriteToConsole($"Model Exists DELETING {Model.Model.Name} {Model.Position}", 5);
+            Model.Delete();
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"Model DOES NOT Exist DELETING {Model.Model.Name} {Model.Position}", 5);
+        }
 
 
 
-      //GameFiber.Sleep(5000);
-      //  ReturnToGameplay();
+
+
+
+
+
+
+
+
+        //EntryPoint.WriteToConsole($"FASTFORWARD 8 HOURS {Time.CurrentTime}", 5);
+        //Time.FastForward(8);
+        //  HighlightStoreWithCamera();
+
+
+
+        //GameFiber.Sleep(5000);
+        //  ReturnToGameplay();
         //EntryPoint.WriteToConsole($"CURRENT TIME (PRE) {Time.CurrentTime}", 5);     
         //Time.FastForward(8);
         //GameFiber.Sleep(5000);
@@ -510,9 +607,18 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
+        //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
 
-        Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+        //Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+
+        List<MenuItem> WeedDealerMenu = new List<MenuItem>() {
+            new MenuItem("Gram of Schwag",6, 1),
+            new MenuItem("Gram of Mids",9, 3),
+            new MenuItem("Gram of Dank",12, 4),
+            new MenuItem("Joint",3, 1)};
+
+        Player.CurrentLookedAtPed.TransactionMenu = WeedDealerMenu;
+
 
         // SetRadarZoomeFor20Seconds(1000f);
         //Player.OnSuspectEluded();
@@ -557,13 +663,13 @@ public class Debug
 
         Vector3 CameraPos = new Vector3(-216.1503f, -54.80959f, 59.33761f);
         Rotator HowToRotate = new Rotator(-11.99999f, 0f, -15.95173f);
-        if (!StoreCam.Exists())
+        if (!CharCam.Exists())
         {
-            StoreCam = new Camera(false);
+            CharCam = new Camera(false);
         }
-        StoreCam.Position = CameraPos;
-        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-        StoreCam.Rotation = HowToRotate;
+        CharCam.Position = CameraPos;
+        CharCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CharCam.Rotation = HowToRotate;
         if (!InterpolationCamera.Exists())
         {
             InterpolationCamera = new Camera(false);
@@ -573,7 +679,7 @@ public class Debug
         Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
         InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
         InterpolationCamera.Active = true;
-        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CharCam, InterpolationCamera, 1500, true, true);
 
     }
     private void ReturnToGameplay()
@@ -587,12 +693,12 @@ public class Debug
         Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
         InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
         InterpolationCamera.Active = true;
-        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, CharCam, 1500, true, true);
         GameFiber.Sleep(1500);
         InterpolationCamera.Active = false;
-        if (StoreCam.Exists())
+        if (CharCam.Exists())
         {
-            StoreCam.Delete();
+            CharCam.Delete();
         }
         if (InterpolationCamera.Exists())
         {

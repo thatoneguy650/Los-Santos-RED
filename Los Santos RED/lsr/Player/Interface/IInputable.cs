@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; set; }
         Ped Character { get; }
         Cop AliasedCop { get; }
+        bool IsDisplayingCustomMenus { get; }
 
         void RaiseHands();
         void LowerHands();

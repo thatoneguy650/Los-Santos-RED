@@ -35,6 +35,8 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyGotInVehicle { get; }
         bool IsArrested { get; set; }
         uint Handle { get; }
+        bool IsDrunk { get; set; }
+        bool IsSuicidal { get; set; }
 
         void SetWantedLevel(int v);
     }

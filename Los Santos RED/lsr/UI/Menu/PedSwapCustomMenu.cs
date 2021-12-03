@@ -6,52 +6,44 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 
-public class PedSwapMenu : Menu
+public class PedSwapCustomMenu : Menu
 {
-    private UIMenu PedSwapUIMenu;
+    private UIMenu PedSwapCustomUIMenu;
     private UIMenuListItem TakeoverRandomPed;
     private UIMenuItem BecomeRandomPed;
-
-    private UIMenuItem BecomeCustomPed;
-
-    private UIMenu PedSwapCustomizeUIMenu;
     private UIMenuItem BecomeRandomCop;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
-    public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap)
+    public PedSwapCustomMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap)
     {
         PedSwap = pedSwap;
-        PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
-        PedSwapUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
-        PedSwapUIMenu.OnItemSelect += OnActionItemSelect;
-        PedSwapUIMenu.OnListChange += OnListChange;
-
-
-        PedSwapCustomMenu PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedSwapUIMenu, PedSwap);
-
+        PedSwapCustomUIMenu = menuPool.AddSubMenu(parentMenu, "Become Custom Ped");
+        PedSwapCustomUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        PedSwapCustomUIMenu.OnItemSelect += OnActionItemSelect;
+        PedSwapCustomUIMenu.OnListChange += OnListChange;
         CreatePedSwap();
     }
     public float SelectedTakeoverRadius { get; set; } = -1f;
     public override void Hide()
     {
-        PedSwapUIMenu.Visible = false;
+        PedSwapCustomUIMenu.Visible = false;
     }
 
     public override void Show()
     {
         Update();
-        PedSwapUIMenu.Visible = true;
+        PedSwapCustomUIMenu.Visible = true;
     }
     public override void Toggle()
     {
 
-        if (!PedSwapUIMenu.Visible)
+        if (!PedSwapCustomUIMenu.Visible)
         {
-            PedSwapUIMenu.Visible = true;
+            PedSwapCustomUIMenu.Visible = true;
         }
         else
         {
-            PedSwapUIMenu.Visible = false;
+            PedSwapCustomUIMenu.Visible = false;
         }
     }
     public void Update()
@@ -60,16 +52,19 @@ public class PedSwapMenu : Menu
     }
     private void CreatePedSwap()
     {
-        PedSwapUIMenu.Clear();
+        PedSwapCustomUIMenu.Clear();
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
         BecomeRandomPed = new UIMenuItem("Become Random Pedestrian", "Becomes a random ped model.");
-        BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian", "Becomes a customized ped from user input.");
+
+
+
+
+
         BecomeRandomCop = new UIMenuItem("Become Random Cop", "Becomes a random cop around the player (Alpha)");
-        PedSwapUIMenu.AddItem(TakeoverRandomPed);
-        PedSwapUIMenu.AddItem(BecomeRandomPed);
-        PedSwapUIMenu.AddItem(BecomeCustomPed);
-        PedSwapUIMenu.AddItem(BecomeRandomCop);
+        PedSwapCustomUIMenu.AddItem(TakeoverRandomPed);
+        PedSwapCustomUIMenu.AddItem(BecomeRandomPed);
+        PedSwapCustomUIMenu.AddItem(BecomeRandomCop);
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -88,15 +83,11 @@ public class PedSwapMenu : Menu
         {
             PedSwap.BecomeRandomPed();
         }
-        else if (selectedItem == BecomeCustomPed)
-        {
-            PedSwap.BecomeCustomPed();
-        }
         else if (selectedItem == BecomeRandomCop)
         {
             PedSwap.BecomeRandomCop();
         }
-        PedSwapUIMenu.Visible = false;
+        PedSwapCustomUIMenu.Visible = false;
     }
     private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
     {
@@ -105,4 +96,40 @@ public class PedSwapMenu : Menu
             SelectedTakeoverRadius = Distances[index].Distance;
         }
     }
+
+
+
+
+
+
+
+
+    public PedVariation GetPedVariation(Ped myPed)
+    {
+        try
+        {
+            PedVariation myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PedPropComponent>()
+            };
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
+            }
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+            {
+                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
+            }
+            return myPedVariation;
+        }
+        catch (Exception e)
+        {
+            EntryPoint.WriteToConsole("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message, 0);
+            return null;
+        }
+    }
+
+
+
 }

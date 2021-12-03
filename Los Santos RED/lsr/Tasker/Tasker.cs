@@ -22,6 +22,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     private Cop ClosestCopToPlayer;
     private IPlacesOfInterest PlacesOfInterest;
     private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
+    private RelationshipGroup CriminalsRG;
     private bool IsTimeToCreateCrime => Game.GameTime - GameTimeLastGeneratedCrime >= (Settings.SettingsManager.CivilianSettings.MinimumTimeBetweenRandomCrimes + RandomCrimeRandomTime);
     public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
@@ -32,6 +33,12 @@ public class Tasker : ITaskerable, ITaskerReportable
         GameTimeLastGeneratedCrime = Game.GameTime;
         RandomCrimeRandomTime = RandomItems.GetRandomNumber(0, 240000);//between 0 and 4 minutes randomly added
         PlacesOfInterest = placesOfInterest;
+    }
+    public void Setup()
+    {
+        CriminalsRG = new RelationshipGroup("CRIMINALS");
+        RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
+        CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
     }
     public void RunPoliceTasks()
     {
@@ -147,28 +154,27 @@ public class Tasker : ITaskerable, ITaskerReportable
         PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
-            PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
-            if (Victim != null && Victim.Pedestrian.Exists())
+            //PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
+            //if (Victim != null && Victim.Pedestrian.Exists())
+            //{
+            if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
             {
-                if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
-                {
-                    Blip myBlip = Criminal.Pedestrian.AttachBlip();
-                    myBlip.Color = Color.Red;
-                    myBlip.Scale = 0.6f;
-                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Criminal");
-                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-                    PedProvider.AddEntity(myBlip);
-                }
-                
-                Criminal.CanBeAmbientTasked = false;
-                Criminal.WasSetCriminal = true;
-                Criminal.CurrentTask = new CommitCrime(Criminal, Player, GetWeaponToIssue(Criminal.IsGangMember), Victim.Pedestrian, PedProvider);
-                Criminal.CurrentTask.Start();
-                //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
-                GameTimeLastGeneratedCrime = Game.GameTime;
-                RandomCrimeRandomTime = RandomItems.GetRandomNumber(0, 240000);//between 0 and 4 minutes randomly added
-            }
+                Blip myBlip = Criminal.Pedestrian.AttachBlip();
+                myBlip.Color = Color.Red;
+                myBlip.Scale = 0.6f;
+                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Criminal");
+                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+                PedProvider.AddEntity(myBlip);
+            }  
+            Criminal.CanBeAmbientTasked = false;
+            Criminal.WasSetCriminal = true;
+            Criminal.Pedestrian.RelationshipGroup = CriminalsRG;
+            Criminal.CurrentTask = new CommitCrime(Criminal, Player,Weapons, PedProvider);
+            Criminal.CurrentTask.Start();
+            //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
+            GameTimeLastGeneratedCrime = Game.GameTime;
+            RandomCrimeRandomTime = RandomItems.GetRandomNumber(0, 240000);//between 0 and 4 minutes randomly added
         }
     }
     public bool IsSeatAssigned(IComplexTaskable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);

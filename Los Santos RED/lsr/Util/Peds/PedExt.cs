@@ -95,6 +95,8 @@ public class PedExt : IComplexTaskable
     public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsDriver { get; private set; } = false;
+    public bool IsDrunk { get; set; } = false;
+    public bool IsSuicidal { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public bool IsGangMember { get; set; } = false;
     public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
@@ -175,6 +177,9 @@ public class PedExt : IComplexTaskable
     }
     public bool IsArrested { get; set; }
     public bool IsInAPC { get; private set; }
+    public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
+    public List<MenuItem> TransactionMenu { get; set; }
+
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)

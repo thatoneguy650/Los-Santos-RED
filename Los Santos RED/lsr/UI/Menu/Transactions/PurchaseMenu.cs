@@ -21,12 +21,12 @@ public class PurchaseMenu : Menu
     private Ped SellingPed;
     private Camera StoreCam;
     private bool ShouldPreviewItem;
-    private Merchant Ped;
+    private PedExt Ped;
     private bool IsActivelyConversing;
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public bool BoughtItem => ItemsBought > 0;
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, Merchant ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
     {
         Ped = ped;
         ModItems = modItems;
@@ -41,7 +41,7 @@ public class PurchaseMenu : Menu
             purchaseMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
             Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
         }
-        if (Store.Name == "")
+        if (Store == null || Store.Name == "")
         {
             purchaseMenu.RemoveBanner();
         }
@@ -152,11 +152,6 @@ public class PurchaseMenu : Menu
                 {
                     Player.StartServiceActivity(ToAdd, Store);
                 }
-                else if (ToAdd.CanConsume)
-                {
-                    Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
-                    EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Amount: {ToAdd.AmountPerPackage}", 5);
-                }
                 else if (ToAdd.ModelItem?.Type == ePhysicalItemType.Vehicle)
                 {
                     subtractCash = PurchaseVehicle(ToAdd);
@@ -165,6 +160,11 @@ public class PurchaseMenu : Menu
                         Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Could Not Deliver", "We are sorry we are unable to complete this transation");
                     }
                     ExitAfterPurchase = subtractCash;
+                }
+                else //if (ToAdd.CanConsume)
+                {
+                    Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
+                    EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Amount: {ToAdd.AmountPerPackage}", 5);
                 }
                 if (subtractCash)
                 {

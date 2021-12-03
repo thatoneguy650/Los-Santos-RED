@@ -21,12 +21,12 @@ public class SellMenu : Menu
     private Ped SellingPed;
     private Camera StoreCam;
     private bool ShouldPreviewItem;
-    private Merchant Ped;
+    private PedExt Ped;
     private bool IsActivelyConversing;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, Merchant ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
     {
         Ped = ped;
         ModItems = modItems;
@@ -113,14 +113,17 @@ public class SellMenu : Menu
             if (cii != null && cii.Sellable)
             {
                 ModItem myItem = ModItems.Get(cii.ModItemName);
-                if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                if (myItem != null)
                 {
-                    sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}"));
-                }
-                else
-                {
-                    bool enabled = Player.HasItemInInventory(cii.ModItemName);
-                    sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}") { Enabled = enabled });
+                    if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                    {
+                        sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}"));
+                    }
+                    else
+                    {
+                        bool enabled = Player.HasItemInInventory(cii.ModItemName);
+                        sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}") { Enabled = enabled });
+                    }
                 }
             }
         }

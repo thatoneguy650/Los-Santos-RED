@@ -182,13 +182,16 @@ namespace LosSantosRED.lsr
         }
         private void MenuCheck()
         {
-            if (IsPressingMenuKey)
+            if (!Player.IsDisplayingCustomMenus)
             {
-                MenuProvider.ToggleMenu();
-            }
-            else if (IsPressingDebugMenuKey)
-            {
-                MenuProvider.ToggleDebugMenu();
+                if (IsPressingMenuKey)
+                {
+                    MenuProvider.ToggleMenu();
+                }
+                else if (IsPressingDebugMenuKey)
+                {
+                    MenuProvider.ToggleDebugMenu();
+                }
             }
         }
 

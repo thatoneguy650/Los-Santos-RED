@@ -192,6 +192,8 @@ namespace Mod
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
+        public bool IsTransacting { get; set; }
+        public bool IsDisplayingCustomMenus => IsTransacting;
         public bool IsDead { get; private set; }
         public bool IsDriver { get; private set; }
         public bool IsGettingIntoAVehicle
@@ -899,9 +901,20 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Merchant myPed = (Merchant)CurrentLookedAtPed;
-                Interaction = new TransactionNew(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider);
-                Interaction.Start();
+
+                if (CurrentLookedAtPed.GetType() == typeof(Merchant))
+                {
+                    EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
+                    Merchant myPed = (Merchant)CurrentLookedAtPed;
+                    Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider);
+                    Interaction.Start();
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
+                    Interaction = new Transaction(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, EntityProvider);
+                    Interaction.Start();
+                }
             }
         }
         public void StartSimpleTransaction()
@@ -913,7 +926,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new TransactionNew(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
+                Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
                 Interaction.Start();
             }
         }
@@ -1742,7 +1755,7 @@ namespace Mod
                     ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
                     ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
                 }
-                if (CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
+                if (((CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition) || CurrentLookedAtPed.HasMenu) && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
                     ButtonPrompts.Add(new ButtonPrompt($"Purchase from {CurrentLookedAtPed.FormattedName}", "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
@@ -1752,8 +1765,6 @@ namespace Mod
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
                 ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
-
-
                 if(ClosestSimpleTransaction != null)
                 {
                     if (!ButtonPrompts.Any(x => x.Identifier == $"Purchase {ClosestSimpleTransaction.Name}"))

@@ -127,6 +127,10 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+    public void BecomeCustomPed()
+    {
+
+    }
     public void BecomeRandomCop()
     {
         ResetOffsetForCurrentModel();
@@ -731,6 +735,9 @@ public class PedSwap : IPedSwap
         else
             return "player_zero";     
     }
+
+
+
     private class TakenOverPed
     {
         public TakenOverPed(Ped _Pedestrian, PoolHandle _OriginalHandle)

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 
-public class SimpleTransaction : Interaction
+public class Transaction : Interaction
 {
     private bool IsUsingHintCamera = false;
     private bool IsUsingCustomCamera = false;
@@ -20,7 +20,6 @@ public class SimpleTransaction : Interaction
     private bool IsActivelyConversing;
     private GameLocation Store;
     private IInteractionable Player;
-    private bool CancelledConversation;
     private ISettingsProvideable Settings;
     private MenuPool menuPool;
     private UIMenu ModItemMenu;
@@ -33,14 +32,11 @@ public class SimpleTransaction : Interaction
     private IModItems ModItems;
     private ITimeReportable Time;
     private IEntityProvideable World;
-    private List<Color> Colors = new List<Color>() { Color.White, Color.Red, Color.Green, Color.Gray, Color.DarkGray, Color.Black, Color.Yellow,Color.LightBlue,Color.Navy,Color.Purple,Color.DarkViolet };
-
-    private List<string> ColorString = new List<string>() { "White", "Red", "Green", "Gray", "DarkGray", "Black", "Yellow", "LightBlue", "Navy", "Purple", "DarkViolet" };
-
-    private Color CurrentSelectedColor = Color.Black;
-    private Color CurrentDisplayColor = Color.Black;
     private PurchaseMenu PurchaseMenu;
     private SellMenu SellMenu;
+    private PedExt Ped;
+    private bool IsTasked;
+
     private bool IsAnyMenuVisible => (ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
     private enum eSetPlayerControlFlag
     {
@@ -57,15 +53,9 @@ public class SimpleTransaction : Interaction
         SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
         SPC_ALLOW_PAD_SHAKE = (1 << 12)
     };
-    private enum PreviewType
+    public Transaction(IInteractionable player, PedExt ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time, IEntityProvideable world)
     {
-        None,
-        Prop,
-        Vehicle,
-        Ped,
-    }
-    public SimpleTransaction(IInteractionable player, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time, IEntityProvideable world)
-    {
+        Ped = ped;
         Player = player;
         Store = store;
         Settings = settings;
@@ -75,7 +65,36 @@ public class SimpleTransaction : Interaction
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
-    private bool CanContinueConversation => Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f && Player.CanConverse;
+    private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f) && Player.CanConverse;
+    public override void Start()
+    {
+        try
+        {
+            if (Store != null || Ped.HasMenu)
+            {
+                Player.IsConversing = true;
+                Player.IsTransacting = true;
+                GameFiber.StartNew(delegate
+                {
+                    Setup();
+                    SetupCamera();
+                    Greet();
+                    ShowMenu();
+                    Tick();
+                    Dispose();
+                }, "Transaction");
+            }
+            else
+            {
+                Dispose();
+            }
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification(ex.Message);
+            EntryPoint.WriteToConsole("SIMPLE TRANSACTION ERROR:" + ex.Message + ex.StackTrace, 0);
+        }
+    }
     public override void Dispose()
     {
         if (!IsDisposed)
@@ -87,6 +106,7 @@ public class SimpleTransaction : Interaction
             SellMenu?.Dispose();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
             Player.IsConversing = false;
+            Player.IsTransacting = false;
             if (IsUsingCustomCam)
             {
                 if (PurchaseMenu?.BoughtItem == true || SellMenu?.SoldItem == true)
@@ -116,51 +136,55 @@ public class SimpleTransaction : Interaction
                 }
                 Game.LocalPlayer.Character.Tasks.Clear();
             }
-            else if(IsUsingHintCamera)
+            else if (IsUsingHintCamera)
             {
                 NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+            }
+
+            if(Ped.GetType() == typeof(Merchant))
+            {
+                if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive && Store != null && Store.VendorHeading != 0f)
+                {
+                    NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Store.VendorHeading, -1);
+                    EntryPoint.WriteToConsole($"Transaction: DISPOSE Set Heading", 3);
+                }
+            }
+            else
+            {
+                if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                    EntryPoint.WriteToConsole($"Transaction: DISPOSE UnTasking", 3);
+                }
             }
             EntryPoint.WriteToConsole($"Simple Transaction DISPOSE IsUsingCustomCam {IsUsingCustomCam}", 3);
         }
     }
-    public override void Start()
-    {
-        try
-        {
-            if (Store != null)
-            {
-                Player.IsConversing = true;      
-                GameFiber.StartNew(delegate
-                {
-                    Setup();
-                    SetupCamera();
-                    Greet();
-                    ShowMenu();
-                    Tick();
-                    Dispose();
-                }, "Transaction");
-            }
-        }
-        catch(Exception ex)
-        {
-            Game.DisplayNotification(ex.Message);
-            EntryPoint.WriteToConsole("SIMPLE TRANSACTION ERROR:" + ex.Message + ex.StackTrace, 0);
-        }
-    }
     private void Setup()
     {
-        ModItemMenu = new UIMenu(Store.Name, Store.Description);
-        if (Store.BannerImage != "")
+        if(Store == null)
         {
-            ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
-            Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+            Store = new GameLocation() { Name = "" };
+            Store.Menu = Ped.TransactionMenu;
+            ModItemMenu = new UIMenu("", "Transaction");
+            ModItemMenu.RemoveBanner();
+        }
+        else
+        {
+            ModItemMenu = new UIMenu(Store.Name, Store.Description);
+            if (Store.BannerImage != "")
+            {
+                ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+                Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+            }
         }
         ModItemMenu.OnItemSelect += OnItemSelect;
         menuPool.Add(ModItemMenu);
+        EntryPoint.WriteToConsole("Transaction: Setup Ran", 5);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if(selectedItem.Text == "Buy")
+        if (selectedItem.Text == "Buy")
         {
             PurchaseMenu?.Show();
         }
@@ -176,13 +200,13 @@ public class SimpleTransaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, null, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(menuPool, ModItemMenu, null, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
             SellMenu.Setup();
             hasSellMenu = true;
         }
@@ -190,7 +214,7 @@ public class SimpleTransaction : Interaction
         {
             ModItemMenu.Visible = true;
         }
-        else if(hasSellMenu)
+        else if (hasSellMenu)
         {
             SellMenu.Show();
         }
@@ -201,7 +225,13 @@ public class SimpleTransaction : Interaction
     }
     private void SetupCamera()
     {
-        if (Player.IsInVehicle)
+        if(Ped != null && Ped.Pedestrian.Exists())
+        {
+            IsUsingHintCamera = true;
+            IsUsingCustomCam = false;
+            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        }
+        else if (Player.IsInVehicle)
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
@@ -220,35 +250,27 @@ public class SimpleTransaction : Interaction
             {
                 HighlightStoreWithCamera();
             }
-            
+
             Game.LocalPlayer.Character.IsVisible = false;
             NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
         }
+        EntryPoint.WriteToConsole("Transaction: Setup Camera Ran", 5);
     }
     private void Tick()
     {
         while (CanContinueConversation)
         {
-            Loop();
-            if (CancelledConversation)
+            menuPool.ProcessMenus();
+            if (!IsActivelyConversing && !IsAnyMenuVisible)
             {
                 Dispose();
-                break;
             }
+            PurchaseMenu?.Update();
+            SellMenu?.Update();
             GameFiber.Yield();
         }
         Dispose();
         GameFiber.Sleep(1000);
-    }
-    private void Loop()
-    {
-        menuPool.ProcessMenus();
-        if (!IsActivelyConversing && !IsAnyMenuVisible)
-        {
-            Dispose();
-        }
-        PurchaseMenu?.Update();
-        SellMenu?.Update();
     }
     private void HighlightLocationWithCamera()
     {
@@ -261,14 +283,14 @@ public class SimpleTransaction : Interaction
             StoreCam.Position = Store.CameraPosition;
             StoreCam.Rotation = Store.CameraRotation;
             StoreCam.Direction = Store.CameraDirection;
-            Game.FadeScreenOut(1500,true);
+            Game.FadeScreenOut(1500, true);
             NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(Store.CameraPosition.X, Store.CameraPosition.Y, Store.CameraPosition.Z, 0f, 0f, 0f);
             Vector3 ToLookAt = new Vector3(Store.ItemPreviewPosition.X, Store.ItemPreviewPosition.Y, Store.ItemPreviewPosition.Z);
             _direction = (ToLookAt - Store.CameraPosition).ToNormalized();
             StoreCam.Direction = _direction;
             StoreCam.Active = true;
             GameFiber.Sleep(500);
-            Game.FadeScreenIn(1500,true);
+            Game.FadeScreenIn(1500, true);
         }
     }
     private void HighlightStoreWithCamera()
@@ -316,11 +338,11 @@ public class SimpleTransaction : Interaction
     {
         if (Store.HasCustomItemPostion)
         {
-            Game.FadeScreenOut(1500,true);
+            Game.FadeScreenOut(1500, true);
             StoreCam.Active = false;
             NativeFunction.Natives.CLEAR_FOCUS();
             GameFiber.Sleep(500);
-            Game.FadeScreenIn(1500,true);
+            Game.FadeScreenIn(1500, true);
         }
         else
         {
@@ -377,7 +399,92 @@ public class SimpleTransaction : Interaction
     }
     private void Greet()
     {
-        if (IsUsingHintCamera || Store.ItemPreviewPosition.DistanceTo2D(Store.EntrancePosition) <= 30f)
+        if(Ped != null && Ped.Pedestrian.Exists())
+        {
+            IsActivelyConversing = true;
+            GameTimeStartedConversing = Game.GameTime;
+            IsActivelyConversing = true;
+            if (Ped.TimesInsultedByPlayer <= 0)
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+            }
+            else
+            {
+                SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false);
+            }
+            while (CanContinueConversation && Game.GameTime - GameTimeStartedConversing <= 1000)
+            {
+                GameFiber.Yield();
+            }
+            if (!CanContinueConversation)
+            {
+                return;
+            }
+
+            if (!Ped.IsFedUpWithPlayer)
+            {
+                //if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
+                //{
+                //    IsTasked = false;
+                //}
+                //else
+                //{
+                    IsTasked = true;
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+              //  }
+
+
+
+                if (Player.IsInVehicle)
+                {
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
+                }
+                else
+                {
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
+                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                uint GameTimeStartedFacing = Game.GameTime;
+                while (CanContinueConversation && Game.GameTime - GameTimeStartedFacing <= 500)
+                {
+                    GameFiber.Yield();
+                }
+                if (!CanContinueConversation)
+                {
+                    return;
+                }
+                if (Ped.TimesInsultedByPlayer <= 0)
+                {
+                    SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+                }
+                else
+                {
+                    SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
+                }
+                Ped.HasSpokenWithPlayer = true;
+            }
+            IsActivelyConversing = false;
+        }
+        else if (IsUsingHintCamera || Store.ItemPreviewPosition.DistanceTo2D(Store.EntrancePosition) <= 30f)
         {
             GameTimeStartedConversing = Game.GameTime;
             IsActivelyConversing = true;
@@ -393,5 +500,6 @@ public class SimpleTransaction : Interaction
             IsActivelyConversing = false;
         }
     }
+
 
 }

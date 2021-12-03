@@ -107,14 +107,14 @@
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
-    <Compile Include="lsr\Player\Interaction\TransactionNew.cs" />
+    <Compile Include="lsr\Player\Interaction\Transaction.cs" />
+    <Compile Include="lsr\UI\Menu\PedSwapCustomMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />
     <Compile Include="lsr\World\NewInvestigation.cs" />
     <Compile Include="lsr\World\NewScanner.cs" />
     <Compile Include="lsr\Util\Inventory\New\ePhysicalItemType.cs" />
     <Compile Include="lsr\Util\Inventory\New\Intoxicant.cs" />
-    <Compile Include="lsr\Old\SimpleTransaction.cs" />
     <Compile Include="lsr\UI\eGTAFont.cs" />
     <Compile Include="lsr\UI\Fader.cs" />
     <Compile Include="lsr\UI\Menu\InventoryMenu.cs" />
@@ -225,7 +225,6 @@
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
     <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />
     <Compile Include="lsr\Player\Interaction\HoldUp.cs" />
-    <Compile Include="lsr\Old\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IInventoryable.cs" />
     <Compile Include="lsr\Player\Inventory.cs" />
     <Compile Include="lsr\Tasker\Idle.cs" />
