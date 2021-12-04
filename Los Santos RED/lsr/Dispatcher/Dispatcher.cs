@@ -38,13 +38,13 @@ public class Dispatcher
     }
     public void Dispatch()
     {
-        //if (!LEDispatcher.Dispatch())
-        //{
-        //    if (!EMSDispatcher.Dispatch())
-        //    {
-        //        FireDispatcher.Dispatch();
-        //    }
-        //}
+        if (!LEDispatcher.Dispatch())
+        {
+            if (!EMSDispatcher.Dispatch())
+            {
+                FireDispatcher.Dispatch();
+            }
+        }
     }
     public void Recall()
     {

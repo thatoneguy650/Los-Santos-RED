@@ -37,6 +37,7 @@ namespace LosSantosRED.lsr
         private Dispatch DrunkDriving;
 
         private Dispatch AssaultingCivilians;
+        private Dispatch AimingWeaponAtPolice;
         private Dispatch DealingDrugs;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
 
@@ -420,6 +421,7 @@ namespace LosSantosRED.lsr
             {
                 AddHeading(dispatchEvent);
             }
+
             if (locationSpecificity == LocationSpecificity.Street || locationSpecificity == LocationSpecificity.HeadingAndStreet || locationSpecificity == LocationSpecificity.StreetAndZone)
             {
                 AddStreet(dispatchEvent);
@@ -428,6 +430,7 @@ namespace LosSantosRED.lsr
             {
                 AddZone(dispatchEvent);
             }
+
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
@@ -799,11 +802,19 @@ namespace LosSantosRED.lsr
                 string ScannerAudio = ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
                 if (ScannerAudio != "")
                 {
-                    dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
-                    dispatchEvent.SoundsToPlay.Add(ScannerAudio);
-                    dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
-                    dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
                     dispatchEvent.HasZoneAudio = true;
+                    if (MyZone.IsSpecificLocation || Settings.SettingsManager.PlayerSettings.Scanner_UseNearForLocations)
+                    {
+                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
+                        dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
+                    }
+                    else
+                    {
+                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.In.FileName, conjunctives.Inuhh.FileName, conjunctives.Inuhh2.FileName, conjunctives.Inuhh3.FileName }.PickRandom());
+                        dispatchEvent.Subtitles += " ~s~in ~p~" + MyZone.DisplayName + "~s~";
+                    }
+                    dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                    dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
                 }
             }
         }
@@ -1017,7 +1028,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("DealingDrugs",DealingDrugs),
 
 
-
+            new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
 
         };
             DispatchList = new List<Dispatch>
@@ -1656,7 +1667,16 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_assault_and_battery.Anassaultandbattery.FileName},"an assault and battery"),
             },
             };
-
+            AimingWeaponAtPolice = new Dispatch()
+            {
+                Name = "Threatening Officer With Firearm",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName},"a suspect threatening and officer with a firearm"),
+            },
+            };
 
             DealingDrugs = new Dispatch()
             {

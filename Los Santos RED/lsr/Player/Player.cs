@@ -1124,9 +1124,17 @@ namespace Mod
             {
                 MaxWantedLastLife = WantedLevel;
             }
+
+
             if(NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
             {
                 NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(wantedLevel);
+
+            }
+            if (Game.LocalPlayer.WantedLevel != 0)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            {
+                Game.LocalPlayer.WantedLevel = 0;
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             }
 
 

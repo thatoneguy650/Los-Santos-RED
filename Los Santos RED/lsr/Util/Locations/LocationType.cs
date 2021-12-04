@@ -29,4 +29,5 @@ public enum LocationType : int
     MassageParlor = 20,
     Garage = 21,
     DrugDealer = 22,
+    StripClub = 23,
 }

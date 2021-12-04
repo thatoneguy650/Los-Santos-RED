@@ -817,6 +817,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, LocationType.Hotel, "Billings Gate Motel", ""){Menu = CheapHotelMenu},
             new GameLocation(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, LocationType.Hotel, "Dream View Motel", "Mostly Bug Free!"){Menu = CheapHotelMenu},
 
+            new GameLocation(new Vector3(-477.0448f, 217.5538f, 83.70456f), 355.1573f, LocationType.Hotel, "The Generic Hotel", ""){Menu = ExpensiveHotelMenu },
+            new GameLocation(new Vector3(-309.8708f, 221.5867f, 87.92822f), 6.029551f, LocationType.Hotel, "Pegasus Hotel", "") { Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(-347.6738f, 229.8998f, 98.77297f), CameraDirection = new Vector3(0.9052147f, -0.3525268f, -0.2372999f), CameraRotation = new Rotator(-13.72723f, -5.712704E-06f, -111.2779f) },
+            new GameLocation(new Vector3(-60.74598f, 360.7194f, 113.0564f), 243.5531f, LocationType.Hotel, "Gentry Manor Hotel", ""){ Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(40.25754f, 259.9668f, 126.4436f), CameraDirection = new Vector3(-0.6868073f, 0.7189223f, -0.1069881f), CameraRotation = new Rotator(-6.141719f, -9.445725E-06f, 43.69126f) },
+            new GameLocation(new Vector3(-1273.729f, 316.0054f, 65.51177f), 152.4087f, LocationType.Hotel, "The Richman Hotel", ""){Menu = ExpensiveHotelMenu },
+            new GameLocation(new Vector3(286.5596f, -936.6477f, 29.46787f), 138.6224f, LocationType.Hotel, "Elkridge Hotel", "") {Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(257.891f, -952.2925f, 43.25403f), CameraDirection = new Vector3(0.8390263f, 0.4567426f, -0.2956704f), CameraRotation = new Rotator(-17.19774f, -1.072479E-05f, -61.43736f) },
+
+
             //Pharmacy
             new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", ""),
             new GameLocation(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, LocationType.Pharmacy, "Dollar Pills", ""),
@@ -857,7 +864,22 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             //Garage
-            new GameLocation(new Vector3(226.205f, -992.613f, -98.99996f), 150.3918f, LocationType.Garage, "Underground Garage", "")
+            new GameLocation(new Vector3(226.205f, -992.613f, -98.99996f), 150.3918f, LocationType.Garage, "Underground Garage", ""),
+
+
+            //Other
+            
+            new GameLocation(new Vector3(-601.9684f, 244.0188f, 82.3046f), 358.6468f, LocationType.LiquorStore, "Liquor Hole", ""),
+            new GameLocation(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, LocationType.Restaurant, "Bean Machine Coffee", ""),
+            new GameLocation(new Vector3(-596.1056f, 277.69f, 82.16035f), 170.2155f, LocationType.LiquorStore, "Eclipse Liquor.Deli", ""),
+            new GameLocation(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, LocationType.Bar, "The List Resort", ""),
+            new GameLocation(new Vector3(-379.3227f, 217.9178f, 83.65989f), 355.8053f, LocationType.StripClub, "Hornbills", ""),
+            new GameLocation(new Vector3(-361.3964f, 275.7073f, 86.42198f), 212.2804f, LocationType.Restaurant, "Last Train Diner", ""),
+            new GameLocation(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, LocationType.Restaurant, "Haute", ""),
+            new GameLocation(new Vector3(-239.7314f, 244.0006f, 92.03992f), 318.9458f, LocationType.LiquorStore, "Ellen's Liquor Lover", ""),
+            new GameLocation(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, LocationType.Restaurant, "Spitroasters", ""),
+            new GameLocation(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, LocationType.Headshop, "Pipe Down", ""),
+            
 
         };
 

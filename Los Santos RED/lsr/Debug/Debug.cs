@@ -41,7 +41,8 @@ public class Debug
     private Camera InterpolationCamera;
     private Agencies Agencies;
     private Weapons Weapons;
-
+    private Camera FreeCam;
+    private float FreeCamScale = 1.0f;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons)
     {
         PlateTypes = plateTypes;
@@ -408,27 +409,28 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
-        GameFiber.Yield();
-        if (!completelynewnameAsd.Exists())
-        {
-            return;
-        }
-        completelynewnameAsd.Model.LoadAndWait();
-        string tempModelName = completelynewnameAsd.Model.Name;
-        completelynewnameAsd.RandomizeVariation();
-        EntryPoint.WriteToConsole($"SpawnModelChecker! 1 {tempModelName} {completelynewnameAsd.Position}", 5);
-        GameFiber.Sleep(5000);
-        if (completelynewnameAsd.Exists())
-        {
-            tempModelName = completelynewnameAsd.Model.Name;
-            EntryPoint.WriteToConsole($"SpawnModelChecker! 2 {tempModelName} {completelynewnameAsd.Position}", 5);
-        }
-        GameFiber.Sleep(500);
-        if (completelynewnameAsd.Exists())
-        {
-            completelynewnameAsd.Delete();
-        }
+        //Freecam();
+        //Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
+        //GameFiber.Yield();
+        //if (!completelynewnameAsd.Exists())
+        //{
+        //    return;
+        //}
+        //completelynewnameAsd.Model.LoadAndWait();
+        //string tempModelName = completelynewnameAsd.Model.Name;
+        //completelynewnameAsd.RandomizeVariation();
+        //EntryPoint.WriteToConsole($"SpawnModelChecker! 1 {tempModelName} {completelynewnameAsd.Position}", 5);
+        //GameFiber.Sleep(5000);
+        //if (completelynewnameAsd.Exists())
+        //{
+        //    tempModelName = completelynewnameAsd.Model.Name;
+        //    EntryPoint.WriteToConsole($"SpawnModelChecker! 2 {tempModelName} {completelynewnameAsd.Position}", 5);
+        //}
+        //GameFiber.Sleep(500);
+        //if (completelynewnameAsd.Exists())
+        //{
+        //    completelynewnameAsd.Delete();
+        //}
 
 
         //SpawnItemInFrom();
@@ -538,6 +540,22 @@ public class Debug
             CurrentWanted++;
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
+    }
+
+
+    private Vector3 RotationToDirection(Rotator rotation)
+    {
+        double retZ = rotation.Yaw * 0.01745329f;
+        double retX = rotation.Pitch * 0.01745329f;
+        double absX = Math.Abs(Math.Cos(retX));
+        return new Vector3((float)-(Math.Sin(retZ) * absX), (float)(Math.Cos(retZ) * absX), (float)Math.Sin(retX));
+    }
+    private Vector3 RotationToDirection(Vector3 rotation)
+    {
+        double retZ = rotation.Z * 0.01745329f;
+        double retX = rotation.X * 0.01745329f;
+        double absX = Math.Abs(Math.Cos(retX));
+        return new Vector3((float)-(Math.Sin(retZ) * absX), (float)(Math.Cos(retZ) * absX), (float)Math.Sin(retX));
     }
     private void PedCameraStuff()
     {

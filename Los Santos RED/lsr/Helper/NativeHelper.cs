@@ -40,6 +40,33 @@ namespace LosSantosRED.lsr.Helper
             double multXY = Math.Abs(Math.Cos(rotX));
             return new Vector3((float)(-Math.Sin(rotZ) * multXY), (float)(Math.Cos(rotZ) * multXY), (float)Math.Sin(rotX));
         }
+        public static Vector3 GetCameraDirection(Camera camera)
+        {
+            //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....
+            Vector3 CameraRotation = new Vector3(camera.Rotation.Pitch,camera.Rotation.Roll, camera.Rotation.Yaw);
+            double rotX = CameraRotation.X / 57.295779513082320876798154814105;
+            double rotZ = CameraRotation.Z / 57.295779513082320876798154814105;
+            double multXY = Math.Abs(Math.Cos(rotX));
+            return new Vector3((float)(-Math.Sin(rotZ) * multXY), (float)(Math.Cos(rotZ) * multXY), (float)Math.Sin(rotX));
+        }
+        public static Vector3 GetCameraDirection(Camera camera, float scale)
+        {
+            //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....
+            Vector3 CameraRotation = new Vector3(camera.Rotation.Pitch, camera.Rotation.Roll, camera.Rotation.Yaw);
+            double rotX = CameraRotation.X / 57.295779513082320876798154814105;
+            double rotZ = CameraRotation.Z / 57.295779513082320876798154814105;
+            double multXY = Math.Abs(Math.Cos(rotX));
+            return new Vector3((float)(-Math.Sin(rotZ) * multXY) * scale, (float)(Math.Cos(rotZ) * multXY) * scale, (float)Math.Sin(rotX) * scale);
+        }
+        public static Vector3 GetCameraDirectionOffset(Camera camera, float offset)
+        {
+            //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....
+            Vector3 CameraRotation = new Vector3(camera.Rotation.Pitch, camera.Rotation.Roll, camera.Rotation.Yaw);
+            double rotX = CameraRotation.X / 57.295779513082320876798154814105;
+            double rotZ = CameraRotation.Z / 57.295779513082320876798154814105;
+            double multXY = Math.Abs(Math.Cos(rotX));
+            return new Vector3((float)(-Math.Sin(rotZ) * multXY), (float)(Math.Cos(rotZ) * multXY), (float)Math.Sin(rotX));
+        }
         public static uint GetTargettingHandle()
         {
             uint TargetEntity;

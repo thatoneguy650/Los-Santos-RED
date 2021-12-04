@@ -118,6 +118,7 @@ public class PedCrimes
             if (!PedExt.IsArrested)
             {
                 CheckCrimes(world, player);
+                GameFiber.Yield();
                 if (WantedLevel > 0)
                 {
                     OnPedSeenByPolice();
@@ -140,34 +141,36 @@ public class PedCrimes
     }
     private void CheckPoliceSight(IEntityProvideable world)
     {
-        foreach (Cop cop in world.PoliceList)
+        if (PedExt.Pedestrian.Exists())
         {
-            if (cop.Pedestrian.Exists())
+            foreach (Cop cop in world.PoliceList)
             {
-                float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
-                if (DistanceTo <= 0.1f)
+                if (cop.Pedestrian.Exists())
                 {
-                    DistanceTo = 999f;
-                }
-                if(DistanceTo <= 10f)//right next to them = they can see ALL!
-                {
-                    OnPedSeenByPolice();
-                    OnPedHeardByPolice();
-                    return;
-                }
-                if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
-                {
-                    OnPedSeenByPolice();
-                    OnPedHeardByPolice();
-                    return;
-                }
-                if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
-                {
-                    OnPedHeardByPolice();
+                    float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
+                    if (DistanceTo <= 0.1f)
+                    {
+                        DistanceTo = 999f;
+                    }
+                    if (DistanceTo <= 10f)//right next to them = they can see ALL!
+                    {
+                        OnPedSeenByPolice();
+                        OnPedHeardByPolice();
+                        return;
+                    }
+                    if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
+                    {
+                        OnPedSeenByPolice();
+                        OnPedHeardByPolice();
+                        return;
+                    }
+                    if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
+                    {
+                        OnPedHeardByPolice();
+                    }
                 }
             }
         }
-        
     }
     private void CheckPlayerSight(IPoliceRespondable player)
     {

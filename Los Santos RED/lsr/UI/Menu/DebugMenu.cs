@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 
 public class DebugMenu : Menu
 {
@@ -34,6 +35,10 @@ public class DebugMenu : Menu
     private int PlaceOfInterestSelected;
     private ISettingsProvideable Settings;
     private ITimeControllable Time;
+    private Camera FreeCam;
+    private float FreeCamScale = 1.0f;
+    private UIMenuItem FreeCamMenu;
+
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time)
     {    
         Player = player;
@@ -84,7 +89,7 @@ public class DebugMenu : Menu
         LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
         LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
         LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
-
+        FreeCamMenu = new UIMenuItem("Free Cam", "Start Free Camera Mode");
 
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
@@ -98,6 +103,7 @@ public class DebugMenu : Menu
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(AutoSetRadioStation);
         Debug.AddItem(TeleportToPOI);
+        Debug.AddItem(FreeCamMenu);
         Debug.AddItem(LogLocationMenu);
         Debug.AddItem(LogLocationSimpleMenu);
         Debug.AddItem(LogInteriorMenu);
@@ -157,6 +163,10 @@ public class DebugMenu : Menu
         {
             Time.SetDateToToday();
         }
+        else if (selectedItem == FreeCamMenu)
+        {
+            Frecam();
+        }
         Debug.Visible = false;
     }
     private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
@@ -173,6 +183,60 @@ public class DebugMenu : Menu
         {
             PlaceOfInterestSelected = index;
         }
+    }
+    private void Frecam()
+    {
+        GameFiber.StartNew(delegate
+        {
+            FreeCam = new Camera(false);
+            FreeCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            FreeCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            FreeCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+            FreeCam.Active = true;
+            Game.LocalPlayer.HasControl = false;
+            //This is all adapted from https://github.com/CamxxCore/ScriptCamTool/blob/master/GTAV_ScriptCamTool/PositionSelector.cs#L59
+            while (!Game.IsKeyDownRightNow(Keys.P))
+            {
+                if (Game.IsKeyDownRightNow(Keys.W))
+                {
+                    FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
+                }
+                else if (Game.IsKeyDownRightNow(Keys.S))
+                {
+                    FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
+                }
+                if (Game.IsKeyDownRightNow(Keys.A))
+                {
+                    FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
+                }
+                else if (Game.IsKeyDownRightNow(Keys.D))
+                {
+                    FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
+                }
+                FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
+
+                NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
+
+                if (Game.IsKeyDownRightNow(Keys.O))
+                {
+                    if (FreeCamScale == 1.0f)
+                    {
+                        FreeCamScale = 0.25f;
+                    }
+                    else
+                    {
+                        FreeCamScale = 1.0f;
+                    }
+                }
+                string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
+                Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}");
+                GameFiber.Yield();
+            }
+            FreeCam.Active = false;
+            Game.LocalPlayer.HasControl = true;
+            NativeFunction.Natives.CLEAR_FOCUS();
+        }, "Run Debug Logic");
     }
     private void LogGameLocation()
     {
@@ -192,11 +256,22 @@ public class DebugMenu : Menu
     }
     private void LogCameraPosition()
     {
-        uint CameraHAndle = NativeFunction.Natives.GET_RENDERING_CAM<uint>();
-        Vector3 pos = NativeFunction.Natives.GET_CAM_COORD<Vector3>(CameraHAndle);
-        Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-        Vector3 direction = NativeHelper.GetGameplayCameraDirection();
-        WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
+
+        if (FreeCam.Active)
+        {
+            Vector3 pos = FreeCam.Position;
+            Rotator r = FreeCam.Rotation;
+            Vector3 direction = NativeHelper.GetCameraDirection(FreeCam);
+            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.Pitch}f, {r.Roll}f, {r.Yaw}f);");
+        }
+        else
+        {
+            uint CameraHAndle = NativeFunction.Natives.GET_RENDERING_CAM<uint>();
+            Vector3 pos = NativeFunction.Natives.GET_CAM_COORD<Vector3>(CameraHAndle);
+            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            Vector3 direction = NativeHelper.GetGameplayCameraDirection();
+            WriteToLogCameraPosition($", CameraPosition = new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), CameraDirection = new Vector3({direction.X}f, {direction.Y}f, {direction.Z}f), CameraRotation = new Rotator({r.X}f, {r.Y}f, {r.Z}f);");
+        }
     }
     private void LogGameInterior()
     {

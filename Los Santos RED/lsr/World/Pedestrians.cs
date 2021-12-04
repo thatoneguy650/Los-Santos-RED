@@ -374,7 +374,7 @@ public class Pedestrians
             }
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
             NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
-            NativeFunction.Natives.SET_DRIVER_ABILITY(Pedestrian, 100f);
+           // NativeFunction.Natives.SET_DRIVER_ABILITY(Pedestrian, 100f);
         }
     }
     private void SetCopStats(Ped Pedestrian)

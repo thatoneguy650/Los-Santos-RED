@@ -13,20 +13,26 @@ public class Zone
     {
 
     }
-    public Zone(string _GameName, string _TextName, County _ZoneCounty, string state)
+    public Zone(string _GameName, string _TextName, County _ZoneCounty,string state,bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
     {
         InternalGameName = _GameName;
         DisplayName = _TextName;
         ZoneCounty = _ZoneCounty;
         State = state;
+        IsSpecificLocation = isSpecificLocation;
+        Economy = economy;
+        Type = type;     
     }
-    public Zone(string _GameName, string _TextName, County _ZoneCounty,Vector2[] boundaries, string state)
+    public Zone(string _GameName, string _TextName, County _ZoneCounty,Vector2[] boundaries, string state, bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
     {
         InternalGameName = _GameName;
         Boundaries = boundaries;
         DisplayName = _TextName;
         ZoneCounty = _ZoneCounty;
         State = state;
+        IsSpecificLocation = isSpecificLocation;
+        Economy = economy;
+        Type = type;
     }
     public string DispatchUnitName { get; set; }
     public string InternalGameName { get; set; }
@@ -57,4 +63,14 @@ public class Zone
     }
     public string AssignedLEAgencyInitials { get; set; }
     public string AssignedSecondLEAgencyInitials { get; set; }
+
+
+    public bool IsSpecificLocation { get; set; } = false;
+    public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
+    public eLocationType Type { get; set; } = eLocationType.Rural;
+
+
+
+
+
 }

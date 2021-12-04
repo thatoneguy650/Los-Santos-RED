@@ -289,7 +289,7 @@ public class PedExt : IComplexTaskable
                     UpdateVehicleState();
                     if (!IsCop)
                     {
-                        WeaponChecker();
+                        //WeaponChecker();
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {
                             PedCrimes.Update(world, policeRespondable);//possible yield in here!

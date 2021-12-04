@@ -155,9 +155,6 @@ public class Tasker : ITaskerable, ITaskerReportable
         PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
-            //PedExt Victim = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Handle != Criminal.Handle && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && x.Pedestrian.Speed <= 2.0f && !x.IsGangMember && x.Pedestrian.IsAlive).OrderBy(x=> x.Pedestrian.DistanceTo2D(Criminal.Pedestrian)).FirstOrDefault();//150f
-            //if (Victim != null && Victim.Pedestrian.Exists())
-            //{
             if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
             {
                 Blip myBlip = Criminal.Pedestrian.AttachBlip();
@@ -170,12 +167,13 @@ public class Tasker : ITaskerable, ITaskerReportable
             }  
             Criminal.CanBeAmbientTasked = false;
             Criminal.WasSetCriminal = true;
+            Criminal.WillCallPolice = false;
             Criminal.Pedestrian.RelationshipGroup = CriminalsRG;
             Criminal.CurrentTask = new CommitCrime(Criminal, Player,Weapons, PedProvider);
-            Criminal.CurrentTask.Start();
-            //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
+            Criminal.CurrentTask.Start();           
             GameTimeLastGeneratedCrime = Game.GameTime;
             RandomCrimeRandomTime = RandomItems.GetRandomNumber(0, 240000);//between 0 and 4 minutes randomly added
+            //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
         }
     }
     public bool IsSeatAssigned(IComplexTaskable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);

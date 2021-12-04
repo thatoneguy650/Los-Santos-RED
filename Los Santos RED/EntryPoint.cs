@@ -10,6 +10,9 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
+    private static bool MenyooRunning = false;
+    private static System.Reflection.Assembly assembly;
+    private static System.Diagnostics.FileVersionInfo fvi;
     public static int PersistentPedsCreated { get; set; } = 0;
     public static int PersistentPedsNonPersistent { get; set; } = 0;
     public static int PersistentPedsDeleted { get; set; } = 0;
@@ -32,8 +35,8 @@ public static class EntryPoint
     }
     private static void Loop()
     {
-        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+        assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
         Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
 
         while (true)
@@ -42,13 +45,11 @@ public static class EntryPoint
             {
                 if(File.Exists("menyoo.asi"))
                 {
+                    MenyooRunning = true;
                     Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~r~Menyoo is not compatible with LSR, please remove it and restart the game");
                 }
-                else
-                {
-                    ModController = new ModController();
-                    ModController.Start();
-                }
+                ModController = new ModController();
+                ModController.Start();
             }
             GameFiber.Yield();
         }
@@ -57,7 +58,7 @@ public static class EntryPoint
     {
         if (level <= LogLevel)
         {
-            Game.Console.Print(Message);
+            Game.Console.Print($"m{(MenyooRunning ? 4556 : 0)} v{fvi.FileVersion} - {Message}");
         }
     }
 }

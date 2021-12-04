@@ -48,6 +48,7 @@ namespace LosSantosRED.lsr.Interface
       //  bool TreatAsCop { get; }
         bool RecentlyFedUpCop { get; }
         int GroupID { get; }
+        PedExt CurrentTargetedPed { get; }
 
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
     }

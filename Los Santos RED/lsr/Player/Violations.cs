@@ -179,7 +179,8 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
-            if (CheckBrandishing() && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
+            bool isBrandishing = CheckBrandishing();
+            if (isBrandishing && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
                 if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 4)
@@ -193,6 +194,17 @@ namespace LosSantosRED.lsr
                 if (Player.CurrentWeapon != null && Player.CurrentWeapon.Category == WeaponCategory.Melee)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
+                }
+            }
+            if (isBrandishing && Player.CurrentTargetedPed != null && Player.CurrentWeapon.Category != WeaponCategory.Melee)
+            {
+                if(Player.CurrentTargetedPed.IsCop)
+                {
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "AimingWeaponAtPolice"));
+                }
+                else
+                {
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
                 }
             }
         }

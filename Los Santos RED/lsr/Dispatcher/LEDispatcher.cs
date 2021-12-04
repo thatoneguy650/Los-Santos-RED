@@ -140,7 +140,7 @@ public class LEDispatcher
         {
             if (TotalWantedLevel == 6)
             {
-                return Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6;//35;//35
+                return Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted6;//35;//35
             }
             if (TotalWantedLevel == 5)
             {
@@ -182,11 +182,11 @@ public class LEDispatcher
         {
             if (TotalWantedLevel == 6)
             {
-                return 2;
+                return 1;
             }
             if (TotalWantedLevel == 5)
             {
-                return 2;
+                return 1;
             }
             else if (TotalWantedLevel == 4)
             {
@@ -224,11 +224,11 @@ public class LEDispatcher
         {
             if (TotalWantedLevel == 6)
             {
-                return 2;
+                return 1;
             }
             if (TotalWantedLevel == 5)
             {
-                return 2;
+                return 1;
             }
             else if (TotalWantedLevel == 4)
             {

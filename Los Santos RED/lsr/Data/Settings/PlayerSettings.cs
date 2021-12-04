@@ -23,6 +23,7 @@ public class PlayerSettings
     public int Scanner_DelayMinTime { get; set; } = 1500;
     public int Scanner_DelayMaxTime { get; set; } = 2500;
     public bool Scanner_AllowStatusAnnouncements { get; set; } = true;
+    public bool Scanner_UseNearForLocations { get; set; } = true;
     public uint Violations_RecentlyHurtCivilianTime { get; set; } = 5000;
     public uint Violations_RecentlyHurtPoliceTime { get; set; } = 5000;
     public uint Violations_RecentlyKilledCivilianTime { get; set; } = 5000;
@@ -55,6 +56,7 @@ public class PlayerSettings
     public float ScaleEngineDamageMultiplier { get; set; } = 3.0f;
     public bool AllowSetIndicatorState { get; set; } = true;
     public bool AllowWeaponDropping { get; set; } = true;
+
 
     public PlayerSettings()
     {

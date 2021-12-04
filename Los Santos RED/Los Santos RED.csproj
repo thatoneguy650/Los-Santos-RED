@@ -103,6 +103,8 @@
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
+    <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
