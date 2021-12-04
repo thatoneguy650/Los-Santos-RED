@@ -37,8 +37,14 @@ public static class EntryPoint
     {
         assembly = System.Reflection.Assembly.GetExecutingAssembly();
         fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-        Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
-
+        if (File.Exists("menyoo.asi"))
+        {
+            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~r~Menyoo is not compatible with LSR, please remove it and restart the game");
+        }
+        else
+        {
+            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
+        }
         while (true)
         {
             if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?

@@ -63,7 +63,7 @@ public class PedSwap : IPedSwap
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
     }
-    public void BecomeExistingPed(Ped TargetPed)
+    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, bool useHeadblend, int motherID, int fatherID, float motherPercent, float fatherPercent, int hairColor)
     {
         try
         {
@@ -80,13 +80,26 @@ public class PedSwap : IPedSwap
             //EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
             //EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+
+
+
             Player.IsCop = false;
             //EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
             //EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(true);
-            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+            PostTakeover(CurrentModelPlayerIs.Name, false, fullName, money);
             GiveHistory();
             TemporarilyStopWanted();
+
+            if (useHeadblend)
+            {
+                if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
+                {
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, motherID, fatherID, 0, motherID, fatherID, 0, motherPercent, fatherPercent, 0f, false);
+                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, hairColor, hairColor);
+                }
+            }
+
             //EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)

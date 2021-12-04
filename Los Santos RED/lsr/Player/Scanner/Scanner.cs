@@ -818,6 +818,22 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        private void AddAttentionUnits(DispatchEvent dispatchEvent)
+        {
+            Zone MyZone = CurrentPlayer.CurrentLocation.CurrentZone;
+            if (MyZone != null)
+            {
+                ZoneLookup zoneAudio = ZoneScannerAudio.GetLookup(MyZone.InternalGameName);
+                if (zoneAudio != null)
+                {
+                    string ScannerAudio = zoneAudio.ScannerUnitValue;
+                    if (ScannerAudio != "")
+                    {
+                        dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                    }
+                }
+            }
+        }
         private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed)
         {
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
@@ -847,6 +863,13 @@ namespace LosSantosRED.lsr
             {
                 AddAudioSet(EventToPlay, AttentionAllUnits.PickRandom());
             }
+            else if(!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            {
+                AddAttentionUnits(EventToPlay);
+            }
+
+
+
             if (DispatchToPlay.IncludeReportedBy)
             {
                 if (DispatchToPlay.LatestInformation.SeenByOfficers)

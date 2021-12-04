@@ -57,10 +57,14 @@ public class LEDispatcher
         GameFiber.Yield();
         if (agency != null)
         {
+            EntryPoint.WriteToConsole($"DISPATCHER: Agency {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
             DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+            EntryPoint.WriteToConsole($"DISPATCHER: Agency2 {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
+
             GameFiber.Yield();
             if (VehicleType != null)
             {
+                EntryPoint.WriteToConsole($"DISPATCHER: Vehicle1 {VehicleType.ModelName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
                 DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
                 GameFiber.Yield();
                 if (OfficerType != null)
@@ -368,7 +372,7 @@ public class LEDispatcher
                 if (agency != null)
                 {
                     LastAgencySpawned = agency;
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                     GameFiber.Yield();
                     if (VehicleType != null)
                     {

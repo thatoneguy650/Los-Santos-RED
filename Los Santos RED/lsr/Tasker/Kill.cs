@@ -85,6 +85,10 @@ public class Kill : ComplexTask
                     }
                 }
             }
+            if(!Ped.IsInVehicle && Ped.DistanceToPlayer <= 100f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            {
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+            }
         }
     }
     public void ClearTasks()//temp public

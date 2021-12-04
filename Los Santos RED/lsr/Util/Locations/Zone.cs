@@ -48,6 +48,10 @@ public class Zone
             string CountyName = "San Andreas";
             if (ZoneCounty == County.BlaineCounty)
                 CountyName = "Blaine County";
+            else if (ZoneCounty == County.VenturaCounty)
+                CountyName = "Ventura County";
+            else if (ZoneCounty == County.MajesticCounty)
+                CountyName = "Majestic County";
             else if (ZoneCounty == County.CityOfLosSantos)
                 CountyName = "City of Los Santos";
             else if (ZoneCounty == County.LosSantosCounty)

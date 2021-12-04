@@ -14,4 +14,6 @@ public enum County
     Crook = 5,
     NorthYankton = 6,
     Vice = 7,
+    VenturaCounty = 8,
+    MajesticCounty = 9,
 }

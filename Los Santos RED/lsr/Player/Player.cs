@@ -132,7 +132,7 @@ namespace Mod
         public List<InventoryItem> InventoryItems => Inventory.Items;
         public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem.CanConsume).ToList();
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
-        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";
+        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
@@ -141,7 +141,7 @@ namespace Mod
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.SearchModeDebug;//$"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => (CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning} {CurrentVehicle.Vehicle.Handle}" : $"NO VEHICLE") + $" IsGettingInto: {IsGettingIntoAVehicle}, IsIn: {IsInVehicle} OwnedHandle {(OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() ? OwnedVehicle.Vehicle.Handle : 0)}";
-        public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";
+        public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count} PH: {EntityProvider.PoliceHelicoptersCount}";
         public string DebugLine11 { get; set; }
         public string LawsViolating => Violations.LawsViolatingDisplay;
         public Cop AliasedCop { get; set; }
@@ -694,6 +694,12 @@ namespace Mod
             }
             return toReturn;
         }
+        public void PlayDispatchDebug(Crime toPlay, CrimeSceneDescription toAnnounce)
+        {
+            Scanner.Reset();
+            Scanner.AnnounceCrime(toPlay, toAnnounce);
+        }
+
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void RaiseHands() => Surrendering.RaiseHands();
         public void RemovePlate()

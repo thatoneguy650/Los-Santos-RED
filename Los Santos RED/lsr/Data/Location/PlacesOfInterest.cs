@@ -879,7 +879,15 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-239.7314f, 244.0006f, 92.03992f), 318.9458f, LocationType.LiquorStore, "Ellen's Liquor Lover", ""),
             new GameLocation(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, LocationType.Restaurant, "Spitroasters", ""),
             new GameLocation(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, LocationType.Headshop, "Pipe Down", ""),
-            
+
+
+            new GameLocation(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, LocationType.Restaurant, "Bean Machine Coffee", ""),
+            new GameLocation(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, LocationType.Restaurant, "Pizza This...", ""),
+            new GameLocation(new Vector3(272.8409f, -965.4847f, 29.31605f), 27.34526f, LocationType.Restaurant, "Noodle Exchange", ""),
+            new GameLocation(new Vector3(265.4628f, -981.3839f, 29.36569f), 72.07395f, LocationType.Restaurant, "Cool Beans Coffee", ""),
+            new GameLocation(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, LocationType.Bar, "Shenanigan's Bar", ""),
+
+
 
         };
 

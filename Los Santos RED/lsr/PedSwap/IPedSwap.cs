@@ -15,6 +15,6 @@ namespace LosSantosRED.lsr.Interface
         void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation currentModelVariation);
         void BecomeRandomCop();
         void BecomeCustomPed();
-        void BecomeExistingPed(Ped pedModel);
+        void BecomeExistingPed(Ped pedModel, string v, int currentSelectedMoney, bool useHeadblend, int motherID, int fatherID, float motherPercent, float fatherPercent, int hairColor);
     }
 }

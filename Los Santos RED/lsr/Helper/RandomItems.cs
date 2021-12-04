@@ -53,6 +53,10 @@ public static class RandomItems
     {
         return (uint)MyRand.Next(minimum, maximum);
     }
+    public static int GetRandomNumberInt(int minimum, int maximum)
+    {
+        return MyRand.Next(minimum, maximum);
+    }
     public static double GetRandomNumber(double minimum, double maximum)
     {
         return MyRand.NextDouble() * (maximum - minimum) + minimum;

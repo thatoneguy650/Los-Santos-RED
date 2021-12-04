@@ -409,6 +409,12 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
+
+
+        Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
+        CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false,false,Game.LocalPlayer.Character.Position);
+        Player.PlayDispatchDebug(toPlay, toAnnounce);
         //Freecam();
         //Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
         //GameFiber.Yield();
@@ -542,7 +548,11 @@ public class Debug
         }
     }
 
-
+    private string GetInternalZoneString(Vector3 ZonePosition)
+    {
+        IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
+        return Marshal.PtrToStringAnsi(ptr);
+    }
     private Vector3 RotationToDirection(Rotator rotation)
     {
         double retZ = rotation.Yaw * 0.01745329f;
