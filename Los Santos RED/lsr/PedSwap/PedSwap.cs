@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,12 @@ public class PedSwap : IPedSwap
     
     private Model InitialModel;
     private Model CurrentModelPlayerIs;
+    private Camera CharCam;
+    private Vector3 PreviousPos;
+    private Model ModelSelected;
+    private Ped PedModel;
+    private PedSwapCustomMenu PedSwapCustomMenu;
+
     public int CurrentPedMoney { get; private set; }
     public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
@@ -55,6 +62,37 @@ public class PedSwap : IPedSwap
         InitialModel = Game.LocalPlayer.Character.Model;
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
+    }
+    public void BecomeExistingPed(Ped TargetPed)
+    {
+        try
+        {
+            ResetOffsetForCurrentModel();
+            if (!TargetPed.Exists())
+            {
+                return;
+            }
+            //EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            StoreTargetPedData(TargetPed);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            Player.IsCop = false;
+            //EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+            //EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
+            HandlePreviousPed(true);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+            GiveHistory();
+            TemporarilyStopWanted();
+            //EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
     }
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
@@ -128,8 +166,22 @@ public class PedSwap : IPedSwap
         }
     }
     public void BecomeCustomPed()
-    {
-
+    {   
+        GameFiber.StartNew(delegate
+        {
+            MenuPool menuPool = new MenuPool();
+            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this);
+            PedSwapCustomMenu.Setup();
+            PedSwapCustomMenu.Show();
+            GameFiber.Yield();
+            while (menuPool.IsAnyMenuOpen())
+            {
+                PedSwapCustomMenu.Update();
+                GameFiber.Yield();
+            }
+            PedSwapCustomMenu.Dispose();
+        }, "Custom Ped Loop");
+        
     }
     public void BecomeRandomCop()
     {

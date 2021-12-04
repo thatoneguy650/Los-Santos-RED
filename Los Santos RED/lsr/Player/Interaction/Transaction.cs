@@ -141,7 +141,7 @@ public class Transaction : Interaction
                 NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
             }
 
-            if(Ped.GetType() == typeof(Merchant))
+            if(Ped != null && Ped.GetType() == typeof(Merchant))
             {
                 if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive && Store != null && Store.VendorHeading != 0f)
                 {

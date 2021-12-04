@@ -14,20 +14,21 @@ public class PedSwapMenu : Menu
 
     private UIMenuItem BecomeCustomPed;
 
-    private UIMenu PedSwapCustomizeUIMenu;
+    //private UIMenu PedSwapCustomizeUIMenu;
     private UIMenuItem BecomeRandomCop;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
+   // private PedSwapCustomMenu PedSwapCustomMenu;
     public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap)
     {
         PedSwap = pedSwap;
         PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
         PedSwapUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
-        PedSwapUIMenu.OnItemSelect += OnActionItemSelect;
+        PedSwapUIMenu.OnItemSelect += OnItemSelect;
         PedSwapUIMenu.OnListChange += OnListChange;
 
 
-        PedSwapCustomMenu PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedSwapUIMenu, PedSwap);
+
 
         CreatePedSwap();
     }
@@ -71,7 +72,7 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(BecomeCustomPed);
         PedSwapUIMenu.AddItem(BecomeRandomCop);
     }
-    private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == TakeoverRandomPed)
         {
@@ -88,13 +89,15 @@ public class PedSwapMenu : Menu
         {
             PedSwap.BecomeRandomPed();
         }
-        else if (selectedItem == BecomeCustomPed)
-        {
-            PedSwap.BecomeCustomPed();
-        }
         else if (selectedItem == BecomeRandomCop)
         {
             PedSwap.BecomeRandomCop();
+        }
+        else if (selectedItem == BecomeCustomPed)
+        {
+            PedSwap.BecomeCustomPed();
+            //PedSwapCustomMenu.StartShit();
+            //PedSwapCustomMenu.Show();
         }
         PedSwapUIMenu.Visible = false;
     }

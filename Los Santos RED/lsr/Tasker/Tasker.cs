@@ -39,6 +39,7 @@ public class Tasker : ITaskerable, ITaskerReportable
         CriminalsRG = new RelationshipGroup("CRIMINALS");
         RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
         CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+        NativeFunction.Natives.REQUEST_ANIM_SET<bool>("move_m@drunk@verydrunk");
     }
     public void RunPoliceTasks()
     {

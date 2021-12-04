@@ -133,6 +133,7 @@ public class PedCrimes
                 if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
                 {
                     CheckOtherPedCrimes(world, player);
+                    GameFiber.Yield();
                 }
             }
         }

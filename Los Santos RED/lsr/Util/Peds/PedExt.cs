@@ -292,18 +292,21 @@ public class PedExt : IComplexTaskable
                         WeaponChecker();
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {
-                            PedCrimes.Update(world, policeRespondable);
+                            PedCrimes.Update(world, policeRespondable);//possible yield in here!
                         }
-                        if (policeRespondable.IsCop && PlayerPerception.DistanceToTarget <= 5f)
+                        if (Pedestrian.Exists())
                         {
-                            if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
+                            if (policeRespondable.IsCop && PlayerPerception.DistanceToTarget <= 5f)
                             {
-                                IsBusted = true;
-                                EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
+                                if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
+                                {
+                                    IsBusted = true;
+                                    EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
+                                }
                             }
                         }
                     }
-                    if(!IsCop && !WasEverSetPersistent && Pedestrian.IsPersistent)
+                    if(!IsCop && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
                     {
                         CanBeAmbientTasked = false;
                         WillCallPolice = false;

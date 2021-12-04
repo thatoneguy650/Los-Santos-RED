@@ -505,6 +505,42 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        CharCam = new Camera(true);
+        CharCam.Active = false;
+        Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
+        //PedSettingStuff();
+        //PedCameraStuff();
+    }
+    public void DebugNumpad8()
+    {
+        //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
+
+        //Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+
+        List<MenuItem> WeedDealerMenu = new List<MenuItem>() {
+            new MenuItem("Gram of Schwag",6, 1),
+            new MenuItem("Gram of Mids",9, 3),
+            new MenuItem("Gram of Dank",12, 4),
+            new MenuItem("Joint",3, 1)};
+
+        Player.CurrentLookedAtPed.TransactionMenu = WeedDealerMenu;
+
+
+        // SetRadarZoomeFor20Seconds(1000f);
+        //Player.OnSuspectEluded();
+        //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
+    }
+    private void DebugNumpad9()
+    {
+        int CurrentWanted = Player.WantedLevel;
+        if(CurrentWanted <= 5)
+        {
+            CurrentWanted++;
+            Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
+        }
+    }
+    private void PedCameraStuff()
+    {
         Game.FadeScreenOut(2500, true);
         GameFiber.Sleep(500);
         Game.LocalPlayer.Character.Position = new Vector3(402.5164f, -1002.847f, -99.2587f);
@@ -541,7 +577,7 @@ public class Debug
         //    GameFiber.Sleep(200);
         //}
 
-       // GameFiber.Sleep(500);
+        // GameFiber.Sleep(500);
         Game.FadeScreenIn(1500, true);
 
         uint GameTimeStarted = Game.GameTime;
@@ -559,7 +595,7 @@ public class Debug
         }
         CharCam.Active = false;
 
-        if(Model.Exists())
+        if (Model.Exists())
         {
             EntryPoint.WriteToConsole($"Model Exists DELETING {Model.Model.Name} {Model.Position}", 5);
             Model.Delete();
@@ -568,73 +604,44 @@ public class Debug
         {
             EntryPoint.WriteToConsole($"Model DOES NOT Exist DELETING {Model.Model.Name} {Model.Position}", 5);
         }
-
-
-
-
-
-
-
-
-
-
-
-        //EntryPoint.WriteToConsole($"FASTFORWARD 8 HOURS {Time.CurrentTime}", 5);
-        //Time.FastForward(8);
-        //  HighlightStoreWithCamera();
-
-
-
-        //GameFiber.Sleep(5000);
-        //  ReturnToGameplay();
-        //EntryPoint.WriteToConsole($"CURRENT TIME (PRE) {Time.CurrentTime}", 5);     
-        //Time.FastForward(8);
-        //GameFiber.Sleep(5000);
-        //EntryPoint.WriteToConsole($"CURRENT TIME (POST) {Time.CurrentTime}", 5);
-
-        //ConsumableSubstance toadd = ConsumableSubstances.Consumables.PickRandom();
-        //if(toadd != null)
-        //{
-        //    Player.AddToInventory(toadd,1);
-        //    EntryPoint.WriteToConsole($"ADDED {toadd.Name} {toadd.Type}", 5);
-        //}
-
-        //if (Player.CurrentLookedAtPed != null)
-        //{
-        //    Player.CurrentLookedAtPed.MerchantType = MerchantType.HotDog;
-        //}
-        //Dispatcher.SpawnHelicopterCop(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
     }
-    public void DebugNumpad8()
+    private void PedSettingStuff()
     {
-        //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
-
-        //Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
-
-        List<MenuItem> WeedDealerMenu = new List<MenuItem>() {
-            new MenuItem("Gram of Schwag",6, 1),
-            new MenuItem("Gram of Mids",9, 3),
-            new MenuItem("Gram of Dank",12, 4),
-            new MenuItem("Joint",3, 1)};
-
-        Player.CurrentLookedAtPed.TransactionMenu = WeedDealerMenu;
-
-
-        // SetRadarZoomeFor20Seconds(1000f);
-        //Player.OnSuspectEluded();
-        //Player.SetWantedLevel(0, "Clear Wanted Debug", true);
-    }
-    private void DebugNumpad9()
-    {
-        int CurrentWanted = Player.WantedLevel;
-        if(CurrentWanted <= 5)
+        Ped myPed = new Ped("S_M_M_GENTRANSPORT", Game.LocalPlayer.Character.GetOffsetPositionFront(5f),0f);
+        GameFiber.Yield();
+        if (myPed.Exists())
         {
-            CurrentWanted++;
-            Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(myPed, ComponentNumber);
+                for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
+                {
+                    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(myPed, ComponentNumber, DrawableNumber);
+                    for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
+                    {
+                        bool IsValid = NativeFunction.Natives.IS_PED_COMPONENT_VARIATION_VALID<bool>(myPed, ComponentNumber, DrawableNumber, TextureNumber);
+                        if(IsValid)
+                        {
+                            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(myPed, ComponentNumber, DrawableNumber, TextureNumber, 0);
+                            EntryPoint.WriteToConsole($"PedSettingStuff Is Valid Variation {ComponentNumber} {DrawableNumber} {TextureNumber}", 5);
+                            GameFiber.Sleep(1000);
+                            if(!myPed.Exists())
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+
+            }
         }
+        GameFiber.Sleep(5000);
+        if(myPed.Exists())
+        {
+            myPed.Delete();
+        }
+        //NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(myPed, ComponentID, DrawableID);
     }
-
-
     private void SpawnItemInFrom()
     {
         GameFiber.StartNew(delegate
