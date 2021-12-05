@@ -190,14 +190,18 @@ namespace Mod
         {
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                gl.Update();
-                if (gl.IsOpen(Time.CurrentHour) && gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                //gl.Update();
+                if (gl.IsOpen(Time.CurrentHour) && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
                     {
                         ActiveLocations.Add(gl);
                         SetupLocation(gl);
                         GameFiber.Yield();
+                    }
+                    else
+                    {
+                        gl.Update();
                     }
                 }
                 else
@@ -221,6 +225,7 @@ namespace Mod
             {
                 SetupBlip(gameLocation);
             }
+            gameLocation.Update();
         }
         private void SetupBlip(GameLocation gameLocation)
         {

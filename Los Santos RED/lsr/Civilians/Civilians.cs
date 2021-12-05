@@ -44,7 +44,7 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
             PedsUpdated++;
-            if (PedsUpdated > 4)//10)//3//10//25
+            if (PedsUpdated > 2)//4//10)//3//10//25
             {
                 PedsUpdated = 0;
                 GameFiber.Yield();
@@ -62,7 +62,7 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
             }
             PedsUpdated++;
-            if (PedsUpdated > 4)//10)//3//10//25
+            if (PedsUpdated > 2)//4//10)//3//10//25
             {
                 PedsUpdated = 0;
                 GameFiber.Yield();

@@ -28,7 +28,7 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastMovedFast;
     private bool hasCheckedWeapon = false;
-    
+    private Vector3 position;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
@@ -69,6 +69,8 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
+    public int CellX { get; set; }
+    public int CellY { get; set; }
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
@@ -179,7 +181,6 @@ public class PedExt : IComplexTaskable
     public bool IsInAPC { get; private set; }
     public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
     public List<MenuItem> TransactionMenu { get; set; }
-
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)
@@ -285,6 +286,10 @@ public class PedExt : IComplexTaskable
             {
                 if (NeedsFullUpdate)
                 {
+                    position = Pedestrian.Position;//See which cell it is in now
+                    CellX = (int)(position.X / EntryPoint.CellSize);
+                    CellY = (int)(position.Y / EntryPoint.CellSize);
+
                     PlayerPerception.Update(perceptable, placeLastSeen);
                     UpdateVehicleState();
                     if (!IsCop)

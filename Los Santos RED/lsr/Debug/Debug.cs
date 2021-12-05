@@ -149,59 +149,26 @@ public class Debug
                 Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
             }
         }
-        //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 90f))
-        //{
-        //    Color Color = Color.Yellow;
-        //    if (ped.CurrentlyViolatingWantedLevel == 0)
-        //    {
-        //        Color = Color.Green;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel == 1)
-        //    {
-        //        Color = Color.Yellow;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel == 2)
-        //    {
-        //        Color = Color.Orange;
-        //    }
-        //    else if (ped.CurrentlyViolatingWantedLevel > 2)
-        //    {
-        //        Color = Color.Red;
-        //    }
-        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
-        //    Color Color2 = Color.Yellow;
-        //    if (ped.WantedLevel == 0)
-        //    {
-        //        Color2 = Color.Green;
-        //    }
-        //    else if (ped.WantedLevel == 1)
-        //    {
-        //        Color2 = Color.Yellow;
-        //    }
-        //    else if (ped.WantedLevel == 2)
-        //    {
-        //        Color2 = Color.Orange;
-        //    }
-        //    else if (ped.WantedLevel > 2)
-        //    {
-        //        Color2 = Color.Red;
-        //    }
-        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2.5f), Vector3.Zero, Rotator.Zero, 1f, Color2);
-        //    Color Color3 = Color.Yellow;
-        //    if (ped.HasSeenPlayerCommitCrime)
-        //    {
-        //        Color3 = Color.Red;
-        //    }
-        //    else if (ped.CanRecognizePlayer)
-        //    {
-        //        Color3 = Color.Orange;
-        //    }
-        //    else if (ped.CanSeePlayer)
-        //    {
-        //        Color3 = Color.Green;
-        //    }
-        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
-        //}
+        if (Settings.SettingsManager.DebugSettings.ShowCivilianPerceptionArrows)
+        {
+            foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
+            {
+                Color Color3 = Color.Yellow;
+                if (ped.HasSeenPlayerCommitCrime)
+                {
+                    Color3 = Color.Red;
+                }
+                else if (ped.CanRecognizePlayer)
+                {
+                    Color3 = Color.Orange;
+                }
+                else if (ped.CanSeePlayer)
+                {
+                    Color3 = Color.Green;
+                }
+                Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
+            }
+        }
         //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         //{
         //    Color Color3 = Color.Yellow;
@@ -282,7 +249,7 @@ public class Debug
         //            //if(obj.DistanceTo2D(Game.LocalPlayer.Character) <= 20f)
         //            //{
         //            //    EntryPoint.WriteToConsole($"Scanned for Stands MODEL {obj.Model.Name.ToLower()}", 5);
-                        
+
         //            //}
         //            if (obj.Model.Hash == Game.GetHashKey("prop_hotdogstand_01") || obj.Model.Hash == Game.GetHashKey("prop_burgerstand_01"))
         //            {
@@ -409,12 +376,12 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
+        //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
 
 
-        Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
-        CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false,false,Game.LocalPlayer.Character.Position);
-        Player.PlayDispatchDebug(toPlay, toAnnounce);
+        //Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
+        //CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false,false,Game.LocalPlayer.Character.Position);
+        //Player.PlayDispatchDebug(toPlay, toAnnounce);
         //Freecam();
         //Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
         //GameFiber.Yield();
@@ -472,7 +439,7 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        //SpawnGunAttackers();
+        SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {

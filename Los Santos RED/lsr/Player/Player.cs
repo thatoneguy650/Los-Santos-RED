@@ -63,9 +63,12 @@ namespace Mod
         private uint GameTimeLastFedUpCop;
         private bool isJacking = false;
         private IModItems ModItems;
+        private Vector3 position;
+        private float CellSize = 50f;
 
 
-        
+        private int TargetCellX = (int)(338.208f/50f);
+        private int TargetCellY = (int)(-1396.154f/50f);
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems)
         {
@@ -119,6 +122,13 @@ namespace Mod
         public PedExt CurrentLookedAtPed { get; private set; }
         public string CurrentModelName { get; set; }//should be private but needed?
         public PedVariation CurrentModelVariation { get; set; }
+
+
+        public int CurrentPrimaryHairColor { get; set; }
+        public int CurrentSecondaryColor { get; set; }
+        public HeadBlendData CurrentHeadBlendData { get; set; }
+
+
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public PedExt CurrentTargetedPed { get; private set; }
@@ -137,7 +147,7 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => $"IntWantedLevel {WantedLevel} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
+        public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} Tar: {TargetCellX},{TargetCellY} In: {CellX == TargetCellX && CellY == TargetCellY} Near: {NativeHelper.IsNearby(CellX, CellY,TargetCellX, TargetCellY, 2)} Away: {NativeHelper.CellsAway(CellX,CellY,TargetCellX,TargetCellY)}";//IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.SearchModeDebug;//$"AliasedCop : {AliasedCop != null} AliasedCopCanBeAmbientTasked: {AliasedCop?.CanBeAmbientTasked} LastSeenPlayer {PlacePoliceLastSeenPlayer} HaveDesc: {PoliceResponse.PoliceHaveDescription} LastRptCrime {PoliceResponse.PlaceLastReportedCrime} IsSuspicious: {Investigation.IsSuspicious}";
         public string DebugLine9 => (CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning} {CurrentVehicle.Vehicle.Handle}" : $"NO VEHICLE") + $" IsGettingInto: {IsGettingIntoAVehicle}, IsIn: {IsInVehicle} OwnedHandle {(OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() ? OwnedVehicle.Vehicle.Handle : 0)}";
@@ -267,7 +277,7 @@ namespace Mod
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public string PlayerName { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
-        public Vector3 Position => Game.LocalPlayer.Character.Position;
+        public Vector3 Position => position;//Game.LocalPlayer.Character.Position;
         public bool RecentlyBribedPolice => Respawning.RecentlyBribedPolice;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyPaidFine => Respawning.RecentlyPaidFine;
@@ -279,6 +289,9 @@ namespace Mod
         public bool RecentlyFedUpCop => GameTimeLastFedUpCop != 0 && Game.GameTime - GameTimeLastFedUpCop <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public Vector3 RootPosition { get; set; }
+        public int CellX { get; private set; }
+        public int CellY { get; private set; }
+
         public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !IsCop;
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
@@ -1168,34 +1181,13 @@ namespace Mod
             {
                 IsIntoxicated = false;
             }
-
+            position = Game.LocalPlayer.Character.Position;
             RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                                                                                                                                                  //See which cell it is in now
+            CellX = (int)(position.X / EntryPoint.CellSize);
+            CellY = (int)(position.Y / EntryPoint.CellSize);
+            EntryPoint.FocusCellX = CellX;
+            EntryPoint.FocusCellY = CellY;
 
 
 
@@ -1209,7 +1201,7 @@ namespace Mod
 
 
 
-  
+
             //if (PoliceResponse.IsDeadlyChase && !IsBusted)
             //{
             //    if (isSetPoliceIgnored)

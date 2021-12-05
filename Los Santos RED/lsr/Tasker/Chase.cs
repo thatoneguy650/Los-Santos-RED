@@ -391,7 +391,7 @@ public class Chase : ComplexTask
                 if(Player.WantedLevel == 1)
                 {
                     IsChasingSlowly = true;
-                    RunSpeed = 1.4f;
+                    RunSpeed = 2.0f;// 1.4f;
                 }
                 else
                 {

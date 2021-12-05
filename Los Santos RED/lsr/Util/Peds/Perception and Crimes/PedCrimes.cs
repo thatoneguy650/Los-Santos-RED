@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
+using LosSantosRED.lsr.Helper;
 
 public class PedCrimes
 {
@@ -147,26 +148,29 @@ public class PedCrimes
             {
                 if (cop.Pedestrian.Exists())
                 {
-                    float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
-                    if (DistanceTo <= 0.1f)
+                    if(NativeHelper.IsNearby(PedExt.CellX,PedExt.CellY,cop.CellX,cop.CellY,4))
                     {
-                        DistanceTo = 999f;
-                    }
-                    if (DistanceTo <= 10f)//right next to them = they can see ALL!
-                    {
-                        OnPedSeenByPolice();
-                        OnPedHeardByPolice();
-                        return;
-                    }
-                    if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
-                    {
-                        OnPedSeenByPolice();
-                        OnPedHeardByPolice();
-                        return;
-                    }
-                    if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
-                    {
-                        OnPedHeardByPolice();
+                        float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
+                        if (DistanceTo <= 0.1f)
+                        {
+                            DistanceTo = 999f;
+                        }
+                        if (DistanceTo <= 10f)//right next to them = they can see ALL!
+                        {
+                            OnPedSeenByPolice();
+                            OnPedHeardByPolice();
+                            return;
+                        }
+                        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
+                        {
+                            OnPedSeenByPolice();
+                            OnPedHeardByPolice();
+                            return;
+                        }
+                        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
+                        {
+                            OnPedHeardByPolice();
+                        }
                     }
                 }
             }
@@ -222,7 +226,7 @@ public class PedCrimes
         if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
         {
             OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
-            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
+            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
             {
                 if (!PedExt.Pedestrian.Exists())
                 {

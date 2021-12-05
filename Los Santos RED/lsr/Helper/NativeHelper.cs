@@ -79,6 +79,8 @@ namespace LosSantosRED.lsr.Helper
             uint Handle = TargetEntity;
             return Handle;
         }
+        public static bool IsNearby(int cellX, int cellY, int targetCellX, int targetCellY, int distance) => cellX >= targetCellX - distance && cellX <= targetCellX + distance && cellY >= targetCellY - distance && cellY <= targetCellY + distance;
+        public static int CellsAway(int cellX, int cellY, int targetCellX, int targetCellY) => Math.Max(Math.Abs(cellX - targetCellX),Math.Abs(cellY - targetCellY));
         public static void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading, bool MainRoadsOnly)
         {
             Vector3 pos = PositionNear;

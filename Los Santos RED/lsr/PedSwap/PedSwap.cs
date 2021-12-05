@@ -63,7 +63,7 @@ public class PedSwap : IPedSwap
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
     }
-    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, bool useHeadblend, int motherID, int fatherID, float motherPercent, float fatherPercent, int hairColor)
+    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor)
     {
         try
         {
@@ -91,12 +91,16 @@ public class PedSwap : IPedSwap
             GiveHistory();
             TemporarilyStopWanted();
 
-            if (useHeadblend)
+            if (headblendData != null)
             {
                 if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
                 {
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, motherID, fatherID, 0, motherID, fatherID, 0, motherPercent, fatherPercent, 0f, false);
-                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, hairColor, hairColor);
+                    Player.CurrentHeadBlendData = headblendData;
+                    Player.CurrentPrimaryHairColor = primaryHairColor;
+                    Player.CurrentSecondaryColor = secondaryHairColor;
+
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
+                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
                 }
             }
 
@@ -226,7 +230,7 @@ public class PedSwap : IPedSwap
         Entities.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons);
     }
-    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation)
+    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor)
     {
         try
         {
@@ -259,6 +263,19 @@ public class PedSwap : IPedSwap
             //EntryPoint.WriteToConsole($"BecomeSavedPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
+
+            if (headblendData != null)
+            {
+                if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
+                {
+                    Player.CurrentHeadBlendData = headblendData;
+                    Player.CurrentPrimaryHairColor = primaryHairColor;
+                    Player.CurrentSecondaryColor = secondaryHairColor;
+
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
+                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
+                }
+            }
             //EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)

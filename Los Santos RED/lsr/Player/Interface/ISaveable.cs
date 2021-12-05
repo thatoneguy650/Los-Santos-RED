@@ -15,5 +15,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsMale { get; }
         int Money { get; }
         Inventory Inventory { get; set; }
+        HeadBlendData CurrentHeadBlendData { get; }
+        int CurrentPrimaryHairColor { get; }
+        int CurrentSecondaryColor { get; }
     }
 }

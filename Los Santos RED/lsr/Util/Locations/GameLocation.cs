@@ -22,6 +22,8 @@ public class GameLocation
     public LocationType Type { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public int CellX { get; set; }
+    public int CellY { get; set; }
     public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
     public bool HasVendor => VendorPosition != Vector3.Zero;
     public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
@@ -58,6 +60,8 @@ public class GameLocation
         Type = _Type;
         Name = _Name;
         Description = _Description;
+        CellX = (int)(VendorPosition.X / EntryPoint.CellSize);
+        CellY = (int)(VendorPosition.Y / EntryPoint.CellSize);
     }
     public GameLocation(Vector3 _EntrancePosition, float _EntranceHeading, LocationType _Type, string _Name, string _Description)
     {
@@ -66,6 +70,8 @@ public class GameLocation
         Type = _Type;
         Name = _Name;
         Description = _Description;
+        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
     public override string ToString()
     {
@@ -99,9 +105,6 @@ public class GameLocation
         }
     }
     public float DistanceToPlayer => distanceToPlayer;
-
-
-
     public void Update()
     {
         if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= UpdateIntervalTime)

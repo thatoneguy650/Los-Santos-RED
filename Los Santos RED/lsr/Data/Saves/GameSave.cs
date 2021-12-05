@@ -38,26 +38,32 @@ namespace LosSantosRED.lsr.Data
             CurrentModelVariation = player.CurrentModelVariation;
             WeaponInventory = new List<StoredWeapon>();
             InventoryItems.Clear();
-            foreach(InventoryItem cii in player.Inventory.Items)
+            foreach (InventoryItem cii in player.Inventory.Items)
             {
                 InventoryItems.Add(new InventoryItem(cii.ModItem, cii.Amount));
             }
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
-                WeaponInventory.Add(new StoredWeapon((uint)wd.Hash,Vector3.Zero,weapons.GetWeaponVariation(Game.LocalPlayer.Character,(uint)wd.Hash),wd.Ammo));
+                WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
+            CurrentHeadBlendData = player.CurrentHeadBlendData;
+            CurrentPrimaryHairColor = player.CurrentPrimaryHairColor;
+            CurrentSecondaryColor = player.CurrentSecondaryColor;
         }
         public string PlayerName { get; set; }
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
         public uint OwnedVehicleHandle { get; set; }
+        public int CurrentPrimaryHairColor { get; set; }
+        public int CurrentSecondaryColor { get; set; }
+        public HeadBlendData CurrentHeadBlendData { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player)
         {
-            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation);
+            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor);
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {

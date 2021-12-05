@@ -20,6 +20,9 @@ public static class EntryPoint
     public static int PersistentVehiclesNonPersistent { get; set; } = 0;
     public static int PersistentVehiclesDeleted { get; set; } = 0;
     private static int LogLevel = 0;
+    public static float CellSize { get; private set; } = 50f;
+    public static int FocusCellX { get; set; } = 0;
+    public static int FocusCellY { get; set; } = 0;
     public static ModController ModController { get; set; }
     public static List<Entity> SpawnedEntities = new List<Entity>();
     public static void Main()

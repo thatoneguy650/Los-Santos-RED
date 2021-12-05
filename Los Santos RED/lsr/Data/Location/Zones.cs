@@ -72,30 +72,33 @@ public class Zones : IZones
             new Zone("CCREAK", "Cassidy Creek", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("CALAFB", "Calafia Bridge", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("GALFISH", "Galilee", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADP", "Braddock Pass", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADT", "Braddock Tunnel", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             
             //Majestic County
-            new Zone("GRAPES", "Grapeseed", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("BRADP", "Braddock Pass", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("BRADT", "Braddock Tunnel", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("ELGORL", "El Gordo Lighthouse", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTGORDO", "Mount Gordo", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("GRAPES", "Grapeseed", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),//has own PD
+
             new Zone("SANCHIA", "San Chianski Mountain Range", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("ALAMO", "Alamo Sea", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("DESRT", "Grand Senora Desert", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("SANDY", "Sandy Shores", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("HUMLAB", "Humane Labs and Research", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
+            new Zone("JAIL", "Bolingbroke Penitentiary", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
+            new Zone("ZQ_UAR", "Davis Quartz", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("HARMO", "Harmony", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("RTRAK", "Redwood Lights Track", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
+
 
             //Blaine
-            new Zone("ALAMO", "Alamo Sea", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
             new Zone("ARMYB", "Fort Zancudo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
             new Zone("CANNY", "Raton Canyon", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("DESRT", "Grand Senora Desert", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("HUMLAB", "Humane Labs and Research", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
-            new Zone("JAIL", "Bolingbroke Penitentiary", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
             new Zone("LAGO", "Lago Zancudo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("MTJOSE", "Mount Josiah", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("NCHU", "North Chumash", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            
-            new Zone("SANDY", "Sandy Shores", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
             new Zone("SLAB", "Slab City", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
             new Zone("ZANCUDO", "Zancudo River", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
-            new Zone("ZQ_UAR", "Davis Quartz", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
             //Vespucci
             new Zone("BEACH", "Vespucci Beach", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
@@ -157,8 +160,8 @@ public class Zones : IZones
             new Zone("BAYTRE", "Baytree Canyon", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("RGLEN", "Richman Glen", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("TONGVAV", "Tongva Valley", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("HARMO", "Harmony", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("RTRAK", "Redwood Lights Track", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
+
+
            
             //Chumash
             new Zone("BANHAMC", "Banham Canyon Dr", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),

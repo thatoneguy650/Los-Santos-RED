@@ -322,7 +322,7 @@ public class PedSwapCustomMenu : Menu
                 if (PedModel.Exists())
                 {
                     Game.FadeScreenOut(1500, true);
-                    PedSwap.BecomeExistingPed(PedModel, CurrentSelectedFirstName + " " + CurrentSelectedLastName, CurrentSelectedMoney, PedModelIsFreeMode, MotherID, FatherID, MotherSide, FatherSide, CurrentSelectedHairColor);
+                    PedSwap.BecomeExistingPed(PedModel, CurrentSelectedFirstName + " " + CurrentSelectedLastName, CurrentSelectedMoney, (PedModelIsFreeMode ? new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0f) : null), CurrentSelectedHairColor, CurrentSelectedHairColor);
                     Dispose();
                 }
             }
@@ -368,6 +368,9 @@ public class PedSwapCustomMenu : Menu
                     }
                     NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(PedModel, MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0f, false);
                     NativeFunction.Natives.x4CFFC65454C93A49(PedModel, CurrentSelectedHairColor, CurrentSelectedHairColor);
+
+                    
+
                     GameFiber.Yield(); 
                 }
             }

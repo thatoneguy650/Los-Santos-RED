@@ -203,6 +203,10 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     private PedExt PedToAttack(Cop Cop)
     {
+        if(!PossibleTargets.Any(x => x.IsWanted))
+        {
+            return null;
+        }
         PedExt MainTarget = null;
         if (Cop.Pedestrian.Exists() && Cop.DistanceToPlayer <= 200f)
         {
@@ -226,7 +230,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && !x.IsArrested).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault(); //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
                 if(MainTarget != null && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
                 {
-                    //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
                     MainTarget = null;
                 }
             }
@@ -235,13 +239,13 @@ public class Tasker : ITaskerable, ITaskerReportable
                 MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x=> x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
                 if (Player.IsWanted && MainTarget != null && !MainTarget.IsDeadlyChase && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
                 {
-                   // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Non Deadly)", 3);
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Non Deadly)", 3);
                     MainTarget = null;
                 }
             }
             if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && PedProvider.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
             {
-               // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Too many police already on busted person, sending away", 3);
+                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Too many police already on busted person, sending away", 3);
                 MainTarget = null;
             }
         }
@@ -265,7 +269,7 @@ public class Tasker : ITaskerable, ITaskerReportable
             {
                 if (Cop.CurrentTask?.Name != "AIApprehend")
                 {
-                    //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
                     Cop.CurrentTask = new AIApprehend(Cop, Player) { OtherTarget = MainTarget };
                     Cop.CurrentTask.Start();
                 }
@@ -278,7 +282,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     {
                         if (Cop.CurrentTask?.Name != "Locate")
                         {
-                           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
+                            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                             Cop.CurrentTask = new Locate(Cop, Player);
                             Cop.CurrentTask.Start();
                         }
@@ -291,7 +295,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                             {
                                 if (Cop.CurrentTask?.Name != "Kill")
                                 {
-                                    //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
+                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
                                     Cop.CurrentTask = new Kill(Cop, Player);
                                     Cop.CurrentTask.Start();
                                 }
@@ -300,7 +304,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                             {
                                 if (Cop.CurrentTask?.Name != "Chase")
                                 {
-                                    //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
+                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
                                     Cop.CurrentTask = new Chase(Cop, Player, PedProvider);
                                     Cop.CurrentTask.Start();
                                 }
@@ -310,7 +314,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                         {
                             if (Cop.CurrentTask?.Name != "Locate")
                             {
-                               // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
+                                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                                 Cop.CurrentTask = new Locate(Cop, Player);
                                 Cop.CurrentTask.Start();
                             }
@@ -321,7 +325,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 {
                     if (Cop.CurrentTask?.Name != "Investigate")
                     {
-                       // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+                       EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
                         Cop.CurrentTask = new Investigate(Cop, Player);
                         Cop.CurrentTask.Start();
                     }
@@ -330,7 +334,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 {
                     if (Cop.CurrentTask?.Name != "Idle" && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
                     {
-                        //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
+                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                         Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                         Cop.CurrentTask.Start();
                     }
@@ -341,7 +345,7 @@ public class Tasker : ITaskerable, ITaskerReportable
         {
             if (Cop.CurrentTask?.Name != "Idle" && Cop.IsIdleTaskable)
             {
-                //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
+                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                 Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                 Cop.CurrentTask.Start();
             }

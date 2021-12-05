@@ -148,10 +148,10 @@ namespace LosSantosRED.lsr.Player
             string AnimExit = "";
             string AnimExitDictionary = "";
             string AnimIdleDictionary;
-            int HandBoneID;
-            Vector3 HandOffset;
-            Rotator HandRotator;
-            string PropModel;
+            int HandBoneID = 57005;
+            Vector3 HandOffset = Vector3.Zero;
+            Rotator HandRotator = Rotator.Zero;
+            string PropModel = "";
 
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
@@ -163,10 +163,14 @@ namespace LosSantosRED.lsr.Player
                 AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
-            HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-            HandOffset = ModItem.ModelItem.AttachOffset;
-            HandRotator = ModItem.ModelItem.AttachRotation;
-            PropModel = ModItem.ModelItem.ModelName;
+            if(ModItem != null && ModItem.ModelItem != null)
+            {
+                HandBoneID = ModItem.ModelItem.AttachBoneIndex;
+                HandOffset = ModItem.ModelItem.AttachOffset;
+                HandRotator = ModItem.ModelItem.AttachRotation;
+                PropModel = ModItem.ModelItem.ModelName;
+            }
+
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }

@@ -15,5 +15,8 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentSeenWeapon { get; }
         bool IsWanted { get; }
         List<Crime> CivilianReportableCrimesViolating { get; }
+        Vector3 Position { get; }
+        int CellX { get; }
+        int CellY { get; }
     }
 }

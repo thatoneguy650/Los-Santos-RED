@@ -28,6 +28,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         Cop AliasedCop { get; set; }
         string PlayerName { get; }
+        HeadBlendData CurrentHeadBlendData { get; set; }
+        int CurrentPrimaryHairColor { get; set; }
+        int CurrentSecondaryColor { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

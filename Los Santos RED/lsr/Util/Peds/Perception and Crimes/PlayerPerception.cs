@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -106,27 +107,52 @@ public class PlayerPerception
     {
         get
         {
+            int CellsAway = NativeHelper.CellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
             if (Originator.IsCop)//IsCop)
             {
-                if (DistanceToTarget >= 300)
+                if(CellsAway >= 6)
+                {
+                    return 1500;
+                }
+                else if(CellsAway >= 4)
+                {
+                    return 1000;
+                }
+                else
+                {
+                    return 500;
+                }
+                //if (DistanceToTarget >= 300)
+                //{
+                //    return 1500;
+                //}
+                //else
+                //{
+                //    return 500;//150
+                //}
+            }
+            else
+            {
+                if (CellsAway >= 6)
+                {
+                    return 2000;
+                }
+                else if (CellsAway >= 4)
                 {
                     return 1500;
                 }
                 else
                 {
-                    return 500;//150
+                    return 750;
                 }
-            }
-            else
-            {
-                if (DistanceToTarget >= 300)
-                {
-                    return 2000;
-                }
-                else
-                {
-                    return 750;//500// 750;//500
-                }
+                //if (DistanceToTarget >= 300)
+                //{
+                //    return 2000;
+                //}
+                //else
+                //{
+                //    return 750;//500// 750;//500
+                //}
             }
         }
     }
@@ -152,12 +178,12 @@ public class PlayerPerception
         Target = target;
         if (Originator != null && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
-            UpdateTargetDistance(placeLastSeen);
+            UpdateTargetDistance(placeLastSeen, target.Position);
             UpdateTargetLineOfSight(Target.IsWanted);
         }
         else
         {
-            SetTargetSeen();
+            SetTargetSeen();//maybe unseen here? not sure....
         }
         UpdateWitnessedCrimes();
     }
@@ -223,18 +249,39 @@ public class PlayerPerception
         GameTimeContinuoslySeenTargetSince = 0;
         CanSeeTarget = false;
     }
-    private void UpdateTargetDistance(Vector3 placeLastSeen)
+    private void UpdateTargetDistance(Vector3 placeLastSeen, Vector3 posToCheck)
     {
         if (!NeedsDistanceCheck || !Target.Character.Exists())
         {
             return;
         }
-        Vector3 PositionToCheck = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Target.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Target.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
+        Vector3 PositionToCheck = posToCheck;//NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Target.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Target.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
+
+
         DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+
+        //if (NativeHelper.IsNearby(Target.CellX,Target.CellY,Originator.CellX,Originator.CellY,6))
+        //{
+        //    DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+        //}
+        //else
+        //{
+        //    DistanceToTarget = 999f;
+        //}
+
+
+
+
+
+
         if (Originator.IsCop)
         {
             DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
         }
+
+
+
+
         if (DistanceToTarget <= 0.1f)
         {
             DistanceToTarget = 999f;
