@@ -16,6 +16,5 @@ namespace LosSantosRED.lsr.Interface
         bool BribePolice(int bribeAmount);
         void ResistArrest();
         bool PayFine();
-        void SetInPoliceCar();
     }
 }

@@ -27,11 +27,13 @@ namespace LosSantosRED.lsr
         private IInputable Player;
         private ISettingsProvideable Settings;
         private IMenuProvideable MenuProvider;
-        public Input(IInputable player, ISettingsProvideable settings, IMenuProvideable menuProvider)
+        private IPedSwap PedSwap;
+        public Input(IInputable player, ISettingsProvideable settings, IMenuProvideable menuProvider, IPedSwap pedswap)
         {
             Player = player;
             Settings = settings;
             MenuProvider = menuProvider;
+            PedSwap = pedswap;
         }
         private uint GameTimeLastPressedEngineToggle;
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);

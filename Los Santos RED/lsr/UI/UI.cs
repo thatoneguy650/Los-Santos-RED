@@ -94,7 +94,6 @@ public class UI : IMenuProvideable
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
     }
-
     private enum GTAHudComponent
     {
         HUD = 0,
@@ -253,7 +252,7 @@ public class UI : IMenuProvideable
     {
         try
         {
-            if (DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen())
+            if (DrawTexture && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
             {
                 if (ToDraw != null && ToDraw.Size != null)
                 {

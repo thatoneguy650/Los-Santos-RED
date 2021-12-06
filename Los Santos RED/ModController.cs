@@ -120,7 +120,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Civilians = new Civilians(World, Player, Player);
             GameFiber.Yield();
-            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes);
+            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes, Names);
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             Tasker.Setup();
@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time);
             UI.Setup();
             GameFiber.Yield();
-            Input = new Input(Player, Settings,UI);
+            Input = new Input(Player, Settings, UI, PedSwap);
             GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
             GameFiber.Yield();
@@ -276,6 +276,11 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
                 new ModTask(500, "Police.Update", Police.Update, 9),//added yields//cant get 300 ms updates in here anyways
+
+
+
+                new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
+
             };
 
             TertiaryTasks = new List<ModTask>()

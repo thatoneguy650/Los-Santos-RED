@@ -44,7 +44,7 @@ public class UISettings
     public int PlayerStatusJustificationID { get; set; } = 2;
     public GTAFont PlayerStatusFont { get; set; } = GTAFont.FontHouseScript;
     public bool PlayerStatusIncludeTime { get; set; } = true;
-
+    public bool PlayerStatusSimpleTime { get; set; } = true;
     public bool ShowStreetDisplay { get; set; } = true;
     public bool FadeStreetDisplay { get; set; } = true;
     public bool FadeStreetDisplayDuringWantedAndInvestigation { get; set; } = false;
@@ -90,6 +90,7 @@ public class UISettings
     public float RadarZoomDistance_Investigation { get; set; } = 125f;
     public float RadarZoomDistance_Default { get; set; } = 75f;
     public bool GreyOutWhiteFontAtNight { get; set; } = true;
+
 
     public UISettings()
     {

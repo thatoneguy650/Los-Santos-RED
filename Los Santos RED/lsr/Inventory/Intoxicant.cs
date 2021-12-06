@@ -1,12 +1,16 @@
-﻿using System;
+﻿using ExtensionsMethods;
+using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 [Serializable]
-public class Intoxicant
+public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
 {
+
+
     public Intoxicant()
     {
 
@@ -20,6 +24,9 @@ public class Intoxicant
         SoberingIntervalTime = soberingIntervalTime;
         OverLayEffect = overLayEffect;
     }
+
+
+
 
     public string Name { get; set; }
     public uint IntoxicatingIntervalTime { get; set; }

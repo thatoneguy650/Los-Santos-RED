@@ -31,6 +31,7 @@ namespace LosSantosRED.lsr.Interface
         HeadBlendData CurrentHeadBlendData { get; set; }
         int CurrentPrimaryHairColor { get; set; }
         int CurrentSecondaryColor { get; set; }
+        bool IsCustomizingPed { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

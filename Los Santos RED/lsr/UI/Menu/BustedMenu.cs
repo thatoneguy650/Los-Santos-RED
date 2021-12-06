@@ -126,7 +126,7 @@ public class BustedMenu : Menu
         }
         if (selectedItem == SurrenderLong)
         {
-            Respawning.SetInPoliceCar();
+            //Respawning.SetInPoliceCar();
         }
         else if (selectedItem == TakeoverRandomPed)
         {

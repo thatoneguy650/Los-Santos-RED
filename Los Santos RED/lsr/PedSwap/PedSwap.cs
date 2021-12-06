@@ -16,7 +16,8 @@ public class PedSwap : IPedSwap
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private ICrimes Crimes;
-    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons  weapons, ICrimes crimes)
+    private INameProvideable Names;
+    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons  weapons, ICrimes crimes, INameProvideable names)
     {
         World = world;
         Player = player;
@@ -24,6 +25,7 @@ public class PedSwap : IPedSwap
         Entities = entities;
         Weapons = weapons;
         Crimes = crimes;
+        Names = names;
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
@@ -186,8 +188,9 @@ public class PedSwap : IPedSwap
     {   
         GameFiber.StartNew(delegate
         {
+            Player.IsCustomizingPed = true;
             MenuPool menuPool = new MenuPool();
-            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this);
+            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this, Names);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
             GameFiber.Yield();
@@ -197,6 +200,7 @@ public class PedSwap : IPedSwap
                 GameFiber.Yield();
             }
             PedSwapCustomMenu.Dispose();
+            Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
         
     }
@@ -817,8 +821,6 @@ public class PedSwap : IPedSwap
         else
             return "player_zero";     
     }
-
-
 
     private class TakenOverPed
     {

@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         Cop AliasedCop { get; }
         bool IsDisplayingCustomMenus { get; }
+        bool IsCustomizingPed { get; }
 
         void RaiseHands();
         void LowerHands();
