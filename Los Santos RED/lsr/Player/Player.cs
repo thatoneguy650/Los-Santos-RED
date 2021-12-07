@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -76,7 +76,7 @@ namespace Mod
             ModItems = modItems;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors, this);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, EntityProvider);
             Violations = new Violations(this, TimeControllable, Crimes, Settings);
@@ -645,9 +645,24 @@ namespace Mod
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
         }
-        public void LocationUpdate() => CurrentLocation.Update(Character);
+        public void LocationUpdate()
+        {
+            CurrentLocation.Update(Character);
+
+
+
+
+        }
         public void LowerHands() => Surrendering.LowerHands();
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
+        public void OnVehicleCrashed()
+        {
+            if(IsWanted)
+            {
+                Scanner.OnVehicleCrashed();
+            }
+            
+        }
         public void OnInvestigationExpire()
         {
             PoliceResponse.Reset();
@@ -696,6 +711,10 @@ namespace Mod
         {
             Scanner.Reset();
             Scanner.AnnounceCrime(toPlay, toAnnounce);
+        }
+        public void ResetScannerDebug()
+        {
+            Scanner.Reset();
         }
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void RaiseHands() => Surrendering.RaiseHands();
@@ -1093,7 +1112,7 @@ namespace Mod
             {
                 existingVehicleExt.SetAsEntered();
             }
-            existingVehicleExt.Update();
+            existingVehicleExt.Update(this);
             if (!existingVehicleExt.IsStolen)
             {
                 if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
@@ -1374,6 +1393,12 @@ namespace Mod
                 {
                     CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 }
+
+
+
+
+
+
                 // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
             }
             else
@@ -1623,15 +1648,35 @@ namespace Mod
                 //    EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentVehicle.HasBeenDescribedByDispatch}", 3);
                 //    EntryPoint.WriteToConsole("-------------------------------", 3);
                 //}
+                if (IsWanted && AnyPoliceCanSeePlayer)
+                {
+                    Scanner.OnGotInVehicle();
+                }
             }
             else
             {
-                if (IsWanted && AnyPoliceCanSeePlayer)
+                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll)
                 {
                     Scanner.OnGotOutOfVehicle();
                 }
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
+        }
+        public void OnGotOnFreeway()
+        {
+            if (IsWanted && AnyPoliceCanSeePlayer)
+            {
+                Scanner.OnGotOnFreeway();
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOnFreeway (5 Second Delay)", 3);
+        }
+        public void OnGotOffFreeway()
+        {
+            if (IsWanted && AnyPoliceCanSeePlayer)
+            {
+                Scanner.OnGotOffFreeway();
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOffFreeway (5 Second Delay)", 3);
         }
         private void OnPlayerBusted()
         {
@@ -1900,6 +1945,7 @@ namespace Mod
             }
 
         }
-       
+
+
     }
 }

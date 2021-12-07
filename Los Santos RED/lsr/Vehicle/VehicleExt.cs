@@ -18,6 +18,8 @@ namespace LSR.Vehicles
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
         private ISettingsProvideable Settings;
+        private int Health = 1000;
+
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -165,6 +167,7 @@ namespace LSR.Vehicles
                 {
                     Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
                 }
+                Health = Vehicle.Health;
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
@@ -260,11 +263,11 @@ namespace LSR.Vehicles
                 OriginalLicensePlate.IsWanted = false;
             }
         }
-        public void Update()
+        public void Update(IDriveable driver)
         {
             if (IsCar)
             {
-                Engine.Update();
+                Engine.Update(driver);
                 if(Settings.SettingsManager.PlayerSettings.KeepRadioStationAutoTuned)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
@@ -280,6 +283,17 @@ namespace LSR.Vehicles
                 if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
                 {
                     FuelTank.Update();
+                }
+                if(Vehicle.Exists())
+                {
+                    if(Health > Vehicle.Health)
+                    {
+                        OnHealthDecreased(driver);
+                    }
+                    else
+                    {
+                        Health = Vehicle.Health;
+                    }
                 }
             }
         }
@@ -505,6 +519,17 @@ namespace LSR.Vehicles
                 SuspiciousReasons.Add("Busted Tires");
             }
             return string.Join(", ", SuspiciousReasons);
+        }
+        private void OnHealthDecreased(IDriveable driver)
+        {
+            int Damage = Health - Vehicle.Health;
+            if(Damage >= 50)
+            {
+                driver.OnVehicleCrashed();
+                EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage}", 5);
+            }
+            Health = Vehicle.Health;
+
         }
     }
 }

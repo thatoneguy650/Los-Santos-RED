@@ -19,13 +19,20 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeEnteredZone;
         private int InteriorID;
         private IInteriors Interiors;
+        private uint GameTimeGotOnFreeway;
+        private uint GameTimeGotOffFreeway;
+        private bool CurrentStreetIsHighway = false;
+        private ILocateable Player;
+        private bool HasThrownGotOffFreeway;
+        private bool HasThrownGotOnFreeway;
 
-        public LocationData(Ped characterToLocate, IStreets streets, IZones zones, IInteriors interiors)
+        public LocationData(Ped characterToLocate, IStreets streets, IZones zones, IInteriors interiors, ILocateable player)
         {
             Streets = streets;
             Zones = zones;
             Interiors = interiors;
             CharacterToLocate = characterToLocate;
+            Player = player;
         }
         public Interior CurrentInterior { get; private set; }
         public Ped CharacterToLocate { get; set; }
@@ -35,6 +42,7 @@ namespace LosSantosRED.lsr.Locations
         public bool IsOffroad { get; private set; }
         public bool IsInside => CurrentInterior != null && CurrentInterior.ID != 0;
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
+        public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
         public Vector3 ClosestRoadNode => ClosestNode;
         public void Update(Ped characterToLocate)
         {
@@ -60,6 +68,13 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
                 CurrentInterior = null;
+                GameTimeGotOffFreeway = 0;
+                GameTimeGotOnFreeway = 0;
+                if (CurrentStreetIsHighway)
+                {
+                    GameTimeGotOffFreeway = Game.GameTime;
+                    CurrentStreetIsHighway = false;
+                }
             }
         }
         private void GetZone()
@@ -67,7 +82,7 @@ namespace LosSantosRED.lsr.Locations
             if (CharacterToLocate.Exists())
             {
                 CurrentZone = Zones.GetZone(CharacterToLocate.Position);
-                if(PreviousZone == null || CurrentZone != PreviousZone)
+                if(PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
                     PreviousZone = CurrentZone;
@@ -82,8 +97,6 @@ namespace LosSantosRED.lsr.Locations
                 Vector3 outPos;
                 NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);//can still get the freeway offramp when you are driving near it, not sure what to do about it!
                 ClosestNode = outPos;
-
-
 
                 //ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);//seems to not get the z coordinate and puts me way down on whatever is lowest
                 if (ClosestNode == Vector3.Zero ||  ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 15f
@@ -104,8 +117,7 @@ namespace LosSantosRED.lsr.Locations
         {
             if (IsOffroad || IsInside)
             {
-                CurrentStreet = null;
-                CurrentCrossStreet = null;
+                OnLeftRoad();
                 return;
             }
 
@@ -151,11 +163,64 @@ namespace LosSantosRED.lsr.Locations
 
             CurrentStreet = Streets.GetStreet(CurrentStreetName);
             CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
+
             GameFiber.Yield();
 
             if (CurrentStreet == null)
             {
                 CurrentStreet = new Street(CurrentStreetName, 60f, "MPH");
+            }
+
+            if (CurrentStreetIsHighway != CurrentStreet.IsHighway)
+            {
+                if(CurrentStreet.IsHighway)
+                {
+                    OnGotOnFreeway();
+                }
+                else
+                {
+                    OnGotOffFreeway();
+                }
+                CurrentStreetIsHighway = CurrentStreet.IsHighway;
+            }
+
+
+
+
+            if(CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000 && !HasThrownGotOnFreeway)
+            {
+                Player.OnGotOnFreeway();
+                HasThrownGotOnFreeway = true;
+                HasThrownGotOffFreeway = false;
+            }
+            else if (!CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway)
+            {
+                Player.OnGotOffFreeway();
+                HasThrownGotOnFreeway = false;
+                HasThrownGotOffFreeway = true;
+            }
+
+        }
+        private void OnGotOnFreeway()
+        {
+            GameTimeGotOnFreeway = Game.GameTime;
+            GameTimeGotOffFreeway = 0;
+            EntryPoint.WriteToConsole("LocationData: Got ON Freeway", 5);
+        }
+        private void OnGotOffFreeway()
+        {
+            GameTimeGotOffFreeway = Game.GameTime;
+            GameTimeGotOnFreeway = 0;
+            EntryPoint.WriteToConsole("LocationData: Got OFF Freeway", 5);
+        }
+        private void OnLeftRoad()
+        {
+            CurrentStreet = null;
+            CurrentCrossStreet = null;
+            if (CurrentStreetIsHighway)
+            {
+                OnGotOffFreeway();
+                CurrentStreetIsHighway = false;
             }
         }
         private void GetInterior()

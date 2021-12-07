@@ -380,7 +380,7 @@ public class Debug
     private void DebugNumpad5()
     {
         //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
-
+        Player.ResetScannerDebug();
 
         //Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
         //CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false,false,Game.LocalPlayer.Character.Position);

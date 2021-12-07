@@ -111,14 +111,14 @@
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
+    <Compile Include="lsr\Player\Interface\IDriveable.cs" />
+    <Compile Include="lsr\Player\Interface\ILocateable.cs" />
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapCustomMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />
-    <Compile Include="lsr\World\NewInvestigation.cs" />
-    <Compile Include="lsr\World\NewScanner.cs" />
     <Compile Include="lsr\Inventory\ePhysicalItemType.cs" />
     <Compile Include="lsr\Inventory\Intoxicant.cs" />
     <Compile Include="lsr\UI\eGTAFont.cs" />

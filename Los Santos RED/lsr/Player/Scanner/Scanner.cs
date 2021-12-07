@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -35,12 +36,10 @@ namespace LosSantosRED.lsr
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
         private Dispatch DrivingAtStolenVehicle;
         private Dispatch DrunkDriving;
-
         private Dispatch AssaultingCivilians;
         private Dispatch AimingWeaponAtPolice;
         private Dispatch DealingDrugs;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
-
         private bool ExecutingQueue;
         private Dispatch FelonySpeeding;
         private uint GameTimeLastAnnouncedDispatch;
@@ -50,7 +49,6 @@ namespace LosSantosRED.lsr
         private Dispatch GrandTheftAuto;
         private int HighestCivilianReportedPriority = 99;
         private int HighestOfficerReportedPriority = 99;
-        private Dispatch InVehicle;
         private Dispatch Kidnapping;
         private List<AudioSet> LethalForce;
         private Dispatch LethalForceAuthorized;
@@ -64,6 +62,8 @@ namespace LosSantosRED.lsr
         private Dispatch OfficersNeeded;
         private List<AudioSet> OfficersReport;
         private Dispatch OnFoot;
+        private Dispatch GotOnFreeway;
+        private Dispatch GotOffFreeway;
         private Dispatch PedHitAndRun;
         private Dispatch PublicIntoxication;
         private List<string> RadioEnd;
@@ -102,6 +102,8 @@ namespace LosSantosRED.lsr
         private IEntityProvideable World;
         private ZoneScannerAudio ZoneScannerAudio;
         private ITimeReportable Time;
+        private Dispatch VehicleCrashed;
+
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
             AudioPlayer = audioPlayer;
@@ -184,6 +186,14 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
+        public void OnGotInVehicle()
+        {
+            if (!ChangedVehicles.HasRecentlyBeenPlayed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
+            {
+                AddToQueue(ChangedVehicles);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: InVehicle", 3);
+        }
         public void OnGotOutOfVehicle()
         {
             if (!OnFoot.HasRecentlyBeenPlayed)
@@ -191,6 +201,14 @@ namespace LosSantosRED.lsr
                 AddToQueue(OnFoot);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
+        }
+        public void OnVehicleCrashed()
+        {
+            if (!VehicleCrashed.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
+            {
+                AddToQueue(VehicleCrashed);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleCrashed", 3);
         }
         public void OnHelicoptersDeployed()
         {
@@ -306,6 +324,22 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
         }
+        public void OnGotOnFreeway()
+        {
+            if (!GotOnFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle)
+            {
+                AddToQueue(GotOnFreeway);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOnFreeway", 5);
+        }
+        public void OnGotOffFreeway()
+        {
+            if (!GotOffFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle)
+            {
+                AddToQueue(GotOffFreeway);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOffFreeway", 5);
+        }
         public void Reset()
         {
             DispatchQueue.Clear();
@@ -385,7 +419,7 @@ namespace LosSantosRED.lsr
         {
             dispatchEvent.SoundsToPlay.Add(new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }.PickRandom());
             dispatchEvent.Subtitles += " ~s~suspect heading~s~";
-            string heading = GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
+            string heading = NativeHelper.GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
             if (heading == "N")
             {
                 dispatchEvent.SoundsToPlay.Add(direction_heading.North.FileName);
@@ -826,7 +860,7 @@ namespace LosSantosRED.lsr
                 ZoneLookup zoneAudio = ZoneScannerAudio.GetLookup(MyZone.InternalGameName);
                 if (zoneAudio != null)
                 {
-                    string ScannerAudio = zoneAudio.ScannerUnitValue;
+                    string ScannerAudio = zoneAudio.ScannerUnitValues.PickRandom();
                     if (ScannerAudio != "")
                     {
                         dispatchEvent.SoundsToPlay.Add(ScannerAudio);
@@ -944,7 +978,7 @@ namespace LosSantosRED.lsr
                 AddHaveDescription(EventToPlay);
             }
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
-            EventToPlay.Subtitles = FirstCharToUpper(EventToPlay.Subtitles);
+            EventToPlay.Subtitles = NativeHelper.FirstCharToUpper(EventToPlay.Subtitles);
             EventToPlay.Priority = DispatchToPlay.Priority;
 
             if (addtoPlayed)
@@ -1031,26 +1065,12 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("DrunkDriving",DrunkDriving),
             new CrimeDispatch("Kidnapping",Kidnapping),
             new CrimeDispatch("PublicIntoxication",PublicIntoxication),
-
-
-
-
             new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),//these are bad
             new CrimeDispatch("OfficersNeeded",OfficersNeeded),
-
-
             new CrimeDispatch("Harassment",Harassment),
-
-            
-
-
-
-
             new CrimeDispatch("AssaultingCivilians",AssaultingCivilians),
             new CrimeDispatch("AssaultingWithDeadlyWeapon",AssaultingCiviliansWithDeadlyWeapon),
             new CrimeDispatch("DealingDrugs",DealingDrugs),
-
-
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
 
         };
@@ -1117,58 +1137,6 @@ namespace LosSantosRED.lsr
                 return ToLookup.Dispatch;
             }
             return null;
-        }
-        private string FirstCharToUpper(string input)
-        {
-            switch (input)
-            {
-                case null: throw new ArgumentNullException(nameof(input));
-                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
-                default: return input.First().ToString().ToUpper() + input.Substring(1);
-            }
-        }
-        private string GetSimpleCompassHeading(float Heading)
-        {
-            //float Heading = Game.LocalPlayer.Character.Heading;
-            string Abbreviation;
-
-            //yeah could be simpler, whatever idk computers are fast
-            if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-            else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
-            else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
-            else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
-            else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
-            else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
-            else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
-            else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
-            else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-            else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
-            else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
-            else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
-            else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
-            else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
-            else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
-            else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
-            else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-            else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
-            else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
-            else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
-            else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
-            else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
-            else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
-            else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
-            else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-            else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
-            else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
-            else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
-            else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
-            else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
-            else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
-            else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
-            else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-            else { Abbreviation = ""; }
-
-            return Abbreviation;
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
         {
@@ -1292,7 +1260,6 @@ namespace LosSantosRED.lsr
             new AudioSet(new List<string>() { lethal_force.Useoflethalforceisauthorized.FileName },"use of lethal force is authorized"),
             new AudioSet(new List<string>() { lethal_force.Useofdeadlyforcepermitted1.FileName },"use of deadly force permitted"),
         };
-
             LicensePlateSet = new List<AudioSet>()
         {
             new AudioSet(new List<string>() { suspect_license_plate.SuspectLicensePlate.FileName},"suspect license plate"),
@@ -1302,7 +1269,6 @@ namespace LosSantosRED.lsr
             new AudioSet(new List<string>() { suspect_license_plate.TargetsLicensePlate.FileName },"targets license plate"),
             new AudioSet(new List<string>() { suspect_license_plate.TargetVehicleLicensePlate.FileName },"target vehicle license plate"),
         };
-
             OfficerDown = new Dispatch()
             {
                 Name = "Officer Down",
@@ -1473,7 +1439,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_assault_on_a_civilian.Anassaultonacivilian.FileName },"an assault on a civilian"),
             },
             };
-
             GrandTheftAuto = new Dispatch()
             {
                 Name = "Grand Theft Auto",
@@ -1501,7 +1466,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_9_25.Asuspiciousperson.FileName },"a suspicious person"),
             },
             };
-
             TamperingWithVehicle = new Dispatch()
             {
                 Name = "Tampering With Vehicle",
@@ -1512,7 +1476,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_04.Tamperingwithavehicle.FileName },"tampering with a vehicle"),
             },
             };
-
             CriminalActivity = new Dispatch()
             {
                 Name = "Criminal Activity",
@@ -1557,7 +1520,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName },"a suspicious vehicle"),
             },
             };
-
             DrivingAtStolenVehicle = new Dispatch()
             {
                 Name = "Driving a Stolen Vehicle",
@@ -1660,7 +1622,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_05.A505.FileName,crime_5_05.Adriveroutofcontrol.FileName },"a 505, a driver out of control"),
             },
             };
-
             DrunkDriving = new Dispatch()
             {
                 Name = "Drunk Driving",
@@ -1674,8 +1635,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_02.A502DUI.FileName},"a 502 dui"),
             },
             };
-
-
             AssaultingCivilians = new Dispatch()
             {
                 Name = "Assault on a Civilian",
@@ -1700,7 +1659,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName},"a suspect threatening and officer with a firearm"),
             },
             };
-
             DealingDrugs = new Dispatch()
             {
                 Name = "Dealing Drugs",
@@ -1714,8 +1672,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_drug_deal.Narcoticstrafficking.FileName},"narcotics trafficing"),
             },
             };
-
-
             AssaultingCiviliansWithDeadlyWeapon = new Dispatch()
             {
                 Name = "Assault With a Deadly Weapon",
@@ -1727,8 +1683,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_assault_with_a_deadly_weapon.AnADW.FileName},"an ADW"),
             },
             };
-
-
             Kidnapping = new Dispatch()
             {
                 Name = "Kidnapping",
@@ -1740,7 +1694,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_2_07.Akidnapping1.FileName},"a kidnapping"),
             },
             };
-
             PublicIntoxication = new Dispatch()
             {
                 Name = "Public Intoxication",
@@ -1752,7 +1705,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_3_90.Publicintoxication.FileName},"public intoxication"),
             },
             };
-
             OfficerNeedsAssistance = new Dispatch()
             {
                 Name = "Officer Needs Assistance",
@@ -1765,7 +1717,6 @@ namespace LosSantosRED.lsr
                  new AudioSet(new List<string>() { crime_officer_in_need_of_assistance.Anofficerrequiringassistance.FileName},"an officer requiring assistance"),
             },
             };
-
             Harassment = new Dispatch()
             {
                 Name = "Harassment",
@@ -1781,7 +1732,6 @@ namespace LosSantosRED.lsr
 
             },
             };
-
             OfficersNeeded = new Dispatch()
             {
                 Name = "Officers Needed",
@@ -1794,8 +1744,6 @@ namespace LosSantosRED.lsr
                  new AudioSet(new List<string>() { assistance_required.Officersrequired.FileName},"officers required"),
             },
             };
-
-
             AnnounceStolenVehicle = new Dispatch()
             {
                 Name = "Stolen Vehicle Reported",
@@ -1839,7 +1787,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { custom_wanted_level_line.Code13militaryunitsrequested.FileName },"code-13 military units requested"),
             },
             };
-
             RequestNOOSEUnits = new Dispatch()
             {
                 IncludeAttentionAllUnits = true,
@@ -1853,7 +1800,6 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { dispatch_units_full.DispatchingSWATunitsfrompoliceheadquarters1.FileName },"dispatching swat units from police headquarters"),
             },
             };
-
             SuspectSpotted = new Dispatch()
             {
                 Name = "Suspect Spotted",
@@ -1880,23 +1826,189 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
             },
             };
-
-
             OnFoot = new Dispatch()
             {
                 Name = "On Foot",
                 IsStatus = true,
                 IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
+                LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot.FileName },"suspect is on foot"),
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot1.FileName },"suspect is on on foot"),
+
+
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_03.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_04.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_03.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_04.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_01.SuspectOnFoot2.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_02.SuspectOnFoot2.FileName },"suspect is on on foot"),
+
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_01.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_03.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_04.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_03.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_04.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.SuspectOnFoot3.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.SuspectOnFoot3.FileName },"suspect is on on foot"),
+
+
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_01.SuspectOnFoot4.FileName },"suspect is on on foot"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_02.SuspectOnFoot4.FileName },"suspect is on on foot"),
+
             },
         };
 
+            GotOnFreeway = new Dispatch()
+            {
+                Name = "Entered Freeway",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteringTheFreeway.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectEnteringTheFreeway2.FileName },"suspect has entered the freeway"),
+            },
+            };
+            GotOffFreeway = new Dispatch()
+            {
+                Name = "Exited Freeway",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectLeftFreeway.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+            },
+            };
+            VehicleCrashed = new Dispatch()
+            {
+                Name = "Vehicle Crashed",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_f_y_cop_white_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectCrashed.FileName},"suspect crashed"),
+                new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectCrashed.FileName},"suspect crashed"),
+            },
+            };
             NoFurtherUnitsNeeded = new Dispatch()
             {
                 Name = "Officers On-Site, Code 4-ADAM",
@@ -1983,13 +2095,58 @@ namespace LosSantosRED.lsr
              },
                 PreambleAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.RequestingBackup.FileName },"requesting backup"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.RequestingBackupWeNeedBackup.FileName },"requesting back, we need backup"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.WeNeedBackupNow.FileName },"we need backup now"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.MikeOscarSamInHotNeedOfBackup.FileName },"MOS in hot need of backup"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.MikeOScarSamRequestingBackup.FileName },"MOS requesting backup"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.INeedSomeSeriousBackupHere.FileName },"i need some serious backup here"),
-                new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.OfficerInNeedofSomeBackupHere.FileName },"officer in need of some backup here"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_01.NeedBackup1.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_02.NeedBackup1.FileName },"requesting backup"),
+
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_01.NeedBackup2.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_02.NeedBackup2.FileName },"requesting backup"),
+
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_black_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_f_y_cop_white_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_03.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_04.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_03.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_04.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_01.NeedBackup3.FileName },"requesting backup"),
+                new AudioSet(new List<string>() {s_m_y_sheriff_white_full_02.NeedBackup3.FileName },"requesting backup"),
              },
             };
             WeaponsFree = new Dispatch()
@@ -2013,13 +2170,6 @@ namespace LosSantosRED.lsr
                 ResultsInLethalForce = true,
                 CanAlwaysInterrupt = true,
             };
-
-
-
-
-
-
-
             //Status
             SuspectEvaded = new Dispatch()
             {
@@ -2034,8 +2184,26 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
                 new AudioSet(new List<string>() { suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName },"officers have lost visual on suspect"),
             },
+                PreambleAudioSet = new List<AudioSet>()
+            {
+
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_03.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_04.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_03.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_04.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+             },
             };
-            RemainInArea = new Dispatch()
+            RemainInArea = new Dispatch()//runs when you lose wanted organicalls
             {
                 Name = "Remain in Area",
                 IsStatus = true,
@@ -2052,7 +2220,7 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName },"all units remain on alert"),
             },
             };
-            AttemptToReacquireSuspect = new Dispatch()
+            AttemptToReacquireSuspect = new Dispatch()//is the status one
             {
                 Name = "Attempt To Reacquire",
                 IsStatus = true,
@@ -2068,8 +2236,28 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect.FileName },"remain in the area, ATL-20 on suspect"),
                 new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
             },
-            };
+                PreambleAudioSet = new List<AudioSet>()
+            {
 
+                new AudioSet(new List<string>() {s_m_y_cop_black_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_03.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_black_mini_04.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_03.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_cop_white_mini_04.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_black_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_01.CantSeeSuspect1.FileName },"need location on suspect"),
+                new AudioSet(new List<string>() {s_m_y_hwaycop_white_full_02.CantSeeSuspect1.FileName },"need location on suspect"),
+             },
+
+
+
+            };
             ResumePatrol = new Dispatch()
             {
                 Name = "Resume Patrol",
@@ -2087,9 +2275,10 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { officer_begin_patrol.Proceedwithpatrol.FileName },"proceed with patrol"),
             },
             };
-
-
         }
+
+
+
         private class CrimeDispatch
         {
             public CrimeDispatch(string crimeID, Dispatch dispatchToPlay)

@@ -31,24 +31,35 @@ public class Engine
             IsRunning = vehicleToMonitor.Vehicle.IsEngineOn;
         }
     }
-    public void Update()
+    public void Update(IDriveable driver)
     {
-        if(Settings.SettingsManager.PlayerSettings.ScaleEngineDamage)
+        if(Health > VehicleToMonitor.Vehicle.EngineHealth)
         {
-            if(Health > VehicleToMonitor.Vehicle.EngineHealth)
+            float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
+            if (Settings.SettingsManager.PlayerSettings.ScaleEngineDamage)
             {
-                float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
                 float ScaledDamage = Health - Settings.SettingsManager.PlayerSettings.ScaleEngineDamageMultiplier * Difference;
-
-                if(ScaledDamage <= -4000f)
+                if (ScaledDamage <= -4000f)
                 {
                     ScaledDamage = -4000f;
                 }
                 VehicleToMonitor.Vehicle.EngineHealth = ScaledDamage;
                 Health = ScaledDamage;
+                if (ScaledDamage >= 100 && driver != null)
+                {
+                    driver.OnVehicleCrashed();
+                }
+            }
+            else
+            {
+                if (Difference >= 50 && driver != null)
+                {
+                    driver.OnVehicleCrashed();
+                }
+                Health = VehicleToMonitor.Vehicle.EngineHealth;
             }
 
-        }
+        } 
         if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
         {
             if (VehicleToMonitor.Vehicle.IsEngineStarting)
@@ -84,7 +95,7 @@ public class Engine
         if (CanToggle)
         {
             IsRunning = DesiredStatus;
-            Update();
+            Update(null);
         }
         
     }

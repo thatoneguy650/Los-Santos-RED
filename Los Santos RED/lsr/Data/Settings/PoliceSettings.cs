@@ -74,8 +74,8 @@ public class PoliceSettings
     public PoliceSettings()
     {
 #if DEBUG
-        //ShowSpawnedBlips = true;
-        ShowVanillaBlips = true;
+        ShowSpawnedBlips = true;
+        ShowVanillaBlips = false;
 #else
                // ShowSpawnedBlips = false;
 #endif
