@@ -50,41 +50,41 @@ public class LEDispatcher
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
-    public void SpawnCop(Vector3 position)
-    {
-        Vector3 spawnLocation = position;
-        Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
-        GameFiber.Yield();
-        if (agency != null)
-        {
-            EntryPoint.WriteToConsole($"DISPATCHER: Agency {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
-            DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-            EntryPoint.WriteToConsole($"DISPATCHER: Agency2 {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
+    //public void SpawnCop(Vector3 position)
+    //{
+    //    Vector3 spawnLocation = position;
+    //    Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
+    //    GameFiber.Yield();
+    //    if (agency != null)
+    //    {
+    //        EntryPoint.WriteToConsole($"DISPATCHER: Agency {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
+    //        DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+    //        EntryPoint.WriteToConsole($"DISPATCHER: Agency2 {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
 
-            GameFiber.Yield();
-            if (VehicleType != null)
-            {
-                EntryPoint.WriteToConsole($"DISPATCHER: Vehicle1 {VehicleType.ModelName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
-                DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
-                GameFiber.Yield();
-                if (OfficerType != null)
-                {
-                    try
-                    {
-                        SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, spawnLocation, 0f, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
-                        spawnTask.AttemptSpawn();
-                        GameFiber.Yield();
-                        spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                        spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
-                    }
-                    catch (Exception ex)
-                    {
-                        EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
-                    }
-                }
-            }
-        }
-    }
+    //        GameFiber.Yield();
+    //        if (VehicleType != null)
+    //        {
+    //            EntryPoint.WriteToConsole($"DISPATCHER: Vehicle1 {VehicleType.ModelName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
+    //            DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
+    //            GameFiber.Yield();
+    //            if (OfficerType != null)
+    //            {
+    //                try
+    //                {
+    //                    SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, spawnLocation, 0f, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
+    //                    spawnTask.AttemptSpawn();
+    //                    GameFiber.Yield();
+    //                    spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+    //                    spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
+    //                }
+    //                catch (Exception ex)
+    //                {
+    //                    EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
@@ -578,22 +578,22 @@ public class LEDispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(TotalWantedLevel))
         {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn",5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn",5);
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)",5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle) IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}",5);
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)",5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot) IS: {cop.DistanceToPlayer} REQ: {DistanceToDeleteOnFoot}",5);
             return true;
         }
-        else if (cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
+        else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close",5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}",5);
             return true;
         }
         //else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away

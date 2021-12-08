@@ -112,7 +112,8 @@ public class Vehicles
                         {
                             EntryPoint.PersistentVehiclesDeleted++;
                         }
-                        PoliceCar.Vehicle.Delete();
+                        EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles {PoliceCar.Vehicle.Handle}", 5);
+                        PoliceCar.Vehicle.Delete();            
                         GameFiber.Yield();
                     }
                 }

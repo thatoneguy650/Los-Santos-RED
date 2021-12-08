@@ -48,9 +48,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 RootPosition { get; }
         bool IsAttemptingToSurrender { get; }
         bool IsCop { get; }
-
-        void AddInjured(PedExt myPed);
-        void AddKilled(PedExt myPed);
+        float ClosestPoliceDistanceToPlayer { get; set; }
         void Arrest();
       //  void StoreCriminalHistory();
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
@@ -65,5 +63,7 @@ namespace LosSantosRED.lsr.Interface
         void OnPoliceNoticeVehicleChange();
         void OnSuspectEluded();
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
+        void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
+        void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
     }
 }

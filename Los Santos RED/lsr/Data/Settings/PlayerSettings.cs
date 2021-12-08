@@ -23,7 +23,7 @@ public class PlayerSettings
     public int Scanner_DelayMinTime { get; set; } = 1500;
     public int Scanner_DelayMaxTime { get; set; } = 2500;
     public bool Scanner_AllowStatusAnnouncements { get; set; } = true;
-    public bool Scanner_UseNearForLocations { get; set; } = true;
+    public bool Scanner_UseNearForLocations { get; set; } = false;
     public uint Violations_RecentlyHurtCivilianTime { get; set; } = 5000;
     public uint Violations_RecentlyHurtPoliceTime { get; set; } = 5000;
     public uint Violations_RecentlyKilledCivilianTime { get; set; } = 5000;
@@ -50,6 +50,7 @@ public class PlayerSettings
     public uint SearchMode_SearchTimeMultiplier { get; set; } = 30000;
     public bool AllowStartRandomScenario { get; set; } = false;
     public bool SetSlowMoOnDeath { get; set; } = true;
+    public bool SetSlowMoOnBusted { get; set; } = true;
     public bool AllowConsumeWithoutInventory { get; set; } = false;
     public bool AllowSetEngineState { get; set; } = true;
     public bool ScaleEngineDamage { get; set; } = true;

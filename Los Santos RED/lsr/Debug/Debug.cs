@@ -168,6 +168,20 @@ public class Debug
                 }
                 Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
             }
+
+            foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+            {
+                Color Color4 = Color.Yellow;
+                if (cop.CanRecognizePlayer)
+                {
+                    Color4 = Color.Orange;
+                }
+                else if (cop.CanSeePlayer)
+                {
+                    Color4 = Color.Green;
+                }
+                Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color4);
+            }
         }
         //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         //{
@@ -501,8 +515,10 @@ public class Debug
             new MenuItem("Gram of Dank",12, 4),
             new MenuItem("Joint",3, 1)};
 
-        Player.CurrentLookedAtPed.TransactionMenu = WeedDealerMenu;
-
+        if (Player.CurrentLookedAtPed != null)
+        {
+            Player.CurrentLookedAtPed.TransactionMenu = WeedDealerMenu;
+        }
 
         // SetRadarZoomeFor20Seconds(1000f);
         //Player.OnSuspectEluded();

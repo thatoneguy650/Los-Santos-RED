@@ -32,6 +32,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
+            float closestDistanceToPlayer = 999f;
             foreach (Cop Cop in World.PoliceList)
             {
                 try
@@ -41,7 +42,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree);
+                            Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice);
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
@@ -50,6 +51,10 @@ namespace LosSantosRED.lsr
                         if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
                         {
                             Cop.UpdateAssists(Player.IsWanted);
+                        }
+                        if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
+                        {
+                            closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
                     }
                 }
@@ -60,6 +65,7 @@ namespace LosSantosRED.lsr
                 }
                 GameFiber.Yield();
             }
+            Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()
         {

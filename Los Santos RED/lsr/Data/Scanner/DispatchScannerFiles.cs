@@ -382,56 +382,65 @@
         public static ScannerFile Armedwithashotgun { get { return new ScannerFile("01_carrying_weapon\\0x1D8FB2BF.wav", "Armed with a shotgun.", "carrying_weapon"); } }
         public static ScannerFile CarryinganRPG { get { return new ScannerFile("01_carrying_weapon\\0x1F6F3AA8.wav", "Carrying an RPG.", "carrying_weapon"); } }
     }
-    //public class car_code_beat { public static ScannerFile 20 { get {return new ScannerFile("01_car_code_beat\\0x04114DC3.wav","20","car_code_beat"); } }
-    //public static ScannerFile 7 { get {return new ScannerFile("01_car_code_beat\\0x045F6810.wav","7","car_code_beat"); } }
-    //public static ScannerFile 6 { get {return new ScannerFile("01_car_code_beat\\0x048DB95D.wav","6","car_code_beat"); } }
-    //public static ScannerFile 13 { get {return new ScannerFile("01_car_code_beat\\0x056934B0.wav","13","car_code_beat"); } }
-    //public static ScannerFile 4 { get {return new ScannerFile("01_car_code_beat\\0x05AFDDFC.wav","4","car_code_beat"); } }
-    //public static ScannerFile 22 { get {return new ScannerFile("01_car_code_beat\\0x070401AA.wav","22","car_code_beat"); } }
-    //public static ScannerFile 17 { get {return new ScannerFile("01_car_code_beat\\0x08632482.wav","17","car_code_beat"); } }
-    //public static ScannerFile 5 { get {return new ScannerFile("01_car_code_beat\\0x0A17C498.wav","5","car_code_beat"); } }
-    //public static ScannerFile 21 { get {return new ScannerFile("01_car_code_beat\\0x0AC0CD3B.wav","21","car_code_beat"); } }
-    //public static ScannerFile 8 { get {return new ScannerFile("01_car_code_beat\\0x0D675D57.wav","8","car_code_beat"); } }
-    //public static ScannerFile 11 { get {return new ScannerFile("01_car_code_beat\\0x0D88503E.wav","11","car_code_beat"); } }
-    //public static ScannerFile 15 { get {return new ScannerFile("01_car_code_beat\\0x0DCE9405.wav","15","car_code_beat"); } }
-    //public static ScannerFile 16 { get {return new ScannerFile("01_car_code_beat\\0x0E40B65E.wav","16","car_code_beat"); } }
-    //public static ScannerFile 3 { get {return new ScannerFile("01_car_code_beat\\0x0E57C6EE.wav","3","car_code_beat"); } }
-    //public static ScannerFile 2 { get {return new ScannerFile("01_car_code_beat\\0x1049F2F3.wav","2","car_code_beat"); } }
-    //public static ScannerFile 19 { get {return new ScannerFile("01_car_code_beat\\0x12850991.wav","19","car_code_beat"); } }
-    //public static ScannerFile 10 { get {return new ScannerFile("01_car_code_beat\\0x131E6122.wav","10","car_code_beat"); } }
-    //public static ScannerFile 1 { get {return new ScannerFile("01_car_code_beat\\0x1361FCAE.wav","1","car_code_beat"); } }
-    //public static ScannerFile 23 { get {return new ScannerFile("01_car_code_beat\\0x13F6EC22.wav","23","car_code_beat"); } }
-    //public static ScannerFile 9 { get {return new ScannerFile("01_car_code_beat\\0x14488E9C.wav","9","car_code_beat"); } }
-    //public static ScannerFile 14 { get {return new ScannerFile("01_car_code_beat\\0x15E37467.wav","14","car_code_beat"); } }
-    //public static ScannerFile 18 { get {return new ScannerFile("01_car_code_beat\\0x1CC8A958.wav","18","car_code_beat"); } }
-    //public static ScannerFile 12 { get {return new ScannerFile("01_car_code_beat\\0x1D7566AD.wav","12","car_code_beat"); } }
-    //public static ScannerFile 24 { get {return new ScannerFile("01_car_code_beat\\0x1E112D7D.wav","24","car_code_beat"); } }}
-    //public class car_code_composite { public static ScannerFile 7Edward7 { get {return new ScannerFile("01_car_code_composite\\0x04ECD8ED.wav","7-Edward-7","car_code_composite"); } }
-    //public static ScannerFile 1Adam13 { get {return new ScannerFile("01_car_code_composite\\0x04F7F7DD.wav","1-Adam-13","car_code_composite"); } }
-    //public static ScannerFile 4Mary5 { get {return new ScannerFile("01_car_code_composite\\0x0741C430.wav","4-Mary-5","car_code_composite"); } }
-    //public static ScannerFile 1David4 { get {return new ScannerFile("01_car_code_composite\\0x0749580E.wav","1-David-4","car_code_composite"); } }
-    //public static ScannerFile 2Lincoln8 { get {return new ScannerFile("01_car_code_composite\\0x07911FB2.wav","2-Lincoln-8","car_code_composite"); } }
-    //public static ScannerFile 2Edward6 { get {return new ScannerFile("01_car_code_composite\\0x08094919.wav","2-Edward-6","car_code_composite"); } }
-    //public static ScannerFile 3Lincoln12 { get {return new ScannerFile("01_car_code_composite\\0x0CFFC800.wav","3-Lincoln-12","car_code_composite"); } }
-    //public static ScannerFile 9David1 { get {return new ScannerFile("01_car_code_composite\\0x0E2B53BA.wav","9-David-1","car_code_composite"); } }
-    //public static ScannerFile 8Lincoln5 { get {return new ScannerFile("01_car_code_composite\\0x12354C79.wav","8-Lincoln-5","car_code_composite"); } }
-    //public static ScannerFile 3Lincoln2 { get {return new ScannerFile("01_car_code_composite\\0x1240ABC0.wav","3-Lincoln-2","car_code_composite"); } }
-    //public static ScannerFile 6David6 { get {return new ScannerFile("01_car_code_composite\\0x15CA5EF5.wav","6-David-6","car_code_composite"); } }
-    //public static ScannerFile 1Adam5 { get {return new ScannerFile("01_car_code_composite\\0x17DC4DCB.wav","1-Adam-5","car_code_composite"); } }
-    //public static ScannerFile 8Mary7 { get {return new ScannerFile("01_car_code_composite\\0x19BDE3DC.wav","8-Mary-7","car_code_composite"); } }
-    //public static ScannerFile 2Edward5 { get {return new ScannerFile("01_car_code_composite\\0x1A9F3B2C.wav","2-Edward-5","car_code_composite"); } }
-    //public static ScannerFile 7Edward14 { get {return new ScannerFile("01_car_code_composite\\0x1CD2F553.wav","7-Edward-14","car_code_composite"); } }
-    //public static ScannerFile 9Lincoln15 { get {return new ScannerFile("01_car_code_composite\\0x1F00095C.wav","9-Lincoln-15","car_code_composite"); } }}
-    //public class car_code_division { public static ScannerFile 1 { get {return new ScannerFile("01_car_code_division\\0x06DF1221.wav","1","car_code_division"); } }
-    //public static ScannerFile 9 { get {return new ScannerFile("01_car_code_division\\0x071CEDC9.wav","9","car_code_division"); } }
-    //public static ScannerFile 8 { get {return new ScannerFile("01_car_code_division\\0x0792F0F1.wav","8","car_code_division"); } }
-    //public static ScannerFile 4 { get {return new ScannerFile("01_car_code_division\\0x0EA506D5.wav","4","car_code_division"); } }
-    //public static ScannerFile 2 { get {return new ScannerFile("01_car_code_division\\0x10564158.wav","2","car_code_division"); } }
-    //public static ScannerFile 5 { get {return new ScannerFile("01_car_code_division\\0x1202F364.wav","5","car_code_division"); } }
-    //public static ScannerFile 7 { get {return new ScannerFile("01_car_code_division\\0x141CAEE1.wav","7","car_code_division"); } }
-    //public static ScannerFile 6 { get {return new ScannerFile("01_car_code_division\\0x146737ED.wav","6","car_code_division"); } }
-    //public static ScannerFile 10 { get {return new ScannerFile("01_car_code_division\\0x15777950.wav","10","car_code_division"); } }
-    //public static ScannerFile 3 { get {return new ScannerFile("01_car_code_division\\0x1C908C63.wav","3","car_code_division"); } }}
+    public class car_code_beat
+    {
+        public static ScannerFile twenty { get {return new ScannerFile("01_car_code_beat\\0x04114DC3.wav","20","car_code_beat"); } }
+        public static ScannerFile seven { get { return new ScannerFile("01_car_code_beat\\0x045F6810.wav", "7", "car_code_beat"); } }
+        public static ScannerFile six { get { return new ScannerFile("01_car_code_beat\\0x048DB95D.wav", "6", "car_code_beat"); } }
+        public static ScannerFile thirteen { get { return new ScannerFile("01_car_code_beat\\0x056934B0.wav", "13", "car_code_beat"); } }
+        public static ScannerFile four { get { return new ScannerFile("01_car_code_beat\\0x05AFDDFC.wav", "4", "car_code_beat"); } }
+        public static ScannerFile twentytwo { get { return new ScannerFile("01_car_code_beat\\0x070401AA.wav", "22", "car_code_beat"); } }
+        public static ScannerFile seventeen { get { return new ScannerFile("01_car_code_beat\\0x08632482.wav", "17", "car_code_beat"); } }
+        public static ScannerFile five { get { return new ScannerFile("01_car_code_beat\\0x0A17C498.wav", "5", "car_code_beat"); } }
+        public static ScannerFile twentyone { get { return new ScannerFile("01_car_code_beat\\0x0AC0CD3B.wav", "21", "car_code_beat"); } }
+        public static ScannerFile eight { get { return new ScannerFile("01_car_code_beat\\0x0D675D57.wav", "8", "car_code_beat"); } }
+        public static ScannerFile eleven { get { return new ScannerFile("01_car_code_beat\\0x0D88503E.wav", "11", "car_code_beat"); } }
+        public static ScannerFile fifteen { get { return new ScannerFile("01_car_code_beat\\0x0DCE9405.wav", "15", "car_code_beat"); } }
+        public static ScannerFile sixteen { get { return new ScannerFile("01_car_code_beat\\0x0E40B65E.wav", "16", "car_code_beat"); } }
+        public static ScannerFile three { get { return new ScannerFile("01_car_code_beat\\0x0E57C6EE.wav", "3", "car_code_beat"); } }
+        public static ScannerFile two { get { return new ScannerFile("01_car_code_beat\\0x1049F2F3.wav", "2", "car_code_beat"); } }
+        public static ScannerFile nineteen { get { return new ScannerFile("01_car_code_beat\\0x12850991.wav", "19", "car_code_beat"); } }
+        public static ScannerFile ten { get { return new ScannerFile("01_car_code_beat\\0x131E6122.wav", "10", "car_code_beat"); } }
+        public static ScannerFile one { get { return new ScannerFile("01_car_code_beat\\0x1361FCAE.wav", "1", "car_code_beat"); } }
+        public static ScannerFile twentythree { get { return new ScannerFile("01_car_code_beat\\0x13F6EC22.wav", "23", "car_code_beat"); } }
+        public static ScannerFile nine { get { return new ScannerFile("01_car_code_beat\\0x14488E9C.wav", "9", "car_code_beat"); } }
+        public static ScannerFile fourteen { get { return new ScannerFile("01_car_code_beat\\0x15E37467.wav", "14", "car_code_beat"); } }
+        public static ScannerFile eighteen { get { return new ScannerFile("01_car_code_beat\\0x1CC8A958.wav", "18", "car_code_beat"); } }
+        public static ScannerFile twelve { get { return new ScannerFile("01_car_code_beat\\0x1D7566AD.wav", "12", "car_code_beat"); } }
+        public static ScannerFile twentyfour { get { return new ScannerFile("01_car_code_beat\\0x1E112D7D.wav", "24", "car_code_beat"); } }
+    }
+    public class car_code_composite 
+    { 
+        public static ScannerFile SevenEdwardSeven { get {return new ScannerFile("01_car_code_composite\\0x04ECD8ED.wav","7-Edward-7","car_code_composite"); } }
+        public static ScannerFile _1Adam13{ get { return new ScannerFile("01_car_code_composite\\0x04F7F7DD.wav", "1-Adam-13", "car_code_composite"); } }
+        public static ScannerFile _4Mary5{ get { return new ScannerFile("01_car_code_composite\\0x0741C430.wav", "4-Mary-5", "car_code_composite"); } }
+        public static ScannerFile _1David4 { get { return new ScannerFile("01_car_code_composite\\0x0749580E.wav", "1-David-4", "car_code_composite"); } }
+        public static ScannerFile _2Lincoln8{ get { return new ScannerFile("01_car_code_composite\\0x07911FB2.wav", "2-Lincoln-8", "car_code_composite"); } }
+        public static ScannerFile _2Edward6 { get { return new ScannerFile("01_car_code_composite\\0x08094919.wav", "2-Edward-6", "car_code_composite"); } }
+        public static ScannerFile _3Lincoln12 { get { return new ScannerFile("01_car_code_composite\\0x0CFFC800.wav", "3-Lincoln-12", "car_code_composite"); } }
+        public static ScannerFile _9David1 { get { return new ScannerFile("01_car_code_composite\\0x0E2B53BA.wav", "9-David-1", "car_code_composite"); } }
+        public static ScannerFile _8Lincoln5{ get { return new ScannerFile("01_car_code_composite\\0x12354C79.wav", "8-Lincoln-5", "car_code_composite"); } }
+        public static ScannerFile _3Lincoln2{ get { return new ScannerFile("01_car_code_composite\\0x1240ABC0.wav", "3-Lincoln-2", "car_code_composite"); } }
+        public static ScannerFile _6David6{ get { return new ScannerFile("01_car_code_composite\\0x15CA5EF5.wav", "6-David-6", "car_code_composite"); } }
+        public static ScannerFile _1Adam5 { get { return new ScannerFile("01_car_code_composite\\0x17DC4DCB.wav", "1-Adam-5", "car_code_composite"); } }
+        public static ScannerFile _8Mary7{ get { return new ScannerFile("01_car_code_composite\\0x19BDE3DC.wav", "8-Mary-7", "car_code_composite"); } }
+        public static ScannerFile _2Edward5{ get { return new ScannerFile("01_car_code_composite\\0x1A9F3B2C.wav", "2-Edward-5", "car_code_composite"); } }
+        public static ScannerFile _7Edward14{ get { return new ScannerFile("01_car_code_composite\\0x1CD2F553.wav", "7-Edward-14", "car_code_composite"); } }
+        public static ScannerFile _9Lincoln15{ get { return new ScannerFile("01_car_code_composite\\0x1F00095C.wav", "9-Lincoln-15", "car_code_composite"); } }
+    }
+    public class car_code_division 
+    { 
+        public static ScannerFile _1 { get {return new ScannerFile("01_car_code_division\\0x06DF1221.wav","1","car_code_division"); } }
+        public static ScannerFile _9 { get { return new ScannerFile("01_car_code_division\\0x071CEDC9.wav", "9", "car_code_division"); } }
+        public static ScannerFile _8 { get { return new ScannerFile("01_car_code_division\\0x0792F0F1.wav", "8", "car_code_division"); } }
+        public static ScannerFile _4 { get { return new ScannerFile("01_car_code_division\\0x0EA506D5.wav", "4", "car_code_division"); } }
+        public static ScannerFile _2 { get { return new ScannerFile("01_car_code_division\\0x10564158.wav", "2", "car_code_division"); } }
+        public static ScannerFile _5 { get { return new ScannerFile("01_car_code_division\\0x1202F364.wav", "5", "car_code_division"); } }
+        public static ScannerFile _7 { get { return new ScannerFile("01_car_code_division\\0x141CAEE1.wav", "7", "car_code_division"); } }
+        public static ScannerFile _6 { get { return new ScannerFile("01_car_code_division\\0x146737ED.wav", "6", "car_code_division"); } }
+        public static ScannerFile _10 { get { return new ScannerFile("01_car_code_division\\0x15777950.wav", "10", "car_code_division"); } }
+        public static ScannerFile _3 { get { return new ScannerFile("01_car_code_division\\0x1C908C63.wav", "3", "car_code_division"); } }
+    }
     public class car_code_unit_type
     {
         public static ScannerFile Adam { get { return new ScannerFile("01_car_code_unit_type\\0x019DB368.wav", "Adam", "car_code_unit_type"); } }

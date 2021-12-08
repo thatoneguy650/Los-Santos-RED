@@ -19,6 +19,7 @@ namespace LSR.Vehicles
         private bool HasAttemptedToLock;
         private ISettingsProvideable Settings;
         private int Health = 1000;
+        private bool IsOnFire;
 
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
@@ -294,6 +295,15 @@ namespace LSR.Vehicles
                     {
                         Health = Vehicle.Health;
                     }
+                    bool onFire = Vehicle.IsOnFire;
+                    if (IsOnFire != onFire)
+                    {
+                        if(onFire)
+                        {
+                            driver.OnVehicleStartedFire();
+                        }
+                        IsOnFire = onFire;
+                    }
                 }
             }
         }
@@ -523,13 +533,10 @@ namespace LSR.Vehicles
         private void OnHealthDecreased(IDriveable driver)
         {
             int Damage = Health - Vehicle.Health;
-            if(Damage >= 50)
-            {
-                driver.OnVehicleCrashed();
-                EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage}", 5);
-            }
+            bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(Vehicle);
+            driver.OnVehicleHealthDecreased(Damage, Collided);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
-
         }
     }
 }

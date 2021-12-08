@@ -44,7 +44,10 @@ public class Investigate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             //EntryPoint.WriteToConsole($"TASKER: Investigate Start: {Ped.Pedestrian.Handle}",5);
-            Ped.Pedestrian.BlockPermanentEvents = false;
+            //Ped.Pedestrian.BlockPermanentEvents = false;
+
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             Update();
         }
     }

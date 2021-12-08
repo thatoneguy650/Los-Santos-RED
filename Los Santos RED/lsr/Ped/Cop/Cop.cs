@@ -45,7 +45,7 @@ public class Cop : PedExt
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool IsAttemptingToSurrender, bool IsBusted, bool IsWeaponsFree) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel, IsAttemptingToSurrender, IsBusted, IsWeaponsFree);
+    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool IsAttemptingToSurrender, bool IsBusted, bool IsWeaponsFree, bool HasShotAtPolice) => WeaponInventory.UpdateLoadout(IsDeadlyChase, WantedLevel, IsAttemptingToSurrender, IsBusted, IsWeaponsFree, HasShotAtPolice);
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Speak(currentPlayer);

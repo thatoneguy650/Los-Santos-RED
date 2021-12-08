@@ -16,8 +16,8 @@ public class CivilianSettings
     public int MaxHealth { get; set; } = 100;
     public bool OverrideAccuracy { get; set; } = true;
     public int GeneralAccuracy { get; set; } = 5;//10
-    public float SightDistance { get; set; } = 70f;//90f
-    public float GunshotHearingDistance { get; set; } = 80f;//100f
+    public float SightDistance { get; set; } = 80f;//70f;//90f
+    public float GunshotHearingDistance { get; set; } = 125f;//100f
     public bool TaskMissionPeds { get; set; } = false;
     public bool AllowMissionPedsToInteract { get; set; } = false;
     public bool AllowRandomCrimes { get; set; } = true;

@@ -166,8 +166,8 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
 #if DEBUG
             StartDebugLogic();
-                GameFiber.Yield();
-            #endif
+            GameFiber.Yield();
+#endif
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
@@ -263,6 +263,9 @@ namespace LosSantosRED.lsr
             CoreTasks = new List<ModTask>()
             {
                   new ModTask(100, "Player.Update", Player.Update, 0),
+
+                  new ModTask(500, "UI.Update", UI.Update, 1),
+
             };
             SecondaryTasks = new List<ModTask>()
             {
@@ -276,9 +279,6 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
                 new ModTask(500, "Police.Update", Police.Update, 9),//added yields//cant get 300 ms updates in here anyways
-
-
-
                 new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
 
             };
@@ -392,55 +392,6 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Input Logic");
         }
-        private void StartQuaternaryLogic()
-        {
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    int CurrentQuaternaryTask = 0;
-                    while (IsRunning)
-                    {
-                        if (DebugSecondaryRunning)
-                        {
-                            if (CurrentQuaternaryTask > QuaternaryTasks.Count)
-                            {
-                                CurrentQuaternaryTask = 0;
-                            }
-                            PrevLastRanQuaternaryTask = LastRanQuaternaryTask;
-                            ModTask firstQuaternary = QuaternaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentQuaternaryTask).FirstOrDefault();
-                            if (firstQuaternary != null)
-                            {
-                                LastRanQuaternaryTask = firstQuaternary.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstQuaternary.GameTimeLastRan}";
-                                firstQuaternary.Run();
-                                CurrentQuaternaryTask++;
-                            }
-                            else
-                            {
-                                ModTask alternateQuaternaryTask = QuaternaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
-                                if (alternateQuaternaryTask != null)
-                                {
-                                    LastRanQuaternaryTask = alternateQuaternaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateQuaternaryTask.GameTimeLastRan}";
-                                    alternateQuaternaryTask.Run();
-                                }
-                                else
-                                {
-                                    LastRanQuaternaryTask = "NONE";//nothing to run at all this tick, everything is on time
-                                }
-                            }
-                        }
-                        GameFiber.Yield();
-                    }
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-                    Dispose();
-                }
-            }, "Run Secondary Logic");
-            GameFiber.Yield();
-        }
         private void StartSecondaryLogic()
         {
             GameFiber.StartNew(delegate
@@ -539,6 +490,55 @@ namespace LosSantosRED.lsr
             }, "Run Secondary Logic");
             GameFiber.Yield();
         }
+        private void StartQuaternaryLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int CurrentQuaternaryTask = 0;
+                    while (IsRunning)
+                    {
+                        if (DebugSecondaryRunning)
+                        {
+                            if (CurrentQuaternaryTask > QuaternaryTasks.Count)
+                            {
+                                CurrentQuaternaryTask = 0;
+                            }
+                            PrevLastRanQuaternaryTask = LastRanQuaternaryTask;
+                            ModTask firstQuaternary = QuaternaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentQuaternaryTask).FirstOrDefault();
+                            if (firstQuaternary != null)
+                            {
+                                LastRanQuaternaryTask = firstQuaternary.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstQuaternary.GameTimeLastRan}";
+                                firstQuaternary.Run();
+                                CurrentQuaternaryTask++;
+                            }
+                            else
+                            {
+                                ModTask alternateQuaternaryTask = QuaternaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                if (alternateQuaternaryTask != null)
+                                {
+                                    LastRanQuaternaryTask = alternateQuaternaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateQuaternaryTask.GameTimeLastRan}";
+                                    alternateQuaternaryTask.Run();
+                                }
+                                else
+                                {
+                                    LastRanQuaternaryTask = "NONE";//nothing to run at all this tick, everything is on time
+                                }
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Secondary Logic");
+            GameFiber.Yield();
+        }
         private void StartUILogic()
         {
             GameFiber.StartNew(delegate
@@ -549,7 +549,7 @@ namespace LosSantosRED.lsr
                     {
                         if(DebugUIRunning)
                         {
-                            UI.Update();
+                            UI.Tick();
                         }
                         Time.Tick();
                         GameFiber.Yield();

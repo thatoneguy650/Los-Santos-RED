@@ -62,6 +62,7 @@ namespace LosSantosRED.lsr
         private Dispatch OfficersNeeded;
         private List<AudioSet> OfficersReport;
         private Dispatch OnFoot;
+        private Dispatch ExcessiveSpeed;
         private Dispatch GotOnFreeway;
         private Dispatch GotOffFreeway;
         private Dispatch PedHitAndRun;
@@ -103,6 +104,8 @@ namespace LosSantosRED.lsr
         private ZoneScannerAudio ZoneScannerAudio;
         private ITimeReportable Time;
         private Dispatch VehicleCrashed;
+        private Dispatch VehicleStartedFire;
+        private uint GameTimeLastMentionedUnits;
 
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
@@ -130,6 +133,7 @@ namespace LosSantosRED.lsr
         public bool RecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000;
         public bool RecentlyMentionedStreet => GameTimeLastMentionedStreet != 0 && Game.GameTime - GameTimeLastMentionedStreet <= 10000;
         public bool RecentlyMentionedZone => GameTimeLastMentionedZone != 0 && Game.GameTime - GameTimeLastMentionedZone <= 10000;
+        public bool RecentlyMentionedUnits => GameTimeLastMentionedUnits != 0 && Game.GameTime - GameTimeLastMentionedUnits <= 10000;
         public bool VeryRecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000;
         public void Abort()
         {
@@ -206,9 +210,19 @@ namespace LosSantosRED.lsr
         {
             if (!VehicleCrashed.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
+                VehicleCrashed.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleCrashed);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleCrashed", 3);
+        }
+        public void OnVehicleStartedFire()
+        {
+            if (!VehicleStartedFire.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
+            {
+                VehicleStartedFire.LatestInformation.SeenByOfficers = true;
+                AddToQueue(VehicleStartedFire);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleStartedFire", 3);
         }
         public void OnHelicoptersDeployed()
         {
@@ -326,19 +340,31 @@ namespace LosSantosRED.lsr
         }
         public void OnGotOnFreeway()
         {
-            if (!GotOnFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle)
+            if (!GotOnFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
+                GotOnFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOnFreeway);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOnFreeway", 5);
         }
         public void OnGotOffFreeway()
         {
-            if (!GotOffFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle)
+            if (!GotOffFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
+                GotOffFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOffFreeway);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOffFreeway", 5);
+        }
+        public void OnExcessiveSpeed()
+        {
+            if (!ExcessiveSpeed.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
+            {
+                ExcessiveSpeed.LatestInformation.SeenByOfficers = true;
+                ExcessiveSpeed.LatestInformation.Speed = Game.LocalPlayer.Character.Speed;
+                AddToQueue(ExcessiveSpeed);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: OnExcessiveSpeed", 5);
         }
         public void Reset()
         {
@@ -359,6 +385,7 @@ namespace LosSantosRED.lsr
             GameTimeLastDisplayedSubtitle = 0;
             GameTimeLastMentionedStreet = 0;
             GameTimeLastMentionedZone = 0;
+            GameTimeLastMentionedUnits = 0;
             //end newish
             DispatchQueue.Clear();
         }
@@ -815,6 +842,9 @@ namespace LosSantosRED.lsr
                 dispatchEvent.NotificationText += " Gat";
             }
         }
+
+
+
         private void AddWeaponsFree(DispatchEvent dispatchEvent)
         {
             if (!ReportedWeaponsFree)
@@ -844,7 +874,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.In.FileName, conjunctives.Inuhh.FileName, conjunctives.Inuhh2.FileName, conjunctives.Inuhh3.FileName }.PickRandom());
+                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.In.FileName }.PickRandom());
                         dispatchEvent.Subtitles += " ~s~in ~p~" + MyZone.DisplayName + "~s~";
                     }
                     dispatchEvent.SoundsToPlay.Add(ScannerAudio);
@@ -854,6 +884,11 @@ namespace LosSantosRED.lsr
         }
         private void AddAttentionUnits(DispatchEvent dispatchEvent)
         {
+            if (RecentlyMentionedUnits)
+            {
+                return;
+            }
+            bool AddedZoneUnits = false;
             Zone MyZone = CurrentPlayer.CurrentLocation.CurrentZone;
             if (MyZone != null)
             {
@@ -864,8 +899,35 @@ namespace LosSantosRED.lsr
                     if (ScannerAudio != "")
                     {
                         dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                        AddedZoneUnits = true;
                     }
                 }
+            }
+            if(!AddedZoneUnits && RandomItems.RandomPercent(30))
+            {
+                dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName, 
+                                                                    attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
+                dispatchEvent.SoundsToPlay.Add(new List<string>() { car_code_composite.SevenEdwardSeven.FileName,
+                                                                    car_code_composite._1Adam13.FileName,
+                                                                    car_code_composite._1Adam5.FileName,
+                                                                    car_code_composite._1David4.FileName,
+                                                                    car_code_composite._2Edward5.FileName,
+                                                                    car_code_composite._2Edward6.FileName,
+                                                                    car_code_composite._2Lincoln8.FileName,
+                                                                    car_code_composite._3Lincoln12.FileName,
+                                                                    car_code_composite._3Lincoln2.FileName,
+                                                                    car_code_composite._4Mary5.FileName,
+                                                                    car_code_composite._6David6.FileName,
+                                                                    car_code_composite._7Edward14.FileName,
+                                                                    car_code_composite._8Lincoln5.FileName,
+                                                                    car_code_composite._8Mary7.FileName,
+                                                                    car_code_composite._9David1.FileName,
+                                                                    car_code_composite._9Lincoln15.FileName}.PickRandom());
+                AddedZoneUnits = true;
+            }
+            if (AddedZoneUnits)
+            {
+                dispatchEvent.HasUnitAudio = true;
             }
         }
         private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed)
@@ -1195,6 +1257,10 @@ namespace LosSantosRED.lsr
                             if (MyAudioEvent.HasZoneAudio)
                             {
                                 GameTimeLastMentionedZone = Game.GameTime;
+                            }
+                            if(MyAudioEvent.HasUnitAudio)
+                            {
+                                GameTimeLastMentionedUnits = Game.GameTime;
                             }
                             GameFiber.Yield();
                             if (AbortedAudio)
@@ -1895,7 +1961,22 @@ namespace LosSantosRED.lsr
 
             },
         };
-
+            ExcessiveSpeed = new Dispatch()
+            {
+                Name = "Excessive Speed",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                IncludeDrivingVehicle = false,
+                VehicleIncludesIn = true,
+                IncludeDrivingSpeed = true,
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                //new AudioSet(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName },"a speeding felony"),
+                //new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
+            },
+            };
             GotOnFreeway = new Dispatch()
             {
                 Name = "Entered Freeway",
@@ -1981,6 +2062,22 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
                 new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
                 new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
+            },
+            };
+            VehicleStartedFire = new Dispatch()
+            {
+                Name = "Vehicle On Fire",
+                IsStatus = true,
+                IncludeReportedBy = true,
+                LocationDescription = LocationSpecificity.Nothing,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_vehicle_on_fire.Avehicleonfire.FileName},"a vehicle on fire"),
+                new AudioSet(new List<string>() { crime_car_on_fire.Acarfire.FileName},"a vehicle on fire"),
+                new AudioSet(new List<string>() { crime_car_on_fire.Acaronfire.FileName},"a vehicle on fire"),
+                new AudioSet(new List<string>() { crime_car_on_fire.Anautomobileonfire.FileName},"a vehicle on fire"),
             },
             };
             VehicleCrashed = new Dispatch()
@@ -2276,9 +2373,6 @@ namespace LosSantosRED.lsr
             },
             };
         }
-
-
-
         private class CrimeDispatch
         {
             public CrimeDispatch(string crimeID, Dispatch dispatchToPlay)
@@ -2386,6 +2480,7 @@ namespace LosSantosRED.lsr
             public bool CanInterrupt { get; set; } = true;
             public bool HasStreetAudio { get; set; }
             public bool HasZoneAudio { get; set; }
+            public bool HasUnitAudio { get; set; }
             public string NotificationSubtitle { get; set; } = "Status";
             public string NotificationText { get; set; } = "~b~Scanner Audio";
             public string NotificationTitle { get; set; } = "Police Scanner";

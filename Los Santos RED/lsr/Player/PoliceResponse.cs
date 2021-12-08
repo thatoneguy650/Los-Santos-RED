@@ -61,6 +61,7 @@ namespace LosSantosRED.lsr
         public bool PlayerSeenDuringCurrentWanted { get; set; }
         public bool PlayerSeenDuringWanted { get; set; } = false;
         public bool PoliceHaveDescription { get; private set; }
+        public bool HasShotAtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("FiringWeaponNearPolice") > 0;
         public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
         private ResponsePriority CurrentResponse

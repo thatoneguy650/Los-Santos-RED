@@ -172,6 +172,8 @@ public class Chase : ComplexTask
         {
             EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance} VehicleMissionFlag: {VehicleMissionFlag}", 5);
             GameTimeChaseStarted = Game.GameTime;
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
@@ -286,6 +288,8 @@ public class Chase : ComplexTask
     }
     private void GoToPlayersCar()
     {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = false;
         if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
@@ -324,6 +328,8 @@ public class Chase : ComplexTask
     }
     private void EnterVehicle()
     {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = false;
         if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
         {
@@ -335,7 +341,8 @@ public class Chase : ComplexTask
     private void ExitVehicle()
     {
         NeedsUpdates = false;
-        
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
         {
             //NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, 27, 2000);

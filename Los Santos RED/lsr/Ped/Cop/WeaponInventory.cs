@@ -51,7 +51,7 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys    
     }
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree)
+    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice)
     {
         uint currentVehicleWeapon;
         bool hasVehicleWeapon = false;
@@ -99,13 +99,24 @@ public class WeaponInventory
                         if (Cop.IsInVehicle)
                         {
                             HasHeavyWeaponOnPerson = true;
-                            if (isAttemptingToSurrender && !isWeaponsFree)
+                            if(isWeaponsFree)
                             {
-                                SetUnarmed();
+                                SetDeadly(false);
                             }
                             else
                             {
-                                SetDeadly(false);
+                                if(isAttemptingToSurrender)
+                                {
+                                    SetUnarmed();
+                                }
+                                else if (!hasShotAtPolice)
+                                {
+                                    SetUnarmed();
+                                }
+                                else
+                                {
+                                    SetDeadly(false);
+                                }
                             }
                         }
                         else

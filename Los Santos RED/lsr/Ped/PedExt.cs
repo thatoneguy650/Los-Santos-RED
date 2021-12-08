@@ -155,9 +155,13 @@ public class PedExt : IComplexTaskable
         {
             if (IsCop)//IsCop)
             {
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 600)
                 {
                     return 1500;
+                }
+                else if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                {
+                    return 750;
                 }
                 else
                 {
@@ -286,29 +290,18 @@ public class PedExt : IComplexTaskable
             {
                 if (NeedsFullUpdate)
                 {
-                    position = Pedestrian.Position;//See which cell it is in now
-                    CellX = (int)(position.X / EntryPoint.CellSize);
-                    CellY = (int)(position.Y / EntryPoint.CellSize);
-
+                    UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
                     UpdateVehicleState();
                     if (!IsCop)
                     {
-                        //WeaponChecker();
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {
                             PedCrimes.Update(world, policeRespondable);//possible yield in here!
                         }
-                        if (Pedestrian.Exists())
+                        if (Pedestrian.Exists() && policeRespondable.IsCop)
                         {
-                            if (policeRespondable.IsCop && PlayerPerception.DistanceToTarget <= 5f)
-                            {
-                                if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
-                                {
-                                    IsBusted = true;
-                                    EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
-                                }
-                            }
+                            CheckPlayerBusted();   
                         }
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
@@ -332,22 +325,21 @@ public class PedExt : IComplexTaskable
             CurrentTask.Update();
         }
     }
-    private void WeaponChecker()
+    private void UpdatePositionData()
     {
-        if(WasEverSetPersistent && !hasCheckedWeapon && Pedestrian.Exists())
+        position = Pedestrian.Position;//See which cell it is in now
+        CellX = (int)(position.X / EntryPoint.CellSize);
+        CellY = (int)(position.Y / EntryPoint.CellSize);
+    }
+    private void CheckPlayerBusted()
+    {
+        if (PlayerPerception.DistanceToTarget <= 5f)
         {
-            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(Pedestrian);
-            if(RG == 124147476)//lslifedealer glitched?
+            if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
             {
-                uint currentWeapon;
-                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Pedestrian, out currentWeapon, true);
-                if (currentWeapon != 2725352035)
-                {
-                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true);
-                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);
-                }
+                IsBusted = true;
+                EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
             }
-            hasCheckedWeapon = true;
         }
     }
     private void UpdateVehicleState()

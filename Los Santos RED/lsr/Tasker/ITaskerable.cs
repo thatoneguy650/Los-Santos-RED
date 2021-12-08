@@ -8,6 +8,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ITaskerable
     {
+        string TaskerDebug { get; }
+
         void CreateCrime();
 
     }

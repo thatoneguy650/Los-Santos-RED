@@ -55,9 +55,9 @@ public class PoliceSettings
     public int KillLimit_Wanted6 { get; set; } = 12;
     public bool WantedLevelIncreasesOverTime { get; set; } = true;
     public uint WantedLevelIncreaseTime { get; set; } = 240000;
-    public float SightDistance { get; set; } = 70f;
-    public float GunshotHearingDistance { get; set; } = 80f;
-    public float SightDistance_Helicopter { get; set; } = 150f;
+    public float SightDistance { get; set; } = 90f;//70f;
+    public float GunshotHearingDistance { get; set; } = 125f;
+    public float SightDistance_Helicopter { get; set; } = 175f;
     public float SightDistance_Helicopter_AdditionalAtWanted { get; set; } = 100f;
     public float MaxDistanceToSpawn_WantedSeen { get; set; } = 550f;
     public float MaxDistanceToSpawn_WantedUnseen { get; set; } = 350f;

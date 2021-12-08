@@ -58,7 +58,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitPedTime;
         private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitVehicleTime;
         private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;
-        public void AddInjured(PedExt myPed)
+        public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {
             if (myPed.IsCop)
             {
@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
         }
-        public void AddKilled(PedExt myPed)
+        public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {
             if (myPed.IsCop)
             {
@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr
                 if (!(Player.Character.IsCurrentWeaponSilenced || Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));//.IsCurrentlyViolating = true;
-                    if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceCanHearPlayer)
+                    if (Player.AnyPoliceRecentlySeenPlayer || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop) || (Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= 50f))
                     {
                         AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));//.IsCurrentlyViolating = true;
                     }
@@ -367,6 +367,9 @@ namespace LosSantosRED.lsr
             if (RecentlyHitVehicle && Player.VehicleSpeedMPH >= 20f)
             {
                 isDrivingSuspiciously = true;
+
+
+                Player.OnVehicleCrashed();
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
             }
             if (!TreatAsCop)

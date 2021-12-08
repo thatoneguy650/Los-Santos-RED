@@ -387,6 +387,11 @@ public class Roadblock
         NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
         SpikeStrip.IsPersistent = true;
         SpikeStrip.IsGravityDisabled = false;
+
+
+        SpikeStrip.IsPositionFrozen = true;
+
+
         CreatedProps.Add(SpikeStrip);
         return SpikeStrip.Exists();
     }

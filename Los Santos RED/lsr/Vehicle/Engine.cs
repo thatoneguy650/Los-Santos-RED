@@ -36,6 +36,7 @@ public class Engine
         if(Health > VehicleToMonitor.Vehicle.EngineHealth)
         {
             float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
+            bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(VehicleToMonitor.Vehicle);
             if (Settings.SettingsManager.PlayerSettings.ScaleEngineDamage)
             {
                 float ScaledDamage = Health - Settings.SettingsManager.PlayerSettings.ScaleEngineDamageMultiplier * Difference;
@@ -45,21 +46,16 @@ public class Engine
                 }
                 VehicleToMonitor.Vehicle.EngineHealth = ScaledDamage;
                 Health = ScaledDamage;
-                if (ScaledDamage >= 100 && driver != null)
-                {
-                    driver.OnVehicleCrashed();
-                }
+                driver.OnVehicleEngineHealthDecreased(ScaledDamage, Collided);
             }
             else
             {
-                if (Difference >= 50 && driver != null)
-                {
-                    driver.OnVehicleCrashed();
-                }
+                driver.OnVehicleEngineHealthDecreased(Difference, Collided);
                 Health = VehicleToMonitor.Vehicle.EngineHealth;
             }
 
         } 
+
         if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
         {
             if (VehicleToMonitor.Vehicle.IsEngineStarting)

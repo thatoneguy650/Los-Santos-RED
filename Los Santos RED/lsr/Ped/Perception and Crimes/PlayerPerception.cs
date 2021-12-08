@@ -75,11 +75,12 @@ public class PlayerPerception
     {
         get
         {
-            if (DistanceToTarget >= 100)
-            {
-                return false;
-            }
-            else if (GameTimeLastLOSCheck == 0)
+            //if (DistanceToTarget >= 100)
+            //{
+            //    return false;
+            //}
+            //else 
+            if (GameTimeLastLOSCheck == 0)
             {
                 return true;
             }
@@ -116,7 +117,7 @@ public class PlayerPerception
                 }
                 else if(CellsAway >= 4)
                 {
-                    return 1000;
+                    return 750;
                 }
                 else
                 {
@@ -156,6 +157,43 @@ public class PlayerPerception
             }
         }
     }
+    private int LosUpdate
+    {
+        get
+        {
+            int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
+            if (Originator.IsCop)//IsCop)
+            {
+                if (CellsAway >= 6)
+                {
+                    return 1500;
+                }
+                else if (CellsAway >= 4)
+                {
+                    return 1000;
+                }
+                else
+                {
+                    return 750;
+                }
+            }
+            else
+            {
+                if (CellsAway >= 6)
+                {
+                    return 2000;
+                }
+                else if (CellsAway >= 4)
+                {
+                    return 1500;
+                }
+                else
+                {
+                    return 750;
+                }
+            }
+        }
+    }
     public bool NeedsUpdate
     {
         get
@@ -171,7 +209,7 @@ public class PlayerPerception
         }
 
     }
-    private int LosUpdate => 750;
+   // private int LosUpdate => 750;
     public bool SeenTargetWithin(int msSince) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= msSince;
     public void Update(IPerceptable target, Vector3 placeLastSeen)
     {
@@ -256,13 +294,11 @@ public class PlayerPerception
         {
             return;
         }
-        Vector3 PositionToCheck = posToCheck;//NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Target.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Target.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
-
+        Vector3 PositionToCheck = posToCheck;
         if(Originator.IsCop)
         {
             DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
         }
-
         else
         {
             int maxCellsAway =  NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
@@ -275,29 +311,10 @@ public class PlayerPerception
                 DistanceToTarget = maxCellsAway * 70f;
             }
         }
-
-        //if (NativeHelper.IsNearby(Target.CellX,Target.CellY,Originator.CellX,Originator.CellY,6))
-        //{
-        //    DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-        //}
-        //else
-        //{
-        //    DistanceToTarget = 999f;
-        //}
-
-
-
-
-
-
         if (Originator.IsCop)
         {
             DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
         }
-
-
-
-
         if (DistanceToTarget <= 0.1f)
         {
             DistanceToTarget = 999f;
@@ -314,17 +331,6 @@ public class PlayerPerception
         {
             WithinWeaponsAudioRange = false;
         }
-        //if (!IsBehind(Target.Character))
-        //{
-        //    if (GameTimeBehindTarget == 0)
-        //    {
-        //        GameTimeBehindTarget = Game.GameTime;
-        //    }
-        //}
-        //else
-        //{
-        //    GameTimeBehindTarget = 0;
-        //}
         GameTimeLastDistanceCheck = Game.GameTime;
     }
     private void UpdateTargetLineOfSight(bool IsWanted)

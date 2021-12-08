@@ -69,6 +69,11 @@ public class HealthState
                 return false;
         }
     }
+
+    public bool WasShot { get; private set; }
+    public bool WasMeleeAttacked { get; private set; }
+    public bool WasHitByVehicle { get; private set; }
+
     public void Update(IPoliceRespondable CurrentPlayer)
     {
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
@@ -133,7 +138,7 @@ public class HealthState
             MyPed.LogSourceOfDeath();
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
-                CurrentPlayer.AddKilled(MyPed);
+                CurrentPlayer.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Killed By Player", 5);
             }
         }
@@ -144,7 +149,7 @@ public class HealthState
                 if (Health - CurrentHealth + Armor - CurrentArmor > 5)
                 {
                     MyPed.HasBeenHurtByPlayer = true;
-                    CurrentPlayer.AddInjured(MyPed);
+                    CurrentPlayer.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                    // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
                 }
                 else
@@ -233,6 +238,7 @@ public class HealthState
             if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", MyPed.Pedestrian, 0, 1))
             {
                 category = WeaponCategory.Melee;
+                WasMeleeAttacked = true;
             }
             else if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", MyPed.Pedestrian, 0, 2))
             {
@@ -243,11 +249,13 @@ public class HealthState
                 else
                 {
                     category = WeaponCategory.Pistol;
+                    WasShot = true;
                 }
             }
             else if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian))
             {
                 category = WeaponCategory.Vehicle;
+                WasHitByVehicle = true;
             }
    
             bool CanBeFatal = false;

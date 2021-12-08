@@ -44,7 +44,12 @@ public class Locate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             //EntryPoint.WriteToConsole($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
-            Ped.Pedestrian.BlockPermanentEvents = false;
+            //Ped.Pedestrian.BlockPermanentEvents = false;
+
+
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+
             Update();
         }
     }

@@ -10,6 +10,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IDriveable
     {
-        void OnVehicleCrashed();
+        void OnVehicleHealthDecreased(int amount, bool isCollision);
+        void OnVehicleEngineHealthDecreased(float amount, bool isCollision);
+        void OnVehicleStartedFire();
     }
 }
