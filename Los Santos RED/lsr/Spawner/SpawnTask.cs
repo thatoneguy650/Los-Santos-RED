@@ -214,10 +214,10 @@ public class SpawnTask
             if (SpawnedVehicle.Exists())
             {
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);
-                if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
-                {
-                    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
-                }
+                //if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
+                //{
+                //    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
+                //}
                 VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 if (SpawnedVehicle.Exists())
                 {

@@ -18,9 +18,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         Ped Character { get; }
         Locations.LocationData CurrentLocation { get; }
-        string DebugLine11 { get; set; }
         VehicleExt CurrentVehicle { get; }
-
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }
 }

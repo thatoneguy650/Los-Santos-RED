@@ -19,7 +19,7 @@ public class UISettings
     public bool ShowSpeedLimitDisplay { get; set; } = true;
     public float SpeedLimitPositionX { get; set; } = 0.78f;
     public float SpeedLimitPositionY { get; set; } = 0.98f;
-    public float SpeedLimitScale { get; set; } = 0.25f;
+    public float SpeedLimitScale { get; set; } = 0.2f;
 
     public bool ShowVehicleStatusDisplay { get; set; } = true;
     public bool FadeVehicleStatusDisplay { get; set; } = true;

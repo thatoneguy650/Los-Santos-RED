@@ -34,6 +34,7 @@ public class Vehicles
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
     public int PoliceVehiclesCount => PoliceVehicles.Count();
     public int CivilianVehiclesCount => CivilianVehicles.Count();
+    public string DebugString { get; set; } = "";
     public int PoliceHelicoptersCount
     {
         get
@@ -58,7 +59,8 @@ public class Vehicles
     public void Scan()
     {
         RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
-       // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
+       // DebugString = $"CopCar#: {PoliceVehiclesCount} CivCar:#: {CivilianVehiclesCount} PH: {SpawnedPoliceVehiclesCount}";
+        // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
     }
     public void CreateNew()
     {
@@ -126,9 +128,10 @@ public class Vehicles
         {
             if (PoliceCar.Vehicle.Exists())
             {
-                if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 4000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
+                if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth- 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
                 {
                     PoliceCar.Vehicle.Repair();
+                    EntryPoint.WriteToConsole($"FixDamagedPoliceVehicles Repaird {PoliceCar.Vehicle.Handle}", 5);
                 }
             }
         }

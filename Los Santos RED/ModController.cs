@@ -262,7 +262,7 @@ namespace LosSantosRED.lsr
         {
             CoreTasks = new List<ModTask>()
             {
-                  new ModTask(100, "Player.Update", Player.Update, 0),
+                  new ModTask(100, "Player.Update", Player.Update, 0),//1
 
                   new ModTask(500, "UI.Update", UI.Update, 1),
 
@@ -299,7 +299,6 @@ namespace LosSantosRED.lsr
 
                 new ModTask(2000, "World.CreateMerchants", World.CreateMerchants, 10),//1000
 
-                //new ModTask(1000, "Time.Tick", Time.Tick, 10),
             };
 
             QuaternaryTasks = new List<ModTask>()
@@ -307,7 +306,7 @@ namespace LosSantosRED.lsr
 
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2), 
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2),
                 new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
                 new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
                 new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
@@ -562,6 +561,29 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run UI Logic");
+
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        if (DebugUIRunning)
+                        {
+                            UI.Tick2();
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run UI Logic");
+
+
         }
         private class ModTask
         {

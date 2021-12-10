@@ -60,6 +60,7 @@ namespace Mod
         public int TotalSpawnedPolice => Pedestrians.TotalSpawnedPolice;
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
+        public string DebugString => Pedestrians.DebugString + " - " + Vehicles.DebugString;
         public void Setup()
         {
             foreach (Zone zone in Zones.ZoneList)

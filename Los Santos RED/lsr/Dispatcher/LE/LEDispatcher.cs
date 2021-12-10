@@ -408,14 +408,6 @@ public class LEDispatcher
         {
             SpawnRoadblock();
         }
-        if (LastAgencySpawned != null)
-        {
-            Player.DebugLine11 = $"Roadblock: {Roadblock != null}; LastAgencySpawned: {LastAgencySpawned.ID}";
-        }
-        else
-        {
-            Player.DebugLine11 = $"Roadblock: {Roadblock != null}";
-        }
         return HasDispatchedThisTick;
     }
     public void Dispose()

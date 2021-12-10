@@ -41,6 +41,7 @@ public class Pedestrians
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
+    public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned
     {
         get
@@ -167,33 +168,43 @@ public class Pedestrians
         //Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            Cop.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
+            bool hasBlip = false;
             Blip myblip = Cop.Pedestrian.GetAttachedBlip();
-            if(myblip.Exists())
-            { 
+            if (myblip.Exists())
+            {
+                hasBlip = true;
                 myblip.Delete();
             }
+            Cop.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+
         }
         foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            EMT.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
+            bool hasBlip = false;
             Blip myblip = EMT.Pedestrian.GetAttachedBlip();
             if (myblip.Exists())
             {
+                hasBlip = true;
                 myblip.Delete();
             }
+            EMT.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            Firefighter.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
+            bool hasBlip = false;
             Blip myblip = Firefighter.Pedestrian.GetAttachedBlip();
             if (myblip.Exists())
             {
+                hasBlip = true;
                 myblip.Delete();
             }
+            Firefighter.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -211,10 +222,8 @@ public class Pedestrians
     }
     public void Scan()
     {
-        // WorldPeds = Rage.World.EnumeratePeds();
-
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
-        //WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();    
+        //DebugString = $"Cop#: {Police.Count()} EMT#: {EMTs.Count()} Fire#: {Firefighters.Count()} Merch# {Merchants.Count()} Civ#: {Civilians.Count()}"; 
     }
     public void CreateNew()
     {

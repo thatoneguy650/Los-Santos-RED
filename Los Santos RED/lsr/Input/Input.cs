@@ -59,6 +59,7 @@ namespace LosSantosRED.lsr
             ControlCheck();
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
+            //GameFiber.Yield();
             MenuCheck();
         }
         private void ConversationCheck()
