@@ -18,6 +18,9 @@ namespace LosSantosRED.lsr
         private IPoliceRespondable Player;
         private ISettingsProvideable Settings;
         private ITimeReportable Time;
+        private Blip CriminalHistoryBlip;
+        private Color blipColor => IsNearLastSeenLocation ? Color.Orange : Color.Yellow;
+        public bool IsNearLastSeenLocation { get; set; }
         public CriminalHistory(IPoliceRespondable currentPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
             Player = currentPlayer;
@@ -29,6 +32,13 @@ namespace LosSantosRED.lsr
         public bool HasHistory => CurrentHistory != null;
         public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.ResultsInLethalForce);
         public int MaxWantedLevel => LastWantedMaxLevel;
+        public void Dispose()
+        {
+            if (CriminalHistoryBlip.Exists())
+            {
+                CriminalHistoryBlip.Delete();
+            }
+        }
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
             CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x=> x.ResultingWantedLevel));
@@ -39,49 +49,40 @@ namespace LosSantosRED.lsr
         }
         public void Update()
         {
-            if (Player.IsAliveAndFree)
+            if (Player.IsAliveAndFree && HasHistory)
             {
-                if (HasHistory && Player.AnyPoliceCanRecognizePlayer)
+                IsNearLastSeenLocation = UpdateLastSeenDistance();
+                if (Player.AnyPoliceCanRecognizePlayer)
                 {
                     if (Player.IsWanted)
                     {
                         ApplyLastWantedStats();
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Became Wanted", 3);
                     }
-                    else if (IsNearLastSeenLocation() && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
+                    else if (IsNearLastSeenLocation && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
                     {
                         ApplyLastWantedStats();
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Near Last Location", 3);
                     }
-                    else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen)
+                    else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.IsWanted)//.CopsRecognizeAsStolen)
                     {
                         ApplyLastWantedStats();
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle", 3);
                     }
                 }
-                if(HasHistory && Player.PoliceResponse.HasBeenNotWantedFor >= Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxTime)// 120000)
+                if(Player.PoliceResponse.HasBeenNotWantedFor >= (Settings.SettingsManager.PlayerSettings.CriminalHistory_RealTimeExpireWantedMultiplier * LastWantedMaxLevel))// 120000)
                 {
                     Clear();
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Real Time)", 3);
                 }
-
-
-
-
-
-                if (HasHistory)// 120000)
+                if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_CalendarTimeExpireWantedMultiplier), Time.CurrentDateTime) < 0)
                 {
-                    if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxCalendarHours), Time.CurrentDateTime) < 0)
-                    {
-                        EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(Settings.SettingsManager.PlayerSettings.CriminalHistory_MaxCalendarHours)} Current: {Time.CurrentDateTime}", 5);
-                        Clear();
-                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
-                    }
-
-
-
+                    EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_CalendarTimeExpireWantedMultiplier)} Current: {Time.CurrentDateTime}", 5);
+                    Clear();
+                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
                 }
             }
+            UpdateBlip();
         }
         public void Clear()
         {
@@ -128,7 +129,7 @@ namespace LosSantosRED.lsr
             }
             return "";
         }
-        private bool IsNearLastSeenLocation()
+        private bool UpdateLastSeenDistance()
         {
             if(CurrentHistory != null && Player.Position.DistanceTo2D(CurrentHistory.LastSeenLocation) <= SearchRadius)
             {
@@ -147,6 +148,37 @@ namespace LosSantosRED.lsr
                 }
                 CurrentHistory = null;
                 Player.OnAppliedWantedStats();
+            }
+        }
+        private void UpdateBlip()
+        {
+            if (HasHistory && Player.IsNotWanted && Settings.SettingsManager.PlayerSettings.CriminalHistory_CreateBlip)
+            {
+                if (!CriminalHistoryBlip.Exists())
+                {
+                    CriminalHistoryBlip = new Blip(CurrentHistory.LastSeenLocation, SearchRadius)
+                    {
+                        Name = "APB Center",
+                        Color = blipColor,//Color.Yellow,
+                        Alpha = 0.25f
+                    };
+                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("APB Center");
+                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(CriminalHistoryBlip);
+                    NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)CriminalHistoryBlip.Handle, true);
+                }
+                else
+                {
+                    CriminalHistoryBlip.Position = CurrentHistory.LastSeenLocation;
+                    CriminalHistoryBlip.Color = blipColor;
+                }
+            }
+            else
+            {
+                if (CriminalHistoryBlip.Exists())
+                {
+                    CriminalHistoryBlip.Delete();
+                }
             }
         }
         private class BOLO

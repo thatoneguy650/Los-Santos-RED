@@ -50,5 +50,7 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
+        bool IsSprinting { get; }
+        float StaminaPercent { get; }
     }
 }

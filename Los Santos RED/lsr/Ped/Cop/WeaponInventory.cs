@@ -109,7 +109,7 @@ public class WeaponInventory
                                 {
                                     SetUnarmed();
                                 }
-                                else if (!hasShotAtPolice)
+                                else if (!hasShotAtPolice && WantedLevel <= 4)
                                 {
                                     SetUnarmed();
                                 }

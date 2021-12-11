@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -62,7 +62,16 @@ namespace Mod
         private uint GameTimeGotOutOfVehicle;
         private uint GameTimeGotInVehicle;
         private bool isExcessiveSpeed;
-
+        private Sprinting Sprinting;
+        //private uint GameTimeStartedSprinting;
+        //private uint GameTimeStoppedSprinting;
+        //private bool isSprinting = false;
+        //private float SprintMeter = 50f;
+        //private float SprintMax = 50f;
+        //private float SprintStartMin = 10f;
+        //private uint GameTimeLastUpdatedSprint = 0;
+        //private uint TimeSprinting => isSprinting ? Game.GameTime - GameTimeStartedSprinting : 0;
+        //private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems)
         {
             ModelName = modelName;
@@ -90,7 +99,7 @@ namespace Mod
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable);
             SearchMode = new SearchMode(this, Settings);
             Inventory = new Inventory(this);
-
+            Sprinting = new Sprinting(this, Settings);
 
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
@@ -132,10 +141,13 @@ namespace Mod
         public bool CurrentWeaponIsOneHanded { get; private set; }
         public ComplexTask CurrentTask { get; set; }
         public Inventory Inventory { get; set; }
+
+
+
         public List<InventoryItem> InventoryItems => Inventory.Items;
         public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem.CanConsume).ToList();
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
-        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
+        public string DebugLine1 => $"Speed: {Game.LocalPlayer.Character.Speed} isSprinting: {Sprinting.IsSprinting} SprintAmount: {Sprinting.Stamina}";//$"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
@@ -244,6 +256,8 @@ namespace Mod
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
+        public bool IsSprinting => Sprinting.IsSprinting;
+        public float StaminaPercent => Sprinting.StaminaPercentage;
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsVisiblyArmed { get; private set; }
         public bool IsWanted => wantedLevel > 0;
@@ -554,6 +568,7 @@ namespace Mod
         public void Dispose()
         {
             Investigation.Dispose(); //remove blip
+            CriminalHistory.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
             SearchMode.Dispose();
@@ -974,9 +989,6 @@ namespace Mod
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
-
-
-
         public bool PayFine()
         {
             bool toReturn = Respawning.PayFine();
@@ -997,6 +1009,8 @@ namespace Mod
         }
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void RaiseHands() => Surrendering.RaiseHands();
+        public void StartSprinting() => Sprinting.Start();
+        public void StopSprinting() => Sprinting.Stop();
         public void RemovePlate()
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -1565,7 +1579,7 @@ namespace Mod
                 }
             }
 
-
+            Sprinting.Update();
 
 
 
@@ -1839,7 +1853,6 @@ namespace Mod
             }
             //EntryPoint.WriteToConsole("Player Made Sober");
         }
-
         private void UpdateButtonPrompts()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)

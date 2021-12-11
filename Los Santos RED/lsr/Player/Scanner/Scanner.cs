@@ -519,10 +519,11 @@ namespace LosSantosRED.lsr
         private void AddSpeed(DispatchEvent dispatchEvent, float Speed)
         {
             Speed = Speed * 2.23694f;//convert to mph
+            dispatchEvent.SoundsToPlay.Add(suspect_last_seen.TargetLastReported.FileName);
+            dispatchEvent.Subtitles += " ~s~target last reported~s~";
             if (Speed >= 40f)
             {
-                dispatchEvent.SoundsToPlay.Add(suspect_last_seen.TargetLastReported.FileName);
-                dispatchEvent.Subtitles += " ~s~target last reported~s~";
+
                 if (Speed >= 40f && Speed < 50f)
                 {
                     dispatchEvent.SoundsToPlay.Add(doing_speed.Doing40mph.FileName);
@@ -571,6 +572,13 @@ namespace LosSantosRED.lsr
                     dispatchEvent.Subtitles += " ~s~doing ~o~over 100 mph~s~";
                     dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~105 mph~s~";
                 }
+            }
+            else
+            {
+                dispatchEvent.SoundsToPlay.Add(crime_speeding.Speeding.FileName);
+                dispatchEvent.Subtitles += " ~s~speeding~s~";
+                dispatchEvent.NotificationText += "~n~Speeding~s~";
+                
             }
         }
         private void AddStreet(DispatchEvent dispatchEvent)
@@ -1027,7 +1035,7 @@ namespace LosSantosRED.lsr
             }
             if (DispatchToPlay.IncludeDrivingSpeed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
             {
-                AddSpeed(EventToPlay, CurrentPlayer.CurrentVehicle.Vehicle.Speed);
+                AddSpeed(EventToPlay, DispatchToPlay.LatestInformation.Speed);// CurrentPlayer.CurrentVehicle.Vehicle.Speed);
                 GameFiber.Yield();
             }
             if (DispatchToPlay.LocationDescription != LocationSpecificity.Nothing)
@@ -1039,8 +1047,15 @@ namespace LosSantosRED.lsr
             {
                 AddHaveDescription(EventToPlay);
             }
+            if(EventToPlay.SoundsToPlay.Count() == 1)//only has radio beep
+            {
+                return;
+            }
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
-            EventToPlay.Subtitles = NativeHelper.FirstCharToUpper(EventToPlay.Subtitles);
+            if (EventToPlay.Subtitles != "")
+            {
+                EventToPlay.Subtitles = NativeHelper.FirstCharToUpper(EventToPlay.Subtitles);
+            }
             EventToPlay.Priority = DispatchToPlay.Priority;
 
             if (addtoPlayed)

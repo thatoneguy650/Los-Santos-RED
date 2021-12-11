@@ -113,8 +113,10 @@
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
+    <Compile Include="lsr\Player\Interface\ISprintable.cs" />
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
+    <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapCustomMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />

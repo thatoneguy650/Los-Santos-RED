@@ -163,28 +163,25 @@ public class UI : IMenuProvideable
     public void Update()
     {
        UpdateUIData();
-
     }
     public void Tick()
     {
         DrawUI();
-
-
-
-
         MenuUpdate();
-
-
     }
     public void Tick2()
     {
         DisplayButtonPrompts();
         ForceVanillaUI();
-        ScreenEffectsUpdate();
-
-        RadarUpdate();
     }
-
+    public void Tick3()
+    {
+        GameFiber.Yield();
+        ScreenEffectsUpdate();
+        GameFiber.Yield();
+        RadarUpdate();
+        GameFiber.Yield();
+    }
     public void DrawUI()
     {
         GameTimeLastDrawnUI = Game.GameTime;
@@ -239,7 +236,22 @@ public class UI : IMenuProvideable
                     DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
                 }
             }
+            DisplayBars();
         }
+    }
+    private void DisplayBars()
+    {
+        float BackPosX = 0.05f;
+        float BackPosY = 0.9925f;
+        float BackWidth = 0.07f;
+        float BackHeight = 0.0075f;
+        float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        float FrontPosX = 0.05f;
+        float FrontPosY = 0.9925f;
+        float FrontHeight = 0.0075f;
+        FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 142, 50, 50, 100, false);
+        NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 181, 48, 48, 255, false);
     }
     public void UpdateUIData()
     {
@@ -316,7 +328,7 @@ public class UI : IMenuProvideable
     {
         //float StartingPoint = 0.1f;
         float StartingPoint = 0.5f;
-        //DisplayTextOnScreen($"{DisplayablePlayer.DebugLine1}", StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{DisplayablePlayer.DebugLine1}", StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen($"{DisplayablePlayer.DebugLine2}", StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen($"{DisplayablePlayer.DebugLine3}", StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen($"{DisplayablePlayer.DebugLine4}", StartingPoint + 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
@@ -328,7 +340,6 @@ public class UI : IMenuProvideable
         //DisplayTextOnScreen(World.DebugString, StartingPoint + 0.10f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen(Tasker.TaskerDebug, StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
-
     public void ToggleMenu()
     {
         if (DisplayablePlayer.IsDead)

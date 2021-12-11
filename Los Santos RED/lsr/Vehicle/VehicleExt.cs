@@ -75,6 +75,7 @@ namespace LSR.Vehicles
         }
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
         public bool HasOriginalPlate => CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
+        public bool IsWanted => CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
         public bool CopsRecognizeAsStolen
         {
             get

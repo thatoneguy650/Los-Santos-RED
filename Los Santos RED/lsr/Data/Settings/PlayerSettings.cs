@@ -42,8 +42,16 @@ public class PlayerSettings
     public float Investigation_MaxDistance { get; set; } = 1500f;
     public float Investigation_SuspiciousDistance { get; set; } = 250f;
     public bool Investigation_CreateBlip { get; set; } = true;
-    public uint CriminalHistory_MaxTime { get; set; } = 120000;
-    public int CriminalHistory_MaxCalendarHours { get; set; } = 24;
+    //public uint CriminalHistory_MaxTime { get; set; } = 120000;
+    //public int CriminalHistory_MaxCalendarHours { get; set; } = 24;
+
+
+    public uint CriminalHistory_RealTimeExpireWantedMultiplier { get; set; } = 60000;
+    public int CriminalHistory_CalendarTimeExpireWantedMultiplier { get; set; } = 12;
+    public bool CriminalHistory_CreateBlip { get; set; } = true;
+
+
+
     public float CriminalHistory_MinimumSearchRadius { get; set; } = 400f;
     public float CriminalHistory_SearchRadiusIncrement { get; set; } = 400f;
     public bool SearchMode_FakeActiveWanted { get; set; } = true;
@@ -57,7 +65,8 @@ public class PlayerSettings
     public float ScaleEngineDamageMultiplier { get; set; } = 3.0f;
     public bool AllowSetIndicatorState { get; set; } = true;
     public bool AllowWeaponDropping { get; set; } = true;
-
+    public float Sprint_MaxStamina { get; set; } = 50f;
+    public float Sprint_MinStaminaToStart { get; set; } = 10f;
 
     public PlayerSettings()
     {

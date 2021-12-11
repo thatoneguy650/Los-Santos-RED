@@ -42,6 +42,10 @@ namespace LosSantosRED.lsr
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
         private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SurrenderKey) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
+
+
+        private bool IsPressingSprint => Game.IsKeyDownRightNow(Keys.Z) && Game.IsShiftKeyDownRightNow;
+
         private bool IsPressingRightIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.RightIndicatorKey) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Settings.SettingsManager.KeySettings.HazardKey) && Game.IsShiftKeyDownRightNow;
@@ -96,6 +100,17 @@ namespace LosSantosRED.lsr
                     {
                         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     }
+                }
+            }
+            if(!Player.IsInVehicle)
+            {
+                if(IsPressingSprint)
+                {
+                    Player.StartSprinting();
+                }
+                else
+                {
+                    Player.StopSprinting();
                 }
             }
         }

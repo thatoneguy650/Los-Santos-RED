@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr
         private Jurisdictions Jurisdictions;
         private string LastRanCoreTask;
         private string LastRanQuaternaryTask;
+        private string LastRanQuinaryTask;
         private string LastRanSecondaryTask;
         private string LastRanTertiaryTask;
         private Names Names;
@@ -37,6 +38,7 @@ namespace LosSantosRED.lsr
         private string PrevLastRanSecondaryTask;
         private string PrevLastRanTertiaryTask;
         private List<ModTask> QuaternaryTasks;
+        private List<ModTask> QuinaryTasks;
         private RadioStations RadioStations;
         private PedGroups RelationshipGroups;
         private Scenarios Scenarios;
@@ -58,12 +60,15 @@ namespace LosSantosRED.lsr
         private ZoneScannerAudio ZoneScannerAudio;
         private Interiors Interiors;
         private ModItems ModItems;
+
+
         public ModController()
         {
         }
         public bool DebugCoreRunning { get; set; } = true;
         public bool DebugInputRunning { get; set; } = true;
         public bool DebugSecondaryRunning { get; set; } = true;
+        private bool DebugQuinaryRunning { get; set; } = true;
         public bool DebugUIRunning { get; set; } = true;
         public bool IsRunning { get; private set; }
         public void Dispose()
@@ -160,6 +165,8 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartQuaternaryLogic();
             GameFiber.Yield();
+            //StartQuinaryLogic();
+            //GameFiber.Yield();
             StartUILogic();
             GameFiber.Yield();
             StartInputLogic();
@@ -311,6 +318,13 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
                 new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
             };
+
+            //QuinaryTasks = new List<ModTask>()
+            //{
+            //    new ModTask(500, "Civilians.Update", Civilians.Update, 0),//250
+            //    new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
+            //};
+
 
             FPS = new MovingAverage();
             TimeMA = new MovingAverage();
@@ -538,6 +552,55 @@ namespace LosSantosRED.lsr
             }, "Run Secondary Logic");
             GameFiber.Yield();
         }
+        //private void StartQuinaryLogic()
+        //{
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        try
+        //        {
+        //            int CurrentQuinaryTask = 0;
+        //            while (IsRunning)
+        //            {
+        //                if (DebugQuinaryRunning)
+        //                {
+        //                    if (CurrentQuinaryTask > QuinaryTasks.Count)
+        //                    {
+        //                        CurrentQuinaryTask = 0;
+        //                    }
+        //                    PrevLastRanSecondaryTask = LastRanQuinaryTask;
+        //                    ModTask firstquiaryTask = QuinaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentQuinaryTask).FirstOrDefault();
+        //                    if (firstquiaryTask != null)
+        //                    {
+        //                        LastRanQuinaryTask = firstquiaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstquiaryTask.GameTimeLastRan}";
+        //                        firstquiaryTask.Run();
+        //                        CurrentQuinaryTask++;
+        //                    }
+        //                    else
+        //                    {
+        //                        ModTask alternateQuinaryTask = QuinaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+        //                        if (alternateQuinaryTask != null)
+        //                        {
+        //                            LastRanQuinaryTask = alternateQuinaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateQuinaryTask.GameTimeLastRan}";
+        //                            alternateQuinaryTask.Run();
+        //                        }
+        //                        else
+        //                        {
+        //                            LastRanQuinaryTask = "NONE";//nothing to run at all this tick, everything is on time
+        //                        }
+        //                    }
+        //                }
+        //                GameFiber.Yield();
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+        //            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+        //            Dispose();
+        //        }
+        //    }, "Run Quinary Logic");
+        //    GameFiber.Yield();
+        //}
         private void StartUILogic()
         {
             GameFiber.StartNew(delegate
@@ -581,9 +644,28 @@ namespace LosSantosRED.lsr
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Dispose();
                 }
-            }, "Run UI Logic");
+            }, "Run UI Logic 2");
 
-
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        if (DebugUIRunning)
+                        {
+                            UI.Tick3();
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run UI Logic 3");
         }
         private class ModTask
         {

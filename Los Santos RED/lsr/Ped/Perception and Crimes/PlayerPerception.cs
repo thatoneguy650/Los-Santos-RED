@@ -113,9 +113,9 @@ public class PlayerPerception
             {
                 if(CellsAway >= 6)
                 {
-                    return 1500;
+                    return 1000;
                 }
-                else if(CellsAway >= 4)
+                else if(CellsAway >= 5)
                 {
                     return 750;
                 }
@@ -166,11 +166,11 @@ public class PlayerPerception
             {
                 if (CellsAway >= 6)
                 {
-                    return 1500;
+                    return 1200;
                 }
-                else if (CellsAway >= 4)
+                else if (CellsAway >= 5)
                 {
-                    return 1000;
+                    return 850;
                 }
                 else
                 {
@@ -181,7 +181,7 @@ public class PlayerPerception
             {
                 if (CellsAway >= 6)
                 {
-                    return 2000;
+                    return 2500;
                 }
                 else if (CellsAway >= 4)
                 {
@@ -339,7 +339,17 @@ public class PlayerPerception
         {
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
-            if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
+
+
+            if(TargetInVehicle && DistanceToTarget <= 20f && !Originator.Pedestrian.IsDead)//this is new...., cops should be able to see behind themselves a short distance
+            {
+                SetTargetSeen();
+            }
+            else if (!TargetInVehicle && DistanceToTarget <= 8f && !Originator.Pedestrian.IsDead)//this is new...., cops should be able to see behind themselves a short distance
+            {
+                SetTargetSeen();
+            }
+            else if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
             {
                 if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))//55f
                 {
