@@ -37,7 +37,7 @@ public class Transaction : Interaction
     private PedExt Ped;
     private bool IsTasked;
 
-    private bool IsAnyMenuVisible => (ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
+    private bool IsAnyMenuVisible => menuPool.IsAnyMenuOpen();//(ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
     private enum eSetPlayerControlFlag
     {
         SPC_AMBIENT_SCRIPT = (1 << 1),
@@ -191,10 +191,12 @@ public class Transaction : Interaction
     {
         if (selectedItem.Text == "Buy")
         {
+            SellMenu?.Dispose();
             PurchaseMenu?.Show();
         }
         if (selectedItem.Text == "Sell")
         {
+            PurchaseMenu?.Dispose();
             SellMenu?.Show();
         }
     }

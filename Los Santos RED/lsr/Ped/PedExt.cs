@@ -187,6 +187,8 @@ public class PedExt : IComplexTaskable
     public List<MenuItem> TransactionMenu { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
     public int AssignedSeat { get; set; }
+    public bool IsConductingIllicitTransaction { get; set; } = false;
+
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)

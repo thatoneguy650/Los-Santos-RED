@@ -51,7 +51,7 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys    
     }
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice)
+    public void UpdateLoadout(bool PlayerInVehicle, bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice, bool lethalForceAuthorized)
     {
         uint currentVehicleWeapon;
         bool hasVehicleWeapon = false;
@@ -130,6 +130,18 @@ public class WeaponInventory
                         {
                             SetUnarmed();
                         }
+                        else
+                        {
+                            if(lethalForceAuthorized)
+                            {
+                                SetDeadly(false);
+                            }
+                            else
+                            {
+                                SetLessLethal();
+                            }
+                            //SetDefault();
+                        }
                     }
                     else
                     {
@@ -139,7 +151,14 @@ public class WeaponInventory
                         }
                         else
                         {
-                            SetLessLethal();
+                            //if(PlayerInVehicle)
+                            //{
+                            //    SetUnarmed();
+                            //}
+                            //else
+                            //{
+                                SetLessLethal();
+                            //}
                         }
                     }
                 }
@@ -278,6 +297,36 @@ public class WeaponInventory
             DebugWeaponState = "Set Unarmed";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
+    }
+    public void SetCompletelyUnarmed()
+    {
+        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
+        {
+            ShouldAutoSetWeaponState = false;
+            NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Cop.Pedestrian, false);
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Cop.Pedestrian, out currentWeapon, true);
+            if (currentWeapon != 2725352035)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
+                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
+            }
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
+            IsSetLessLethal = false;
+            IsSetUnarmed = true;
+            IsSetDeadly = false;
+            IsSetDefault = false;
+            DebugWeaponState = "Set Unarmed";
+            GameTimeLastWeaponCheck = Game.GameTime;
+        }
+    }
+    public void Reset()
+    {
+        IsSetDeadly = false;
+        IsSetLessLethal = false;
+        IsSetUnarmed = false;
+        IsSetDefault = false;
+        ShouldAutoSetWeaponState = true;
     }
 }
 

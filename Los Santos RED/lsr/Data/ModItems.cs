@@ -357,6 +357,18 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("schlagen") {Type = ePhysicalItemType.Vehicle }},
             new ModItem("Benefactor Krieger") {
                 ModelItem = new PhysicalItem("krieger"){Type = ePhysicalItemType.Vehicle } },
+
+            ////Vapid
+            new ModItem("Vapid Dominator") { ModelItem = new PhysicalItem("dominator") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Stanier") {ModelItem = new PhysicalItem("stanier") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Sandking SWB"){ModelItem = new PhysicalItem("sandking2") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Sandking XL"){ModelItem = new PhysicalItem("sandking") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Bullet"){ModelItem = new PhysicalItem("bullet") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Radius"){ModelItem = new PhysicalItem("radi") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Sadler"){ModelItem = new PhysicalItem("sadler") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Minivan"){ModelItem = new PhysicalItem("minivan") { Type = ePhysicalItemType.Vehicle }},
+            new ModItem("Vapid Speedo"){ModelItem = new PhysicalItem("speedo") { Type = ePhysicalItemType.Vehicle }},
+
             //Generic
 
 

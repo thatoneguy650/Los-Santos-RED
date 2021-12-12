@@ -22,22 +22,22 @@ public class ShopMenu
     public string Name { get; set; }
     public void Randomize()
     {
-        foreach(MenuItem mi in Items)
-        {
-            if(mi.Purchaseable)
-            {
-                mi.PurchasePrice += (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.0f,0.2f));
-            }
-            if(mi.Sellable)
-            {
-                mi.SalesPrice -= (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.2f, 0.4f));
-            }
-            if(mi.Purchaseable && mi.Sellable && mi.PurchasePrice <= mi.SalesPrice)
-            {
-                mi.PurchasePrice++;
-                mi.PurchasePrice += (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.1f, 0.4f));
-            }
-        }
+        //foreach(MenuItem mi in Items)
+        //{
+        //    if(mi.Purchaseable)
+        //    {
+        //        mi.PurchasePrice += (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.0f,0.2f));
+        //    }
+        //    if(mi.Sellable)
+        //    {
+        //        mi.SalesPrice -= (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.2f, 0.4f));
+        //    }
+        //    if(mi.Purchaseable && mi.Sellable && mi.PurchasePrice <= mi.SalesPrice)
+        //    {
+        //        mi.PurchasePrice++;
+        //        mi.PurchasePrice += (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.1f, 0.4f));
+        //    }
+        //}
     }
 }
 

@@ -96,7 +96,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> WeedAndCigMenu = ShopMenus.GetMenu("WeedAndCigMenu")?.Items;
         List<MenuItem> WeedDealerMenu = ShopMenus.GetMenu("WeedDealerMenu")?.Items;
 
-
+        List<MenuItem> VapidMenu = ShopMenus.GetMenu("VapidMenu")?.Items;
 
 
         LocationsList = new List<GameLocation>
@@ -455,14 +455,16 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, LocationType.CarDealer, "Benefactor/Gallivanter", "") { BannerImage = "benefactorgallivanter.png", Menu = BenefactorGallavanterMenu, 
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(-83.40893f, 80.80059f, 71.08399f), ItemDeliveryHeading = 150.8571f
+                ItemDeliveryPosition = new Vector3(-83.40893f, 80.80059f, 71.08399f), ItemDeliveryHeading = 150.8571f},
+
+            new GameLocation(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, LocationType.CarDealer, "Vapid", "") { Menu = VapidMenu
+                ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
+                ItemDeliveryPosition = new Vector3(-223.3041f, -1166.967f, 22.99067f), ItemDeliveryHeading = 347.7626f},
 
 
 
 
-            },
-
-            new GameLocation(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, LocationType.CarDealer, "Vapid", ""),
             new GameLocation(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f, LocationType.CarDealer, "Sanders Motorcycles", ""),
             new GameLocation(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, LocationType.CarDealer, "Melmut's European Autos", ""),
 

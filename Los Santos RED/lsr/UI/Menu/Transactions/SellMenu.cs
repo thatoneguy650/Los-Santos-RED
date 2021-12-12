@@ -35,7 +35,6 @@ public class SellMenu : Menu
         StoreCam = storeCamera;
         ShouldPreviewItem = shouldPreviewItem;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
-        sellMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         if (Store.BannerImage != "")
         {
             sellMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
@@ -138,7 +137,7 @@ public class SellMenu : Menu
         {
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-                StartSellAnimation(ToAdd);
+                StartSellAnimation(ToAdd, menuItem.IsIllicilt);
             }
             else
             {
@@ -304,10 +303,15 @@ public class SellMenu : Menu
             }
         }
     }
-    private void StartSellAnimation(ModItem item)
+    private void StartSellAnimation(ModItem item, bool isIllicit)
     {
         Hide();
         IsActivelyConversing = true;
+        if (isIllicit)
+        {
+            Player.IsConductingIllicitTransaction = true;
+            Ped.IsConductingIllicitTransaction = true;
+        }
         Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
@@ -356,6 +360,11 @@ public class SellMenu : Menu
             SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
         }
         IsActivelyConversing = false;
+        if (isIllicit)
+        {
+            Player.IsConductingIllicitTransaction = false;
+            Ped.IsConductingIllicitTransaction = false;
+        }
         //Show();     
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)

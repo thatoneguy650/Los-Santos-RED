@@ -252,7 +252,7 @@ public class PedSwapCustomMenu : Menu
         Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select Percent Of Parent ID 1 To Use", 0.0f, 1.0f, 0.1f);
         Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select Percent Of Parent ID 2 To Use", 0.0f, 1.0f, 0.1f);
 
-        RandomizeHair = new UIMenuItem("Randomize Hair", "Set Randome Hair (Use Components to Select Manually)");
+        RandomizeHair = new UIMenuItem("Randomize Hair", "Set Random Hair (Use Components to Select Manually)");
 
         HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select Primary Hair Color (Requires Head Data)", ColorList);
         HairSecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Hair Color", "Select Secondary Hair Color (Requires Head Data)", ColorList);

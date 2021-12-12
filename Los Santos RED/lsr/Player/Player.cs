@@ -63,6 +63,8 @@ namespace Mod
         private uint GameTimeGotInVehicle;
         private bool isExcessiveSpeed;
         private Sprinting Sprinting;
+        private int storedViewMode = -1;
+
         //private uint GameTimeStartedSprinting;
         //private uint GameTimeStoppedSprinting;
         //private bool isSprinting = false;
@@ -200,6 +202,7 @@ namespace Mod
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1);//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
+        public bool IsConductingIllicitTransaction { get; set; }
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
@@ -340,6 +343,9 @@ namespace Mod
         public float VehicleSpeedMPH => VehicleSpeed * 2.23694f;
         public Violations Violations { get; private set; }
         public int WantedLevel => wantedLevel;
+
+        public bool IsDuckingInVehicle { get; set; } = false;
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -674,10 +680,6 @@ namespace Mod
 
         }
         public void LowerHands() => Surrendering.LowerHands();
-
-
-
-
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
@@ -1335,13 +1337,11 @@ namespace Mod
             if (toOwn != null && toOwn.Vehicle.Exists())
             {
                 ClearVehicleOwnership();
-                //if (!TrackedVehicles.Any(x => x.Vehicle.Handle == toOwn.Handle))
-                //{
-                //    TrackedVehicles.Add(toOwn);
-                //}
                 toOwn.SetNotWanted();
                 toOwn.Vehicle.IsStolen = false;
                 toOwn.Vehicle.IsPersistent = true;
+                Blip myBlip = toOwn.Vehicle.AttachBlip();
+                myBlip.Sprite = BlipSprite.GetawayCar;
                 OwnedVehicle = toOwn;
                 EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {OwnedVehicle.Vehicle.Handle}", 5);
             }
@@ -1350,6 +1350,11 @@ namespace Mod
         {
             if(OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
             {
+                Blip attachedBlip = OwnedVehicle.Vehicle.GetAttachedBlip();
+                if (attachedBlip.Exists())
+                {
+                    attachedBlip.Delete();
+                }
                 OwnedVehicle.Vehicle.IsPersistent = false;
                 EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE CLEARED {OwnedVehicle.Vehicle.Handle}", 5);
             }
@@ -1707,7 +1712,9 @@ namespace Mod
                 }
 
 
+         
 
+                
 
 
 
@@ -1777,21 +1784,49 @@ namespace Mod
                     OwnedVehicle.Vehicle.IsPersistent = false;
                 }
             }
-
-
-
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());
-
-
-
-
-
-
-            //if(IsCop && AliasedCop != null)
-            //{
-            //    AliasedCop.Update(this, this, PlacePoliceLastSeenPlayer, EntityProvider);
-            //}
+            bool isDuckingInVehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character, 359, 1);
+            if (IsDuckingInVehicle != isDuckingInVehicle)
+            {
+                if(isDuckingInVehicle)
+                {
+                    OnStartedDuckingInVehicle();
+                }
+                else
+                {
+                    OnStoppedDuckingInVehicle();
+                }
+                IsDuckingInVehicle = isDuckingInVehicle;
+            }
         }
+
+        private void OnStoppedDuckingInVehicle()
+        {
+            if (Settings.SettingsManager.PlayerSettings.ForceFirstPersonOnVehicleDuck)
+            {
+                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
+                if (viewMode != storedViewMode)
+                {
+                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(storedViewMode);
+                    storedViewMode = -1;
+                }
+                EntryPoint.WriteToConsole($"OnStoppedDuckingInVehicle storedViewMode {storedViewMode}", 5);
+            }
+        }
+        private void OnStartedDuckingInVehicle()
+        {
+            if (Settings.SettingsManager.PlayerSettings.ForceFirstPersonOnVehicleDuck)
+            {
+                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
+                if (viewMode != 4)
+                {
+                    storedViewMode = viewMode;
+                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(4);
+                }
+                EntryPoint.WriteToConsole($"OnStartedDuckingInVehicle viewMode {viewMode} storedViewMode {storedViewMode}", 5);
+            }
+        }
+
         public void UpdateWeaponData()
         {
             if (Game.LocalPlayer.Character.IsShooting)

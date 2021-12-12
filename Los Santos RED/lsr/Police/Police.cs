@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice);
+                            Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {

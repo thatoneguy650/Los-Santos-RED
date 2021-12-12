@@ -80,7 +80,7 @@ public class ShopMenus : IShopMenus
             new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Lighter",5),}),
             new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("Lighter",5),}),
-            new ShopMenu("WeedDealerMenu","Marijuana Dealer",new List<MenuItem>() { new MenuItem("Gram of Schwag",6, 1),new MenuItem("Gram of Mids",9, 3),new MenuItem("Gram of Dank",12, 4),new MenuItem("Joint",3, 1)}),
+            new ShopMenu("WeedDealerMenu","Marijuana Dealer",new List<MenuItem>() { new MenuItem("Gram of Schwag", 6, 1) { IsIllicilt = true },new MenuItem("Gram of Mids",9, 3) { IsIllicilt = true }, new MenuItem("Gram of Dank",12, 4) { IsIllicilt = true }, new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
             //Specific
             new ShopMenu("BurgerShotMenu","Burger Shot",new List<MenuItem> { new MenuItem("Money Shot Meal", 7),new MenuItem("The Bleeder Meal", 4),new MenuItem("Torpedo Meal", 6),new MenuItem("Meat Free Meal", 5),new MenuItem("Freedom Fries", 2),new MenuItem("Liter of eCola", 2),new MenuItem("Liter of Sprunk", 2),new MenuItem("Bottle of Raine Water", 2),new MenuItem("Double Shot Coffee", 2) }),
             new ShopMenu("UpNAtomMenu","Up-N-Atom",new List<MenuItem>() { new MenuItem("Triple Burger", 4),new MenuItem("Bacon Triple Cheese Melt", 3),new MenuItem("Jumbo Shake", 5),new MenuItem("Bacon Burger", 2),new MenuItem("French Fries", 2),new MenuItem("Cup of eCola", 2),new MenuItem("Cup of Sprunk", 2),new MenuItem("Cup of Coffee", 3),new MenuItem("Bottle of Raine Water", 5) }),
@@ -94,6 +94,22 @@ public class ShopMenus : IShopMenus
             new ShopMenu("CluckinBellMenu","Cluckin' Bell",new List<MenuItem>() { new MenuItem("Cluckin' Little Meal",2),new MenuItem("Cluckin' Big Meal",6),new MenuItem("Cluckin' Huge Meal",12),new MenuItem("Wing Piece",7),new MenuItem("Little Peckers",8),new MenuItem("Balls & Rings",4),new MenuItem("Fries",2),new MenuItem("Fowlburger",5),new MenuItem("Cup Of Coffee",3),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2), }),
             new ShopMenu("AlDentesMenu","Al Dentes",new List<MenuItem>() { new MenuItem("Slice of Pizza", 3, 2),new MenuItem("Cup of Sprunk", 2, 1),new MenuItem("Bottle of A.M.", 3, 1),new MenuItem("Bottle of PiBwasser", 3),new MenuItem("Bottle of PiBwasser", -1,2),new MenuItem("Bottle of Barracho", 4),new MenuItem("Bottle of Blarneys", 4),new MenuItem("Bottle of Jakeys", 3),new MenuItem("Bottle of Stronz", 4),new MenuItem("Bottle of Dusche", 3) }),
             new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() { new MenuItem("Gallivanter Baller",67000),new MenuItem("Gallivanter Baller II",90000),new MenuItem("Gallivanter Baller LE",149000),new MenuItem("Gallivanter Baller LE LWB",247000),new MenuItem("Benefactor Schafter",65000),new MenuItem("Benefactor Schafter V12",112000),new MenuItem("Benefactor Feltzer",145000),new MenuItem("Benefactor Schwartzer",48000),new MenuItem("Benefactor Surano",110000),new MenuItem("Benefactor Serrano",60000),new MenuItem("Benefactor Dubsta",110000),new MenuItem("Benefactor Dubsta 2",120000),new MenuItem("Benefactor XLS",151000),new MenuItem("Benefactor Streiter",156000),new MenuItem("Benefactor Schlagen GT",500000),new MenuItem("Benefactor Krieger",750000),}),
+
+            new ShopMenu("VapidMenu","Vapid",new List<MenuItem>() {
+
+                new MenuItem("Vapid Stanier",28000),
+                new MenuItem("Vapid Minivan",29000),
+                new MenuItem("Vapid Speedo",31000),
+                new MenuItem("Vapid Radius",32000),
+                new MenuItem("Vapid Sadler",38000),
+                new MenuItem("Vapid Sandking SWB",41000),
+                new MenuItem("Vapid Sandking XL",45000),
+                new MenuItem("Vapid Dominator",55000),
+                new MenuItem("Vapid Bullet",155000),    
+            }),
+
+
+
             new ShopMenu("TwentyFourSevenMenu","24/7",new List<MenuItem>() { new MenuItem("Hot Dog", 5),new MenuItem("Burger",3),new MenuItem("Phat Chips", 2),new MenuItem("Donut", 1),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35)
                 ,new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("Lighter", 5),new MenuItem("Can of eCola", 1),new MenuItem("Can of Sprunk", 1),new MenuItem("Bottle of PiBwasser", 3),new MenuItem("Bottle of Jakeys", 3)
                 ,new MenuItem("Cup of Coffee", 2),new MenuItem("Bottle of Raine Water", 2) }),
@@ -103,6 +119,14 @@ public class ShopMenus : IShopMenus
             new ShopMenu("XeroMenu","Xero",new List<MenuItem>() { new MenuItem("Hot Dog", 5),new MenuItem("Burger",3),new MenuItem("Phat Chips", 2),new MenuItem("Donut", 1),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Estancia Cigar", 50),new MenuItem("Lighter", 5),new MenuItem("Can of eCola", 1),new MenuItem("Can of Sprunk", 1),new MenuItem("Bottle of PiBwasser", 3),new MenuItem("Bottle of Jakeys", 3),new MenuItem("Cup of Coffee", 2),new MenuItem("Bottle of Raine Water", 2) }),
             new ShopMenu("LTDMenu","LTD",new List<MenuItem>() { new MenuItem("Hot Dog", 5),new MenuItem("Burger",3),new MenuItem("Phat Chips", 2),new MenuItem("Donut", 1),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Estancia Cigar", 50),new MenuItem("Lighter", 5),new MenuItem("Can of eCola", 1),new MenuItem("Can of Sprunk", 1),new MenuItem("Bottle of PiBwasser", 3),new MenuItem("Bottle of Jakeys", 3),new MenuItem("Cup of Coffee", 2),new MenuItem("Bottle of Raine Water", 2) }),
     };
+
+
+
+
+        
+
+
+
     }
 }
 

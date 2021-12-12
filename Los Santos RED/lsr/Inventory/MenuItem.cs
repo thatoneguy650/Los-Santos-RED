@@ -29,5 +29,6 @@ public class MenuItem
     public bool Sellable => SalesPrice > 0;
     public int PurchasePrice { get; set;} = 5;
     public int SalesPrice { get; set; } = -1;
+    public bool IsIllicilt { get; set; } = false;
 }
 

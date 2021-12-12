@@ -359,7 +359,17 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Game.LocalPlayer.Character, 3, 1, 0, 0);
+        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+            if (TotalLiveries > -1)
+            {
+                int LiveryNumber = RandomItems.GetRandomNumberInt(0, TotalLiveries-1);
+                NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+            }
+
+        }
+        //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Game.LocalPlayer.Character, 3, 1, 0, 0);
 
         //EntryPoint.WriteToConsole($"Game.IsPaused {Game.IsPaused}", 5);
         // IssueWeapons(Weapons);

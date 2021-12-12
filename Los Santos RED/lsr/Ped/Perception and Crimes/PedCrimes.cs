@@ -426,14 +426,14 @@ public class PedCrimes
             //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
             //}
 
-            if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            if(PedExt.IsConductingIllicitTransaction)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
             }
-            if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
-            }
+            //if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
+            //{
+            //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+            //}
 
 
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
