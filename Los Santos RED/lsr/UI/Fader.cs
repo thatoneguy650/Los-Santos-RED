@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -17,7 +18,8 @@ public class Fader
     private uint TimeToFade;
     private bool FadeIsInverse = false;
     private string DebugName = "";
-
+    private string strippedIncomingText;
+    private string strippedExistingText;
     private enum FadeState
     {
         FadingOut,
@@ -136,6 +138,8 @@ public class Fader
     //}
     public void Update(string IncomingText)
     {
+       // strippedIncomingText = Regex.Replace(IncomingText, @"(~.*?~)", "");//strip all color chracters from the text to compare when it actually changes
+
         if (IncomingText != ExistingText)
         {
             OnTextChanged(IncomingText);

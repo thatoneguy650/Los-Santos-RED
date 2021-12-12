@@ -105,6 +105,9 @@ public class GameLocation
         }
     }
     public float DistanceToPlayer => distanceToPlayer;
+
+    public bool IsWalkup { get; set; } = false;
+
     public void Update()
     {
         if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= UpdateIntervalTime)

@@ -25,7 +25,8 @@ public class Pedestrians
     private List<Entity> WorldPeds = new List<Entity>();
     private IWeapons Weapons;
     private ICrimes Crimes;
-    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes)
+    private IShopMenus ShopMenus;
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus)
     {
         Agencies = agencies;
         Zones = zones;
@@ -35,6 +36,7 @@ public class Pedestrians
         RelationshipGroups = relationshipGroups;
         Weapons = weapons;
         Crimes = crimes;
+        ShopMenus = shopMenus;
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
@@ -283,7 +285,12 @@ public class Pedestrians
         {
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked });
+        ShopMenu toAdd = null;
+        if(IsGangMember)
+        {
+            toAdd = ShopMenus.GetRanomdDrugMenu();
+        }
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
     }
     private void AddCop(Ped Pedestrian)
     {

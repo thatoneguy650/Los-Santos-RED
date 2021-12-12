@@ -197,7 +197,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;//(Game.LocalPlayer.Character.IsJacking && (!Game.LocalPlayer.Character.VehicleTryingToEnter.Exists() || Game.LocalPlayer.Character.VehicleTryingToEnter.Handle != OwnedVehicleHandle));
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));//took out vehicle in here, might need at one star vehicle is ok
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1);//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }

@@ -241,17 +241,111 @@ public class UI : IMenuProvideable
     }
     private void DisplayBars()
     {
-        float BackPosX = 0.05f;
-        float BackPosY = 0.9925f;
+        if (Settings.SettingsManager.UISettings.ShowStaminaBar && NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(0))
+        {
+            DisplayBackbroundBar();
+            DisplayStaminaBar();
+            DisplayBar2();
+            DisplayBar3();
+        }
+    }
+    private void DisplayStaminaBar()
+    {
+        //float BackPosX = Settings.SettingsManager.UISettings.StaminaBarPositionX;
+        //float BackPosY = Settings.SettingsManager.UISettings.StaminaBarPositionY;
+        //float BackWidth = Settings.SettingsManager.UISettings.StaminaBarWidth;
+        //float BackHeight = Settings.SettingsManager.UISettings.StaminaBarHeight;
+        //float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        //float FrontPosX = Settings.SettingsManager.UISettings.StaminaBarPositionX;
+        //float FrontPosY = Settings.SettingsManager.UISettings.StaminaBarPositionY;
+        //float FrontHeight = Settings.SettingsManager.UISettings.StaminaBarHeight;
+        //FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        //NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 142, 50, 50, 100, false);
+        //NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 181, 48, 48, 255, false);
+
+
+
         float BackWidth = 0.07f;
+        float BackPosX = 0.015f + (BackWidth / 2);
+        float PosY = 0.992f;
+        float BackPosY = PosY;
         float BackHeight = 0.0075f;
         float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
-        float FrontPosX = 0.05f;
-        float FrontPosY = 0.9925f;
+        float FrontPosX = BackPosX;
+        float FrontPosY = PosY;
         float FrontHeight = 0.0075f;
         FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
         NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 142, 50, 50, 100, false);
         NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 181, 48, 48, 255, false);
+    }
+    private void DisplayBar2()
+    {
+        //float BackPosX = 0.1035f;
+        //float BackPosY = 0.9925f;
+        //float BackWidth = 0.034f;
+        //float BackHeight = 0.0075f;
+        //float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        //float FrontPosX = 0.1035f;
+        //float FrontPosY = 0.9925f;
+        //float FrontHeight = 0.0075f;
+        //FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        //NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 72, 133, 164, 100, false);
+        //NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 72, 133, 164, 255, false);
+
+        float BackWidth = 0.0335f;
+        float BackPosX = 0.0867f + (BackWidth / 2);
+        float PosY = 0.992f;
+        float BackPosY = PosY;
+
+        float BackHeight = 0.0075f;
+        float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        float FrontPosX = BackPosX;
+        float FrontPosY = PosY;
+        float FrontHeight = 0.0075f;
+        FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 72, 133, 164, 100, false);
+        NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 72, 133, 164, 255, false);
+    }
+    private void DisplayBar3()
+    {
+        float BackWidth = 0.0335f;
+        float BackPosX = 0.121875f + (BackWidth / 2);
+        float PosY = 0.992f;//0.9925f;
+        float BackPosY = PosY;
+        float BackHeight = 0.0075f;
+        float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        float FrontPosX = BackPosX;
+        float FrontPosY = PosY;
+        float FrontHeight = 0.0075f;
+        FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 202, 169, 66, 100, false);
+        NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 202, 169, 66, 255, false);
+
+
+        //float BackPosX = 0.1385f;
+        //float BackPosY = 0.9925f;
+        //float BackWidth = 0.0335f;
+        //float BackHeight = 0.0075f;
+        //float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        //float FrontPosX = 0.1385f;
+        //float FrontPosY = 0.9925f;
+        //float FrontHeight = 0.0075f;
+        //FrontPosX = FrontPosX - ((BackWidth - FrontWidth) / 2);
+        //NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 202, 169, 66, 100, false);
+        //NativeFunction.Natives.DRAW_RECT(FrontPosX, FrontPosY, FrontWidth, FrontHeight, 202, 169, 66, 255, false);
+
+    }
+    private void DisplayBackbroundBar()
+    {
+        float BackWidth = 0.14075f;//0.07f;
+        float BackPosX = 0.015f + (BackWidth/2);//0.08525f;
+        float BackPosY = 0.992f;//0.9925f;
+        float BackHeight = 0.015f;//0.0075f;
+        //float BackPosX = 0.0855f;
+        //float BackPosY = 0.992f;//0.9925f;
+        //float BackWidth = 0.1405f;//0.07f;
+        //float BackHeight = 0.015f;//0.0075f;
+        NativeFunction.Natives.DRAW_RECT(BackPosX, BackPosY, BackWidth, BackHeight, 0, 0, 0, 125, false);
     }
     public void UpdateUIData()
     {

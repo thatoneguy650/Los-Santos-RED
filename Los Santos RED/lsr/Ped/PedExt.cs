@@ -185,6 +185,8 @@ public class PedExt : IComplexTaskable
     public bool IsInAPC { get; private set; }
     public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
     public List<MenuItem> TransactionMenu { get; set; }
+    public VehicleExt AssignedVehicle { get; set; }
+    public int AssignedSeat { get; set; }
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)

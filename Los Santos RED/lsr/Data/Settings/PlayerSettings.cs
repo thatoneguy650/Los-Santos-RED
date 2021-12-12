@@ -67,6 +67,9 @@ public class PlayerSettings
     public bool AllowWeaponDropping { get; set; } = true;
     public float Sprint_MaxStamina { get; set; } = 50f;
     public float Sprint_MinStaminaToStart { get; set; } = 10f;
+    public float Sprint_DrainRate { get; set; } = 1.0f;
+    public float Sprint_RecoverRate { get; set; } = 1.0f;
+    public float Sprint_MoveSpeedOverride { get; set; } = 3.0f;//5.0f;
 
     public PlayerSettings()
     {

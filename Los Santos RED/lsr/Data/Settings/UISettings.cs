@@ -90,7 +90,11 @@ public class UISettings
     public float RadarZoomDistance_Investigation { get; set; } = 125f;
     public float RadarZoomDistance_Default { get; set; } = 75f;
     public bool GreyOutWhiteFontAtNight { get; set; } = true;
-
+    public bool ShowStaminaBar { get; set; } = true;
+    public float StaminaBarPositionX { get; set; } = 0.05f;
+    public float StaminaBarPositionY { get; set; } = 0.9925f;
+    public float StaminaBarWidth { get; set; } = 0.07f;
+    public float StaminaBarHeight { get; set; } = 0.0075f;
 
     public UISettings()
     {

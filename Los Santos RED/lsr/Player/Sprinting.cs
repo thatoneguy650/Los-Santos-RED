@@ -13,31 +13,23 @@ public class Sprinting
     private uint GameTimeStoppedSprinting;
     private bool isSprinting = false;
     private float CurrentStamina = 50f;
-    private float MaxStamina = 50f;
-    private float StaminaStartMin = 10f;
     private uint GameTimeLastUpdatedSprint = 0;
-    private uint TimeSprinting => isSprinting ? Game.GameTime - GameTimeStartedSprinting : 0;
-    private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
-
-    public bool IsSprinting => isSprinting;
-    public float Stamina => CurrentStamina;
-    public float StaminaPercentage => CurrentStamina / MaxStamina;
-
     private ISprintable Player;
     private ISettingsProvideable Settings;
-
+    private uint TimeSprinting => isSprinting ? Game.GameTime - GameTimeStartedSprinting : 0;
+    private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
+    public bool IsSprinting => isSprinting;
+    public float Stamina => CurrentStamina;
+    public float StaminaPercentage => CurrentStamina / Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina;
     public Sprinting(ISprintable player, ISettingsProvideable settings)
     {
         Player = player;
         Settings = settings;
-        MaxStamina = Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina;
         CurrentStamina = Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina;
-        StaminaStartMin = Settings.SettingsManager.PlayerSettings.Sprint_MinStaminaToStart;
     }
-
     public void Start()
     {
-        if (!isSprinting && CurrentStamina > StaminaStartMin && Player.Character.Speed >= 2.0f)
+        if (!isSprinting && CurrentStamina > Settings.SettingsManager.PlayerSettings.Sprint_MinStaminaToStart && Player.Character.Speed >= 2.0f)
         {
             GameTimeStartedSprinting = Game.GameTime;
             isSprinting = true;
@@ -57,16 +49,16 @@ public class Sprinting
         {
             if (isSprinting)
             {
-                if (CurrentStamina >= 1.0f)
+                if (CurrentStamina >= Settings.SettingsManager.PlayerSettings.Sprint_DrainRate)
                 {
-                    CurrentStamina--;
+                    CurrentStamina -= Settings.SettingsManager.PlayerSettings.Sprint_DrainRate;
                 }
             }
             else
             {
-                if (CurrentStamina <= MaxStamina - 1.0f)
+                if (CurrentStamina <= Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina - Settings.SettingsManager.PlayerSettings.Sprint_RecoverRate)
                 {
-                    CurrentStamina++;
+                    CurrentStamina += Settings.SettingsManager.PlayerSettings.Sprint_RecoverRate;
                 }
             }
             if (isSprinting && CurrentStamina == 0)
@@ -81,7 +73,7 @@ public class Sprinting
         }
         if (isSprinting)
         {
-            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, 5.0f);
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.PlayerSettings.Sprint_MoveSpeedOverride);
         }
     }
 

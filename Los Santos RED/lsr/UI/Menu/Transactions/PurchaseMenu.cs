@@ -23,10 +23,12 @@ public class PurchaseMenu : Menu
     private bool ShouldPreviewItem;
     private PedExt Ped;
     private bool IsActivelyConversing;
+    private IEntityProvideable World;
+    private ISettingsProvideable Settings;
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public bool BoughtItem => ItemsBought > 0;
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings)
     {
         Ped = ped;
         ModItems = modItems;
@@ -34,6 +36,8 @@ public class PurchaseMenu : Menu
         Player = player;
         StoreCam = storeCamera;
         ShouldPreviewItem = shouldPreviewItem;
+        World = world;
+        Settings = settings;
         purchaseMenu = menuPool.AddSubMenu(parentMenu, "Buy");
         purchaseMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         if (Store.BannerImage != "")
@@ -324,29 +328,27 @@ public class PurchaseMenu : Menu
     }
     private bool PurchaseVehicle(ModItem modItem)
     {
-        //bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
-        //if (!ItemInDeliveryBay)
-        //{
-        //    Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
-        //    if (NewVehicle.Exists())
-        //    {
-        //        VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
-        //        World.AddEntity(MyNewCar, ResponseType.None);
-        //        Player.TakeOwnershipOfVehicle(MyNewCar);
-        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "Purchase", "Thank you for your purchase");
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-        return false;
-
+        bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+        if (!ItemInDeliveryBay)
+        {
+            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
+            if (NewVehicle.Exists())
+            {
+                VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
+                World.AddEntity(MyNewCar, ResponseType.None);
+                Player.TakeOwnershipOfVehicle(MyNewCar);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "Purchase", "Thank you for your purchase");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
     private void StartBuyAnimation(ModItem item)
     {

@@ -28,7 +28,7 @@ namespace Mod
         private IWeapons Weapons;
         private List<GameLocation> ActiveLocations = new List<GameLocation>();
         private ITimeReportable Time;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time)
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -37,7 +37,7 @@ namespace Mod
             Weapons = weapons;
             Crimes = crimes;
             Time = time;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public bool AnyWantedCiviliansNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);

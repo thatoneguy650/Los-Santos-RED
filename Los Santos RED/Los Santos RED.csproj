@@ -101,13 +101,16 @@
   <ItemGroup>
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
+    <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Intoxicants.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
+    <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
+    <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />

@@ -76,6 +76,8 @@ public class SpawnTask
                             if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
                                 Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                                Person.AssignedVehicle = Vehicle;
+                                Person.AssignedSeat = -1;
                                 int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
                                 for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                                 {
@@ -84,6 +86,8 @@ public class SpawnTask
                                     {
                                         int SeatToAssign = OccupantIndex - 1;
                                         Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
+                                        Passenger.AssignedVehicle = Vehicle;
+                                        Passenger.AssignedSeat = SeatToAssign;
                                     }
                                     else
                                     {

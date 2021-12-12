@@ -37,6 +37,8 @@ namespace LosSantosRED.lsr.Interface
         uint Handle { get; }
         bool IsDrunk { get; set; }
         bool IsSuicidal { get; set; }
+        VehicleExt AssignedVehicle { get; }
+        int AssignedSeat { get; }
         void SetWantedLevel(int v);
     }
 }

@@ -351,7 +351,7 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        Dispatcher.SpawnCop(Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        Dispatcher.DebugSpawnCop();
     }
     private void DebugNumpad3()
     {
@@ -507,7 +507,7 @@ public class Debug
     {
         //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
 
-        //Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+        Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
 
         List<MenuItem> WeedDealerMenu = new List<MenuItem>() {
             new MenuItem("Gram of Schwag",6, 1),
@@ -533,7 +533,6 @@ public class Debug
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
     }
-
     private string GetInternalZoneString(Vector3 ZonePosition)
     {
         IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
@@ -678,7 +677,6 @@ public class Debug
             }
         }, "Run Debug Logic");
     }
-
     private void HighlightStoreWithCamera()
     {
 
@@ -726,7 +724,6 @@ public class Debug
             InterpolationCamera.Delete();
         }
     }
-
     private void SetRadarZoomeFor20Seconds(float distance)
     {
 

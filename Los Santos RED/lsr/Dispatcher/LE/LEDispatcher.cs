@@ -636,4 +636,52 @@ public class LEDispatcher
             //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
         }
     }
+    public void DebugSpawnCop()
+    {
+        int timesTried = 0;
+        bool isValidSpawn = false;
+        SpawnLocation spawnLocation = new SpawnLocation();
+        do
+        {
+            spawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);//GetPositionAroundPlayer();
+            spawnLocation.StreetPosition = spawnLocation.InitialPosition;
+            isValidSpawn = true;// IsValidSpawn(spawnLocation);
+            timesTried++;
+            GameFiber.Yield();
+        }
+        while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
+        if (spawnLocation.HasSpawns && isValidSpawn)
+        {
+            Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
+            GameFiber.Yield();
+            if (agency != null)
+            {
+                LastAgencySpawned = agency;
+                DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                GameFiber.Yield();
+                if (VehicleType != null)
+                {
+                    DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
+                    GameFiber.Yield();
+                    if (OfficerType != null)
+                    {
+                        try
+                        {
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
+                            spawnTask.AttemptSpawn();
+                            GameFiber.Yield();
+                            spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
+                            HasDispatchedThisTick = true;
+                            Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
+                        }
+                        catch (Exception ex)
+                        {
+                            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

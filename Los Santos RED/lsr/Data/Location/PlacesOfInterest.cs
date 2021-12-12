@@ -16,52 +16,10 @@ public class PlacesOfInterest : IPlacesOfInterest
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
     private List<GameLocation> LocationsList;
-    private List<MenuItem> ToolMenu;
-    private List<MenuItem> CheapHotelMenu;
-    private List<MenuItem> ExpensiveHotelMenu;
-    private List<MenuItem> HookerMenu;
-    private List<MenuItem> ConvenienceStoreMenu;
-    private List<MenuItem> TwentyFourSevenMenu;
-    private List<MenuItem> ConvenienceAndLiquorStoreMenu;
-    private List<MenuItem> FancyDeliMenu;
-    private List<MenuItem> FancyFishMenu;
-    private List<MenuItem> FancyGenericMenu;
-    private List<MenuItem> GrainOfTruthMenu;
-    private List<MenuItem> FruitVineMenu;
-    private List<MenuItem> GasStationMenu;
-    private List<MenuItem> RonMenu;
-    private List<MenuItem> XeroMenu;
-    private List<MenuItem> LTDMenu;
-    private List<MenuItem> GenericMenu;
-    private List<MenuItem> ChihuahuaHotDogMenu;
-    private List<MenuItem> BeefyBillsMenu;
-    private List<MenuItem> PizzaMenu;
-    private List<MenuItem> DonutMenu;
-    private List<MenuItem> StoreMenu;
-    private List<MenuItem> FruitMenu;
-    private List<MenuItem> UpNAtomMenu;
-    private List<MenuItem> TacoFarmerMenu;
-    private List<MenuItem> HeadShopMenu;
-    private List<MenuItem> LiquorStoreMenu;
-    private List<MenuItem> BarMenu;
-    private List<MenuItem> CoffeeMenu;
-    private List<MenuItem> SandwichMenu;
-    private List<MenuItem> BiteMenu;
-    private List<MenuItem> TacoBombMenu;
-    private List<MenuItem> BurgerShotMenu;
-    private List<MenuItem> WigwamMenu;
-    private List<MenuItem> ViceroyMenu;
-    private List<MenuItem> CluckinBellMenu;
-    private List<MenuItem> AlDentesMenu;
-    private List<MenuItem> BenefactorGallavanterMenu;
-    private List<MenuItem> NoodleMenu;
-    private List<MenuItem> WeedMenu;
-    private List<MenuItem> WeedAndCigMenu;
-    private List<MenuItem> WeedDealerMenu;
-
-    public PlacesOfInterest()
+    private IShopMenus ShopMenus;
+    public PlacesOfInterest(IShopMenus shopMenus)
     {
-
+        ShopMenus = shopMenus;
     }
 
     public void ReadConfig()
@@ -92,398 +50,55 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         return LocationsList.Where(x => x.Type == Type).ToList();
     }
-    private void CreateMenus()
-    {
-        CreateGenericMenus();
-        CreateSpecificMenus();
-    }
-    private void CreateGenericMenus()
-    {
-        ToolMenu = new List<MenuItem>() {
-            new MenuItem("Screwdriver",19),
-            new MenuItem("Hammer", 15),
-            new MenuItem("Drill", 50),
-            new MenuItem("Pliers", 20),
-            new MenuItem("Shovel", 60),
-            new MenuItem("Wrench", 24),};
-        CheapHotelMenu = new List<MenuItem>() {
-            new MenuItem("Room: Single Twin",99),
-            new MenuItem("Room: Single Queen", 130),
-            new MenuItem("Room: Double Queen", 150),
-            new MenuItem("Room: Single King", 160), };
-        ExpensiveHotelMenu = new List<MenuItem>() {
-            new MenuItem("Room: Single Queen", 189),
-            new MenuItem("Room: Double Queen", 220),
-            new MenuItem("Room: Single King", 250),
-            new MenuItem("Room: Delux", 280), };
-        HookerMenu = new List<MenuItem>() {
-            new MenuItem("Handy", 50),
-            new MenuItem("Head", 75),
-            new MenuItem("Half And Half", 150),
-            new MenuItem("Full",200),};
-        ConvenienceStoreMenu = new List<MenuItem>() {
-            new MenuItem("Hot Dog", 5),
-            new MenuItem("Burger",3),
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Donut", 1),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Debonaire Menthol", 38),
-            new MenuItem("Caradique", 35),
-            new MenuItem("69 Brand", 40),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Lighter", 5),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Jakeys", 3),
-            new MenuItem("Cup of Coffee", 2),
-            new MenuItem("Bottle of Raine Water", 2) };
-        SandwichMenu = new List<MenuItem>() {
-            new MenuItem("Ham and Cheese Sandwich", 2),
-            new MenuItem("Turkey Sandwich", 2),
-            new MenuItem("Tuna Sandwich", 2),
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Bottle of Raine Water", 2),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1) };
-        HeadShopMenu = new List<MenuItem>() {
-            new MenuItem("Joint", 25),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Debonaire Menthol", 38),
-            new MenuItem("Caradique", 35),
-            new MenuItem("69 Brand", 40),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Lighter", 5),
-            new MenuItem("Bottle of Raine Water", 2) };
-        LiquorStoreMenu = new List<MenuItem>() {
-            new MenuItem("40 oz", 5),
-            new MenuItem("Bottle of Barracho", 3),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Blarneys", 3),
-            new MenuItem("Bottle of Logger", 3,1),
-            new MenuItem("Bottle of Patriot", 3,1),
-            new MenuItem("Bottle of Pride", 3),
-            new MenuItem("Bottle of Stronz", 4),
-            new MenuItem("Bottle of A.M.", 4),
-            new MenuItem("Bottle of Jakeys", 4),
-            new MenuItem("Bottle of Dusche", 4) };
-        BarMenu = new List<MenuItem>() {
-            new MenuItem("Burger", 5),
-            new MenuItem("Hot Dog", 5),
-            new MenuItem("Bottle of Raine Water", 2),
-            new MenuItem("Cup of eCola", 2),
-            new MenuItem("40 oz", 5),
-            new MenuItem("Bottle of Barracho", 4),
-            new MenuItem("Bottle of PiBwasser", 4),
-            new MenuItem("Bottle of Blarneys", 5),
-            new MenuItem("Bottle of Logger", 5),
-            new MenuItem("Bottle of Patriot", 5),
-            new MenuItem("Bottle of Pride", 4),
-            new MenuItem("Bottle of Stronz", 5),
-            new MenuItem("Bottle of A.M.", 4),
-            new MenuItem("Bottle of Jakeys", 5),
-            new MenuItem("Bottle of Dusche", 5) };
-        CoffeeMenu = new List<MenuItem>() {
-            new MenuItem("Cup of Coffee", 2),
-            new MenuItem("Donut", 5),
-            new MenuItem("Bottle of Raine Water", 2) };
-        GenericMenu = new List<MenuItem>() {
-            new MenuItem("Burger",3),
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
-        PizzaMenu = new List<MenuItem>() {
-            new MenuItem("Slice of Pizza", 3),
-            new MenuItem("Cup of Sprunk", 2),
-            new MenuItem("Bottle of A.M.", 3),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Barracho", 4),
-            new MenuItem("Bottle of Blarneys", 4),
-            new MenuItem("Bottle of Jakeys", 3),
-            new MenuItem("Bottle of Stronz", 4),
-            new MenuItem("Bottle of Dusche", 3) };
-        DonutMenu = new List<MenuItem>() {
-            new MenuItem("Hot Dog", 5),
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Donut", 1),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Cup of eCola", 2),
-            new MenuItem("Cup of Coffee", 3) };
-        StoreMenu = new List<MenuItem>() {
-            new MenuItem("Joint", 25),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Cup of Sprunk", 2),
-            new MenuItem("Banana", 3),
-            new MenuItem("Donut", 1),
-            new MenuItem("Hot Pretzel", 2),
-            new MenuItem("40 oz", 5),
-            new MenuItem("Bottle of Barracho",3),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Blarneys",3),
-            new MenuItem("Bottle of Logger", 4),
-            new MenuItem("Bottle of Patriot",4),
-            new MenuItem("Bottle of Pride", 3),
-            new MenuItem("Bottle of Stronz", 4) };
-        FruitMenu = new List<MenuItem>() {
-            new MenuItem("Banana", 2),
-            new MenuItem("Orange", 2),
-            new MenuItem("Apple", 2),
-            new MenuItem("Nuts", 2),
-            new MenuItem("Bottle of Raine Water", 2),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1) };
-        GasStationMenu = new List<MenuItem>() {
-            new MenuItem("Hot Dog", 5),
-            new MenuItem("Burger",3),
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Donut", 1),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Lighter", 5),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Jakeys", 3),
-            new MenuItem("Cup of Coffee", 2),
-            new MenuItem("Bottle of Raine Water", 2) };
-        ConvenienceAndLiquorStoreMenu = new List<MenuItem>() {
-            new MenuItem("Phat Chips", 2),
-            new MenuItem("Donut", 1),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Debonaire Menthol", 38),
-            new MenuItem("Caradique", 35),
-            new MenuItem("69 Brand", 40),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Lighter", 5),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of Barracho", 3),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of Blarneys", 3),
-            new MenuItem("Bottle of Logger", 3),
-            new MenuItem("Bottle of Patriot", 3),
-            new MenuItem("Bottle of Pride", 3),
-            new MenuItem("Bottle of Stronz", 4),
-            new MenuItem("Bottle of A.M.", 4),
-            new MenuItem("Bottle of Jakeys", 4),
-            new MenuItem("Bottle of Dusche", 4),
-            new MenuItem("Cup of Coffee", 2),
-            new MenuItem("Bottle of Raine Water", 2) };
-        FancyDeliMenu = new List<MenuItem>() {
-            new MenuItem("Chicken Club Salad",10),
-            new MenuItem("Spicy Seafood Gumbo",14),
-            new MenuItem("Muffaletta",8),
-            new MenuItem("Zucchini Garden Pasta",9),
-            new MenuItem("Pollo Mexicano",12),
-            new MenuItem("Italian Cruz Po'boy",19),
-            new MenuItem("Chipotle Chicken Panini",10),
-            new MenuItem("Bottle of Raine Water",2),
-            new MenuItem("Cup of eCola",2),
-            new MenuItem("Cup of Sprunk",2),};
-        FancyFishMenu = new List<MenuItem>() {
-            new MenuItem("Coconut Crusted Prawns",12),
-            new MenuItem("Crab and Shrimp Louie",10),
-            new MenuItem("Open-Faced Crab Melt",28),
-            new MenuItem("King Salmon",48),
-            new MenuItem("Ahi Tuna",44),
-            new MenuItem("Key Lime Pie",13),
-            new MenuItem("Bottle of Raine Water",2), };
-        FancyGenericMenu = new List<MenuItem>() {
-            new MenuItem("Smokehouse Burger",10),
-            new MenuItem("Chicken Critters Basket",7),
-            new MenuItem("Prime Rib 16 oz",22),
-            new MenuItem("Bone-In Ribeye",25),
-            new MenuItem("Grilled Pork Chops",14),
-            new MenuItem("Grilled Shrimp",15),
-            new MenuItem("Bottle of Raine Water",2),
-            new MenuItem("Cup of eCola",2),
-            new MenuItem("Cup of Sprunk",2),};
-        NoodleMenu = new List<MenuItem>() {
-            new MenuItem("Juek Suk tong Mandu",8),
-            new MenuItem("Hayan Jam Pong",9),
-            new MenuItem("Sal Gook Su Jam Pong",12),
-            new MenuItem("Chul Pan Bokkeum Jam Pong",20),
-            new MenuItem("Deul Gae Udon",12),
-            new MenuItem("Dakgogo Bokkeum Bap",9),
-            new MenuItem("Bottle of Raine Water",2),
-            new MenuItem("Cup of eCola",2),
-            new MenuItem("Cup of Sprunk",2),};
-        WeedMenu = new List<MenuItem>() {
-            new MenuItem("White Widow Preroll",2),
-            new MenuItem("OG Kush Preroll",3),
-            new MenuItem("Northern Lights Preroll",3),
-            new MenuItem("White Widow Gram",7),
-            new MenuItem("OG Kush Gram",8),
-            new MenuItem("Northern Lights Gram",9),
-            new MenuItem("Bong",25),
-            new MenuItem("Lighter",5),};
-        WeedAndCigMenu = new List<MenuItem>() {
-            new MenuItem("White Widow Preroll",2),
-            new MenuItem("OG Kush Preroll",3),
-            new MenuItem("Northern Lights Preroll",3),
-            new MenuItem("White Widow Gram",7),
-            new MenuItem("OG Kush Gram",8),
-            new MenuItem("Northern Lights Gram",9),
-            new MenuItem("Bong",25),
-            new MenuItem("Redwood Regular", 30),
-            new MenuItem("Redwood Mild", 32),
-            new MenuItem("Debonaire", 35),
-            new MenuItem("Debonaire Menthol", 38),
-            new MenuItem("Caradique", 35),
-            new MenuItem("69 Brand", 40),
-            new MenuItem("Estancia Cigar", 50),
-            new MenuItem("Lighter",5),};
-        WeedDealerMenu = new List<MenuItem>() {
-            new MenuItem("Gram of Schwag",6, 1),
-            new MenuItem("Gram of Mids",9, 3),
-            new MenuItem("Gram of Dank",12, 4),
-            new MenuItem("Joint",3, 1)};
-    }
-    private void CreateSpecificMenus()
-    {
-        BurgerShotMenu = new List<MenuItem>
-        {
-            new MenuItem("Money Shot Meal", 7),
-            new MenuItem("The Bleeder Meal", 4),
-            new MenuItem("Torpedo Meal", 6),
-            new MenuItem("Meat Free Meal", 5),
-            new MenuItem("Freedom Fries", 2),
-            new MenuItem("Liter of eCola", 2),
-            new MenuItem("Liter of Sprunk", 2),
-            new MenuItem("Bottle of Raine Water", 2),
-            new MenuItem("Double Shot Coffee", 2) };
-        UpNAtomMenu = new List<MenuItem>() {
-            new MenuItem("Triple Burger", 4),
-            new MenuItem("Bacon Triple Cheese Melt", 3),
-            new MenuItem("Jumbo Shake", 5),
-            new MenuItem("Bacon Burger", 2),
-            new MenuItem("French Fries", 2),
-            new MenuItem("Cup of eCola", 2),
-            new MenuItem("Cup of Sprunk", 2),
-            new MenuItem("Cup of Coffee", 3),
-            new MenuItem("Bottle of Raine Water", 5) };
-        BeefyBillsMenu = new List<MenuItem>() {
-            new MenuItem("Burger", 3),
-            new MenuItem("Megacheese Burger", 2),
-            new MenuItem("Double Burger", 2),
-            new MenuItem("Kingsize Burger", 2),
-            new MenuItem("Bacon Burger", 2),
-            new MenuItem("French Fries", 2),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
-        ChihuahuaHotDogMenu = new List<MenuItem>() {
-            new MenuItem("Hot Dog", 5, 2),
-            new MenuItem("Hot Sausage", 5),
-            new MenuItem("Hot Pretzel", 2),
-            new MenuItem("3 Mini Pretzels", 3),
-            new MenuItem("Nuts", 2),
-            new MenuItem("Can of Sprunk", 1, 1),
-            new MenuItem("Bottle of Raine Water", 2, 1) };
-        TacoFarmerMenu = new List<MenuItem>() {
-            new MenuItem("Taco", 2),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Cup of Coffee", 3),
-            new MenuItem("Bottle of Raine Water", 2) };
-        BiteMenu = new List<MenuItem>() {
-            new MenuItem("Gut Buster Sandwich", 9),
-            new MenuItem("Ham and Tuna Sandwich", 7),
-            new MenuItem("Chef's Salad", 4),
-            new MenuItem("Cup of eCola", 1),
-            new MenuItem("Cup of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
-        TacoBombMenu = new List<MenuItem> {
-            new MenuItem("Breakfast Burrito",4),
-            new MenuItem("Deep Fried Salad",7),
-            new MenuItem("Beef Bazooka",8),
-            new MenuItem("Chimichingado Chiquito",5),
-            new MenuItem("Cheesy Meat Flappers",6),
-            new MenuItem("Volcano Mudsplatter Nachos",7),
-            new MenuItem("Can of eCola", 1),
-            new MenuItem("Can of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
-        WigwamMenu = new List<MenuItem>() {
-            new MenuItem("Wigwam Burger", 3),
-            new MenuItem("Wigwam Cheeseburger", 2),
-            new MenuItem("Big Wig Burger", 5),
-            new MenuItem("French Fries", 2),
-            new MenuItem("Cup of eCola", 1),
-            new MenuItem("Cup of Sprunk", 1),
-            new MenuItem("Bottle of Raine Water", 2) };
-        ViceroyMenu = new List<MenuItem>() {
-            new MenuItem("City View King",354),
-            new MenuItem("City View Deluxe King", 378),
-            new MenuItem("Partial Ocean View King", 392),
-            new MenuItem("Ocean View King", 423),
-            new MenuItem("City View Two Bedded Room", 456),
-            new MenuItem("Grande King", 534),
-            new MenuItem("Grande Ocean View King", 647),
-            new MenuItem("Empire Suite", 994),
-            new MenuItem("Monarch Suite", 1327), };
-        CluckinBellMenu = new List<MenuItem>() {
-            new MenuItem("Cluckin' Little Meal",2),
-            new MenuItem("Cluckin' Big Meal",6),
-            new MenuItem("Cluckin' Huge Meal",12),
-            new MenuItem("Wing Piece",7),
-            new MenuItem("Little Peckers",8),
-            new MenuItem("Balls & Rings",4),
-            new MenuItem("Fries",2),
-            new MenuItem("Fowlburger",5),
-            new MenuItem("Cup Of Coffee",3),
-            new MenuItem("Cup of eCola",2),
-            new MenuItem("Cup of Sprunk",2), };
-        AlDentesMenu = new List<MenuItem>() {
-            new MenuItem("Slice of Pizza", 3, 2),
-            new MenuItem("Cup of Sprunk", 2, 1),
-            new MenuItem("Bottle of A.M.", 3, 1),
-            new MenuItem("Bottle of PiBwasser", 3),
-            new MenuItem("Bottle of PiBwasser", -1,2),
-            new MenuItem("Bottle of Barracho", 4),
-            new MenuItem("Bottle of Blarneys", 4),
-            new MenuItem("Bottle of Jakeys", 3),
-            new MenuItem("Bottle of Stronz", 4),
-            new MenuItem("Bottle of Dusche", 3) };
-        BenefactorGallavanterMenu = new List<MenuItem>() {
-            new MenuItem("Gallivanter Baller",67000),
-            new MenuItem("Gallivanter Baller II",90000),
-            new MenuItem("Gallivanter Baller LE",149000),
-            new MenuItem("Gallivanter Baller LE LWB",247000),
-            new MenuItem("Benefactor Schafter",65000),
-            new MenuItem("Benefactor Schafter V12",112000),
-            new MenuItem("Benefactor Feltzer",145000),
-            new MenuItem("Benefactor Schwartzer",48000),
-            new MenuItem("Benefactor Surano",110000),
-            new MenuItem("Benefactor Serrano",60000),
-            new MenuItem("Benefactor Dubsta",110000),
-            new MenuItem("Benefactor Dubsta 2",120000),
-            new MenuItem("Benefactor XLS",151000),
-            new MenuItem("Benefactor Streiter",156000),
-            new MenuItem("Benefactor Schlagen GT",500000),
-            new MenuItem("Benefactor Krieger",750000),
-        };
-        TwentyFourSevenMenu = ConvenienceStoreMenu;
-        GrainOfTruthMenu = ConvenienceAndLiquorStoreMenu;
-        FruitVineMenu = ConvenienceAndLiquorStoreMenu;
-        RonMenu = GasStationMenu;
-        XeroMenu = GasStationMenu;
-        LTDMenu = GasStationMenu;
-    }
+   
     private void DefaultConfig()
     {
-        CreateMenus();
+        List<MenuItem> ToolMenu = ShopMenus.GetMenu("ToolMenu")?.Items;
+        List<MenuItem> CheapHotelMenu = ShopMenus.GetMenu("CheapHotelMenu")?.Items;
+        List<MenuItem> ExpensiveHotelMenu = ShopMenus.GetMenu("ExpensiveHotelMenu")?.Items;
+        List<MenuItem> HookerMenu = ShopMenus.GetMenu("HookerMenu")?.Items;
+        List<MenuItem> ConvenienceStoreMenu = ShopMenus.GetMenu("ConvenienceStoreMenu")?.Items;
+        List<MenuItem> TwentyFourSevenMenu = ShopMenus.GetMenu("TwentyFourSevenMenu")?.Items;
+        List<MenuItem> ConvenienceAndLiquorStoreMenu = ShopMenus.GetMenu("ConvenienceAndLiquorStoreMenu")?.Items;
+        List<MenuItem> FancyDeliMenu = ShopMenus.GetMenu("FancyDeliMenu")?.Items;
+        List<MenuItem> FancyFishMenu = ShopMenus.GetMenu("FancyFishMenu")?.Items;
+        List<MenuItem> FancyGenericMenu = ShopMenus.GetMenu("FancyGenericMenu")?.Items;
+        List<MenuItem> GrainOfTruthMenu = ShopMenus.GetMenu("GrainOfTruthMenu")?.Items;
+        List<MenuItem> FruitVineMenu = ShopMenus.GetMenu("FruitVineMenu")?.Items;
+        List<MenuItem> GasStationMenu = ShopMenus.GetMenu("GasStationMenu")?.Items;
+        List<MenuItem> RonMenu = ShopMenus.GetMenu("RonMenu")?.Items;
+        List<MenuItem> XeroMenu = ShopMenus.GetMenu("XeroMenu")?.Items;
+        List<MenuItem> LTDMenu = ShopMenus.GetMenu("LTDMenu")?.Items;
+        List<MenuItem> GenericMenu = ShopMenus.GetMenu("GenericMenu")?.Items;
+        List<MenuItem> ChihuahuaHotDogMenu = ShopMenus.GetMenu("ChihuahuaHotDogMenu")?.Items;
+        List<MenuItem> BeefyBillsMenu = ShopMenus.GetMenu("BeefyBillsMenu")?.Items;
+        List<MenuItem> PizzaMenu = ShopMenus.GetMenu("PizzaMenu")?.Items;
+        List<MenuItem> DonutMenu = ShopMenus.GetMenu("DonutMenu")?.Items;
+        List<MenuItem> StoreMenu = ShopMenus.GetMenu("StoreMenu")?.Items;
+        List<MenuItem> FruitMenu = ShopMenus.GetMenu("FruitMenu")?.Items;
+        List<MenuItem> UpNAtomMenu = ShopMenus.GetMenu("UpNAtomMenu")?.Items;
+        List<MenuItem> TacoFarmerMenu = ShopMenus.GetMenu("TacoFarmerMenu")?.Items;
+        List<MenuItem> HeadShopMenu = ShopMenus.GetMenu("HeadShopMenu")?.Items;
+        List<MenuItem> LiquorStoreMenu = ShopMenus.GetMenu("LiquorStoreMenu")?.Items;
+        List<MenuItem> BarMenu = ShopMenus.GetMenu("BarMenu")?.Items;
+        List<MenuItem> CoffeeMenu = ShopMenus.GetMenu("CoffeeMenu")?.Items;
+        List<MenuItem> SandwichMenu = ShopMenus.GetMenu("SandwichMenu")?.Items;
+        List<MenuItem> BiteMenu = ShopMenus.GetMenu("BiteMenu")?.Items;
+        List<MenuItem> TacoBombMenu = ShopMenus.GetMenu("TacoBombMenu")?.Items;
+        List<MenuItem> BurgerShotMenu = ShopMenus.GetMenu("BurgerShotMenu")?.Items;
+        List<MenuItem> WigwamMenu = ShopMenus.GetMenu("WigwamMenu")?.Items;
+        List<MenuItem> ViceroyMenu = ShopMenus.GetMenu("ViceroyMenu")?.Items;
+        List<MenuItem> CluckinBellMenu = ShopMenus.GetMenu("CluckinBellMenu")?.Items;
+        List<MenuItem> AlDentesMenu = ShopMenus.GetMenu("AlDentesMenu")?.Items;
+        List<MenuItem> BenefactorGallavanterMenu = ShopMenus.GetMenu("BenefactorGallavanterMenu")?.Items;
+        List<MenuItem> NoodleMenu = ShopMenus.GetMenu("NoodleMenu")?.Items;
+        List<MenuItem> WeedMenu = ShopMenus.GetMenu("WeedMenu")?.Items;
+        List<MenuItem> WeedAndCigMenu = ShopMenus.GetMenu("WeedAndCigMenu")?.Items;
+        List<MenuItem> WeedDealerMenu = ShopMenus.GetMenu("WeedDealerMenu")?.Items;
+
+
+
+
         LocationsList = new List<GameLocation>
         {
             //Hospital
@@ -700,7 +315,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GameLocation(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, LocationType.Restaurant, "Guidos Takeout 24/7", "Guidos Takeout 24/7") {Menu = PizzaMenu },
                 new GameLocation(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, LocationType.Restaurant, "Pebble Dash Pizza", "Pebble Dash Pizza"){ Menu = PizzaMenu },
                 new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.Restaurant, "Slice N Dice Pizza","Slice UP!"){ Menu = PizzaMenu},
-                new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.Restaurant, "Sharkies Bites","Take A Bite Today!"){ Menu = PizzaMenu },
+                new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.Restaurant, "Sharkies Bites","Take A Bite Today!"){ Menu = PizzaMenu, IsWalkup = true },
                 new GameLocation(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, LocationType.Restaurant, "Giovanni's Italian", "Giovanni's Italian"){ Menu = PizzaMenu },
 
                 //Burger
@@ -753,7 +368,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
                 //Ice Cream
                 new GameLocation(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, LocationType.Restaurant, "The Sundae Post", "The Sundae Post") {Menu = DonutMenu },
-                new GameLocation(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, LocationType.Restaurant, "Ice Maiden", "Ice Maiden") {Menu = GenericMenu },
+                new GameLocation(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, LocationType.Restaurant, "Ice Maiden", "Ice Maiden") {Menu = GenericMenu, IsWalkup = true },
 
                 //Juice and Smoothies
                 new GameLocation(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, LocationType.Restaurant, "Vitamin Seaside Juice Bar", "Vitamin Seaside Juice Bar"){ Menu = FruitMenu },

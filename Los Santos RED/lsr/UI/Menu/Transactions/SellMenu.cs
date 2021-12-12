@@ -304,32 +304,6 @@ public class SellMenu : Menu
             }
         }
     }
-    private bool PurchaseVehicle(ModItem modItem)
-    {
-        //bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
-        //if (!ItemInDeliveryBay)
-        //{
-        //    Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
-        //    if (NewVehicle.Exists())
-        //    {
-        //        VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
-        //        World.AddEntity(MyNewCar, ResponseType.None);
-        //        Player.TakeOwnershipOfVehicle(MyNewCar);
-        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "Purchase", "Thank you for your purchase");
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-        return false;
-
-    }
     private void StartSellAnimation(ModItem item)
     {
         Hide();
@@ -416,5 +390,4 @@ public class SellMenu : Menu
         }
         return Spoke;
     }
-
 }

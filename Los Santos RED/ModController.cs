@@ -60,6 +60,7 @@ namespace LosSantosRED.lsr
         private ZoneScannerAudio ZoneScannerAudio;
         private Interiors Interiors;
         private ModItems ModItems;
+        private ShopMenus ShopMenus;
 
 
         public ModController()
@@ -115,7 +116,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems);
@@ -209,6 +210,13 @@ namespace LosSantosRED.lsr
             ModItems.ReadConfig();
             GameFiber.Yield();
 
+
+            ShopMenus = new ShopMenus();
+            ShopMenus.ReadConfig();
+            GameFiber.Yield();
+
+
+
             Zones = new Zones();
             Zones.ReadConfig();
             GameFiber.Yield();
@@ -224,7 +232,7 @@ namespace LosSantosRED.lsr
             Names = new Names();
             Names.ReadConfig();
             GameFiber.Yield();
-            PlacesOfInterest = new PlacesOfInterest();
+            PlacesOfInterest = new PlacesOfInterest(ShopMenus);
             PlacesOfInterest.ReadConfig();
             GameFiber.Yield();
             VehicleScannerAudio = new VehicleScannerAudio();

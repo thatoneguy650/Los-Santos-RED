@@ -115,16 +115,21 @@ public class Transaction : Interaction
                 }
                 if (!Player.IsInVehicle)
                 {
-                    Game.LocalPlayer.Character.Position = Store.EntrancePosition;
-                    Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
-                    Game.LocalPlayer.Character.IsVisible = true;
+                    if(Store != null)
+                    {
+                        Game.LocalPlayer.Character.Position = Store.EntrancePosition;
+                        Game.LocalPlayer.Character.Heading = Store.EntranceHeading;
+                        if (!Store.IsWalkup)
+                        {
+                            Game.LocalPlayer.Character.IsVisible = true;
+                        }
+                    }
                     Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), 1.0f, Store.EntranceHeading, 1.0f, 1500);
                 }
                 ReturnToGameplay();
                 if (!Player.IsInVehicle)
                 {
-                    Game.LocalPlayer.HasControl = true;
-                    NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
+                    EnableControl();
                 }
                 if (StoreCam.Exists())
                 {
@@ -200,7 +205,7 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
@@ -241,7 +246,7 @@ public class Transaction : Interaction
         {
             IsUsingCustomCam = true;
             IsUsingHintCamera = false;
-            Game.LocalPlayer.HasControl = false;
+            DisableControl();
             if (Store.HasCustomItemPostion)
             {
                 HighlightLocationWithCamera();
@@ -250,9 +255,10 @@ public class Transaction : Interaction
             {
                 HighlightStoreWithCamera();
             }
-
-            Game.LocalPlayer.Character.IsVisible = false;
-            NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
+            if(Store != null && !Store.IsWalkup)
+            {
+                Game.LocalPlayer.Character.IsVisible = false;
+            }
         }
         EntryPoint.WriteToConsole("Transaction: Setup Camera Ran", 5);
     }
@@ -500,6 +506,18 @@ public class Transaction : Interaction
             IsActivelyConversing = false;
         }
     }
-
-
+    private void DisableControl()
+    {
+        Game.LocalPlayer.HasControl = false;
+        NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
+        Game.DisableControlAction(0, GameControl.LookLeftRight, false);
+        Game.DisableControlAction(0, GameControl.LookUpDown, false);
+    }
+    private void EnableControl()
+    {
+        Game.DisableControlAction(0, GameControl.LookLeftRight, false);
+        Game.DisableControlAction(0, GameControl.LookUpDown, false);
+        Game.LocalPlayer.HasControl = true;
+        NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
+    }
 }

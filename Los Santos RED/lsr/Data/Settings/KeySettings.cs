@@ -23,6 +23,7 @@ public class KeySettings
     public Keys InteractNegativeOrNo { get; set; } = Keys.K;
     public Keys InteractCancel { get; set; } = Keys.L;
     public Keys ScenarioStart { get; set; } = Keys.P;
+    public Keys SprintKey { get; set; } = Keys.Z;
 
     public KeySettings()
     {

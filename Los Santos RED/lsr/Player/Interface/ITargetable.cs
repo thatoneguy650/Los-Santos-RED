@@ -28,6 +28,7 @@ namespace LosSantosRED.lsr.Interface
         ComplexTask CurrentTask { get; }
         Cop AliasedCop { get; }
         bool IsCop { get; }
+        bool IsMoving { get; }
 
         void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool IsForPlayer);
     }
