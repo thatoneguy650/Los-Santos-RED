@@ -113,6 +113,7 @@
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />
+    <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />

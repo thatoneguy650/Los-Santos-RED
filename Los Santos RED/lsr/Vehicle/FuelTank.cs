@@ -17,7 +17,9 @@ public class FuelTank
 {
     private VehicleExt VehicleExt;
     private uint GameTimeLastCheckedFuel;
-
+    private float FuelLevel;
+    private float prevFuelLevel;
+    public bool IsLeaking { get; set; }
     public FuelTank(VehicleExt vehicleToMonitor)
     {
         VehicleExt = vehicleToMonitor;
@@ -31,16 +33,50 @@ public class FuelTank
     }   
     public void Update()
     {
+        FuelLevel = VehicleExt.Vehicle.FuelLevel;
+        if(prevFuelLevel != FuelLevel)
+        {
+            if(FuelLevel > prevFuelLevel)
+            {
+                OnFuelAdded();
+            }
+            else if(FuelLevel < prevFuelLevel)
+            {
+                if (!IsLeaking)
+                {
+                    OnTankStartedLeaking();
+                }
+            }
+            prevFuelLevel = FuelLevel;
+        }
+        else
+        {
+            IsLeaking = false;
+        }
         if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
         {
-            if(VehicleExt.Vehicle.IsEngineOn)
-            {
-                float CurrentLevel = VehicleExt.Vehicle.FuelLevel;
-                float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
-                VehicleExt.Vehicle.FuelLevel = CurrentLevel - AmountToSubtract;
-            }
+            ConsumeFuel();
             GameTimeLastCheckedFuel = Game.GameTime;
         }    
+    }
+
+    private void OnFuelAdded()
+    {
+        IsLeaking = false;
+        //EntryPoint.WriteToConsole("FuelTank Fuel Added", 5);
+    }
+    private void OnTankStartedLeaking()
+    {
+        IsLeaking = true;    
+    }
+    private void ConsumeFuel()
+    {
+        if (VehicleExt.Vehicle.IsEngineOn)
+        {
+            float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
+            FuelLevel -= AmountToSubtract;
+            VehicleExt.Vehicle.FuelLevel = FuelLevel;
+        }
     }
 }
 

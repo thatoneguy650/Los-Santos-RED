@@ -20,22 +20,26 @@ namespace LosSantosRED.lsr.Player
         private IIntoxicatable Player;
         private ISettingsProvideable Settings;
         private ModItem ModItem;
+        private IIntoxicants Intoxicants;
+        private Intoxicant CurrentIntoxicant;
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             Settings = settings;
         }
-        public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem) : base()
+        public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            Intoxicants = intoxicants;
         }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
+            Player.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
@@ -102,6 +106,7 @@ namespace LosSantosRED.lsr.Player
             //Player.Character.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.IsPerformingActivity = false;
+            Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
             if (Bottle.Exists())
             {
@@ -179,7 +184,15 @@ namespace LosSantosRED.lsr.Player
                 PropModel = Settings.SettingsManager.ActivitySettings.Alcohol_PossibleProps.PickRandom();
                 IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
                 IntoxicatingEffect.Start();
-            }  
+            }
+
+            if (ModItem != null && ModItem.IsIntoxicating)
+            {
+                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                Player.StartIngesting(CurrentIntoxicant);
+            }
+
+
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);

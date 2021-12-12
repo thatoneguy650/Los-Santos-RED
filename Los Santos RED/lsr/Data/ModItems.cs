@@ -453,15 +453,34 @@ public class ModItems : IModItems
 
 
             new ModItem("Gram of Schwag",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
             new ModItem("Gram of Mids",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
             new ModItem("Gram of Dank",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
+
+            new ModItem("SPANK",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "SPANK" },
+            new ModItem("Toilet Cleaner",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_detergent_01b",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
+            new ModItem("Gram of Coke",eConsumableType.None) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Cocaine" },
+            new ModItem("Gram of Meth",eConsumableType.None) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Meth" },
 
 
-
-
+            new ModItem("Bull Shark Testosterone",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" },
+            new ModItem("Alco Patch",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch" },
+            new ModItem("Mollis",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Mollis" },
+            new ModItem("Chesty",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Chesty" },
+            new ModItem("Equanox",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox" },
+            new ModItem("Zombix",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix" },
             //        WeedDealerMenu = new List<MenuItem>() {
             //new MenuItem("Brick Gram",6, 1),
             //new MenuItem("Mid Gram",9, 3),
@@ -520,6 +539,12 @@ public class ModItems : IModItems
 
         //Sandwiches
 
+
+
+
+        //PILLS
+
+            //ng_proc_drug01a002
 
     };
     }

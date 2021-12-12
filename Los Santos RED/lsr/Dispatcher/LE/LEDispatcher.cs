@@ -597,7 +597,6 @@ public class LEDispatcher
     }
     public void SpawnRoadblock()//temp public
     {
-        //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Roadblock", 3);
         Vector3 Position = Player.Character.GetOffsetPositionFront(350f);//400f 400 is mostly far enough to not see it
         Street ForwardStreet = Streets.GetStreet(Position);
         if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
@@ -620,7 +619,6 @@ public class LEDispatcher
                             Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names);
                             Roadblock.SpawnRoadblock();
                             GameTimeLastSpawnedRoadblock = Game.GameTime;
-                            //EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
                         }
                     }
                 }
@@ -633,7 +631,6 @@ public class LEDispatcher
         {
             Roadblock.Dispose();
             Roadblock = null;
-            //EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
         }
     }
     public void DebugSpawnCop()

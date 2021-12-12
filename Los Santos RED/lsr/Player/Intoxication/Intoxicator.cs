@@ -14,43 +14,34 @@ public class Intoxicator//THIS IS THE CURRENT INTOXICANTS VALUE INSIDE UR BODY
     private uint GameTimeStoppedIntoxicating;
     private bool IsConsuming;
     private IIntoxicatable Player;
+    private uint PreviousIntoxicationTime = 0;
     public Intoxicator(IIntoxicatable player, Intoxicant intoxicant)
     {
         Intoxicant = intoxicant;
         Player = player;
     }
     public float CurrentIntensity => (float)((float)TotalTimeIntoxicated / Intoxicant.IntoxicatingIntervalTime - (float)TotalTimeSober / Intoxicant.SoberingIntervalTime).Clamp(0.0f, Intoxicant.MaxEffectAllowed);
-    private uint HasBeenIntoxicatedFor => !IsConsuming ? 0 : Game.GameTime - GameTimeStartedIntoxicating;
-    private uint HasBeenNotIntoxicatedFor => IsConsuming ? 0 : Game.GameTime - GameTimeStoppedIntoxicating;
-    private uint TotalTimeIntoxicated => IsConsuming ? HasBeenIntoxicatedFor : GameTimeStoppedIntoxicating - GameTimeStartedIntoxicating;
+    private uint HasBeenIntoxicatedFor => (!IsConsuming ? 0 : Game.GameTime - GameTimeStartedIntoxicating) + PreviousIntoxicationTime;
+    private uint HasBeenNotIntoxicatedFor => (IsConsuming ? 0 : Game.GameTime - GameTimeStoppedIntoxicating) + PreviousIntoxicationTime;
+    private uint TotalTimeIntoxicated => IsConsuming ? HasBeenIntoxicatedFor : GameTimeStoppedIntoxicating - GameTimeStartedIntoxicating + PreviousIntoxicationTime;
     private uint TotalTimeSober => IsConsuming ? 0 : HasBeenNotIntoxicatedFor;
     public Intoxicant Intoxicant { get; set; }
-    public void Update(bool isConsuming)
+    public void StopConsuming()
     {
-        if (IsConsuming != isConsuming)
+        if (IsConsuming)
         {
-
-            if(IsConsuming)
-            {
-                if (CurrentIntensity == 0f)
-                {
-                    StartConsuming();
-                }
-            }
-            else
-            {
-                StopConsuming();
-            }
-            IsConsuming = isConsuming;
+            PreviousIntoxicationTime = Game.GameTime - GameTimeStartedIntoxicating;
+            GameTimeStoppedIntoxicating = Game.GameTime;
+            IsConsuming = false;
         }
     }
-    private void StopConsuming()
+    public void StartConsuming()
     {
-        GameTimeStoppedIntoxicating = Game.GameTime;
-    }
-    private void StartConsuming()
-    {
-        GameTimeStartedIntoxicating = Game.GameTime;
+        if (!IsConsuming)
+        {
+            GameTimeStartedIntoxicating = Game.GameTime;
+            IsConsuming = true;
+        }
     }
 }
 

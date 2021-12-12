@@ -20,7 +20,7 @@ public class Engine
     private VehicleExt VehicleToMonitor;
     private ISettingsProvideable Settings;
     public bool IsRunning { get; private set; }
-    private bool CanToggle => VehicleToMonitor.Vehicle.Speed < 4f;
+    private bool CanToggle => VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.Speed < 4f && !VehicleToMonitor.Vehicle.MustBeHotwired;
     public Engine(VehicleExt vehicleToMonitor, ISettingsProvideable settings)
     {
         VehicleToMonitor = vehicleToMonitor;
@@ -33,7 +33,24 @@ public class Engine
     }
     public void Update(IDriveable driver)
     {
-        if(Health > VehicleToMonitor.Vehicle.EngineHealth)
+        UpdateDamage(driver);
+        UpdateState();
+    }
+    public void Toggle()
+    {
+        Toggle(!IsRunning);
+    }
+    public void Toggle(bool DesiredStatus)
+    {     
+        if (CanToggle)
+        {
+            IsRunning = DesiredStatus;
+            Update(null);
+        }
+    }
+    private void UpdateDamage(IDriveable driver)
+    {
+        if (Health > VehicleToMonitor.Vehicle.EngineHealth)
         {
             float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
             bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(VehicleToMonitor.Vehicle);
@@ -53,9 +70,10 @@ public class Engine
                 driver.OnVehicleEngineHealthDecreased(Difference, Collided);
                 Health = VehicleToMonitor.Vehicle.EngineHealth;
             }
-
-        } 
-
+        }
+    }
+    private void UpdateState()
+    {
         if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
         {
             if (VehicleToMonitor.Vehicle.IsEngineStarting)
@@ -80,19 +98,5 @@ public class Engine
                 IsRunning = true;
             }
         }
-
-    }
-    public void Toggle()
-    {
-        Toggle(!IsRunning);
-    }
-    public void Toggle(bool DesiredStatus)
-    {     
-        if (CanToggle)
-        {
-            IsRunning = DesiredStatus;
-            Update(null);
-        }
-        
     }
 }

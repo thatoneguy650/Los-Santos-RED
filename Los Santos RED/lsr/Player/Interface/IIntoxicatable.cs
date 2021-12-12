@@ -20,5 +20,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
 
         void SetUnarmed();
+        void StartIngesting(Intoxicant intoxicant);
+        void StopIngesting(Intoxicant currentIntoxicant);
     }
 }

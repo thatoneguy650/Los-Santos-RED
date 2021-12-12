@@ -64,6 +64,8 @@ namespace Mod
         private bool isExcessiveSpeed;
         private Sprinting Sprinting;
         private int storedViewMode = -1;
+        private Blip OwnedVehicleBlip;
+        private IIntoxicants Intoxicants;
 
         //private uint GameTimeStartedSprinting;
         //private uint GameTimeStoppedSprinting;
@@ -74,7 +76,7 @@ namespace Mod
         //private uint GameTimeLastUpdatedSprint = 0;
         //private uint TimeSprinting => isSprinting ? Game.GameTime - GameTimeStartedSprinting : 0;
         //private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems)
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -89,6 +91,7 @@ namespace Mod
             GameTimeStartedPlaying = Game.GameTime;
             PlacesOfInterest = placesOfInterest;
             ModItems = modItems;
+            Intoxicants = intoxicants;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors, this);
@@ -152,7 +155,7 @@ namespace Mod
         public string DebugLine1 => $"Speed: {Game.LocalPlayer.Character.Speed} isSprinting: {Sprinting.IsSprinting} SprintAmount: {Sprinting.Stamina}";//$"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine4 => Intoxication.DebugString;//$"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";//IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
@@ -606,15 +609,19 @@ namespace Mod
                 IsPerformingActivity = true;
                 if (modItem.Type == eConsumableType.Drink)
                 {
-                    DynamicActivity = new DrinkingActivity(this, Settings, modItem);
+                    DynamicActivity = new DrinkingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Eat)
                 {
-                    DynamicActivity = new EatingActivity(this, Settings, modItem);
+                    DynamicActivity = new EatingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Smoke)
                 {
-                    DynamicActivity = new SmokingActivity(this, Settings, modItem);
+                    DynamicActivity = new SmokingActivity(this, Settings, modItem, Intoxicants);
+                }
+                else if (modItem.Type == eConsumableType.Ingest)
+                {
+                    DynamicActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
                 }
                 DynamicActivity?.Start();
             }
@@ -844,6 +851,7 @@ namespace Mod
                 {
                     Scanner.OnGotInVehicle();
                 }
+                RemoveOwnedVehicleBlip();
             }
             else
             {
@@ -853,6 +861,7 @@ namespace Mod
                 {
                     Scanner.OnGotOutOfVehicle();
                 }
+                CreateOwnedVehicleBlip();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
         }
@@ -1302,6 +1311,10 @@ namespace Mod
                 IsPerformingActivity = false;
             }
         }
+        public void StartIngesting(Intoxicant intoxicant) => Intoxication.StartIngesting(intoxicant);
+        public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
+
+
         public void StopVanillaSearchMode() => SearchMode.StopVanilla();
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
@@ -1340,9 +1353,11 @@ namespace Mod
                 toOwn.SetNotWanted();
                 toOwn.Vehicle.IsStolen = false;
                 toOwn.Vehicle.IsPersistent = true;
-                Blip myBlip = toOwn.Vehicle.AttachBlip();
-                myBlip.Sprite = BlipSprite.GetawayCar;
                 OwnedVehicle = toOwn;
+                if (!IsInVehicle)
+                {
+                    CreateOwnedVehicleBlip();
+                }
                 EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {OwnedVehicle.Vehicle.Handle}", 5);
             }
         }
@@ -1355,6 +1370,7 @@ namespace Mod
                 {
                     attachedBlip.Delete();
                 }
+                RemoveOwnedVehicleBlip();
                 OwnedVehicle.Vehicle.IsPersistent = false;
                 EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE CLEARED {OwnedVehicle.Vehicle.Handle}", 5);
             }
@@ -1618,7 +1634,6 @@ namespace Mod
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
             if (IsInVehicle)
             {
-
                 if (Character.CurrentVehicle.Exists() && OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicle.Vehicle.Handle)
                 {
                     isJacking = false;
@@ -1627,15 +1642,12 @@ namespace Mod
                 {
                     isJacking = Character.IsJacking;
                 }
-
                 IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
                 IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
-
-
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
                 if (VehicleSpeedMPH >= 80f)
                 {
@@ -1644,7 +1656,6 @@ namespace Mod
                         OnExcessiveSpeed();
                         isExcessiveSpeed = true;
                     }
-
                 }
                 else
                 {
@@ -1652,10 +1663,7 @@ namespace Mod
                     {
                         isExcessiveSpeed = false;
                     }
-
                 }
-
-
                 if (isHotwiring != IsHotWiring)
                 {
                     if (IsHotWiring)
@@ -1664,13 +1672,10 @@ namespace Mod
                     }
                     else
                     {
-                        //EntryPoint.WriteToConsole($"PLAYER EVENT: HotWiring Took {Game.GameTime - GameTimeStartedHotwiring}", 3);
                         GameTimeStartedHotwiring = 0;
                     }
-                    //EntryPoint.WriteToConsole($"PLAYER EVENT: IsHotWiring Changed to {IsHotWiring}", 3);
                     isHotwiring = IsHotWiring;
                 }
-
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
                 {
                     if (!IsMobileRadioEnabled)
@@ -1704,21 +1709,10 @@ namespace Mod
                     GameTimeLastMovedFast = 0;
                 }
                 IsStill = VehicleSpeed <= 0.1f;
-
-
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
                     CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 }
-
-
-         
-
-                
-
-
-
-                // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
             }
             else
             {
@@ -1727,20 +1721,7 @@ namespace Mod
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
                 CurrentVehicle = null;
-                // CurrentSpeedDisplay = "";
                 float PlayerSpeed = Game.LocalPlayer.Character.Speed;
-
-                //foreach (VehicleExt ownedCar in TrackedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Handle == OwnedVehicleHandle))
-                //{
-                //    if (ownedCar.Vehicle.DistanceTo2D(Position) >= 1000f && ownedCar.Vehicle.IsPersistent)
-                //    {
-                //        ownedCar.Vehicle.IsPersistent = false;
-                //    }
-                //    else
-                //    {
-                //        ownedCar.Vehicle.IsPersistent = true;
-                //    }
-                //}
                 if (PlayerSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
@@ -1759,23 +1740,9 @@ namespace Mod
                 }
                 IsStill = Game.LocalPlayer.Character.IsStill;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-
-
-                //if(IsGettingIntoAVehicle && Character.VehicleTryingToEnter.Exists() && Character.VehicleTryingToEnter.Handle == OwnedVehicleHandle)
-                //{
-                //    isJacking = false;
-                //}
-                //else
-                //{
-                //    isJacking = Character.IsJacking;
-                //}
-
                 isJacking = Character.IsJacking;
 
             }
-
-
-
             if (OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
             {
                 if (OwnedVehicle.Vehicle.DistanceTo2D(Position) >= 800f && OwnedVehicle.Vehicle.IsPersistent)
@@ -1971,6 +1938,7 @@ namespace Mod
             GameFiber.Yield();
             UpdateStateData();
             GameFiber.Yield();
+            Intoxication.Update();
         }
         private void UpdateLookedAtPed()
         {
@@ -2054,7 +2022,22 @@ namespace Mod
             }
 
         }
-
+        private void CreateOwnedVehicleBlip()
+        {
+            if (!OwnedVehicleBlip.Exists() && OwnedVehicle != null)
+            {
+                OwnedVehicleBlip = OwnedVehicle.Vehicle.AttachBlip();
+                OwnedVehicleBlip.Sprite = BlipSprite.GetawayCar;
+                OwnedVehicleBlip.Color = System.Drawing.Color.Red;
+            }
+        }
+        private void RemoveOwnedVehicleBlip()
+        {
+            if (OwnedVehicleBlip.Exists())
+            {
+                OwnedVehicleBlip.Delete();
+            }
+        }
 
     }
 }

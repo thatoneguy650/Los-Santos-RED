@@ -35,23 +35,27 @@ namespace LosSantosRED.lsr.Player
         private Rage.Object SmokedItem;
         private ISettingsProvideable Settings;
         private ModItem ModItem;
+        private IIntoxicants Intoxicants;
+        private Intoxicant CurrentIntoxicant;
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
         }
-        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem) : base()
+        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            Intoxicants = intoxicants;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override void Cancel()
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
+            Player.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
@@ -175,6 +179,7 @@ namespace LosSantosRED.lsr.Player
             //Player.Character.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.IsPerformingActivity = false;
+            Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
             {
@@ -353,6 +358,13 @@ namespace LosSantosRED.lsr.Player
                     PropModelName = Settings.SettingsManager.ActivitySettings.Cigarette_PossibleProps.PickRandom();
                 }
             }
+
+            if (ModItem != null && ModItem.IsIntoxicating)
+            {
+                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                Player.StartIngesting(CurrentIntoxicant);
+            }
+
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

@@ -61,6 +61,7 @@ namespace LosSantosRED.lsr
         private Interiors Interiors;
         private ModItems ModItems;
         private ShopMenus ShopMenus;
+        private Intoxicants Intoxicants;
 
 
         public ModController()
@@ -119,7 +120,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -268,7 +269,8 @@ namespace LosSantosRED.lsr
             Interiors = new Interiors();
             Interiors.ReadConfig();
 
-
+            Intoxicants = new Intoxicants();
+            Intoxicants.ReadConfig();
 
             GameFiber.Yield();
 
@@ -294,7 +296,7 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
                 new ModTask(500, "Police.Update", Police.Update, 9),//added yields//cant get 300 ms updates in here anyways
-                new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
+               // new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
 
             };
 

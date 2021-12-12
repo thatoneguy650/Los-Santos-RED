@@ -286,7 +286,7 @@ public class Pedestrians
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
         ShopMenu toAdd = null;
-        if(IsGangMember)
+        if (IsGangMember && RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }

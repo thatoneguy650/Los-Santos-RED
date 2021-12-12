@@ -101,7 +101,10 @@ public class Transaction : Interaction
         {
             Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
             IsDisposed = true;
-            ModItemMenu.Visible = false;
+            if (ModItemMenu != null)
+            {
+                ModItemMenu.Visible = false;
+            }
             PurchaseMenu?.Dispose();
             SellMenu?.Dispose();
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");

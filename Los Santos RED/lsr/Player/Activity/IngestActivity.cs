@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class EatingActivity : DynamicActivity
+    public class IngestActivity : DynamicActivity
     {
-        private Rage.Object Food;
+        private Rage.Object Item;
         private string PlayingAnim;
         private string PlayingDict;
         private EatingData Data;
@@ -23,7 +23,7 @@ namespace LosSantosRED.lsr.Player
         private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
-        public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -48,34 +48,30 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "DrinkingWatcher");
         }
-        private void AttachFoodToHand()
+        private void AttachItemToHand()
         {
-            CreateFood();
-            if (Food.Exists() && !IsAttachedToHand)
+            CreateItem();
+            if (Item.Exists() && !IsAttachedToHand)
             {
-                Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
             }
         }
-        private void CreateFood()
+        private void CreateItem()
         {
-            if (!Food.Exists() && Data.PropModelName != "")
+            if (!Item.Exists() && Data.PropModelName != "")
             {
                 try
                 {
-                    //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
-                    //Model modelToCreate = new Model(Game.GetHashKey(Data.PropModelName));
-                    //modelToCreate.LoadAndWait();
-                    //Food = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(Data.PropModelName), position.X, position.Y, position.Z, 0f);
-                    Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                    Item = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
                 }
-                if (Food.Exists())
+                if (Item.Exists())
                 {
-                    Food.IsGravityDisabled = false;
+                    Item.IsGravityDisabled = false;
                 }
                 else
                 {
@@ -86,7 +82,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.SetUnarmed();
-            AttachFoodToHand();
+            AttachItemToHand();
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
@@ -95,54 +91,40 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            if (Food.Exists())
+            if (Item.Exists())
             {
-                Food.Detach();
+                Item.Detach();
             }
-            //Player.Character.Tasks.Clear();
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
-            if (Food.Exists())
+            if (Item.Exists())
             {
-                Food.Delete();
+                Item.Delete();
             }
         }
         private void Idle()
         {
-            bool HasMadeNoise = false;
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.9f)
+                if (AnimationTime >= 0.25f)
                 {
-                    if (Food.Exists())
+                    if (Item.Exists())
                     {
-                        Food.Delete();
-                        if(Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
-                        {
-                            int ToAdd = 10;
-                            if(Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health < 10)
-                            {
-                                ToAdd = Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health;
-                            }
-                            Player.Character.Health += ToAdd;
-                        }
+                        Item.Delete();
                     }
                 }
-                if (AnimationTime >= 1.0f)
+                if (AnimationTime >= 0.35f)
                 {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
-                }
-                if(!HasMadeNoise && AnimationTime >= 0.2)
-                {
-                    HasMadeNoise = true;
-                    SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_EAT" }, false);
                 }
                 GameFiber.Yield();
             }
+            GameFiber.Sleep(5000);//wait for it to take effect!
             Exit();
         }
         private void Setup()
@@ -158,28 +140,36 @@ namespace LosSantosRED.lsr.Player
             Rotator HandRotator = Rotator.Zero;
             string PropModel = "";
 
-            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-            {
-                AnimIdleDictionary = "amb@code_human_wander_eating_donut@male@idle_a";
-                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-            }
-            else
-            {
-                AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
-                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-            }
-            if(ModItem != null && ModItem.ModelItem != null)
+            //if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
+            //{
+            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@male@idle_a";
+            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
+            //}
+            //else
+            //{
+            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
+            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
+            //}
+            if (ModItem != null && ModItem.ModelItem != null)
             {
                 HandBoneID = ModItem.ModelItem.AttachBoneIndex;
                 HandOffset = ModItem.ModelItem.AttachOffset;
                 HandRotator = ModItem.ModelItem.AttachRotation;
                 PropModel = ModItem.ModelItem.ModelName;
             }
-            if (ModItem != null && ModItem.IsIntoxicating)
+
+
+            AnimIdleDictionary = "mp_suicide";
+            AnimIdle = new List<string>() { "pill" };
+
+
+
+            if(ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.StartIngesting(CurrentIntoxicant);
             }
+
 
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);

@@ -29,5 +29,6 @@ public class ModItem
     public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest;
     public eConsumableType Type { get; set; } = eConsumableType.None;
     public string IntoxicantName { get; set; } = "";
+    public bool IsIntoxicating => IntoxicantName != "";
 }
 

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -39,7 +40,7 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenu GetRanomdDrugMenu()
     {
-        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "WeedDealerMenu").FirstOrDefault();
+        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DealerMenu").PickRandom();
         if(Possible != null)
         {
             Possible.Randomize();
@@ -81,6 +82,32 @@ public class ShopMenus : IShopMenus
             new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Lighter",5),}),
             new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("Lighter",5),}),
             new ShopMenu("WeedDealerMenu","Marijuana Dealer",new List<MenuItem>() { new MenuItem("Gram of Schwag", 6, 1) { IsIllicilt = true },new MenuItem("Gram of Mids",9, 3) { IsIllicilt = true }, new MenuItem("Gram of Dank",12, 4) { IsIllicilt = true }, new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
+            new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
+                new MenuItem("Chesty", 19, 0),
+                new MenuItem("Bull Shark Testosterone", 25, 0),
+                new MenuItem("Alco Patch", 55, 0),
+                new MenuItem("Equanox", 89, 0),
+                new MenuItem("Mollis", 345, 0),
+                new MenuItem("Zombix", 267, 0),
+            }),
+
+
+            new ShopMenu("DealerMenu","Marijuana Dealer",new List<MenuItem>() { 
+                    new MenuItem("Gram of Schwag", 6, 1) { IsIllicilt = true },
+                    new MenuItem("Gram of Mids",9, 3) { IsIllicilt = true }, 
+                    new MenuItem("Gram of Dank",12, 4) { IsIllicilt = true }, 
+                    new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
+
+            new ShopMenu("DealerMenu","SPANK Dealer",new List<MenuItem>() {
+                    new MenuItem("SPANK", 250, 100) { IsIllicilt = true },
+                    new MenuItem("Toilet Cleaner",25, 2) { IsIllicilt = true } }),
+
+            new ShopMenu("DealerMenu","Coke Dealer",new List<MenuItem>() {
+                    new MenuItem("Gram of Coke", 75, 23) { IsIllicilt = true }}),
+
+            new ShopMenu("DealerMenu","Meth Dealer",new List<MenuItem>() {
+                    new MenuItem("Gram of Meth", 20, 10) { IsIllicilt = true }}),
+
             //Specific
             new ShopMenu("BurgerShotMenu","Burger Shot",new List<MenuItem> { new MenuItem("Money Shot Meal", 7),new MenuItem("The Bleeder Meal", 4),new MenuItem("Torpedo Meal", 6),new MenuItem("Meat Free Meal", 5),new MenuItem("Freedom Fries", 2),new MenuItem("Liter of eCola", 2),new MenuItem("Liter of Sprunk", 2),new MenuItem("Bottle of Raine Water", 2),new MenuItem("Double Shot Coffee", 2) }),
             new ShopMenu("UpNAtomMenu","Up-N-Atom",new List<MenuItem>() { new MenuItem("Triple Burger", 4),new MenuItem("Bacon Triple Cheese Melt", 3),new MenuItem("Jumbo Shake", 5),new MenuItem("Bacon Burger", 2),new MenuItem("French Fries", 2),new MenuItem("Cup of eCola", 2),new MenuItem("Cup of Sprunk", 2),new MenuItem("Cup of Coffee", 3),new MenuItem("Bottle of Raine Water", 5) }),
