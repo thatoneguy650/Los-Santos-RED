@@ -28,6 +28,7 @@ namespace Mod
         private IWeapons Weapons;
         private List<GameLocation> ActiveLocations = new List<GameLocation>();
         private ITimeReportable Time;
+        private List<IPLLocation> IPLLocations = new List<IPLLocation>();
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus)
         {
             PlacesOfInterest = placesOfInterest;
@@ -80,6 +81,10 @@ namespace Mod
                 
                 GameFiber.Yield();
             }
+
+
+            SetupIPLs();
+
         }
         public void AddBlipsToMap()
         {
@@ -134,6 +139,7 @@ namespace Mod
         {
             RemoveBlips();
             ClearSpawned();
+            UnloadIPLs();
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
@@ -187,7 +193,7 @@ namespace Mod
                 IsMPMapLoaded = false;
             }
         }
-        public void CreateMerchants()
+        public void ActiveNearLocations()
         {
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
@@ -215,6 +221,27 @@ namespace Mod
                     }
                 }
             }
+
+            foreach(IPLLocation iPLLocation in IPLLocations)
+            {
+                if(NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, iPLLocation.CellX, iPLLocation.CellY, 4))
+                {
+                    if(!iPLLocation.IsActive)
+                    {
+                        iPLLocation.Load();
+                        EntryPoint.WriteToConsole($"World: Loaded {iPLLocation.ID}", 5);
+                    }
+                }
+                else
+                {
+                    if (iPLLocation.IsActive)
+                    {
+                        iPLLocation.Unload();
+                        EntryPoint.WriteToConsole($"World: UnLoaded {iPLLocation.ID}", 5);
+                    }
+                }
+            }
+
         }
         public void SetupLocation(GameLocation gameLocation)
         {
@@ -293,6 +320,52 @@ namespace Mod
                 Person.Store = gameLocation;
                 AddEntity(Person);
             }
+        }
+        private void SetupIPLs()
+        {
+
+            IPLLocations = new List<IPLLocation>() {
+                new IPLLocation("premiumdeluxemotorsport",7170,new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" },new Vector3(-38.83289f, -1108.61f, 26.46652f)),
+            };
+
+
+            ////FIB Lobby
+            //NativeFunction.Natives.REQUEST_IPL("FIBlobby");
+            //NativeFunction.Natives.REMOVE_IPL("FIBlobbyfake");
+            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1517873911, 106.3793f, -742.6982f, 46.51962f, false, 0.0f, 0.0f, 0.0f);
+            //NativeFunction.Natives.x9B12F9A24FABEDB0(-90456267, 105.7607f, -746.646f, 46.18266f, false, 0.0f, 0.0f, 0.0f);
+
+            ////Paleto Sheriff
+            //NativeFunction.Natives.DISABLE_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(-444.89068603515625f, 6013.5869140625f, 30.7164f), false);
+            //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(-444.89068603515625f, 6013.5869140625f, 30.7164f), false);
+            //NativeFunction.Natives.REQUEST_IPL("v_sheriff2");
+            //NativeFunction.Natives.REMOVE_IPL("cs1_16_sheriff_cap");
+            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1501157055, -444.4985f, 6017.06f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
+            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1501157055, -442.66f, 6015.222f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
+
+
+            ////Simeon
+            //NativeFunction.Natives.REQUEST_IPL("shr_int");
+            //NativeFunction.Natives.REMOVE_IPL("fakeint");
+            //NativeFunction.Natives.REMOVE_IPL("shutter_closed");
+
+
+
+            //NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(7170, "csr_beforeMission");
+            //NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(7170, "shutter_open");
+            //NativeFunction.Natives.REFRESH_INTERIOR(7170);
+
+
+
+        }
+        private void UnloadIPLs()
+        {
+            //NativeFunction.Natives.REMOVE_IPL("shr_int");
+            //NativeFunction.Natives.REQUEST_IPL("fakeint");
+            //NativeFunction.Natives.REQUEST_IPL("shutter_closed");
+            //NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(7170, "csr_afterMissionB");
+            //NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(7170, "shutter_closed");
+            //NativeFunction.Natives.REFRESH_INTERIOR(7170);
         }
     }
 }

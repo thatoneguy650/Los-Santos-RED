@@ -27,6 +27,7 @@ public class GameLocation
     public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
     public bool HasVendor => VendorPosition != Vector3.Zero;
     public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
+    public bool IsStore => Type != LocationType.Police && Type != LocationType.Hospital && Type != LocationType.Grave && Type != LocationType.FireStation;
     public Blip CreatedBlip => createdBlip;
     public bool CanTransact => Menu.Any();
     public bool Is247 => CloseTime >= 24;

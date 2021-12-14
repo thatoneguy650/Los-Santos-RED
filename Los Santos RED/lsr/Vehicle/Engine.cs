@@ -63,11 +63,11 @@ public class Engine
                 }
                 VehicleToMonitor.Vehicle.EngineHealth = ScaledDamage;
                 Health = ScaledDamage;
-                driver.OnVehicleEngineHealthDecreased(ScaledDamage, Collided);
+                driver?.OnVehicleEngineHealthDecreased(ScaledDamage, Collided);
             }
             else
             {
-                driver.OnVehicleEngineHealthDecreased(Difference, Collided);
+                driver?.OnVehicleEngineHealthDecreased(Difference, Collided);
                 Health = VehicleToMonitor.Vehicle.EngineHealth;
             }
         }

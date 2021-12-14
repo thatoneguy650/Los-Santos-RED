@@ -407,8 +407,12 @@ public class PurchaseMenu : Menu
                 Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Could Not Deliver", "We are sorry we are unable to complete this transation");
                 return;
             }
+            MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == CurrentItem.Name).FirstOrDefault();
+            if (menuItem != null)//otherwise its free i guess?
+            {
+                Player.GiveMoney(-1 * menuItem.PurchasePrice);
+            }
             sender.Visible = false;
-            //GameFiber.Sleep(500);
             Dispose();
         }
         if (selectedItem.Text == "Set Plate" && CurrentItem != null)
@@ -456,6 +460,7 @@ public class PurchaseMenu : Menu
     private void CreatePreview(UIMenuItem myItem)
     {
         ClearPreviews();
+       // GameFiber.Yield();
         if (myItem != null)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
@@ -479,10 +484,10 @@ public class PurchaseMenu : Menu
     }
     private void PreviewPed(ModItem itemToShow)
     {
-        if (itemToShow != null && itemToShow.ModelItem != null)
-        {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
-        }
+        //if (itemToShow != null && itemToShow.ModelItem != null)
+        //{
+        //    SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
+        //}
         GameFiber.Yield();
     }
     private void PreviewVehicle(ModItem itemToShow)
@@ -491,7 +496,7 @@ public class PurchaseMenu : Menu
         {
             SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
         }
-        //GameFiber.Yield();
+       // GameFiber.Yield();
         if (SellingVehicle.Exists())
         {
             SellingVehicle.Wash();
@@ -577,10 +582,10 @@ public class PurchaseMenu : Menu
                     {
                         new Model(myItem.ModelItem.ModelName).LoadAndWait();
                     }
-                    else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
-                    {
-                        new Vehicle(myItem.ModelItem.ModelName,Vector3.Zero,0f).Model.LoadAndWait();
-                    }
+                    //else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
+                    //{
+                    //    new Vehicle(myItem.ModelItem.ModelName,Vector3.Zero,0f).Model.LoadAndWait();
+                    //}
                 }
             }
         }

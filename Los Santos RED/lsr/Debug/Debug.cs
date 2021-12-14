@@ -364,10 +364,11 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        BrowseTimecycles();
+        SetInRandomInterior();
+        //BrowseTimecycles();
 
 
-       // Dispatcher.RemoveRoadblock();
+        // Dispatcher.RemoveRoadblock();
         //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //{
         //    int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);

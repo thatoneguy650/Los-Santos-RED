@@ -67,7 +67,7 @@ public class UISettings
     public int ZoneJustificationID { get; set; } = 2;
     public GTAFont ZoneFont { get; set; } = GTAFont.FontHouseScript;
     public bool ZoneDisplayShowPrimaryAgency { get; set; } = true;
-    public bool ZoneDisplayShowSecondaryAgency { get; set; } = true;
+    public bool ZoneDisplayShowSecondaryAgency { get; set; } = false;
 
     public bool AlwaysShowCash { get; set; } = true;
     public bool AlwaysShowRadar { get; set; } = true;

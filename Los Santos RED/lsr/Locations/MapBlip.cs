@@ -28,6 +28,10 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return BlipSprite.Hospital;
                 }
+                if (Type == LocationType.FireStation)
+                {
+                    return BlipSprite.Fire;
+                }
                 else if (Type == LocationType.Police)
                 {
                     return BlipSprite.PoliceStation;

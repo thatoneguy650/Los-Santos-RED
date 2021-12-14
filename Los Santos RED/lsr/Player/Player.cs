@@ -2024,7 +2024,7 @@ namespace Mod
         }
         private void CreateOwnedVehicleBlip()
         {
-            if (!OwnedVehicleBlip.Exists() && OwnedVehicle != null)
+            if (!OwnedVehicleBlip.Exists() && OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
             {
                 OwnedVehicleBlip = OwnedVehicle.Vehicle.AttachBlip();
                 OwnedVehicleBlip.Sprite = BlipSprite.GetawayCar;

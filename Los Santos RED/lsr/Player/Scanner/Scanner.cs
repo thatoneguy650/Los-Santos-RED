@@ -1035,7 +1035,15 @@ namespace LosSantosRED.lsr
             }
             if (DispatchToPlay.IncludeDrivingSpeed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
             {
-                AddSpeed(EventToPlay, DispatchToPlay.LatestInformation.Speed);// CurrentPlayer.CurrentVehicle.Vehicle.Speed);
+                if(DispatchToPlay.LatestInformation.Speed <= CurrentPlayer.Character.Speed)
+                {
+                    AddSpeed(EventToPlay, CurrentPlayer.Character.Speed);
+                }
+                else
+                {
+                    AddSpeed(EventToPlay, DispatchToPlay.LatestInformation.Speed);
+                }
+                //AddSpeed(EventToPlay, DispatchToPlay.LatestInformation.Speed);// CurrentPlayer.CurrentVehicle.Vehicle.Speed);
                 GameFiber.Yield();
             }
             if (DispatchToPlay.LocationDescription != LocationSpecificity.Nothing)

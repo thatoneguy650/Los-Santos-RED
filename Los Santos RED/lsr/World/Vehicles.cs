@@ -102,24 +102,31 @@ public class Vehicles
     }
     private void RemoveAbandonedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty))
+        try
         {
-            if (PoliceCar.Vehicle.Exists())
+            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty))
             {
-                if(!PoliceCar.Vehicle.Occupants.Any(x=> x.Exists() && x.IsAlive))
+                if (PoliceCar.Vehicle.Exists())
                 {
-                    if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                    if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                     {
-                        if (PoliceCar.Vehicle.IsPersistent)
+                        if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                         {
-                            EntryPoint.PersistentVehiclesDeleted++;
+                            if (PoliceCar.Vehicle.IsPersistent)
+                            {
+                                EntryPoint.PersistentVehiclesDeleted++;
+                            }
+                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles {PoliceCar.Vehicle.Handle}", 5);
+                            PoliceCar.Vehicle.Delete();
+                            GameFiber.Yield();
                         }
-                        EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles {PoliceCar.Vehicle.Handle}", 5);
-                        PoliceCar.Vehicle.Delete();            
-                        GameFiber.Yield();
                     }
                 }
             }
+        }
+        catch(InvalidOperationException ex)
+        {
+            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles ERROR collection was modified? {ex.Message} {ex.StackTrace}", 0);
         }
     }
     private void FixDamagedPoliceVehicles()
