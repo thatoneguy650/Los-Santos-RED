@@ -26,6 +26,8 @@ public class GameLocation
     public int CellY { get; set; }
     public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
     public bool HasVendor => VendorPosition != Vector3.Zero;
+    public int InteriorID { get; set; } = -1;
+    public bool HasInterior => InteriorID != -1;
     public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
     public bool IsStore => Type != LocationType.Police && Type != LocationType.Hospital && Type != LocationType.Grave && Type != LocationType.FireStation;
     public Blip CreatedBlip => createdBlip;
@@ -35,11 +37,14 @@ public class GameLocation
     public int CloseTime { get; set; } = 20;
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
+    public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
+    public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
+    public float TeleportEnterHeading { get; set; } = 0f;
     public string BannerImage { get; set; } = "";
     public float ItemPreviewHeading { get; set; } = 0f;
     public float ItemDeliveryHeading { get; set; } = 0f;
@@ -106,9 +111,7 @@ public class GameLocation
         }
     }
     public float DistanceToPlayer => distanceToPlayer;
-
     public bool IsWalkup { get; set; } = false;
-
     public void Update()
     {
         if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= UpdateIntervalTime)

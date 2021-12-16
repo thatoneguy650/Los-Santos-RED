@@ -108,33 +108,49 @@ public class PlacesOfInterest : IPlacesOfInterest
         LocationsList = new List<GameLocation>
         {
             //Hospital
-            new GameLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, LocationType.Hospital, "Pill Box Hill Hospital",""),
-            new GameLocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, LocationType.Hospital, "Central Los Santos Hospital",""),
-            new GameLocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, LocationType.Hospital, "Sandy Shores Hospital",""),
-            new GameLocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, LocationType.Hospital, "Paleto Bay Hospital",""),
+            new GameLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, LocationType.Hospital, "Pill Box Hill Hospital","") {OpenTime = 0,CloseTime = 24, InteriorID = -9998 },
+            new GameLocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, LocationType.Hospital, "Central Los Santos Hospital","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, LocationType.Hospital, "Sandy Shores Hospital","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, LocationType.Hospital, "Paleto Bay Hospital","") {OpenTime = 0,CloseTime = 24 },
 
-            new GameLocation(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, LocationType.Hospital, "St. Fiacre", ""),
+            new GameLocation(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, LocationType.Hospital, "St. Fiacre", "") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
+            //new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f
+            //new Vector3(253.351f, -1364.622f, 39.53437f), 327.1821f morgue interior teleport position
+            //new Vector3(239.75195f, -1360.64965f, 39.53437f), 337.4726f
+
+
+
 
             //Grave
-            new GameLocation(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, LocationType.Grave, "Grave 1",""),
+            new GameLocation(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, LocationType.Grave, "Grave 1","") {OpenTime = 0,CloseTime = 24 },
 
             //Fire
-            new GameLocation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, LocationType.FireStation, "LSCFD # 7", ""),
-            new GameLocation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, LocationType.FireStation, "Davis Fire Station", ""),
+            new GameLocation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, LocationType.FireStation, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666 },
+            new GameLocation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, LocationType.FireStation, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24 },
 
             //Police
-            new GameLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, LocationType.Police, "Davis Police Station",""),
-            new GameLocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, LocationType.Police, "Sandy Shores Police Station",""),
-            new GameLocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, LocationType.Police, "Paleto Bay Police Station",""),
-            new GameLocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, LocationType.Police, "Mission Row Police Station",""),
-            new GameLocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, LocationType.Police, "La Mesa Police Station",""),
-            new GameLocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, LocationType.Police, "Vinewood Police Station",""),
-            new GameLocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, LocationType.Police, "Rockford Hills Police Station",""),
-            new GameLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, LocationType.Police, "Vespucci Police Station",""),
-            new GameLocation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, LocationType.Police, "Del Perro Police Station",""),
-            new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station",""),
+            new GameLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, LocationType.Police, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, LocationType.Police, "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, LocationType.Police, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842},
+            new GameLocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, LocationType.Police, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, LocationType.Police, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, LocationType.Police, "Vinewood Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, LocationType.Police, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, LocationType.Police, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, LocationType.Police, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
+
+            new GameLocation(new Vector3(110.4f, -744.2f, 45.7496f), 233.9121f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+
+            //Other
+            new GameLocation(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,LocationType.Stadium,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
             
+            //Apartment
+            //new GameLocation(new Vector3(-1149.953f, -1521.617f, 10.62806f), 216.7212f,LocationType.Hotel,"Apartment","") {OpenTime = 0,CloseTime = 24, InteriorID = 171777 },
             
+
+
             //Stores
 
             //Liquor
@@ -170,7 +186,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(129.7891f, -1643.382f, 29.29159f), 38.8853f, LocationType.LiquorStore, "Liquor", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(463.9041f, -1852.109f, 27.79801f), 3.177461f, LocationType.LiquorStore, "Liquor Store", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(-156.2888f, 6327.238f, 31.58083f), 316.2542f, LocationType.LiquorStore, "Del Vecchio Liquor", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
-           
+           new GameLocation(new Vector3(-406.0117f, 6062.374f, 31.50013f), 132.2045f, LocationType.LiquorStore, "Liquor", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             
             
             //HeadShop
@@ -285,7 +301,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f,new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, LocationType.FoodStand, "Grapeseed Fruit", "Grapeseed Fruit") { Menu = FruitMenu },
 
 
-            new GameLocation(new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f,new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f, LocationType.DrugDealer, "", ""){ Menu = WeedDealerMenu, VendorModels = new List<string>() { "g_m_y_famdnf_01","g_m_y_famca_01","g_m_y_famfor_01" } },
+            //new GameLocation(new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f,new Vector3(-27.02787f, -1578.65f, 29.29078f), 183.333f, LocationType.DrugDealer, "", ""){ Menu = WeedDealerMenu, VendorModels = new List<string>() { "g_m_y_famdnf_01","g_m_y_famca_01","g_m_y_famfor_01" } },
 
 
 
@@ -500,6 +516,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new GameLocation(new Vector3(104.8123f, -932.9781f, 29.81516f), 248.7484f, LocationType.Hotel, "The Emissary", ""){Menu = ExpensiveHotelMenu },
             new GameLocation(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, LocationType.Hotel, "Vinewood Gardens", ""){Menu = ExpensiveHotelMenu },
+            new GameLocation(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, LocationType.Hotel, "Cheep Motel", "POOL!"){Menu = CheapHotelMenu},
 
             //Pharmacy
             new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
@@ -541,10 +558,14 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ItemDeliveryPosition = new Vector3(-214.548f, 6195.725f, 31.48873f), ItemDeliveryHeading = 314.937f},
 
 
-            new GameLocation(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, LocationType.CarDealer, "Premium Deluxe", "") { Menu = PremiumDeluxeMenu
+            new GameLocation(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, LocationType.CarDealer, "Premium Deluxe Motorsport", "") { Menu = PremiumDeluxeMenu
                 ,CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
-                ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.96404f), ItemPreviewHeading = 165.1469f,
-                ItemDeliveryPosition = new Vector3(-56.35966f, -1116.532f, 26.4349f), ItemDeliveryHeading = 2.403779f},
+                ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,
+                ItemDeliveryPosition = new Vector3(-56.35966f, -1116.532f, 26.4349f), ItemDeliveryHeading = 2.403779f,
+                InteriorID = 7170
+
+
+            },
 
 
             new GameLocation(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, LocationType.CarDealer, "Luxury Autos", "") { Menu = LuxuryAutosMenu
@@ -560,7 +581,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             //Garage
-            new GameLocation(new Vector3(226.205f, -992.613f, -98.99996f), 150.3918f, LocationType.Garage, "Underground Garage", ""),
+           // new GameLocation(new Vector3(226.205f, -992.613f, -98.99996f), 150.3918f, LocationType.Garage, "Underground Garage", ""),
 
             //Strip
             new GameLocation(new Vector3(-379.3227f, 217.9178f, 83.65989f), 355.8053f, LocationType.StripClub, "Hornbills", ""),

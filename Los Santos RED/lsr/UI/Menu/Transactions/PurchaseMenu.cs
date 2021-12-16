@@ -582,10 +582,14 @@ public class PurchaseMenu : Menu
                     {
                         new Model(myItem.ModelItem.ModelName).LoadAndWait();
                     }
-                    //else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
-                    //{
-                    //    new Vehicle(myItem.ModelItem.ModelName,Vector3.Zero,0f).Model.LoadAndWait();
-                    //}
+                    else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
+                    {
+                        Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
+                        if(MyVehicle.Exists())
+                        {
+                            MyVehicle.Delete();
+                        }
+                    }
                 }
             }
         }

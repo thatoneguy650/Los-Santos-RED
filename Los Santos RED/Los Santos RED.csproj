@@ -110,7 +110,8 @@
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
-    <Compile Include="lsr\Locations\IPLLocation.cs" />
+    <Compile Include="lsr\Locations\InteriorDoor.cs" />
+    <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\EatingData.cs" />

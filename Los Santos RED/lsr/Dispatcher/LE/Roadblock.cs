@@ -73,7 +73,7 @@ public class Roadblock
         {
             try
             {
-                while (!IsDisposed && Player.Position.DistanceTo2D(CenterPosition) >= 175f)
+                while (!IsDisposed)
                 {
                     //Rage.Debug.DrawArrowDebug(new Vector3(NodeCenter.X, NodeCenter.Y, NodeCenter.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
                     //Rage.Debug.DrawArrowDebug(new Vector3(NodeOffset.X, NodeOffset.Y,NodeOffset.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
@@ -86,12 +86,13 @@ public class Roadblock
                     //Rage.Debug.DrawArrowDebug(RearRight, Vector3.Zero, Rotator.Zero, 1f, Color.White);
                     //Rage.Debug.DrawArrowDebug(RearLeft, Vector3.Zero, Rotator.Zero, 1f, Color.Black);
 
-
-                    foreach(Rage.Object obj in CreatedProps)
+                    if (Player.Position.DistanceTo2D(CenterPosition) >= 175f)
                     {
-                        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                        foreach (Rage.Object obj in CreatedProps)
+                        {
+                            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                        }
                     }
-
 
                     if (Player.IsInVehicle && Player.CurrentVehicle != null)
                     {

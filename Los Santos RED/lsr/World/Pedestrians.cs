@@ -255,13 +255,51 @@ public class Pedestrians
     }
     private void AddCivilian(Ped Pedestrian)
     {
+        //if(Pedestrian.Exists())
+        //{
+        //    Vector3 Pos = Pedestrian.Position;
+        //    float Heading = Pedestrian.Heading;
+        //    Vehicle CurrentVehicle = Pedestrian.CurrentVehicle;
+        //    int SeatIndex = -1;
+        //    if (CurrentVehicle.Exists())
+        //    {
+        //        Pos = Pos + new Vector3(0f, 0f, 5f);
+        //        SeatIndex = Pedestrian.SeatIndex;
+        //    }
+        //    Pedestrian.Delete();
+        //    Pedestrian = new Ped("S_M_M_GENTRANSPORT", Pos, Heading);
+        //    if (Pedestrian.Exists())
+        //    {
+        //        Pedestrian.RandomizeVariation();
+        //        Pedestrian.IsPersistent = false;
+        //        if (CurrentVehicle.Exists())
+        //        {
+        //            Pedestrian.WarpIntoVehicle(CurrentVehicle, SeatIndex);
+        //        }
+        //    }
+        //}
+
+
+
+
         SetCivilianStats(Pedestrian);
+
+
+
+
+
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
         bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
         bool IsGangMember = false;
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {
+
+
+
+
+
+
             if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
             {
                 IsGangMember = true;

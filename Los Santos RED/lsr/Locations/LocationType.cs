@@ -31,4 +31,6 @@ public enum LocationType : int
     DrugDealer = 22,
     StripClub = 23,
     FireStation = 24,
+    Stadium = 25,
+    Morgue = 26,
 }

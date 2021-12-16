@@ -84,7 +84,14 @@ namespace LosSantosRED.lsr
             {
                 Player.StartScenario();
             }
-
+            else if (Player.ButtonPrompts.Any(x => x.Group == "EnterLocation" && x.IsPressedNow))//string for now...
+            {
+                Player.EnterLocation();
+            }
+            else if (Player.ButtonPrompts.Any(x => x.Group == "ExitLocation" && x.IsPressedNow))//string for now...
+            {
+                Player.ExitLocation();
+            }  
         }
         private void ControlCheck()
         {

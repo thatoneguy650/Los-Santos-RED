@@ -36,31 +36,54 @@ public class Interiors : IInteriors
     {
         return LocationsList.Where(x => x.ID == id).FirstOrDefault();
     }
+    public Interior GetInterior(string name)
+    {
+        return LocationsList.Where(x => x.Name == name).FirstOrDefault();
+    }
     private void DefaultConfig()
     {
         LocationsList = new List<Interior>
         {
             new Interior(19458,"Sub Urban"),
+
+
             new Interior(29698,"Ammunation"),
-            new Interior(49922,"Los Santos Tattoo"),
+            new Interior(59138,"Ammunation"),
             new Interior(80386,"Ammunation"),
+            new Interior(48130,"Ammunation"),
+            new Interior(115458,"Ammunation"),
+            new Interior(94978,"Ammunation"),
+            new Interior(37122,"Ammunation"),
+            new Interior(49922,"Los Santos Tattoo"),     
             new Interior(93442,"Los Santos Customs"),
             new Interior(102146,"Herr Kutz Barber"),
             new Interior(35074,"The Pit"),
             new Interior(88066,"Discount Store"),
             new Interior(118018,"Vanilla Unicorn"),
-            new Interior(48130,"Ammunation"),
             new Interior(113922,"Beachcombover Barber"),
             new Interior(17154,"Binco"),
             new Interior(74874,"LtD Gas"),
-            new Interior(115458,"Ammunation"),
             new Interior(37890,"Los Santos Customs"),
-            new Interior(59138,"Ammunation"),
             new Interior(22786,"Binco"),
-
-
+            new Interior(58882,"FIB Downtown",new List<string>() { "FIBlobby" },new List<string>() { "FIBlobbyfake" },new List<InteriorDoor>() { new InteriorDoor(-1517873911, new Vector3(106.3793f, -742.6982f, 46.51962f)),new InteriorDoor(-90456267, new Vector3(105.7607f, -746.646f, 46.18266f))}),
             new Interior(104450,"Liquor Ace"),
+            new Interior(78338,"Maze Bank Arena",new List<string>() { "sp1_10_real_interior" },new List<string>() { "sp1_10_fake_interior" }),
+            new Interior(78338,"Pillbox Hill Hospital",new List<string>() { "RC12B_Default" },new List<string>() { "RC12B_Destroyed","RC12B_HospitalInterior","RC12B_Fixed" }),
+            new Interior(60418,"Los Santos County Coroner Office",new List<string>() { "Coroner_Int_on","coronertrash" }),
 
+            new Interior(3842,"Paleto Bay Police Station",new List<string>() { "v_sheriff2" },new List<string>() { "cs1_16_sheriff_cap" },new List<InteriorDoor>() { new InteriorDoor(-1501157055, new Vector3(-444.4985f, 6017.06f, 31.86633f)),new InteriorDoor(-1501157055, new Vector3(-442.66f, 6015.222f, 31.86633f))}) { DisabledInteriorCoords = new Vector3(-444.89068603515625f, 6013.5869140625f, 30.7164f) },
+
+            /*        NativeFunction.CallByName<bool>("DISABLE_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
+        NativeFunction.CallByName<bool>("CAP_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
+        NativeFunction.CallByName<bool>("REQUEST_IPL", "v_sheriff2");
+        NativeFunction.CallByName<bool>("REMOVE_IPL", "cs1_16_sheriff_cap");
+        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1501157055, -444.4985f, 6017.06f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
+        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1501157055, -442.66f, 6015.222f, 31.86633f, false, 0.0f, 0.0f, 0.0f);*/
+
+
+
+            //new Interior(171777,"Apartment"){ InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
+            new Interior(81666,"LSCFD Fire Station 7"),
             new Interior(62722,"24/7"),
             new Interior(89602,"Yellow Jacket Inn"),
             new Interior(50178,"Rob's Liquors"),
@@ -69,13 +92,12 @@ public class Interiors : IInteriors
             new Interior(1282,"Ponsonby"),
             new Interior(37378,"Bob Mullet Hair & Beauty"),
             new Interior(14338,"Ponsonby"),
+            new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
             new Interior(47874, "Ltd Gasoline") { IsSPOnly = true } ,
-
             new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,
             new Interior(39682,"Torture Room") { IsSPOnly = true } ,
             new Interior(76290,"Dell Perro Heights, Apt 4") { IsSPOnly = true } ,
             new Interior(108290,"Low End Apartment") { IsSPOnly = true } ,
-
             new Interior(69890,"IAA Office") { IsSPOnly = true } ,
             new Interior(25602,"Dell Perro Heights, Apt 7") { IsSPOnly = true } ,
             new Interior(31490,"FIB Floor 47") { IsSPOnly = true } ,
@@ -88,7 +110,6 @@ public class Interiors : IInteriors
             new Interior(85250,"Omega's Garage") { IsSPOnly = true } ,
             new Interior(61186,"Eclipse Towers, Apt 3") { IsSPOnly = true } ,
             new Interior(94722,"Booking Room") { IsSPOnly = true } 
-
             ,new Interior(146433, "10 Car") { IsMPOnly = true }
             ,new Interior(149761, "Low End Apartment") { IsMPOnly = true }
             ,new Interior(141313, "4 Integrity Way, Apt 30") { IsMPOnly = true }

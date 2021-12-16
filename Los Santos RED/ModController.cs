@@ -117,7 +117,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants);

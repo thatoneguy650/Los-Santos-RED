@@ -34,6 +34,7 @@ namespace Mod
         private uint GameTimeWantedLevelStarted;
         private HealthState HealthState;
         private GameLocation ClosestSimpleTransaction;
+        private GameLocation ClosestTeleportEntrance;
         private int wantedLevel = 0;
         private bool isActive = true;
         private bool isAiming;
@@ -66,6 +67,7 @@ namespace Mod
         private int storedViewMode = -1;
         private Blip OwnedVehicleBlip;
         private IIntoxicants Intoxicants;
+        private GameLocation CurrentInteriorLocation;
 
         //private uint GameTimeStartedSprinting;
         //private uint GameTimeStoppedSprinting;
@@ -924,9 +926,17 @@ namespace Mod
         }
         private void OnExcessiveSpeed()
         {
-            if (IsWanted && VehicleSpeedMPH >= 80f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
+            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
             {
-                Scanner.OnExcessiveSpeed();
+                GameFiber SpeedWatcher = GameFiber.StartNew(delegate
+                {
+                    GameFiber.Sleep(5000);
+                    if (isExcessiveSpeed)
+                    {
+                        Scanner.OnExcessiveSpeed();
+                    }
+                }, "FastForwardWatcher");
+                
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);
         }
@@ -952,7 +962,7 @@ namespace Mod
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    if (Settings.SettingsManager.PoliceSettings.AllowExclusiveControlOverWantedLevel)
+                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
                         EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
                         SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
@@ -972,7 +982,7 @@ namespace Mod
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    if (Settings.SettingsManager.PoliceSettings.AllowExclusiveControlOverWantedLevel)
+                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
                         EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
                         SetWantedLevel(0, "GAME AUTO SET WANTED", true);
@@ -1410,7 +1420,7 @@ namespace Mod
 
 
             VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
-            //GameFiber.Yield();
+            GameFiber.Yield();
             if (existingVehicleExt == null)
             {
                 VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
@@ -1427,6 +1437,7 @@ namespace Mod
                 existingVehicleExt.SetAsEntered();
             }
             existingVehicleExt.Update(this);
+            GameFiber.Yield();
             if (!existingVehicleExt.IsStolen)
             {
                 if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
@@ -1462,17 +1473,42 @@ namespace Mod
             }
 
 
-            if(NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
+            //this was below that, see if this helps with the flashing.....
+            int realWantedLevel = Game.LocalPlayer.WantedLevel;
+            if (realWantedLevel != 0)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            {
+                if(!Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
+                {
+                    //this setting is new, allow the game and mods to set 2+ stars
+                    if(Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevelOneStarAndBelow)
+                    {
+                        if(realWantedLevel > 1)
+                        {
+                            SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (1)", true);
+                            PlacePoliceLastSeenPlayer = Position;
+                        }
+                    }
+                    else//or is they want my mod to just accept any wanted level generated
+                    {
+                        SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (2)", true);
+                        PlacePoliceLastSeenPlayer = Position;
+                    }
+                }
+
+
+                Game.LocalPlayer.WantedLevel = 0;
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+            }
+            if (NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
             {
                 NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(wantedLevel);
 
             }
-            if (Game.LocalPlayer.WantedLevel != 0)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
-            {
-                Game.LocalPlayer.WantedLevel = 0;
-                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-            }
-
+            //if (Game.LocalPlayer.WantedLevel != 0)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            //{
+            //    Game.LocalPlayer.WantedLevel = 0;
+            //    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+            //}
 
             if (PreviousWantedLevel != wantedLevel)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {
@@ -1490,14 +1526,6 @@ namespace Mod
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
             IsMovingDynamically = Game.LocalPlayer.Character.IsInCover || Game.LocalPlayer.Character.IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
-            if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
-            {
-                IsIntoxicated = true;
-            }
-            else
-            {
-                IsIntoxicated = false;
-            }
             position = Game.LocalPlayer.Character.Position;
             RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
                                                                                                                                                                                                                   //See which cell it is in now
@@ -1506,105 +1534,28 @@ namespace Mod
             EntryPoint.FocusCellX = CellX;
             EntryPoint.FocusCellY = CellY;
 
-
-
-
-
-
-
-
-
-            //COULD BE VERY PROBLEMATIC!!!!!!!!!!
-
-
-
-
-            //if (PoliceResponse.IsDeadlyChase && !IsBusted)
-            //{
-            //    if (isSetPoliceIgnored)
-            //    {
-            //        NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
-            //        isSetPoliceIgnored = false;
-            //    }
-
-            //}
-            //else
-            //{
-            //    if(EntityProvider.PoliceList.Any(x=> x.CurrentTask?.OtherTarget != null))
-            //    {
-            //        if (!isSetPoliceIgnored)
-            //        {
-            //            NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, true);
-            //            isSetPoliceIgnored = true;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (isSetPoliceIgnored)
-            //        {
-            //            NativeFunction.Natives.SET_POLICE_IGNORE_PLAYER(Game.LocalPlayer, false);
-            //            isSetPoliceIgnored = false;
-            //        }
-            //    }
-
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             ClosestSimpleTransaction = null;
+            ClosestTeleportEntrance = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
-                foreach (GameLocation gl in PlacesOfInterest.GetAllStores())
+                foreach (GameLocation gl in EntityProvider.ActiveLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (!gl.HasVendor && gl.CanTransact && gl.DistanceToPlayer <= 3f)
+                    if (gl.DistanceToPlayer <= 3f)
                     {
-                        ClosestSimpleTransaction = gl;
-                        break;
+                        if (!gl.HasVendor && gl.CanTransact)
+                        {
+                            ClosestSimpleTransaction = gl;
+                            break;
+                        }
+                        else if (gl.HasTeleportEnter)
+                        {
+                            ClosestTeleportEntrance = gl;
+                        }
                     }
                 }
             }
 
             Sprinting.Update();
-
-
-
-
 
 
             if (Settings.SettingsManager.PlayerSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
@@ -1709,10 +1660,10 @@ namespace Mod
                     GameTimeLastMovedFast = 0;
                 }
                 IsStill = VehicleSpeed <= 0.1f;
-                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-                {
-                    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
-                }
+                //if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+                //{
+                //    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
+                //}
             }
             else
             {
@@ -1902,6 +1853,35 @@ namespace Mod
                 ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
             }
 
+
+
+            if(CurrentInteriorLocation != null)
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
+                if (!ButtonPrompts.Any(x => x.Identifier == $"Exit {CurrentInteriorLocation.Name}"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "ExitLocation");
+                    ButtonPrompts.Add(new ButtonPrompt($"Exit {CurrentInteriorLocation.Name}", "ExitLocation", $"Exit {CurrentInteriorLocation.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
+                }
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "ExitLocation");
+                if (ClosestTeleportEntrance != null)
+                {
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"Enter {ClosestTeleportEntrance.Name}"))
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
+                        ButtonPrompts.Add(new ButtonPrompt($"Enter {ClosestTeleportEntrance.Name}", "EnterLocation", $"Enter {ClosestTeleportEntrance.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
+                    }
+                }
+                else
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
+                }
+            }
+
+
             if(IsCop && AliasedCop != null && AliasedCop.Pedestrian.Exists())
             {
                 if(AliasedCop.CanBeTasked)
@@ -2039,5 +2019,27 @@ namespace Mod
             }
         }
 
+        public void EnterLocation()
+        {
+            if(ClosestTeleportEntrance != null)
+            {
+                Game.FadeScreenOut(1500, true);
+                CurrentInteriorLocation = ClosestTeleportEntrance;
+                Character.Position = ClosestTeleportEntrance.TeleportEnterPosition;
+                Character.Heading = ClosestTeleportEntrance.TeleportEnterHeading;
+                Game.FadeScreenIn(1500, true);
+            }
+        }
+        public void ExitLocation()
+        {
+            if (CurrentInteriorLocation != null)
+            {
+                Game.FadeScreenOut(1500, true);
+                Character.Position = CurrentInteriorLocation.EntrancePosition;
+                Character.Heading = CurrentInteriorLocation.EntranceHeading;
+                CurrentInteriorLocation = null;
+                Game.FadeScreenIn(1500, true);
+            }
+        }
     }
 }

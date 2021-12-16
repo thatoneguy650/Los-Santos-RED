@@ -15,8 +15,7 @@ using System.Runtime.InteropServices;
 namespace Mod
 {
     public class World : IEntityLoggable, IEntityProvideable
-    {
-        
+    {     
         private List<Blip> CreatedBlips = new List<Blip>();
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
@@ -25,11 +24,10 @@ namespace Mod
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
         private ICrimes Crimes;
-        private IWeapons Weapons;
-        private List<GameLocation> ActiveLocations = new List<GameLocation>();
+        private IWeapons Weapons;     
         private ITimeReportable Time;
-        private List<IPLLocation> IPLLocations = new List<IPLLocation>();
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus)
+        private IInteriors Interiors;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -38,9 +36,11 @@ namespace Mod
             Weapons = weapons;
             Crimes = crimes;
             Time = time;
+            Interiors = interiors;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
+        public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
         public bool AnyWantedCiviliansNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
@@ -77,14 +77,8 @@ namespace Mod
                 {
                     zone.AssignedSecondLEAgencyInitials = "";
                 }
-
-                
                 GameFiber.Yield();
             }
-
-
-            SetupIPLs();
-
         }
         public void AddBlipsToMap()
         {
@@ -139,7 +133,17 @@ namespace Mod
         {
             RemoveBlips();
             ClearSpawned();
-            UnloadIPLs();
+            foreach(GameLocation loc in ActiveLocations)
+            {
+                if(loc.HasInterior)
+                {
+                    Interior myInt = Interiors.GetInterior(loc.InteriorID);
+                    if (myInt != null)
+                    {
+                        myInt.Unload();
+                    }
+                }
+            }
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
@@ -197,7 +201,6 @@ namespace Mod
         {
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                //gl.Update();
                 if (gl.IsOpen(Time.CurrentHour) && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
@@ -221,30 +224,29 @@ namespace Mod
                     }
                 }
             }
-
-            foreach(IPLLocation iPLLocation in IPLLocations)
+        }
+        public void ActivateLocation(GameLocation gl)
+        {
+            if (gl.IsOpen(Time.CurrentHour))
             {
-                if(NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, iPLLocation.CellX, iPLLocation.CellY, 4))
+                if (!ActiveLocations.Contains(gl))
                 {
-                    if(!iPLLocation.IsActive)
-                    {
-                        iPLLocation.Load();
-                        EntryPoint.WriteToConsole($"World: Loaded {iPLLocation.ID}", 5);
-                    }
-                }
-                else
-                {
-                    if (iPLLocation.IsActive)
-                    {
-                        iPLLocation.Unload();
-                        EntryPoint.WriteToConsole($"World: UnLoaded {iPLLocation.ID}", 5);
-                    }
+                    ActiveLocations.Add(gl);
+                    SetupLocation(gl);
+                    GameFiber.Yield();
                 }
             }
-
         }
         public void SetupLocation(GameLocation gameLocation)
         {
+            if(gameLocation.HasInterior)
+            {
+                Interior myInt = Interiors.GetInterior(gameLocation.InteriorID);
+                if(myInt != null)
+                {
+                    myInt.Load();
+                }
+            }
             if (gameLocation.HasVendor)
             {
                 SpawnVendor(gameLocation);
@@ -255,34 +257,13 @@ namespace Mod
             }
             gameLocation.Update();
         }
-        private void SetupBlip(GameLocation gameLocation)
-        {
-            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);
-            Blip createdBlip = myBlip.AddToMap();
-            gameLocation.SetCreatedBlip(createdBlip);
-            AddEntity(createdBlip);
-        }
-        private void RemoveLocation(GameLocation gameLocation)
-        {
-            if (!gameLocation.ShouldAlwaysHaveBlip)
-            {
-                RemoveBlip(gameLocation);
-            }
-        }
-        private void RemoveBlip(GameLocation gameLocation)
-        {
-            if (gameLocation.CreatedBlip.Exists())
-            {
-                gameLocation.CreatedBlip.Delete();
-            }
-        }
         private void SpawnVendor(GameLocation gameLocation)
         {
             Ped ped;
             string ModelName = gameLocation.VendorModels.PickRandom();
-            foreach(PedExt possibleCollision in CivilianList)
+            foreach (PedExt possibleCollision in CivilianList)
             {
-                if(possibleCollision.Pedestrian.Exists() && possibleCollision.Pedestrian.DistanceTo2D(gameLocation.VendorPosition) <= 5f)
+                if (possibleCollision.Pedestrian.Exists() && possibleCollision.Pedestrian.DistanceTo2D(gameLocation.VendorPosition) <= 5f)
                 {
                     possibleCollision.Pedestrian.Delete();
                 }
@@ -304,7 +285,7 @@ namespace Mod
                 modelToCreate.LoadAndWait();
                 ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z + 1f, gameLocation.VendorHeading, false, false);
 
-               // EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
+                // EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
             }
 
             GameFiber.Yield();
@@ -321,51 +302,34 @@ namespace Mod
                 AddEntity(Person);
             }
         }
-        private void SetupIPLs()
+        private void SetupBlip(GameLocation gameLocation)
         {
-
-            IPLLocations = new List<IPLLocation>() {
-                new IPLLocation("premiumdeluxemotorsport",7170,new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" },new Vector3(-38.83289f, -1108.61f, 26.46652f)),
-            };
-
-
-            ////FIB Lobby
-            //NativeFunction.Natives.REQUEST_IPL("FIBlobby");
-            //NativeFunction.Natives.REMOVE_IPL("FIBlobbyfake");
-            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1517873911, 106.3793f, -742.6982f, 46.51962f, false, 0.0f, 0.0f, 0.0f);
-            //NativeFunction.Natives.x9B12F9A24FABEDB0(-90456267, 105.7607f, -746.646f, 46.18266f, false, 0.0f, 0.0f, 0.0f);
-
-            ////Paleto Sheriff
-            //NativeFunction.Natives.DISABLE_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(-444.89068603515625f, 6013.5869140625f, 30.7164f), false);
-            //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(-444.89068603515625f, 6013.5869140625f, 30.7164f), false);
-            //NativeFunction.Natives.REQUEST_IPL("v_sheriff2");
-            //NativeFunction.Natives.REMOVE_IPL("cs1_16_sheriff_cap");
-            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1501157055, -444.4985f, 6017.06f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
-            //NativeFunction.Natives.x9B12F9A24FABEDB0(-1501157055, -442.66f, 6015.222f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
-
-
-            ////Simeon
-            //NativeFunction.Natives.REQUEST_IPL("shr_int");
-            //NativeFunction.Natives.REMOVE_IPL("fakeint");
-            //NativeFunction.Natives.REMOVE_IPL("shutter_closed");
-
-
-
-            //NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(7170, "csr_beforeMission");
-            //NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(7170, "shutter_open");
-            //NativeFunction.Natives.REFRESH_INTERIOR(7170);
-
-
-
+            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);
+            Blip createdBlip = myBlip.AddToMap();
+            gameLocation.SetCreatedBlip(createdBlip);
+            AddEntity(createdBlip);
         }
-        private void UnloadIPLs()
+        private void RemoveLocation(GameLocation gameLocation)
         {
-            //NativeFunction.Natives.REMOVE_IPL("shr_int");
-            //NativeFunction.Natives.REQUEST_IPL("fakeint");
-            //NativeFunction.Natives.REQUEST_IPL("shutter_closed");
-            //NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(7170, "csr_afterMissionB");
-            //NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(7170, "shutter_closed");
-            //NativeFunction.Natives.REFRESH_INTERIOR(7170);
+            if (gameLocation.HasInterior)
+            {
+                Interior myInt = Interiors.GetInterior(gameLocation.InteriorID);
+                if (myInt != null)
+                {
+                    myInt.Unload();
+                }
+            }
+            if (!gameLocation.ShouldAlwaysHaveBlip)
+            {
+                RemoveBlip(gameLocation);
+            }
+        }
+        private void RemoveBlip(GameLocation gameLocation)
+        {
+            if (gameLocation.CreatedBlip.Exists())
+            {
+                gameLocation.CreatedBlip.Delete();
+            }
         }
     }
 }

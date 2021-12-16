@@ -349,7 +349,7 @@ public class UI : IMenuProvideable
     }
     public void UpdateUIData()
     {
-        if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
+        if (DisplayablePlayer.IsAliveAndFree) //if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
             if (Time.IsNight && Settings.SettingsManager.UISettings.GreyOutWhiteFontAtNight)
             {

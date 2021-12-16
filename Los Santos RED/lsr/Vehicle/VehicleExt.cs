@@ -290,7 +290,8 @@ namespace LSR.Vehicles
                 {
                     if(Health > Vehicle.Health)
                     {
-                        OnHealthDecreased(driver);
+                        GameFiber.Yield();
+                        OnHealthDecreased(driver); 
                     }
                     else
                     {
@@ -301,6 +302,7 @@ namespace LSR.Vehicles
                     {
                         if(onFire)
                         {
+                            GameFiber.Yield();
                             driver.OnVehicleStartedFire();
                         }
                         IsOnFire = onFire;

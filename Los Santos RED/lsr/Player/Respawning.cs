@@ -350,6 +350,12 @@ public class Respawning// : IRespawning
     {
         Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
+
+        if(ToSet.HasInterior)
+        {
+            World.ActivateLocation(ToSet);
+        }
+
         if (ToSet.Type == LocationType.Grave)
         {
             Game.LocalPlayer.Character.IsRagdoll = true;

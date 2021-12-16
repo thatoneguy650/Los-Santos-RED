@@ -14,7 +14,8 @@ public class PoliceSettings
     public int TimeBetweenRoadblock_Seen_AdditionalTimeScaler { get; set; } = 30000;
     public bool ManageDispatching { get; set; } = true;
     public bool ManageTasking { get; set; } = true;
-    public bool AllowExclusiveControlOverWantedLevel { get; set; } = true;
+    public bool TakeExclusiveControlOverWantedLevel { get; set; } = true;
+    public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; } = false;
     public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;
@@ -70,6 +71,7 @@ public class PoliceSettings
     public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; } = 2000;
     public bool DeadlyChaseRequiresThreeStars { get; set; } = true;
     public int MaxWantedLevel { get; set; } = 6;
+
 
     public PoliceSettings()
     {

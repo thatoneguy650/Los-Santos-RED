@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Interface
         List<VehicleExt> PoliceVehicleList { get; }
         int SpawnedPoliceVehicleCount { get; }
         string DebugString { get; }
+        List<GameLocation> ActiveLocations { get; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);
@@ -42,5 +43,6 @@ namespace LosSantosRED.lsr.Interface
         void LoadMPMap();
         void LoadSPMap();
         VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance);
+        void ActivateLocation(GameLocation toSet);
     }
 }

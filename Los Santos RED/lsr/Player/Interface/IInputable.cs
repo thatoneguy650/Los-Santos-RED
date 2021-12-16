@@ -43,5 +43,7 @@ namespace LosSantosRED.lsr.Interface
         void StartSimpleTransaction();
         void StartSprinting();
         void StopSprinting();
+        void EnterLocation();
+        void ExitLocation();
     }
 }

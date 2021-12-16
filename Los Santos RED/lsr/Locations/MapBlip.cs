@@ -30,11 +30,15 @@ namespace LosSantosRED.lsr.Util.Locations
                 }
                 if (Type == LocationType.FireStation)
                 {
-                    return BlipSprite.Fire;
+                    return (BlipSprite)436;
                 }
                 else if (Type == LocationType.Police)
                 {
                     return BlipSprite.PoliceStation;
+                }
+                else if (Type == LocationType.Stadium)
+                {
+                    return (BlipSprite)459;
                 }
                 else if (Type == LocationType.ConvenienceStore)
                 {
@@ -45,6 +49,10 @@ namespace LosSantosRED.lsr.Util.Locations
                     return BlipSprite.JerryCan;
                 }
                 else if (Type == LocationType.Grave)
+                {
+                    return BlipSprite.Dead;
+                }
+                else if (Type == LocationType.Morgue)
                 {
                     return BlipSprite.Dead;
                 }
