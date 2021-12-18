@@ -15,7 +15,7 @@ public class Scenarios : IScenarios
 ,new Scenario("WORLD_HUMAN_BUM_WASH","Bum Wash")
 ,new Scenario("WORLD_HUMAN_CAR_PARK_ATTENDANT","Part Car")
 ,new Scenario("WORLD_HUMAN_CHEERING","Cheer")
-,new Scenario("WORLD_HUMAN_CLIPBOARD","Use CLipboard")
+,new Scenario("WORLD_HUMAN_CLIPBOARD","Use Clipboard")
 ,new Scenario("WORLD_HUMAN_CONST_DRILL","Dill")
 ,new Scenario("WORLD_HUMAN_COP_IDLES","Idle")
 ,new Scenario("WORLD_HUMAN_DRINKING","Drink Alcohol")

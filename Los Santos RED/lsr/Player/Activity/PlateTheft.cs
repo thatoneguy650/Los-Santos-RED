@@ -31,6 +31,7 @@ public class PlateTheft : DynamicActivity
     {
         PlateToAdd = plateToChange;
     }
+    public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     private bool TargetVehicleHasPlate
     {

@@ -12,6 +12,7 @@ public class ActionMenu : Menu
     private UIMenuItem Drink;
     private IActionable Player;
     private UIMenuItem RemovePlate;
+    private UIMenuItem SitDown;
     private UIMenuItem Smoke;
     private UIMenuItem SmokePot;
     private UIMenuItem StopConsuming;
@@ -102,7 +103,7 @@ public class ActionMenu : Menu
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-
+        SitDown = new UIMenuItem("Sit Down", "Face the nearest Seat.");
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Drink = new UIMenuItem("Drink", "Start Drinking");
@@ -114,6 +115,7 @@ public class ActionMenu : Menu
         Actions.AddItem(Suicide);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
+        Actions.AddItem(SitDown);
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Actions.AddItem(Drink);
@@ -150,6 +152,10 @@ public class ActionMenu : Menu
         else if (selectedItem == SmokePot)
         {
             Player.StartSmokingPot();
+        }
+        else if (selectedItem == SitDown)
+        {
+            Player.StartSittingDown();
         }
         else if (selectedItem == StopConsuming)
         {

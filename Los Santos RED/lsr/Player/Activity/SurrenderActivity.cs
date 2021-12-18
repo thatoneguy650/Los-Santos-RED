@@ -19,6 +19,7 @@ public class SurrenderActivity : DynamicActivity
         World = world;
     }
     public bool CanSurrender => !Player.HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);
+    public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public bool IsCommitingSuicide { get; set; }
     public override void Cancel()

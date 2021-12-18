@@ -268,11 +268,11 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
             }
-            if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && !Player.HandsAreUp)// && ((!Player.IsInVehicle && Player.Character.Speed >= 1.5f) || (Player.IsInVehicle && Player.VehicleSpeedMPH > 40f)) && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
+            if (Player.IsWanted && !Player.HandsAreUp) //&& Player.AnyPoliceRecentlySeenPlayer)// && ((!Player.IsInVehicle && Player.Character.Speed >= 1.5f) || (Player.IsInVehicle && Player.VehicleSpeedMPH > 40f)) && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
             {
                 if(Player.IsInVehicle)
                 {
-                    if(Player.VehicleSpeedMPH >= 70f)
+                    if(Player.VehicleSpeedMPH >= 65f)
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
                         {
@@ -280,7 +280,7 @@ namespace LosSantosRED.lsr
                             //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
                         }
                     }
-                    else if (Player.VehicleSpeedMPH >= 30f)
+                    else if (Player.VehicleSpeedMPH >= 35f)
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestMediumTriggerTime)
                         {
@@ -290,7 +290,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if(Player.VehicleSpeedMPH >= 5f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
+                        if(Player.VehicleSpeedMPH >= 20f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                            // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
@@ -320,21 +320,20 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
-
-            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers)// && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Player.GroupID) && x.Handle != Player.Character.Handle))
-            {
-                foreach(Ped passenger in Player.CurrentVehicle.Vehicle.Passengers)
-                {
-                    //EntryPoint.WriteToConsole($"VIOLATIONS: Kidnapping {passenger.Handle} IsPersistent {passenger.IsPersistent} IS_PED_GROUP_MEMBER {NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID)}", 5);
-                    if (passenger.Exists() && passenger.IsAlive && !passenger.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID) && passenger.Handle != Player.Character.Handle)
-                    {
-                        AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
-                        break;
-                    }
+            //if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers)// && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Player.GroupID) && x.Handle != Player.Character.Handle))
+            //{
+            //    foreach(Ped passenger in Player.CurrentVehicle.Vehicle.Passengers)
+            //    {
+            //        //EntryPoint.WriteToConsole($"VIOLATIONS: Kidnapping {passenger.Handle} IsPersistent {passenger.IsPersistent} IS_PED_GROUP_MEMBER {NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID)}", 5);
+            //        if (passenger.Exists() && passenger.IsAlive && !passenger.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID) && passenger.Handle != Player.Character.Handle)
+            //        {
+            //            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
+            //            break;
+            //        }
                     
-                }
+            //    }
                 
-            }
+            //}
             if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 2.0f && !Player.IsInVehicle)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
@@ -345,14 +344,10 @@ namespace LosSantosRED.lsr
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "InsultingOfficer"));
                 
             }
-            if(Player.IsConductingIllicitTransaction)//if(NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            if(Player.IsConductingIllicitTransaction)
             {
-                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));
             }
-            //if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
-            //{
-            //    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
-            //}
 
         }
         private void CheckTrafficViolations()

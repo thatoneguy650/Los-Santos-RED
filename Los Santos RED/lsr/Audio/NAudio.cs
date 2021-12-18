@@ -13,7 +13,8 @@ public class Audio : IAudioPlayable
     public Audio()
     {
 
-    } 
+    }
+    public bool IsScannerPlaying { get; private set; }
     public bool IsAudioPlaying
     {
         get
@@ -21,7 +22,7 @@ public class Audio : IAudioPlayable
             return outputDevice != null;
         }
     }
-    public void Play(string FileName, float volume)
+    public void Play(string FileName, float volume, bool isLowPriority)
     {
         try
         {
@@ -71,8 +72,8 @@ public class Audio : IAudioPlayable
         audioFile = null;
     }
 
-    public void Play(string fileName, int volume)
+    public void Play(string fileName, int volume, bool isScannerPlaying)
     {
-        Play(fileName, volume * 1.0f);
+        Play(fileName, volume * 1.0f, isScannerPlaying);
     }
 }

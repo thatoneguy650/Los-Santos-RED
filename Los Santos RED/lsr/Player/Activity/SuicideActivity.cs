@@ -23,6 +23,7 @@ public class SuicideActivity : DynamicActivity
         Player = player;
         Settings = settings;
     }
+    public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override void Cancel()
     {

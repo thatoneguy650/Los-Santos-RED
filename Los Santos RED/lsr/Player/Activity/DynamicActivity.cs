@@ -13,6 +13,7 @@ namespace LosSantosRED.lsr.Player
         {
 
         }
+        public abstract ModItem ModItem { get; set; }
         public abstract string DebugString { get; }
         public abstract void Start();
         public abstract void Continue();

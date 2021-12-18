@@ -113,9 +113,11 @@
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
+    <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
-    <Compile Include="lsr\Player\Activity\EatingData.cs" />
+    <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
+    <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
@@ -223,8 +225,8 @@
     <Compile Include="lsr\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
     <Compile Include="lsr\Player\Activity\SuicideActivity.cs" />
-    <Compile Include="lsr\Player\Activity\DrinkingData.cs" />
-    <Compile Include="lsr\Player\Activity\SmokingData.cs" />
+    <Compile Include="lsr\Player\Activity\Data\DrinkingData.cs" />
+    <Compile Include="lsr\Player\Activity\Data\SmokingData.cs" />
     <Compile Include="lsr\Ped\Cop\WeaponInventory.cs" />
     <Compile Include="lsr\Tasker\eDrivingStyles.cs" />
     <Compile Include="lsr\UI\Menu\ActionMenu.cs" />
@@ -295,6 +297,7 @@
     <Compile Include="lsr\Ped\Health\BodyLocation.cs" />
     <Compile Include="lsr\Ped\Health\Bone.cs" />
     <Compile Include="lsr\World\Util\LocationSpawner.cs" />
+    <Compile Include="lsr\World\Weather.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
     <Compile Include="lsr\Ped\PedConfigFlags.cs" />

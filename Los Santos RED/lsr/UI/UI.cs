@@ -298,7 +298,7 @@ public class UI : IMenuProvideable
         float BackPosY = PosY;
 
         float BackHeight = 0.0075f;
-        float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        float FrontWidth = BackWidth * 0.0f;// DisplayablePlayer.StaminaPercent;
         float FrontPosX = BackPosX;
         float FrontPosY = PosY;
         float FrontHeight = 0.0075f;
@@ -313,7 +313,7 @@ public class UI : IMenuProvideable
         float PosY = 0.992f;//0.9925f;
         float BackPosY = PosY;
         float BackHeight = 0.0075f;
-        float FrontWidth = BackWidth * DisplayablePlayer.StaminaPercent;
+        float FrontWidth = BackWidth * 0.0f;// DisplayablePlayer.StaminaPercent;
         float FrontPosX = BackPosX;
         float FrontPosY = PosY;
         float FrontHeight = 0.0075f;
@@ -789,11 +789,11 @@ public class UI : IMenuProvideable
             {
                 if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit (Weapons Free){CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Weapons Free{CurrentDefaultTextColor}";
                 }
                 else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit (Lethal Force Authorized){CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Lethal Force Authorized{CurrentDefaultTextColor}";
                 }
                 else
                 {
@@ -805,7 +805,7 @@ public class UI : IMenuProvideable
         {   
             if(DisplayablePlayer.Investigation.IsSuspicious)
             {
-                PlayerDisplay += $"~r~ Police Responding, Description Issued{CurrentDefaultTextColor}";
+                PlayerDisplay += $"~r~ Police Responding with Description{CurrentDefaultTextColor}";
             }
             else if(DisplayablePlayer.Investigation.IsNearPosition)
             {

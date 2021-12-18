@@ -146,8 +146,9 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}", 3);
                     Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true,false, true);
                 }
+                int highestWantedLevel = CurrentHistory.WantedLevel;
                 CurrentHistory = null;
-                Player.OnAppliedWantedStats();
+                Player.OnAppliedWantedStats(highestWantedLevel);
             }
         }
         private void UpdateBlip()

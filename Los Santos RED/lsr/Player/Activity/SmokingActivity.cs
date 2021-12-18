@@ -34,7 +34,7 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
         private ISettingsProvideable Settings;
-        private ModItem ModItem;
+        //private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Player
             ModItem = modItem;
             Intoxicants = intoxicants;
         }
+        public override ModItem ModItem { get; set; }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override void Cancel()
         {

@@ -21,6 +21,7 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; }
         List<InventoryItem> InventoryItems { get; }
         void StartSmokingPot();
+        void StartSittingDown();
         void StartSmoking();
         void StartDrinkingActivity();
         void CommitSuicide();

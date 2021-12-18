@@ -24,7 +24,8 @@ public class WavAudio : IAudioPlayable
     private SoundPlayer AudioDevice = new SoundPlayer();
     private bool CancelAudio;
     public bool IsAudioPlaying { get; private set; }
-    public void Play(string FileName, int volume)
+    public bool IsScannerPlaying { get; private set; }
+    public void Play(string FileName, int volume, bool isScannerPlaying)
     {
         if (FileName == "")
         {
@@ -48,7 +49,8 @@ public class WavAudio : IAudioPlayable
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; }); 
+        IsScannerPlaying = isScannerPlaying;
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; }); 
     }
     public void Play_OLD(string FileName, int volume)
     {

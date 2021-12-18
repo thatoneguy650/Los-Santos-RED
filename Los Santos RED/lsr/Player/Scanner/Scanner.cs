@@ -14,78 +14,54 @@ namespace LosSantosRED.lsr
 {
     public class Scanner
     {
-        private bool AbortedAudio;
+
         private Dispatch AnnounceStolenVehicle;
         private Dispatch AssaultingOfficer;
         private Dispatch AttemptingSuicide;
         private Dispatch AttemptToReacquireSuspect;
-        private List<AudioSet> AttentionAllUnits;
-        private IAudioPlayable AudioPlayer;
         private Dispatch CarryingWeapon;
         private Dispatch ChangedVehicles;
         private Dispatch CivilianDown;
         private Dispatch CivilianInjury;
         private Dispatch CivilianShot;
-        private List<AudioSet> CiviliansReport;
         private Dispatch CriminalActivity;
-        private DispatchEvent CurrentlyPlaying;
-        private CrimeSceneDescription CurrentlyPlayingCallIn;
-        private IPoliceRespondable CurrentPlayer;
-        private List<Dispatch> DispatchList = new List<Dispatch>();
-        private List<CrimeDispatch> DispatchLookup;
-        private List<Dispatch> DispatchQueue = new List<Dispatch>();
         private Dispatch DrivingAtStolenVehicle;
         private Dispatch DrunkDriving;
         private Dispatch AssaultingCivilians;
         private Dispatch AimingWeaponAtPolice;
         private Dispatch DealingDrugs;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
-        private bool ExecutingQueue;
         private Dispatch FelonySpeeding;
-        private uint GameTimeLastAnnouncedDispatch;
-        private uint GameTimeLastDisplayedSubtitle;
-        private uint GameTimeLastMentionedStreet;
-        private uint GameTimeLastMentionedZone;
         private Dispatch GrandTheftAuto;
-        private int HighestCivilianReportedPriority = 99;
-        private int HighestOfficerReportedPriority = 99;
         private Dispatch Kidnapping;
-        private List<AudioSet> LethalForce;
         private Dispatch LethalForceAuthorized;
-        private List<AudioSet> LicensePlateSet;
         private Dispatch Mugging;
         private Dispatch NoFurtherUnitsNeeded;
-        private List<uint> NotificationHandles = new List<uint>();
         private Dispatch OfficerDown;
         private Dispatch OfficerNeedsAssistance;
         private Dispatch Harassment;
         private Dispatch OfficersNeeded;
-        private List<AudioSet> OfficersReport;
         private Dispatch OnFoot;
         private Dispatch ExcessiveSpeed;
         private Dispatch GotOnFreeway;
         private Dispatch GotOffFreeway;
         private Dispatch PedHitAndRun;
         private Dispatch PublicIntoxication;
-        private List<string> RadioEnd;
-        private List<string> RadioStart;
         private Dispatch RecklessDriving;
         private Dispatch RemainInArea;
-        private bool ReportedLethalForceAuthorized;
-        private bool ReportedRequestAirSupport;
-        private bool ReportedWeaponsFree;
         private Dispatch RequestAirSupport;
+        private Dispatch RequestSwatAirSupport;
         private Dispatch RequestBackup;
         private Dispatch RequestMilitaryUnits;
         private Dispatch RequestNOOSEUnits;
+        private Dispatch RequestNooseUnitsAlt;
+        private Dispatch RequestNooseUnitsAlt2;
         private Dispatch ResistingArrest;
         private Dispatch ResumePatrol;
         private Dispatch RunningARedLight;
-        private ISettingsProvideable Settings;
         private Dispatch ShotsFired;
         private Dispatch ShotsFiredAtAnOfficer;
         private Dispatch StealingAirVehicle;
-        private StreetScannerAudio StreetScannerAudio;
         private Dispatch SuspectArrested;
         private Dispatch SuspectEvaded;
         private Dispatch SuspectSpotted;
@@ -97,20 +73,56 @@ namespace LosSantosRED.lsr
         private Dispatch ThreateningOfficerWithFirearm;
         private Dispatch TrespassingOnGovernmentProperty;
         private Dispatch VehicleHitAndRun;
-        private VehicleScannerAudio VehicleScannerAudio;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
-        private IEntityProvideable World;
-        private ZoneScannerAudio ZoneScannerAudio;
-        private ITimeReportable Time;
         private Dispatch VehicleCrashed;
         private Dispatch VehicleStartedFire;
+
+        private bool AbortedAudio;
+        private bool ExecutingQueue;
+        private List<uint> NotificationHandles = new List<uint>();
+
+        private DispatchEvent CurrentlyPlaying;
+        private CrimeSceneDescription CurrentlyPlayingCallIn;
+        private List<Dispatch> DispatchList = new List<Dispatch>();
+        private List<CrimeDispatch> DispatchLookup;
+        private List<Dispatch> DispatchQueue = new List<Dispatch>();
+
+        private bool ReportedLethalForceAuthorized;
+        private bool ReportedRequestAirSupport;
+        private bool ReportedWeaponsFree;
+        private uint GameTimeLastAnnouncedDispatch;
+        private uint GameTimeLastDisplayedSubtitle;
+        private uint GameTimeLastMentionedStreet;
+        private uint GameTimeLastMentionedZone;
         private uint GameTimeLastMentionedUnits;
+        private int HighestCivilianReportedPriority = 99;
+        private int HighestOfficerReportedPriority = 99;
+
+        private bool Flipper = false;
+
+        private List<string> RadioEnd;
+        private List<string> RadioStart;
+        private List<AudioSet> LethalForce;
+        private List<AudioSet> LicensePlateSet;
+        private List<AudioSet> OfficersReport;
+        private List<AudioSet> AttentionAllUnits;
+        private List<AudioSet> CiviliansReport;
+
+        private StreetScannerAudio StreetScannerAudio;
+        private VehicleScannerAudio VehicleScannerAudio;
+        private ZoneScannerAudio ZoneScannerAudio;
+
+        private ISettingsProvideable Settings;
+        private IAudioPlayable AudioPlayer;
+        private IEntityProvideable World;
+        private ITimeReportable Time;
+        private IPoliceRespondable Player;
 
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
             AudioPlayer = audioPlayer;
-            CurrentPlayer = currentPlayer;
+            Player = currentPlayer;
             World = world;
             Settings = settings;
             Time = time;
@@ -156,7 +168,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if (CurrentPlayer.IsNotWanted)
+                        if (Player.IsNotWanted)
                         {
                             if (ToAnnounce.Priority < HighestCivilianReportedPriority || (ToAnnounce.Priority == HighestCivilianReportedPriority && !ToAnnounce.HasRecentlyBeenPlayed))
                             {
@@ -167,17 +179,44 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void OnAppliedWantedStats()
+        public void DebugPlayDispatch()
+        {
+            Reset();
+            if(Flipper)
+            {
+                if (RandomItems.RandomPercent(50))
+                {
+                    AddToQueue(RequestNooseUnitsAlt);
+                }
+                else
+                {
+                    AddToQueue(RequestNooseUnitsAlt2);
+                }
+            }
+            else
+            {
+                AddToQueue(RequestSwatAirSupport);
+            }
+            Flipper = !Flipper;
+        }
+        public void OnAppliedWantedStats(int wantedLevel)
         {
             if (!WantedSuspectSpotted.HasRecentlyBeenPlayed)
             {
-                AddToQueue(WantedSuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
+                if(wantedLevel == 1)
+                {
+                    AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer) { VehicleSeen = Player.CurrentVehicle });
+                }
+                else
+                {
+                    AddToQueue(WantedSuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer) { VehicleSeen = Player.CurrentVehicle });
+                }  
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnAppliedWantedStats", 3);
         }
         public void OnArmyDeployed()
         {
-            if (CurrentPlayer.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+            if (Player.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
             {
                 AddToQueue(RequestMilitaryUnits);
             }
@@ -192,7 +231,7 @@ namespace LosSantosRED.lsr
         }
         public void OnGotInVehicle()
         {
-            if (!ChangedVehicles.HasRecentlyBeenPlayed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
+            if (!ChangedVehicles.HasRecentlyBeenPlayed && Player.CurrentVehicle != null && Player.CurrentVehicle.HasBeenDescribedByDispatch)
             {
                 AddToQueue(ChangedVehicles);
             }
@@ -208,7 +247,7 @@ namespace LosSantosRED.lsr
         }
         public void OnVehicleCrashed()
         {
-            if (!VehicleCrashed.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!VehicleCrashed.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer)
             {
                 VehicleCrashed.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleCrashed);
@@ -217,7 +256,7 @@ namespace LosSantosRED.lsr
         }
         public void OnVehicleStartedFire()
         {
-            if (!VehicleStartedFire.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!VehicleStartedFire.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer)
             {
                 VehicleStartedFire.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleStartedFire);
@@ -226,9 +265,17 @@ namespace LosSantosRED.lsr
         }
         public void OnHelicoptersDeployed()
         {
-            if (CurrentPlayer.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+            if (Player.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && !RequestSwatAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
             {
-                AddToQueue(RequestAirSupport);
+                if(World.AnyNooseUnitsSpawned)
+                {
+                    AddToQueue(RequestSwatAirSupport);
+                }
+                else
+                {
+                    AddToQueue(RequestAirSupport);
+
+                }
             }
         }
         public void OnInvestigationExpire()
@@ -247,7 +294,7 @@ namespace LosSantosRED.lsr
         }
         public void OnLethalForceAuthorized()
         {
-            if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && CurrentPlayer.PoliceResponse.IsDeadlyChase)
+            if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && Player.PoliceResponse.IsDeadlyChase)
             {
                 AddToQueue(LethalForceAuthorized);
             }
@@ -255,9 +302,16 @@ namespace LosSantosRED.lsr
         }
         public void OnNooseDeployed()
         {
-            if (CurrentPlayer.IsWanted && !RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+            if (Player.IsWanted && !RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
             {
-                AddToQueue(RequestNOOSEUnits);
+                if(RandomItems.RandomPercent(50))
+                {
+                    AddToQueue(RequestNooseUnitsAlt);
+                }
+                else
+                {
+                    AddToQueue(RequestNooseUnitsAlt2); 
+                }
             }
         }
         public void OnPaidFine()
@@ -270,7 +324,7 @@ namespace LosSantosRED.lsr
         }
         public void OnPlayerBusted()
         {
-            if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!SuspectArrested.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer)
             {
                 AddToQueue(SuspectArrested);
             }
@@ -278,9 +332,9 @@ namespace LosSantosRED.lsr
         }
         public void OnPoliceNoticeVehicleChange()
         {
-            if (!ChangedVehicles.HasVeryRecentlyBeenPlayed && CurrentPlayer.CurrentVehicle != null)// && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
+            if (!ChangedVehicles.HasVeryRecentlyBeenPlayed && Player.CurrentVehicle != null)// && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
             {
-                AddToQueue(ChangedVehicles, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
+                AddToQueue(ChangedVehicles, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer) { VehicleSeen = Player.CurrentVehicle });
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnPoliceNoticeVehicleChange", 3);
         }
@@ -288,7 +342,7 @@ namespace LosSantosRED.lsr
         {
             if (!RequestBackup.HasRecentlyBeenPlayed)
             {
-                AddToQueue(RequestBackup, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                AddToQueue(RequestBackup, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUp", 3);
         }
@@ -301,14 +355,14 @@ namespace LosSantosRED.lsr
                 GameFiber.Sleep(1000);
                 if (!RemainInArea.HasRecentlyBeenPlayed)
                 {
-                    AddToQueue(RemainInArea, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    AddToQueue(RemainInArea, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
                 }
                 EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
             }, "PlayDispatchQueue");
         }
         public void OnSuspectWasted()
         {
-            if (!SuspectWasted.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceRecentlySeenPlayer && CurrentPlayer.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && Player.AnyPoliceRecentlySeenPlayer && Player.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -316,17 +370,17 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedActiveMode()
         {
-            if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !DispatchQueue.Any() && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
+            if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !DispatchQueue.Any() && Player.PoliceResponse.HasBeenWantedFor > 25000)
             {
-                AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsActive", 3);
         }
         public void OnWantedSearchMode()
         {
-            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any() && !World.AnyCopsNearPosition(CurrentPlayer.Position,100f))
+            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any() && !World.AnyCopsNearPosition(Player.Position,100f))
             {
-                AddToQueue(SuspectEvaded, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                AddToQueue(SuspectEvaded, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
         }
@@ -340,7 +394,7 @@ namespace LosSantosRED.lsr
         }
         public void OnGotOnFreeway()
         {
-            if (!GotOnFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!GotOnFreeway.HasRecentlyBeenPlayed && Player.IsInVehicle && Player.AnyPoliceCanSeePlayer)
             {
                 GotOnFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOnFreeway);
@@ -349,7 +403,7 @@ namespace LosSantosRED.lsr
         }
         public void OnGotOffFreeway()
         {
-            if (!GotOffFreeway.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!GotOffFreeway.HasRecentlyBeenPlayed && Player.IsInVehicle && Player.AnyPoliceCanSeePlayer)
             {
                 GotOffFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOffFreeway);
@@ -358,7 +412,7 @@ namespace LosSantosRED.lsr
         }
         public void OnExcessiveSpeed()
         {
-            if (!ExcessiveSpeed.HasRecentlyBeenPlayed && CurrentPlayer.IsInVehicle && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!ExcessiveSpeed.HasRecentlyBeenPlayed && Player.IsInVehicle && Player.AnyPoliceCanSeePlayer)
             {
                 ExcessiveSpeed.LatestInformation.SeenByOfficers = true;
                 ExcessiveSpeed.LatestInformation.Speed = Game.LocalPlayer.Character.Speed;
@@ -417,7 +471,7 @@ namespace LosSantosRED.lsr
                         {
                             Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
                             bool AddToPlayed = true;
-                            if(CurrentPlayer.IsNotWanted && Item.LatestInformation.SeenByOfficers)
+                            if(Player.IsNotWanted && Item.LatestInformation.SeenByOfficers)
                             {
                                 AddToPlayed = false;
                             }
@@ -495,7 +549,7 @@ namespace LosSantosRED.lsr
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
-            dispatchEvent.NotificationText = "Wanted For:" + CurrentPlayer.PoliceResponse.PrintCrimes();
+            dispatchEvent.NotificationText = "Wanted For:" + Player.PoliceResponse.PrintCrimes();
         }
         private void AddRequestAirSupport(DispatchEvent dispatchEvent)
         {
@@ -587,7 +641,7 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Street MyStreet = CurrentPlayer.CurrentLocation.CurrentStreet;
+            Street MyStreet = Player.CurrentLocation.CurrentStreet;
             if (MyStreet != null)
             {
                 string StreetAudio = StreetScannerAudio.GetAudio(MyStreet.Name);
@@ -599,9 +653,9 @@ namespace LosSantosRED.lsr
                     dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
                     dispatchEvent.HasStreetAudio = true;
 
-                    if (CurrentPlayer.CurrentLocation.CurrentCrossStreet != null)
+                    if (Player.CurrentLocation.CurrentCrossStreet != null)
                     {
-                        Street MyCrossStreet = CurrentPlayer.CurrentLocation.CurrentCrossStreet;
+                        Street MyCrossStreet = Player.CurrentLocation.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
                             string CrossStreetAudio = StreetScannerAudio.GetAudio(MyCrossStreet.Name);
@@ -868,7 +922,7 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Zone MyZone = CurrentPlayer.CurrentLocation.CurrentZone;
+            Zone MyZone = Player.CurrentLocation.CurrentZone;
             if (MyZone != null)
             {
                 string ScannerAudio = ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
@@ -897,7 +951,7 @@ namespace LosSantosRED.lsr
                 return;
             }
             bool AddedZoneUnits = false;
-            Zone MyZone = CurrentPlayer.CurrentLocation.CurrentZone;
+            Zone MyZone = Player.CurrentLocation.CurrentZone;
             if (MyZone != null)
             {
                 ZoneLookup zoneAudio = ZoneScannerAudio.GetLookup(MyZone.InternalGameName);
@@ -1006,14 +1060,14 @@ namespace LosSantosRED.lsr
             {
                 AddRapSheet(EventToPlay);
             }
-            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && CurrentPlayer.CurrentVehicle != null)//temp current vehicle BS
+            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && Player.CurrentVehicle != null)//temp current vehicle BS
             {
                 //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
-                CurrentPlayer.CurrentVehicle.WasReportedStolen = true;
-                CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
-                if (CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber == CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber)
+                Player.CurrentVehicle.WasReportedStolen = true;
+                Player.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
+                if (Player.CurrentVehicle.OriginalLicensePlate.PlateNumber == Player.CurrentVehicle.CarPlate.PlateNumber)
                 {
-                    CurrentPlayer.CurrentVehicle.CarPlate.IsWanted = true;
+                    Player.CurrentVehicle.CarPlate.IsWanted = true;
                 }
             }
             if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name == "Carrying Weapon"))
@@ -1025,19 +1079,19 @@ namespace LosSantosRED.lsr
             {
                 AddLethalForce(EventToPlay);
             }
-            if (CurrentPlayer.IsWanted && !CurrentPlayer.IsDead && CurrentPlayer.PoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
+            if (DispatchToPlay.CanAddExtras && Player.IsWanted && !Player.IsDead && Player.PoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
             {
                 AddWeaponsFree(EventToPlay);
             }
-            if (CurrentPlayer.IsWanted && !CurrentPlayer.IsDead && World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            if (DispatchToPlay.CanAddExtras && Player.IsWanted && !Player.IsDead && World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
             {
                 AddRequestAirSupport(EventToPlay);
             }
-            if (DispatchToPlay.IncludeDrivingSpeed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
+            if (DispatchToPlay.CanAddExtras && DispatchToPlay.IncludeDrivingSpeed && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
-                if(DispatchToPlay.LatestInformation.Speed <= CurrentPlayer.Character.Speed)
+                if(DispatchToPlay.LatestInformation.Speed <= Player.Character.Speed)
                 {
-                    AddSpeed(EventToPlay, CurrentPlayer.Character.Speed);
+                    AddSpeed(EventToPlay, Player.Character.Speed);
                 }
                 else
                 {
@@ -1051,7 +1105,7 @@ namespace LosSantosRED.lsr
                 AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
                 GameFiber.Yield();
             }
-            if (CurrentPlayer.PoliceResponse.PoliceHaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            if (DispatchToPlay.CanAddExtras && Player.PoliceResponse.PoliceHaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
             {
                 AddHaveDescription(EventToPlay);
             }
@@ -1083,7 +1137,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckDispatch()
         {
-            if (CurrentPlayer.RecentlyStartedPlaying)
+            if (Player.RecentlyStartedPlaying)
             {
                 return;//don't care right when you become a new person
             }
@@ -1092,28 +1146,28 @@ namespace LosSantosRED.lsr
         }
         private void CheckStatusToAnnounce()
         {
-            if (CurrentPlayer.IsWanted && CurrentPlayer.IsAliveAndFree && Settings.SettingsManager.PlayerSettings.Scanner_AllowStatusAnnouncements)
+            if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.PlayerSettings.Scanner_AllowStatusAnnouncements)
             {
-                if (CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
+                if (Player.PoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
+                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.AnyPoliceCanSeePlayer)
                     {
                         EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
-                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
+                    else if (!Player.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
                     {
                         EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
-                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
                     }
                 }
             }
             else
             {
-                foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
+                foreach (VehicleExt StolenCar in Player.ReportedStolenVehicles)
                 {
                     StolenCar.AddedToReportedStolenQueue = true;
-                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!Player.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
                 }
             }
         }
@@ -1211,6 +1265,18 @@ namespace LosSantosRED.lsr
             ,AssaultingCivilians
             ,AssaultingCiviliansWithDeadlyWeapon
             ,DealingDrugs
+            ,WantedSuspectSpotted
+            ,RequestNooseUnitsAlt
+            ,RequestNooseUnitsAlt2
+            ,RequestSwatAirSupport
+            ,AimingWeaponAtPolice
+            ,OnFoot
+            ,ExcessiveSpeed
+            ,GotOnFreeway
+            ,GotOffFreeway
+            ,TamperingWithVehicle
+            ,VehicleCrashed
+            ,VehicleStartedFire
         };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -1226,6 +1292,15 @@ namespace LosSantosRED.lsr
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
         {
             //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
+
+            if(AudioPlayer.IsScannerPlaying)
+            {
+                EntryPoint.WriteToConsole($"ScannerScript Abort Low Priority Other Audio Playing", 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
+
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
@@ -1243,7 +1318,7 @@ namespace LosSantosRED.lsr
                 if (AbortedAudio)
                 {
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
-                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
+                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
                 }
@@ -1264,7 +1339,7 @@ namespace LosSantosRED.lsr
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
-                        AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
+                        AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
                         while (AudioPlayer.IsAudioPlaying)
                         {
                             if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.PlayerSettings.Scanner_EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
@@ -1478,18 +1553,6 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeCarryingWeapon = true,
                 CanBeReportedMultipleTimes = false,
-            };
-            TerroristActivity = new Dispatch()
-            {
-                Name = "Terrorist Activity",
-                LocationDescription = LocationSpecificity.StreetAndZone,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity.FileName },"possible terrorist activity"),
-                new AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity1.FileName},"possible terrorist activity"),
-                new AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity2.FileName },"possible terrorist activity"),
-                new AudioSet(new List<string>() {  crime_terrorist_activity.Terroristactivity.FileName },"terrorist activity"),
-            },
             };
             CivilianDown = new Dispatch()
             {
@@ -1864,6 +1927,10 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { officer_requests_air_support.Unitsrequestinghelicoptersupport.FileName },"units requesting helicopter support"),
             },
             };
+
+
+
+
             RequestMilitaryUnits = new Dispatch()
             {
                 IncludeAttentionAllUnits = true,
@@ -1889,6 +1956,89 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { dispatch_units_full.DispatchingSWATunitsfrompoliceheadquarters1.FileName },"dispatching swat units from police headquarters"),
             },
             };
+
+            RequestNooseUnitsAlt = new Dispatch()
+            {
+                IncludeAttentionAllUnits = false,
+                Name = "NOOSE Units Requested",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                CanAddExtras = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { SWAT3.hitandrun.FileName},"dispatching swat units"),
+
+                new AudioSet(new List<string>() { SWAT3.requestingcode1alphain30minutes.FileName},"dispatching swat units"),
+
+                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName },"dispatching swat units"),
+
+            },
+            };
+
+
+            //RequestNooseUnitsAlt = new Dispatch()
+            //{
+            //    IncludeAttentionAllUnits = false,
+            //    Name = "NOOSE Units Requested",
+            //    IsStatus = true,
+            //    IncludeReportedBy = false,
+            //    CanAddExtras = false,
+            //    LocationDescription = LocationSpecificity.Nothing,
+            //    PreambleAudioSet = new List<AudioSet>()
+            //{
+            //    new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgoahead.FileName },"emergency traffic"),
+            //   new AudioSet(new List<string>() { SWAT3.copyemergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgo.FileName },"emergency traffic"),
+            // },
+            //    MainAudioSet = new List<AudioSet>()
+            //{
+            //    new AudioSet(new List<string>() { SWAT3.hitandrun.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogershowusinroute.FileName },"dispatching swat units"),
+
+            //    new AudioSet(new List<string>() { SWAT3.requestingcode1alphain30minutes.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogerrespondingcode3.FileName },"dispatching swat units"),
+
+            //    new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogerrespondingcode3.FileName },"dispatching swat units"),
+
+            //},
+            //};
+
+            RequestNooseUnitsAlt2 = new Dispatch()
+            {
+                IncludeAttentionAllUnits = false,
+                Name = "NOOSE Units Requested",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                CanAddExtras = false,
+                MainAudioSet = new List<AudioSet>()
+            {
+
+                new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
+
+                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName,SWAT3.suspectarmedusecaution.FileName },"dispatching swat units"),
+
+            },
+            };
+
+
+            RequestSwatAirSupport = new Dispatch()
+            {
+                Name = "Air Support Requested",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                CanAddExtras = false,
+                PreambleAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgoahead.FileName },"emergency traffic"),
+               new AudioSet(new List<string>() { SWAT3.copyemergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgo.FileName },"emergency traffic"),
+             },
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { SWAT3.airsupportimmediateinsertion.FileName,SWAT3.respondcode3.FileName },"officers requesting helicopter support"),
+            },
+            };
+
+
             SuspectSpotted = new Dispatch()
             {
                 Name = "Suspect Spotted",
@@ -1898,6 +2048,54 @@ namespace LosSantosRED.lsr
                 IncludeDrivingVehicle = true,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
+
+
+                PreambleAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual8.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual7.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual8.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual8.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual7.FileName },"suspect spotted"),
+             },
+
             };
             WantedSuspectSpotted = new Dispatch()
             {
@@ -1909,7 +2107,51 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
                 CanAlwaysInterrupt = true,
+                PreambleAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_01.WeHaveAVisual8.FileName },"suspect spotted"),
 
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_02.WeHaveAVisual7.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_03.WeHaveAVisual8.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual7.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_04.WeHaveAVisual8.FileName },"suspect spotted"),
+
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual1.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual2.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual3.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual4.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual5.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual6.FileName },"suspect spotted"),
+                new AudioSet(new List<string>() { spot_suspect_cop_05.WeHaveAVisual7.FileName },"suspect spotted"),
+             },
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
@@ -2467,6 +2709,7 @@ namespace LosSantosRED.lsr
             public bool IncludeRapSheet { get; set; }
             public bool IncludeReportedBy { get; set; } = true;
             public bool IsStatus { get; set; }
+            public bool CanAddExtras { get; set; } = true;
             public CrimeSceneDescription LatestInformation { get; set; } = new CrimeSceneDescription();
             public LocationSpecificity LocationDescription { get; set; } = LocationSpecificity.Nothing;
             public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();

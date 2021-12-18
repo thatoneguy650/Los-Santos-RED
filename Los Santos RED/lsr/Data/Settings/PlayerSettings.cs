@@ -8,7 +8,8 @@ public class PlayerSettings
 {
     public uint AlarmedCarTimeToReportStolen { get; set; } = 100000;
     public uint NonAlarmedCarTimeToReportStolen { get; set; } = 600000;
-    public bool KeepRadioStationAutoTuned { get; set; } = false;
+    public bool KeepRadioAutoTuned { get; set; } = false;
+    public bool AutoTuneRadioOnEntry { get; set; } = false;
     public string AutoTuneRadioStation { get; set; } = "NONE";    
     public uint Recognize_BaseTime { get; set; } = 2000;
     public uint Recognize_NightPenalty { get; set; } = 3500;
@@ -72,11 +73,13 @@ public class PlayerSettings
     public float Sprint_MoveSpeedOverride { get; set; } = 4.0f;//5.0f;
     public bool ForceFirstPersonOnVehicleDuck { get; set; } = true;
 
+
     public PlayerSettings()
     {
         #if DEBUG
                 AutoTuneRadioStation = "RADIO_19_USER";
-                KeepRadioStationAutoTuned = true;
+                //KeepRadioAutoTuned = true;
+                AutoTuneRadioOnEntry = true;
         #endif
     }
 

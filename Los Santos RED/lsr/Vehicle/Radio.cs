@@ -42,9 +42,9 @@ public class Radio
         }
 
     }
-    private void SetRadioStation(string StationName)
+    public void SetRadioStation(string StationName)
     {
-        if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.IsEngineOn && VehicleToMonitor.Vehicle.Exists())
+        if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
         }

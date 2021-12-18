@@ -16,6 +16,7 @@ namespace LosSantosRED.lsr.Player
         {
             Player = consumable;
         }
+        public override ModItem ModItem { get; set; }
         public override string DebugString => $"IsPerformingActivity: {Player.IsPerformingActivity}";
         public override void Cancel()
         {

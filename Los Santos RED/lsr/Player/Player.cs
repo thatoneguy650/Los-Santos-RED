@@ -627,6 +627,11 @@ namespace Mod
                 }
                 DynamicActivity?.Start();
             }
+            else if (IsPerformingActivity && DynamicActivity != null && DynamicActivity.GetType() == typeof(SittingActivity) && modItem.CanConsume)
+            {
+                DynamicActivity.ModItem = modItem;
+                //(SittingActivity)DynamicActivity.AddItem(modItem);
+            }
         }
         public void StartServiceActivity(ModItem modItem, GameLocation location)
         {
@@ -689,7 +694,7 @@ namespace Mod
 
         }
         public void LowerHands() => Surrendering.LowerHands();
-        public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
+        public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
             if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
@@ -854,6 +859,10 @@ namespace Mod
                     Scanner.OnGotInVehicle();
                 }
                 RemoveOwnedVehicleBlip();
+                if(Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned && CurrentVehicle != null)
+                {
+                    CurrentVehicle.SetRadioStation(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                }
             }
             else
             {
@@ -1313,6 +1322,19 @@ namespace Mod
                 DynamicActivity.Continue();
             }
         }
+        public void StartSittingDown()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new SittingActivity(this, Settings, ModItems);
+                DynamicActivity.Start();
+            }
+        }
         public void StopDynamicActivity()
         {
             if (IsPerformingActivity)
@@ -1324,7 +1346,7 @@ namespace Mod
         public void StartIngesting(Intoxicant intoxicant) => Intoxication.StartIngesting(intoxicant);
         public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
 
-
+        public void ScannerPlayDebug() => Scanner.DebugPlayDispatch();
         public void StopVanillaSearchMode() => SearchMode.StopVanilla();
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
@@ -1599,7 +1621,14 @@ namespace Mod
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
-                VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
+                if(Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                {
+                    VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
+                }    
+                else
+                {
+                    VehicleSpeed = 0f;
+                }
                 if (VehicleSpeedMPH >= 80f)
                 {
                     if(!isExcessiveSpeed)

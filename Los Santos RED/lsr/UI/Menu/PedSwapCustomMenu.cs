@@ -113,7 +113,14 @@ public class PedSwapCustomMenu : Menu
         {
             PedModel.Delete();
         }
-        PedModel = new Ped(ModelSelected, new Vector3(402.8473f, -996.3224f, -99.00025f), 182.7549f);
+        try
+        {
+            PedModel = new Ped(ModelSelected, new Vector3(402.8473f, -996.3224f, -99.00025f), 182.7549f);
+        }
+        catch(Exception ex)
+        {
+            Game.DisplayNotification($"Error Spawning Ped {ModelSelected}");
+        }
         GameFiber.Yield();
         if (PedModel.Exists())
         {

@@ -73,6 +73,24 @@ public class Roadblock
         {
             try
             {
+
+                foreach (Rage.Object obj in CreatedProps)
+                {
+                    NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                }
+
+
+                float DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
+                while (!IsDisposed && DistanceToRoadblock >= 125f)
+                {
+                    DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
+                    foreach (Rage.Object obj in CreatedProps)
+                    {
+                        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                    }
+                    GameFiber.Sleep(500);
+                }
+
                 while (!IsDisposed)
                 {
                     //Rage.Debug.DrawArrowDebug(new Vector3(NodeCenter.X, NodeCenter.Y, NodeCenter.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
@@ -86,36 +104,31 @@ public class Roadblock
                     //Rage.Debug.DrawArrowDebug(RearRight, Vector3.Zero, Rotator.Zero, 1f, Color.White);
                     //Rage.Debug.DrawArrowDebug(RearLeft, Vector3.Zero, Rotator.Zero, 1f, Color.Black);
 
-                    if (Player.Position.DistanceTo2D(CenterPosition) >= 175f)
-                    {
-                        foreach (Rage.Object obj in CreatedProps)
-                        {
-                            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
-                        }
-                    }
-
                     if (Player.IsInVehicle && Player.CurrentVehicle != null)
                     {
                         if (Player.CurrentVehicle.Vehicle.Exists())
                         {
-
+                            DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
                             //'0 = wheel_lf / bike, plane or jet front
                             //'1 = wheel_rf
                             //'2 = wheel_lm / in 6 wheels trailer, plane or jet is first one on left
                             //'3 = wheel_rm / in 6 wheels trailer, plane or jet is first one on right
                             //'4 = wheel_lr / bike rear / in 6 wheels trailer, plane or jet is last one on left
                             //'5 = wheel_rr / in 6 wheels trailer, plane or jet is last one on right
-                            List<(int, string)> WheelList = new List<(int, string)>() { (0, "wheel_lf"), (1, "wheel_rf"), (2, "wheel_lm"), (3, "wheel_rm"), (4, "wheel_lr"), (5, "wheel_rr") };
-                            foreach ((int, string) wheelItem in WheelList)
+                            if (DistanceToRoadblock <= 100)
                             {
-                                if (Player.CurrentVehicle.Vehicle.HasBone(wheelItem.Item2) && Player.CurrentVehicle.Vehicle.HasBone(Player.CurrentVehicle.Vehicle.GetBoneIndex(wheelItem.Item2)))
+                                List<(int, string)> WheelList = new List<(int, string)>() { (0, "wheel_lf"), (1, "wheel_rf"), (2, "wheel_lm"), (3, "wheel_rm"), (4, "wheel_lr"), (5, "wheel_rr") };
+                                foreach ((int, string) wheelItem in WheelList)
                                 {
-                                    CheckTireForCollision(Player.CurrentVehicle.Vehicle.Wheels[wheelItem.Item1]);
+                                    if (Player.CurrentVehicle.Vehicle.HasBone(wheelItem.Item2) && Player.CurrentVehicle.Vehicle.HasBone(Player.CurrentVehicle.Vehicle.GetBoneIndex(wheelItem.Item2)))
+                                    {
+                                        CheckTireForCollision(Player.CurrentVehicle.Vehicle.Wheels[wheelItem.Item1]);
+                                    }
                                 }
                             }
                         }
                     }
-                    GameFiber.Sleep(500);//.Yield();
+                    GameFiber.Yield();
                 }
             }
             catch (Exception e)

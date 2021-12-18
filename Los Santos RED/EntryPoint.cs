@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using Rage;
+using Rage.Attributes;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -69,5 +70,10 @@ public static class EntryPoint
         {
             Game.Console.Print($"m{(MenyooRunning ? 4556 : 0)} v{fvi.FileVersion} - {Message}");
         }
+    }
+    [ConsoleCommand]
+    public static void Command_UnloadLSR()
+    {
+        ModController?.Dispose();
     }
 }

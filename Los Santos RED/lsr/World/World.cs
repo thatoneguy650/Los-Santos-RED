@@ -27,7 +27,8 @@ namespace Mod
         private IWeapons Weapons;     
         private ITimeReportable Time;
         private IInteriors Interiors;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors)
+        private Weather Weather;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -39,6 +40,7 @@ namespace Mod
             Interiors = interiors;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
+            Weather = new Weather(audio, Settings, time);
         }
         public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
         public bool AnyWantedCiviliansNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
@@ -79,6 +81,7 @@ namespace Mod
                 }
                 GameFiber.Yield();
             }
+            Weather?.Setup();
         }
         public void AddBlipsToMap()
         {
@@ -144,7 +147,9 @@ namespace Mod
                     }
                 }
             }
+            Weather?.Dispose();
         }
+        public void DebugPlayWeather() => Weather.DebugPlayReport();
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
         public VehicleExt GetVehicleExt(uint handle) => Vehicles.GetVehicleExt(handle);
@@ -224,6 +229,15 @@ namespace Mod
                     }
                 }
             }
+
+            UpdateWeather();//here for now, will be moved...
+
+
+
+        }
+        public void UpdateWeather()
+        {
+            Weather.Update();
         }
         public void ActivateLocation(GameLocation gl)
         {

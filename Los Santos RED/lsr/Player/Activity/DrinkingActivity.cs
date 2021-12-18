@@ -19,7 +19,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IIntoxicatable Player;
         private ISettingsProvideable Settings;
-        private ModItem ModItem;
+       // private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Player
             ModItem = modItem;
             Intoxicants = intoxicants;
         }
+        public override ModItem ModItem { get; set; }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
         {

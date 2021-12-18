@@ -337,17 +337,17 @@ public class Pedestrians
         {
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale));
             myCop.IssueWeapons(Weapons);
-            if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
-            {
-                Blip myBlip = Pedestrian.AttachBlip();
-                myBlip.Color = AssignedAgency.Color;
-                myBlip.Scale = 0.6f;
-                string CopName = AssignedAgency.ID;
-                myBlip.Name = CopName;
-                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CopName);
-                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            }
+            //if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
+            //{
+            //    Blip myBlip = Pedestrian.AttachBlip();
+            //    myBlip.Color = AssignedAgency.Color;
+            //    myBlip.Scale = 0.6f;
+            //    string CopName = AssignedAgency.ID;
+            //    myBlip.Name = CopName;
+            //    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            //    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CopName);
+            //    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            //}
             SetCopStats(Pedestrian);
             Police.Add(myCop);
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);

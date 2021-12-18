@@ -270,7 +270,7 @@ namespace LSR.Vehicles
             if (IsCar)
             {
                 Engine.Update(driver);
-                if(Settings.SettingsManager.PlayerSettings.KeepRadioStationAutoTuned)
+                if(Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
                 }
@@ -407,6 +407,7 @@ namespace LSR.Vehicles
                 }
             }
         }
+        public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
         public bool IsCar
         {
             get
