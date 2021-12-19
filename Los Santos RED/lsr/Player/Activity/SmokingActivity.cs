@@ -29,7 +29,7 @@ namespace LosSantosRED.lsr.Player
         private float MinDistanceBetweenHandAndFace = 999f;
         private float MinDistanceBetweenSmokedItemAndFace = 999f;
         private IIntoxicatable Player;
-        private bool PrevHandByFace;
+        private bool PrevHandByFace = false;
         private bool ShouldContinue;
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
@@ -38,6 +38,7 @@ namespace LosSantosRED.lsr.Player
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         private bool IsPaused = false;
+        private bool HasLightingAnimation = true;
 
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
@@ -69,6 +70,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (Player.CanPerformActivities)
             {
+                Setup();
                 ShouldContinue = true;
             }
         }
@@ -88,6 +90,7 @@ namespace LosSantosRED.lsr.Player
             {
                 SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsSmokedItemAttachedToMouth = false;
+                Player.AttachedProp = SmokedItem;
             }
         }
         private void AttachSmokedItemToMouth()
@@ -97,6 +100,12 @@ namespace LosSantosRED.lsr.Player
             {
                 SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.MouthBoneID), Data.MouthOffset, Data.MouthRotator);
                 IsSmokedItemAttachedToMouth = true;
+                Player.AttachedProp = SmokedItem;
+                if (!HasLightingAnimation)
+                {
+                    IsActivelySmoking = true;
+                    IsSmokedItemLit = true;
+                }
             }
         }
         private void CreateSmokedItem()
@@ -118,7 +127,8 @@ namespace LosSantosRED.lsr.Player
             Player.SetUnarmed();
             Player.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
-            GameFiber.Sleep(500);
+            EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
+            //GameFiber.Sleep(500);
             while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 Player.SetUnarmed();
@@ -130,20 +140,23 @@ namespace LosSantosRED.lsr.Player
                     {
                         if (!IsSmokedItemAttachedToMouth && !IsSmokedItemLit)
                         {
-                            //EntryPoint.WriteToConsole($"IsAttachedToMouth {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}"); 
+                            
                             AttachSmokedItemToMouth();
+                            EntryPoint.WriteToConsole($"Smoking Activity IsAttachedToMouth {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}", 5);
                         }
                         else if (IsSmokedItemAttachedToMouth && !IsSmokedItemLit)
                         {
                             IsActivelySmoking = true;
                             IsSmokedItemLit = true;
+                            EntryPoint.WriteToConsole($"Smoking Activity Light Cigarette {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}", 5);
                         }
                         else if (IsSmokedItemAttachedToMouth && IsSmokedItemLit)
                         {
                             AttachSmokedItemToHand();
+                            EntryPoint.WriteToConsole($"Smoking Activity AttachSmokedItemToHand {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}", 5);
                         }
                     }
-                    //EntryPoint.WriteToConsole($"HandByFace Changed To {IsHandByFace}");
+                    EntryPoint.WriteToConsole($"HandByFace Changed To {IsHandByFace}",5);
                     PrevHandByFace = IsHandByFace;
                 }
                 GameFiber.Yield();
@@ -171,6 +184,7 @@ namespace LosSantosRED.lsr.Player
             if (IsActivelySmoking && Player.CanPerformActivities)
             {
                 //EntryPoint.WriteToConsole($"Stop with Animation");
+                EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
                 while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
                 {
@@ -204,6 +218,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
+            EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
             while (Player.CanPerformActivities && !IsCancelled && !IsPaused)
             {
@@ -342,7 +357,7 @@ namespace LosSantosRED.lsr.Player
                 AnimBaseDictionary = "amb@world_human_smoking@female@idle_a";
                 AnimBase = "base";
                 AnimIdleDictionary = "amb@world_human_smoking@female@idle_a";
-                AnimIdle = new List<string> {  "idle_c" };//"idle_a", "idle_b", these are kinda bad
+                AnimIdle = new List<string> { "idle_c" };//"idle_a", "idle_b", these are kinda bad
                 AnimEnterDictionary = "amb@world_human_smoking@female@enter";
                 AnimEnter = "enter";
                 AnimExitDictionary = "amb@world_human_smoking@female@exit";
@@ -353,6 +368,19 @@ namespace LosSantosRED.lsr.Player
                 MouthBoneID = 17188;
                 MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
                 MouthRotator = new Rotator(0.0f, -180f, 0f);
+            }
+
+            if (Player.IsSitting || Player.IsInVehicle)
+            {
+                AnimBaseDictionary = "amb@incar@male@smoking@base";
+                AnimBase = "base";
+                AnimIdleDictionary = "amb@incar@male@smoking@idle_a";
+                AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };//"idle_a", "idle_b", these are kinda bad
+                AnimEnterDictionary = "amb@incar@male@smoking@enter";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@incar@male@smoking@exit";
+                AnimExit = "exit";
+                HasLightingAnimation = false;
             }
 
             if(ModItem != null)
@@ -405,22 +433,53 @@ namespace LosSantosRED.lsr.Player
                     MinDistanceBetweenSmokedItemAndFace = DistanceBetweenSmokedItemAndFace;
                 }
             }
-            if (DistanceBetweenSmokedItemAndFace <= 0.17f && SmokedItem.Exists())
+            if (Player.IsSitting || Player.IsInVehicle)
             {
-                IsSmokedItemNearMouth = true;
+                if (DistanceBetweenSmokedItemAndFace <= 0.19f && SmokedItem.Exists())
+                {
+                    IsSmokedItemNearMouth = true;
+                }
+                else
+                {
+                    IsSmokedItemNearMouth = false;
+                }
             }
             else
             {
-                IsSmokedItemNearMouth = false;
+                if (DistanceBetweenSmokedItemAndFace <= 0.17f && SmokedItem.Exists())
+                {
+                    IsSmokedItemNearMouth = true;
+                }
+                else
+                {
+                    IsSmokedItemNearMouth = false;
+                }
             }
-            if (DistanceBetweenHandAndFace <= 0.25f)//0.2f
+            if(Player.IsSitting || Player.IsInVehicle)
             {
-                IsHandByFace = true;
+                if (DistanceBetweenHandAndFace <= 0.27f)//0.2f
+                {
+                    IsHandByFace = true;
+                }
+                else
+                {
+                    IsHandByFace = false;
+                }
             }
             else
             {
-                IsHandByFace = false;
+                if (DistanceBetweenHandAndFace <= 0.25f)//0.2f
+                {
+                    IsHandByFace = true;
+                }
+                else
+                {
+                    IsHandByFace = false;
+                }
             }
+
+
+           // EntryPoint.WriteToConsole($"Smoking Activity: DistanceBetweenHandAndFace {DistanceBetweenHandAndFace} IsHandByFace {IsHandByFace}", 5);
         }
         private void UpdateSmoke()
         {

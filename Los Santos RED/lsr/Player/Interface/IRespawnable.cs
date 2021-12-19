@@ -24,5 +24,6 @@ namespace LosSantosRED.lsr.Interface
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory);
         void RaiseHands();
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);
+        void ClearInventory();
     }
 }

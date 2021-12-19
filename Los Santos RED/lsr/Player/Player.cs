@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -154,7 +154,7 @@ namespace Mod
         public Inventory Inventory { get; set; }
 
 
-
+        public Rage.Object AttachedProp { get; set; }
         public List<InventoryItem> InventoryItems => Inventory.Items;
         public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem.CanConsume).ToList();
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
@@ -489,6 +489,19 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
+        public void Gesture(string gestureName)
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new GestureActivity(this, gestureName);
+                DynamicActivity.Start();
+            }
+        }
         public void DeleteTrackedVehicles()
         {
             TrackedVehicles.Clear();
@@ -604,6 +617,7 @@ namespace Mod
                 Game.TimeScale = 1f;
             }
         }
+        public void ClearInventory() => Inventory.Clear();
         public bool RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
         public void StartConsumingActivity(ModItem modItem)
         {
@@ -864,10 +878,15 @@ namespace Mod
                     Scanner.OnGotInVehicle();
                 }
                 RemoveOwnedVehicleBlip();
-                if(Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned && CurrentVehicle != null)
+                if (CurrentVehicle != null)
                 {
-                    CurrentVehicle.SetRadioStation(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                    CurrentVehicle.HasAutoSetRadio = false;
                 }
+                
+                //if(Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned && CurrentVehicle != null)
+                //{
+                //    CurrentVehicle.SetRadioStation(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                //}
             }
             else
             {

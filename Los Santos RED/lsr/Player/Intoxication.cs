@@ -232,7 +232,10 @@ public class Intoxication
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             Player.IntoxicatedIntensity = CurrentIntensity;
-            UpdateSwerving();
+            if (Player.IsInVehicle)
+            {
+                UpdateSwerving();
+            }
         }
     }
     private void UpdateSwerving()
@@ -266,7 +269,7 @@ public class Intoxication
         Player.IsIntoxicated = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE")
+        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle)
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {

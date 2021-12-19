@@ -116,12 +116,14 @@
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />
+    <Compile Include="lsr\Player\Activity\GestureActivity.cs" />
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
     <Compile Include="lsr\Player\Interface\ISprintable.cs" />
+    <Compile Include="lsr\Player\Interface\IWeatherReportable.cs" />
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />

@@ -18,6 +18,7 @@ public class PlayerSettings
     public bool UseCustomFuelSystem { get; set; } = false;
     public bool Scanner_IsEnabled { get; set; } = true;
     public bool Scanner_EnableAudio { get; set; } = true;
+    public bool Scanner_SetVolume { get; set; } = false;
     public int Scanner_AudioVolume { get; set; } = 5;
     public bool Scanner_EnableSubtitles { get; set; } = false;
     public bool Scanner_EnableNotifications { get; set; } = true;

@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsScannerPlaying { get; }
 
         void Abort();
+        void Play(string fileName, bool isScannerPlaying);
         void Play(string fileName, int volume, bool isScannerPlaying);
     }
 }

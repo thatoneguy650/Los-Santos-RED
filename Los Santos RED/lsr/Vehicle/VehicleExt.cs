@@ -35,6 +35,7 @@ namespace LSR.Vehicles
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
         public bool IsStolen { get; set; } = false;//true;
+        public bool HasAutoSetRadio { get; set; } = false;
        // public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
@@ -270,7 +271,15 @@ namespace LSR.Vehicles
             if (IsCar)
             {
                 Engine.Update(driver);
+
+
+
+
                 if(Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
+                {
+                    Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                }
+                else if (Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !HasAutoSetRadio)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
                 }
@@ -278,6 +287,10 @@ namespace LSR.Vehicles
                 {
                     Radio.Update("NONE");
                 }         
+
+
+
+
                 if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
                 {
                     Indicators.Update();

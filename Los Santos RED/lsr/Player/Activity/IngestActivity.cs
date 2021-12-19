@@ -60,6 +60,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
+                Player.AttachedProp = Item;
             }
         }
         private void CreateItem()
@@ -125,7 +126,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 if (AnimationTime >= 0.35f)
                 {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }
                 GameFiber.Yield();
@@ -178,7 +179,7 @@ namespace LosSantosRED.lsr.Player
 
 
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
-            Data = new EatingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
+            Data = new EatingData("","",AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }
         private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
         {

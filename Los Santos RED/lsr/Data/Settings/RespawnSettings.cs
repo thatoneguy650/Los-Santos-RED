@@ -30,4 +30,5 @@ public class RespawnSettings
     public int PoliceBailWantedLevelScale { get; set; } = 750;
     public int HospitalFee { get; set; } = 5000;
     public bool PermanentDeathMode { get; set; } = false;
+    public bool ClearInventoryOnDeath { get; set; } = true;
 }

@@ -6,74 +6,74 @@ using Rage;
 using Rage.Native;
 using System;
 
-public class Audio : IAudioPlayable
-{
-    private WaveOutEvent outputDevice;
-    private AudioFileReader audioFile;
-    public Audio()
-    {
+//public class Audio : IAudioPlayable
+//{
+//    private WaveOutEvent outputDevice;
+//    private AudioFileReader audioFile;
+//    public Audio()
+//    {
 
-    }
-    public bool IsScannerPlaying { get; private set; }
-    public bool IsAudioPlaying
-    {
-        get
-        {
-            return outputDevice != null;
-        }
-    }
-    public void Play(string FileName, float volume, bool isLowPriority)
-    {
-        try
-        {
-            if (FileName == "")
-            {
-                return;
-            }
-            if (outputDevice == null)
-            {
-                outputDevice = new WaveOutEvent();
-                outputDevice.PlaybackStopped += OnPlaybackStopped;
-            }
-            if (audioFile == null)
-            {
-                audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
-                {
-                    Volume = volume
-                };
-                outputDevice.Init(audioFile);
-            }
-            else
-            {
-                outputDevice.Init(audioFile);
-            }
-            outputDevice.Play();
-        }
-        catch (Exception e)
-        {
-            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message,0);
-        }
-    }
-    public void Abort()
-    {
-        if (IsAudioPlaying)
-        {
-            outputDevice.Stop();
-        }
-    }
-    private void OnPlaybackStopped(object sender, StoppedEventArgs args)
-    {
-        outputDevice.Dispose();
-        outputDevice = null;
-        if (audioFile != null)
-        {
-            audioFile.Dispose();
-        }
-        audioFile = null;
-    }
+//    }
+//    public bool IsScannerPlaying { get; private set; }
+//    public bool IsAudioPlaying
+//    {
+//        get
+//        {
+//            return outputDevice != null;
+//        }
+//    }
+//    public void Play(string FileName, float volume, bool isLowPriority)
+//    {
+//        try
+//        {
+//            if (FileName == "")
+//            {
+//                return;
+//            }
+//            if (outputDevice == null)
+//            {
+//                outputDevice = new WaveOutEvent();
+//                outputDevice.PlaybackStopped += OnPlaybackStopped;
+//            }
+//            if (audioFile == null)
+//            {
+//                audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
+//                {
+//                    Volume = volume
+//                };
+//                outputDevice.Init(audioFile);
+//            }
+//            else
+//            {
+//                outputDevice.Init(audioFile);
+//            }
+//            outputDevice.Play();
+//        }
+//        catch (Exception e)
+//        {
+//            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message,0);
+//        }
+//    }
+//    public void Abort()
+//    {
+//        if (IsAudioPlaying)
+//        {
+//            outputDevice.Stop();
+//        }
+//    }
+//    private void OnPlaybackStopped(object sender, StoppedEventArgs args)
+//    {
+//        outputDevice.Dispose();
+//        outputDevice = null;
+//        if (audioFile != null)
+//        {
+//            audioFile.Dispose();
+//        }
+//        audioFile = null;
+//    }
 
-    public void Play(string fileName, int volume, bool isScannerPlaying)
-    {
-        Play(fileName, volume * 1.0f, isScannerPlaying);
-    }
-}
+//    public void Play(string fileName, int volume, bool isScannerPlaying)
+//    {
+//        Play(fileName, volume * 1.0f, isScannerPlaying);
+//    }
+//}

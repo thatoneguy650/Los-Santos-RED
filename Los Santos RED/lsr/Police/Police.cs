@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr
         public void Update()
         {
             UpdateCops();
+
             UpdateRecognition();
             if (Player.IsBustable && World.PoliceList.Any(x => x.ShouldBustPlayer))
             {
@@ -56,6 +57,7 @@ namespace LosSantosRED.lsr
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
+                        GameFiber.Yield();
                     }
                 }
                 catch (Exception e)

@@ -30,6 +30,7 @@ public class Radio
             }
             if (CurrentRadioStationName != DesiredStation)
             {
+
                 SetRadioStation(DesiredStation);
             }
         }
@@ -47,6 +48,7 @@ public class Radio
         if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
+            VehicleToMonitor.HasAutoSetRadio = true;
         }
     }
 }

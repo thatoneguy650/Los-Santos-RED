@@ -64,6 +64,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
+                Player.AttachedProp = Bottle;
             }
         }
         private void CreateBottle()
@@ -158,6 +159,15 @@ namespace LosSantosRED.lsr.Player
                 HandBoneID = 57005;
                 HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
+
+
+                AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
+                AnimExit = "exit";
+                AnimIdleDictionary = "amb@code_human_wander_drinking@male@idle_a";
+                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
+
             }
             else
             {
@@ -170,6 +180,14 @@ namespace LosSantosRED.lsr.Player
                 HandBoneID = 57005;
                 HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
+
+
+                AnimEnterDictionary = "amb@world_human_drinking@beer@female@enter";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@world_human_drinking@beer@female@exit";
+                AnimExit = "exit";
+                AnimIdleDictionary = "amb@code_human_wander_drinking@female@idle_a";
+                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
 
 

@@ -28,11 +28,13 @@ public class Weather
     private readonly string NotificationTitle = "Weazel News";
     private readonly string NotificationSubtitle = "~b~Weather Report";
     private List<Sponsor> Sponsors;
-    public Weather(IAudioPlayable audio, ISettingsProvideable settings, ITimeReportable time)
+    private IWeatherReportable Player;
+    public Weather(IAudioPlayable audio, ISettingsProvideable settings, ITimeReportable time, IWeatherReportable player)
     {
         AudioPlayer = audio;
         Settings = settings;
         Time = time;
+        Player = player;
     }
     public bool IsReportingWeather { get; set; }
     private bool CanReportWeather => Game.GameTime - GameTimeLastReportedWeather >= Settings.SettingsManager.WorldSettings.ReportWeather_MinimumTimeBetweenReports;
@@ -173,7 +175,7 @@ public class Weather
             CurrentWindSpeed = NativeFunction.Natives.GET_WIND_SPEED<float>();
             if (CanReportWind)
             {
-                if (CurrentWindSpeed >= Settings.SettingsManager.WorldSettings.ReportWindyWeather_MinimumSpeed && !Time.IsFastForwarding)
+                if (CurrentWindSpeed >= Settings.SettingsManager.WorldSettings.ReportWindyWeather_MinimumSpeed && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
                 {
                     ReportWindy();
                 }
@@ -210,8 +212,7 @@ public class Weather
     }
     private void ReportWeather(WeatherTypeHash WeatherToReport)
     {
-        bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        if(Settings.SettingsManager.WorldSettings.RequireVehicleForAudio && !inVehicle)
+        if(Settings.SettingsManager.WorldSettings.RequireVehicleForAudio && !Player.IsInVehicle)
         {
             return;
         }
@@ -221,14 +222,14 @@ public class Weather
         {
             return;
         }
-        if (inVehicle)
+        if (Player.IsInVehicle)
         {
             StoredAndTurnOffRadio();
         }
         GameTimeLastReportedWeather = Game.GameTime;
         if (Settings.SettingsManager.WorldSettings.ShowWeatherNotifications)
         {
-            DisplayNotification(weatherFile.ForcedSponsorName);
+            DisplayNotification(weatherFile.ForcedSponsorName, false);
         }
         if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio)
         {
@@ -250,7 +251,7 @@ public class Weather
         GameTimeLastReportedWeather = Game.GameTime;
         if (Settings.SettingsManager.WorldSettings.ShowWeatherNotifications)
         {
-            DisplayNotification(toReport.ForcedSponsorName);
+            DisplayNotification(toReport.ForcedSponsorName, true);
         }
         if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio)
         {
@@ -258,7 +259,7 @@ public class Weather
         }
         EntryPoint.WriteToConsole($"ReportWindy", 5);
     }
-    private void DisplayNotification(string ForcedSponsorName)
+    private void DisplayNotification(string ForcedSponsorName, bool isWindy)
     {
         RemoveAllNotifications();
         double WindSpeed = Math.Round(CurrentWindSpeed, 0);
@@ -279,8 +280,11 @@ public class Weather
         {
             WindText = "~r~" + WindSpeed.ToString() + "~s~";
         }
-        string NotificationText = $"Currently: {NameFromHash(CurrentWeather)}~n~Forecasted: {NameFromHash(NextWeather)}~n~Wind: {WindText} m/s";
-
+        string NotificationText = $"Currently: {NameFromHash(CurrentWeather)}~n~Forecasted: {NameFromHash(NextWeather)}";
+        if(isWindy)
+        {
+            NotificationText = $"Currently: ~s~Windy: {WindText} m/s~n~Forecasted: {NameFromHash(NextWeather)}";
+        }    
         Sponsor sponsor = Sponsors.PickRandom();
 
         if(ForcedSponsorName != "")
@@ -289,15 +293,13 @@ public class Weather
         }
         if(sponsor != null)
         {
-            NotificationText += "~n~Brought To You By ~n~~r~" + sponsor.SponsorName + "~s~";
+            NotificationText += "~s~~n~Brought To You By ~n~~h~" + sponsor.SponsorName + "~s~";
             NotificationHandles.Add(Game.DisplayNotification(sponsor.NotificationPicture, sponsor.NotificationPicture, NotificationTitle, NotificationSubtitle, NotificationText));
         }
         else
         {
             NotificationHandles.Add(Game.DisplayNotification(NotificationPicture, NotificationPicture, NotificationTitle, NotificationSubtitle, NotificationText));
         }
-
-        
     }
     private void PlayAudioList(List<string> AudioToPlay)
     {
@@ -313,7 +315,14 @@ public class Weather
                 {
                     break;
                 }
-                AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
+                if (Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
+                {
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
+                }
+                else
+                {
+                    AudioPlayer.Play(audioname, false);
+                }
                 while (AudioPlayer.IsAudioPlaying)
                 {
                     GameFiber.Yield();
@@ -331,7 +340,7 @@ public class Weather
     }
     private void CurrentWeatherChanged()
     {
-        if (!AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedCurrentWeather && !Time.IsFastForwarding)
+        if (!AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedCurrentWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
         {
             ReportWeather(CurrentWeather);
         }
@@ -340,7 +349,7 @@ public class Weather
     }
     private void NextWeatherChanged()
     {
-        if (NextWeather != CurrentWeather && !AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding)
+        if (NextWeather != CurrentWeather && !AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
         {
             ReportWeather(NextWeather);
         }
@@ -367,9 +376,17 @@ public class Weather
                     {
                         GameFiber.Sleep(100);
                     }
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                    try
                     {
-                        NativeFunction.Natives.SET_VEH_RADIO_STATION(Game.LocalPlayer.Character.CurrentVehicle, RadioStationLastTuned);
+                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                        {
+                            NativeFunction.Natives.SET_VEH_RADIO_STATION(Game.LocalPlayer.Character.CurrentVehicle, RadioStationLastTuned);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Game.DisplayNotification("ERROR Changing radio back");
+                        EntryPoint.WriteToConsole($"ERROR Changing radio back, {ex.Message} {ex.StackTrace}", 0);
                     }
                 }, "ChangeRadioBack");
             }

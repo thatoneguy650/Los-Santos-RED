@@ -125,23 +125,15 @@ public class Respawning// : IRespawning
         Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false);
         GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);
+        if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
+        {
+            CurrentPlayer.ClearInventory();
+        }
         World.ClearSpawned();
         Game.LocalPlayer.Character.IsRagdoll = true;
         FadeIn();
         Game.LocalPlayer.Character.IsRagdoll = false;
         GameTimeLastDischargedFromHospital = Game.GameTime;
-        //GameFiber.StartNew(delegate
-        //{
-        //    while (Game.GameTime - GameTimeLastDischargedFromHospital <= 5000)
-        //    {
-        //        if (Game.LocalPlayer.WantedLevel != 0)
-        //        {
-        //            CurrentPlayer.SetWantedLevel(0, "RespawnAtGrave resetting afterwards", true);
-        //        }
-        //        GameFiber.Yield();
-        //    }
-
-        //}, "Wanted Level Stopper");
     }
     public void RespawnAtHospital(GameLocation PlaceToSpawn)
     {
@@ -158,6 +150,11 @@ public class Respawning// : IRespawning
                 PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
             }
             SetPlayerAtLocation(PlaceToSpawn);
+
+            if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
+            {
+                CurrentPlayer.ClearInventory();
+            }
             World.ClearSpawned();
             FadeIn();
             if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
@@ -165,18 +162,6 @@ public class Respawning// : IRespawning
                 SetHospitalFee(PlaceToSpawn.Name);
             }
             GameTimeLastDischargedFromHospital = Game.GameTime;
-            //GameFiber.StartNew(delegate
-            //{
-            //    while (Game.GameTime - GameTimeLastDischargedFromHospital <= 5000)
-            //    {
-            //        if (Game.LocalPlayer.WantedLevel != 0)
-            //        {
-            //            CurrentPlayer.SetWantedLevel(0, "RespawnAtHospital resetting afterwards", true);
-            //        }
-            //        GameFiber.Yield();
-            //    }
-
-            //}, "Wanted Level Stopper");
         }
     }
     public void SurrenderToPolice(GameLocation PoliceStation)
@@ -201,18 +186,6 @@ public class Respawning// : IRespawning
             SetPoliceFee(PoliceStation.Name, BailFee);
         }
         GameTimeLastSurrenderedToPolice = Game.GameTime;
-        //GameFiber.StartNew(delegate
-        //{
-        //    while (Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000)
-        //    {
-        //        if (Game.LocalPlayer.WantedLevel != 0)
-        //        {
-        //            CurrentPlayer.SetWantedLevel(0, "SurrenderToPolice resetting afterwards", true);
-        //        }
-        //        GameFiber.Yield();
-        //    }
-
-        //}, "Wanted Level Stopper");
     }
     private void CheckWeapons()
     {

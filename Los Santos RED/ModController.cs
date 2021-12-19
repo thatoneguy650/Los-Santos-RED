@@ -62,6 +62,7 @@ namespace LosSantosRED.lsr
         private ModItems ModItems;
         private ShopMenus ShopMenus;
         private Intoxicants Intoxicants;
+        private Weather Weather;
 
 
         public ModController()
@@ -84,6 +85,7 @@ namespace LosSantosRED.lsr
             VanillaManager.Dispose();
             UI.Dispose();
             Time.Dispose();
+            Weather.Dispose();
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
         }
@@ -140,6 +142,9 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
+            GameFiber.Yield();
+            Weather = new Weather(WavAudio, Settings, Time, Player);
+            Weather.Setup();
             GameFiber.Yield();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems);
             Debug.Setup();
@@ -315,6 +320,8 @@ namespace LosSantosRED.lsr
                 new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 9),//1000
 
                 new ModTask(2000, "World.CreateMerchants", World.ActiveNearLocations, 10),//1000
+
+                new ModTask(4000, "Weather.Update", Weather.Update, 11),//1000
 
             };
 

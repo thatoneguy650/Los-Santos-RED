@@ -37,10 +37,10 @@ public class WavAudio : IAudioPlayable
             AudioDevice = new SoundPlayer();
         }
 
-        if(volume > 10)
+        if (volume > 10)
         {
             volume = 10;
-        }    
+        }
         else if (volume <= 0)
         {
             volume = 1;
@@ -50,7 +50,25 @@ public class WavAudio : IAudioPlayable
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
         IsScannerPlaying = isScannerPlaying;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; }); 
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; });
+    }
+    public void Play(string FileName, bool isScannerPlaying)
+    {
+        if (FileName == "")
+        {
+            return;
+        }
+
+        if (AudioDevice == null)
+        {
+            AudioDevice = new SoundPlayer();
+        }
+
+        string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
+        AudioDevice.SoundLocation = AudioFilePath;
+        IsAudioPlaying = true;
+        IsScannerPlaying = isScannerPlaying;
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; });
     }
     public void Play_OLD(string FileName, int volume)
     {

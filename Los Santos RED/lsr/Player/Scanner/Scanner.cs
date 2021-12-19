@@ -1318,7 +1318,14 @@ namespace LosSantosRED.lsr
                 if (AbortedAudio)
                 {
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
-                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                    if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
+                    {
+                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                    }
+                    else
+                    {
+                        AudioPlayer.Play(RadioEnd.PickRandom(), true);
+                    }
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
                 }
@@ -1339,7 +1346,14 @@ namespace LosSantosRED.lsr
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
-                        AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                        if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
+                        {
+                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                        }
+                        else
+                        {
+                            AudioPlayer.Play(audioname, true);
+                        }
                         while (AudioPlayer.IsAudioPlaying)
                         {
                             if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.PlayerSettings.Scanner_EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
