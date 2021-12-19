@@ -15,9 +15,12 @@ public class ActionMenu : Menu
     private UIMenuItem SitDown;
     private UIMenuItem Smoke;
     private UIMenuItem SmokePot;
+    private UIMenuItem PauseConsuming;
     private UIMenuItem StopConsuming;
     private UIMenuItem Suicide;
     private ISettingsProvideable Settings;
+    private UIMenuItem ContinueConsuming;
+
     public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -110,6 +113,8 @@ public class ActionMenu : Menu
             Smoke = new UIMenuItem("Smoke", "Start Smoking");
             SmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
         }
+        ContinueConsuming = new UIMenuItem("Continue", "Continue Consuming Activity");
+        PauseConsuming = new UIMenuItem("Pause", "Pause Consuming Activity");
         StopConsuming = new UIMenuItem("Stop", "Stop Consuming Activity");
 
         Actions.AddItem(Suicide);
@@ -122,6 +127,8 @@ public class ActionMenu : Menu
         Actions.AddItem(Smoke);
         Actions.AddItem(SmokePot);
         }
+        Actions.AddItem(ContinueConsuming);
+        Actions.AddItem(PauseConsuming);
         Actions.AddItem(StopConsuming);
 
         
@@ -156,6 +163,14 @@ public class ActionMenu : Menu
         else if (selectedItem == SitDown)
         {
             Player.StartSittingDown();
+        }
+        else if (selectedItem == ContinueConsuming)
+        {
+            Player.ContinueDynamicActivity();
+        }
+        else if (selectedItem == PauseConsuming)
+        {
+            Player.PauseDynamicActivity();
         }
         else if (selectedItem == StopConsuming)
         {

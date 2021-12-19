@@ -38,6 +38,10 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
         }
+        public override void Pause()
+        {
+
+        }
         public override void Continue()
         {
         }
@@ -96,7 +100,8 @@ namespace LosSantosRED.lsr.Player
             {
                 Item.Detach();
             }
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);

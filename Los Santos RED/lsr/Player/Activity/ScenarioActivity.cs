@@ -23,6 +23,10 @@ namespace LosSantosRED.lsr.Player
             IsCancelled = true;
             Player.IsPerformingActivity = false;
         }
+        public override void Pause()
+        {
+
+        }
         public override void Continue()
         {
 

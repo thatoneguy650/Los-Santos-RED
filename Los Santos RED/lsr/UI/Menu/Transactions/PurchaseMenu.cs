@@ -574,7 +574,7 @@ public class PurchaseMenu : Menu
                 ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
                 if (myItem != null)
                 {
-                    if (myItem.PackageItem != null && myItem.ModelItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
+                    if (myItem.PackageItem != null && myItem.PackageItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
                     {
                         new Model(myItem.PackageItem.ModelName).LoadAndWait();
                     }

@@ -52,6 +52,10 @@ public class PlateTheft : DynamicActivity
         IsCancelled = true;
         Player.IsPerformingActivity = false;
     }
+    public override void Pause()
+    {
+
+    }
     public override void Continue()
     {
         //no no

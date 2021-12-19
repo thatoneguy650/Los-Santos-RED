@@ -26,6 +26,10 @@ public class SurrenderActivity : DynamicActivity
     {
         LowerHands();
     }
+    public override void Pause()
+    {
+
+    }
     public override void Continue()
     {
 

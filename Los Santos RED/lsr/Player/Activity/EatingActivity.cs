@@ -38,11 +38,16 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
         }
+        public override void Pause()
+        {
+
+        }
         public override void Continue()
         {
         }
         public override void Start()
         {
+            EntryPoint.WriteToConsole("EatingActivity START", 5);
             Setup();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
@@ -101,7 +106,15 @@ namespace LosSantosRED.lsr.Player
                 Food.Detach();
             }
             //Player.Character.Tasks.Clear();
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+
+
+            // NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            
+
+                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+
+
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);

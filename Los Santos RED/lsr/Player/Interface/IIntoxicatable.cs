@@ -18,6 +18,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsDriver { get; }
         VehicleExt CurrentVehicle { get; }
+        bool IsSitting { get; set; }
 
         void SetUnarmed();
         void StartIngesting(Intoxicant intoxicant);

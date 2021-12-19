@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Player
         public abstract void Start();
         public abstract void Continue();
         public abstract void Cancel();
+        public abstract void Pause();
     }
 }

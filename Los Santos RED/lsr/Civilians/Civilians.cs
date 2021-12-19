@@ -31,42 +31,44 @@ public class Civilians
     }
     public void Update()
     {
-        int PedsUpdated = 0;
+        //int PedsUpdated = 0;
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                GameFiber.Yield();
             }
             catch (Exception e)
             {
                 EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
-            PedsUpdated++;
-            if (PedsUpdated > 2)//4//10)//3//10//25
-            {
-                PedsUpdated = 0;
-                GameFiber.Yield();
-            }
+            //PedsUpdated++;
+            //if (PedsUpdated > 2)//4//10)//3//10//25
+            //{
+            //    PedsUpdated = 0;
+            //    GameFiber.Yield();
+            //}
         }
         foreach (PedExt ped in World.MerchantList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                GameFiber.Yield();
             }
             catch (Exception e)
             {
                 EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
             }
-            PedsUpdated++;
-            if (PedsUpdated > 2)//4//10)//3//10//25
-            {
-                PedsUpdated = 0;
-                GameFiber.Yield();
-            }
+            //PedsUpdated++;
+            //if (PedsUpdated > 2)//4//10)//3//10//25
+            //{
+            //    PedsUpdated = 0;
+            //    GameFiber.Yield();
+            //}
         }
     }
 }

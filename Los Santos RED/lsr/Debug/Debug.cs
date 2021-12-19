@@ -366,10 +366,44 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-       Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+
+        //mp_doorbell
+        //open_door
+        //AnimationDictionary.RequestAnimationDictionay("switch@michael@biking_with_jimmy");
+        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@michael@biking_with_jimmy", "exit_right_door", 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
+
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
         if (ClosestEntity.Exists())
         {
+
+
+            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+            float ObjectHeading = ClosestEntity.Heading;
+            if (ClosestEntity.Heading >= 180f)
+            {
+                DesiredHeading = ClosestEntity.Heading - 180f;
+            }
+            else
+            {
+                DesiredHeading = ClosestEntity.Heading + 180f;
+            }
+
+
+
+
             EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+
+
+            uint GameTimeStartedDisplaying = Game.GameTime;
+            while(Game.GameTime - GameTimeStartedDisplaying <= 5000)
+            {
+
+                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                GameFiber.Yield();
+            }
+
         }
             // Player.ScannerPlayDebug();
 
@@ -427,6 +461,11 @@ public class Debug
 
         Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
         Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
+        Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
+        Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
+
+
+
         //World.DebugPlayWeather();
 
 

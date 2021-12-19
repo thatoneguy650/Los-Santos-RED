@@ -29,6 +29,10 @@ public class SuicideActivity : DynamicActivity
     {
         IsCancelled = true;
     }
+    public override void Pause()
+    {
+
+    }
     public override void Continue()
     {
 

@@ -20,6 +20,10 @@ namespace Mod
         private ICrimes Crimes;
         private CriminalHistory CriminalHistory;
         private string CurrentVehicleDebugString;
+        
+
+        private DynamicActivity SittingActivity;
+
         private DynamicActivity DynamicActivity;
         private IEntityProvideable EntityProvider;
         private uint GameTimeLastBusted;
@@ -261,6 +265,7 @@ namespace Mod
         public bool IsOnMotorcycle { get; private set; }
         public bool IsPerformingActivity { get; set; }
         public bool IsRagdoll { get; private set; }
+        public bool IsSitting { get; set; } = false;
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
@@ -627,11 +632,11 @@ namespace Mod
                 }
                 DynamicActivity?.Start();
             }
-            else if (IsPerformingActivity && DynamicActivity != null && DynamicActivity.GetType() == typeof(SittingActivity) && modItem.CanConsume)
-            {
-                DynamicActivity.ModItem = modItem;
-                //(SittingActivity)DynamicActivity.AddItem(modItem);
-            }
+            //else if (IsPerformingActivity && DynamicActivity != null && DynamicActivity.GetType() == typeof(SittingActivity) && modItem.CanConsume)
+            //{
+            //    DynamicActivity.ModItem = modItem;
+            //    //(SittingActivity)DynamicActivity.AddItem(modItem);
+            //}
         }
         public void StartServiceActivity(ModItem modItem, GameLocation location)
         {
@@ -1300,10 +1305,6 @@ namespace Mod
                 DynamicActivity = new SmokingActivity(this, false, Settings);
                 DynamicActivity.Start();
             }
-            else if (IsPerformingActivity && CanPerformActivities)
-            {
-                DynamicActivity.Continue();
-            }
         }
         public void StartSmokingPot()
         {
@@ -1317,10 +1318,6 @@ namespace Mod
                 DynamicActivity = new SmokingActivity(this, true, Settings);
                 DynamicActivity.Start();
             }
-            else if (IsPerformingActivity && CanPerformActivities)
-            {
-                DynamicActivity.Continue();
-            }
         }
         public void StartSittingDown()
         {
@@ -1330,9 +1327,14 @@ namespace Mod
                 {
                     DynamicActivity.Cancel();
                 }
-                IsPerformingActivity = true;
-                DynamicActivity = new SittingActivity(this, Settings, ModItems);
-                DynamicActivity.Start();
+                if (SittingActivity != null)
+                {
+                    SittingActivity.Cancel();
+                }
+                //IsSitting = true;
+                //IsPerformingActivity = true;
+                SittingActivity = new SittingActivity(this, Settings);
+                SittingActivity.Start();
             }
         }
         public void StopDynamicActivity()
@@ -1342,6 +1344,14 @@ namespace Mod
                 DynamicActivity?.Cancel();
                 IsPerformingActivity = false;
             }
+        }
+        public void PauseDynamicActivity()
+        {
+            DynamicActivity?.Pause();
+        }
+        public void ContinueDynamicActivity()
+        {
+            DynamicActivity?.Continue();
         }
         public void StartIngesting(Intoxicant intoxicant) => Intoxication.StartIngesting(intoxicant);
         public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);

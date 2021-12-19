@@ -135,10 +135,10 @@ public class Investigate : ComplexTask
             }
 
 
-            if(Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-            {
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation TASK ISSUES {0} {1}", Ped.Pedestrian.Handle, Ped.Pedestrian.Tasks.CurrentTaskStatus), 5);
-            }
+            //if(Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            //{
+            //    EntryPoint.WriteToConsole(string.Format("TASKER: Investigation TASK ISSUES {0} {1}", Ped.Pedestrian.Handle, Ped.Pedestrian.Tasks.CurrentTaskStatus), 5);
+            //}
             //EntryPoint.WriteToConsole(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
         }
     }

@@ -37,6 +37,8 @@ namespace LosSantosRED.lsr.Player
         //private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
+        private bool IsPaused = false;
+
         public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
@@ -58,6 +60,11 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
         }
+        public override void Pause()
+        {
+            IsPaused = true;
+            Player.IsPerformingActivity = false;
+        }
         public override void Continue()
         {
             if (Player.CanPerformActivities)
@@ -67,6 +74,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
+            IsPaused = false;
             Setup();
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
@@ -159,6 +167,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
+            EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
             if (IsActivelySmoking && Player.CanPerformActivities)
             {
                 //EntryPoint.WriteToConsole($"Stop with Animation");
@@ -178,9 +187,11 @@ namespace LosSantosRED.lsr.Player
                 SmokedItem.Detach();
             }
             //Player.Character.Tasks.Clear();
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
+            EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
             {
@@ -189,10 +200,12 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            
+            EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.CanPerformActivities && !IsCancelled && !IsPaused)
             {
                 Player.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
@@ -210,6 +223,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
+            EntryPoint.WriteToConsole("SmokingActivity Idle End", 5);
             if (IsSmokedItemNearMouth)
             {
                 InactiveIdle();
@@ -221,9 +235,11 @@ namespace LosSantosRED.lsr.Player
         }
         private void InactiveIdle()
         {
+            EntryPoint.WriteToConsole("SmokingActivity InactiveIdle Start", 5);
             AttachSmokedItemToMouth();
             //Player.Character.Tasks.Clear();
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             IsActivelySmoking = false;
             uint GameTimeStartedIdle = Game.GameTime;
             while (!IsCancelled && !ShouldContinue && Game.GameTime - GameTimeStartedIdle <= 120000)//two minutes and your ciggy burns out
@@ -236,6 +252,8 @@ namespace LosSantosRED.lsr.Player
             {
                 ShouldContinue = false;
                 IsActivelySmoking = true;
+                IsPaused = false;
+                Player.IsPerformingActivity = true;
                 Idle();
             }
             else

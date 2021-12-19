@@ -36,5 +36,7 @@ namespace LosSantosRED.lsr.Interface
         //void StartEatingActivity(ConsumableSubstance selectedStuff);
         bool RemoveFromInventory(ModItem selectedStuff, int v);
         void StartConsumingActivity(ModItem selectedStuff);
+        void PauseDynamicActivity();
+        void ContinueDynamicActivity();
     }
 }
