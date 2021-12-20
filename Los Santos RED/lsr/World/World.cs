@@ -251,12 +251,15 @@ namespace Mod
             if (gameLocation.HasVendor)
             {
                 SpawnVendor(gameLocation);
+                GameFiber.Yield();
             }
             if (!gameLocation.ShouldAlwaysHaveBlip)
             {
                 SetupBlip(gameLocation);
+                GameFiber.Yield();
             }
             gameLocation.Update();
+            GameFiber.Yield();
         }
         private void SpawnVendor(GameLocation gameLocation)
         {

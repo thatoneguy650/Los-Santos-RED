@@ -382,7 +382,7 @@ public class LEDispatcher
                         {
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage));
                                 spawnTask.AttemptSpawn();
                                 GameFiber.Yield();
                                 spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
@@ -665,7 +665,7 @@ public class LEDispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true);
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));

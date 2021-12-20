@@ -311,17 +311,13 @@ public class Weather
             }
             foreach (string audioname in AudioToPlay)
             {
-                if(AudioPlayer.IsScannerPlaying)
-                {
-                    break;
-                }
                 if (Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                 {
-                    AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
                 }
                 else
                 {
-                    AudioPlayer.Play(audioname, false);
+                    AudioPlayer.Play(audioname);
                 }
                 while (AudioPlayer.IsAudioPlaying)
                 {

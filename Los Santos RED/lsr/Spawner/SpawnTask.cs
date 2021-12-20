@@ -22,7 +22,8 @@ public class SpawnTask
     private IWeapons Weapons;
     private INameProvideable Names;
     private Vehicle SpawnedVehicle;
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
+    private bool AddOptionalPassengers = false;
+    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
     {
         Agency = agency;
         PersonType = officerType;
@@ -34,6 +35,7 @@ public class SpawnTask
         Settings = settings;
         Weapons = weapons;
         Names = names;
+        AddOptionalPassengers = addOptionalPassengers;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -78,20 +80,23 @@ public class SpawnTask
                                 Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
                                 Person.AssignedVehicle = Vehicle;
                                 Person.AssignedSeat = -1;
-                                int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
-                                for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                                if (VehicleType.MinOccupants > 1 || AddOptionalPassengers)
                                 {
-                                    PedExt Passenger = CreatePerson();
-                                    if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                    int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                                    for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                                     {
-                                        int SeatToAssign = OccupantIndex - 1;
-                                        Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
-                                        Passenger.AssignedVehicle = Vehicle;
-                                        Passenger.AssignedSeat = SeatToAssign;
-                                    }
-                                    else
-                                    {
-                                        EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                        PedExt Passenger = CreatePerson();
+                                        if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                        {
+                                            int SeatToAssign = OccupantIndex - 1;
+                                            Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
+                                            Passenger.AssignedVehicle = Vehicle;
+                                            Passenger.AssignedSeat = SeatToAssign;
+                                        }
+                                        else
+                                        {
+                                            EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                        }
                                     }
                                 }
                             }

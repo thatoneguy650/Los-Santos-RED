@@ -372,45 +372,45 @@ public class Debug
         //AnimationDictionary.RequestAnimationDictionay("switch@michael@biking_with_jimmy");
         //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@michael@biking_with_jimmy", "exit_right_door", 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
 
 
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-            float ObjectHeading = ClosestEntity.Heading;
-            if (ClosestEntity.Heading >= 180f)
-            {
-                DesiredHeading = ClosestEntity.Heading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ClosestEntity.Heading + 180f;
-            }
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
 
             
 
 
-            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-            if(ClosestEntity.Model.Dimensions.X >= 2f)
-            {
+        //    if(ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
 
-            }
+        //    }
 
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while(Game.GameTime - GameTimeStartedDisplaying <= 5000)
-            {
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while(Game.GameTime - GameTimeStartedDisplaying <= 5000)
+        //    {
 
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                GameFiber.Yield();
-            }
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
 
-        }
+        //}
             // Player.ScannerPlayDebug();
 
             //SetInRandomInterior();
@@ -458,7 +458,7 @@ public class Debug
             //}
             //Game.LocalPlayer.IsInvincible = false;
             //Game.DisplayNotification("IsInvincible = False");
-            // SpawnNoGunAttackers();
+             SpawnNoGunAttackers();
         }
     private void DebugNumpad5()
     {
@@ -475,7 +475,7 @@ public class Debug
         //World.DebugPlayWeather();
 
 
-        Dispatcher.SpawnRoadblock();
+       // Dispatcher.SpawnRoadblock();
 
 
         //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
@@ -541,7 +541,7 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        //SpawnGunAttackers();
+        SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {

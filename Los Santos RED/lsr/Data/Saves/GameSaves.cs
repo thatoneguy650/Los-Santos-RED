@@ -56,6 +56,61 @@ public class GameSaves : IGameSaves
     }
     private void DefaultConfig()
     {
+        PedVariation AlexisVariation = new PedVariation(new List<PedComponent>()
+        {
+            new PedComponent(0, 0, 0, 0),
+            new PedComponent(1, 0, 0, 0),
+            new PedComponent(2, 42, 0, 0) ,
+            new PedComponent(3, 9, 0, 0) ,
+            new PedComponent(4, 9, 11, 0) ,
+            new PedComponent(5, 0, 0, 0) ,
+            new PedComponent(6, 3, 12, 0) ,
+            new PedComponent(7, 2, 0, 0) ,
+            new PedComponent(8, 0, 0, 0) ,
+            new PedComponent(9, 0, 0, 0) ,
+            new PedComponent(10, 0, 0, 0) ,
+            new PedComponent(11, 9, 13, 0)
+        },
+            new List<PedPropComponent>()
+            {
+                 new PedPropComponent(0, -1, -1),
+                 new PedPropComponent(1, -1, -1),
+                 new PedPropComponent(2, -1, -1),
+                 new PedPropComponent(3, -1, -1),
+                 new PedPropComponent(4, -1, -1),
+                 new PedPropComponent(5, -1, -1),
+                 new PedPropComponent(6, -1, -1),
+                 new PedPropComponent(7, -1, -1),
+            });
+        List<StoredWeapon> AlexisWeapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(4222310262, Vector3.Zero, new WeaponVariation(), 0),
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
+            new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
+        };
+
+        List<HeadOverlay> HeadOverlays = new List<HeadOverlay>() {
+            new HeadOverlay(0,"Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0},
+            new HeadOverlay(1, "Facial Hair") { ColorType = 1,Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(2, "Eyebrows") { ColorType = 1,Index = 3,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(3, "Ageing") {Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(4, "Makeup") { Index = 12,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(5, "Blush") { ColorType = 2, Index = 3,Opacity = 0.4f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(6, "Complexion"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(7, "Sun Damage"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(8, "Lipstick") { ColorType = 2, Index = 2,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(9, "Moles/Freckles"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(10, "Chest Hair") { ColorType = 1, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(11, "Body Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlay(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },};
+
+        HeadBlendData HeadBlend = new HeadBlendData(12,31,0,12,31,0,0.8f,0.2f,0.0f);
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, 0, AlexisVariation, AlexisWeapons) { CurrentHeadBlendData = HeadBlend, CurrentHeadOverlays = HeadOverlays, CurrentPrimaryHairColor = 57,CurrentSecondaryColor = 5 };
+        GameSaveList = new List<GameSave>
+        {
+            AlexisGameSave,
+        };
+
         //PedVariation ClaudeVariation = new PedVariation(new List<PedComponent>()
         //{ 
         //    new PedComponent(0, 0, 0, 0),
@@ -90,7 +145,7 @@ public class GameSaves : IGameSaves
         //};
         //GameSaveList = new List<GameSave>
         //{
-            
+
         //    new GameSave("Claude Speed",9500,"MP_M_CLAUDE_01",true,0,ClaudeVariation,ClaudeWeapons),
         //};
     }

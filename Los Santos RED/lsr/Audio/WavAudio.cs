@@ -24,8 +24,7 @@ public class WavAudio : IAudioPlayable
     private SoundPlayer AudioDevice = new SoundPlayer();
     private bool CancelAudio;
     public bool IsAudioPlaying { get; private set; }
-    public bool IsScannerPlaying { get; private set; }
-    public void Play(string FileName, int volume, bool isScannerPlaying)
+    public void Play(string FileName, int volume)
     {
         if (FileName == "")
         {
@@ -49,10 +48,9 @@ public class WavAudio : IAudioPlayable
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
-        IsScannerPlaying = isScannerPlaying;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; });
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; });
     }
-    public void Play(string FileName, bool isScannerPlaying)
+    public void Play(string FileName)
     {
         if (FileName == "")
         {
@@ -67,51 +65,7 @@ public class WavAudio : IAudioPlayable
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
-        IsScannerPlaying = isScannerPlaying;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsScannerPlaying = false; });
-    }
-    public void Play_OLD(string FileName, int volume)
-    {
-        if (FileName == "")
-        {
-            return;
-        }
-
-        if (AudioDevice == null)
-        {
-            AudioDevice = new SoundPlayer();
-        }
-
-        if (volume > 10)
-        {
-            volume = 10;
-        }
-        else if (volume <= 0)
-        {
-            volume = 1;
-        }
-        SetVolume(volume);
-        string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
-        AudioDevice.SoundLocation = AudioFilePath;
-        int l = SoundInfo.GetSoundLength(AudioFilePath);
-
-        if (l == 0)
-        {
-            EntryPoint.WriteToConsole($"WAVAudio: Zero Sound Length! Attempt Alt, {FileName}", 3);
-        }
-        IsAudioPlaying = true;
-        Thread t2 = new Thread(delegate ()
-        {
-            AudioDevice.Play();
-            while (l > 0 && !CancelAudio)
-            {
-                Thread.Sleep(100);
-                l -= 100;
-            }
-            IsAudioPlaying = false;
-            CancelAudio = false;
-        });
-        t2.Start();
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; });
     }
     public void Abort()
     {
@@ -119,8 +73,6 @@ public class WavAudio : IAudioPlayable
         {
             CancelAudio = true;
             System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); });//seems to take 500 ms or so to do it? will lock the game thread 
-
-            //AudioDevice.Stop();
         }
     }
     private int GetVolume()

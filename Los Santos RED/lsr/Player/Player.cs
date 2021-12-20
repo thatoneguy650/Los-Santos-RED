@@ -717,6 +717,7 @@ namespace Mod
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
+            GameFiber.Yield();
             if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
             {
                 Scanner.OnVehicleCrashed();
@@ -725,6 +726,7 @@ namespace Mod
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
+            GameFiber.Yield();
             if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50 && TimeInCurrentVehicle >= 5000)
             {
                 Scanner.OnVehicleCrashed();
@@ -733,6 +735,7 @@ namespace Mod
         }
         public void OnVehicleCrashed()
         {
+            GameFiber.Yield();
             if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
             {
                 Scanner.OnVehicleCrashed();
@@ -741,7 +744,8 @@ namespace Mod
         }
         public void OnVehicleStartedFire()
         {
-            if(IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
+            GameFiber.Yield();
+            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
             {
                 Scanner.OnVehicleStartedFire();
             }
@@ -749,6 +753,7 @@ namespace Mod
         }
         public void OnInvestigationExpire()
         {
+            GameFiber.Yield();
             PoliceResponse.Reset();
             Scanner.OnInvestigationExpire();
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnInvestigationExpire", 3);
@@ -776,6 +781,7 @@ namespace Mod
         public void OnRequestedBackUp() => Scanner.OnRequestedBackUp();
         public void OnSuspectEluded()//runs before OnWantedLevelChanged
         {
+            GameFiber.Yield();
             CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x => x.AssociatedCrime).ToList(), PlacePoliceLastSeenPlayer);
             Scanner.OnSuspectEluded();
         }

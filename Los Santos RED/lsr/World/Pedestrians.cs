@@ -251,6 +251,7 @@ public class Pedestrians
                     AddCivilian(Pedestrian);
                 }
             }
+            GameFiber.Yield();
         }
     }
     private void AddCivilian(Ped Pedestrian)

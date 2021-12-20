@@ -74,51 +74,29 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            //EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             StoreTargetPedData(TargetPed);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-
-
-
             Player.IsCop = false;
-            //EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(true);
             PostTakeover(CurrentModelPlayerIs.Name, false, fullName, money);
             GiveHistory();
-            TemporarilyStopWanted();
-
             if (headblendData != null)
             {
                 if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
                 {
-                    Player.CurrentHeadBlendData = headblendData;
-                    Player.CurrentPrimaryHairColor = primaryHairColor;
-                    Player.CurrentSecondaryColor = secondaryHairColor;
-                    Player.CurrentHeadOverlays = headOverlays;
-
-
-
-
-
+                    Player.CurrentHeadBlendData = headblendData.Copy();
+                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
+                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
+                    Player.CurrentHeadOverlays = headOverlays.Copy();
                     NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
                     NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
-
                     foreach (HeadOverlay ho in headOverlays)
                     {
                         NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
                         NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
                     }
-
                 }
             }
-
-            //EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -139,22 +117,12 @@ public class PedSwap : IPedSwap
                 }
                 return;      
             }
-            //EntryPoint.WriteToConsole($"BecomeExistingPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             StoreTargetPedData(TargetPed);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            //EntryPoint.WriteToConsole($"BecomeExistingPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeExistingPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(deleteOld);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
-            TemporarilyStopWanted();
-            //EntryPoint.WriteToConsole($"BecomeExistingPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -173,23 +141,13 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            //EntryPoint.WriteToConsole($"BecomeRandomPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            //EntryPoint.WriteToConsole($"BecomeRandomPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeRandomPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GiveHistory();
-            TemporarilyStopWanted();
-            //EntryPoint.WriteToConsole($"BecomeRandomPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -262,31 +220,23 @@ public class PedSwap : IPedSwap
             {
                 variation.ReplacePedComponentVariation(TargetPed);
             }
-            //EntryPoint.WriteToConsole($"BecomeSavedPed: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
             StoreTargetPedData(TargetPed);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed2: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed2: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
-            //EntryPoint.WriteToConsole($"BecomeSavedPed4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-            //EntryPoint.WriteToConsole($"BecomeSavedPed4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
-
             if (headblendData != null)
             {
                 if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
                 {
-                    Player.CurrentHeadBlendData = headblendData;
-                    Player.CurrentPrimaryHairColor = primaryHairColor;
-                    Player.CurrentSecondaryColor = secondaryHairColor;
+                    Player.CurrentHeadBlendData = headblendData.Copy();
+                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
+                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
+                    Player.CurrentHeadOverlays = headOverlays.Copy();
 
                     NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
                     NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
@@ -298,7 +248,6 @@ public class PedSwap : IPedSwap
 
                 }
             }
-            //EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         }
         catch (Exception e3)
         {
@@ -365,23 +314,6 @@ public class PedSwap : IPedSwap
             //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
             TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
         }
-    }
-    private void TemporarilyStopWanted()
-    {
-        ////not needed with fake wanted level?
-        //GameFiber.StartNew(delegate
-        //{
-        //    uint GameTimeLastTakenOver = Game.GameTime;
-        //    while (Game.GameTime - GameTimeLastTakenOver <= 3000)
-        //    {
-        //        if (Game.LocalPlayer.WantedLevel != 0)
-        //        {
-        //            Player.SetWantedLevel(0, "PedSwap resetting afterwards", true);
-        //        }
-        //        GameFiber.Yield();
-        //    }
-
-        //}, "Wanted Level Stopper");
     }
     private void GiveHistory()
     {

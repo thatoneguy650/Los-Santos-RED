@@ -1292,15 +1292,6 @@ namespace LosSantosRED.lsr
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
         {
             //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
-
-            if(AudioPlayer.IsScannerPlaying)
-            {
-                EntryPoint.WriteToConsole($"ScannerScript Abort Low Priority Other Audio Playing", 4);
-                AbortedAudio = true;
-                Abort();
-            }
-
-
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
@@ -1320,11 +1311,11 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
                     if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
                     }
                     else
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), true);
+                        AudioPlayer.Play(RadioEnd.PickRandom());
                     }
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
@@ -1348,11 +1339,11 @@ namespace LosSantosRED.lsr
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
                         if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                         {
-                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
+                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
                         }
                         else
                         {
-                            AudioPlayer.Play(audioname, true);
+                            AudioPlayer.Play(audioname);
                         }
                         while (AudioPlayer.IsAudioPlaying)
                         {

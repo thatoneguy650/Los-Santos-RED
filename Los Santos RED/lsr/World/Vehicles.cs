@@ -64,18 +64,19 @@ public class Vehicles
     }
     public void CreateNew()
     {
-        int VehiclesCreated = 0;
+        //int VehiclesCreated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
             if(AddToList(vehicle))
-            {
-                VehiclesCreated++;
-            }
-            if (VehiclesCreated > 4)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
-            {
-                VehiclesCreated = 0;
+                //{
+                //    VehiclesCreated++;
+                //}
+                //if (VehiclesCreated > 4)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
+                //{
+                //    VehiclesCreated = 0;
+                //    GameFiber.Yield();
+                //}
                 GameFiber.Yield();
-            }
         }
     }
     public void CleanUp()

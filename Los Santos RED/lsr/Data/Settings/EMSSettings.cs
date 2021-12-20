@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 public class EMSSettings
 {
-    public bool ManageDispatching { get; set; } = true;
-    public bool ManageTasking { get; set; } = true;
+    public bool ManageDispatching { get; set; } = false;
+    public bool ManageTasking { get; set; } = false;
     public bool ShowSpawnedBlips { get; set; } = false;
     public EMSSettings()
     {

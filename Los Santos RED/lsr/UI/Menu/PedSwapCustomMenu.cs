@@ -44,14 +44,17 @@ public class PedSwapCustomMenu : Menu
     private List<FashionComponent> ComponentLookup;
     private List<FashionProp> PropLookup;
     private List<ColorLookup> ColorList;
+    private List<HeadLookup> HeadList;
     private UIMenuItem ChangeMoney;
     private UIMenuItem ChangeName;
     private UIMenuItem RandomizeName;
     private string CurrentSelectedName = "John Doe";
     private int CurrentSelectedMoney = 5000;
     private UIMenuItem RandomizeHead;
-    private UIMenuNumericScrollerItem<int> Parent1IDMenu;
-    private UIMenuNumericScrollerItem<int> Parent2IDMenu;
+    //private UIMenuNumericScrollerItem<int> Parent1IDMenu;
+    //private UIMenuNumericScrollerItem<int> Parent2IDMenu;
+    private UIMenuListScrollerItem<HeadLookup> Parent1IDMenu;
+    private UIMenuListScrollerItem<HeadLookup> Parent2IDMenu;
     private UIMenuNumericScrollerItem<float> Parent1MixMenu;
     private UIMenuNumericScrollerItem<float> Parent2MixMenu;
     private UIMenuItem DefaultVariation;
@@ -226,6 +229,56 @@ public class PedSwapCustomMenu : Menu
         new ColorLookup(63,"Unk 2"),
         };
 
+        HeadList = new List<HeadLookup>()
+        {
+            new HeadLookup(0,"Benjamin"),
+            new HeadLookup(1,"Daniel"),
+            new HeadLookup(2,"Joshua"),
+            new HeadLookup(3,"Noah"),
+            new HeadLookup(4,"Andrew"),
+            new HeadLookup(5,"Juan"),
+            new HeadLookup(6,"Alex"),
+            new HeadLookup(7,"Isaac"),
+            new HeadLookup(8,"Evan"),
+            new HeadLookup(9,"Ethan"),
+            new HeadLookup(10,"Vincent"),
+            new HeadLookup(11,"Angel"),
+            new HeadLookup(12,"Diego"),
+            new HeadLookup(13,"Adrian"),
+            new HeadLookup(14,"Gabriel"),
+            new HeadLookup(15,"Michael"),
+            new HeadLookup(16,"Santiago"),
+            new HeadLookup(17,"Kevin"),
+            new HeadLookup(18,"Louis"),
+            new HeadLookup(19,"Samuel"),
+            new HeadLookup(20,"Anthony"),
+            new HeadLookup(21,"Hannah"),
+            new HeadLookup(22,"Audrey"),
+            new HeadLookup(23,"Jasmine"),
+            new HeadLookup(24,"Giselle"),
+            new HeadLookup(25,"Amelia"),
+            new HeadLookup(26,"Isabella"),
+            new HeadLookup(27,"Zoe"),
+            new HeadLookup(28,"Ava"),
+            new HeadLookup(29,"Camila"),
+            new HeadLookup(30,"Violet"),
+            new HeadLookup(31,"Sophia"),
+            new HeadLookup(32,"Evelyn"),
+            new HeadLookup(33,"Nicole"),
+            new HeadLookup(34,"Ashley"),
+            new HeadLookup(35,"Grace"),
+            new HeadLookup(36,"Brianna"),
+            new HeadLookup(37,"Natalie"),
+            new HeadLookup(38,"Olivia"),
+            new HeadLookup(39,"Elizabeth"),
+            new HeadLookup(40,"Charlotte"),
+            new HeadLookup(41,"Emma"),
+            new HeadLookup(42,"Claude"),
+            new HeadLookup(43,"Niko"),
+            new HeadLookup(44,"John"),
+            new HeadLookup(45,"Misty"),
+        };
+
 
         HeadOverlays = new List<HeadOverlay>() {
             new HeadOverlay(0,"Blemishes"),
@@ -258,16 +311,14 @@ public class PedSwapCustomMenu : Menu
         DemographicsSubMenu.AddItem(RandomizeName);
         DemographicsSubMenu.AddItem(ChangeMoney);
 
-        ChangeModel = new UIMenuItem("Input Model","Enter Model Name");
-        SelectModel = new UIMenuListItem("Select Model", "Select From Available", Rage.Model.PedModels.Select(x=> x.Name));
-        RandomizeVariation = new UIMenuItem("Randomize Variation", "Set Random Variation");
-        DefaultVariation = new UIMenuItem("Default Variation", "Set Default Variation");
+        ChangeModel = new UIMenuItem("Input Model","Enter model name");
+        SelectModel = new UIMenuListItem("Select Model", "Select from available", Rage.Model.PedModels.Select(x=> x.Name));
+        RandomizeVariation = new UIMenuItem("Randomize Variation", "Set random variation");
+        DefaultVariation = new UIMenuItem("Default Variation", "Set default variation");
         PedSwapCustomUIMenu.AddItem(ChangeModel);
         PedSwapCustomUIMenu.AddItem(SelectModel);
         PedSwapCustomUIMenu.AddItem(RandomizeVariation);
         PedSwapCustomUIMenu.AddItem(DefaultVariation);
-
-
 
         //Submenu
         CustomizeHeadMenu = MenuPool.AddSubMenu(PedSwapCustomUIMenu, "Set Head");
@@ -276,16 +327,19 @@ public class PedSwapCustomMenu : Menu
         CustomizeHeadMenu.OnIndexChange += OnIndexChange;
         CustomizeHeadMenu.OnScrollerChange += OnScrollerChange;
 
-        RandomizeHead = new UIMenuItem("Randomize Head","Set Random Head Data");
-        Parent1IDMenu = new UIMenuNumericScrollerItem<int>("Set Parent 1", "Select Parent ID 1", 0, 45, 1);
-        Parent2IDMenu = new UIMenuNumericScrollerItem<int>("Set Parent 2", "Select Parent ID 2", 0, 45, 1);
-        Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select Percent Of Parent ID 1 To Use", 0.0f, 1.0f, 0.1f);
-        Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select Percent Of Parent ID 2 To Use", 0.0f, 1.0f, 0.1f);
+        RandomizeHead = new UIMenuItem("Randomize Head","Set random head data");
+        Parent1IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 1", "Select parent ID 1", HeadList);
+        Parent2IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 2", "Select parent ID 2", HeadList);
 
-        RandomizeHair = new UIMenuItem("Randomize Hair", "Set Random Hair (Use Components to Select Manually)");
+        //Parent1IDMenu = new UIMenuNumericScrollerItem<int>("Set Parent 1", "Select parent ID 1", 0, 45, 1);
+        //Parent2IDMenu = new UIMenuNumericScrollerItem<int>("Set Parent 2", "Select parent ID 2", 0, 45, 1);
+        Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select percent of parent ID 1 to use", 0.0f, 1.0f, 0.1f);
+        Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select percent of parent ID 2 to use", 0.0f, 1.0f, 0.1f);
 
-        HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select Primary Hair Color (Requires Head Data)", ColorList);
-        HairSecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Hair Color", "Select Secondary Hair Color (Requires Head Data)", ColorList);
+        RandomizeHair = new UIMenuItem("Randomize Hair", "Set random hair (use components to select manually)");
+
+        HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select primary hair color (requires head data)", ColorList);
+        HairSecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Hair Color", "Select secondary hair color (requires head data)", ColorList);
 
         CustomizeHeadMenu.AddItem(RandomizeHead);
         CustomizeHeadMenu.AddItem(Parent1IDMenu);
@@ -302,19 +356,19 @@ public class PedSwapCustomMenu : Menu
         {
             UIMenu overlayHeaderMenu = MenuPool.AddSubMenu(CustomizeHeadMenu, ho.Part);
             overlayHeaderMenu.TitleText = $"{ho.Part}";
-            UIMenuListScrollerItem<ColorLookup>  PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Color", "Select Primary Color", ColorList);
-            UIMenuListScrollerItem<ColorLookup>  SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Color", "Select Secondary Color", ColorList);
-            UIMenuNumericScrollerItem<float> OpacityMenu = new UIMenuNumericScrollerItem<float>($"Opacity", $"Modify Opacity", 0.0f, 1.0f, 0.1f);
+            UIMenuListScrollerItem<ColorLookup>  PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Color", "Select primary color", ColorList);
+            UIMenuListScrollerItem<ColorLookup>  SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Color", "Select secondary color", ColorList);
+            UIMenuNumericScrollerItem<float> OpacityMenu = new UIMenuNumericScrollerItem<float>($"Opacity", $"Modify opacity", 0.0f, 1.0f, 0.1f);
             OpacityMenu.Index = 10;
             overlayHeaderMenu.AddItem(PrimaryColorMenu);
             overlayHeaderMenu.AddItem(SecondaryColorMenu);
             overlayHeaderMenu.AddItem(OpacityMenu);
             int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);
-            UIMenuNumericScrollerItem<int> OverlayIndexMenu = new UIMenuNumericScrollerItem<int>($"Index", $"Modify Index", -1, TotalItems-1, 1);
+            UIMenuNumericScrollerItem<int> OverlayIndexMenu = new UIMenuNumericScrollerItem<int>($"Index", $"Modify index", -1, TotalItems-1, 1);
             OverlayIndexMenu.Index = 0;
             overlayHeaderMenu.AddItem(OverlayIndexMenu);
-            overlayHeaderMenu.OnItemSelect += OnItemSelect;
-            overlayHeaderMenu.OnScrollerChange += OnScrollerChange;
+           // overlayHeaderMenu.OnItemSelect += OnHeadOverlayItemSelect;
+            overlayHeaderMenu.OnScrollerChange += OnHeadOverlayScrollerChange;
         }
 
         //Submenu
@@ -328,9 +382,12 @@ public class PedSwapCustomMenu : Menu
         PropsUIMenu.OnItemSelect += OnItemSelect;
         RefreshMenuList();
 
-        ClearProps = new UIMenuItem("Clear Props","Removes All Props");
-        BecomeModel = new UIMenuItem("Become Character","Return To Gameplay As Character");
-        Exit = new UIMenuItem("Exit","Return To Gameplay");
+        ClearProps = new UIMenuItem("Clear Props","Remove ALL props from displayed character");
+        ClearProps.RightBadge = UIMenuItem.BadgeStyle.Crown;
+        BecomeModel = new UIMenuItem("Become Character","Return to gameplay as displayed character");
+        BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Heart;
+        Exit = new UIMenuItem("Exit","Return to gameplay as old character");
+        Exit.RightBadge = UIMenuItem.BadgeStyle.Alert;
 
         BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Clothes;
         Exit.RightBadge = UIMenuItem.BadgeStyle.Alert;
@@ -340,7 +397,6 @@ public class PedSwapCustomMenu : Menu
     }
     private void RefreshMenuList()
     {
-
         HeadOverlays = new List<HeadOverlay>() {
             new HeadOverlay(0,"Blemishes"),
             new HeadOverlay(1, "Facial Hair") { ColorType = 1 },
@@ -360,36 +416,20 @@ public class PedSwapCustomMenu : Menu
         PropsUIMenu.Clear();
         if (PedModel.Exists())
         {
-            if(PedModelIsFreeMode)
+            if (PedModelIsFreeMode)
             {
-                RandomizeHead.Enabled = true;
-                Parent1IDMenu.Enabled = true;
-                Parent2IDMenu.Enabled = true;
-                Parent1MixMenu.Enabled = true;
-                Parent2MixMenu.Enabled = true;
-                RandomizeHair.Enabled = true;
-                HairPrimaryColorMenu.Enabled = true;
-                HairSecondaryColorMenu.Enabled = true;
+                foreach(UIMenuItem menu in CustomizeHeadMenu.MenuItems)
+                {
+                    menu.Enabled = true;
+                }  
             }
             else
             {
-                RandomizeHead.Enabled = false;
-                Parent1IDMenu.Enabled = false;
-                Parent2IDMenu.Enabled = false;
-                Parent1MixMenu.Enabled = false;
-                Parent2MixMenu.Enabled = false;
-                RandomizeHair.Enabled = false;
-                HairPrimaryColorMenu.Enabled = false;
-                HairSecondaryColorMenu.Enabled = false;
+                foreach (UIMenuItem menu in CustomizeHeadMenu.MenuItems)
+                {
+                    menu.Enabled = false;
+                }
             }
-
-            //foreach(HeadOverlay ho in HeadOverlays)
-            //{
-            //    CustomizeHeadOverlayMenu.AddItem(new UIMenuItem(ho.Part));
-            //}
-
-
-
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
                 int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(PedModel, ComponentNumber);
@@ -403,7 +443,7 @@ public class PedSwapCustomMenu : Menu
                 for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(PedModel, ComponentNumber, DrawableNumber) - 1;
-                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "Arrow to Change Texture, Select to Reset Texture", 0, NumberOfTextureVariations, 1);
+                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "Arrow to change texture, select to reset texture", -1, NumberOfTextureVariations, 1);
                     ComponentSubMenu.AddItem(Test);
                 }
                 ComponentSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
@@ -424,7 +464,7 @@ public class PedSwapCustomMenu : Menu
                 for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(PedModel, PropsNumber, DrawableNumber);
-                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "", 0, NumberOfTextureVariations, 1);
+                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "", -1, NumberOfTextureVariations, 1);
                     PropSubMenu.AddItem(Test);
                 }
                 PropSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
@@ -433,6 +473,8 @@ public class PedSwapCustomMenu : Menu
             }
         }
     }
+
+
     public override void Hide()
     {
         PedSwapCustomUIMenu.Visible = false;
@@ -453,6 +495,8 @@ public class PedSwapCustomMenu : Menu
             PedSwapCustomUIMenu.Visible = false;
         }
     }
+
+
     public void Update()
     {
         MenuPool.ProcessMenus();
@@ -477,6 +521,8 @@ public class PedSwapCustomMenu : Menu
             Game.FadeScreenIn(1500, true);
         }
     }
+
+
     private void SetHeadblendData()
     {
         if(CurrentHeadblend != null)
@@ -490,6 +536,53 @@ public class PedSwapCustomMenu : Menu
             NativeFunction.Natives.x497BF74A7B9CB952(PedModel, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
         }
     }
+    private void RandomizeOverlay()
+    {
+        foreach (HeadOverlay ho in HeadOverlays)
+        {
+            int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);
+            ho.Index = RandomItems.GetRandomNumberInt(-1, TotalItems-1);
+            ho.Opacity = RandomItems.GetRandomNumber(0.0f, 1.0f);
+            ho.PrimaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+            ho.SecondaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+        }
+    }
+    private void RandomizeHeadblend()
+    {
+        int MotherID = 0;
+        int FatherID = 0;
+        float FatherSide = 0f;
+        float MotherSide = 0f;
+        MotherID = RandomItems.GetRandomNumberInt(0, 45);
+        FatherID = RandomItems.GetRandomNumberInt(0, 45);
+        if (PedModel.IsMale)
+        {
+            FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+            MotherSide = 1.0f - FatherSide;
+        }
+        else
+        {
+            MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+            FatherSide = 1.0f - MotherSide;
+        }
+
+        Parent1IDMenu.Index = MotherID;
+        Parent2IDMenu.Index = FatherID;
+        Parent1MixMenu.Value = MotherSide;
+        Parent2MixMenu.Value = FatherSide;
+        CurrentHeadblend = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
+    }
+    private void RandomizeHairStyle()
+    {
+        int DrawableID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(PedModel, 2));
+        int TextureID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(PedModel, 2, DrawableID) - 1);
+        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(PedModel, 2, DrawableID, TextureID, 0);
+        CurrentSelectedPrimaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+        CurrentSelectedSecondaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+    }
+
+
+
     private void OnIndexChange(UIMenu sender, int newIndex)
     {
         if (sender == ComponentsUIMenu)
@@ -564,29 +657,8 @@ public class PedSwapCustomMenu : Menu
             {
                 if (PedModel.Exists() && PedModelIsFreeMode)
                 {
-                    int MotherID = 0;
-                    int FatherID = 0;
-                    float FatherSide = 0f;
-                    float MotherSide = 0f;
-                    MotherID = RandomItems.GetRandomNumberInt(0, 45);
-                    FatherID = RandomItems.GetRandomNumberInt(0, 45);
-                    if (PedModel.IsMale)
-                    {
-                        FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-                        MotherSide = 1.0f - FatherSide;
-                    }
-                    else
-                    {
-                        MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-                        FatherSide = 1.0f - MotherSide;
-                    }
-
-
-                    Parent1IDMenu.Value = MotherID;
-                    Parent2IDMenu.Value = FatherID;
-                    Parent1MixMenu.Value = MotherSide;
-                    Parent2MixMenu.Value = FatherSide;
-                    CurrentHeadblend = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
+                    RandomizeHeadblend();
+                    //RandomizeOverlay();
                     SetHeadblendData();
                     GameFiber.Yield();
                 }
@@ -596,11 +668,7 @@ public class PedSwapCustomMenu : Menu
                 if (PedModel.Exists() && PedModelIsFreeMode)
                 {
                     SetHeadblendData();
-                    int DrawableID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(PedModel, 2));
-                    int TextureID  = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(PedModel, 2, DrawableID) - 1);
-                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(PedModel, 2, DrawableID, TextureID, 0);
-                    CurrentSelectedPrimaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-                    CurrentSelectedSecondaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+                    RandomizeHairStyle();
                     HairPrimaryColorMenu.Index = CurrentSelectedPrimaryHairColor;
                     HairSecondaryColorMenu.Index = CurrentSelectedSecondaryHairColor;
                     SetHeadblendData();
@@ -727,29 +795,48 @@ public class PedSwapCustomMenu : Menu
                 SetHeadblendData();
             }
         }
-        else if (sender.TitleText == CurrentSelectedOverlay?.Part)
-        {
-            if(item.Text == "Set Primary Color")
-            {
-                CurrentSelectedOverlay.PrimaryColor = newIndex;
-            }
-            else if (item.Text == "Set Secondary Color")
-            {
-                CurrentSelectedOverlay.SecondaryColor = newIndex;
-            }
-            else if (item.Text == "Index")
-            {
-                CurrentSelectedOverlay.Index = newIndex-1;
-            }
-            else if (item.Text == "Opacity" && float.TryParse(item.OptionText, out float opacity))
-            {
-                CurrentSelectedOverlay.Opacity = opacity;
-            }
-            NativeFunction.Natives.SET_PED_HEAD_OVERLAY(PedModel, CurrentSelectedOverlay.OverlayID, CurrentSelectedOverlay.Index, CurrentSelectedOverlay.Opacity);
-            NativeFunction.Natives.x497BF74A7B9CB952(PedModel, CurrentSelectedOverlay.OverlayID, CurrentSelectedOverlay.ColorType, CurrentSelectedOverlay.PrimaryColor, CurrentSelectedOverlay.SecondaryColor);//colors?
-        }
         EntryPoint.WriteToConsole($"OnScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
     }
+
+
+    //private void OnHeadOverlayItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    //{   
+    //    HeadOverlay ho = HeadOverlays.FirstOrDefault(x => x.Part == selectedItem.Text);
+    //    if (ho != null)
+    //    {
+    //        CurrentSelectedOverlay = ho;
+    //    }
+    //    else
+    //    {
+    //        CurrentSelectedOverlay = null;
+    //    }    
+    //    EntryPoint.WriteToConsole($"OnHeadOverlayItemSelect TitleText: {sender.TitleText} Text: {selectedItem.Text} Index: {index} CurrentSelectedOverlay {CurrentSelectedOverlay?.Part}", 5);
+    //    EntryPoint.WriteToConsole($"OnHeadOverlayItemSelect {CurrentSelectedComponent} {DrawableSelected} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+    //}
+    private void OnHeadOverlayScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
+    {
+        if (item.Text == "Set Primary Color")
+        {
+            CurrentSelectedOverlay.PrimaryColor = newIndex;
+        }
+        else if (item.Text == "Set Secondary Color")
+        {
+            CurrentSelectedOverlay.SecondaryColor = newIndex;
+        }
+        else if (item.Text == "Index")
+        {
+            CurrentSelectedOverlay.Index = newIndex - 1;
+        }
+        else if (item.Text == "Opacity" && float.TryParse(item.OptionText, out float opacity))
+        {
+            CurrentSelectedOverlay.Opacity = opacity;
+        }
+        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(PedModel, CurrentSelectedOverlay.OverlayID, CurrentSelectedOverlay.Index, CurrentSelectedOverlay.Opacity);
+        NativeFunction.Natives.x497BF74A7B9CB952(PedModel, CurrentSelectedOverlay.OverlayID, CurrentSelectedOverlay.ColorType, CurrentSelectedOverlay.PrimaryColor, CurrentSelectedOverlay.SecondaryColor);//colors?  
+        EntryPoint.WriteToConsole($"OnHeadOverlayScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
+    }
+
+
 
     private void OnComponentItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -841,7 +928,25 @@ public class PedSwapCustomMenu : Menu
 
 
 
+    private class HeadLookup
+    {
+        public HeadLookup()
+        {
 
+        }
+        public HeadLookup(int headID, string headName)
+        {
+            HeadID = headID;
+            HeadName = headName;
+        }
+
+        public int HeadID { get; set; }
+        public string HeadName { get; set; }
+        public override string ToString()
+        {
+            return HeadName;
+        }
+    }
     private class FashionComponent
     {
         public FashionComponent()
