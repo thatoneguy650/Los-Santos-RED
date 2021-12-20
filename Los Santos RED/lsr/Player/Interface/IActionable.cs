@@ -24,7 +24,10 @@ namespace LosSantosRED.lsr.Interface
         List<InventoryItem> InventoryItems { get; }
         Ped Character { get; }
         bool IsMale { get; }
-        bool IsSitting { get; }
+        bool IsSitting { get; set; }
+       Rage.Object AttachedProp { get; }
+        bool IsMoveControlPressed { get; }
+        string ModelName { get; }
 
         void StartSmokingPot();
         void StartSittingDown();

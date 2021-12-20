@@ -13,7 +13,7 @@ public class InventoryMenu : Menu
         Player = player;
         ModItems = modItems;
         inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
-        inventoryMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        inventoryMenu.SetBannerType(EntryPoint.LSRedColor);
         inventoryMenu.OnItemSelect += OnActionItemSelect;
         CreateInventoryMenu();
     }

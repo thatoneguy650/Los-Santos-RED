@@ -372,7 +372,7 @@ public class LEDispatcher
                 if (agency != null)
                 {
                     LastAgencySpawned = agency;
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit && Player.WantedLevel >= 3, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                     GameFiber.Yield();
                     if (VehicleType != null)
                     {
@@ -423,8 +423,9 @@ public class LEDispatcher
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
                     Delete(DeleteableCop);
-                    GameFiber.Yield();
+                    
                 }
+                GameFiber.Yield();
             }
             if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
             {

@@ -25,7 +25,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
-
+            Cancel();//for now it just cancels
         }
         public override void Continue()
         {

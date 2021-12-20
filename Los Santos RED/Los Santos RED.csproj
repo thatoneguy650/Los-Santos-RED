@@ -113,6 +113,7 @@
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
+    <Compile Include="lsr\PedSwap\HeadOverlay.cs" />
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />

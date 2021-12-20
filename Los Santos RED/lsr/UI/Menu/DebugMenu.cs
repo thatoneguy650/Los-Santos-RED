@@ -48,6 +48,7 @@ public class DebugMenu : Menu
         Settings = settings;
         Time = time;
         Debug = new UIMenu("Debug", "Debug Settings");
+        Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);
 
         

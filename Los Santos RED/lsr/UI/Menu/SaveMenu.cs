@@ -25,7 +25,7 @@ public class SaveMenu : Menu
         PedSwap = pedSwap;
         PlayerInvetory = playerinventory;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
-        Saves.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        Saves.SetBannerType(EntryPoint.LSRedColor);
         Saves.OnItemSelect += OnActionItemSelect;
         CreateSavesMenu();
     }

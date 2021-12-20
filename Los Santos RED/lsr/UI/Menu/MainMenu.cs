@@ -88,33 +88,14 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
-
-
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-
-        if(Player.IsCop)
-        {
-            CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
-            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
-        }
-        else
-        {
-            CallPolice = new UIMenuItem("Call Police", "Need some help?");
-            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
-        }
-
-        GenerateCrime = new UIMenuItem("Generate Crime", "Attempt to generate a random crime around the player");
-        GenerateCrime.RightBadge = UIMenuItem.BadgeStyle.Gun;
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
-        UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
-
-        Main.AddItem(CallPolice);
-        Main.AddItem(GenerateCrime);
-        Main.AddItem(TakeVehicleOwnership);
+        UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star; 
         Main.AddItem(ShowStatus);
+        Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(UnloadMod);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -130,14 +111,6 @@ public class MainMenu : Menu
         else if (selectedItem == TakeVehicleOwnership)
         {
             Player.TakeOwnershipOfNearestCar();
-        }
-        else if (selectedItem == CallPolice)
-        {
-            Player.CallPolice();
-        }
-        else if (selectedItem == GenerateCrime)
-        {
-            Tasker.CreateCrime();
         }
         Main.Visible = false;
     }

@@ -141,6 +141,7 @@ namespace Mod
         public PedVariation CurrentModelVariation { get; set; }
         public int CurrentPrimaryHairColor { get; set; }
         public int CurrentSecondaryColor { get; set; }
+        public List<HeadOverlay> CurrentHeadOverlays { get; set; }
         public HeadBlendData CurrentHeadBlendData { get; set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
@@ -452,7 +453,7 @@ namespace Mod
         }
         public void ChangePlate(int Index)
         {
-            if (!IsPerformingActivity && CanPerformActivities)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
                 if (DynamicActivity != null)
                 {
@@ -465,7 +466,7 @@ namespace Mod
         }
         public void ChangePlate(LicensePlate toChange)
         {
-            if (!IsPerformingActivity && CanPerformActivities)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
                 if (DynamicActivity != null)
                 {
@@ -478,7 +479,7 @@ namespace Mod
         }
         public void CommitSuicide()
         {
-            if (!IsPerformingActivity && CanPerformActivities)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
                 if (DynamicActivity != null)
                 {
@@ -882,11 +883,6 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
-                
-                //if(Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned && CurrentVehicle != null)
-                //{
-                //    CurrentVehicle.SetRadioStation(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
-                //}
             }
             else
             {
@@ -1301,7 +1297,7 @@ namespace Mod
         }
         public void StartScenario()
         {
-            if (!IsPerformingActivity && CanPerformActivities)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
                 if (DynamicActivity != null)
                 {
@@ -1340,7 +1336,7 @@ namespace Mod
         }
         public void StartSittingDown()
         {
-            if (!IsPerformingActivity && CanPerformActivities)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
                 if (DynamicActivity != null)
                 {

@@ -18,10 +18,9 @@ public class Radio
     {
         VehicleToMonitor = vehicleToMonitor;
     }
-    public bool CanChangeStation => Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
     public void Update(string DesiredStation)
     {
-        if (DesiredStation != "NONE")
+        if (DesiredStation != "NONE" && VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             unsafe
             {
@@ -30,25 +29,23 @@ public class Radio
             }
             if (CurrentRadioStationName != DesiredStation)
             {
-
                 SetRadioStation(DesiredStation);
             }
+            VehicleToMonitor.HasAutoSetRadio = true;
         }
     }
     public void SetNextTrack()
     {
-        if (CanChangeStation)
+        if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             NativeFunction.CallByName<bool>("SKIP_RADIO_FORWARD");
         }
-
     }
     public void SetRadioStation(string StationName)
     {
         if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
-            VehicleToMonitor.HasAutoSetRadio = true;
         }
     }
 }

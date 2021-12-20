@@ -20,10 +20,13 @@ public class ActionMenu : Menu
     private UIMenuItem StopConsuming;
     private UIMenuItem Suicide;
     private ISettingsProvideable Settings;
+    private UIMenuListScrollerItem<string> CurrentActivityMenu;
     private UIMenuItem ContinueConsuming;
     private MenuPool MenuPool;
-    private UIMenu GestureMenu;
+    private UIMenuListScrollerItem<GestureLookup> GestureMenu;
     private List<GestureLookup> GestureLookups;
+    private UIMenuItem CallPolice;
+
     public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -32,7 +35,8 @@ public class ActionMenu : Menu
         Actions = MenuPool.AddSubMenu(parentMenu, "Actions");
         Actions.SetBannerType(EntryPoint.LSRedColor);
         Actions.OnItemSelect += OnActionItemSelect;
-        
+
+
         CreateActionsMenu();
     }
     public int SelectedPlateIndex { get; set; }
@@ -60,49 +64,46 @@ public class ActionMenu : Menu
     public void Update()
     {
         //CreateActionsMenu();
-        if (Player.CanPerformActivities)
-        {
-            Suicide.Enabled = true;
-            ChangePlate.Enabled = true;
-            RemovePlate.Enabled = true;
+        //if (Player.CanPerformActivities)
+        //{
+        //    //Suicide.Enabled = true;
+        //    //ChangePlate.Enabled = true;
+        //    //RemovePlate.Enabled = true;
 
-            if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
-            {
-                Drink.Enabled = true;
-                Smoke.Enabled = true;
-                SmokePot.Enabled = true;
-            }
-        }
-        else
-        {
-            Suicide.Enabled = false;
-            ChangePlate.Enabled = false;
-            RemovePlate.Enabled = false;
-            if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
-            {
-                Drink.Enabled = false;
-                Smoke.Enabled = false;
-                SmokePot.Enabled = false;
-            }
-        }
-        if (Player.IsPerformingActivity)
-        {
-            StopConsuming.Enabled = true;
-        }
-        else
-        {
-            StopConsuming.Enabled = false;
-        }
+        //    //if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+        //    //{
+        //    //    Drink.Enabled = true;
+        //    //    Smoke.Enabled = true;
+        //    //    SmokePot.Enabled = true;
+        //    //}
+        //}
+        //else
+        //{
+        //    //Suicide.Enabled = false;
+        //    //ChangePlate.Enabled = false;
+        //    //RemovePlate.Enabled = false;
+        //    //if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
+        //    //{
+        //    //    Drink.Enabled = false;
+        //    //    Smoke.Enabled = false;
+        //    //    SmokePot.Enabled = false;
+        //    //}
+        //}
+        //if (Player.IsPerformingActivity)
+        //{
+        //    StopConsuming.Enabled = true;
+        //}
+        //else
+        //{
+        //    StopConsuming.Enabled = false;
+        //}
         ChangePlate.Items = Player.SpareLicensePlates;
     }
     private void CreateActionsMenu()
     {
         Setup();
         Actions.Clear();
-        Suicide = new UIMenuItem("Suicide", "Commit Suicide");
-        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
-        RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        SitDown = new UIMenuItem("Sit Down", "Face the nearest Seat.");
+
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Drink = new UIMenuItem("Drink", "Start Drinking");
@@ -110,35 +111,40 @@ public class ActionMenu : Menu
             SmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
         }
 
-        GestureMenu = MenuPool.AddSubMenu(Actions, "Gesture");
-        GestureMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
-
-        foreach(GestureLookup gl in GestureLookups)
+        if (Player.IsCop)
         {
-            GestureMenu.AddItem(new UIMenuItem(gl.Name, gl.Name));
+            CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
+            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
         }
-        GestureMenu.OnItemSelect += OnGestureItemSelect;
+        else
+        {
+            CallPolice = new UIMenuItem("Call Police", "Need some help?");
+            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        }
 
-        ContinueConsuming = new UIMenuItem("Continue", "Continue Consuming Activity");
-        PauseConsuming = new UIMenuItem("Pause", "Pause Consuming Activity");
-        StopConsuming = new UIMenuItem("Stop", "Stop Consuming Activity");
 
-        Actions.AddItem(Suicide);
-        Actions.AddItem(ChangePlate);
-        Actions.AddItem(RemovePlate);
-        Actions.AddItem(SitDown);
+
+        Suicide = new UIMenuItem("Suicide", "Commit Suicide");
+        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
+        RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
+        SitDown = new UIMenuItem("Sit Down", "Face the nearest Seat.");
+
+        GestureMenu = new UIMenuListScrollerItem<GestureLookup>("Gesture", "Perform the selected gesture", GestureLookups);
+        CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue","Pause","Stop" });
+
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Actions.AddItem(Drink);
             Actions.AddItem(Smoke);
             Actions.AddItem(SmokePot);
         }
-        Actions.AddItem(ContinueConsuming);
-        Actions.AddItem(PauseConsuming);
-        Actions.AddItem(StopConsuming);
-
-        
-       // Actions.OnListChange += OnListChange;
+        Actions.AddItem(CurrentActivityMenu);
+        Actions.AddItem(GestureMenu);
+        Actions.AddItem(SitDown);
+        Actions.AddItem(CallPolice);
+        Actions.AddItem(ChangePlate);
+        Actions.AddItem(RemovePlate);
+        Actions.AddItem(Suicide);
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -170,30 +176,31 @@ public class ActionMenu : Menu
         {
             Player.StartSittingDown();
         }
-        else if (selectedItem == ContinueConsuming)
+        else if (selectedItem == CurrentActivityMenu)
         {
-            Player.ContinueDynamicActivity();
+            if(CurrentActivityMenu.SelectedItem == "Continue")
+            {
+                Player.ContinueDynamicActivity();
+            }
+            else if (CurrentActivityMenu.SelectedItem == "Pause")
+            {
+                Player.PauseDynamicActivity();
+            }
+            else if (CurrentActivityMenu.SelectedItem == "Stop")
+            {
+                Player.StopDynamicActivity();
+            }
         }
-        else if (selectedItem == PauseConsuming)
+        else if (selectedItem == GestureMenu)
         {
-            Player.PauseDynamicActivity();
+            Player.Gesture(GestureMenu.SelectedItem?.AnimationName);
         }
-        else if (selectedItem == StopConsuming)
+        else if (selectedItem == CallPolice)
         {
-            Player.StopDynamicActivity();
+            Player.CallPolice();
         }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;
-    }
-    private void OnGestureItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        EntryPoint.WriteToConsole($"GestureMenu Select: {selectedItem.Text}", 5);
-        GestureLookup gl = GestureLookups.FirstOrDefault(x=> x.Name == selectedItem.Text);
-        if(gl != null)
-        {
-            Player.Gesture(gl.AnimationName);
-            GestureMenu.Visible = false;
-        }
     }
     private void Setup()
     {
@@ -243,6 +250,10 @@ public class ActionMenu : Menu
 
         public string Name { get; set; }
         public string AnimationName { get; set; }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
 }

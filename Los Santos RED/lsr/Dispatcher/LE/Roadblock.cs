@@ -331,8 +331,10 @@ public class Roadblock
             Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
             if (Created)
             {
-                Vector3 ConePosition = NativeHelper.GetOffsetPosition(SpawnPosition, PedHeading, 5.0f);
+                Vector3 ConePosition = NativeHelper.GetOffsetPosition(SpawnPosition, NodeHeading, 5.0f);
                 CreateCone(ConePosition, 0f);//heading doesnt matter on a cone (big brain time)...
+                ConePosition = NativeHelper.GetOffsetPosition(ConePosition, NodeHeading, 5.0f);
+                CreateBarrier(ConePosition, NodeHeading);
                 StripsAdded++;
             }
         } while (Created && StripsAdded < 5);
@@ -359,12 +361,20 @@ public class Roadblock
         {
             position = new Vector3(position.X, position.Y, GroundZ);
         }
-
-
         Rage.Object Cone = new Rage.Object(ConeTypes.PickRandom(), position, heading);
-       // NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Cone);
         Cone.IsPersistent = true;
-        //Cone.IsGravityDisabled = false;
+        CreatedProps.Add(Cone);
+        return Cone.Exists();
+    }
+    private bool CreateBarrier(Vector3 position, float heading)
+    {
+        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
+        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        {
+            position = new Vector3(position.X, position.Y, GroundZ);
+        }
+        Rage.Object Cone = new Rage.Object("prop_barrier_work05", position, heading);
+        Cone.IsPersistent = true;
         CreatedProps.Add(Cone);
         return Cone.Exists();
     }

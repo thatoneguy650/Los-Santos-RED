@@ -34,7 +34,6 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
         private ISettingsProvideable Settings;
-        //private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         private bool IsPaused = false;
@@ -128,8 +127,7 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
-            //GameFiber.Sleep(500);
-            while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
+            while (Player.CanPerformActivities && !IsPaused && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 Player.SetUnarmed();
                 UpdatePosition();
@@ -162,7 +160,7 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
             }
             GameFiber.Sleep(100);
-            if (!Player.CanPerformActivities)
+            if (!Player.CanPerformActivities || IsPaused)
             {
                 if (IsSmokedItemLit && IsSmokedItemNearMouth)
                 {
@@ -178,43 +176,8 @@ namespace LosSantosRED.lsr.Player
                 Idle();//Start puffing from the cigarette
             }
         }
-        private void Exit()
-        {
-            EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
-            if (IsActivelySmoking && Player.CanPerformActivities)
-            {
-                //EntryPoint.WriteToConsole($"Stop with Animation");
-                EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
-                {
-                    Player.SetUnarmed();
-                    if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())
-                    {
-                        SmokedItem.Detach();
-                    }
-                    GameFiber.Yield();
-                }
-            }
-            if (SmokedItem.Exists())
-            {
-                SmokedItem.Detach();
-            }
-            //Player.Character.Tasks.Clear();
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
-            EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
-            GameFiber.Sleep(5000);
-            if (SmokedItem.Exists())
-            {
-                SmokedItem.Delete();
-            }
-        }
         private void Idle()
         {
-            
             EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
@@ -228,7 +191,6 @@ namespace LosSantosRED.lsr.Player
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                    //EntryPoint.WriteToConsole($"New Smoking Idle {PlayingAnim}");
                 }
                 UpdatePosition();
                 UpdateSmoke();
@@ -252,8 +214,6 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("SmokingActivity InactiveIdle Start", 5);
             AttachSmokedItemToMouth();
-            //Player.Character.Tasks.Clear();
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             IsActivelySmoking = false;
             uint GameTimeStartedIdle = Game.GameTime;
@@ -274,6 +234,37 @@ namespace LosSantosRED.lsr.Player
             else
             {
                 Exit();
+            }
+        }
+        private void Exit()
+        {
+            EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
+            if (IsActivelySmoking && Player.CanPerformActivities)
+            {
+                EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
+                {
+                    Player.SetUnarmed();
+                    if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())
+                    {
+                        SmokedItem.Detach();
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            if (SmokedItem.Exists())
+            {
+                SmokedItem.Detach();
+            }
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+            Player.IsPerformingActivity = false;
+            Player.StopIngesting(CurrentIntoxicant);
+            EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
+            GameFiber.Sleep(5000);
+            if (SmokedItem.Exists())
+            {
+                SmokedItem.Delete();
             }
         }
         private void Setup()

@@ -191,7 +191,17 @@ public class ModItems : IModItems
             new ModItem("Phat Chips",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
 
+            new ModItem("Ego Chaser Energy Bar",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_ego",57005,new Vector3(0.13f, 0.05f, -0.02f),new Rotator(25f, -11f, -95f)) },
 
+            new ModItem("King Size P's & Q's",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_candy_pqs",57005,new Vector3(0.16f, 0.01f, -0.02f),new Rotator(-178f, -169f, 169f)) },
+            new ModItem("P's & Q's",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_pq",57005,new Vector3(0.12f, 0.02f, -0.02f),new Rotator(-178f, -169f, 79f)) },
+            new ModItem("Meteorite Bar",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_meto",57005,new Vector3(0.12f, 0.03f, -0.02f),new Rotator(169f, 170f, 76f)) },
+
+            
 
             new ModItem("Taco",eConsumableType.Eat),
             new ModItem("Redwood Regular",eConsumableType.Smoke) {

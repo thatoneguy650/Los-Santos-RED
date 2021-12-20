@@ -283,10 +283,10 @@ namespace LSR.Vehicles
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
                 }
-                else
-                {
-                    Radio.Update("NONE");
-                }         
+                //else
+                //{
+                //    Radio.Update("NONE");
+                //}         
 
 
 

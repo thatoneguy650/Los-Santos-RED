@@ -43,6 +43,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         World = world;
         SettingsProvider = settingsProvideable;
         SettingsUIMenu = menuPool.AddSubMenu(parentMenu, "Settings");
+        SettingsUIMenu.SetBannerType(EntryPoint.LSRedColor);
         CreateSettingsMenu();
     }
     public override void Hide()
@@ -88,20 +89,35 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         SettingsUIMenu.AddItem(SaveSettingsToFile);
 
         PlayerSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Player Settings");
+        PlayerSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         RespawnSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Respawn Settings");
+        RespawnSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         UISettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "UI Settings");
+        UISettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         KeyBindingSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Key Binding");
+        KeyBindingSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         PoliceSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Police Settings");
+        PoliceSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         EMSSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "EMS Settings");
+        EMSSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         FireSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Fire Settings");
+        FireSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         DamageSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Damage Settings");
+        DamageSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         PedSwapSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "PedSwap Settings");
+        PedSwapSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         CivilianSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Civilian Settings");
+        CivilianSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         ActivitySettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Activity Settings");
+        ActivitySettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         WorldSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "World Settings");
+        WorldSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         TimeSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Time Settings");
+        TimeSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         VanillaSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Vanilla Settings");
+        VanillaSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
         DebugSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Debug Settings");
+        DebugSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
 
         CreateSettingSubMenu(typeof(PlayerSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerSettings, PlayerSettingsIUMenu);
         CreateSettingSubMenu(typeof(RespawnSettings).GetProperties(), SettingsProvider.SettingsManager.RespawnSettings, RespawnSettingsIUMenu);
@@ -119,7 +135,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         CreateSettingSubMenu(typeof(VanillaSettings).GetProperties(), SettingsProvider.SettingsManager.VanillaSettings, VanillaSettingsIUMenu);
         CreateSettingSubMenu(typeof(DebugSettings).GetProperties(), SettingsProvider.SettingsManager.DebugSettings, DebugSettingsIUMenu);
 
-        SettingsUIMenu.OnItemSelect += OnActionItemSelect;
+        SettingsUIMenu.OnItemSelect += OnItemSelect;
         SettingsUIMenu.OnListChange += OnListChange;
 
         PlayerSettingsIUMenu.OnItemSelect += OnPlayerSettingsSelect;
@@ -370,7 +386,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         }
         MenuPool.ProcessMenus();
     }
-    private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == MapToggle)
         {

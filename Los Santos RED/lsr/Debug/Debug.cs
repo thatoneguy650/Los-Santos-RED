@@ -390,11 +390,17 @@ public class Debug
                 DesiredHeading = ClosestEntity.Heading + 180f;
             }
 
-
+            
 
 
             EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
+
+            if(ClosestEntity.Model.Dimensions.X >= 2f)
+            {
+
+            }
 
             uint GameTimeStartedDisplaying = Game.GameTime;
             while(Game.GameTime - GameTimeStartedDisplaying <= 5000)
@@ -469,7 +475,7 @@ public class Debug
         //World.DebugPlayWeather();
 
 
-        //Dispatcher.SpawnRoadblock();
+        Dispatcher.SpawnRoadblock();
 
 
         //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
@@ -576,10 +582,11 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        CharCam = new Camera(true);
-        CharCam.Active = false;
-        Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
-        //PedSettingStuff();
+        Dispatcher.RemoveRoadblock();
+        //CharCam = new Camera(true);
+        //CharCam.Active = false;
+        //Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
+        ////PedSettingStuff();
         //PedCameraStuff();
     }
     public void DebugNumpad8()

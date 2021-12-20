@@ -24,5 +24,6 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void StartIngesting(Intoxicant intoxicant);
         void StopIngesting(Intoxicant currentIntoxicant);
+        void PauseDynamicActivity();
     }
 }

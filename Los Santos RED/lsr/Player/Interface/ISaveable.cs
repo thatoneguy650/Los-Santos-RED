@@ -16,6 +16,7 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         Inventory Inventory { get; set; }
         HeadBlendData CurrentHeadBlendData { get; }
+        List<HeadOverlay> CurrentHeadOverlays { get; }
         int CurrentPrimaryHairColor { get; }
         int CurrentSecondaryColor { get; }
     }

@@ -65,7 +65,7 @@ public class PedSwap : IPedSwap
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
     }
-    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor)
+    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
     {
         try
         {
@@ -100,9 +100,21 @@ public class PedSwap : IPedSwap
                     Player.CurrentHeadBlendData = headblendData;
                     Player.CurrentPrimaryHairColor = primaryHairColor;
                     Player.CurrentSecondaryColor = secondaryHairColor;
+                    Player.CurrentHeadOverlays = headOverlays;
+
+
+
+
 
                     NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
                     NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
+
+                    foreach (HeadOverlay ho in headOverlays)
+                    {
+                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
+                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
+                    }
+
                 }
             }
 
@@ -234,7 +246,7 @@ public class PedSwap : IPedSwap
         Entities.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons);
     }
-    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor)
+    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
     {
         try
         {
@@ -278,6 +290,12 @@ public class PedSwap : IPedSwap
 
                     NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
                     NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
+                    foreach (HeadOverlay ho in headOverlays)
+                    {
+                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
+                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
+                    }
+
                 }
             }
             //EntryPoint.WriteToConsole($"BecomeSavedPed5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);

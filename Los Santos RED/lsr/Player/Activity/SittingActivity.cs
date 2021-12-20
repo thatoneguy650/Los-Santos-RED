@@ -12,34 +12,29 @@ namespace LosSantosRED.lsr.Player
 {
     public class SittingActivity : DynamicActivity
     {
-
-        private DynamicActivity SecondaryActivity;
-
-
         private string PlayingAnim;
         private string PlayingDict;
         private SittingData Data;
-
         private bool IsCancelled;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private ISettingsProvideable Settings;
         private bool IsActivelySitting = false;
         private Vector3 StartingPosition;
         private int PlayerScene;
         private List<SeatModel> SeatModels;
+        private List<TableModel> TableModels;
         //0xe7ed1a59 doesnt work properly, del pierro beach bench
         //0xd3c6d323 del pierro beach plastic chair
         //0x643d1f90 maze bus bench, sit too far forward
         private Entity ClosestSittableEntity;
         private Entity PossibleCollisionTable;
-
-        public SittingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
+        public SittingActivity(IActionable player, ISettingsProvideable settings) : base()
         {
-            Player = consumable;
+            Player = player;
             Settings = settings;
         }
         public override ModItem ModItem { get; set; }
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
+        public override string DebugString => "";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -112,7 +107,7 @@ namespace LosSantosRED.lsr.Player
         private void Exit()
         {
             EntryPoint.WriteToConsole("Sitting Activity Exit", 5);
-            SecondaryActivity?.Cancel();
+            Player.PauseDynamicActivity();
             if (IsActivelySitting)
             {
                 PlayingDict = Data.AnimExitDictionary;
@@ -221,7 +216,7 @@ namespace LosSantosRED.lsr.Player
                     offset = seatModel.EntryOffsetFront;
                     EntryPoint.WriteToConsole($"Sitting Closest = {ClosestSittableEntity.Model.Name} using custom offset {offset}", 5);
                 }
-
+                EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestSittableEntity.Model.Dimensions.X} Y {ClosestSittableEntity.Model.Dimensions.Y} Z {ClosestSittableEntity.Model.Dimensions.Z}", 5);
                 Vector3 DesiredPos = ClosestSittableEntity.GetOffsetPositionFront(offset);
                 DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
                 float DesiredHeading = Math.Abs(ClosestSittableEntity.Heading + 180f);
@@ -234,8 +229,6 @@ namespace LosSantosRED.lsr.Player
                 {
                     DesiredHeading = ClosestSittableEntity.Heading + 180f;
                 }
-                //PossibleCollisionTable = Rage.World.GetClosestEntity(DesiredPos, 1.5f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-
 
 
 
@@ -245,9 +238,17 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (obj.Exists() && obj.Handle != ClosestSittableEntity.Handle)// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
                     {
+                        uint tableHash = obj.Model.Hash;
+                        TableModel tableModel = TableModels.FirstOrDefault(x => x.Hash == tableHash);
+                        float DistanceToObject = obj.DistanceTo2D(DesiredPos);
+                        if (tableModel != null && DistanceToObject <= 2f)
+                        {
+                            PossibleCollisionTable = obj;
+                            ClosestDistance = DistanceToObject;
+                            break;
+                        }
                         if (Player.AttachedProp.Exists() && Player.AttachedProp.Handle != obj.Handle)
                         {
-                            float DistanceToObject = obj.DistanceTo2D(DesiredPos);
                             if (DistanceToObject <= 2f && DistanceToObject <= ClosestDistance)
                             {
                                 PossibleCollisionTable = obj;
@@ -417,7 +418,9 @@ namespace LosSantosRED.lsr.Player
                 new SeatModel(0xda867f80),
                 new SeatModel(0x643d1f90,-0.25f) {Name = "Maze Bus Bench" } };
 
-
+            TableModels = new List<TableModel>() {
+                new TableModel(0xf3a90766),
+                                             };
         }
         private class SeatModel
         {
@@ -430,6 +433,25 @@ namespace LosSantosRED.lsr.Player
                 Hash = hash;
             }
             public SeatModel(uint hash, float entryOffsetFront)
+            {
+                Hash = hash;
+                EntryOffsetFront = entryOffsetFront;
+            }
+            public string Name { get; set; } = "Unknown";
+            public uint Hash { get; set; }
+            public float EntryOffsetFront { get; set; } = -0.5f;
+        }
+        private class TableModel
+        {
+            public TableModel()
+            {
+
+            }
+            public TableModel(uint hash)
+            {
+                Hash = hash;
+            }
+            public TableModel(uint hash, float entryOffsetFront)
             {
                 Hash = hash;
                 EntryOffsetFront = entryOffsetFront;
