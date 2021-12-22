@@ -108,52 +108,52 @@ public class PlayerPerception
     {
         get
         {
-            int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
+            //int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
             if (Originator.IsCop)//IsCop)
             {
-                if(CellsAway >= 6)
-                {
-                    return 1000;
-                }
-                else if(CellsAway >= 5)
-                {
-                    return 750;
-                }
-                else
-                {
-                    return 500;
-                }
-                //if (DistanceToTarget >= 300)
+                //if (CellsAway >= 6)
                 //{
-                //    return 1500;
+                //    return 1000;
+                //}
+                //else if (CellsAway >= 5)
+                //{
+                //    return 750;
                 //}
                 //else
                 //{
-                //    return 500;//150
+                //    return 500;
                 //}
-            }
-            else
-            {
-                if (CellsAway >= 6)
-                {
-                    return 2000;
-                }
-                else if (CellsAway >= 4)
+                if (DistanceToTarget >= 300)
                 {
                     return 1500;
                 }
                 else
                 {
-                    return 750;
+                    return 500;//150
                 }
-                //if (DistanceToTarget >= 300)
+            }
+            else
+            {
+                //if (CellsAway >= 6)
                 //{
                 //    return 2000;
                 //}
+                //else if (CellsAway >= 4)
+                //{
+                //    return 1500;
+                //}
                 //else
                 //{
-                //    return 750;//500// 750;//500
+                //    return 750;
                 //}
+                if (DistanceToTarget >= 300)
+                {
+                    return 2000;
+                }
+                else
+                {
+                    return 750;//500// 750;//500
+                }
             }
         }
     }
@@ -161,37 +161,45 @@ public class PlayerPerception
     {
         get
         {
-            int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
-            if (Originator.IsCop)//IsCop)
+            if (DistanceToTarget >= 300)
             {
-                if (CellsAway >= 6)
-                {
-                    return 1200;
-                }
-                else if (CellsAway >= 5)
-                {
-                    return 850;
-                }
-                else
-                {
-                    return 750;
-                }
+                return 2000;
             }
             else
             {
-                if (CellsAway >= 6)
-                {
-                    return 2500;
-                }
-                else if (CellsAway >= 4)
-                {
-                    return 1500;
-                }
-                else
-                {
-                    return 750;
-                }
+                return 750;//500// 750;//500
             }
+            //int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
+            //if (Originator.IsCop)//IsCop)
+            //{
+            //    if (CellsAway >= 6)
+            //    {
+            //        return 1200;
+            //    }
+            //    else if (CellsAway >= 5)
+            //    {
+            //        return 850;
+            //    }
+            //    else
+            //    {
+            //        return 750;
+            //    }
+            //}
+            //else
+            //{
+            //    if (CellsAway >= 6)
+            //    {
+            //        return 2000;// 2500;
+            //    }
+            //    else if (CellsAway >= 4)
+            //    {
+            //        return 850;// 1500;
+            //    }
+            //    else
+            //    {
+            //        return 750;
+            //    }
+            //}
         }
     }
     public bool NeedsUpdate
@@ -218,7 +226,7 @@ public class PlayerPerception
         {
             UpdateTargetDistance(placeLastSeen, target.Position);
             UpdateTargetLineOfSight(Target.IsWanted);
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
         else
         {
@@ -337,6 +345,7 @@ public class PlayerPerception
     {
         if (NeedsLOSCheck && Target.Character.Exists())
         {
+            
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
 
@@ -388,6 +397,7 @@ public class PlayerPerception
                 }
             }
             GameTimeLastLOSCheck = Game.GameTime;
+            GameFiber.Yield();
         }
     }
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)

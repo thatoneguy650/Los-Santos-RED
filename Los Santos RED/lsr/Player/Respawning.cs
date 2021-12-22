@@ -323,8 +323,11 @@ public class Respawning// : IRespawning
     {
         Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
+        EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
+        EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
 
-        if(ToSet.HasInterior)
+
+        if (ToSet.HasInterior)
         {
             World.ActivateLocation(ToSet);
         }

@@ -73,7 +73,7 @@ public class Roadblock
         {
             try
             {
-
+                GameFiber.Yield();
                 foreach (Rage.Object obj in CreatedProps)
                 {
                     NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
@@ -179,15 +179,21 @@ public class Roadblock
     private void FillInBlockade()
     {
         DeterminSpikeStripPositions();
+        GameFiber.Yield();
         if (!CreateVehicle(NodeCenter, RotatedNodeHeading,true))
         {
             return;
         }
         AddVehicles(true);
+        GameFiber.Yield();
         AddVehicles(false);
+        GameFiber.Yield();
         CreateSpikeStrip(NodeOffset, RotatedNodeHeading);
+        GameFiber.Yield();
         AddSpikeStrips(true);
+        GameFiber.Yield();
         AddSpikeStrips(false);
+        GameFiber.Yield();
     }
     private void RemoveItems()
     {

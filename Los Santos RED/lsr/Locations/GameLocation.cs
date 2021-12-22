@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Util.Locations;
 using Rage;
@@ -15,6 +16,8 @@ public class GameLocation
 {
     private float distanceToPlayer = 999f;
     private Blip createdBlip;
+    private int CellsAway = 99;
+    private bool isNearby = false;
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
@@ -88,7 +91,8 @@ public class GameLocation
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
     }
     private uint GameTimeLastCheckedDistance;
-    private uint UpdateIntervalTime
+    private uint GameTimeLastCheckedNearby;
+    private uint DistanceUpdateIntervalTime
     {
         get
         {
@@ -110,16 +114,67 @@ public class GameLocation
             }
         }
     }
+    private uint NearbyUpdateIntervalTime
+    {
+        get
+        {
+            if (CellsAway >= 20)
+            {
+                return 8000;
+            }
+            else if (CellsAway >= 10)
+            {
+                return 4000;
+            }
+            else if (CellsAway >= 6)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
+    }
     public float DistanceToPlayer => distanceToPlayer;
     public bool IsWalkup { get; set; } = false;
     public void Update()
     {
-        if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= UpdateIntervalTime)
+        if (isNearby)
         {
-            distanceToPlayer = EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+            if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
+            {
+                distanceToPlayer = EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+                GameTimeLastCheckedDistance = Game.GameTime;
+            }
+        }
+        else
+        {
+            distanceToPlayer = 999f;
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
+    public bool IsNearby(int cellX, int cellY, int Distance)
+    {
+        if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)
+        {
+            CellsAway = NativeHelper.MaxCellsAway(cellX, cellY, CellX, CellY);
+            if(CellsAway <= Distance)
+            {
+                isNearby = true;
+            }
+            else
+            {
+                isNearby = false;
+            }
+            GameTimeLastCheckedNearby = Game.GameTime;
+        }
+        return isNearby;
+    }
 
+    public void SetNearby()
+    {
+        isNearby = true;
+    }
 }
 

@@ -163,9 +163,9 @@ namespace Mod
                 }
             }
         }
-        public void ScanForPedestrians() => Pedestrians.Scan();
+        //public void ScanForPedestrians() => Pedestrians.Scan();
         public void CreateNewPedestrians() => Pedestrians.CreateNew();
-        public void ScanForVehicles() => Vehicles.Scan();
+        //public void ScanForVehicles() => Vehicles.Scan();
         public void CreateNewVehicles() => Vehicles.CreateNew();
         public void UpdateVehiclePlates()
         {
@@ -201,9 +201,10 @@ namespace Mod
         }
         public void ActiveNearLocations()
         {
+            int LocationsCalculated = 0;
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                if (gl.IsOpen(Time.CurrentHour) && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 4))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
                     {
@@ -225,11 +226,16 @@ namespace Mod
                         GameFiber.Yield();
                     }
                 }
+                LocationsCalculated++;
+                if(LocationsCalculated >= 20)
+                {
+                    GameFiber.Yield();
+                }
             }
         }
         public void ActivateLocation(GameLocation gl)
         {
-            if (gl.IsOpen(Time.CurrentHour))
+            if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 4))
             {
                 if (!ActiveLocations.Contains(gl))
                 {
@@ -259,6 +265,7 @@ namespace Mod
                 SetupBlip(gameLocation);
                 GameFiber.Yield();
             }
+            gameLocation.SetNearby();
             gameLocation.Update();
             GameFiber.Yield();
         }

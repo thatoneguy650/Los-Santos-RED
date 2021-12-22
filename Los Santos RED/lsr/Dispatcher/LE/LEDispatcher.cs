@@ -406,6 +406,7 @@ public class LEDispatcher
         }
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
+            GameFiber.Yield();
             SpawnRoadblock();
         }
         return HasDispatchedThisTick;
@@ -613,25 +614,31 @@ public class LEDispatcher
     {
         Vector3 Position = Player.Character.GetOffsetPositionFront(350f);//400f 400 is mostly far enough to not see it
         Street ForwardStreet = Streets.GetStreet(Position);
+        GameFiber.Yield();
         if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
-        {
+        {      
             if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
             {
                 Agency ToSpawn = GetRandomAgency(CenterPosition, ResponseType.LawEnforcement);
+                GameFiber.Yield();
                 if (ToSpawn != null)
                 {
                     DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(TotalWantedLevel, false, false, false);
+                    GameFiber.Yield();
                     if (VehicleToUse != null)
                     {
                         DispatchablePerson OfficerType = ToSpawn.GetRandomPed(TotalWantedLevel, VehicleToUse.RequiredPassengerModels);
+                        GameFiber.Yield();
                         if (OfficerType != null)
                         {
                             if (Roadblock != null)
                             {
                                 Roadblock.Dispose();
+                                GameFiber.Yield();
                             }
                             Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names);
                             Roadblock.SpawnRoadblock();
+                            GameFiber.Yield();
                             GameTimeLastSpawnedRoadblock = Game.GameTime;
                         }
                     }

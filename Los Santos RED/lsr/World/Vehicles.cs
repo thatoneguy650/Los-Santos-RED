@@ -20,6 +20,7 @@ public class Vehicles
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
     private Entity[] RageVehicles;
+    private uint GameTimeLastCreatedVehicles;
 
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
@@ -56,19 +57,21 @@ public class Vehicles
         EMSVehicles.RemoveAll(x => !x.Vehicle.Exists());
         FireVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
-    public void Scan()
-    {
-        RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
-       // DebugString = $"CopCar#: {PoliceVehiclesCount} CivCar:#: {CivilianVehiclesCount} PH: {SpawnedPoliceVehiclesCount}";
-        // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
-    }
+    //public void Scan()
+    //{
+    //   // RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+    //   // DebugString = $"CopCar#: {PoliceVehiclesCount} CivCar:#: {CivilianVehiclesCount} PH: {SpawnedPoliceVehiclesCount}";
+    //    // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
+    //}
     public void CreateNew()
     {
+        RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+        GameFiber.Yield();
         //int VehiclesCreated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
-            if(AddToList(vehicle))
-                //{
+            if (AddToList(vehicle))
+            {   //{
                 //    VehiclesCreated++;
                 //}
                 //if (VehiclesCreated > 4)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
@@ -77,7 +80,10 @@ public class Vehicles
                 //    GameFiber.Yield();
                 //}
                 GameFiber.Yield();
+            }
         }
+        EntryPoint.WriteToConsole($"Vehicles.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedVehicles}", 5);
+        GameTimeLastCreatedVehicles = Game.GameTime;
     }
     public void CleanUp()
     {

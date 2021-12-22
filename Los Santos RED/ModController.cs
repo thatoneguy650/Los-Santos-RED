@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr
         private string PrevLastRanTertiaryTask;
         private List<ModTask> QuaternaryTasks;
         private List<ModTask> QuinaryTasks;
+        private List<ModTask> NonPriorityTasks;
         private RadioStations RadioStations;
         private PedGroups RelationshipGroups;
         private Scenarios Scenarios;
@@ -63,7 +64,9 @@ namespace LosSantosRED.lsr
         private ShopMenus ShopMenus;
         private Intoxicants Intoxicants;
         private Weather Weather;
-
+        private string PrevLastRanQuinaryTask;
+        private string PrevLastRanNonPriorityTask;
+        private string LastRanNonPriorityTask;
 
         public ModController()
         {
@@ -73,6 +76,7 @@ namespace LosSantosRED.lsr
         public bool DebugSecondaryRunning { get; set; } = true;
         private bool DebugQuinaryRunning { get; set; } = true;
         public bool DebugUIRunning { get; set; } = true;
+        public bool DebugNonPriorityRunning { get; set; } = true;
         public bool IsRunning { get; private set; }
         public void Dispose()
         {
@@ -173,6 +177,9 @@ namespace LosSantosRED.lsr
             StartQuaternaryLogic();
             GameFiber.Yield();
             StartQuinaryLogic();
+            GameFiber.Yield();
+
+            StartNonPriorityLogic();
             GameFiber.Yield();
             StartUILogic();
             GameFiber.Yield();
@@ -309,22 +316,20 @@ namespace LosSantosRED.lsr
             {
               
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
-                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 1), //very bad performance//500
-                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 2), //very bad performance//500
-                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 3),//500
-                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 4),  //very bad performance
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 5), //very bad performance
-                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 6),
-                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7),
-                new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 8),//500
-                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 9),//1000
+                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500
+                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 2),//500
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
+                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 4),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 5),
+                new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
+                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 7),//1000
 
-                new ModTask(2000, "World.CreateMerchants", World.ActiveNearLocations, 10),//1000
+                //new ModTask(2000, "World.ActiveNearLocations", World.ActiveNearLocations, 8),//1000
 
-                new ModTask(4000, "Weather.Update", Weather.Update, 11),//1000
+                //new ModTask(4000, "Weather.Update", Weather.Update, 9),//1000
 
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 12),
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 13),
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 8),
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 9),
 
             };
 
@@ -344,6 +349,13 @@ namespace LosSantosRED.lsr
             QuinaryTasks = new List<ModTask>()
             {
                 new ModTask(500, "Civilians.Update", Civilians.Update, 0),//250
+                //new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
+            };
+
+            NonPriorityTasks = new List<ModTask>()
+            {
+                new ModTask(2000, "World.ActiveNearLocations", World.ActiveNearLocations, 0),//1000
+                new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                 //new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 
@@ -589,7 +601,7 @@ namespace LosSantosRED.lsr
                             {
                                 CurrentQuinaryTask = 0;
                             }
-                            PrevLastRanSecondaryTask = LastRanQuinaryTask;
+                            PrevLastRanQuinaryTask = LastRanQuinaryTask;
                             ModTask firstquiaryTask = QuinaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentQuinaryTask).FirstOrDefault();
                             if (firstquiaryTask != null)
                             {
@@ -608,6 +620,55 @@ namespace LosSantosRED.lsr
                                 else
                                 {
                                     LastRanQuinaryTask = "NONE";//nothing to run at all this tick, everything is on time
+                                }
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Quinary Logic");
+            GameFiber.Yield();
+        }
+        private void StartNonPriorityLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int CurrentNonPriorityTask = 0;
+                    while (IsRunning)
+                    {
+                        if (DebugNonPriorityRunning)
+                        {
+                            if (CurrentNonPriorityTask > NonPriorityTasks.Count)
+                            {
+                                CurrentNonPriorityTask = 0;
+                            }
+                            PrevLastRanNonPriorityTask = LastRanQuinaryTask;
+                            ModTask firstnonPriorityTask = NonPriorityTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentNonPriorityTask).FirstOrDefault();
+                            if (firstnonPriorityTask != null)
+                            {
+                                LastRanNonPriorityTask = firstnonPriorityTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstnonPriorityTask.GameTimeLastRan}";
+                                firstnonPriorityTask.Run();
+                                CurrentNonPriorityTask++;
+                            }
+                            else
+                            {
+                                ModTask alternateNonPriorityTask = NonPriorityTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                if (alternateNonPriorityTask != null)
+                                {
+                                    LastRanNonPriorityTask = alternateNonPriorityTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateNonPriorityTask.GameTimeLastRan}";
+                                    alternateNonPriorityTask.Run();
+                                }
+                                else
+                                {
+                                    LastRanNonPriorityTask = "NONE";//nothing to run at all this tick, everything is on time
                                 }
                             }
                         }

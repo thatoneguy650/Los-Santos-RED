@@ -36,7 +36,7 @@ public class ModItem
     public PhysicalItem ModelItem { get; set; }
     public PhysicalItem PackageItem { get; set; }
     public string Name { get; set; }
-    public string Description { get; set; }
+    public string Description { get; set; } = "";
     public int AmountPerPackage { get; set; } = 1;
     public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest;
     public eConsumableType Type { get; set; } = eConsumableType.None;

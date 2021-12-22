@@ -31,12 +31,13 @@ public class PurchaseMenu : Menu
     private int SecondaryColor = 0;
     private ModItem CurrentItem;
     private string PlateString = "";
+    private Transaction Transaction;
 
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public bool BoughtItem => ItemsBought > 0;
 
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction)
     {
         Ped = ped;
         ModItems = modItems;
@@ -47,6 +48,7 @@ public class PurchaseMenu : Menu
         World = world;
         Settings = settings;
         MenuPool = menuPool;
+        Transaction = parentTransaction;
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
         if (Store.BannerImage != "")
         {
@@ -64,6 +66,7 @@ public class PurchaseMenu : Menu
     public void Setup()
     {
         PreloadModels();
+        Transaction.ClearPreviews();
         if (Ped != null)
         {
             AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
@@ -241,7 +244,7 @@ public class PurchaseMenu : Menu
     }
     public void Update()
     {
-        if (purchaseMenu.Visible)//MenuPool.IsAnyMenuOpen())
+        if (MenuPool.IsAnyMenuOpen())
         {
             if (SellingProp.Exists())
             {
@@ -297,6 +300,24 @@ public class PurchaseMenu : Menu
                     {
                         UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
                         VehicleMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+
+                        
+                        string description = myItem.Description;
+                        if (description == "")
+                        {
+                            description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
+                        }
+                        if(cii.ModItemName.Substring(cii.ModItemName.Length - 1) =="*")
+                        {
+                            description += $"~n~~n~~b~DLC Vehicle";
+                        }
+                        
+
+
+
+
+                        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
+                        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
                         if (Store?.BannerImage != "")
                         {
                             VehicleMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
@@ -312,12 +333,12 @@ public class PurchaseMenu : Menu
 
                         UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
                         UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
-                        string description = myItem.Description;
+                        description = myItem.Description;
                         if (description == "")
                         {
                             description = $"List Price {formattedPurchasePrice}";
                         }
-                        UIMenuItem Purchase = new UIMenuItem($"Purchase", description) { RightLabel = formattedPurchasePrice };
+                        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
                         //VehicleMenu.AddItem(SetPlate);
                         VehicleMenu.AddItem(ColorMenu);
                         VehicleMenu.AddItem(PrimaryColorMenu);
@@ -330,6 +351,10 @@ public class PurchaseMenu : Menu
                     }
                     else
                     {
+
+
+
+
                         string description = myItem.Description;
                         if(description == "")
                         {
@@ -345,6 +370,10 @@ public class PurchaseMenu : Menu
                         {
                             description += $"~n~~g~+{myItem.HealthGained} ~s~HP";
                         }
+
+
+
+
                         
                         purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
                     }
@@ -412,6 +441,16 @@ public class PurchaseMenu : Menu
     {
         if (newIndex != -1)
         {
+            //UIMenuItem myMenu = sender.MenuItems[newIndex];
+            //if (myMenu != null)
+            //{
+            //    ModItem itemToShow = ModItems.Items.Where(x => x.Name == myMenu.Text).FirstOrDefault();
+            //    if (itemToShow != null && itemToShow.ModelItem?.Type == ePhysicalItemType.Vehicle)
+            //    {
+            //        myMenu.Description = itemToShow.Name + " TEST!";
+            //    }
+            //}
+
             CreatePreview(sender.MenuItems[newIndex]);
         }
     }
@@ -423,14 +462,18 @@ public class PurchaseMenu : Menu
     {
         if (selectedItem.Text == "Purchase" && CurrentItem != null)
         {
-            if (!PurchaseVehicle(CurrentItem))
-            {
-                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Could Not Deliver", "We are sorry we are unable to complete this transation");
-                return;
-            }
             MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == CurrentItem.Name).FirstOrDefault();
-            if (menuItem != null)//otherwise its free i guess?
+            if (menuItem != null)
             {
+                if (Player.Money < menuItem.PurchasePrice)
+                {
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    return;
+                }
+                if (!PurchaseVehicle(CurrentItem))
+                {
+                    return;
+                }
                 Player.GiveMoney(-1 * menuItem.PurchasePrice);
             }
             sender.Visible = false;
@@ -571,7 +614,7 @@ public class PurchaseMenu : Menu
             }
         }
     }
-    private void ClearPreviews()
+    public void ClearPreviews()
     {
         if (SellingProp.Exists())
         {
@@ -585,6 +628,7 @@ public class PurchaseMenu : Menu
         {
             SellingPed.Delete();
         }
+        EntryPoint.WriteToConsole($"Purchase Menu ClearPreviews Ran", 5);
     }
     private void PreloadModels()
     {
@@ -632,16 +676,18 @@ public class PurchaseMenu : Menu
                 VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
                 World.AddEntity(MyNewCar, ResponseType.None);
                 Player.TakeOwnershipOfVehicle(MyNewCar);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "Purchase", "Thank you for your purchase");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
                 return true;
             }
             else
             {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
                 return false;
             }
         }
         else
         {
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
             return false;
         }
     }

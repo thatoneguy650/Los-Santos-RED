@@ -19,6 +19,8 @@ public class WorldSettings
     public bool PlayWeatherAudio { get; set; } = true;
     public bool RequireVehicleForAudio { get; set; } = false;
     public bool WeahterAudio_MuteRadio { get; set; } = true;
+    public bool PlayWeatherAudioInVehicleOnly { get; set; } = true;
+
     public WorldSettings()
     {
 

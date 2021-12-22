@@ -27,6 +27,7 @@ public class Pedestrians
     private IWeapons Weapons;
     private ICrimes Crimes;
     private IShopMenus ShopMenus;
+    private uint GameTimeLastCreatedPeds = 0;
     public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus)
     {
         Agencies = agencies;
@@ -248,13 +249,15 @@ public class Pedestrians
         Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
     }
-    public void Scan()
-    {
-        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
-        //DebugString = $"Cop#: {Police.Count()} EMT#: {EMTs.Count()} Fire#: {Firefighters.Count()} Merch# {Merchants.Count()} Civ#: {Civilians.Count()}"; 
-    }
+    //public void Scan()
+    //{
+    //    WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+    //    //DebugString = $"Cop#: {Police.Count()} EMT#: {EMTs.Count()} Fire#: {Firefighters.Count()} Merch# {Merchants.Count()} Civ#: {Civilians.Count()}"; 
+    //}
     public void CreateNew()
     {
+        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+        GameFiber.Yield();
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
             //if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01")
@@ -268,6 +271,7 @@ public class Pedestrians
                 if (!Police.Any(x => x.Handle == localHandle))
                 {
                     AddCop(Pedestrian);
+                    GameFiber.Yield();
                 }
             }
             else
@@ -275,10 +279,13 @@ public class Pedestrians
                 if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle))
                 {
                     AddCivilian(Pedestrian);
+                    GameFiber.Yield();
                 }
             }
-            GameFiber.Yield();
+            
         }
+        EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
+        GameTimeLastCreatedPeds = Game.GameTime;
     }
     private void AddCivilian(Ped Pedestrian)
     {

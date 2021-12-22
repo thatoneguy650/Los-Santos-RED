@@ -212,7 +212,8 @@ public class Weather
     }
     private void ReportWeather(WeatherTypeHash WeatherToReport)
     {
-        if(Settings.SettingsManager.WorldSettings.RequireVehicleForAudio && !Player.IsInVehicle)
+        GameFiber.Yield();
+        if (Settings.SettingsManager.WorldSettings.RequireVehicleForAudio && !Player.IsInVehicle)
         {
             return;
         }
@@ -231,13 +232,14 @@ public class Weather
         {
             DisplayNotification(weatherFile.ForcedSponsorName, false);
         }
-        if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio)
+        if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio && (Player.IsInVehicle || !Settings.SettingsManager.WorldSettings.PlayWeatherAudioInVehicleOnly))
         {
             PlayAudioList(new List<string> { Weazel.Outro2.FileName, weatherFile.FileName, Weazel.Outro.FileName });
         }
     }
     private void ReportWindy()
     {
+        GameFiber.Yield();
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         if (Settings.SettingsManager.WorldSettings.RequireVehicleForAudio && !inVehicle)
         {
@@ -253,7 +255,7 @@ public class Weather
         {
             DisplayNotification(toReport.ForcedSponsorName, true);
         }
-        if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio)
+        if (Settings.SettingsManager.WorldSettings.PlayWeatherAudio && (Player.IsInVehicle || !Settings.SettingsManager.WorldSettings.PlayWeatherAudioInVehicleOnly))
         {
             PlayAudioList(new List<string> { Weazel.Outro2.FileName, toReport.FileName, Weazel.Outro.FileName });
         }
@@ -338,6 +340,7 @@ public class Weather
     {
         if (!AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedCurrentWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
         {
+            GameFiber.Yield();
             ReportWeather(CurrentWeather);
         }
         EntryPoint.WriteToConsole($"Current Weather Changed from {PrevCurrentWeather} to {CurrentWeather}", 5);

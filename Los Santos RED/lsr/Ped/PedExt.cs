@@ -172,11 +172,11 @@ public class PedExt : IComplexTaskable
             {
                 if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
                 {
-                    return 2000;
+                    return 750;//2000
                 }
                 else
                 {
-                    return 750;//500// 750;//500
+                    return 500;//500// 750;//500
                 }
             }
         }

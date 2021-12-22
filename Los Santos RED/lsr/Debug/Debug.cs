@@ -156,7 +156,7 @@ public class Debug
         }
         if (Settings.SettingsManager.DebugSettings.ShowCivilianPerceptionArrows)
         {
-            foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
+            foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists()))/// && x.DistanceToPlayer <= 250f))// && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
             {
                 Color Color3 = Color.Yellow;
                 if (ped.HasSeenPlayerCommitCrime)

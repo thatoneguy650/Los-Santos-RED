@@ -23,10 +23,11 @@ public class SellMenu : Menu
     private bool ShouldPreviewItem;
     private PedExt Ped;
     private bool IsActivelyConversing;
+    private Transaction Transaction;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem)
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction)
     {
         Ped = ped;
         ModItems = modItems;
@@ -34,6 +35,7 @@ public class SellMenu : Menu
         Player = player;
         StoreCam = storeCamera;
         ShouldPreviewItem = shouldPreviewItem;
+        Transaction = transaction;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
         if (Store.BannerImage != "")
         {
@@ -51,6 +53,7 @@ public class SellMenu : Menu
     public void Setup()
     {
         PreloadModels();
+        Transaction.ClearPreviews();
         if (Ped != null)
         {
             AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
@@ -275,7 +278,7 @@ public class SellMenu : Menu
             }
         }
     }
-    private void ClearPreviews()
+    public void ClearPreviews()
     {
         if (SellingProp.Exists())
         {

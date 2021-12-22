@@ -69,6 +69,13 @@ public class Transaction : Interaction
     }
     public override string DebugString => "";
     private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f) && Player.CanConverse;
+
+    public void ClearPreviews()
+    {
+        PurchaseMenu?.ClearPreviews();
+        SellMenu?.ClearPreviews();
+    }
+
     public override void Start()
     {
         try
@@ -234,13 +241,13 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings);
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam);
+            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);
             SellMenu.Setup();
             hasSellMenu = true;
         }
@@ -425,6 +432,10 @@ public class Transaction : Interaction
             {
                 Dispose();
             }
+            if(ModItemMenu.MenuItems.Count() == 1 && ModItemMenu.Visible)
+            {
+                Dispose();
+            }
             PurchaseMenu?.Update();
             SellMenu?.Update();
             GameFiber.Yield();
@@ -501,8 +512,8 @@ public class Transaction : Interaction
             Game.FadeScreenOut(1500, true);
             StoreCam.Active = false;
             NativeFunction.Natives.CLEAR_FOCUS();
-            GameFiber.Sleep(500);
-            Game.FadeScreenIn(1500, true);
+            //GameFiber.Sleep(500);
+            Game.FadeScreenIn(1500, false);//was true   
         }
         else
         {
