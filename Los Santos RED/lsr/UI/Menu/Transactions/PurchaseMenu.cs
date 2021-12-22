@@ -35,6 +35,7 @@ public class PurchaseMenu : Menu
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public bool BoughtItem => ItemsBought > 0;
+
     public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings)
     {
         Ped = ped;
@@ -240,7 +241,7 @@ public class PurchaseMenu : Menu
     }
     public void Update()
     {
-        if (MenuPool.IsAnyMenuOpen())
+        if (purchaseMenu.Visible)//MenuPool.IsAnyMenuOpen())
         {
             if (SellingProp.Exists())
             {
@@ -311,8 +312,12 @@ public class PurchaseMenu : Menu
 
                         UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
                         UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
-
-                        UIMenuItem Purchase = new UIMenuItem($"Purchase", $"List Price: {formattedPurchasePrice}");
+                        string description = myItem.Description;
+                        if (description == "")
+                        {
+                            description = $"List Price {formattedPurchasePrice}";
+                        }
+                        UIMenuItem Purchase = new UIMenuItem($"Purchase", description) { RightLabel = formattedPurchasePrice };
                         //VehicleMenu.AddItem(SetPlate);
                         VehicleMenu.AddItem(ColorMenu);
                         VehicleMenu.AddItem(PrimaryColorMenu);
@@ -325,7 +330,18 @@ public class PurchaseMenu : Menu
                     }
                     else
                     {
-                        purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
+                        string description = myItem.Description;
+                        if(description == "")
+                        {
+                            description = $"{cii.ModItemName} {formattedPurchasePrice}";
+                        }
+                        description += $"~n~{myItem.AmountPerPackage} Item(s) per Package";
+                        if(myItem.AmountPerPackage > 1)
+                        {
+                            description += $"~n~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} per Item";
+                        }
+                        description += $"~n~Type: {myItem.FormattedItemType}";
+                        purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
                     }
                 }
             }

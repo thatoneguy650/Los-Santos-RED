@@ -227,7 +227,7 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
-            HandlePreviousPed(false);
+            HandlePreviousPed(true);
             PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
             if (headblendData != null)
             {

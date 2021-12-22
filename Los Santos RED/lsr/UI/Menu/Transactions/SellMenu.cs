@@ -114,14 +114,22 @@ public class SellMenu : Menu
                 ModItem myItem = ModItems.Get(cii.ModItemName);
                 if (myItem != null)
                 {
+                    string formattedSalesPrice = cii.SalesPrice.ToString("C0");
                     if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
                     {
-                        sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}"));
+                        sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedSalesPrice}") {RightLabel = formattedSalesPrice});
                     }
                     else
                     {
                         bool enabled = Player.HasItemInInventory(cii.ModItemName);
-                        sellMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} ${cii.SalesPrice}") { Enabled = enabled });
+                        string description = myItem.Description;
+                        if (description == "")
+                        {
+                            description = $"{cii.ModItemName} {formattedSalesPrice}";
+                        }
+                        description += $"~n~Type: {myItem.FormattedItemType}";
+                        UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
+                        sellMenu.AddItem(myMenuItem);
                     }
                 }
             }

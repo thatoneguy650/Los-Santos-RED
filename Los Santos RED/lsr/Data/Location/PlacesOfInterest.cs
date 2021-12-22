@@ -586,6 +586,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             //Strip
             new GameLocation(new Vector3(-379.3227f, 217.9178f, 83.65989f), 355.8053f, LocationType.StripClub, "Hornbills", ""),
 
+            //bus Stop
+            new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
+            new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
+
+
             //Other
 
         };

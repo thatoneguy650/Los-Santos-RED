@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -241,6 +241,7 @@ namespace Mod
         public bool IsInSearchMode { get; set; }
         public bool IsInteracting => IsConversing || IsHoldingUp;
         public bool IsIntoxicated { get; set; }
+        public bool IsRidingBus { get; set; }
         public bool IsInVehicle
         {
             get => isInVehicle;
@@ -356,6 +357,7 @@ namespace Mod
         public int WantedLevel => wantedLevel;
 
         public bool IsDuckingInVehicle { get; set; } = false;
+        public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
 
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -722,7 +724,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
@@ -731,7 +733,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
         }
         public void OnVehicleCrashed()
         {
@@ -740,7 +742,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
         }
         public void OnVehicleStartedFire()
         {
@@ -749,7 +751,7 @@ namespace Mod
             {
                 Scanner.OnVehicleStartedFire();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleStartedFire", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleStartedFire", 5);
         }
         public void OnInvestigationExpire()
         {
@@ -760,6 +762,7 @@ namespace Mod
         }
         public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
         {
+            GameFiber.Yield();
             if (IsWanted)
             {
                 if (agency.ID == "ARMY")
@@ -818,6 +821,7 @@ namespace Mod
         }
         private void OnGettingIntoAVehicleChanged()
         {
+            GameFiber.Yield();
             if (IsGettingIntoAVehicle)
             {
                 Vehicle VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
@@ -827,7 +831,7 @@ namespace Mod
                     return;
                 }
                 UpdateCurrentVehicle();
-                //GameFiber.Yield();
+                GameFiber.Yield();
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
@@ -861,6 +865,19 @@ namespace Mod
                             CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
                             MyBreakIn.BreakIn();
                         }
+                        else if (SeatTryingToEnter != -1)
+                        {
+                            if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
+                            {
+                                EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                                BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, EntityProvider);
+                                MyBusRide.Start();
+                            }
+                            else
+                            {
+                                EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
+                            }
+                        }
                     }
                 }
                 else
@@ -876,6 +893,7 @@ namespace Mod
         }
         private void OnIsInVehicleChanged()
         {
+            GameFiber.Yield();
             if (IsInVehicle)
             {
                 GameTimeGotInVehicle = Game.GameTime;
@@ -904,6 +922,7 @@ namespace Mod
         }
         public void OnGotOnFreeway()
         {
+            GameFiber.Yield();
             if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
             {
                 Scanner.OnGotOnFreeway();
@@ -912,6 +931,7 @@ namespace Mod
         }
         public void OnGotOffFreeway()
         {
+            GameFiber.Yield();
             if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
             {
                 Scanner.OnGotOffFreeway();
@@ -920,6 +940,7 @@ namespace Mod
         }
         private void OnPlayerBusted()
         {
+            GameFiber.Yield();
             DiedInVehicle = IsInVehicle;
             IsBusted = true;
             BeingArrested = true;
@@ -942,6 +963,7 @@ namespace Mod
         }
         private void OnPlayerDied()
         {
+            GameFiber.Yield();
             TimeControllable.PauseTime();
             DiedInVehicle = IsInVehicle;
             IsDead = true;
@@ -961,6 +983,7 @@ namespace Mod
         }
         private void OnExcessiveSpeed()
         {
+            GameFiber.Yield();
             if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
@@ -980,6 +1003,7 @@ namespace Mod
             if (TargettingHandle != 0)
             {
                 CurrentTargetedPed = EntityProvider.GetPedExt(TargettingHandle);
+                GameFiber.Yield();
                 if (!IsInteracting && CanHoldUpTargettedPed && CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged)
                 {
                     StartHoldUp();
@@ -993,6 +1017,7 @@ namespace Mod
         }
         private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
         {
+            GameFiber.Yield();
             if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
@@ -2099,6 +2124,76 @@ namespace Mod
                 Character.Heading = CurrentInteriorLocation.EntranceHeading;
                 CurrentInteriorLocation = null;
                 Game.FadeScreenIn(1500, true);
+            }
+        }
+        public void EnterVehicleAsPassenger()
+        {
+            VehicleExt toEnter = EntityProvider.GetClosestVehicleExt(Character.Position, false, 10f); 
+            if(toEnter != null && toEnter.Vehicle.Exists())
+            {
+                int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+                if (seatIndex != null)
+                {
+                    NativeFunction.Natives.TASK_ENTER_VEHICLE(Character, toEnter.Vehicle, 5000, seatIndex, 1f, 9);
+                }
+            }
+        }
+        public void ShuffleToNextSeat()
+        {
+            if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && IsInVehicle && Character.IsInAnyVehicle(false) && Character.SeatIndex != -1 && NativeFunction.Natives.CAN_SHUFFLE_SEAT<bool>(CurrentVehicle.Vehicle, true))
+            {
+                NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Character, CurrentVehicle.Vehicle, 0);
+            }
+        }
+        public void ForceErraticDriver()
+        {
+            if(IsInVehicle && !IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+            {
+                Ped Driver = CurrentVehicle.Vehicle.Driver;
+                if(Driver.Exists() && Driver.Handle != Character.Handle)
+                {
+                    PedExt DriverExt = EntityProvider.GetPedExt(Driver.Handle);
+                    Driver.BlockPermanentEvents = true;
+                    Driver.KeepTasks = true;
+                    if(DriverExt != null)
+                    {
+                        DriverExt.CanBeAmbientTasked = false;
+                        DriverExt.WillCallPolice = false;
+                        DriverExt.WillFight = false;
+                        DriverExt.CanBeTasked = false;
+                    }
+                    NativeFunction.Natives.SET_DRIVER_ABILITY(Driver, 100f);
+
+
+
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_COORS_TARGET", 0, CurrentVehicle.Vehicle, 358.9726f, -1582.881f, 29.29195f, 8, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+
+
+                    //unsafe
+                    //{
+                    //    int lol = 0;
+                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    //    //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, CurrentVehicle.Vehicle, -1, -1, 15.0f, 9);
+                    //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, Position.X,Position.Y,Position.Z,5000f,-1, false, false);
+
+
+
+                    //    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, CurrentVehicle.Vehicle, 25f, (int)VehicleDrivingFlags.Emergency, 25f);
+                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
+                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    //}
+                }
             }
         }
     }

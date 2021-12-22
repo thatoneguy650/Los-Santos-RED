@@ -371,95 +371,104 @@ public class Debug
         //open_door
         //AnimationDictionary.RequestAnimationDictionay("switch@michael@biking_with_jimmy");
         //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@michael@biking_with_jimmy", "exit_right_door", 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
+        Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
+        Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
+        Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
+        Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
 
-        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        //if (ClosestEntity.Exists())
+        Player.AddToInventory(ModItems.Get("Equanox"), 4);
+
+
+
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        if (ClosestEntity.Exists())
+        {
+
+
+            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+            float ObjectHeading = ClosestEntity.Heading;
+            if (ClosestEntity.Heading >= 180f)
+            {
+                DesiredHeading = ClosestEntity.Heading - 180f;
+            }
+            else
+            {
+                DesiredHeading = ClosestEntity.Heading + 180f;
+            }
+
+
+
+
+            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+
+
+            if (ClosestEntity.Model.Dimensions.X >= 2f)
+            {
+
+            }
+
+            uint GameTimeStartedDisplaying = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+            {
+
+                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                GameFiber.Yield();
+            }
+
+        }
+        // Player.ScannerPlayDebug();
+
+        //SetInRandomInterior();
+        //BrowseTimecycles();
+
+
+        // Dispatcher.RemoveRoadblock();
+        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //{
-
-
-        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-        //    float ObjectHeading = ClosestEntity.Heading;
-        //    if (ClosestEntity.Heading >= 180f)
+        //    int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+        //    if (TotalLiveries > -1)
         //    {
-        //        DesiredHeading = ClosestEntity.Heading - 180f;
-        //    }
-        //    else
-        //    {
-        //        DesiredHeading = ClosestEntity.Heading + 180f;
-        //    }
-
-            
-
-
-        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
-
-
-        //    if(ClosestEntity.Model.Dimensions.X >= 2f)
-        //    {
-
-        //    }
-
-        //    uint GameTimeStartedDisplaying = Game.GameTime;
-        //    while(Game.GameTime - GameTimeStartedDisplaying <= 5000)
-        //    {
-
-        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-        //        GameFiber.Yield();
+        //        int LiveryNumber = RandomItems.GetRandomNumberInt(0, TotalLiveries-1);
+        //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
         //    }
 
         //}
-            // Player.ScannerPlayDebug();
+        //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Game.LocalPlayer.Character, 3, 1, 0, 0);
 
-            //SetInRandomInterior();
-            //BrowseTimecycles();
+        //EntryPoint.WriteToConsole($"Game.IsPaused {Game.IsPaused}", 5);
+        // IssueWeapons(Weapons);
+        //set in garage
+        //Game.LocalPlayer.Character.Position = new Vector3(229.9559f, -981.7928f, -99.66071f);
+        //Model characterModel = new Model(0xB779A091);
+        //characterModel.LoadAndWait();
+        //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        //NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(0xB779A091, Position.X, Position.Y, Position.Z, 0f, false, false);
+        // Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
+        //Game.LocalPlayer.IsInvincible = true;
+        //Game.DisplayNotification("IsInvincible = True");
+        //foreach (InteriorPosition ip in MPInteriorPositions)
+        //{
+        //    if (ip != null)
+        //    {
+        //        EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
+        //        Game.DisplayNotification(ip.Name);
+        //        Game.LocalPlayer.Character.Position = ip.Position;
+        //        GameFiber.Sleep(1000);
+        //        string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
+        //        toWrite += " { IsMPOnly = true }";
+        //        WriteToLogLocations(toWrite);
 
-
-            // Dispatcher.RemoveRoadblock();
-            //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-            //{
-            //    int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
-            //    if (TotalLiveries > -1)
-            //    {
-            //        int LiveryNumber = RandomItems.GetRandomNumberInt(0, TotalLiveries-1);
-            //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
-            //    }
-
-            //}
-            //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Game.LocalPlayer.Character, 3, 1, 0, 0);
-
-            //EntryPoint.WriteToConsole($"Game.IsPaused {Game.IsPaused}", 5);
-            // IssueWeapons(Weapons);
-            //set in garage
-            //Game.LocalPlayer.Character.Position = new Vector3(229.9559f, -981.7928f, -99.66071f);
-            //Model characterModel = new Model(0xB779A091);
-            //characterModel.LoadAndWait();
-            //Vector3 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
-            //NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(0xB779A091, Position.X, Position.Y, Position.Z, 0f, false, false);
-            // Player.AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"), false, Game.LocalPlayer.Character.Position, null, null, RandomItems.RandomPercent(25), true, true);
-            //Game.LocalPlayer.IsInvincible = true;
-            //Game.DisplayNotification("IsInvincible = True");
-            //foreach (InteriorPosition ip in MPInteriorPositions)
-            //{
-            //    if (ip != null)
-            //    {
-            //        EntryPoint.WriteToConsole($"Player Set In {ip.Name}", 5);
-            //        Game.DisplayNotification(ip.Name);
-            //        Game.LocalPlayer.Character.Position = ip.Position;
-            //        GameFiber.Sleep(1000);
-            //        string toWrite = $",new Interior({Player.CurrentLocation.CurrentInterior.ID}, \"{ip.Name}\")";
-            //        toWrite += " { IsMPOnly = true }";
-            //        WriteToLogLocations(toWrite);
-
-            //        GameFiber.Sleep(2000);
-            //    }
-            //}
-            //Game.LocalPlayer.IsInvincible = false;
-            //Game.DisplayNotification("IsInvincible = False");
-             SpawnNoGunAttackers();
-        }
+        //        GameFiber.Sleep(2000);
+        //    }
+        //}
+        //Game.LocalPlayer.IsInvincible = false;
+        //Game.DisplayNotification("IsInvincible = False");
+        // SpawnNoGunAttackers();
+        //SpawnBus();
+    }
     private void DebugNumpad5()
     {
 
@@ -470,12 +479,12 @@ public class Debug
         Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
         Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
 
-
+        Player.AddToInventory(ModItems.Get("Equanox"), 4);
 
         //World.DebugPlayWeather();
 
 
-       // Dispatcher.SpawnRoadblock();
+        // Dispatcher.SpawnRoadblock();
 
 
         //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position),5);
@@ -541,7 +550,7 @@ public class Debug
         //Game.LocalPlayer.IsInvincible = false;
         //Game.DisplayNotification("IsInvincible = False");
 
-        SpawnGunAttackers();
+        //SpawnGunAttackers();
     }
     private void DebugNumpad6()
     {
@@ -619,6 +628,52 @@ public class Debug
             Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         }
     }
+
+    private void SpawnBus()
+    {
+
+        GameFiber.StartNew(delegate
+        {
+
+
+
+
+
+            Vector3 busSpot = Game.LocalPlayer.Character.GetOffsetPositionFront(30f);
+            Vehicle myCar = new Vehicle("bus", busSpot);
+
+            GameFiber.Yield();
+            if (myCar.Exists())
+            {
+                myCar.IsPersistent = false;
+                myCar.IsEngineOn = true;
+                Ped busDriver = new Ped("S_M_M_GENTRANSPORT",Game.LocalPlayer.Character.GetOffsetPositionFront(15f),0f);
+                GameFiber.Yield();
+                if (busDriver.Exists())
+                {
+                    busDriver.IsPersistent = false;
+                    busDriver.BlockPermanentEvents = false;
+                    busDriver.KeepTasks = false;
+                    busDriver.WarpIntoVehicle(myCar, -1);
+                }
+                Game.DisplayHelp($"person spawned normally");
+                //while (!Game.IsKeyDown(Keys.O))
+                //{
+                //    GameFiber.Yield();
+                //}
+                //if (myCar.Exists())
+                //{
+                //    myCar.Delete();
+                //}
+                //if (busDriver.Exists())
+                //{
+                //    busDriver.Delete();
+                //}
+                //NativeFunction.Natives.SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1);
+            }
+        }, "Run Debug Logic");
+    }
+
     private void BrowseTimecycles()
     {
         try

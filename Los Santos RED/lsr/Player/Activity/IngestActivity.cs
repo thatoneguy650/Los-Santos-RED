@@ -105,7 +105,11 @@ namespace LosSantosRED.lsr.Player
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            if(!CurrentIntoxicant.ContinuesWithoutCurrentUse)
+            {
+                EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion", 5);
+                Player.StopIngesting(CurrentIntoxicant);
+            }
             GameFiber.Sleep(5000);
             if (Item.Exists())
             {
@@ -132,7 +136,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            GameFiber.Sleep(5000);//wait for it to take effect!
+            //GameFiber.Sleep(5000);//wait for it to take effect!
             Exit();
         }
         private void Setup()

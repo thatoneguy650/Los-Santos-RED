@@ -407,8 +407,8 @@ namespace LosSantosRED.lsr.Player
 
 
             SeatModels = new List<SeatModel>() { 
-                new SeatModel(0x6ba514ac), 
-                new SeatModel(0x7facd66f), 
+                new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" },
+                new SeatModel(0x7facd66f,-0.15f) {Name = "Bus Bench" },
                 new SeatModel(0xc0a6cbcd), 
                 new SeatModel(0x534bc1bc), 
                 new SeatModel(0xa55359b8), 

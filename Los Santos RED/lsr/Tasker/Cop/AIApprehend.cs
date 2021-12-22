@@ -408,7 +408,7 @@ public class AIApprehend : ComplexTask
             }
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
+            //NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
             NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far

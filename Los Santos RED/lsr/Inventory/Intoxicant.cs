@@ -34,5 +34,8 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     public bool ChangesWalking { get; set; } = true;
     public bool CausesSwerve { get; set; } = true;
     public bool HasOverlay => OverLayEffect != "";
+    public float EffectIntoxicationLimit { get; set; } = 0.25f;
+    public bool ContinuesWithoutCurrentUse { get; set; } = false;
+
 }
 

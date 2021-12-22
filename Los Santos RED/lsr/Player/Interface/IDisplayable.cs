@@ -52,5 +52,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsSprinting { get; }
         float StaminaPercent { get; }
+        float IntoxicatedIntensityPercent { get; }
     }
 }

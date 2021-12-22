@@ -192,8 +192,28 @@ public class Intoxication
     }
     public void Update()
     {
-        PrimaryIntoxicator = CurrentIntoxicators.OrderByDescending(x => x.CurrentIntensity).FirstOrDefault();
-        if(PrimaryIntoxicator != null)
+        CurrentIntoxicators.RemoveAll(x => x.CurrentIntensity == 0.0f && !x.IsConsuming);
+        float HighestIntensity = 0.0f;
+        PrimaryIntoxicator = null;
+        foreach(Intoxicator intox in CurrentIntoxicators)
+        {
+            if(intox.CurrentIntensity > HighestIntensity)
+            {
+                PrimaryIntoxicator = intox;
+                HighestIntensity = intox.CurrentIntensity;
+            }
+            if(intox.Intoxicant.ContinuesWithoutCurrentUse)
+            {
+                if(intox.CurrentIntensity == intox.Intoxicant.MaxEffectAllowed && intox.IsConsuming)
+                {
+                    intox.StopConsuming();
+                    EntryPoint.WriteToConsole($"Intoxication Intoxicant.ContinuesWithoutCurrentUse, Reached Max, Stopping {intox.Intoxicant?.Name}", 5);
+                }
+            }
+        }
+        
+        //PrimaryIntoxicator = CurrentIntoxicators.OrderByDescending(x => x.CurrentIntensity).FirstOrDefault();
+        if (PrimaryIntoxicator != null)
         {
             OverLayEffect = PrimaryIntoxicator.Intoxicant?.OverLayEffect;
             CurrentIntensity = PrimaryIntoxicator.CurrentIntensity;
@@ -206,15 +226,16 @@ public class Intoxication
                 SetSober(true);
             }
         }
-        DebugString = $" PName: {PrimaryIntoxicator?.Intoxicant?.Name} Int: {PrimaryIntoxicator?.CurrentIntensity} Total: {CurrentIntoxicators.Count()}"; 
+        DebugString = $" PName: {PrimaryIntoxicator?.Intoxicant?.Name} Int: {PrimaryIntoxicator?.CurrentIntensity} int2 {CurrentIntensity} Total: {CurrentIntoxicators.Count()} IsIntoxicated {Player.IsIntoxicated}  EffectLimit {PrimaryIntoxicator?.Intoxicant?.EffectIntoxicationLimit}";
+        //EntryPoint.WriteToConsole(DebugString, 5);
     }
     private void UpdateDrunkStatus()
     {
-        if (!Player.IsIntoxicated && CurrentIntensity >= 0.25f)
+        if (!Player.IsIntoxicated && CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
         {
             SetIntoxicated();
         }
-        else if (Player.IsIntoxicated && CurrentIntensity <= 0.25f)
+        else if (Player.IsIntoxicated && CurrentIntensity <= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)//0.25f)
         {
             SetSober(true);
         }
@@ -232,6 +253,7 @@ public class Intoxication
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             Player.IntoxicatedIntensity = CurrentIntensity;
+            Player.IntoxicatedIntensityPercent = CurrentIntensity / PrimaryIntoxicator.Intoxicant.MaxEffectAllowed;
             if (Player.IsInVehicle)
             {
                 UpdateSwerving();

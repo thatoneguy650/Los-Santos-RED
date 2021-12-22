@@ -12,7 +12,7 @@ public class Intoxicator//THIS IS THE CURRENT INTOXICANTS VALUE INSIDE UR BODY
 {
     private uint GameTimeStartedIntoxicating;
     private uint GameTimeStoppedIntoxicating;
-    private bool IsConsuming;
+   // private bool IsConsuming;
     private IIntoxicatable Player;
     private uint PreviousIntoxicationTime = 0;
     public Intoxicator(IIntoxicatable player, Intoxicant intoxicant)
@@ -26,6 +26,7 @@ public class Intoxicator//THIS IS THE CURRENT INTOXICANTS VALUE INSIDE UR BODY
     private uint TotalTimeIntoxicated => IsConsuming ? HasBeenIntoxicatedFor : GameTimeStoppedIntoxicating - GameTimeStartedIntoxicating + PreviousIntoxicationTime;
     private uint TotalTimeSober => IsConsuming ? 0 : HasBeenNotIntoxicatedFor;
     public Intoxicant Intoxicant { get; set; }
+    public bool IsConsuming { get; private set; }
     public void StopConsuming()
     {
         if (IsConsuming)

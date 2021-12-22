@@ -92,10 +92,10 @@ public class ModItems : IModItems
             */
 
             //Generic Services
-            new ModItem("Room: Single Twin",eConsumableType.Service),
-            new ModItem("Room: Single Queen",eConsumableType.Service),
-            new ModItem("Room: Double Queen",eConsumableType.Service),
-            new ModItem("Room: Single King",eConsumableType.Service),
+            new ModItem("Room: Single Twin","Cheapest room for the most discerning client",eConsumableType.Service),
+            new ModItem("Room: Single Queen","Clean sheets on request",eConsumableType.Service),
+            new ModItem("Room: Double Queen","Have a little company, but don't want to get too close?",eConsumableType.Service),
+            new ModItem("Room: Single King","Please clean off all mirrors after use",eConsumableType.Service),
 
 
 
@@ -105,223 +105,221 @@ public class ModItems : IModItems
             //new ModItem("Handy",eConsumableType.Service),
 
             //Generic Tools
-            new ModItem("Screwdriver") {
+            new ModItem("Screwdriver","Might get you into some locked things") {
                 ModelItem = new PhysicalItem("prop_tool_screwdvr01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) },
-            new ModItem("Hammer") {
+            new ModItem("Hammer","It's hammer time") {
                 ModelItem = new PhysicalItem("prop_tool_hammer",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) },
-            new ModItem("Drill") {
+            new ModItem("Drill","Not your dentists drill") {
                 ModelItem = new PhysicalItem("prop_tool_drill",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) },
-            new ModItem("Pliers") {
+            new ModItem("Pliers","When you really need to grab something") {
                 ModelItem = new PhysicalItem("prop_tool_pliers",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) },
-            new ModItem("Shovel") {
+            new ModItem("Shovel","Gets rid of lots of problems") {
                 ModelItem = new PhysicalItem("prop_tool_shovel",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true } },
-            new ModItem("Wrench") {
+            new ModItem("Wrench","What harm could a loose bolt have?") {
                 ModelItem = new PhysicalItem("prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }  },
-            new ModItem("Lighter") {
+            new ModItem("Lighter","Arson strongly discouraged") {
                 ModelItem = new PhysicalItem("ng_proc_ciglight01a",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) },
 
             //Generic Food/Drink/SMoke
-            new ModItem("Hot Dog",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) },
-            new ModItem("Hot Sausage",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) },
-            new ModItem("Hot Pretzel",eConsumableType.Eat),
-            new ModItem("3 Mini Pretzels",eConsumableType.Eat),
-            new ModItem("Nuts",eConsumableType.Eat),
-            new ModItem("Bottle of Raine Water",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("ba_prop_club_water_bottle",57005,new Vector3(0.12f, -0.1f, -0.07f),new Rotator(-70.0f, 0.0f, 0.0f)) },
-            new ModItem("Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
-            new ModItem("Donut",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_donut_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)) } ,
-            new ModItem("Slice of Pizza",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) } ,
-            new ModItem("Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
-            new ModItem("40 oz",eConsumableType.Drink) {
+            new ModItem("Hot Dog","Niko would be proud",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Hot Sausage","Get all your jokes out",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Hot Pretzel","You tie me up",eConsumableType.Eat) {HealthGained = 10 },
+            new ModItem("3 Mini Pretzels","Like a pretzel, but smaller",eConsumableType.Eat) {HealthGained = 10 },
+            new ModItem("Nuts","You're gonna love my nuts",eConsumableType.Eat) {HealthGained = 10 },
+            new ModItem("Bottle of Raine Water","The water that rich people drink, and the main reason why there are now entire continents of plastic bottles floating in the ocean",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("ba_prop_club_water_bottle",57005,new Vector3(0.12f, -0.1f, -0.07f),new Rotator(-70.0f, 0.0f, 0.0f)), HealthGained = 20 },
+            new ModItem("Burger","100% Certified Food",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Donut","mmmm Donuts",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_donut_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)), HealthGained = 10 } ,
+            new ModItem("Slice of Pizza","Caution may be hot",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 } ,
+            new ModItem("40 oz","Drink like a true thug!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_cs_beer_bot_40oz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
-            new ModItem("Can of eCola",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) },
-            new ModItem("Can of Sprunk",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("ng_proc_sodacan_01b",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) },
-            new ModItem("Cup of eCola",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) },
-            new ModItem("Cup of Sprunk",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("ng_proc_sodacup_01b",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) },
-            new ModItem("Cup of Coffee",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)) },
-            new ModItem("French Fries",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
-            new ModItem("Fries",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
-            new ModItem("Banana",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("ng_proc_food_nana1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
-            new ModItem("Orange",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("ng_proc_food_ornge1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
-            new ModItem("Apple",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("ng_proc_food_aple1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
-            new ModItem("Ham and Cheese Sandwich",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) },
-            new ModItem("Turkey Sandwich",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) } ,
-            new ModItem("Tuna Sandwich",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) } ,
+            new ModItem("Can of eCola", "Deliciously Infectious!",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) , HealthGained = 10},
+            new ModItem("Can of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("ng_proc_sodacan_01b",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Cup of eCola", "Deliciously Infectious!",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_food_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 10 },
+            new ModItem("Cup of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("ng_proc_sodacup_01b",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 10 },
+            new ModItem("Cup of Coffee","Finally something without sugar! Sugar on Request",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("French Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
+            new ModItem("Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
+            new ModItem("Banana","An elongated, edible fruit – botanically a berry[1][2] – produced by several kinds of large herbaceous flowering plants in the genus Musa",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("ng_proc_food_nana1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Orange","Not just a color",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("ng_proc_food_ornge1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Apple","Certified sleeping death free",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("ng_proc_food_aple1a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Ham and Cheese Sandwich","Basic and shitty, just like you",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Turkey Sandwich","The most plain sandwich for the most plain person",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 } ,
+            new ModItem("Tuna Sandwich","Haven't got enough heavy metals in you at your job? Try tuna!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 } ,
 
 
-            new ModItem("Bottle of A.M.",eConsumableType.Drink) {
+            new ModItem("Bottle of A.M.","Mornings Golden Shower",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_am",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of PiBwasser",eConsumableType.Drink) {
+            new ModItem("Bottle of PiBwasser","Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_amb_beer_bottle",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of Barracho",eConsumableType.Drink) {
+            new ModItem("Bottle of Barracho","Es Playtime!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_bar",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
-            new ModItem("Bottle of Blarneys",eConsumableType.Drink) {
+            new ModItem("Bottle of Blarneys","Making your mouth feel lucky",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_blr",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of Jakeys",eConsumableType.Drink) {
+            new ModItem("Bottle of Jakeys","Drink Outdoors With Jakey's",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_jakey",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
-            new ModItem("Bottle of Logger",eConsumableType.Drink) {
+            new ModItem("Bottle of Logger","A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_logger",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
-            new ModItem("Bottle of Patriot",eConsumableType.Drink) {
+            new ModItem("Bottle of Patriot","Never refuse a patriot",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_patriot",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of Pride",eConsumableType.Drink) {
+            new ModItem("Bottle of Pride","Swallow Me",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_pride",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of Stronz",eConsumableType.Drink) {
+            new ModItem("Bottle of Stronzo","Birra forte d'Italia",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beer_stz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),IntoxicantName = "Alcohol" },
-            new ModItem("Bottle of Dusche",eConsumableType.Drink) {
+            new ModItem("Bottle of Dusche","Das Ist Gut Ja!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beerdusche",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
-            new ModItem("Phat Chips",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
+            new ModItem("Phat Chips","They are extra phat",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
 
-            new ModItem("Ego Chaser Energy Bar",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_choc_ego",57005,new Vector3(0.13f, 0.05f, -0.02f),new Rotator(25f, -11f, -95f)) },
+            new ModItem("Ego Chaser Energy Bar","Contains 20,000 Calories! ~n~'It's all about you'",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_ego",57005,new Vector3(0.13f, 0.05f, -0.02f),new Rotator(25f, -11f, -95f)), HealthGained = 20 },
 
-            new ModItem("King Size P's & Q's",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_candy_pqs",57005,new Vector3(0.16f, 0.01f, -0.02f),new Rotator(-178f, -169f, 169f)) },
-            new ModItem("P's & Q's",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_choc_pq",57005,new Vector3(0.12f, 0.02f, -0.02f),new Rotator(-178f, -169f, 79f)) },
-            new ModItem("Meteorite Bar",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_choc_meto",57005,new Vector3(0.12f, 0.03f, -0.02f),new Rotator(169f, 170f, 76f)) },
+            new ModItem("King Size P's & Q's","The candy bar that kids and stoners love. EXTRA Large",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_candy_pqs",57005,new Vector3(0.16f, 0.01f, -0.02f),new Rotator(-178f, -169f, 169f)), HealthGained = 15 },
+            new ModItem("P's & Q's","The candy bar that kids and stoners love",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_pq",57005,new Vector3(0.12f, 0.02f, -0.02f),new Rotator(-178f, -169f, 79f)), HealthGained = 10 },
+            new ModItem("Meteorite Bar","Dark chocolate with a GOOEY core",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_choc_meto",57005,new Vector3(0.12f, 0.03f, -0.02f),new Rotator(169f, 170f, 76f)), HealthGained = 10 },
 
             
 
-            new ModItem("Taco",eConsumableType.Eat),
-            new ModItem("Redwood Regular",eConsumableType.Smoke) {
+            new ModItem("Taco",eConsumableType.Eat) { HealthGained = 10 },
+            new ModItem("Redwood Regular", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 AmountPerPackage = 20 },
 
 
-            new ModItem("Redwood Mild",eConsumableType.Smoke) {
+            new ModItem("Redwood Mild", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda. Milder version",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs2",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
-            new ModItem("Debonaire",eConsumableType.Smoke) {
+            new ModItem("Debonaire", "Tobacco products marketed at the more sophisticated smoker, whoever that is",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs3",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
-            new ModItem("Debonaire Menthol",eConsumableType.Smoke) {
+            new ModItem("Debonaire Menthol", "Tobacco products marketed at the more sophisticated smoker, whoever that is. With Menthol!",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs4",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
-            new ModItem("Caradique",eConsumableType.Smoke) {
+            new ModItem("Caradique", "Fine Napoleon Cigarettes",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs5",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
-            new ModItem("69 Brand",eConsumableType.Smoke) {
+            new ModItem("69 Brand","Don;t let an embargo stop you",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs6",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20 },
-            new ModItem("Joint",eConsumableType.Smoke) {
+            new ModItem("Joint","Weed in rolled form",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), IntoxicantName = "Marijuana" },
-            new ModItem("Estancia Cigar",eConsumableType.Smoke) {
+            new ModItem("Estancia Cigar","Medium Cut. Hand Rolled.",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("prop_cigar_02",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),
                 PackageItem = new PhysicalItem("p_cigar_pack_02_s",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),AmountPerPackage = 20 },
             
 
             //UPNATOM
-            new ModItem("Triple Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
-            new ModItem("Bacon Triple Cheese Melt",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
-            new ModItem("Jumbo Shake",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_juice01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+            new ModItem("Triple Burger", "Three times the meat, three times the cholesterol", eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Bacon Triple Cheese Melt", "More meat AND more bacon", eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Jumbo Shake", "Almost a whole cow full of milk", eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_food_juice01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
 
 
             //BurgerShot
             new ModItem("Money Shot Meal",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burg1",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02")},
-            new ModItem("The Bleeder Meal",eConsumableType.Eat) {
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 12},
+            new ModItem("The Bleeder Meal","",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burg1",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02")},
-            new ModItem("Torpedo Meal",eConsumableType.Eat) {
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 20},
+            new ModItem("Torpedo Meal","Torpedo your hunger",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_03")},
-            new ModItem("Meat Free Meal",eConsumableType.Eat) {
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_03"), HealthGained = 15},
+            new ModItem("Meat Free Meal","For the bleeding hearts",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_01")},
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_01"), HealthGained = 5},
             new ModItem("Freedom Fries",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
             new ModItem("Double Shot Coffee",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_bs_coffee",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) },
+                ModelItem = new PhysicalItem("prop_food_bs_coffee",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 5 },
             new ModItem("Liter of eCola",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) },
+                ModelItem = new PhysicalItem("prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 5 },
             new ModItem("Liter of Sprunk",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)) },
+                ModelItem = new PhysicalItem("prop_food_bs_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 5 },
 
             //Bite
             new ModItem("Gut Buster Sandwich",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_burg2",57005,new Vector3(0.14f, 0.01f, -0.06f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("prop_food_burg2",57005,new Vector3(0.14f, 0.01f, -0.06f),new Rotator(0f, 0f, 0f)), HealthGained = 10 } ,
             new ModItem("Ham and Tuna Sandwich",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_burg2",57005,new Vector3(0.14f, 0.01f, -0.06f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("prop_food_burg2",57005,new Vector3(0.14f, 0.01f, -0.06f),new Rotator(0f, 0f, 0f)), HealthGained = 10 } ,
             new ModItem("Chef's Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1")} ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 5} ,
 
             //BeefyBills
             new ModItem("Megacheese Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
             new ModItem("Double Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 12 },
             new ModItem("Kingsize Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 15 },
             new ModItem("Bacon Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 17 },
 
 
             //Taco Bomb
             new ModItem("Breakfast Burrito",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bag1")},
+                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 12},
             new ModItem("Deep Fried Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1")},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
             new ModItem("Beef Bazooka",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bag1")},
+                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 15},
             new ModItem("Chimichingado Chiquito",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1")},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
             new ModItem("Cheesy Meat Flappers",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1")},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
             new ModItem("Volcano Mudsplatter Nachos",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1")},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
 
             //WIgwam Menu
             new ModItem("Wigwam Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
             new ModItem("Wigwam Cheeseburger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 12 },
             new ModItem("Big Wig Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 12 },
 
             //CB
             new ModItem("Cluckin' Little Meal",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03") },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 },
             new ModItem("Cluckin' Big Meal",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_02") } ,
+                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 10 } ,
             new ModItem("Cluckin' Huge Meal",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_02") } ,
+                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 15 } ,
             new ModItem("Wing Piece",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03") },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 10 },
             new ModItem("Little Peckers",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03") },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 },
             new ModItem("Balls & Rings",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_burg3",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_food_burg3",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 5 },
             new ModItem("Fowlburger",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_burg1",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
-                PackageItem = new PhysicalItem("prop_food_burg3") } ,
+                PackageItem = new PhysicalItem("prop_food_burg3"), HealthGained = 10 } ,
 
             //Viceroy
             new ModItem("City View King",eConsumableType.Service),
@@ -334,193 +332,69 @@ public class ModItems : IModItems
             new ModItem("Empire Suite",eConsumableType.Service),
             new ModItem("Monarch Suite",eConsumableType.Service),
 
-            //Gallivanter Benefactor
-            new ModItem("Gallivanter Baller") {
-                ModelItem = new PhysicalItem("baller") {Type = ePhysicalItemType.Vehicle } },
-            new ModItem("Gallivanter Baller II") {
-                ModelItem = new PhysicalItem("baller2") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Gallivanter Baller LE") {
-                ModelItem = new PhysicalItem("baller3") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Gallivanter Baller LE LWB") {
-                ModelItem = new PhysicalItem("baller4") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Schafter") {
-                ModelItem = new PhysicalItem("schafter2") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Schafter V12") {
-                ModelItem = new PhysicalItem("schafter3") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Feltzer") {
-                ModelItem = new PhysicalItem("feltzer2") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Schwartzer") {
-                ModelItem = new PhysicalItem("schwarzer") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Surano") {
-                ModelItem = new PhysicalItem("surano") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Serrano") {
-                ModelItem = new PhysicalItem("serrano") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Dubsta") {
-                ModelItem = new PhysicalItem("dubsta") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Dubsta 2") {
-                ModelItem = new PhysicalItem("dubsta2") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor XLS") {
-                ModelItem = new PhysicalItem("xls") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Streiter") {
-                ModelItem = new PhysicalItem("streiter") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Schlagen GT") {
-                ModelItem = new PhysicalItem("schlagen") {Type = ePhysicalItemType.Vehicle }},
-            new ModItem("Benefactor Krieger") {
-                ModelItem = new PhysicalItem("krieger"){Type = ePhysicalItemType.Vehicle } },
 
-            //////Vapid
-            //new ModItem("Vapid Dominator") { ModelItem = new PhysicalItem("dominator") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Stanier") {ModelItem = new PhysicalItem("stanier") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Sandking SWB"){ModelItem = new PhysicalItem("sandking2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Sandking XL"){ModelItem = new PhysicalItem("sandking") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Bullet"){ModelItem = new PhysicalItem("bullet") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Radius"){ModelItem = new PhysicalItem("radi") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Sadler"){ModelItem = new PhysicalItem("sadler") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Minivan"){ModelItem = new PhysicalItem("minivan") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Vapid Speedo"){ModelItem = new PhysicalItem("speedo") { Type = ePhysicalItemType.Vehicle }},
-
-            ////BF
-            //new ModItem("BF Injection") { ModelItem = new PhysicalItem("bfinjection") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("BF Surfer") {ModelItem = new PhysicalItem("surfer") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("BF Bifta") { ModelItem = new PhysicalItem("bifta") { Type = ePhysicalItemType.Vehicle }},//dlc
-
-            ////Sanders Motorcycles
-            //new ModItem("Maibatsu Sanchez") { ModelItem = new PhysicalItem("sanchez2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Maibatsu Sanchez Custom") {ModelItem = new PhysicalItem("sanchez") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Shitzu PCJ 600") {ModelItem = new PhysicalItem("pcj") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Shitzu Vader") {ModelItem = new PhysicalItem("vader") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Dinka Akuma") {ModelItem = new PhysicalItem("akuma") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Dinka Double-T") {ModelItem = new PhysicalItem("double") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Nagasaki Carbon RS") {ModelItem = new PhysicalItem("carbonrs") { Type = ePhysicalItemType.Vehicle }},
-
-            //new ModItem("Principe Nemesis") {ModelItem = new PhysicalItem("nemesis") { Type = ePhysicalItemType.Vehicle }},
-
-            ////Bravado
-            //new ModItem("Bravado Gauntlet") { ModelItem = new PhysicalItem("gauntlet") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Banshee") {ModelItem = new PhysicalItem("banshee") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Buffalo") {ModelItem = new PhysicalItem("buffalo") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Buffalo S") {ModelItem = new PhysicalItem("buffalo2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Gresley") {ModelItem = new PhysicalItem("gresley") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Bison") {ModelItem = new PhysicalItem("bison") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Bison ST") {ModelItem = new PhysicalItem("bison2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Bison GX") {ModelItem = new PhysicalItem("bison3") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Bravado Youga") {ModelItem = new PhysicalItem("youga") { Type = ePhysicalItemType.Vehicle }},
-
-            ////Karin
-            //new ModItem("Karin Dilettante") { ModelItem = new PhysicalItem("dilettante") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin Rebel") {ModelItem = new PhysicalItem("rebel2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin Asterope") {ModelItem = new PhysicalItem("asterope") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin Intruder") {ModelItem = new PhysicalItem("intruder") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin Futo") {ModelItem = new PhysicalItem("futo") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin Sultan") {ModelItem = new PhysicalItem("sultan") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Karin BeeJay XL") {ModelItem = new PhysicalItem("bjxl") { Type = ePhysicalItemType.Vehicle }},
-
-
-            //////pegassi/grotti/enus/buckingham/pfiuster
-            ////Pegassi
-            //new ModItem("Pegassi Bati 801") {ModelItem = new PhysicalItem("bati") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Bati 801RR") {ModelItem = new PhysicalItem("bati2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Faggio") {ModelItem = new PhysicalItem("faggio2") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Ruffian") {ModelItem = new PhysicalItem("ruffian") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Monroe") {ModelItem = new PhysicalItem("monroe") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Infernus") {ModelItem = new PhysicalItem("infernus") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Vacca") {ModelItem = new PhysicalItem("vacca") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Pegassi Osiris") { ModelItem = new PhysicalItem("osiris") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Pegassi Zentorno") { ModelItem = new PhysicalItem("zentorno") { Type = ePhysicalItemType.Vehicle }},//dlc
-
-            ////Grotti
-            //new ModItem("Grotti Carbonizzare") {ModelItem = new PhysicalItem("carbonizzare") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Grotti Stinger") {ModelItem = new PhysicalItem("stinger") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Grotti Stinger GT") {ModelItem = new PhysicalItem("stingergt") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Grotti Cheetah") {ModelItem = new PhysicalItem("cheetah") { Type = ePhysicalItemType.Vehicle }},
-
-
-            ////Enus
-            //new ModItem("Enus Cognoscenti Cabrio") {ModelItem = new PhysicalItem("cogcabrio") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Enus Super Diamond") {ModelItem = new PhysicalItem("superd") { Type = ePhysicalItemType.Vehicle }},
-            //new ModItem("Enus Windsor") { ModelItem = new PhysicalItem("windsor") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Enus Huntly S") { ModelItem = new PhysicalItem("huntley") { Type = ePhysicalItemType.Vehicle }},//dlc
-
-            ////Pfister
-            //new ModItem("Pfister Comet") {ModelItem = new PhysicalItem("comet2") { Type = ePhysicalItemType.Vehicle }},
-
-            ////Dinka
-            //new ModItem("Dinka Jester") { ModelItem = new PhysicalItem("jester") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Dinka Thrust") { ModelItem = new PhysicalItem("thrust") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Dinka Vindicator") { ModelItem = new PhysicalItem("vindicator") { Type = ePhysicalItemType.Vehicle }},//dlc
-
-            ////Shitzu
-            //new ModItem("Shitzu Hakuchou") { ModelItem = new PhysicalItem("hakuchou") { Type = ePhysicalItemType.Vehicle }},//dlc
-
-            ////Other
-            //new ModItem("Albany Alpha") { ModelItem = new PhysicalItem("alpha") { Type = ePhysicalItemType.Vehicle }},//dlc       
-            //new ModItem("Grotti Turismo R") { ModelItem = new PhysicalItem("turismor") { Type = ePhysicalItemType.Vehicle }},//dlc           
-            //new ModItem("Dewbauchee Massacro") { ModelItem = new PhysicalItem("massacro") { Type = ePhysicalItemType.Vehicle }},//dlc        
-            //new ModItem("Lampadati Furore GT") { ModelItem = new PhysicalItem("furoregt") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Declasse Stallion") { ModelItem = new PhysicalItem("stalion") { Type = ePhysicalItemType.Vehicle }},//dlc
-            //new ModItem("Progen T20") { ModelItem = new PhysicalItem("t20") { Type = ePhysicalItemType.Vehicle }},//dlc
 
             //Generic
 
 
             //FancyDeli
             new ModItem("Chicken Club Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Spicy Seafood Gumbo",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Muffaletta",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Zucchini Garden Pasta",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Pollo Mexicano",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Italian Cruz Po'boy",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Chipotle Chicken Panini",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
 
 
             //FancyFish
             new ModItem("Coconut Crusted Prawns",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Crab and Shrimp Louie",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Open-Faced Crab Melt",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("King Salmon",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Ahi Tuna",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Key Lime Pie",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             
             //FancyGeneric
             new ModItem("Smokehouse Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)) },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 20 },
             new ModItem("Chicken Critters Basket",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Prime Rib 16 oz",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Bone-In Ribeye",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Grilled Pork Chops",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Grilled Shrimp",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1") , HealthGained = 20} ,
 
             //Noodles
             new ModItem("Juek Suk tong Mandu",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_ff_noodle_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_ff_noodle_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 10 },
             new ModItem("Hayan Jam Pong",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_ff_noodle_02",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("prop_ff_noodle_02",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 15 } ,
             new ModItem("Sal Gook Su Jam Pong",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle1",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("v_ret_247_noodle1",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Chul Pan Bokkeum Jam Pong",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle2",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("v_ret_247_noodle2",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Deul Gae Udon",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle3",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
+                ModelItem = new PhysicalItem("v_ret_247_noodle3",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Dakgogo Bokkeum Bap",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
 
             //Weed
             new ModItem("White Widow Preroll",eConsumableType.Smoke) {
@@ -560,17 +434,17 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Meth" },
 
 
-            new ModItem("Bull Shark Testosterone",eConsumableType.Ingest) {
+            new ModItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" },
-            new ModItem("Alco Patch",eConsumableType.Ingest) {
+            new ModItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch" },
-            new ModItem("Mollis",eConsumableType.Ingest) {
+            new ModItem("Mollis","For outstanding erections. Get the performance you've always dreamed of",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Mollis" },
-            new ModItem("Chesty",eConsumableType.Ingest) {
+            new ModItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Chesty" },
-            new ModItem("Equanox",eConsumableType.Ingest) {
+            new ModItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. Equanox may cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox" },
-            new ModItem("Zombix",eConsumableType.Ingest) {
+            new ModItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix" },
             //        WeedDealerMenu = new List<MenuItem>() {
             //new MenuItem("Brick Gram",6, 1),

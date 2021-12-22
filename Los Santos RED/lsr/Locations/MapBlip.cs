@@ -104,6 +104,14 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return BlipSprite.GangVehicle;
                 }
+                else if (Type == LocationType.PawnShop)
+                {
+                    return BlipSprite.PointOfInterest;
+                }
+                else if (Type == LocationType.BusStop)
+                {
+                    return BlipSprite.VinewoodTours;
+                }
                 else if (Type == LocationType.Brothel)
                 {
                     return BlipSprite.DropOffHooker;

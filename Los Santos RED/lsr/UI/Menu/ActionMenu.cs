@@ -21,6 +21,9 @@ public class ActionMenu : Menu
     private UIMenuItem Suicide;
     private ISettingsProvideable Settings;
     private UIMenuListScrollerItem<string> CurrentActivityMenu;
+    private UIMenuItem EnterAsPassenger;
+    private UIMenuItem ShuffleSeat;
+    private UIMenuItem IntimidateDriver;
     private UIMenuItem ContinueConsuming;
     private MenuPool MenuPool;
     private UIMenuListScrollerItem<GestureLookup> GestureMenu;
@@ -132,6 +135,11 @@ public class ActionMenu : Menu
         GestureMenu = new UIMenuListScrollerItem<GestureLookup>("Gesture", "Perform the selected gesture", GestureLookups);
         CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue","Pause","Stop" });
 
+        EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
+        ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
+
+        IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
+
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Actions.AddItem(Drink);
@@ -145,6 +153,10 @@ public class ActionMenu : Menu
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
+
+        Actions.AddItem(EnterAsPassenger);
+        Actions.AddItem(ShuffleSeat);
+        Actions.AddItem(IntimidateDriver);
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -175,6 +187,18 @@ public class ActionMenu : Menu
         else if (selectedItem == SitDown)
         {
             Player.StartSittingDown();
+        }
+        else if (selectedItem == EnterAsPassenger)
+        {
+            Player.EnterVehicleAsPassenger();
+        }
+        else if (selectedItem == ShuffleSeat)
+        {
+            Player.ShuffleToNextSeat();
+        }
+        else if (selectedItem == IntimidateDriver)
+        {
+            Player.ForceErraticDriver();
         }
         else if (selectedItem == CurrentActivityMenu)
         {

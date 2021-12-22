@@ -49,5 +49,8 @@ namespace LosSantosRED.lsr.Interface
         void PauseDynamicActivity();
         void ContinueDynamicActivity();
         void Gesture(string text);
+        void EnterVehicleAsPassenger();
+        void ShuffleToNextSeat();
+        void ForceErraticDriver();
     }
 }

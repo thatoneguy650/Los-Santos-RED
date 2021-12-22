@@ -23,7 +23,7 @@ public class Kill : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             ClearTasks();
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
+            //NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
             NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
@@ -93,7 +93,7 @@ public class Kill : ComplexTask
             }
             if(!Ped.IsDriver && Ped.DistanceToPlayer <= 100f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && Game.GameTime - GametimeLastRetasked >= 1000)
             {
-                NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
+                //NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
                 NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
                 NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far

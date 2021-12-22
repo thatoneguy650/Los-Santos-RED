@@ -243,7 +243,8 @@ namespace LosSantosRED.lsr.Player
             {
                 EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
+                uint GameTimeStartedExitAnimation = Game.GameTime;
+                while (Game.GameTime - GameTimeStartedExitAnimation <= 5000 && Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
                 {
                     Player.SetUnarmed();
                     if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())

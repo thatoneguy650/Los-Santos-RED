@@ -80,7 +80,6 @@ public class UI : IMenuProvideable
     private string lastZoneDisplay;
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
-
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
@@ -298,7 +297,7 @@ public class UI : IMenuProvideable
         float BackPosY = PosY;
 
         float BackHeight = 0.0075f;
-        float FrontWidth = BackWidth * 0.0f;// DisplayablePlayer.StaminaPercent;
+        float FrontWidth = BackWidth * DisplayablePlayer.IntoxicatedIntensityPercent;
         float FrontPosX = BackPosX;
         float FrontPosY = PosY;
         float FrontHeight = 0.0075f;
@@ -932,7 +931,7 @@ public class UI : IMenuProvideable
                 }
                 StartedDeathEffect = true;
             }
-            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= 1000)
+            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath ? 1000 : 2000))
             {
                 GameTimeLastDied = 0;
                 Show(DeathMenu);
@@ -959,7 +958,7 @@ public class UI : IMenuProvideable
                 }
                 StartedBustedEffect = true;
             }
-            if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= 2000)
+            if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= (Settings.SettingsManager.PlayerSettings.SetSlowMoOnBusted ? 1000 : 2000))
             {
                 GameTimeLastBusted = 0;
                 Show(BustedMenu);

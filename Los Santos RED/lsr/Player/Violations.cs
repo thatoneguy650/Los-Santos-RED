@@ -237,7 +237,7 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "GotInAirVehicleDuringChase"));//.IsCurrentlyViolating = true;
             }
-            if (Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen && Player.IsInVehicle)
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen && Player.IsInVehicle && Player.IsDriver)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
             }
@@ -400,7 +400,7 @@ namespace LosSantosRED.lsr
             VehicleIsSuspicious = false;
             TreatAsCop = false;
             IsSpeeding = false;
-            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.IsDriver)
             {
                 if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
                 {

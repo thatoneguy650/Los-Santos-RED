@@ -165,7 +165,29 @@ public class WeaponInventory
             }
             if(Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
             {
-                Cop.Pedestrian.Accuracy = DesiredAccuracy;
+                if(Cop.IsInVehicle)
+                {
+                    Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
+                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
+                }
+                else if (IsSetLessLethal)
+                {
+                    Cop.Pedestrian.Accuracy = 30;
+                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);
+                }
+                else
+                {
+                    Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+                    if(IsDeadlyChase)
+                    {
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate + 100);
+                    }
+                    else
+                    {
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                    }
+                    
+                }
             }
         }
     }

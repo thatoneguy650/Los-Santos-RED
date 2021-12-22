@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         bool IsSitting { get; set; }
         Rage.Object AttachedProp { get; set; }
+        float IntoxicatedIntensityPercent { get; set; }
 
         void SetUnarmed();
         void StartIngesting(Intoxicant intoxicant);
