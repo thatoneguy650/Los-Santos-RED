@@ -216,13 +216,13 @@ public class PlayerPerception
         Target = target;
         if (Originator != null && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
-            
             UpdateTargetDistance(placeLastSeen, target.Position);
             UpdateTargetLineOfSight(Target.IsWanted);
+            GameFiber.Yield();
         }
         else
         {
-            SetTargetSeen();//maybe unseen here? not sure....
+            SetTargetUnseen();// SetTargetSeen();//maybe unseen here? not sure....
         }
         UpdateWitnessedCrimes();
     }
@@ -402,15 +402,18 @@ public class PlayerPerception
     }
     public void UpdateWitnessedCrimes()
     {
-        foreach (Crime committing in Target.CivilianReportableCrimesViolating)
+        if (Originator.Pedestrian.Exists())
         {
-            if (CanRecognizeTarget && !committing.CanReportBySound)
+            foreach (Crime committing in Target.CivilianReportableCrimesViolating)
             {
-                AddWitnessedCrime(committing, Originator.Pedestrian.Position);
-            }
-            else if (WithinWeaponsAudioRange && committing.CanReportBySound)
-            {
-                AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                if (CanRecognizeTarget && !committing.CanReportBySound)
+                {
+                    AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                }
+                else if (WithinWeaponsAudioRange && committing.CanReportBySound)
+                {
+                    AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                }
             }
         }
     }

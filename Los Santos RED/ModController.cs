@@ -323,17 +323,22 @@ namespace LosSantosRED.lsr
 
                 new ModTask(4000, "Weather.Update", Weather.Update, 11),//1000
 
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 12),
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 13),
+
             };
 
             QuaternaryTasks = new List<ModTask>()
             {
 
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2),
-                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
+                //new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
+                //new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 0),
+                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 1),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 2),
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 3),
+
+                //new ModTask(500, "Police.Update", Police.Update, 6),
             };
 
             QuinaryTasks = new List<ModTask>()

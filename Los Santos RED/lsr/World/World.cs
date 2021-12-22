@@ -121,6 +121,7 @@ namespace Mod
             }
         }
         public void AddEntity(VehicleExt vehicle, ResponseType responseType) => Vehicles.AddToList(vehicle, responseType);
+        public bool AnyCopsNearCop(Cop cop, int CellsAway) => Pedestrians.AnyCopsNearCop(cop, CellsAway);
         public bool AnyCopsNearPosition(Vector3 position, float radius) => Pedestrians.AnyCopsNearPosition(position, radius);
         public void ClearSpawned()
         {

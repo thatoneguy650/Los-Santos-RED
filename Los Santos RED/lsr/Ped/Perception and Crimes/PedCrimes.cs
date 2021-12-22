@@ -357,7 +357,7 @@ public class PedCrimes
     }
     private void CheckCrimes(IEntityProvideable world, IPoliceRespondable player)
     {
-        if (!PedExt.IsBusted)
+        if (PedExt.Pedestrian.Exists() && !PedExt.IsBusted)
         {
             if (IsWanted)
             {
@@ -410,17 +410,17 @@ public class PedCrimes
             {
                 IsShootingCheckerActive = false;
             }
-            if (!IsDeadlyChase && EverCommittedCrime)
-            {
-                foreach (PedExt civie in world.CivilianList)
-                {
-                    if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.CheckKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
-                    {
-                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
-                        return;
-                    }
-                }
-            }
+            //if (!IsDeadlyChase && EverCommittedCrime)
+            //{
+            //    foreach (PedExt civie in world.CivilianList)
+            //    {
+            //        if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.CheckKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
+            //        {
+            //            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
+            //            return;
+            //        }
+            //    }
+            //}
             //if (PedExt.IsInVehicle && PedExt.WasSetCriminal)
             //{
             //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));

@@ -45,7 +45,7 @@ public class LEDispatcher
 
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
-    private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
     private float DistanceToDelete => TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
@@ -418,15 +418,18 @@ public class LEDispatcher
     {
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToRecall)
         {
+            GameFiber.Yield();
             foreach (Cop DeleteableCop in DeletableCops)
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
+                    GameFiber.Yield();
                     Delete(DeleteableCop);
                     
                 }
                 GameFiber.Yield();
             }
+            GameFiber.Yield();
             if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
             {
                 Roadblock.Dispose();
@@ -450,12 +453,14 @@ public class LEDispatcher
                         RemoveBlip(Passenger);
                         Passenger.Delete();
                         EntryPoint.PersistentPedsDeleted++;
+                        GameFiber.Yield();
                     }
                 }
                 if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
                 {
                     Cop.Pedestrian.CurrentVehicle.Delete();
                     EntryPoint.PersistentVehiclesDeleted++;
+                    GameFiber.Yield();
                 }
             }
             RemoveBlip(Cop.Pedestrian);
@@ -464,6 +469,7 @@ public class LEDispatcher
                 //EntryPoint.WriteToConsole(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 Cop.Pedestrian.Delete();
                 EntryPoint.PersistentPedsDeleted++;
+                GameFiber.Yield();
             }
         }
     }
@@ -589,6 +595,13 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}",5);
             return true;
         }
+
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 250f && cop.ClosestDistanceToPlayer <= 50f && World.AnyCopsNearCop(cop,2))
+        {
+            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: World.AnyCopsNearCop IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}", 5);
+            return true;
+        }
+
         //else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
         //{
         //    //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");

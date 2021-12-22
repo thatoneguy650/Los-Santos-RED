@@ -397,7 +397,7 @@ public class PedExt : IComplexTaskable
             IsDriver = false;
             IsInBoat = false;
             IsInAPC = false;
-            if (Pedestrian.Speed >= 7.0f)
+            if (Pedestrian.Exists() && Pedestrian.Speed >= 7.0f)
             {
                 GameTimeLastMovedFast = Game.GameTime;
             }

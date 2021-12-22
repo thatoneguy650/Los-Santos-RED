@@ -50,7 +50,6 @@ public class Tasker : ITaskerable, ITaskerReportable
     public void RunPoliceTasks()
     {
         SetPossibleTargets();
-        GameFiber.Yield();
         ExpireSeatAssignments();
         GameFiber.Yield();
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate && x.CanBeTasked).OrderBy(x => x.DistanceToPlayer))
@@ -89,7 +88,6 @@ public class Tasker : ITaskerable, ITaskerReportable
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
             SetPossibleTargets();
-            GameFiber.Yield();
             ExpireSeatAssignments();
             GameFiber.Yield();
             foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck && x.CanBeTasked).OrderBy(x => x.DistanceToPlayer))
@@ -104,29 +102,6 @@ public class Tasker : ITaskerable, ITaskerReportable
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Cop Task");
                 }
                 GameFiber.Yield();
-            }
-            List<Cop> PossibleCops = PedProvider.PoliceList.Where(x => x.GameTimeLastUpdatedTask != 0).ToList();
-            List<PedExt> PossibleCivs = PedProvider.CivilianList.Where(x => x.GameTimeLastUpdatedTask != 0).ToList();
-
-            if (PossibleCops.Any())
-            {
-                MaxTimeBetweenCopUpdates = PossibleCops.Max(x => Game.GameTime - x.GameTimeLastUpdatedTask);
-                AverageTimeBetweenCopUpdates = PossibleCops.Average(x => Game.GameTime - x.GameTimeLastUpdatedTask);
-            }
-            else
-            {
-                MaxTimeBetweenCopUpdates = 0;
-                AverageTimeBetweenCopUpdates = 0;
-            }
-            if (PossibleCivs.Any())
-            {
-                MaxTimeBetweenCivUpdates = PossibleCivs.Max(x => Game.GameTime - x.GameTimeLastUpdatedTask);
-                AverageTimeBetweenCivUpdates = PossibleCivs.Average(x => Game.GameTime - x.GameTimeLastUpdatedTask);
-            }
-            else
-            {
-                MaxTimeBetweenCivUpdates = 0;
-                AverageTimeBetweenCivUpdates = 0;
             }
         }
 
@@ -323,7 +298,6 @@ public class Tasker : ITaskerable, ITaskerReportable
     private void SetPossibleTargets()
     {
         PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
-
         ClosestCopToPlayer = PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?

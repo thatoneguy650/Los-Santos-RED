@@ -549,10 +549,10 @@ namespace LSR.Vehicles
         }
         private void OnHealthDecreased(IDriveable driver)
         {
-            int Damage = Health - Vehicle.Health;
-            bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(Vehicle);
-            driver.OnVehicleHealthDecreased(Damage, Collided);
-            //EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
+            //int Damage = Health - Vehicle.Health;
+            //bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(Vehicle);
+            //driver.OnVehicleHealthDecreased(Damage, Collided);
+            ////EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
         }
     }

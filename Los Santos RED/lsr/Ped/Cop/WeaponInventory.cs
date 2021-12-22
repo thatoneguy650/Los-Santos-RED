@@ -53,140 +53,143 @@ public class WeaponInventory
     }
     public void UpdateLoadout(bool PlayerInVehicle, bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice, bool lethalForceAuthorized)
     {
-        uint currentVehicleWeapon;
-        bool hasVehicleWeapon = false;
-        hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(Cop.Pedestrian, out currentVehicleWeapon);
-        //3450622333 searchlight
-        if (hasVehicleWeapon && currentVehicleWeapon == 3450622333)//searchlight
+        if (Cop.Pedestrian.Exists())
         {
-            return;
-        }
-        if (ShouldAutoSetWeaponState && NeedsWeaponCheck)
-        {
-            if (Cop.CurrentTask?.Name == "AIApprehend")
+            uint currentVehicleWeapon;
+            bool hasVehicleWeapon = false;
+            hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(Cop.Pedestrian, out currentVehicleWeapon);
+            //3450622333 searchlight
+            if (hasVehicleWeapon && currentVehicleWeapon == 3450622333)//searchlight
             {
-                HasHeavyWeaponOnPerson = true;
-                if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+                return;
+            }
+            if (ShouldAutoSetWeaponState && NeedsWeaponCheck)
+            {
+                if (Cop.CurrentTask?.Name == "AIApprehend")
                 {
-                    SetDeadly(true);
-                }
-                else
-                {
-                    if (Cop.IsInVehicle)
+                    HasHeavyWeaponOnPerson = true;
+                    if (Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.IsDeadlyChase)
                     {
-                        SetUnarmed();
+                        SetDeadly(true);
                     }
                     else
                     {
-                        SetLessLethal();
-                    }
-                }
-            }
-            else
-            {      
-                if (WantedLevel == 0)
-                {
-                    if (!IsSetDefault)
-                    {
-                        SetDefault();
-                        HasHeavyWeaponOnPerson = false;
+                        if (Cop.IsInVehicle)
+                        {
+                            SetUnarmed();
+                        }
+                        else
+                        {
+                            SetLessLethal();
+                        }
                     }
                 }
                 else
                 {
-                    if (IsDeadlyChase)
+                    if (WantedLevel == 0)
                     {
-                        if (Cop.IsInVehicle)
+                        if (!IsSetDefault)
                         {
-                            HasHeavyWeaponOnPerson = true;
-                            if(isWeaponsFree)
+                            SetDefault();
+                            HasHeavyWeaponOnPerson = false;
+                        }
+                    }
+                    else
+                    {
+                        if (IsDeadlyChase)
+                        {
+                            if (Cop.IsInVehicle)
                             {
-                                SetDeadly(false);
-                            }
-                            else
-                            {
-                                if(isAttemptingToSurrender)
-                                {
-                                    SetUnarmed();
-                                }
-                                else if (!hasShotAtPolice && WantedLevel <= 4)
-                                {
-                                    SetUnarmed();
-                                }
-                                else
+                                HasHeavyWeaponOnPerson = true;
+                                if (isWeaponsFree)
                                 {
                                     SetDeadly(false);
                                 }
-                            }
-                        }
-                        else
-                        {
-                            SetDeadly(false);
-                        }
-                    }
-                    else if (isBusted)
-                    {
-                        if (Cop.IsInVehicle)
-                        {
-                            SetUnarmed();
-                        }
-                        else
-                        {
-                            if(lethalForceAuthorized)
-                            {
-                                SetDeadly(false);
+                                else
+                                {
+                                    if (isAttemptingToSurrender)
+                                    {
+                                        SetUnarmed();
+                                    }
+                                    else if (!hasShotAtPolice && WantedLevel <= 4)
+                                    {
+                                        SetUnarmed();
+                                    }
+                                    else
+                                    {
+                                        SetDeadly(false);
+                                    }
+                                }
                             }
                             else
                             {
-                                SetLessLethal();
+                                SetDeadly(false);
                             }
-                            //SetDefault();
                         }
-                    }
-                    else
-                    {
-                        if (Cop.IsInVehicle)
+                        else if (isBusted)
                         {
-                            SetUnarmed();
+                            if (Cop.IsInVehicle)
+                            {
+                                SetUnarmed();
+                            }
+                            else
+                            {
+                                if (lethalForceAuthorized)
+                                {
+                                    SetDeadly(false);
+                                }
+                                else
+                                {
+                                    SetLessLethal();
+                                }
+                                //SetDefault();
+                            }
                         }
                         else
                         {
-                            //if(PlayerInVehicle)
-                            //{
-                            //    SetUnarmed();
-                            //}
-                            //else
-                            //{
+                            if (Cop.IsInVehicle)
+                            {
+                                SetUnarmed();
+                            }
+                            else
+                            {
+                                //if(PlayerInVehicle)
+                                //{
+                                //    SetUnarmed();
+                                //}
+                                //else
+                                //{
                                 SetLessLethal();
-                            //}
+                                //}
+                            }
                         }
                     }
                 }
-            }
-            if(Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
-            {
-                if(Cop.IsInVehicle)
+                if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
                 {
-                    Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
-                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
-                }
-                else if (IsSetLessLethal)
-                {
-                    Cop.Pedestrian.Accuracy = 30;
-                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);
-                }
-                else
-                {
-                    Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-                    if(IsDeadlyChase)
+                    if (Cop.IsInVehicle)
                     {
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate + 100);
+                        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
+                    }
+                    else if (IsSetLessLethal)
+                    {
+                        Cop.Pedestrian.Accuracy = 30;
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);
                     }
                     else
                     {
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+                        if (IsDeadlyChase)
+                        {
+                            NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate + 100);
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                        }
+
                     }
-                    
                 }
             }
         }

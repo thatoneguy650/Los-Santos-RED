@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr
         private bool VehicleIsSuspicious;
         private readonly List<Crime> CrimesViolating = new List<Crime>();
         private ISettingsProvideable Settings;
+        private bool SentRecentCrash = false;
         public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings)
         {
             TimeReporter = timeReporter;
@@ -363,9 +364,16 @@ namespace LosSantosRED.lsr
             {
                 isDrivingSuspiciously = true;
 
-
-                Player.OnVehicleCrashed();
+                if (!SentRecentCrash)
+                {
+                    SentRecentCrash = true;
+                    Player.OnVehicleCrashed();
+                }
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
+            }
+            if (!RecentlyHitVehicle)
+            {
+                SentRecentCrash = false;
             }
             if (!TreatAsCop)
             {

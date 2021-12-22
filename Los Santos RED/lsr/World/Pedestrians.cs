@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -97,6 +98,31 @@ public class Pedestrians
         {
             return false;
         }
+    }
+    public bool AnyCopsNearCop(Cop cop, int CellsAway)
+    {
+        if (cop != null && cop.Pedestrian.Exists())
+        {
+            Vehicle copVehicle = cop.Pedestrian.CurrentVehicle;
+            foreach (Cop targetCop in Police)
+            {
+                if (targetCop.Pedestrian.Exists())
+                {
+                    if (cop.Pedestrian.Handle != targetCop.Pedestrian.Handle && NativeHelper.IsNearby(cop.CellX, cop.CellY, targetCop.CellX, targetCop.CellY, CellsAway))
+                    {
+                        if (!targetCop.IsInVehicle)
+                        {
+                            return true;
+                        }
+                        else if (copVehicle.Exists() && targetCop.Pedestrian.CurrentVehicle.Exists() && copVehicle.Handle != targetCop.Pedestrian.CurrentVehicle.Handle)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false; 
     }
     public void ClearSpawned()
     {

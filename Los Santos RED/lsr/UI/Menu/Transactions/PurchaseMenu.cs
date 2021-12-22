@@ -335,12 +335,17 @@ public class PurchaseMenu : Menu
                         {
                             description = $"{cii.ModItemName} {formattedPurchasePrice}";
                         }
-                        description += $"~n~{myItem.AmountPerPackage} Item(s) per Package";
+                        description += $"~n~~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
                         if(myItem.AmountPerPackage > 1)
                         {
-                            description += $"~n~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} per Item";
+                            description += $"~n~~o~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
                         }
                         description += $"~n~Type: {myItem.FormattedItemType}";
+                        if(myItem.RestoresHealth)
+                        {
+                            description += $"~n~~g~+{myItem.HealthGained} ~s~HP";
+                        }
+                        
                         purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
                     }
                 }

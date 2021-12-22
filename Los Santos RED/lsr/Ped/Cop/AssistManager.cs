@@ -17,7 +17,7 @@ public class AssistManager
     }
     public void UpdateCollision(bool IsWanted)
     {
-        if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
+        if (Cop.Pedestrian.Exists() && Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
         {
             if (IsWanted && Cop.DistanceToPlayer > 15f)
             {

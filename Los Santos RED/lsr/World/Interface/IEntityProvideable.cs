@@ -44,5 +44,6 @@ namespace LosSantosRED.lsr.Interface
         void LoadSPMap();
         VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance);
         void ActivateLocation(GameLocation toSet);
+        bool AnyCopsNearCop(Cop cop, int v);
     }
 }

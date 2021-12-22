@@ -146,6 +146,8 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public PedExt CurrentTargetedPed { get; private set; }
+
+        public VehicleExt PreviousVehicle { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
@@ -1478,6 +1480,7 @@ namespace Mod
             bool IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             if (!IsInVehicle && !IsGettingIntoVehicle)
             {
+                PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
                 return;
             }
@@ -1492,38 +1495,70 @@ namespace Mod
             }
             if (!vehicle.Exists())
             {
+                PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
                 return;
-            }           
+            }
 
 
-            VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
-            GameFiber.Yield();
-            if (existingVehicleExt == null)
+
+
+
+            uint newVehicleHandle = vehicle.Handle;
+            if (CurrentVehicle == null)
             {
-                VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
-                EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
-                TrackedVehicles.Add(createdVehicleExt);
-                existingVehicleExt = createdVehicleExt;
-            }
-            if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-            {
-                TrackedVehicles.Add(existingVehicleExt);
-            }
-            if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
-            {
-                existingVehicleExt.SetAsEntered();
-            }
-            existingVehicleExt.Update(this);
-            GameFiber.Yield();
-            if (!existingVehicleExt.IsStolen)
-            {
-                if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
+                if (PreviousVehicle != null && PreviousVehicle.Handle == newVehicleHandle)
                 {
-                    existingVehicleExt.IsStolen = true;
+                    CurrentVehicle = PreviousVehicle;
+                }
+                else
+                {
+                    VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
+                    GameFiber.Yield();
+                    if (existingVehicleExt == null)
+                    {
+                        VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
+                        EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
+                        TrackedVehicles.Add(createdVehicleExt);
+                        existingVehicleExt = createdVehicleExt;
+                    }
+                    if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                    {
+                        TrackedVehicles.Add(existingVehicleExt);
+                    }
+                    if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
+                    {
+                        existingVehicleExt.SetAsEntered();
+                    }
+                    existingVehicleExt.Update(this);
+                    GameFiber.Yield();
+                    if (!existingVehicleExt.IsStolen)
+                    {
+                        if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
+                        {
+                            existingVehicleExt.IsStolen = true;
+                        }
+                    }
+                    CurrentVehicle = existingVehicleExt;
                 }
             }
-            CurrentVehicle = existingVehicleExt;
+            else 
+            {
+                CurrentVehicle.Update(this);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         public void UpdateStateData()
         {
@@ -1676,6 +1711,7 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
+                GameFiber.Yield();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
                 if(Game.LocalPlayer.Character.CurrentVehicle.Exists())
                 {
@@ -1756,6 +1792,7 @@ namespace Mod
                 CurrentVehicleDebugString = "";
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
+                PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
                 float PlayerSpeed = Game.LocalPlayer.Character.Speed;
                 if (PlayerSpeed >= 0.1f)
