@@ -52,5 +52,7 @@ namespace LosSantosRED.lsr.Interface
         void EnterVehicleAsPassenger();
         void ShuffleToNextSeat();
         void ForceErraticDriver();
+        void ToggleBodyArmor(int Type);
+        void SetBodyArmor(int value);
     }
 }

@@ -47,6 +47,8 @@ public class Debug
     private int TimecycleIndex = 0;
     private string TimecycleName = "";
     private IModItems ModItems;
+    private bool boolFlipper;
+
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems)
     {
         PlateTypes = plateTypes;
@@ -591,7 +593,9 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        Dispatcher.RemoveRoadblock();
+        NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
+        EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
+        //Dispatcher.RemoveRoadblock();
         //CharCam = new Camera(true);
         //CharCam.Active = false;
         //Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
@@ -600,9 +604,16 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+            boolFlipper = !boolFlipper;
+            NativeFunction.Natives.xF3365489E0DD50F9(Player.CurrentVehicle.Vehicle, boolFlipper);
+            EntryPoint.WriteToConsole($"xF3365489E0DD50F9 {boolFlipper}", 5);
+        }
+
         //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
 
-        Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
+        //Time.FastForward(new DateTime(Time.CurrentYear,Time.CurrentMonth,Time.CurrentDay + 1,11,0,0));
 
         //List<MenuItem> WeedDealerMenu = new List<MenuItem>() {
         //    new MenuItem("Gram of Schwag",6, 1),

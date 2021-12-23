@@ -3,6 +3,7 @@ using LSR.Vehicles;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +30,7 @@ public class ActionMenu : Menu
     private UIMenuListScrollerItem<GestureLookup> GestureMenu;
     private List<GestureLookup> GestureLookups;
     private UIMenuItem CallPolice;
+    private UIMenuNumericScrollerItem<int> ToggleBodyArmor;
 
     public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings)
     {
@@ -38,10 +40,13 @@ public class ActionMenu : Menu
         Actions = MenuPool.AddSubMenu(parentMenu, "Actions");
         Actions.SetBannerType(EntryPoint.LSRedColor);
         Actions.OnItemSelect += OnActionItemSelect;
-
+        Actions.OnScrollerChange += OnScrollerChange;
 
         CreateActionsMenu();
     }
+
+
+
     public int SelectedPlateIndex { get; set; }
     public override void Hide()
     {
@@ -140,6 +145,10 @@ public class ActionMenu : Menu
 
         IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
 
+
+        ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
+
+
         if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
         {
             Actions.AddItem(Drink);
@@ -149,6 +158,7 @@ public class ActionMenu : Menu
         Actions.AddItem(CurrentActivityMenu);
         Actions.AddItem(GestureMenu);
         Actions.AddItem(SitDown);
+        Actions.AddItem(ToggleBodyArmor);
         Actions.AddItem(CallPolice);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
@@ -157,6 +167,7 @@ public class ActionMenu : Menu
         Actions.AddItem(EnterAsPassenger);
         Actions.AddItem(ShuffleSeat);
         Actions.AddItem(IntimidateDriver);
+        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -223,8 +234,19 @@ public class ActionMenu : Menu
         {
             Player.CallPolice();
         }
+        else if (selectedItem == ToggleBodyArmor)
+        {
+            Player.ToggleBodyArmor(ToggleBodyArmor.Value);
+        }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;
+    }
+    private void OnScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
+    {
+        if(item == ToggleBodyArmor)
+        {
+            Player.SetBodyArmor(ToggleBodyArmor.Value);
+        }
     }
     private void Setup()
     {

@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr
             ResetViolations();
             if (Player.IsAliveAndFree && Player.ShouldCheckViolations)
             {
-                ResetViolations();
+                //ResetViolations();
                 CheckViolations();
                 AddObservedAndReported();
             }
@@ -144,9 +144,13 @@ namespace LosSantosRED.lsr
         private void CheckViolations()
         {
             CheckPedDamageCrimes();
+            GameFiber.Yield();
             CheckWeaponCrimes();
+            GameFiber.Yield();
             CheckTheftCrimes();
+            GameFiber.Yield();
             CheckOtherCrimes();
+            GameFiber.Yield();
         }
         private void AddViolating(Crime crime)
         {

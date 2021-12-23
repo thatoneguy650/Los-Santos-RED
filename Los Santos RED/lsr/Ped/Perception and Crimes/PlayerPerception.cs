@@ -226,13 +226,16 @@ public class PlayerPerception
         {
             UpdateTargetDistance(placeLastSeen, target.Position);
             UpdateTargetLineOfSight(Target.IsWanted);
+
+
+            UpdateWitnessedCrimes();
             //GameFiber.Yield();
         }
         else
         {
             SetTargetUnseen();// SetTargetSeen();//maybe unseen here? not sure....
         }
-        UpdateWitnessedCrimes();
+        //UpdateWitnessedCrimes();
     }
     private float GetDotVectorResult(Entity source, Entity target)
     {
@@ -340,10 +343,11 @@ public class PlayerPerception
             WithinWeaponsAudioRange = false;
         }
         GameTimeLastDistanceCheck = Game.GameTime;
+        GameFiber.Yield();
     }
     private void UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (NeedsLOSCheck && Target.Character.Exists())
+        if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
         {
             
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);

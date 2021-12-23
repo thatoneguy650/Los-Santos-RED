@@ -92,7 +92,9 @@ public class HealthState
                 {
                     EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                     FlagDamage(CurrentPlayer);
+                    GameFiber.Yield();
                     ModifyDamage();
+                    GameFiber.Yield();
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
@@ -225,7 +227,7 @@ public class HealthState
     }
     private void ModifyDamage()
     {
-        if (!Settings.SettingsManager.DamageSettings.ModifyDamage)
+        if (!Settings.SettingsManager.DamageSettings.ModifyDamage || !MyPed.Pedestrian.Exists())
         {
             return;
         }

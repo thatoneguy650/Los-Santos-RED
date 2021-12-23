@@ -227,7 +227,7 @@ namespace Mod
                     }
                 }
                 LocationsCalculated++;
-                if(LocationsCalculated >= 20)
+                if(LocationsCalculated >= 5)
                 {
                     GameFiber.Yield();
                 }
@@ -250,7 +250,7 @@ namespace Mod
             if(gameLocation.HasInterior)
             {
                 Interior myInt = Interiors.GetInterior(gameLocation.InteriorID);
-                if(myInt != null)
+                if (myInt != null)
                 {
                     myInt.Load();
                 }

@@ -305,12 +305,15 @@ public class Weather
     }
     private void PlayAudioList(List<string> AudioToPlay)
     {
+        GameFiber.Yield();
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
+            GameFiber.Yield();
             while (AudioPlayer.IsAudioPlaying)
             {
                 GameFiber.Yield();
             }
+
             foreach (string audioname in AudioToPlay)
             {
                 if (Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)

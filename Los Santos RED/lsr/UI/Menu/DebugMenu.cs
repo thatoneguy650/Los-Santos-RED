@@ -27,6 +27,7 @@ public class DebugMenu : Menu
     private UIMenuListItem GetRandomWeapon;
     private UIMenuListItem TeleportToPOI;
     private UIMenuItem SetDateToToday;
+    private UIMenuItem Holder1;
     private IActionable Player;
     private RadioStations RadioStations;
     private int RandomWeaponCategory;
@@ -95,6 +96,8 @@ public class DebugMenu : Menu
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
+        Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
+
 
 
 
@@ -168,6 +171,10 @@ public class DebugMenu : Menu
         {
             Frecam();
         }
+        else if (selectedItem == Holder1)
+        {
+
+        }
         Debug.Visible = false;
     }
     private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
@@ -185,6 +192,7 @@ public class DebugMenu : Menu
             PlaceOfInterestSelected = index;
         }
     }
+
     private void Frecam()
     {
         GameFiber.StartNew(delegate

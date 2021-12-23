@@ -133,6 +133,7 @@ namespace Mod
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
         public Ped Character => Game.LocalPlayer.Character;
+        private bool CharacterModelIsFreeMode => Character.Model.Name.ToLower() == "mp_f_freemode_01" || Character.Model.Name.ToLower() == "mp_m_freemode_01" || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public int GroupID { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
@@ -360,6 +361,7 @@ namespace Mod
 
         public bool IsDuckingInVehicle { get; set; } = false;
         public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
+        public bool HasOnBodyArmor { get; private set; }
 
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -1091,6 +1093,51 @@ namespace Mod
             Scanner.Reset();
         }
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
+        public void ToggleBodyArmor(int Type)
+        {
+            if (CharacterModelIsFreeMode)
+            {
+                if (HasOnBodyArmor)
+                {
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, 0, 0, 0);
+                    HasOnBodyArmor = false;
+                    Character.Armor = 0;   
+                }
+                else
+                {
+                    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
+                    int TextureID = 0;
+
+                    if (NumberOfTextureVariations > 0)
+                    {
+                        RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
+                    }
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
+                    HasOnBodyArmor = true;
+                    Character.Armor = 200;
+                }
+            }
+        }
+        public void SetBodyArmor(int Type)
+        {
+            if (CharacterModelIsFreeMode)
+            {
+                int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
+                int TextureID = 0;
+
+                if (NumberOfTextureVariations > 0)
+                {
+                    RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
+                }
+                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
+                if(!HasOnBodyArmor)
+                {
+                    Character.Armor = 200;
+                }
+                HasOnBodyArmor = true;
+            }
+            
+        }
         public void RaiseHands() => Surrendering.RaiseHands();
         public void StartSprinting() => Sprinting.Start();
         public void StopSprinting() => Sprinting.Stop();

@@ -349,7 +349,7 @@ namespace LosSantosRED.lsr
             QuinaryTasks = new List<ModTask>()
             {
                 new ModTask(500, "Civilians.Update", Civilians.Update, 0),//250
-                //new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
+               // new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 
             NonPriorityTasks = new List<ModTask>()
