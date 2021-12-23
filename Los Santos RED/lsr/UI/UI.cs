@@ -138,7 +138,7 @@ public class UI : IMenuProvideable
     };
     public void Setup()
     {
-        Game.RawFrameRender += Draw;
+       Game.RawFrameRender += Draw;
         Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
         Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
         Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");

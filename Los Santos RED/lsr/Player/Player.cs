@@ -1587,6 +1587,8 @@ namespace Mod
                         }
                     }
                     CurrentVehicle = existingVehicleExt;
+
+                    EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
                 }
             }
             else 
@@ -1672,6 +1674,7 @@ namespace Mod
 
             if (PreviousWantedLevel != wantedLevel)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {
+                GameFiber.Yield();
                 OnWantedLevelChanged();
             }
             if (CurrentLocation.CharacterToLocate.Exists() && CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
@@ -1693,7 +1696,7 @@ namespace Mod
             CellY = (int)(position.Y / EntryPoint.CellSize);
             EntryPoint.FocusCellX = CellX;
             EntryPoint.FocusCellY = CellY;
-
+            GameFiber.Yield();
             ClosestSimpleTransaction = null;
             ClosestTeleportEntrance = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
@@ -1714,7 +1717,7 @@ namespace Mod
                     }
                 }
             }
-
+            GameFiber.Yield();
             Sprinting.Update();
 
 
@@ -1738,6 +1741,7 @@ namespace Mod
             {
                 IsNearScenario = false;
             }
+            GameFiber.Yield();
         }
         public void UpdateVehicleData()
         {
@@ -1832,6 +1836,7 @@ namespace Mod
                 //{
                 //    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 //}
+                GameFiber.Yield();
             }
             else
             {
@@ -1885,6 +1890,7 @@ namespace Mod
                 }
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
+            GameFiber.Yield();
         }
 
         private void OnStoppedDuckingInVehicle()
@@ -1923,6 +1929,7 @@ namespace Mod
             IsAiming = Game.LocalPlayer.IsFreeAiming;
             IsAimingInVehicle = IsInVehicle && IsAiming;
             UpdateVisiblyArmed();
+            GameFiber.Yield();
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
             if (PlayerCurrentWeapon != null)
             {
@@ -2088,6 +2095,7 @@ namespace Mod
             UpdateStateData();
             GameFiber.Yield();
             Intoxication.Update();
+            GameFiber.Yield();
         }
         private void UpdateLookedAtPed()
         {

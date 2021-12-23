@@ -293,7 +293,7 @@ namespace LosSantosRED.lsr
             {
                   new ModTask(100, "Player.Update", Player.Update, 0),//1
 
-                  new ModTask(500, "UI.Update", UI.Update, 1),
+                 new ModTask(500, "UI.Update", UI.Update, 1),
 
             };
             SecondaryTasks = new List<ModTask>()

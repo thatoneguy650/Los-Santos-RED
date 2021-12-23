@@ -268,20 +268,25 @@ namespace LSR.Vehicles
         }
         public void Update(IDriveable driver)
         {
+
+           // return;
+
             if (IsCar)
             {
                 Engine.Update(driver);
+                GameFiber.Yield();
 
 
 
-
-                if(Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
+                if (Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                    GameFiber.Yield();
                 }
                 else if (Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !HasAutoSetRadio)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                    GameFiber.Yield();
                 }
                 //else
                 //{
@@ -294,10 +299,12 @@ namespace LSR.Vehicles
                 if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
                 {
                     Indicators.Update();
+                    GameFiber.Yield();
                 }
                 if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
                 {
                     FuelTank.Update();
+                    GameFiber.Yield();
                 }
                 if(Vehicle.Exists())
                 {

@@ -114,6 +114,7 @@ public class HealthState
             }
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
+                GameFiber.Yield();
                // EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                 ModifyDamage();
                 Health = CurrentHealth;

@@ -325,6 +325,7 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
+            GameFiber.Yield();
             //if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers)// && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Player.GroupID) && x.Handle != Player.Character.Handle))
             //{
             //    foreach(Ped passenger in Player.CurrentVehicle.Vehicle.Passengers)
@@ -335,9 +336,9 @@ namespace LosSantosRED.lsr
             //            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             //            break;
             //        }
-                    
+
             //    }
-                
+
             //}
             if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 2.0f && !Player.IsInVehicle)
             {
@@ -359,6 +360,7 @@ namespace LosSantosRED.lsr
         {
             bool isDrivingSuspiciously = false;
             UpdateTrafficStats();
+            GameFiber.Yield();
             if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear && Player.VehicleSpeedMPH >= 20f)//needed for non humans that are returned from this native
             {
                 isDrivingSuspiciously = true;
@@ -381,6 +383,7 @@ namespace LosSantosRED.lsr
             }
             if (!TreatAsCop)
             {
+                GameFiber.Yield();
                 if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.VehicleSpeedMPH >= 20f)))
                 {
                     isDrivingSuspiciously = true;
@@ -409,6 +412,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateTrafficStats()
         {
+            GameFiber.Yield();
             VehicleIsSuspicious = false;
             TreatAsCop = false;
             IsSpeeding = false;
@@ -416,6 +420,7 @@ namespace LosSantosRED.lsr
             {
                 if (!IsRoadWorthy(Player.CurrentVehicle) || IsDamaged(Player.CurrentVehicle))
                 {
+                    GameFiber.Yield();
                     VehicleIsSuspicious = true;
                 }
                 //if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.ExemptCode3 && CurrentPlayer.CurrentVehicle.Vehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.IsPoliceVehicle && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.WasReportedStolen)
