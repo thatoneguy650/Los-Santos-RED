@@ -230,88 +230,97 @@ namespace LosSantosRED.lsr.Player
                     DesiredHeading = ClosestSittableEntity.Heading + 180f;
                 }
 
-
-
-                List<Rage.Object> Objects = World.GetAllObjects().ToList();
-                float ClosestDistance = 999f;
-                foreach (Rage.Object obj in Objects)
+                if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
                 {
-                    if (obj.Exists() && obj.Handle != ClosestSittableEntity.Handle)// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
-                    {
-                        uint tableHash = obj.Model.Hash;
-                        TableModel tableModel = TableModels.FirstOrDefault(x => x.Hash == tableHash);
-                        float DistanceToObject = obj.DistanceTo2D(DesiredPos);
-                        if (tableModel != null && DistanceToObject <= 2f)
-                        {
-                            PossibleCollisionTable = obj;
-                            ClosestDistance = DistanceToObject;
-                            break;
-                        }
-                        if (Player.AttachedProp.Exists() && Player.AttachedProp.Handle != obj.Handle)
-                        {
-                            if (DistanceToObject <= 2f && DistanceToObject <= ClosestDistance)
-                            {
-                                PossibleCollisionTable = obj;
-                                ClosestDistance = DistanceToObject;
-                            }
-                        }
-                    }
-                }
-
-
-
-
-
-                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                {
-                    EntryPoint.WriteToConsole($"Sitting PossibleCollisionTable = {PossibleCollisionTable.Model.Name} ", 5);
-                    //NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
-                }
-                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPos.X, DesiredPos.Y, DesiredPos.Z, 1.0f, -1, DesiredHeading, 0.2f);
-                uint GameTimeStartedSitting = Game.GameTime;
-                float heading = Game.LocalPlayer.Character.Heading;
-                bool IsFacingDirection = false;
-                bool IsCloseEnough = false;
-                while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-                {
-                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                    {
-                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                    }
-                    if (Player.IsMoveControlPressed)
-                    {
-                        IsCancelled = true;
-                    }
-                    IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(DesiredPos) < 0.2f;
-                    GameFiber.Yield();
-                }
-                GameTimeStartedSitting = Game.GameTime;
-                while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-                {
-                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                    {
-                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                    }
-                    heading = Game.LocalPlayer.Character.Heading;
-                    if (Math.Abs(Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)
-                    {
-                        IsFacingDirection = true;
-                        EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
-                    }
-                    GameFiber.Yield();
-                }
-                GameFiber.Sleep(500);
-                if (IsCloseEnough && IsFacingDirection && !IsCancelled)
-                {
-                    
-                    EntryPoint.WriteToConsole($"Sitting IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
+                    Game.FadeScreenOut(500, true);
+                    Player.Character.Position = DesiredPos;
+                    Player.Character.Heading = DesiredHeading;
+                    Game.FadeScreenIn(500, true);
                     return true;
                 }
                 else
                 {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                    EntryPoint.WriteToConsole($"Sitting NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
-                    return false;
+                    List<Rage.Object> Objects = World.GetAllObjects().ToList();
+                    float ClosestDistance = 999f;
+                    foreach (Rage.Object obj in Objects)
+                    {
+                        if (obj.Exists() && obj.Handle != ClosestSittableEntity.Handle)// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
+                        {
+                            uint tableHash = obj.Model.Hash;
+                            TableModel tableModel = TableModels.FirstOrDefault(x => x.Hash == tableHash);
+                            float DistanceToObject = obj.DistanceTo2D(DesiredPos);
+                            if (tableModel != null && DistanceToObject <= 2f)
+                            {
+                                PossibleCollisionTable = obj;
+                                ClosestDistance = DistanceToObject;
+                                break;
+                            }
+                            if (Player.AttachedProp.Exists() && Player.AttachedProp.Handle != obj.Handle)
+                            {
+                                if (DistanceToObject <= 2f && DistanceToObject <= ClosestDistance)
+                                {
+                                    PossibleCollisionTable = obj;
+                                    ClosestDistance = DistanceToObject;
+                                }
+                            }
+                        }
+                    }
+
+
+
+
+
+                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                    {
+                        EntryPoint.WriteToConsole($"Sitting PossibleCollisionTable = {PossibleCollisionTable.Model.Name} ", 5);
+                        //NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
+                    }
+                    NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPos.X, DesiredPos.Y, DesiredPos.Z, 1.0f, -1, DesiredHeading, 0.2f);
+                    uint GameTimeStartedSitting = Game.GameTime;
+                    float heading = Game.LocalPlayer.Character.Heading;
+                    bool IsFacingDirection = false;
+                    bool IsCloseEnough = false;
+                    while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+                    {
+                        if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                        {
+                            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                        }
+                        if (Player.IsMoveControlPressed)
+                        {
+                            IsCancelled = true;
+                        }
+                        IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(DesiredPos) < 0.2f;
+                        GameFiber.Yield();
+                    }
+                    GameTimeStartedSitting = Game.GameTime;
+                    while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+                    {
+                        if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                        {
+                            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                        }
+                        heading = Game.LocalPlayer.Character.Heading;
+                        if (Math.Abs(Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)
+                        {
+                            IsFacingDirection = true;
+                            EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
+                        }
+                        GameFiber.Yield();
+                    }
+                    GameFiber.Sleep(500);
+                    if (IsCloseEnough && IsFacingDirection && !IsCancelled)
+                    {
+
+                        EntryPoint.WriteToConsole($"Sitting IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
+                        return true;
+                    }
+                    else
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        EntryPoint.WriteToConsole($"Sitting NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
+                        return false;
+                    }
                 }
             }
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

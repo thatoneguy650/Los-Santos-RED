@@ -257,5 +257,105 @@ namespace LosSantosRED.lsr.Helper
             }
         }
 
+        public static string VehicleMakeName(uint modelHash)
+        {
+            string MakeName;
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByHash<IntPtr>(0xF7AF4F159FF99F97, modelHash);
+                MakeName = Marshal.PtrToStringAnsi(ptr);
+            }
+            unsafe
+            {
+                IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, MakeName);
+                MakeName = Marshal.PtrToStringAnsi(ptr2);
+            }
+            if (MakeName == "CARNOTFOUND" || MakeName == "NULL")
+            {
+                return "";
+            }
+            else
+            {
+                return MakeName;
+            }
+        }
+        public static string VehicleModelName(uint modelHash)
+        {
+            string ModelName;
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", modelHash);
+                ModelName = Marshal.PtrToStringAnsi(ptr);
+            }
+            unsafe
+            {
+                IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
+                ModelName = Marshal.PtrToStringAnsi(ptr2);
+            }
+            if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
+            {
+                return "";
+            }
+            else
+            {
+                return ModelName;
+            }
+
+        }
+        public static string VehicleClassName(uint modelHash)
+        {
+            int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS_FROM_NAME", modelHash);
+            switch (ClassInt)
+            {
+                case 0:
+                    return "Compact";
+                case 1:
+                    return "Sedan";
+                case 2:
+                    return "SUV";
+                case 3:
+                    return "Coupe";
+                case 4:
+                    return "Muscle";
+                case 5:
+                    return "Sports Classic";
+                case 6:
+                    return "Sports Car";
+                case 7:
+                    return "Super";
+                case 8:
+                    return "Motorcycle";
+                case 9:
+                    return "Off Road";
+                case 10:
+                    return "Industrial";
+                case 11:
+                    return "Utility";
+                case 12:
+                    return "Van";
+                case 13:
+                    return "Bicycle";
+                case 14:
+                    return "Boat";
+                case 15:
+                    return "Helicopter";
+                case 16:
+                    return "Plane";
+                case 17:
+                    return "Service";
+                case 18:
+                    return "Emergency";
+                case 19:
+                    return "Military";
+                case 20:
+                    return "Commercial";
+                case 21:
+                    return "Train";
+                default:
+                    return "";
+            }
+        }
+
+
     }
 }

@@ -17,6 +17,8 @@ public class ActivitySettings
     public string Marijuana_Overlay { get; set; } = "drug_wobbly";
     public List<string> Marijuana_PossibleProps { get; set; } = new List<string>() { "p_amb_joint_01" };
     public List<string> Cigarette_PossibleProps { get; set; } = new List<string>() { "ng_proc_cigarette01a" };
+    public bool TeleportWhenSitting { get; set; } = false;
+
     public ActivitySettings()
     {
 

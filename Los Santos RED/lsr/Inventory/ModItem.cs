@@ -1,10 +1,4 @@
-﻿using LosSantosRED.lsr.Interface;
-using Rage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 [Serializable()]
 public class ModItem
@@ -16,6 +10,11 @@ public class ModItem
     public ModItem(string name)
     {
         Name = name;
+    }
+    public ModItem(string name, bool requiresDLC)
+    {
+        Name = name;
+        RequiresDLC = requiresDLC;
     }
     public ModItem(string name, string description)
     {
@@ -44,6 +43,7 @@ public class ModItem
     public bool IsIntoxicating => IntoxicantName != "";
     public bool RestoresHealth => HealthGained > 0;
     public int HealthGained { get; set; } = 0;
+    public bool RequiresDLC { get; set; } = false;
     public string FormattedItemType
     {
         get

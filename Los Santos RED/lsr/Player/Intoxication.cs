@@ -158,6 +158,23 @@ public class Intoxication
     }
     public bool IsSwerving { get; private set; }
     public float CurrentIntensity { get; private set; }
+    public void Dispose()
+    {
+        CurrentIntoxicators.Clear();
+        PrimaryIntoxicator = null;
+        if (Player.IsIntoxicated)
+        {
+            SetSober(true);
+        }
+    }
+    public void Restart()
+    {
+        Update();
+        if (CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
+        {
+            SetIntoxicated();
+        }
+    }
     public void StartIngesting(Intoxicant intoxicant)
     {
         if(intoxicant == null)
@@ -250,6 +267,7 @@ public class Intoxication
                 }
                 NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
             }
+
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             Player.IntoxicatedIntensity = CurrentIntensity;

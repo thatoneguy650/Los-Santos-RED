@@ -362,7 +362,18 @@ namespace Mod
         public bool IsDuckingInVehicle { get; set; } = false;
         public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
         public bool HasOnBodyArmor { get; private set; }
-
+        public void AddHealth(int ToAdd)
+        {
+            if (Character.Health < Character.MaxHealth && ToAdd> 0)
+            {
+                if (Character.MaxHealth - Character.Health < ToAdd)
+                {
+                    ToAdd = Character.MaxHealth - Character.Health;
+                }
+                Character.Health += ToAdd;
+                EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}", 5);
+            }
+        }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
@@ -1150,7 +1161,7 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication)
         {
             IsDead = false;
             IsBusted = false;
@@ -1159,6 +1170,9 @@ namespace Mod
             //HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
             HealthState.Reset();
             IsPerformingActivity = false;
+
+            IsIntoxicated = false;
+
             if (resetWanted)
             {
                 PoliceResponse.Reset();
@@ -1201,6 +1215,10 @@ namespace Mod
             if (clearInventory)
             {
                 Inventory.Clear();
+            }
+            if(clearIntoxication)
+            {
+                Intoxication.Dispose();
             }
         }
         public void ResetScanner() => Scanner.Reset();

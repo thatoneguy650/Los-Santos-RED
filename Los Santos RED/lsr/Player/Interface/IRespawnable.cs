@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Interface
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation();
-        void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory);
+        void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication);
         void RaiseHands();
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);
         void ClearInventory();

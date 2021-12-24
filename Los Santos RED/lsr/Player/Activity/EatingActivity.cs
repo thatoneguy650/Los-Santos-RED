@@ -95,8 +95,6 @@ namespace LosSantosRED.lsr.Player
             Player.SetUnarmed();
             AttachFoodToHand();
             Player.IsPerformingActivity = true;
-
-
             //PlayingDict = Data.AnimEnterDictionary;
             //PlayingAnim = Data.AnimEnter;
             //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
@@ -118,16 +116,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Food.Detach();
             }
-            //Player.Character.Tasks.Clear();
-
-
-
-            // NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            
-
-                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-
-
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
@@ -155,8 +144,8 @@ namespace LosSantosRED.lsr.Player
                         Food.Delete();
                         if(Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
                         {
-                            int ToAdd = 10;
-                            if(Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health < 10)
+                            int ToAdd = ModItem.HealthGained;
+                            if(Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health < ToAdd)
                             {
                                 ToAdd = Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health;
                             }

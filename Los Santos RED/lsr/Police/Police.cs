@@ -43,17 +43,17 @@ namespace LosSantosRED.lsr
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
                             Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
-                            GameFiber.Yield();
+                            //GameFiber.Yield();
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
                             Cop.UpdateSpeech(Player);
-                            GameFiber.Yield();
+                            //GameFiber.Yield();
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
                         {
                             Cop.UpdateAssists(Player.IsWanted);
-                            GameFiber.Yield();
+                            //GameFiber.Yield();
                         }
                         if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {

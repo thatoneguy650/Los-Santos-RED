@@ -1972,11 +1972,7 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { SWAT3.hitandrun.FileName},"dispatching swat units"),
-
-                new AudioSet(new List<string>() { SWAT3.requestingcode1alphain30minutes.FileName},"dispatching swat units"),
-
-                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName },"dispatching swat units"),
+                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.hitandrun.FileName, SWAT3.respondcode3.FileName},"dispatching swat units"),
 
             },
             };
@@ -2017,9 +2013,9 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
 
-                new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
+               // new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
 
-                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName,SWAT3.suspectarmedusecaution.FileName },"dispatching swat units"),
+                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, SWAT3.swat10minuteeta.FileName, SWAT3.suspectarmedusecaution.FileName },"dispatching swat units"),
 
             },
             };

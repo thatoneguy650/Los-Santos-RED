@@ -227,7 +227,7 @@ namespace Mod
                     }
                 }
                 LocationsCalculated++;
-                if(LocationsCalculated >= 5)
+                if(LocationsCalculated >= 20)//5
                 {
                     GameFiber.Yield();
                 }

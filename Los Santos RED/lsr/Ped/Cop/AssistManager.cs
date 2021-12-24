@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class AssistManager
 {
+    private bool IsSetNoCollision = false;//this is new
     private Cop Cop;
 
     public AssistManager(Cop cop)
@@ -21,12 +22,21 @@ public class AssistManager
         {
             if (IsWanted && Cop.DistanceToPlayer > 15f)
             {
-                Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
+                if (!IsSetNoCollision)
+                {
+                    Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
+                    IsSetNoCollision = true;
+                }
+
                 //SetClosestVehicleNoCollision();
             }
             else
             {
-                Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
+                if (IsSetNoCollision)
+                {
+                    Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
+                    IsSetNoCollision = false;
+                }
             }
 
         }

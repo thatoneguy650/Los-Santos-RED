@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Player
         //private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
+        private bool hasGainedHP = false;
+
         public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -127,6 +129,11 @@ namespace LosSantosRED.lsr.Player
                     if (Item.Exists())
                     {
                         Item.Delete();
+                        if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                        {
+                            Player.AddHealth(ModItem.HealthGained);
+                            hasGainedHP = true;
+                        }
                     }
                 }
                 if (AnimationTime >= 0.35f)

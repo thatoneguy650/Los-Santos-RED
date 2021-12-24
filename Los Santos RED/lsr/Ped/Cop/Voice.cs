@@ -69,20 +69,20 @@ public class Voice
     }
     private void SpeakToPlayer(IPoliceRespondable currentPlayer)
     {
-        if (currentPlayer.WantedLevel <= 3)
-        {
-            TimeBetweenSpeaking = 25000;
-        }
-        else if (currentPlayer.PoliceResponse.IsWeaponsFree)
-        {
-            TimeBetweenSpeaking = 10000;
-        }
-        else if (currentPlayer.PoliceResponse.IsDeadlyChase)
-        {
-            TimeBetweenSpeaking = 18000;
-        }
         if (CanSpeak)
         {
+            if (currentPlayer.WantedLevel <= 3)
+            {
+                TimeBetweenSpeaking = 25000 + RandomItems.GetRandomNumberInt(0, 13000);
+            }
+            else if (currentPlayer.PoliceResponse.IsWeaponsFree)
+            {
+                TimeBetweenSpeaking = 10000 + RandomItems.GetRandomNumberInt(0, 4000);
+            }
+            else if (currentPlayer.PoliceResponse.IsDeadlyChase)
+            {
+                TimeBetweenSpeaking = 18000 + RandomItems.GetRandomNumberInt(0, 7000);
+            }
             if (currentPlayer.IsWanted)
             {
                 if (currentPlayer.IsBusted)
@@ -117,16 +117,16 @@ public class Voice
     }
     private void SpeakToTarget()
     {
-        if (Cop.CurrentTask.OtherTarget.WantedLevel <= 3)
-        {
-            TimeBetweenSpeaking = 25000;
-        }
-        else if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
-        {
-            TimeBetweenSpeaking = 18000;
-        }
         if (CanSpeak)
         {
+            if (Cop.CurrentTask.OtherTarget.WantedLevel <= 3)
+            {
+                TimeBetweenSpeaking = 25000 + RandomItems.GetRandomNumberInt(0, 13000);
+            }
+            else if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+            {
+                TimeBetweenSpeaking = 18000 + RandomItems.GetRandomNumberInt(0, 7000);
+            }
             if (Cop.CurrentTask.OtherTarget.IsWanted)
             {
                 if (Cop.CurrentTask.OtherTarget.IsBusted)

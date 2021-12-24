@@ -53,6 +53,7 @@ public class Investigation
         if (Player.IsNotWanted)
         {
             Position = NativeHelper.GetStreetPosition(postionToInvestigate);
+            GameFiber.Yield();
             if (havePlayerDescription)
             {
                 HavePlayerDescription = havePlayerDescription;
@@ -73,6 +74,7 @@ public class Investigation
                     NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Investigation Center");
                     NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
                     NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
+                    GameFiber.Yield();
                 }
                 EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START", 3);
             }
@@ -111,6 +113,7 @@ public class Investigation
                 NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Investigation Center");
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
                 NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
+                GameFiber.Yield();
             }
             else
             {

@@ -307,14 +307,28 @@ public class PurchaseMenu : Menu
                         {
                             description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
                         }
-                        if(cii.ModItemName.Substring(cii.ModItemName.Length - 1) =="*")
+                        description += "~n~~s~";
+
+                        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
+                        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
+                        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
+
+                        if (MakeName != "")
                         {
-                            description += $"~n~~n~~b~DLC Vehicle";
+                            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
                         }
-                        
-
-
-
+                        if (ModelName != "")
+                        {
+                            description += $"~n~Model: ~g~{ModelName}~s~";
+                        }
+                        if (ClassName != "")
+                        {
+                            description += $"~n~Class: ~p~{ClassName}~s~";
+                        }
+                        if (myItem.RequiresDLC)
+                        {
+                            description += $"~n~~b~DLC Vehicle";
+                        }
 
                         purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
                         purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
