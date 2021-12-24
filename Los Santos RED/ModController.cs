@@ -74,10 +74,18 @@ namespace LosSantosRED.lsr
         public bool DebugCoreRunning { get; set; } = true;
         public bool DebugInputRunning { get; set; } = true;
         public bool DebugSecondaryRunning { get; set; } = true;
-        private bool DebugQuinaryRunning { get; set; } = true;
+        public bool DebugTertiaryRunning { get; set; } = true;
+        public bool DebugQuaternaryRunning { get; set; } = true;
+        public bool DebugQuinaryRunning { get; set; } = true;
         public bool DebugUIRunning { get; set; } = true;
         public bool DebugNonPriorityRunning { get; set; } = true;
+
+
+
+
         public bool IsRunning { get; private set; }
+
+
         public void Dispose()
         {
             IsRunning = false;
@@ -302,12 +310,17 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
                 new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 2),//150
                 new ModTask(500, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),//150
-                new ModTask(500, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 4),//500
-                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 5),
-                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6),
-                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
-                //new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
-                new ModTask(500, "Police.Update", Police.Update, 8),//added yields//cant get 300 ms updates in here anyways
+                
+                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 4),
+                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 5),
+                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6),
+
+
+
+
+
+              //  new ModTask(500, "Civilians.Update", Civilians.Update, 7),//250
+                new ModTask(500, "Police.Update", Police.Update,7),//added yields//cant get 300 ms updates in here anyways
                // new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
 
             };
@@ -328,20 +341,20 @@ namespace LosSantosRED.lsr
 
                 //new ModTask(4000, "Weather.Update", Weather.Update, 9),//1000
 
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 8),
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 9),
+                //new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 8),
+                //new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 9),
 
             };
 
             QuaternaryTasks = new List<ModTask>()
             {
 
-                //new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
-                //new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 0),
-                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 1),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 2),
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 3),
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2),
+                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
 
                 //new ModTask(500, "Police.Update", Police.Update, 6),
             };
@@ -497,7 +510,7 @@ namespace LosSantosRED.lsr
                     int CurrentTertiaryTask = 0;
                     while (IsRunning)
                     {
-                        if (DebugSecondaryRunning)
+                        if (DebugTertiaryRunning)
                         {
                             if (CurrentTertiaryTask > TertiaryTasks.Count)
                             {
@@ -546,7 +559,7 @@ namespace LosSantosRED.lsr
                     int CurrentQuaternaryTask = 0;
                     while (IsRunning)
                     {
-                        if (DebugSecondaryRunning)
+                        if (DebugQuaternaryRunning)
                         {
                             if (CurrentQuaternaryTask > QuaternaryTasks.Count)
                             {
@@ -696,7 +709,7 @@ namespace LosSantosRED.lsr
                         {
                             UI.Tick();
                         }
-                        Time.Tick();
+                        
                         GameFiber.Yield();
                     }
                 }
@@ -739,6 +752,8 @@ namespace LosSantosRED.lsr
                         {
                             UI.Tick3();
                         }
+                        GameFiber.Yield();
+                        Time.Tick();
                         GameFiber.Yield();
                     }
                 }

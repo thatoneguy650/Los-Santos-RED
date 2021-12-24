@@ -355,19 +355,36 @@ public class Debug
     }
     private void DebugNumpad1()
     {
-        Game.LocalPlayer.IsInvincible = false;
-        Game.DisplayNotification("IsInvincible = False");
+        ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
+        Game.DisplayNotification($"ModController.DebugCoreRunning {ModController.DebugCoreRunning}");
+        GameFiber.Sleep(500);
+
+
+        //Game.LocalPlayer.IsInvincible = false;
+        //Game.DisplayNotification("IsInvincible = False");
     }
     private void DebugNumpad2()
     {
-        Dispatcher.DebugSpawnCop();
+        ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
+        Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
+        GameFiber.Sleep(500);
+        //Dispatcher.DebugSpawnCop();
     }
     private void DebugNumpad3()
     {
+        ModController.DebugTertiaryRunning = !ModController.DebugTertiaryRunning;
+        Game.DisplayNotification($"ModController.DebugTertiaryRunning {ModController.DebugTertiaryRunning}");
+        GameFiber.Sleep(500);
+
         WriteCivilianAndCopState();
     }
     private void DebugNumpad4()
     {
+        ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
+        Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
+        GameFiber.Sleep(500);
+
+
 
         //mp_doorbell
         //open_door
@@ -382,45 +399,45 @@ public class Debug
 
 
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
 
 
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-            float ObjectHeading = ClosestEntity.Heading;
-            if (ClosestEntity.Heading >= 180f)
-            {
-                DesiredHeading = ClosestEntity.Heading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ClosestEntity.Heading + 180f;
-            }
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
 
 
 
 
-            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-            if (ClosestEntity.Model.Dimensions.X >= 2f)
-            {
+        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
 
-            }
+        //    }
 
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
-            {
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+        //    {
 
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                GameFiber.Yield();
-            }
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
 
-        }
+        //}
         // Player.ScannerPlayDebug();
 
         //SetInRandomInterior();
@@ -473,8 +490,10 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
+        Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
+        GameFiber.Sleep(500);
 
-        
 
         Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
         Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
@@ -556,33 +575,40 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        int TotalEntities = 0;
-        EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
-        foreach (Entity ent in EntryPoint.SpawnedEntities)
-        {
-            if(ent.Exists())
-            {
-                TotalEntities++;
-                EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-            }
-        }
-        EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-        TotalEntities = 0;
+        ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        GameFiber.Sleep(500);
 
-        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
-        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
-        foreach (Entity ent in AllEntities)
-        {
-            if (ent.Exists() && ent.IsPersistent)
-            {
-                TotalEntities++;
-                EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-            }
-        }
-        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-        WriteCopState();
+
+        //int TotalEntities = 0;
+        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
+        //foreach (Entity ent in EntryPoint.SpawnedEntities)
+        //{
+        //    if(ent.Exists())
+        //    {
+        //        TotalEntities++;
+        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //    }
+        //}
+        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        //TotalEntities = 0;
+
+        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
+        //foreach (Entity ent in AllEntities)
+        //{
+        //    if (ent.Exists() && ent.IsPersistent)
+        //    {
+        //        TotalEntities++;
+        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //    }
+        //}
+        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+
+        //WriteCopState();
 
         //SpawnModelChecker();
         //Vector3 pos = Game.LocalPlayer.Character.Position;
@@ -593,8 +619,11 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
-        EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
+        ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
+        GameFiber.Sleep(500);
+        //NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
+        //EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
         //Dispatcher.RemoveRoadblock();
         //CharCam = new Camera(true);
         //CharCam.Active = false;
@@ -604,12 +633,17 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-            {
-            boolFlipper = !boolFlipper;
-            NativeFunction.Natives.xF3365489E0DD50F9(Player.CurrentVehicle.Vehicle, boolFlipper);
-            EntryPoint.WriteToConsole($"xF3365489E0DD50F9 {boolFlipper}", 5);
-        }
+        ModController.DebugInputRunning = !ModController.DebugInputRunning;
+        Game.DisplayNotification($"ModController.DebugInputRunning {ModController.DebugInputRunning}");
+        GameFiber.Sleep(500);
+
+
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //    {
+        //    boolFlipper = !boolFlipper;
+        //    NativeFunction.Natives.xF3365489E0DD50F9(Player.CurrentVehicle.Vehicle, boolFlipper);
+        //    EntryPoint.WriteToConsole($"xF3365489E0DD50F9 {boolFlipper}", 5);
+        //}
 
         //EntryPoint.WriteToConsole($"FASTFORWARD TO 11 AM TOMORROW {Time.CurrentTime}", 5);
 
@@ -632,12 +666,15 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        int CurrentWanted = Player.WantedLevel;
-        if(CurrentWanted <= 5)
-        {
-            CurrentWanted++;
-            Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
-        }
+        ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        GameFiber.Sleep(500);
+        //int CurrentWanted = Player.WantedLevel;
+        //if(CurrentWanted <= 5)
+        //{
+        //    CurrentWanted++;
+        //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
+        //}
     }
 
     private void SpawnBus()

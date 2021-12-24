@@ -47,22 +47,22 @@ namespace LosSantosRED.lsr
         {
             IsActive = false;
         }
-        public void StopVanilla()
-        {
-            if(IsActive)
-            {
-                if (Settings.SettingsManager.PlayerSettings.SearchMode_FakeActiveWanted)
-                {
-                    //StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+        //public void StopVanilla()
+        //{
+        //    if(IsActive)
+        //    {
+        //        if (Settings.SettingsManager.PlayerSettings.SearchMode_FakeActiveWanted)
+        //        {
+        //            //StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
 
 
 
 
 
-                    //ghost cop is turned off from the fake wanted level stuff
-                }
-            } 
-        }
+        //            //ghost cop is turned off from the fake wanted level stuff
+        //        }
+        //    } 
+        //}
         private void DetermineMode()
         {
             if (Player.IsWanted)// && Player.HasBeenWantedFor >= 5000)

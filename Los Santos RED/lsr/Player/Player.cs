@@ -714,10 +714,6 @@ namespace Mod
         public void LocationUpdate()
         {
             CurrentLocation.Update(Character);
-
-
-
-
         }
         public void LowerHands() => Surrendering.LowerHands();
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
@@ -1452,7 +1448,7 @@ namespace Mod
         public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
 
         public void ScannerPlayDebug() => Scanner.DebugPlayDispatch();
-        public void StopVanillaSearchMode() => SearchMode.StopVanilla();
+      //  public void StopVanillaSearchMode() => SearchMode.StopVanilla();
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
         {
