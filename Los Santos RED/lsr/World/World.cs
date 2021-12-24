@@ -146,7 +146,6 @@ namespace Mod
                 }
             }
         }
-       // public void DebugPlayWeather() => Weather.DebugPlayReport();
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
         public VehicleExt GetVehicleExt(uint handle) => Vehicles.GetVehicleExt(handle);
@@ -227,7 +226,7 @@ namespace Mod
                     }
                 }
                 LocationsCalculated++;
-                if(LocationsCalculated >= 20)//5
+                if(LocationsCalculated >= 50)//20//5
                 {
                     GameFiber.Yield();
                 }

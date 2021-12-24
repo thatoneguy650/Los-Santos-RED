@@ -28,6 +28,8 @@ namespace LosSantosRED.lsr.Interface
        Rage.Object AttachedProp { get; }
         bool IsMoveControlPressed { get; }
         string ModelName { get; }
+        bool HasCurrentActivity { get; }
+        bool CharacterModelIsFreeMode { get; }
 
         void StartSmokingPot();
         void StartSittingDown();

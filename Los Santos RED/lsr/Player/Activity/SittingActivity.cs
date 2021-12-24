@@ -28,6 +28,9 @@ namespace LosSantosRED.lsr.Player
         //0x643d1f90 maze bus bench, sit too far forward
         private Entity ClosestSittableEntity;
         private Entity PossibleCollisionTable;
+        private Vector3 StoredPlayerPosition;
+        private float StoredPlayerHeading;
+
         public SittingActivity(IActionable player, ISettingsProvideable settings) : base()
         {
             Player = player;
@@ -108,47 +111,62 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("Sitting Activity Exit", 5);
             Player.PauseDynamicActivity();
-            if (IsActivelySitting)
-            {
-                PlayingDict = Data.AnimExitDictionary;
-                PlayingAnim = Data.AnimExit;
-                Vector3 Position = Game.LocalPlayer.Character.Position;
-                float Heading = Game.LocalPlayer.Character.Heading;
-                PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
-                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
 
-                float AnimationTime = 0f;
-                while (AnimationTime < 1.0f)
+            if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
+            {
+                Game.FadeScreenOut(500, true);
+                Player.Character.Position = StoredPlayerPosition;
+                Player.Character.Heading = StoredPlayerHeading;
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                Game.FadeScreenIn(500, true);
+                Player.IsSitting = false;
+                
+            }
+            else
+            {
+
+                if (IsActivelySitting)
                 {
-                    AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                    Player.SetUnarmed();
-                    GameFiber.Yield();
-                }
-                EntryPoint.WriteToConsole("Sitting Activity Exit 2", 5);
-            }
-            EntryPoint.WriteToConsole("Sitting Activity Exit 3", 5);
-            AnimationDictionary.RequestAnimationDictionay("ped");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-            if (ClosestSittableEntity.Exists())
-            {
-                ClosestSittableEntity.IsPositionFrozen = false;
-            }
-            if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-            {
-                NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
-            }
+                    PlayingDict = Data.AnimExitDictionary;
+                    PlayingAnim = Data.AnimExit;
+                    Vector3 Position = Game.LocalPlayer.Character.Position;
+                    float Heading = Game.LocalPlayer.Character.Heading;
+                    PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+                    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
 
-            GameFiber.Yield();
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            //Player.IsPerformingActivity = false;
-            Player.IsSitting = false;
-            GameFiber.Sleep(5000);
-            if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-            {
-                EntryPoint.WriteToConsole("Sitting Activity Exit Collision Added", 5);
-                NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, 0, true);
+                    float AnimationTime = 0f;
+                    while (AnimationTime < 1.0f)
+                    {
+                        AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+                        Player.SetUnarmed();
+                        GameFiber.Yield();
+                    }
+                    EntryPoint.WriteToConsole("Sitting Activity Exit 2", 5);
+                }
+                EntryPoint.WriteToConsole("Sitting Activity Exit 3", 5);
+                AnimationDictionary.RequestAnimationDictionay("ped");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                if (ClosestSittableEntity.Exists())
+                {
+                    ClosestSittableEntity.IsPositionFrozen = false;
+                }
+                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                {
+                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
+                }
+
+                GameFiber.Yield();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                //Player.IsPerformingActivity = false;
+                Player.IsSitting = false;
+                GameFiber.Sleep(5000);
+                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                {
+                    EntryPoint.WriteToConsole("Sitting Activity Exit Collision Added", 5);
+                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, 0, true);
+                }
             }
         }
         private void SitDown()
@@ -187,7 +205,11 @@ namespace LosSantosRED.lsr.Player
                 {
                     string modelName = obj.Model.Name.ToLower();
                     uint hash = obj.Model.Hash;
-                    SeatModel seatModel = SeatModels.FirstOrDefault(x => x.Hash == hash);
+                    SeatModel seatModel = SeatModels.FirstOrDefault(x => x.ModelHash == hash);
+                    if(seatModel == null)
+                    {
+                        seatModel = SeatModels.FirstOrDefault(x => x.ModelName?.ToLower() == modelName);
+                    }
                     if (seatModel != null || modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
                     {
                         float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
@@ -208,8 +230,12 @@ namespace LosSantosRED.lsr.Player
                 ClosestSittableEntity.IsPositionFrozen = true;
 
                 uint hash = ClosestSittableEntity.Model.Hash;
-                SeatModel seatModel = SeatModels.FirstOrDefault(x => x.Hash == hash);
-
+                string modelName = ClosestSittableEntity.Model.Name.ToLower();
+                SeatModel seatModel = SeatModels.FirstOrDefault(x => x.ModelHash == hash);
+                if (seatModel == null)
+                {
+                    seatModel = SeatModels.FirstOrDefault(x => x.ModelName?.ToLower() == modelName);
+                }
                 float offset = -0.5f;
                 if(seatModel != null)
                 {
@@ -232,6 +258,8 @@ namespace LosSantosRED.lsr.Player
 
                 if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
                 {
+                    StoredPlayerPosition = Player.Character.Position;
+                    StoredPlayerHeading = Player.Character.Heading;
                     Game.FadeScreenOut(500, true);
                     Player.Character.Position = DesiredPos;
                     Player.Character.Heading = DesiredHeading;
@@ -247,7 +275,12 @@ namespace LosSantosRED.lsr.Player
                         if (obj.Exists() && obj.Handle != ClosestSittableEntity.Handle)// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
                         {
                             uint tableHash = obj.Model.Hash;
+                            string tableModelName = obj.Model.Name.ToLower();
                             TableModel tableModel = TableModels.FirstOrDefault(x => x.Hash == tableHash);
+                            if(tableModel == null)
+                            {
+                                tableModel = TableModels.FirstOrDefault(x => x.ModelName?.ToLower() == tableModelName);
+                            }
                             float DistanceToObject = obj.DistanceTo2D(DesiredPos);
                             if (tableModel != null && DistanceToObject <= 2f)
                             {
@@ -301,7 +334,7 @@ namespace LosSantosRED.lsr.Player
                             NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
                         }
                         heading = Game.LocalPlayer.Character.Heading;
-                        if (Math.Abs(Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)
+                        if (Math.Abs(Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.1f)//0.5f)
                         {
                             IsFacingDirection = true;
                             EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading} {ObjectHeading}", 5);
@@ -416,15 +449,22 @@ namespace LosSantosRED.lsr.Player
 
 
             SeatModels = new List<SeatModel>() { 
-                new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" },
+                new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" }, //sometime float a bit above it
                 new SeatModel(0x7facd66f,-0.15f) {Name = "Bus Bench" },
                 new SeatModel(0xc0a6cbcd), 
                 new SeatModel(0x534bc1bc), 
                 new SeatModel(0xa55359b8), 
-                new SeatModel(0xe7ed1a59), 
+                new SeatModel(0xe7ed1a59),
+
+                new SeatModel(0xd3c6d323){Name = "Plastic Chair" },
+
+                new SeatModel("PROP_BENCH_05") {Name ="Bus Bench 05"},
+                new SeatModel(0x96ff362a){Name = "Wooden Chair With Table" },
+                
+
                 new SeatModel(0xd3c6d323){Name = "Plastic Chair" }, 
-                new SeatModel(0x3c67ba3f), 
-                new SeatModel(0xda867f80),
+                new SeatModel(0x3c67ba3f,-0.45f){Name = "Iron Bench" },
+                new SeatModel(0xda867f80,-0.45f){Name = "Iron Bench" },
                 new SeatModel(0x643d1f90,-0.25f) {Name = "Maze Bus Bench" } };
 
             TableModels = new List<TableModel>() {
@@ -439,15 +479,25 @@ namespace LosSantosRED.lsr.Player
             }
             public SeatModel(uint hash)
             {
-                Hash = hash;
+                ModelHash = hash;
             }
             public SeatModel(uint hash, float entryOffsetFront)
             {
-                Hash = hash;
+                ModelHash = hash;
+                EntryOffsetFront = entryOffsetFront;
+            }
+            public SeatModel(string modelName)
+            {
+                ModelName = modelName;
+            }
+            public SeatModel(string modelName, float entryOffsetFront)
+            {
+                ModelName = modelName;
                 EntryOffsetFront = entryOffsetFront;
             }
             public string Name { get; set; } = "Unknown";
-            public uint Hash { get; set; }
+            public string ModelName { get; set; } = "";
+            public uint ModelHash { get; set; } = 0;
             public float EntryOffsetFront { get; set; } = -0.5f;
         }
         private class TableModel
@@ -465,7 +515,17 @@ namespace LosSantosRED.lsr.Player
                 Hash = hash;
                 EntryOffsetFront = entryOffsetFront;
             }
+            public TableModel(string modelName)
+            {
+                ModelName = modelName;
+            }
+            public TableModel(string modelName, float entryOffsetFront)
+            {
+                ModelName = modelName;
+                EntryOffsetFront = entryOffsetFront;
+            }
             public string Name { get; set; } = "Unknown";
+            public string ModelName { get; set; }
             public uint Hash { get; set; }
             public float EntryOffsetFront { get; set; } = -0.5f;
         }

@@ -9,9 +9,10 @@ namespace LosSantosRED.lsr.Interface
     public interface IAudioPlayable
     {
         bool IsAudioPlaying { get; }
+        bool IsPlayingLowPriority { get; }
 
         void Abort();
-        void Play(string fileName);
-        void Play(string fileName, int volume);
+        void Play(string fileName, bool isLowPriority);
+        void Play(string fileName, int volume, bool isLowPriority);
     }
 }

@@ -24,7 +24,8 @@ public class WavAudio : IAudioPlayable
     private SoundPlayer AudioDevice = new SoundPlayer();
     private bool CancelAudio;
     public bool IsAudioPlaying { get; private set; }
-    public void Play(string FileName, int volume)
+    public bool IsPlayingLowPriority { get; set; } = false;
+    public void Play(string FileName, int volume, bool isLowPriority)
     {
         if (FileName == "")
         {
@@ -44,13 +45,14 @@ public class WavAudio : IAudioPlayable
         {
             volume = 1;
         }
+        IsPlayingLowPriority = isLowPriority;
         SetVolume(volume);
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; });
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsPlayingLowPriority = false; });
     }
-    public void Play(string FileName)
+    public void Play(string FileName, bool isLowPriority)
     {
         if (FileName == "")
         {
@@ -61,18 +63,18 @@ public class WavAudio : IAudioPlayable
         {
             AudioDevice = new SoundPlayer();
         }
-
+        IsPlayingLowPriority = isLowPriority;
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
-        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; });
+        System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsPlayingLowPriority = false; });
     }
     public void Abort()
     {
         if (IsAudioPlaying)
         {
             CancelAudio = true;
-            System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); });//seems to take 500 ms or so to do it? will lock the game thread 
+            System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); IsPlayingLowPriority = false; });//seems to take 500 ms or so to do it? will lock the game thread 
         }
     }
     private int GetVolume()

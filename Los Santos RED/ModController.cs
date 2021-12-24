@@ -158,7 +158,7 @@ namespace LosSantosRED.lsr
             Weather = new Weather(WavAudio, Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather);
             Debug.Setup();
             GameFiber.Yield();
             World.AddBlipsToMap();
@@ -361,7 +361,7 @@ namespace LosSantosRED.lsr
 
             QuinaryTasks = new List<ModTask>()
             {
-                new ModTask(500, "Civilians.Update", Civilians.Update, 0),//250
+                new ModTask(250, "Civilians.Update", Civilians.Update, 0),//500//250
                // new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 

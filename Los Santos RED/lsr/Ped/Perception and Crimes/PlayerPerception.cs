@@ -108,21 +108,8 @@ public class PlayerPerception
     {
         get
         {
-            //int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
             if (Originator.IsCop)//IsCop)
             {
-                //if (CellsAway >= 6)
-                //{
-                //    return 1000;
-                //}
-                //else if (CellsAway >= 5)
-                //{
-                //    return 750;
-                //}
-                //else
-                //{
-                //    return 500;
-                //}
                 if (DistanceToTarget >= 300)
                 {
                     return 1500;
@@ -134,25 +121,18 @@ public class PlayerPerception
             }
             else
             {
-                //if (CellsAway >= 6)
-                //{
-                //    return 2000;
-                //}
-                //else if (CellsAway >= 4)
-                //{
-                //    return 1500;
-                //}
-                //else
-                //{
-                //    return 750;
-                //}
+
                 if (DistanceToTarget >= 300)
                 {
                     return 2000;
                 }
+                if (DistanceToTarget >= 80F)
+                {
+                    return 750;
+                }
                 else
                 {
-                    return 750;//500// 750;//500
+                    return 500;// 750;//500// 750;//500
                 }
             }
         }
@@ -165,43 +145,59 @@ public class PlayerPerception
             {
                 return 2000;
             }
+            if (DistanceToTarget >= 80F)
+            {
+                return 1000;
+            }
             else
             {
                 return 750;//500// 750;//500
             }
-            //int CellsAway = NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
-            //if (Originator.IsCop)//IsCop)
-            //{
-            //    if (CellsAway >= 6)
-            //    {
-            //        return 1200;
-            //    }
-            //    else if (CellsAway >= 5)
-            //    {
-            //        return 850;
-            //    }
-            //    else
-            //    {
-            //        return 750;
-            //    }
-            //}
-            //else
-            //{
-            //    if (CellsAway >= 6)
-            //    {
-            //        return 2000;// 2500;
-            //    }
-            //    else if (CellsAway >= 4)
-            //    {
-            //        return 850;// 1500;
-            //    }
-            //    else
-            //    {
-            //        return 750;
-            //    }
-            //}
         }
     }
+    //private int DistanceUpdate
+    //{
+    //    get
+    //    {
+    //        if (Originator.IsCop)//IsCop)
+    //        {
+    //            if (DistanceToTarget >= 300)
+    //            {
+    //                return 1500;
+    //            }
+    //            else
+    //            {
+    //                return 500;//150
+    //            }
+    //        }
+    //        else
+    //        {
+
+    //            if (DistanceToTarget >= 300)
+    //            {
+    //                return 2000;
+    //            }
+    //            else
+    //            {
+    //                return 500;// 750;//500// 750;//500
+    //            }
+    //        }
+    //    }
+    //}
+    //private int LosUpdate
+    //{
+    //    get
+    //    {
+    //        if (DistanceToTarget >= 300)
+    //        {
+    //            return 2000;
+    //        }
+    //        else
+    //        {
+    //            return 750;//500// 750;//500
+    //        }
+    //    }
+    //}
     public bool NeedsUpdate
     {
         get
@@ -312,15 +308,16 @@ public class PlayerPerception
         }
         else
         {
-            int maxCellsAway =  NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
-            if (maxCellsAway <= 2)
-            {
-                DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-            }
-            else
-            {
-                DistanceToTarget = maxCellsAway * 70f;
-            }
+            DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+            //int maxCellsAway =  NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
+            //if (maxCellsAway <= 2)
+            //{
+            //    DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+            //}
+            //else
+            //{
+            //    DistanceToTarget = maxCellsAway * 70f;
+            //}
         }
         if (Originator.IsCop)
         {

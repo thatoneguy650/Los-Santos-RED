@@ -71,6 +71,25 @@ public class ActionMenu : Menu
     }
     public void Update()
     {
+
+        if(Player.HasCurrentActivity)
+        {
+            CurrentActivityMenu.Enabled = true;
+        }
+        else
+        {
+            CurrentActivityMenu.Enabled = false;
+        }
+
+        if(Player.CharacterModelIsFreeMode)
+        {
+            ToggleBodyArmor.Enabled = true;
+        }
+        else
+        {
+            ToggleBodyArmor.Enabled = false;
+        }
+
         //CreateActionsMenu();
         //if (Player.CanPerformActivities)
         //{
@@ -158,16 +177,19 @@ public class ActionMenu : Menu
         Actions.AddItem(CurrentActivityMenu);
         Actions.AddItem(GestureMenu);
         Actions.AddItem(SitDown);
-        Actions.AddItem(ToggleBodyArmor);
         Actions.AddItem(CallPolice);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
 
+#if DEBUG
+        Actions.AddItem(ToggleBodyArmor);
         Actions.AddItem(EnterAsPassenger);
         Actions.AddItem(ShuffleSeat);
         Actions.AddItem(IntimidateDriver);
-        
+#endif
+
+
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

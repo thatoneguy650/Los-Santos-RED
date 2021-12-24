@@ -1304,6 +1304,15 @@ namespace LosSantosRED.lsr
                 AbortedAudio = true;
                 Abort();
             }
+
+
+            if (AudioPlayer.IsAudioPlaying && AudioPlayer.IsPlayingLowPriority)
+            {
+                EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
                 if (AbortedAudio)
@@ -1311,11 +1320,11 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
                     if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
                     }
                     else
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom());
+                        AudioPlayer.Play(RadioEnd.PickRandom(),false);
                     }
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
@@ -1339,11 +1348,11 @@ namespace LosSantosRED.lsr
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
                         if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                         {
-                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
+                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
                         }
                         else
                         {
-                            AudioPlayer.Play(audioname);
+                            AudioPlayer.Play(audioname, false);
                         }
                         while (AudioPlayer.IsAudioPlaying)
                         {
@@ -2350,11 +2359,11 @@ namespace LosSantosRED.lsr
             {
                 Name = "Vehicle Crashed",
                 IsStatus = true,
-                IncludeReportedBy = false,
+                IncludeReportedBy = true,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
-                MainAudioSet = new List<AudioSet>()
+                PreambleAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { s_f_y_cop_black_full_01.SuspectCrashed.FileName},"suspect crashed"),
                 new AudioSet(new List<string>() { s_f_y_cop_black_full_02.SuspectCrashed.FileName},"suspect crashed"),
@@ -2371,6 +2380,14 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { s_m_y_sheriff_white_full_01.SuspectCrashed.FileName},"suspect crashed"),
                 new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectCrashed.FileName},"suspect crashed"),
             },
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName},"a motor vehicle accident"),
+                new AudioSet(new List<string>() { crime_motor_vehicle_accident.AseriousMVA.FileName},"a motor vehicle accident"),
+                new AudioSet(new List<string>() { crime_motor_vehicle_accident.AnAEincident.FileName},"a motor vehicle accident"),
+            },
+
+
             };
             NoFurtherUnitsNeeded = new Dispatch()
             {
@@ -2637,6 +2654,10 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { officer_begin_patrol.Proceedtopatrolarea.FileName },"proceed to patrol area"),
                 new AudioSet(new List<string>() { officer_begin_patrol.Proceedwithpatrol.FileName },"proceed with patrol"),
             },
+                //SecondaryAudioSet = new List<AudioSet>()
+                //{
+                //    new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
+                //}
             };
         }
         private class CrimeDispatch

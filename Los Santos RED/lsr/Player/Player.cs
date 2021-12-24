@@ -128,12 +128,12 @@ namespace Mod
         public bool CanConverse => !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse; // && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;//off for performance checking
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
-        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
-        public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;// && !IsInVehicle;//THIS IS TURNED OFF TO SEE HOW THE ANIMATIONS LOOK, PROBABLYT WONT WORK!
+        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f && !CurrentTargetedPed.IsInVehicle;
+        public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;// && !IsInVehicle;//THIS IS TURNED OFF TO SEE HOW THE ANIMATIONS LOOK, PROBABLYT WONT WORK!
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
         public Ped Character => Game.LocalPlayer.Character;
-        private bool CharacterModelIsFreeMode => Character.Model.Name.ToLower() == "mp_f_freemode_01" || Character.Model.Name.ToLower() == "mp_m_freemode_01" || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
+        public bool CharacterModelIsFreeMode => Character.Model.Name.ToLower() == "mp_f_freemode_01" || Character.Model.Name.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public int GroupID { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
@@ -180,6 +180,7 @@ namespace Mod
         public bool HasItemInInventory(string Name) => Inventory.Get(Name)?.Amount > 0;
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
+        public bool HasCurrentActivity => DynamicActivity != null;
         public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
@@ -1710,7 +1711,7 @@ namespace Mod
             CellY = (int)(position.Y / EntryPoint.CellSize);
             EntryPoint.FocusCellX = CellX;
             EntryPoint.FocusCellY = CellY;
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
             ClosestSimpleTransaction = null;
             ClosestTeleportEntrance = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
@@ -1731,7 +1732,7 @@ namespace Mod
                     }
                 }
             }
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
             Sprinting.Update();
 
 
@@ -1755,7 +1756,7 @@ namespace Mod
             {
                 IsNearScenario = false;
             }
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
         }
         public void UpdateVehicleData()
         {
@@ -1813,7 +1814,10 @@ namespace Mod
                     }
                     isHotwiring = IsHotWiring;
                 }
-                if (CurrentVehicle != null && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
+
+
+
+                if (Settings.SettingsManager.PlayerSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
                 {
                     if (!IsMobileRadioEnabled)
                     {
@@ -1829,6 +1833,11 @@ namespace Mod
                         NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                     }
                 }
+
+
+
+
+
                 if (VehicleSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
@@ -1850,7 +1859,7 @@ namespace Mod
                 //{
                 //    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 //}
-                GameFiber.Yield();
+                //GameFiber.Yield();//TR Yield RemovedTest 1
             }
             else
             {
@@ -1884,7 +1893,7 @@ namespace Mod
             }
             if (OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
             {
-                if (OwnedVehicle.Vehicle.DistanceTo2D(Position) >= 800f && OwnedVehicle.Vehicle.IsPersistent)
+                if (OwnedVehicle.Vehicle.IsPersistent && OwnedVehicle.Vehicle.DistanceTo2D(Position) >= 800f)
                 {
                     EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE MOVED AWAY {OwnedVehicle.Vehicle.Handle}", 5);
                     OwnedVehicle.Vehicle.IsPersistent = false;
@@ -1904,7 +1913,7 @@ namespace Mod
                 }
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
         }
 
         private void OnStoppedDuckingInVehicle()
@@ -1943,7 +1952,7 @@ namespace Mod
             IsAiming = Game.LocalPlayer.IsFreeAiming;
             IsAimingInVehicle = IsInVehicle && IsAiming;
             UpdateVisiblyArmed();
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
             if (PlayerCurrentWeapon != null)
             {
@@ -2109,7 +2118,7 @@ namespace Mod
             UpdateStateData();
             GameFiber.Yield();
             Intoxication.Update();
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 1
         }
         private void UpdateLookedAtPed()
         {

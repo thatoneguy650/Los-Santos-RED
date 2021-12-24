@@ -140,8 +140,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, LocationType.Police, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
             new GameLocation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, LocationType.Police, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
             new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+            
 
-            new GameLocation(new Vector3(110.4f, -744.2f, 45.7496f), 233.9121f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(110.4f, -744.2f, 45.7496f), 233.9121f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },//inside, can sometime glitch the spawn for now
 
             //Other
             new GameLocation(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,LocationType.Stadium,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },

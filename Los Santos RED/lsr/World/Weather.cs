@@ -29,6 +29,7 @@ public class Weather
     private readonly string NotificationSubtitle = "~b~Weather Report";
     private List<Sponsor> Sponsors;
     private IWeatherReportable Player;
+    private bool isPlayingAudio = false;
     public Weather(IAudioPlayable audio, ISettingsProvideable settings, ITimeReportable time, IWeatherReportable player)
     {
         AudioPlayer = audio;
@@ -313,22 +314,32 @@ public class Weather
             {
                 GameFiber.Yield();
             }
-
             foreach (string audioname in AudioToPlay)
             {
+                if(Player.IsWanted || Player.Investigation.IsActive)
+                {
+                    if(isPlayingAudio)
+                    {
+                        AudioPlayer.Abort();
+                    }
+                    break;
+                }
                 if (Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                 {
-                    AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume);
+                    isPlayingAudio = true;
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, true);
                 }
                 else
                 {
-                    AudioPlayer.Play(audioname);
+                    isPlayingAudio = true;
+                    AudioPlayer.Play(audioname, true);
                 }
                 while (AudioPlayer.IsAudioPlaying)
                 {
                     GameFiber.Yield();
                 }
             }
+            isPlayingAudio = false;
         }, "PlayAudioList");
     }
     private void RemoveAllNotifications()

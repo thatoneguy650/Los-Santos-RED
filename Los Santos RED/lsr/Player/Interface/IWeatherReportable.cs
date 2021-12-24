@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsNotWanted { get; }
         bool IsAliveAndFree { get; }
+        Investigation Investigation { get; }
     }
 }

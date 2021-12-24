@@ -73,7 +73,7 @@ public class PlayerSettings
     public float Sprint_RecoverRate { get; set; } = 1.0f;
     public float Sprint_MoveSpeedOverride { get; set; } = 4.0f;//5.0f;
     public bool ForceFirstPersonOnVehicleDuck { get; set; } = true;
-
+    public bool AllowRadioInPoliceVehicles { get; set; } = true;
 
     public PlayerSettings()
     {
