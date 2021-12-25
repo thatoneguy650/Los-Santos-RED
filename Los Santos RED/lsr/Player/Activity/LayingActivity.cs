@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class SittingActivity : DynamicActivity
+    public class LayingActivity : DynamicActivity
     {
         private string PlayingAnim;
         private string PlayingDict;
@@ -32,7 +32,7 @@ namespace LosSantosRED.lsr.Player
         private float StoredPlayerHeading;
         private bool FindSittingProp = false;
 
-        public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp) : base()
+        public LayingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp) : base()
         {
             Player = player;
             Settings = settings;
@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            EntryPoint.WriteToConsole($"Sitting Activity Enter {FindSittingProp}", 5);
+            EntryPoint.WriteToConsole("Sitting Activity Enter", 5);
             Player.SetUnarmed();
             Player.IsSitting = true;
 
@@ -78,7 +78,6 @@ namespace LosSantosRED.lsr.Player
                     {
                         ClosestSittableEntity.IsPositionFrozen = false;
                     }
-                    EntryPoint.WriteToConsole("Sitting Activity No Seat Found", 5);
                     return;
                 }
             }
@@ -100,12 +99,12 @@ namespace LosSantosRED.lsr.Player
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                if(AnimationTime >= 1.0f && !Player.IsPerformingActivity)
+                if (AnimationTime >= 1.0f && !Player.IsPerformingActivity)
                 {
                     StartNewIdleScene();
-                    
+
                 }
-                if(Player.IsMoveControlPressed)
+                if (Player.IsMoveControlPressed)
                 {
                     IsCancelled = true;
                 }
@@ -127,7 +126,7 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Game.FadeScreenIn(500, true);
                 Player.IsSitting = false;
-                
+
             }
             else
             {
@@ -213,7 +212,7 @@ namespace LosSantosRED.lsr.Player
                     string modelName = obj.Model.Name.ToLower();
                     uint hash = obj.Model.Hash;
                     SeatModel seatModel = SeatModels.FirstOrDefault(x => x.ModelHash == hash);
-                    if(seatModel == null)
+                    if (seatModel == null)
                     {
                         seatModel = SeatModels.FirstOrDefault(x => x.ModelName?.ToLower() == modelName);
                     }
@@ -244,7 +243,7 @@ namespace LosSantosRED.lsr.Player
                     seatModel = SeatModels.FirstOrDefault(x => x.ModelName?.ToLower() == modelName);
                 }
                 float offset = -0.5f;
-                if(seatModel != null)
+                if (seatModel != null)
                 {
                     offset = seatModel.EntryOffsetFront;
                     EntryPoint.WriteToConsole($"Sitting Closest = {ClosestSittableEntity.Model.Name} using custom offset {offset}", 5);
@@ -284,7 +283,7 @@ namespace LosSantosRED.lsr.Player
                             uint tableHash = obj.Model.Hash;
                             string tableModelName = obj.Model.Name.ToLower();
                             TableModel tableModel = TableModels.FirstOrDefault(x => x.Hash == tableHash);
-                            if(tableModel == null)
+                            if (tableModel == null)
                             {
                                 tableModel = TableModels.FirstOrDefault(x => x.ModelName?.ToLower() == tableModelName);
                             }
@@ -418,30 +417,30 @@ namespace LosSantosRED.lsr.Player
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
                 EntryPoint.WriteToConsole("Sitting Activity SETUPO MALE", 5);
-                AnimBase = "base";
-                AnimBaseDictionary = "amb@prop_human_seat_chair@male@generic@base";
-                AnimEnter = "enter_forward";
-                AnimEnterDictionary = "amb@prop_human_seat_chair@male@generic@enter";
-                AnimExit = "exit_forward";
-                AnimExitDictionary = "amb@prop_human_seat_chair@male@generic@exit";
-                AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
-                AnimIdleDictionary = "amb@prop_human_seat_chair@male@generic@idle_a";
-                AnimIdle2 = new List<string>() { "idle_d", "idle_e" };
-                AnimIdleDictionary2 = "amb@prop_human_seat_chair@male@generic@idle_b";
+                AnimBase = "f_getin_l_bighouse";
+                AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
+                AnimEnter = "f_getin_l_bighouse";
+                AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
+                AnimExit = "f_getout_l_bighouse";
+                AnimExitDictionary = "anim@mp_bedmid@left_var_01";
+                AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
+                AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
+                AnimIdle2 = new List<string>() { "f_sleep_l_loop_bighouse" };
+                AnimIdleDictionary2 = "anim@mp_bedmid@left_var_01";
             }
             else
             {
                 EntryPoint.WriteToConsole("Sitting Activity SETUP FEMALE", 5);
-                AnimBase = "base";
-                AnimBaseDictionary = "amb@prop_human_seat_chair@female@legs_crossed@base";
-                AnimEnter = "enter_fwd";
-                AnimEnterDictionary = "amb@prop_human_seat_chair@female@legs_crossed@enter";
-                AnimExit = "exit_fwd";
-                AnimExitDictionary = "amb@prop_human_seat_chair@female@legs_crossed@exit";
-                AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
-                AnimIdleDictionary = "amb@prop_human_seat_chair@female@legs_crossed@idle_a";
-                AnimIdle2 = new List<string>() { "idle_d", "idle_e" };
-                AnimIdleDictionary2 = "amb@prop_human_seat_chair@female@legs_crossed@idle_b";
+                AnimBase = "f_getin_l_bighouse";
+                AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
+                AnimEnter = "f_getin_l_bighouse";
+                AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
+                AnimExit = "f_getout_l_bighouse";
+                AnimExitDictionary = "anim@mp_bedmid@left_var_01";
+                AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
+                AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
+                AnimIdle2 = new List<string>() { "f_sleep_l_loop_bighouse" };
+                AnimIdleDictionary2 = "anim@mp_bedmid@left_var_01";
             }
 
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
@@ -455,12 +454,12 @@ namespace LosSantosRED.lsr.Player
 
 
 
-            SeatModels = new List<SeatModel>() { 
+            SeatModels = new List<SeatModel>() {
                 new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" }, //sometime float a bit above it
                 new SeatModel(0x7facd66f,-0.15f) {Name = "Bus Bench" },
-                new SeatModel(0xc0a6cbcd), 
-                new SeatModel(0x534bc1bc), 
-                new SeatModel(0xa55359b8), 
+                new SeatModel(0xc0a6cbcd),
+                new SeatModel(0x534bc1bc),
+                new SeatModel(0xa55359b8),
                 new SeatModel(0xe7ed1a59),
 
                 new SeatModel(0xd3c6d323){Name = "Plastic Chair" },
@@ -472,11 +471,11 @@ namespace LosSantosRED.lsr.Player
 
 
 
-                
 
 
 
-                new SeatModel(0xd3c6d323){Name = "Plastic Chair" }, 
+
+                new SeatModel(0xd3c6d323){Name = "Plastic Chair" },
                 new SeatModel(0x3c67ba3f,-0.45f){Name = "Iron Bench" },
                 new SeatModel(0xda867f80,-0.45f){Name = "Iron Bench" },
                 new SeatModel(0x643d1f90,-0.25f) {Name = "Maze Bus Bench" } };

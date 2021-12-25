@@ -34,4 +34,5 @@ public enum LocationType : int
     Stadium = 25,
     Morgue = 26,
     BusStop = 27,
+    Apartment = 28,
 }

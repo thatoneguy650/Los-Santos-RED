@@ -12,6 +12,8 @@ public class Civilians
     private IEntityProvideable World;
     private IPoliceRespondable PoliceRespondable;
     private IPerceptable Perceptable;
+    private uint GameTimeLastUpdatedPeds;
+
     public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable)
     {
         World = world;
@@ -57,5 +59,7 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
             }
         }
+        EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds}", 5);
+        GameTimeLastUpdatedPeds = Game.GameTime;
     }
 }

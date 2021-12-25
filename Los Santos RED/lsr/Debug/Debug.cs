@@ -424,7 +424,7 @@ public class Debug
         //Weather.DebugPlayReport();
 
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
         if (ClosestEntity.Exists())
         {
 
@@ -520,6 +520,51 @@ public class Debug
         //GameFiber.Sleep(500);
 
 
+
+
+
+
+
+        List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+        float ClosestDistance = 999f;
+        foreach (Rage.Object obj in Objects)
+        {
+            if (obj.Exists())// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
+            {
+                string modelName = obj.Model.Name.ToLower();
+                float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+                if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
+                {
+                    
+                    if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
+                    {
+                        ClosestDistance = DistanceToObject;
+                    }
+
+                }
+                if (DistanceToObject <= 5f)
+                {
+                    EntryPoint.WriteToConsole($"PROP HUNT: Found {modelName} Hash: {obj.Model.Hash} X: {obj.Model.Dimensions.X} Y: {obj.Model.Dimensions.Y} {DistanceToObject}", 5);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
         Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
         Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
@@ -527,17 +572,17 @@ public class Debug
 
         Player.AddToInventory(ModItems.Get("Equanox"), 4);
 
-        
+        //SetInRandomInterior();
 
         // Dispatcher.SpawnRoadblock();
 
 
-        EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position), 5);
-        Player.ResetScannerDebug();
+        //EntryPoint.WriteToConsole("Zone STRING : " + GetInternalZoneString(Game.LocalPlayer.Character.Position), 5);
+        //Player.ResetScannerDebug();
 
-        Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
-        CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false, false, Game.LocalPlayer.Character.Position);
-        Player.PlayDispatchDebug(toPlay, toAnnounce);
+        //Crime toPlay = Crimes.CrimeList.Where(x => x.CanBeReportedByCivilians).PickRandom();
+        //CrimeSceneDescription toAnnounce = new CrimeSceneDescription(false, false, Game.LocalPlayer.Character.Position);
+        //Player.PlayDispatchDebug(toPlay, toAnnounce);
         //Freecam();
         //Ped completelynewnameAsd = new Ped("S_M_M_GENTRANSPORT", Player.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading); //new Ped(Player.Character.Position.Around2D(5f));//new Ped("a_f_y_smartcaspat_01", Player.Character.Position.Around2D(5f), Game.LocalPlayer.Character.Heading);//S_M_M_GENTRANSPORT
         //GameFiber.Yield();

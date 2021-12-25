@@ -92,6 +92,10 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return (BlipSprite)475;
                 }
+                else if (Type == LocationType.Apartment)
+                {
+                    return BlipSprite.GarageForSale;
+                }
                 else if (Type == LocationType.HardwareStore)
                 {
                     return (BlipSprite)566; //BlipSprite.Repair;

@@ -592,6 +592,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
             new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
 
+            //apartments
+            new GameLocation(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, LocationType.Apartment, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},//TeleportEnterPosition = new Vector3(261.4586f, -998.8196f, -99.00863f), TeleportEnterHeading = 327.1821f },
+
+            
 
             //Other
 

@@ -121,6 +121,7 @@
     <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />
     <Compile Include="lsr\Player\Activity\GestureActivity.cs" />
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
+    <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IBusRideable.cs" />

@@ -149,35 +149,59 @@ public class PedExt : IComplexTaskable
     public bool WillFight { get; set; } = false;
     public bool WasEverSetPersistent { get; private set; }
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
-    private int FullUpdateInterval
+    private int FullUpdateInterval//dont forget distance and LOS in here
     {
         get
         {
             if (IsCop)//IsCop)
             {
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 600)
+                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
                 {
                     return 1500;
                 }
-                else if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 80F)
                 {
-                    return 750;
+                    return 500;
                 }
                 else
                 {
-                    return 500;//150
+                    return 250;//150
                 }
+                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 600)
+                //{
+                //    return 1500;
+                //}
+                //else if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                //{
+                //    return 750;
+                //}
+                //else
+                //{
+                //    return 500;//150
+                //}
             }
             else
             {
                 if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
                 {
-                    return 750;//2000
+                    return 1500;
+                }
+                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 80F)
+                {
+                    return 500;
                 }
                 else
                 {
-                    return 500;//500// 750;//500
+                    return 250;//150
                 }
+                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                //{
+                //    return 750;//2000
+                //}
+                //else
+                //{
+                //    return 500;//500// 750;//500
+                //}
             }
         }
     }

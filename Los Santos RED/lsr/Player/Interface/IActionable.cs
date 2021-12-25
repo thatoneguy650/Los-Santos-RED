@@ -32,7 +32,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
 
         void StartSmokingPot();
-        void StartSittingDown();
+        void StartSittingDown(bool FindSittingProp);
         void StartSmoking();
         void StartDrinkingActivity();
         void CommitSuicide();
@@ -56,5 +56,6 @@ namespace LosSantosRED.lsr.Interface
         void ForceErraticDriver();
         void ToggleBodyArmor(int Type);
         void SetBodyArmor(int value);
+        void StartLayingDown(bool v);
     }
 }

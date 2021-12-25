@@ -14,7 +14,8 @@ public class ActionMenu : Menu
     private UIMenuItem Drink;
     private IActionable Player;
     private UIMenuItem RemovePlate;
-    private UIMenuItem SitDown;
+    private UIMenuListScrollerItem<string> SitDown;
+    private UIMenuListScrollerItem<string> LayDown;
     private UIMenuItem Smoke;
     private UIMenuItem SmokePot;
     private UIMenuItem PauseConsuming;
@@ -154,8 +155,8 @@ public class ActionMenu : Menu
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        SitDown = new UIMenuItem("Sit Down", "Face the nearest Seat.");
-
+        SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here" });
+        LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
         GestureMenu = new UIMenuListScrollerItem<GestureLookup>("Gesture", "Perform the selected gesture", GestureLookups);
         CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue","Pause","Stop" });
 
@@ -177,6 +178,9 @@ public class ActionMenu : Menu
         Actions.AddItem(CurrentActivityMenu);
         Actions.AddItem(GestureMenu);
         Actions.AddItem(SitDown);
+#if DEBUG
+        Actions.AddItem(LayDown);
+#endif
         Actions.AddItem(CallPolice);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
@@ -193,6 +197,9 @@ public class ActionMenu : Menu
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
+
+
+
         if (selectedItem == Suicide)
         {
             Player.CommitSuicide();
@@ -219,7 +226,25 @@ public class ActionMenu : Menu
         }
         else if (selectedItem == SitDown)
         {
-            Player.StartSittingDown();
+            if (SitDown.SelectedItem == "At Closest Seat")
+            {
+                Player.StartSittingDown(true);
+            }
+            else
+            {
+                Player.StartSittingDown(false);
+            }
+        }
+        else if (selectedItem == LayDown)
+        {
+            if (LayDown.SelectedItem == "At Closest Bed")
+            {
+                Player.StartLayingDown(true);
+            }
+            else
+            {
+                Player.StartLayingDown(false);
+            }
         }
         else if (selectedItem == EnterAsPassenger)
         {

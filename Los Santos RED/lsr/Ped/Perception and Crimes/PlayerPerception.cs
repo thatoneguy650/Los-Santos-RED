@@ -104,7 +104,7 @@ public class PlayerPerception
     public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
     public bool HasSeenTargetCommitCrime => CrimesWitnessed.Any();
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
-    private int DistanceUpdate
+    private int DistanceUpdate//also need to change the full update interval for this to work
     {
         get
         {
@@ -114,9 +114,13 @@ public class PlayerPerception
                 {
                     return 1500;
                 }
+                if (DistanceToTarget >= 80F)
+                {
+                    return 300;
+                }
                 else
                 {
-                    return 500;//150
+                    return 250;//150
                 }
             }
             else
@@ -128,16 +132,16 @@ public class PlayerPerception
                 }
                 if (DistanceToTarget >= 80F)
                 {
-                    return 750;
+                    return 300;
                 }
                 else
                 {
-                    return 500;// 750;//500// 750;//500
+                    return 250;// 750;//500// 750;//500
                 }
             }
         }
     }
-    private int LosUpdate
+    private int LosUpdate//also need to change the full update interval for this to work
     {
         get
         {
@@ -147,11 +151,11 @@ public class PlayerPerception
             }
             if (DistanceToTarget >= 80F)
             {
-                return 1000;
+                return 750;
             }
             else
             {
-                return 750;//500// 750;//500
+                return 350;//500// 750;//500
             }
         }
     }
@@ -220,10 +224,12 @@ public class PlayerPerception
         Target = target;
         if (Originator != null && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
-            UpdateTargetDistance(placeLastSeen, target.Position);
-            UpdateTargetLineOfSight(Target.IsWanted);
-
-
+            bool distanceRan = UpdateTargetDistance(placeLastSeen, target.Position);
+            bool losRan = UpdateTargetLineOfSight(Target.IsWanted);
+            if(distanceRan || losRan)
+            {
+               // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
+            }
             UpdateWitnessedCrimes();
             //GameFiber.Yield();
         }
@@ -295,11 +301,11 @@ public class PlayerPerception
         GameTimeContinuoslySeenTargetSince = 0;
         CanSeeTarget = false;
     }
-    private void UpdateTargetDistance(Vector3 placeLastSeen, Vector3 posToCheck)
+    private bool UpdateTargetDistance(Vector3 placeLastSeen, Vector3 posToCheck)
     {
         if (!NeedsDistanceCheck || !Target.Character.Exists())
         {
-            return;
+            return false;
         }
         Vector3 PositionToCheck = posToCheck;
         if(Originator.IsCop)
@@ -340,17 +346,20 @@ public class PlayerPerception
             WithinWeaponsAudioRange = false;
         }
         GameTimeLastDistanceCheck = Game.GameTime;
-        GameFiber.Yield();
+        //GameFiber.Yield();//TR Yield RemovedTest 2
+        return true;
     }
-    private void UpdateTargetLineOfSight(bool IsWanted)
+    private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
+        if (DistanceToTarget >= 100f)//this is new
         {
-            
+            SetTargetUnseen();
+            return false;
+        }
+        if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
+        {     
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
-
-
             if(TargetInVehicle && DistanceToTarget <= 20f && !Originator.Pedestrian.IsDead)//this is new...., cops should be able to see behind themselves a short distance
             {
                 SetTargetSeen();
@@ -398,8 +407,10 @@ public class PlayerPerception
                 }
             }
             GameTimeLastLOSCheck = Game.GameTime;
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 2
+            return true;
         }
+        return false;
     }
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {

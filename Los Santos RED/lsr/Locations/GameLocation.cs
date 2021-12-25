@@ -41,6 +41,7 @@ public class GameLocation
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
     public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
+    public bool CanEnter { get; set; } = true;
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }

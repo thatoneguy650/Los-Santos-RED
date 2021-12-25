@@ -329,7 +329,7 @@ namespace LosSantosRED.lsr
             {
               
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
-                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500
+                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
                 new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 2),//500
                 new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 4),

@@ -363,6 +363,8 @@ namespace Mod
         public bool IsDuckingInVehicle { get; set; } = false;
         public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
         public bool HasOnBodyArmor { get; private set; }
+        public bool CanExitCurrentInterior { get; set; } = false;
+
         public void AddHealth(int ToAdd)
         {
             if (Character.Health < Character.MaxHealth && ToAdd> 0)
@@ -833,7 +835,7 @@ namespace Mod
         }
         private void OnGettingIntoAVehicleChanged()
         {
-            GameFiber.Yield();
+            //GameFiber.Yield();//TR Yield RemovedTest 2
             if (IsGettingIntoAVehicle)
             {
                 Vehicle VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
@@ -843,7 +845,7 @@ namespace Mod
                     return;
                 }
                 UpdateCurrentVehicle();
-                GameFiber.Yield();
+                //GameFiber.Yield();//TR Yield RemovedTest 2
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
@@ -857,7 +859,7 @@ namespace Mod
                         if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
                         {
                             CurrentVehicle.AttemptToLock();
-                            GameFiber.Yield();
+                            //GameFiber.Yield();//TR Yield RemovedTest 2
                         }
                         if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                         {
@@ -1429,7 +1431,7 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
-        public void StartSittingDown()
+        public void StartSittingDown(bool FindSittingProp)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
@@ -1443,10 +1445,30 @@ namespace Mod
                 }
                 //IsSitting = true;
                 //IsPerformingActivity = true;
-                SittingActivity = new SittingActivity(this, Settings);
+                SittingActivity = new SittingActivity(this, Settings, FindSittingProp);
                 SittingActivity.Start();
             }
         }
+
+        public void StartLayingDown(bool FindSittingProp)
+        {
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                if (SittingActivity != null)
+                {
+                    SittingActivity.Cancel();
+                }
+                //IsSitting = true;
+                //IsPerformingActivity = true;
+                SittingActivity = new LayingActivity(this, Settings, FindSittingProp);
+                SittingActivity.Start();
+            }
+        }
+
         public void StopDynamicActivity()
         {
             if (IsPerformingActivity)
@@ -1732,6 +1754,23 @@ namespace Mod
                     }
                 }
             }
+
+            if(CurrentInteriorLocation != null)
+            {
+                if(Character.DistanceTo2D(CurrentInteriorLocation.TeleportEnterPosition)<= 3f)
+                {
+                    CanExitCurrentInterior = true;
+                }
+                else
+                {
+                    CanExitCurrentInterior = false;
+                }
+            }
+            else
+            {
+                CanExitCurrentInterior = false;
+            }
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
             Sprinting.Update();
 
@@ -2039,6 +2078,11 @@ namespace Mod
                     ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
                 }
             }
+
+
+
+
+
             if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
             {
                 if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
@@ -2054,7 +2098,7 @@ namespace Mod
 
 
 
-            if(CurrentInteriorLocation != null)
+            if(CurrentInteriorLocation != null && CanExitCurrentInterior)
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
                 if (!ButtonPrompts.Any(x => x.Identifier == $"Exit {CurrentInteriorLocation.Name}"))
@@ -2311,5 +2355,7 @@ namespace Mod
                 }
             }
         }
+
+
     }
 }
