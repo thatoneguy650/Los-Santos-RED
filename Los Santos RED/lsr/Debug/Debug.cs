@@ -357,9 +357,9 @@ public class Debug
     }
     private void DebugNumpad1()
     {
-        //ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
-        //Game.DisplayNotification($"ModController.DebugCoreRunning {ModController.DebugCoreRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
+        Game.DisplayNotification($"ModController.DebugCoreRunning {ModController.DebugCoreRunning}");
+        GameFiber.Sleep(500);
 
 
         Game.LocalPlayer.IsInvincible = false;
@@ -367,16 +367,16 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        //ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
-        //Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
-        //GameFiber.Sleep(500);
-        Dispatcher.DebugSpawnCop();
+        ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
+        Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
+        GameFiber.Sleep(500);
+        //Dispatcher.DebugSpawnCop();
     }
     private void DebugNumpad3()
     {
-        //ModController.DebugTertiaryRunning = !ModController.DebugTertiaryRunning;
-        //Game.DisplayNotification($"ModController.DebugTertiaryRunning {ModController.DebugTertiaryRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugTertiaryRunning = !ModController.DebugTertiaryRunning;
+        Game.DisplayNotification($"ModController.DebugTertiaryRunning {ModController.DebugTertiaryRunning}");
+        GameFiber.Sleep(500);
 
         WriteCivilianAndCopState();
 
@@ -395,9 +395,11 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
-        //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
+        Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
+        GameFiber.Sleep(500);
+
+
         //if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
         //{
         //    bool Test1 = NativeFunction.Natives.x0BE4BE946463F917<bool>(Game.LocalPlayer.Character.CurrentVehicle);//has radio?
@@ -424,46 +426,46 @@ public class Debug
         //Weather.DebugPlayReport();
 
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
 
 
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-            float ObjectHeading = ClosestEntity.Heading;
-            if (ClosestEntity.Heading >= 180f)
-            {
-                DesiredHeading = ClosestEntity.Heading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ClosestEntity.Heading + 180f;
-            }
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
 
 
 
 
-            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-            if (ClosestEntity.Model.Dimensions.X >= 2f)
-            {
+        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
 
-            }
+        //    }
 
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
-            {
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+        //    {
 
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                GameFiber.Yield();
-            }
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
 
-        }
-        // Player.ScannerPlayDebug();
+        //}
+        //// Player.ScannerPlayDebug();
 
         //SetInRandomInterior();
         //BrowseTimecycles();
@@ -515,9 +517,9 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        //ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
-        //Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
+        Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
+        GameFiber.Sleep(500);
 
 
 
@@ -525,29 +527,29 @@ public class Debug
 
 
 
-        List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
-        float ClosestDistance = 999f;
-        foreach (Rage.Object obj in Objects)
-        {
-            if (obj.Exists())// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
-            {
-                string modelName = obj.Model.Name.ToLower();
-                float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-                if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
-                {
+        //List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+        //float ClosestDistance = 999f;
+        //foreach (Rage.Object obj in Objects)
+        //{
+        //    if (obj.Exists())// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
+        //    {
+        //        string modelName = obj.Model.Name.ToLower();
+        //        float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+        //        if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
+        //        {
                     
-                    if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
-                    {
-                        ClosestDistance = DistanceToObject;
-                    }
+        //            if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
+        //            {
+        //                ClosestDistance = DistanceToObject;
+        //            }
 
-                }
-                if (DistanceToObject <= 5f)
-                {
-                    EntryPoint.WriteToConsole($"PROP HUNT: Found {modelName} Hash: {obj.Model.Hash} X: {obj.Model.Dimensions.X} Y: {obj.Model.Dimensions.Y} {DistanceToObject}", 5);
-                }
-            }
-        }
+        //        }
+        //        if (DistanceToObject <= 5f)
+        //        {
+        //            EntryPoint.WriteToConsole($"PROP HUNT: Found {modelName} Hash: {obj.Model.Hash} X: {obj.Model.Dimensions.X} Y: {obj.Model.Dimensions.Y} {DistanceToObject}", 5);
+        //        }
+        //    }
+        //}
 
 
 
@@ -645,9 +647,9 @@ public class Debug
     private void DebugNumpad6()
     {
 
-        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
-        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        GameFiber.Sleep(500);
 
 
 
@@ -688,9 +690,10 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        //ModController.DebugUIRunning = !ModController.DebugUIRunning;
-        //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
+        GameFiber.Sleep(500);
+
         //NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
         //EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
         //Dispatcher.RemoveRoadblock();
@@ -702,9 +705,9 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        //ModController.DebugInputRunning = !ModController.DebugInputRunning;
-        //Game.DisplayNotification($"ModController.DebugInputRunning {ModController.DebugInputRunning}");
-        //GameFiber.Sleep(500);
+        ModController.DebugInputRunning = !ModController.DebugInputRunning;
+        Game.DisplayNotification($"ModController.DebugInputRunning {ModController.DebugInputRunning}");
+        GameFiber.Sleep(500);
 
 
         //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
@@ -738,12 +741,15 @@ public class Debug
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
-        int CurrentWanted = Player.WantedLevel;
-        if (CurrentWanted <= 5)
-        {
-            CurrentWanted++;
-            Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
-        }
+
+        Dispatcher.DebugSpawnCop();
+
+        //int CurrentWanted = Player.WantedLevel;
+        //if (CurrentWanted <= 5)
+        //{
+        //    CurrentWanted++;
+        //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
+        //}
     }
 
     private void SpawnBus()

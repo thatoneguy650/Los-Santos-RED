@@ -230,6 +230,12 @@ public class PlayerPerception
             {
                // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
             }
+
+            if(losRan)
+            {
+                GameFiber.Yield();//TR
+            }
+
             UpdateWitnessedCrimes();
             //GameFiber.Yield();
         }
@@ -311,6 +317,7 @@ public class PlayerPerception
         if(Originator.IsCop)
         {
             DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
+            GameFiber.Yield();//TR is new, doesnt seem to do much....
         }
         else
         {

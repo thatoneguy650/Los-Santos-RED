@@ -89,6 +89,7 @@ public class PedCrimes
     {
         if (!IsShootingCheckerActive)
         {
+            GameFiber.Yield();//TR Yield add 1
             GameFiber.StartNew(delegate
             {
                 IsShootingCheckerActive = true;
@@ -119,7 +120,7 @@ public class PedCrimes
             if (!PedExt.IsArrested)
             {
                 CheckCrimes(world, player);
-                //GameFiber.Yield();//maybe if they are a criminal, check crimes more?
+                //GameFiber.Yield();//TR maybe if they are a criminal, check crimes more?
                 if (WantedLevel > 0)
                 {
                     OnPedSeenByPolice();
@@ -135,7 +136,7 @@ public class PedCrimes
                 if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
                 {
                     CheckOtherPedCrimes(world, player);
-                    GameFiber.Yield();//should this only yield if it did something? dont think i need this back, but it was the last to be removed
+                    //GameFiber.Yield();//TR//should this only yield if it did something? dont think i need this back, but it was the last to be removed
                 }
             }
         }
@@ -234,7 +235,7 @@ public class PedCrimes
                 }
                 else
                 {
-                    //GameFiber.Yield();//this is new, before it jusdt yielded forever
+                    GameFiber.Yield();//this is new, before it jusdt yielded forever
                     float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
                     uint VehicleWitnessed = 0;
                     uint WeaponWitnessed = 0;
