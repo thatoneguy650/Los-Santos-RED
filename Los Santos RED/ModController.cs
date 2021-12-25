@@ -751,9 +751,9 @@ namespace LosSantosRED.lsr
                         if (DebugUIRunning)
                         {
                             UI.Tick3();
+                            GameFiber.Yield();
+                            Time.Tick();//this was below before, but shouldnt be any different
                         }
-                        GameFiber.Yield();
-                        Time.Tick();
                         GameFiber.Yield();
                     }
                 }

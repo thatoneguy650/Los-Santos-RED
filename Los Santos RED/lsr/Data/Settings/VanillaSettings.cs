@@ -11,7 +11,7 @@ public class VanillaSettings
     public bool TerminateHealthRecharge { get; set; } = true;
     public bool TerminateWantedMusic { get; set; } = true;
     public bool TerminateScanner { get; set; } = true;
-    public bool TerminateScenarioCops { get; set; } = false;
+    public bool TerminateScenarioCops { get; set; } = true;
     public VanillaSettings()
     {
 

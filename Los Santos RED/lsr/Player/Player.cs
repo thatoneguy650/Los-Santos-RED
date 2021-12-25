@@ -845,7 +845,7 @@ namespace Mod
                     return;
                 }
                 UpdateCurrentVehicle();
-                //GameFiber.Yield();//TR Yield RemovedTest 2
+                GameFiber.Yield();//TR Yield RemovedTest 2
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;

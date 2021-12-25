@@ -43,7 +43,7 @@ namespace LosSantosRED.lsr
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
                             Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
-                            //GameFiber.Yield();
+                            GameFiber.Yield();//TR this is new
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
