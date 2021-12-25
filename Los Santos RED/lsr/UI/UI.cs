@@ -165,7 +165,7 @@ public class UI : IMenuProvideable
     }
     public void Tick()
     {
-        DrawUI();
+       DrawUI();
         MenuUpdate();
     }
     public void Tick2()
@@ -186,6 +186,7 @@ public class UI : IMenuProvideable
         GameTimeLastDrawnUI = Game.GameTime;
         if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
+
 
             if (Settings.SettingsManager.UISettings.ShowDebug)
             {
@@ -497,27 +498,50 @@ public class UI : IMenuProvideable
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
     {
-        NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
-        NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
-        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+        NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+        NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+        NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
 
         NativeFunction.Natives.SetTextJustification((int)Justification);
         NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
 
         if (Justification == GTATextJustification.Right)
         {
-            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
+            NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
         }
         else
         {
-            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+            NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
         }
-        NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
-        NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
-        NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
-        NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
+        NativeFunction.Natives.x25fbb336df1804cb("STRING");
+        NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+        NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+        NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
         return;
     }
+    //private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
+    //{
+    //    NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
+    //    NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
+    //    NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+
+    //    NativeFunction.Natives.SetTextJustification((int)Justification);
+    //    NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+
+    //    if (Justification == GTATextJustification.Right)
+    //    {
+    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
+    //    }
+    //    else
+    //    {
+    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+    //    }
+    //    NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
+    //    NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
+    //    NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
+    //    NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
+    //    return;
+    //}
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
         DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, 255);       

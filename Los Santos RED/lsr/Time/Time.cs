@@ -77,6 +77,7 @@ namespace Mod
                 if (Settings.SettingsManager.TimeSettings.ScaleTime)
                 {
                     GetIntervalAndMultiplier();
+                    GameFiber.Yield();//TR this is new, shouldnt do much harm
                 }
                 CheckTimeInterval();
             }

@@ -120,7 +120,7 @@ public class PedCrimes
             if (!PedExt.IsArrested)
             {
                 CheckCrimes(world, player);
-                //GameFiber.Yield();//TR maybe if they are a criminal, check crimes more?
+               // GameFiber.Yield();//TR maybe if they are a criminal, check crimes more?
                 if (WantedLevel > 0)
                 {
                     OnPedSeenByPolice();
@@ -236,6 +236,10 @@ public class PedCrimes
                 else
                 {
                     GameFiber.Yield();//this is new, before it jusdt yielded forever
+                    if (!criminal.Pedestrian.Exists())
+                    {
+                        return;
+                    }
                     float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
                     uint VehicleWitnessed = 0;
                     uint WeaponWitnessed = 0;
