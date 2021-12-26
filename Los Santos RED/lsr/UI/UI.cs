@@ -80,6 +80,7 @@ public class UI : IMenuProvideable
     private string lastZoneDisplay;
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
+    private string overrideTimeDisplay = "";
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
@@ -238,6 +239,10 @@ public class UI : IMenuProvideable
             }
             DisplayBars();
         }
+    }
+    public void SetTimeDisplay(string toSet)
+    {
+        overrideTimeDisplay = toSet;
     }
     private void DisplayBars()
     {
@@ -520,7 +525,7 @@ public class UI : IMenuProvideable
                 NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
             }
             NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-                                                                //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
             NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
             NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
         }
@@ -619,6 +624,10 @@ public class UI : IMenuProvideable
 
     private string GetTimeDisplay()
     {
+        if(overrideTimeDisplay != "")
+        {
+            return overrideTimeDisplay;
+        }
         string TimeDisplay = "";
         if (Time.CurrentDay != 0)
         {

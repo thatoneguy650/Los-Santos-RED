@@ -114,13 +114,19 @@ namespace LosSantosRED.lsr.Player
                 if(AnimationTime >= 1.0f && !Player.IsPerformingActivity)
                 {
                     StartNewIdleScene();
-                    
                 }
                 if(Player.IsMoveControlPressed)
                 {
                     IsCancelled = true;
                 }
                 Player.SetUnarmed();
+
+                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                {
+                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                }
+
+
                 GameFiber.Yield();
             }
             Exit();
@@ -171,20 +177,25 @@ namespace LosSantosRED.lsr.Player
                 {
                     ClosestSittableEntity.IsPositionFrozen = false;
                 }
-                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                {
-                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
-                }
+                //if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                //{
+                //    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, false);
+                //}
 
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 //Player.IsPerformingActivity = false;
                 Player.IsSitting = false;
                 GameFiber.Sleep(5000);
-                if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                //if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                //{
+                //    EntryPoint.WriteToConsole("Sitting Activity Exit Collision Added", 5);
+                //    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, 0, true);
+                //}
+
+                if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
                 {
-                    EntryPoint.WriteToConsole("Sitting Activity Exit Collision Added", 5);
-                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, 0, true);
+                    PossibleCollisionTable.IsPositionFrozen = false;
                 }
             }
         }
@@ -359,9 +370,15 @@ namespace LosSantosRED.lsr.Player
                         }
                     }
                 }
-                if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                //if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                //{
+                //    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                //}
+
+
+                if(PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
                 {
-                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                    PossibleCollisionTable.IsPositionFrozen = true;
                 }
             }
         }
@@ -388,6 +405,10 @@ namespace LosSantosRED.lsr.Player
                 bool IsCloseEnough = false;
                 while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
                 {
+                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                    {
+                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                    }
                     if (Player.IsMoveControlPressed)
                     {
                         IsCancelled = true;
@@ -399,6 +420,10 @@ namespace LosSantosRED.lsr.Player
                 GameTimeStartedSitting = Game.GameTime;
                 while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
                 {
+                    if (PossibleCollisionTable.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+                    {
+                        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
+                    }
                     heading = Game.LocalPlayer.Character.Heading;
                     if (Math.Abs(Extensions.GetHeadingDifference(heading, SeatEntryHeading)) <= 0.5f)//0.5f)
                     {

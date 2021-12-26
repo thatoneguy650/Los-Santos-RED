@@ -155,6 +155,7 @@ namespace LosSantosRED.lsr
         public void AnnounceCrime(Crime crimeAssociated, CrimeSceneDescription reportInformation)
         {
             Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
+            
             if (ToAnnounce != null)
             {
                 if (!ToAnnounce.HasVeryRecentlyBeenPlayed && ((ToAnnounce.CanBeReportedMultipleTimes && ToAnnounce.TimesPlayed <= 2) || ToAnnounce.TimesPlayed == 0))
@@ -451,8 +452,10 @@ namespace LosSantosRED.lsr
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
                 {
                     ExecutingQueue = true;
+                    GameFiber.Yield();
                     GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                     {
+
                         GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.PlayerSettings.Scanner_DelayMinTime, Settings.SettingsManager.PlayerSettings.Scanner_DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
                         if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
                         {
@@ -477,7 +480,10 @@ namespace LosSantosRED.lsr
                             }
                             BuildDispatch(Item, AddToPlayed);
                             if (DispatchQueue.Contains(Item))
+                            {
                                 DispatchQueue.Remove(Item);
+                            }
+                            GameFiber.Yield();
                         }
                         ExecutingQueue = false;
                     }, "PlayDispatchQueue");
@@ -1132,7 +1138,7 @@ namespace LosSantosRED.lsr
                     HighestCivilianReportedPriority = DispatchToPlay.Priority;
                 }
             }
-
+            GameFiber.Yield();
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
         }
         private void CheckDispatch()
@@ -1157,6 +1163,7 @@ namespace LosSantosRED.lsr
                     }
                     else if (!Player.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
                     {
+
                         EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
                         AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
                     }
@@ -1312,9 +1319,10 @@ namespace LosSantosRED.lsr
                 AbortedAudio = true;
                 Abort();
             }
-
+            GameFiber.Yield();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
+                GameFiber.Yield();
                 if (AbortedAudio)
                 {
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);

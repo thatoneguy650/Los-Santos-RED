@@ -26,8 +26,8 @@ namespace LosSantosRED.lsr.Interface
 
         void SetAngeredCop();
         void GiveMoney(int v);
-        void StartSmoking();
-        void StartDrinkingActivity();
+       // void StartSmoking();
+       // void StartDrinkingActivity();
         void AddToInventory(ModItem offering, int v);
         void StartServiceActivity(ModItem toAdd, GameLocation store);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);

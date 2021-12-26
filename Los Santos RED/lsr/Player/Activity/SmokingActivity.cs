@@ -384,32 +384,12 @@ namespace LosSantosRED.lsr.Player
             if(ModItem != null)
             {
                 PropModelName = ModItem.ModelItem.ModelName;
-                //if (ModItem.IsIntoxicating)
-                //{
-                //    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
-                //    IntoxicatingEffect.Start();
-                //}
             }
-            else
-            {
-                if (IsPot)
-                {
-                    PropModelName = Settings.SettingsManager.ActivitySettings.Marijuana_PossibleProps.PickRandom();
-                    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Marijuana_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Marijuana_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Marijuana_Overlay);
-                    IntoxicatingEffect.Start();
-                }
-                else
-                {
-                    PropModelName = Settings.SettingsManager.ActivitySettings.Cigarette_PossibleProps.PickRandom();
-                }
-            }
-
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.StartIngesting(CurrentIntoxicant);
             }
-
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

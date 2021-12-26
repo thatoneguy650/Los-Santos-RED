@@ -154,7 +154,7 @@ namespace LosSantosRED.lsr.Player
             int HandBoneID;
             Vector3 HandOffset;
             Rotator HandRotator;
-            string PropModel;
+            string PropModel = "";
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
                 AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
@@ -196,34 +196,18 @@ namespace LosSantosRED.lsr.Player
                 AnimIdleDictionary = "amb@code_human_wander_drinking@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
-
-
             if(ModItem != null && ModItem.ModelItem != null)
             {
                 PropModel = ModItem.ModelItem.ModelName;
                 HandBoneID = ModItem.ModelItem.AttachBoneIndex;
                 HandOffset = ModItem.ModelItem.AttachOffset;
                 HandRotator = ModItem.ModelItem.AttachRotation;
-                //if(ModItem.IsIntoxicating)
-                //{
-                //    IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
-                //    IntoxicatingEffect.Start();
-                //}
             }
-            else
-            {   // assume drinking beer if nothing
-                PropModel = Settings.SettingsManager.ActivitySettings.Alcohol_PossibleProps.PickRandom();
-                IntoxicatingEffect = new IntoxicatingEffect(Player, Settings.SettingsManager.ActivitySettings.Alcohol_MaxEffectAllowed, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachIntoxicatedLevel, Settings.SettingsManager.ActivitySettings.Alcohol_TimeToReachEachSoberLevel, Settings.SettingsManager.ActivitySettings.Alcohol_Overlay);
-                IntoxicatingEffect.Start();
-            }
-
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.StartIngesting(CurrentIntoxicant);
             }
-
-
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);

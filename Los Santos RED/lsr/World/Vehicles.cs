@@ -92,19 +92,26 @@ public class Vehicles
     }
     public void UpdatePlates()
     {
-        int VehiclesUpdated = 0;
-        foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
+        try
         {
-            if (MyCar.Vehicle.Exists())
+            int VehiclesUpdated = 0;
+            foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
             {
-                UpdatePlate(MyCar);
+                if (MyCar.Vehicle.Exists())
+                {
+                    UpdatePlate(MyCar);
+                }
+                VehiclesUpdated++;
+                if (VehiclesUpdated > 4)
+                {
+                    VehiclesUpdated = 0;
+                    GameFiber.Yield();
+                }
             }
-            VehiclesUpdated++;
-            if (VehiclesUpdated > 4)
-            {
-                VehiclesUpdated = 0;
-                GameFiber.Yield();
-            }
+        }
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UpdatePlates ERROR {ex.Message} {ex.StackTrace}", 0);
         }
     }
     private void RemoveAbandonedPoliceVehicles()

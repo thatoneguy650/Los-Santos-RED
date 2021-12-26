@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -560,17 +561,27 @@ public class PedSwap : IPedSwap
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
                 NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
             }
-            Player.UpdateCurrentVehicle();
-            if(Player.CurrentVehicle != null)
+            VehicleExt NewVehicle = Entities.GetVehicleExt(TargetPedVehicle);
+            if (NewVehicle != null)
             {
-                Player.CurrentVehicle.IsStolen = false;
-                if (Player.CurrentVehicle.Vehicle.Exists())
+                NewVehicle.IsStolen = false;
+                if (NewVehicle.Vehicle.Exists())
                 {
-                    Player.TakeOwnershipOfVehicle(Player.CurrentVehicle);
-                    //Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
-                    Player.CurrentVehicle.Vehicle.IsStolen = false;
+                    Player.TakeOwnershipOfVehicle(NewVehicle);
+                    NewVehicle.Vehicle.IsStolen = false;
                 }
             }
+            //Player.UpdateCurrentVehicle();
+            //if(Player.CurrentVehicle != null)
+            //{
+            //    Player.CurrentVehicle.IsStolen = false;
+            //    if (Player.CurrentVehicle.Vehicle.Exists())
+            //    {
+            //        Player.TakeOwnershipOfVehicle(Player.CurrentVehicle);
+            //        //Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
+            //        Player.CurrentVehicle.Vehicle.IsStolen = false;
+            //    }
+            //}
         }
         else
         {

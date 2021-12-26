@@ -236,7 +236,7 @@ public class PedCrimes
                 else
                 {
                     GameFiber.Yield();//this is new, before it jusdt yielded forever
-                    if (!criminal.Pedestrian.Exists())
+                    if (!criminal.Pedestrian.Exists() || !PedExt.Pedestrian.Exists())
                     {
                         return;
                     }

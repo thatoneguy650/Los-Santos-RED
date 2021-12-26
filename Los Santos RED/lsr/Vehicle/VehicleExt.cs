@@ -34,9 +34,8 @@ namespace LSR.Vehicles
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
-        public bool IsStolen { get; set; } = false;//true;
+        public bool IsStolen { get; set; } = false;
         public bool HasAutoSetRadio { get; set; } = false;
-       // public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
@@ -56,24 +55,7 @@ namespace LSR.Vehicles
                 }
             }
         }
-        public uint GameTimeToReportStolen
-        {
-            get
-            {
-                if (WasAlarmed && GameTimeEntered > 0)
-                {
-                    return GameTimeEntered + Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolen;//60000;// was 100000, 60 second for testing
-                }
-                else if (GameTimeEntered > 0)
-                {
-                    return GameTimeEntered + Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolen;// 120000;//was 600000, 120 seconds for testing
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        public uint GameTimeToReportStolen { get; set; } = 0;
         public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
         public bool HasOriginalPlate => CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
         public bool IsWanted => CopsRecognizeAsStolen || (CarPlate != null && CarPlate.IsWanted);
@@ -151,11 +133,6 @@ namespace LSR.Vehicles
             }
         }
         public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
-        //public VehicleExt(Vehicle vehicle, uint gameTimeEntered) : this(vehicle)
-        //{
-        //    GameTimeEntered = gameTimeEntered;
-        //    PlaceOriginallyEntered = Vehicle.Position;
-        //}
         public VehicleExt(Vehicle vehicle, ISettingsProvideable settings)
         {
             Vehicle = vehicle;
@@ -182,6 +159,14 @@ namespace LSR.Vehicles
             if (GameTimeEntered == 0)
             {
                 GameTimeEntered = Game.GameTime;
+                if (WasAlarmed)
+                {
+                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolenMin, Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger, alarmed cars get called in sooner
+                }
+                else
+                {
+                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolenMin, Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger
+                }
                 PlaceOriginallyEntered = Vehicle.Position;
             }
         }
@@ -268,43 +253,29 @@ namespace LSR.Vehicles
         }
         public void Update(IDriveable driver)
         {
-
-           // return;
-
             if (IsCar)
             {
                 Engine.Update(driver);
-                GameFiber.Yield();
-
-
-
+                //GameFiber.Yield();//TR Removed 5
                 if (Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR Removed 5
                 }
                 else if (Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !HasAutoSetRadio)
                 {
                     Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR Removed 5
                 }
-                //else
-                //{
-                //    Radio.Update("NONE");
-                //}         
-
-
-
-
                 if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
                 {
                     Indicators.Update();
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR Removed 5
                 }
                 if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
                 {
                     FuelTank.Update();
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR Removed 5
                 }
                 if(Vehicle.Exists())
                 {
@@ -328,6 +299,7 @@ namespace LSR.Vehicles
                         IsOnFire = onFire;
                     }
                 }
+                GameFiber.Yield();//TR Added 5
             }
         }
         public void UpdateDescription()

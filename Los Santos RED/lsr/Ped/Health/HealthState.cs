@@ -141,7 +141,7 @@ public class HealthState
     }
     private void FlagDamage(IPoliceRespondable CurrentPlayer)
     {
-        if(CurrentPlayer == null)//only flag the player we want to have the damage
+        if(CurrentPlayer == null || !MyPed.Pedestrian.Exists())//only flag the player we want to have the damage
         {
             return;
         }

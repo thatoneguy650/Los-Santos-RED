@@ -38,7 +38,6 @@ namespace LosSantosRED.lsr.Interface
         void DisplayPlayerNotification();
         void SetMoney(int currentPedMoney);
         void AddCrimeToHistory(Crime crime);
-        void UpdateCurrentVehicle();
         void SetWantedLevel(int v1, string v2, bool v3);
         void TakeOwnershipOfVehicle(VehicleExt currentVehicle);
         void ClearVehicleOwnership();

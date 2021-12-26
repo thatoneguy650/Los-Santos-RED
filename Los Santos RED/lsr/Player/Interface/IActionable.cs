@@ -31,10 +31,10 @@ namespace LosSantosRED.lsr.Interface
         bool HasCurrentActivity { get; }
         bool CharacterModelIsFreeMode { get; }
 
-        void StartSmokingPot();
+       // void StartSmokingPot();
         void StartSittingDown(bool FindSittingProp, bool EnterForward);
-        void StartSmoking();
-        void StartDrinkingActivity();
+        //void StartSmoking();
+        //void StartDrinkingActivity();
         void CommitSuicide();
         void DisplayPlayerNotification();
         void GiveMoney(int v);

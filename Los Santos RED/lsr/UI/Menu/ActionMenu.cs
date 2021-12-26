@@ -11,13 +11,10 @@ public class ActionMenu : Menu
 {
     private UIMenu Actions;
     private UIMenuListScrollerItem<LSR.Vehicles.LicensePlate> ChangePlate;
-    private UIMenuItem Drink;
     private IActionable Player;
     private UIMenuItem RemovePlate;
     private UIMenuListScrollerItem<string> SitDown;
     private UIMenuListScrollerItem<string> LayDown;
-    private UIMenuItem Smoke;
-    private UIMenuItem SmokePot;
     private UIMenuItem PauseConsuming;
     private UIMenuItem StopConsuming;
     private UIMenuItem Suicide;
@@ -132,13 +129,6 @@ public class ActionMenu : Menu
         Setup();
         Actions.Clear();
 
-        if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
-        {
-            Drink = new UIMenuItem("Drink", "Start Drinking");
-            Smoke = new UIMenuItem("Smoke", "Start Smoking");
-            SmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
-        }
-
         if (Player.IsCop)
         {
             CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
@@ -167,14 +157,8 @@ public class ActionMenu : Menu
 
 
         ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
+        ToggleBodyArmor.Value = 0;
 
-
-        if (Settings.SettingsManager.PlayerSettings.AllowConsumeWithoutInventory)
-        {
-            Actions.AddItem(Drink);
-            Actions.AddItem(Smoke);
-            Actions.AddItem(SmokePot);
-        }
         Actions.AddItem(CurrentActivityMenu);
         Actions.AddItem(GestureMenu);
         Actions.AddItem(SitDown);
@@ -212,18 +196,6 @@ public class ActionMenu : Menu
         {
             Player.RemovePlate();
         }
-        else if (selectedItem == Drink)
-        {
-            Player.StartDrinkingActivity();
-        }
-        else if (selectedItem == Smoke)
-        {
-            Player.StartSmoking();
-        }
-        else if (selectedItem == SmokePot)
-        {
-            Player.StartSmokingPot();
-        }
         else if (selectedItem == SitDown)
         {
             if (SitDown.SelectedItem == "At Closest Seat")
@@ -240,7 +212,6 @@ public class ActionMenu : Menu
                 {
                     Player.StartSittingDown(false, true);
                 }
-                
             }
         }
         else if (selectedItem == LayDown)
