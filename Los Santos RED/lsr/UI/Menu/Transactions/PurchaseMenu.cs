@@ -301,12 +301,20 @@ public class PurchaseMenu : Menu
                         UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
                         VehicleMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
 
-                        
-                        string description = myItem.Description;
-                        if (description == "")
+                        string description;
+                        if (myItem.Description.Length >= 200)
                         {
-                            description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
+                            description = myItem.Description.Substring(0,200) + "...";//menu cant show more than 225?, need some for below
                         }
+                        else
+                        {
+                            description = myItem.Description;
+                        }
+                        
+                        //if (description == "")
+                        //{
+                        //    description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
+                        //}
                         description += "~n~~s~";
 
                         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));

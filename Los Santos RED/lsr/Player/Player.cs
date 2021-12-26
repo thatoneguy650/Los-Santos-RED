@@ -377,6 +377,7 @@ namespace Mod
         }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
+            GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
             if (AnnounceCrime)
@@ -747,6 +748,49 @@ namespace Mod
         {
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
+        }
+        public void CloseDriverDoor()
+        {
+            if (!IsPerformingActivity && IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
+            {
+                bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
+                if (isValid)
+                {
+                    float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
+
+                    if (DoorAngle > 0.0f)
+                    {
+                        string toPlay = "";
+                        int TimeToWait = 250;
+                        if (DoorAngle >= 0.7)
+                        {
+                            toPlay = "d_close_in";
+                            TimeToWait = 500;
+                        }
+                        else
+                        {
+                            toPlay = "d_close_in_near";
+                        }
+                        EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+                        AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1      
+                        GameFiber DoorWatcher = GameFiber.StartNew(delegate
+                        {
+                            GameFiber.Sleep(TimeToWait);
+                            if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                            {
+                                NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+                                GameFiber.Sleep(250);
+                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                            }
+                            else
+                            {
+                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                            }
+                        }, "DoorWatcher");
+                    }
+                }
+            }
         }
 
         //Updates

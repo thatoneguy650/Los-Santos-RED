@@ -84,11 +84,15 @@ public class ScaredCallIn : ComplexTask
         {
             if(Ped.PlayerCrimesWitnessed.Any())
             {
+                
+
                 //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
+                List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
+                foreach (Crime toReport in toCheck)
                 {
                     Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
+
                 }
                 Ped.PlayerCrimesWitnessed.Clear();
             }
@@ -111,7 +115,8 @@ public class ScaredCallIn : ComplexTask
             {
                 //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
+                List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
+                foreach (Crime toReport in toCheck)
                 {
                     Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
                 }

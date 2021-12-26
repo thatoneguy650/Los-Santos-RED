@@ -458,46 +458,50 @@ public class PedCrimes
                     }
                 }
             }
-            if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
+
+            if (PedExt.Pedestrian.Exists())//do a yiled above
             {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
-                if (isVisiblyArmed)
+                if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
                 {
-                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
-                }
-                foreach (Cop cop in world.PoliceList)
-                {
-                    if (cop.Pedestrian.Exists())
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
+                    if (isVisiblyArmed)
                     {
-                        if (PedExt.Pedestrian.CombatTarget.Exists() && PedExt.Pedestrian.CombatTarget.Handle == cop.Pedestrian.Handle)
+                        AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
+                    }
+                    foreach (Cop cop in world.PoliceList)
+                    {
+                        if (cop.Pedestrian.Exists())
                         {
-                            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
-                            break;
+                            if (PedExt.Pedestrian.CombatTarget.Exists() && PedExt.Pedestrian.CombatTarget.Handle == cop.Pedestrian.Handle)
+                            {
+                                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            if (PedExt.Pedestrian.IsJacking)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
-                GameTimeLastCommittedGTA = Game.GameTime;
-            }
-            if (GameTimeLastCommittedGTA != 0 && Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle && PedExt.IsDriver)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
-            }
-            if (CrimesViolating.Any())
-            {
-                GameTimeLastCommittedCrime = Game.GameTime;
-                if(!EverCommittedCrime)
+                if (PedExt.Pedestrian.IsJacking)
                 {
-                    EverCommittedCrime = true;
-                    EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));
+                    GameTimeLastCommittedGTA = Game.GameTime;
                 }
-            }
-            if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 7000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
-            {
-                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
+                if (GameTimeLastCommittedGTA != 0 && Game.GameTime - GameTimeLastCommittedGTA <= 90000 && PedExt.IsInVehicle && PedExt.IsDriver)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
+                }
+                if (CrimesViolating.Any())
+                {
+                    GameTimeLastCommittedCrime = Game.GameTime;
+                    if (!EverCommittedCrime)
+                    {
+                        EverCommittedCrime = true;
+                        EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
+                    }
+                }
+                if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 7000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)
+                {
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
+                }
             }
         }
     }

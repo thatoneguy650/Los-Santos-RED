@@ -84,6 +84,7 @@ namespace LosSantosRED.lsr
 
         private DispatchEvent CurrentlyPlaying;
         private CrimeSceneDescription CurrentlyPlayingCallIn;
+        private Dispatch CurrentlyPlayingDispatch;
         private List<Dispatch> DispatchList = new List<Dispatch>();
         private List<CrimeDispatch> DispatchLookup;
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
@@ -1139,7 +1140,7 @@ namespace LosSantosRED.lsr
                 }
             }
             GameFiber.Yield();
-            PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
+            PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
         }
         private void CheckDispatch()
         {
@@ -1296,7 +1297,7 @@ namespace LosSantosRED.lsr
             }
             return null;
         }
-        private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
+        private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription dispatchDescription, Dispatch dispatchToPlay)
         {
             //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
@@ -1305,9 +1306,17 @@ namespace LosSantosRED.lsr
                 AbortedAudio = true;
                 Abort();
             }
-            if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && MyDispatch.SeenByOfficers)
+            if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && dispatchDescription.SeenByOfficers)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
+
+            if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && (dispatchToPlay.Name == SuspectSpotted.Name || dispatchToPlay.Name == WantedSuspectSpotted.Name) && CurrentlyPlayingDispatch.Name == SuspectEvaded.Name)
+            {
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
@@ -1347,7 +1356,8 @@ namespace LosSantosRED.lsr
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                 }
                 CurrentlyPlaying = MyAudioEvent;
-                CurrentlyPlayingCallIn = MyDispatch;
+                CurrentlyPlayingCallIn = dispatchDescription;
+                CurrentlyPlayingDispatch = dispatchToPlay;
 
                 if (Settings.SettingsManager.PlayerSettings.Scanner_EnableAudio)
                 {
@@ -1401,9 +1411,9 @@ namespace LosSantosRED.lsr
                     AbortedAudio = false;
                 }
                 CurrentlyPlaying = null;
-                if (MyDispatch.VehicleSeen != null)
+                if (dispatchDescription.VehicleSeen != null)
                 {
-                    MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
+                    dispatchDescription.VehicleSeen.HasBeenDescribedByDispatch = true;
                 }
             }, "PlayAudioList");
         }

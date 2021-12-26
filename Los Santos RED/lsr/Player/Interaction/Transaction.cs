@@ -272,7 +272,7 @@ public class Transaction : Interaction
             IsUsingCustomCam = false;
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
         }
-        else if (Player.IsInVehicle)
+        else if (Player.IsInVehicle || Store.Type == LocationType.DriveThru)
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;

@@ -36,6 +36,8 @@ namespace LosSantosRED.lsr
             PedSwap = pedswap;
         }
         private uint GameTimeLastPressedEngineToggle;
+        private uint GameTimeLastPressedDoorClose;
+
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
@@ -44,8 +46,12 @@ namespace LosSantosRED.lsr
         private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
         private bool IsPressingSprint => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SprintKey);// && Game.IsShiftKeyDownRightNow;
         private bool IsPressingRightIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.RightIndicatorKey) && Game.IsShiftKeyDownRightNow;
+
+        private bool IsPressingDoorClose => Game.IsControlKeyDownRightNow;
+
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Settings.SettingsManager.KeySettings.HazardKey) && Game.IsShiftKeyDownRightNow;
+        private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
         public bool IsPressingEngineToggle => Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
@@ -198,6 +204,14 @@ namespace LosSantosRED.lsr
                             Player.CurrentVehicle.Indicators.ToggleRight();
                             GameTimeLastPressedIndicators = Game.GameTime;
                         }
+                    }
+                }
+                if(!RecentlyPressedDoorClose)
+                {
+                    if (IsPressingDoorClose)
+                    {
+                        Player.CloseDriverDoor();
+                        GameTimeLastPressedDoorClose = Game.GameTime;
                     }
                 }
             }

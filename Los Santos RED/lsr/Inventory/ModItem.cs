@@ -21,6 +21,12 @@ public class ModItem
         Name = name;
         Description = description;
     }
+    public ModItem(string name, string description, bool requiresDLC)
+    {
+        Name = name;
+        Description = description;
+        RequiresDLC = requiresDLC;
+    }
     public ModItem(string name, eConsumableType type)
     {
         Name = name;

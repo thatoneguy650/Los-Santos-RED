@@ -357,9 +357,9 @@ public class Debug
     }
     private void DebugNumpad1()
     {
-        ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
-        Game.DisplayNotification($"ModController.DebugCoreRunning {ModController.DebugCoreRunning}");
-        GameFiber.Sleep(500);
+        //ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
+        //Game.DisplayNotification($"ModController.DebugCoreRunning {ModController.DebugCoreRunning}");
+        //GameFiber.Sleep(500);
 
 
         Game.LocalPlayer.IsInvincible = false;
@@ -367,16 +367,16 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
-        Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
-        GameFiber.Sleep(500);
+        //ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
+        //Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
+        //GameFiber.Sleep(500);
         //Dispatcher.DebugSpawnCop();
     }
     private void DebugNumpad3()
     {
-        ModController.DebugTertiaryRunning = !ModController.DebugTertiaryRunning;
-        Game.DisplayNotification($"ModController.DebugTertiaryRunning {ModController.DebugTertiaryRunning}");
-        GameFiber.Sleep(500);
+        //ModController.DebugTertiaryRunning = !ModController.DebugTertiaryRunning;
+        //Game.DisplayNotification($"ModController.DebugTertiaryRunning {ModController.DebugTertiaryRunning}");
+        //GameFiber.Sleep(500);
 
         WriteCivilianAndCopState();
 
@@ -395,21 +395,51 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
-        Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
-        GameFiber.Sleep(500);
+        //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
+        //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
+        //GameFiber.Sleep(500);
 
 
-        //if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-        //{
-        //    bool Test1 = NativeFunction.Natives.x0BE4BE946463F917<bool>(Game.LocalPlayer.Character.CurrentVehicle);//has radio?
-        //    NativeFunction.Natives.x3E45765F3FBB582F(Game.LocalPlayer.Character.CurrentVehicle);//radio override?
-        //    bool Test2 = NativeFunction.Natives.x0BE4BE946463F917<bool>(Game.LocalPlayer.Character.CurrentVehicle);//has radio?
+        if (Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
+        {
+            bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
+            if (isValid)
+            {
+                float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 0);
 
-
-        //    EntryPoint.WriteToConsole($"Has Radio Debug Pre: {Test1} Post: {Test2}", 5);
-
-        //}
+                if (DoorAngle > 0.0f)
+                {
+                    string toPlay = "";
+                    int TimeToWait = 250;
+                    if (DoorAngle >= 0.7)
+                    {
+                        toPlay = "d_close_in";
+                        TimeToWait = 500;
+                    }
+                    else
+                    {
+                        toPlay = "d_close_in_near";
+                    }
+                    EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+                    AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1      
+                    GameFiber DoorWatcher = GameFiber.StartNew(delegate
+                    {
+                        GameFiber.Sleep(TimeToWait);
+                        if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                        {
+                            NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+                            GameFiber.Sleep(250);
+                            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                        }
+                    }, "DoorWatcher");
+                }
+            }
+        }
 
 
         //mp_doorbell
@@ -517,9 +547,23 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
-        Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
-        GameFiber.Sleep(500);
+
+
+
+        if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        {
+            float PreAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
+            NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(Game.LocalPlayer.Character.CurrentVehicle, 0, true, true);
+            float PostANgle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
+            EntryPoint.WriteToConsole($"PreAngle {PreAngle} PostANgle {PostANgle}", 5);   
+            //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2.0f, 1, 0);
+        }
+
+
+
+        //ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
+        //Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
+        //GameFiber.Sleep(500);
 
 
 
@@ -537,7 +581,7 @@ public class Debug
         //        float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
         //        if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
         //        {
-                    
+
         //            if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
         //            {
         //                ClosestDistance = DistanceToObject;
@@ -647,9 +691,9 @@ public class Debug
     private void DebugNumpad6()
     {
 
-        ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
-        Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
-        GameFiber.Sleep(500);
+        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
+        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
+        //GameFiber.Sleep(500);
 
 
 

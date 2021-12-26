@@ -45,5 +45,6 @@ namespace LosSantosRED.lsr.Interface
         void StopSprinting();
         void EnterLocation();
         void ExitLocation();
+        void CloseDriverDoor();
     }
 }

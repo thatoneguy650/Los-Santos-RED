@@ -225,6 +225,7 @@ public class CarJack
 
         if (Driver.Pedestrian.IsInAnyVehicle(false))
         {
+
         }
         else
         {
