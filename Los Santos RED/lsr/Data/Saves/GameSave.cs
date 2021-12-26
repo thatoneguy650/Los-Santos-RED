@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -18,17 +19,16 @@ namespace LosSantosRED.lsr.Data
         {
 
         }
-        public GameSave(string playerName, int money, string modelName,bool isMale, uint ownedVehicleHandle, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory)
+        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, VehicleVariation vehicleVariation)
         {
             PlayerName = playerName;
             Money = money;
             ModelName = modelName;
             IsMale = isMale;
-            OwnedVehicleHandle = ownedVehicleHandle;
             CurrentModelVariation = currentModelVariation;
             WeaponInventory = weaponInventory;
+            OwnedVehicleVariation = vehicleVariation;
         }
-
         public void Save(ISaveable player, IWeapons weapons)
         {
             PlayerName = player.PlayerName;
@@ -50,12 +50,21 @@ namespace LosSantosRED.lsr.Data
             CurrentPrimaryHairColor = player.CurrentPrimaryHairColor;
             CurrentSecondaryColor = player.CurrentSecondaryColor;
             CurrentHeadOverlays = player.CurrentHeadOverlays;
+            if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
+            {
+                int primaryColor;
+                int secondaryColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", player.OwnedVehicle.Vehicle, &primaryColor, &secondaryColor);
+                }
+                OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted));
+            }
         }
         public string PlayerName { get; set; }
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-        public uint OwnedVehicleHandle { get; set; }
         public int CurrentPrimaryHairColor { get; set; }
         public int CurrentSecondaryColor { get; set; }
         public List<HeadOverlay> CurrentHeadOverlays { get; set; }
@@ -63,7 +72,8 @@ namespace LosSantosRED.lsr.Data
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player)
+        public VehicleVariation OwnedVehicleVariation { get; set; }
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World)
         {
             pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
@@ -84,6 +94,27 @@ namespace LosSantosRED.lsr.Data
             {
                 player.Inventory.Add(cii.ModItem, cii.Amount);
             }
+
+            if(OwnedVehicleVariation != null)
+            {
+                NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position,out Vector3 SpawnPos, out float Heading,false);
+                if (SpawnPos != Vector3.Zero)
+                {
+                    Vehicle NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
+                    if (NewVehicle.Exists())
+                    {
+                        NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
+                        NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle,OwnedVehicleVariation.LicensePlate.PlateType);                     
+                        NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+                        NewVehicle.Wash();
+                        VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
+                        World.AddEntity(MyNewCar, ResponseType.None);
+                        player.TakeOwnershipOfVehicle(MyNewCar);
+                    }
+                }
+            }
+
+
         }
 
         public override string ToString()

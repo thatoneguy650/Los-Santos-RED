@@ -49,7 +49,7 @@ public class LEDispatcher
     private float DistanceToDelete => TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
-    private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
+    private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     //public void SpawnCop(Vector3 position)
     //{
     //    Vector3 spawnLocation = position;
@@ -87,7 +87,7 @@ public class LEDispatcher
     //}
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
-    private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
+    private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private float MaxDistanceToSpawn
     {
         get
@@ -320,6 +320,21 @@ public class LEDispatcher
             }
         }
     }
+    private int TimeBetweenRecall
+    {
+        get
+        {
+            if (!Player.AnyPoliceRecentlySeenPlayer)
+            {
+                return Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Unseen;// 3000;
+            }
+            else
+            {
+                return ((6 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_Min;//((5 - TotalWantedLevel) * Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler) + Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;//2000;
+            }
+        }
+    }
+
     private int TimeBetweenRoadblocks
     {
         get
@@ -597,7 +612,7 @@ public class LEDispatcher
             return true;
         }
 
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 250f && cop.ClosestDistanceToPlayer <= 50f && World.AnyCopsNearCop(cop,2))
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: World.AnyCopsNearCop IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}", 5);
             return true;

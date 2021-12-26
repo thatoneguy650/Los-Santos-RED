@@ -231,7 +231,7 @@ public class PlayerPerception
                // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
             }
 
-            if(losRan)
+            if(losRan && Originator.IsCop)
             {
                 GameFiber.Yield();//TR
             }

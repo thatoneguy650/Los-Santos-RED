@@ -313,7 +313,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
                     Cop.CurrentTask = new AIApprehend(Cop, Player) { OtherTarget = MainTarget };
                     Cop.ResetWeaponsState();
-                    //GameFiber.Yield();
+                    GameFiber.Yield();//TR Added back 4
                     Cop.CurrentTask.Start();
                 }
             }
@@ -328,7 +328,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                             EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                             Cop.CurrentTask = new Locate(Cop, Player);
                             Cop.ResetWeaponsState();
-                            //GameFiber.Yield();
+                            GameFiber.Yield();//TR Added back 4
                             Cop.CurrentTask.Start();
                         }
                     }
@@ -343,7 +343,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                                     EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
                                     Cop.CurrentTask = new Kill(Cop, Player);
                                     Cop.ResetWeaponsState();
-                                    //GameFiber.Yield();
+                                    GameFiber.Yield();//TR Added back 4
                                     Cop.CurrentTask.Start();
                                 }
                             }
@@ -354,7 +354,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                                     EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
                                     Cop.CurrentTask = new Chase(Cop, Player, PedProvider, Cop);
                                     Cop.ResetWeaponsState();
-                                   // GameFiber.Yield();
+                                    GameFiber.Yield();//TR Added back 4
                                     Cop.CurrentTask.Start();
                                 }
                             }
@@ -366,7 +366,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
                                 Cop.CurrentTask = new Locate(Cop, Player);
                                 Cop.ResetWeaponsState();
-                               // GameFiber.Yield();
+                                GameFiber.Yield();//TR Added back 4
                                 Cop.CurrentTask.Start();
                             }
                         }
@@ -379,7 +379,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
                         Cop.CurrentTask = new Investigate(Cop, Player);
                         Cop.ResetWeaponsState();
-                        //GameFiber.Yield();
+                        GameFiber.Yield();//TR Added back 4
                         Cop.CurrentTask.Start();
                     }
                 }
@@ -390,7 +390,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                         EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                         Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                         Cop.ResetWeaponsState();
-                        //GameFiber.Yield();
+                        GameFiber.Yield();//TR Added back 4
                         Cop.CurrentTask.Start();
                     }
                 }
@@ -403,7 +403,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
                 Cop.CurrentTask = new Idle(Cop, Player, PedProvider, this, PlacesOfInterest);
                 Cop.ResetWeaponsState();
-               // GameFiber.Yield();
+                GameFiber.Yield();//TR Added back 4
                 Cop.CurrentTask.Start();
             }
         }
@@ -437,6 +437,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     {
                         Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
+                        GameFiber.Yield();//TR Added back 4
                     }
                 }
                 else if (Civilian.WillFight)
@@ -447,6 +448,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                         {
                             Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
                             Civilian.CurrentTask.Start();
+                            GameFiber.Yield();//TR Added back 4
                         }
                     }
                     else
@@ -455,6 +457,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                         {
                             Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                             Civilian.CurrentTask.Start();
+                            GameFiber.Yield();//TR Added back 4
                         }
                     }
                 }
@@ -464,6 +467,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     {
                         Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
+                        GameFiber.Yield();//TR Added back 4
                     }
                 }
             }
@@ -473,6 +477,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 {
                     Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
                     Civilian.CurrentTask.Start();
+                    GameFiber.Yield();//TR Added back 4
                 }
             }
             else if (SeenMundaneCrime)
@@ -483,6 +488,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     {
                         Civilian.CurrentTask = new CalmCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         Civilian.CurrentTask.Start();
+                        GameFiber.Yield();//TR Added back 4
                     }
                 }
             }

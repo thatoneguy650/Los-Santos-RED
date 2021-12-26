@@ -265,6 +265,7 @@ public class PedCrimes
                         }
                         fullVehicle = world.GetVehicleExt(VehicleWitnessed);
                         fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
+                        GameFiber.Yield();//this is new, before it jusdt yielded forever
                     }
                     else
                     {

@@ -155,7 +155,7 @@ public class ActionMenu : Menu
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here" });
+        SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
         LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
         GestureMenu = new UIMenuListScrollerItem<GestureLookup>("Gesture", "Perform the selected gesture", GestureLookups);
         CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue","Pause","Stop" });
@@ -228,11 +228,19 @@ public class ActionMenu : Menu
         {
             if (SitDown.SelectedItem == "At Closest Seat")
             {
-                Player.StartSittingDown(true);
+                Player.StartSittingDown(true, true);
             }
             else
             {
-                Player.StartSittingDown(false);
+                if(SitDown.SelectedItem == "Here Backwards")
+                {
+                    Player.StartSittingDown(false, false);
+                }
+                else
+                {
+                    Player.StartSittingDown(false, true);
+                }
+                
             }
         }
         else if (selectedItem == LayDown)

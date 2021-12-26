@@ -169,7 +169,7 @@ namespace LosSantosRED.lsr
             GameSave CurrentSave = GameSaves.GetSave(Player);
             if (CurrentSave != null)
             {
-                CurrentSave.Load(Weapons, PedSwap, Player);
+                CurrentSave.Load(Weapons, PedSwap, Player, Settings, World);
                 GameFiber.Yield();
             }
 

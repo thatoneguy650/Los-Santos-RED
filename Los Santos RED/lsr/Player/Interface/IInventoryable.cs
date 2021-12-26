@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         void GiveMoney(int salesPrice);
         void AddToInventory(ModItem toAdd, int amountPerPackage);
         void StartServiceActivity(ModItem toAdd, GameLocation store);
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
     }
 }

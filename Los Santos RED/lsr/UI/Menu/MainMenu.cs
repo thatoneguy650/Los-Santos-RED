@@ -33,7 +33,7 @@ public class MainMenu : Menu
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
         SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
         InventoryMenu = new InventoryMenu(menuPool, Main, Player, modItems);

@@ -17,13 +17,17 @@ public class SaveMenu : Menu
     private IGameSaves GameSaves;
     private IPedSwap PedSwap;
     private IInventoryable PlayerInvetory;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory)
+    private ISettingsProvideable Settings;
+    private IEntityProvideable World;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world)
     {
         PlayerSave = playersave;
         GameSaves = gameSaves;
         Weapons = weapons;
         PedSwap = pedSwap;
         PlayerInvetory = playerinventory;
+        Settings = settings;
+        World = world;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         Saves.SetBannerType(EntryPoint.LSRedColor);
         Saves.OnItemSelect += OnActionItemSelect;
@@ -67,7 +71,7 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World);
         }
         else if (selectedItem == SaveGameItem)
         {

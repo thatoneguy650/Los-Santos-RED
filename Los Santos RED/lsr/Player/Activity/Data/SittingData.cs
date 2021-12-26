@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Player.Activity
         public string AnimBaseDictionary { get; set; }
         public string AnimEnter { get; set; }
         public string AnimEnterDictionary { get; set; }
+
         public string AnimExit { get; set; }
         public string AnimExitDictionary { get; set; }
         public List<string> AnimIdle { get; set; } = new List<string>();

@@ -93,6 +93,16 @@ namespace Mod
                 IsFastForwarding = true;
                 GetIntervalAndMultiplier();
                 TimeToStopFastForwarding = untilTime;
+
+
+                GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+                {
+                    while (IsFastForwarding)
+                    {
+                        CheckTimeInterval();
+                        GameFiber.Yield();
+                    }
+                }, "FastForwardWatcher");
             }
         }
         public void FastForward(int HoursTo)
@@ -102,6 +112,15 @@ namespace Mod
                 IsFastForwarding = true;
                 GetIntervalAndMultiplier();
                 TimeToStopFastForwarding = CurrentDateTime.AddHours(HoursTo);
+
+                GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+                {
+                    while (IsFastForwarding)
+                    {
+                        CheckTimeInterval();
+                        GameFiber.Yield();
+                    }
+                }, "FastForwardWatcher");
             }
         }
         private void CheckTimeInterval()

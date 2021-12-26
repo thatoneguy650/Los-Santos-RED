@@ -845,7 +845,7 @@ namespace Mod
                     return;
                 }
                 UpdateCurrentVehicle();
-                GameFiber.Yield();//TR Yield RemovedTest 2
+                //GameFiber.Yield();//TR Yield RemovedTest 2
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
@@ -1431,7 +1431,7 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
-        public void StartSittingDown(bool FindSittingProp)
+        public void StartSittingDown(bool findSittingProp, bool enterForward)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
@@ -1445,7 +1445,7 @@ namespace Mod
                 }
                 //IsSitting = true;
                 //IsPerformingActivity = true;
-                SittingActivity = new SittingActivity(this, Settings, FindSittingProp);
+                SittingActivity = new SittingActivity(this, Settings, findSittingProp, enterForward);
                 SittingActivity.Start();
             }
         }
@@ -1615,7 +1615,7 @@ namespace Mod
                         existingVehicleExt.SetAsEntered();
                     }
                     existingVehicleExt.Update(this);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR removed 4
                     if (!existingVehicleExt.IsStolen)
                     {
                         if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))

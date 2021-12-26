@@ -36,9 +36,9 @@ public class GameSaves : IGameSaves
         mySave.Save(player, weapons);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world)
     {       
-        gameSave.Load(weapons, pedSwap, player);
+        gameSave.Load(weapons, pedSwap, player, settings, world);
     }
     public GameSave GetSave(ISaveable player)
     {
@@ -105,7 +105,11 @@ public class GameSaves : IGameSaves
             new HeadOverlay(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },};
 
         HeadBlendData HeadBlend = new HeadBlendData(12,31,0,12,31,0,0.8f,0.2f,0.0f);
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, 0, AlexisVariation, AlexisWeapons) { CurrentHeadBlendData = HeadBlend, CurrentHeadOverlays = HeadOverlays, CurrentPrimaryHairColor = 57,CurrentSecondaryColor = 5 };
+
+
+        VehicleVariation myVehicle = new VehicleVariation("dominator", 30,1, new LSR.Vehicles.LicensePlate("133AD37",0,false));
+
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, myVehicle) { CurrentHeadBlendData = HeadBlend, CurrentHeadOverlays = HeadOverlays, CurrentPrimaryHairColor = 57,CurrentSecondaryColor = 5 };
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,

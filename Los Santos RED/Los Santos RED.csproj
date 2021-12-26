@@ -228,6 +228,7 @@
     <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
+    <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
     <Compile Include="lsr\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />

@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace LSR.Vehicles
 {
+    [Serializable]
     public class LicensePlate
     {
+        public LicensePlate()
+        {
+
+        }
         public string PlateNumber { get; set; }
         public bool IsWanted { get; set; }
         public int PlateType { get; set; }

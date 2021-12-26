@@ -7,9 +7,10 @@ namespace LosSantosRED.lsr.Interface
     public interface IGameSaves
     {
         List<GameSave> GameSaveList { get; }
-        void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player);
+
 
         void Save(ISaveable player, IWeapons weapons);
         void DeleteSave(string playerName, string modelName);
+        void Load(GameSave selectedItem, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerInvetory, ISettingsProvideable settings, IEntityProvideable world);
     }
 }

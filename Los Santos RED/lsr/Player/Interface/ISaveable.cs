@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace LosSantosRED.lsr.Interface
         List<HeadOverlay> CurrentHeadOverlays { get; }
         int CurrentPrimaryHairColor { get; }
         int CurrentSecondaryColor { get; }
+        VehicleExt OwnedVehicle { get; }
     }
 }

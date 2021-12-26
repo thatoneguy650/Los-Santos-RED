@@ -32,7 +32,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
 
         void StartSmokingPot();
-        void StartSittingDown(bool FindSittingProp);
+        void StartSittingDown(bool FindSittingProp, bool EnterForward);
         void StartSmoking();
         void StartDrinkingActivity();
         void CommitSuicide();

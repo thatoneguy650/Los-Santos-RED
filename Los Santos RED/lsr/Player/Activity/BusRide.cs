@@ -71,9 +71,9 @@ public class BusRide
                                 int lol = 0;
                                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                                 NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", 0, Bus, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)VehicleDrivingFlags.Normal, 20f);
+                                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", 0, Bus, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)VehicleDrivingFlags.FollowTraffic, 20f);
                                 NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", 0, Bus, taskedPosition2.X, taskedPosition2.Y, taskedPosition2.Z, 12f, (int)VehicleDrivingFlags.Normal, 20f);
+                                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", 0, Bus, taskedPosition2.X, taskedPosition2.Y, taskedPosition2.Z, 12f, (int)VehicleDrivingFlags.FollowTraffic, 20f);
                                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Bus.Driver, lol);

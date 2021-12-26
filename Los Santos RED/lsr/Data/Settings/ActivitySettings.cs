@@ -18,6 +18,7 @@ public class ActivitySettings
     public List<string> Marijuana_PossibleProps { get; set; } = new List<string>() { "p_amb_joint_01" };
     public List<string> Cigarette_PossibleProps { get; set; } = new List<string>() { "ng_proc_cigarette01a" };
     public bool TeleportWhenSitting { get; set; } = false;
+    public bool SetNoTableCollisionWhenSitting { get; set; } = true;
 
     public ActivitySettings()
     {

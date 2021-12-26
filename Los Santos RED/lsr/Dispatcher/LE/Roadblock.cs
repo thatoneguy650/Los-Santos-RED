@@ -65,7 +65,10 @@ public class Roadblock
         {
             FillInBlockade();
         }
-        CheckSpikeStrips();
+        if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+        {
+            CheckSpikeStrips();
+        }
     }
     private void CheckSpikeStrips()
     {
@@ -188,12 +191,15 @@ public class Roadblock
         GameFiber.Yield();
         AddVehicles(false);
         GameFiber.Yield();
-        CreateSpikeStrip(NodeOffset, RotatedNodeHeading);
-        GameFiber.Yield();
-        AddSpikeStrips(true);
-        GameFiber.Yield();
-        AddSpikeStrips(false);
-        GameFiber.Yield();
+        if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+        {
+            CreateSpikeStrip(NodeOffset, RotatedNodeHeading);
+            GameFiber.Yield();
+            AddSpikeStrips(true);
+            GameFiber.Yield();
+            AddSpikeStrips(false);
+            GameFiber.Yield();
+        }
     }
     private void RemoveItems()
     {

@@ -29,6 +29,7 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastMovedFast;
     private bool hasCheckedWeapon = false;
     private Vector3 position;
+    private uint GameTimeCreated = 0;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
@@ -36,6 +37,7 @@ public class PedExt : IComplexTaskable
         Health = Pedestrian.Health;
         SpawnPosition = Pedestrian.Position;
         Name = _Name;
+        GameTimeCreated = Game.GameTime;
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
@@ -48,6 +50,7 @@ public class PedExt : IComplexTaskable
         IsGangMember = _IsGangMember;
         PedGroup = gameGroup;
     }
+    public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public uint ArrestingPedHandle { get; set; } = 0;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract);
