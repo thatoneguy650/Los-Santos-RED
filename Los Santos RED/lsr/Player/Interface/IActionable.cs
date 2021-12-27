@@ -30,8 +30,9 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         bool HasCurrentActivity { get; }
         bool CharacterModelIsFreeMode { get; }
+        bool IsMakingInsultingGesture { get; set; }
 
-       // void StartSmokingPot();
+        // void StartSmokingPot();
         void StartSittingDown(bool FindSittingProp, bool EnterForward);
         //void StartSmoking();
         //void StartDrinkingActivity();
@@ -50,7 +51,7 @@ namespace LosSantosRED.lsr.Interface
         void StartConsumingActivity(ModItem selectedStuff);
         void PauseDynamicActivity();
         void ContinueDynamicActivity();
-        void Gesture(string text);
+        void Gesture(GestureData gestureData);
         void EnterVehicleAsPassenger();
         void ShuffleToNextSeat();
         void ForceErraticDriver();

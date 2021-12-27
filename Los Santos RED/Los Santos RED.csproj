@@ -116,6 +116,7 @@
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlay.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
+    <Compile Include="lsr\Player\Activity\Data\GestureData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
     <Compile Include="lsr\Player\Activity\EatingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />

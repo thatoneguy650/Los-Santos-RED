@@ -41,12 +41,12 @@ public class PoliceSettings
     public int MaxArmor { get; set; } = 50;
     public int PedSpawnLimit_Default { get; set; } = 5;
     public int PedSpawnLimit_Investigation { get; set; } = 6;
-    public int PedSpawnLimit_Wanted1 { get; set; } = 7;
-    public int PedSpawnLimit_Wanted2 { get; set; } = 9;
-    public int PedSpawnLimit_Wanted3 { get; set; } = 13;
+    public int PedSpawnLimit_Wanted1 { get; set; } = 6;//7;
+    public int PedSpawnLimit_Wanted2 { get; set; } = 10;//9;
+    public int PedSpawnLimit_Wanted3 { get; set; } = 12;//13;
     public int PedSpawnLimit_Wanted4 { get; set; } = 16;
     public int PedSpawnLimit_Wanted5 { get; set; } = 20;
-    public int PedSpawnLimit_Wanted6 { get; set; } = 25;
+    public int PedSpawnLimit_Wanted6 { get; set; } = 24;
     public int VehicleSpawnLimit_Default { get; set; } = 5;
     public int VehicleSpawnLimit_Investigation { get; set; } = 6;
     public int VehicleSpawnLimit_Wanted1 { get; set; } = 6;
@@ -54,7 +54,7 @@ public class PoliceSettings
     public int VehicleSpawnLimit_Wanted3 { get; set; } = 10;
     public int VehicleSpawnLimit_Wanted4 { get; set; } = 12;
     public int VehicleSpawnLimit_Wanted5 { get; set; } = 14;
-    public int VehicleSpawnLimit_Wanted6 { get; set; } = 18;
+    public int VehicleSpawnLimit_Wanted6 { get; set; } = 16;
     public bool WantedLevelIncreasesByKillingPolice { get; set; } = true;
     public int KillLimit_Wanted4 { get; set; } = 4;
     public int KillLimit_Wanted5 { get; set; } = 12;

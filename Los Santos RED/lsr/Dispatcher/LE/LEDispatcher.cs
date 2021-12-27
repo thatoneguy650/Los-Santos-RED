@@ -42,7 +42,6 @@ public class LEDispatcher
         Weapons = weapons;
         Names = names;
     }
-
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
@@ -50,41 +49,6 @@ public class LEDispatcher
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
-    //public void SpawnCop(Vector3 position)
-    //{
-    //    Vector3 spawnLocation = position;
-    //    Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
-    //    GameFiber.Yield();
-    //    if (agency != null)
-    //    {
-    //        EntryPoint.WriteToConsole($"DISPATCHER: Agency {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
-    //        DispatchableVehicle VehicleType = agency.GetRandomVehicle(TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-    //        EntryPoint.WriteToConsole($"DISPATCHER: Agency2 {agency.FullName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
-
-    //        GameFiber.Yield();
-    //        if (VehicleType != null)
-    //        {
-    //            EntryPoint.WriteToConsole($"DISPATCHER: Vehicle1 {VehicleType.ModelName} PoliceHelicoptersCount {World.PoliceHelicoptersCount} SpawnedHeliLimit {SpawnedHeliLimit}", 5);
-    //            DispatchablePerson OfficerType = agency.GetRandomPed(TotalWantedLevel, VehicleType.RequiredPassengerModels);
-    //            GameFiber.Yield();
-    //            if (OfficerType != null)
-    //            {
-    //                try
-    //                {
-    //                    SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, spawnLocation, 0f, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names);
-    //                    spawnTask.AttemptSpawn();
-    //                    GameFiber.Yield();
-    //                    spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-    //                    spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
-    //                }
-    //                catch (Exception ex)
-    //                {
-    //                    EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;

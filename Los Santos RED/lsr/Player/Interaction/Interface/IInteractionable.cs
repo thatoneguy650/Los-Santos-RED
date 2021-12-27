@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         bool IsTransacting { get; set; }
         bool IsConductingIllicitTransaction { get; set; }
+        bool IsSitting { get; }
 
         void SetAngeredCop();
         void GiveMoney(int v);

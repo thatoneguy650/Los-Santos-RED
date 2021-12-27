@@ -694,6 +694,7 @@ namespace LosSantosRED.lsr
         }
         private void AddToQueue(Dispatch ToAdd)
         {
+            GameFiber.Yield();//TR Added 7
             Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
             if (Existing == null && Settings.SettingsManager.PlayerSettings.Scanner_IsEnabled)
             {

@@ -224,6 +224,7 @@ namespace Mod
         public bool IsTransacting { get; set; }
         public bool IsDisplayingCustomMenus => IsTransacting || IsCustomizingPed;
         public bool IsDead { get; private set; }
+        public bool IsMakingInsultingGesture { get; set; }
         public bool IsDriver { get; private set; }
         public bool IsGettingIntoAVehicle
         {
@@ -1032,6 +1033,10 @@ namespace Mod
                             ClosestTeleportEntrance = gl;
                         }
                     }
+                    else if (IsSitting && gl.Type == LocationType.Restaurant && gl.DistanceToPlayer <= 30f && gl.CanTransact)
+                    {
+                        ClosestSimpleTransaction = gl;
+                    }
                 }
             }
 
@@ -1075,6 +1080,13 @@ namespace Mod
             {
                 IsNearScenario = false;
             }
+
+
+            if(IsMakingInsultingGesture && CurrentLookedAtPed != null && !CurrentLookedAtPed.IsFedUpWithPlayer)
+            {
+                CurrentLookedAtPed.TimesInsultedByPlayer++;
+            }
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }
         public void UpdateVehicleData()
@@ -1568,7 +1580,7 @@ namespace Mod
                 EntryPoint.WriteToConsole($"PLAYER EVENT: StartServiceActivity HOTEL", 3);
             }
         }
-        public void Gesture(string gestureName)
+        public void Gesture(GestureData gestureData)
         {
             if (!IsPerformingActivity && CanPerformActivities)
             {
@@ -1577,7 +1589,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new GestureActivity(this, gestureName);
+                DynamicActivity = new GestureActivity(this, gestureData);
                 DynamicActivity.Start();
             }
         }
@@ -1890,6 +1902,15 @@ namespace Mod
                 {
                     CurrentVehicle.SetDriverWindow(true);
                 }
+
+                if(CurrentWeapon == null)
+                {
+                    IsMakingInsultingGesture = true;
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"CurrentWeapon {CurrentWeapon.ModelName}", 5);
+                }
             }
             else
             {
@@ -1897,6 +1918,9 @@ namespace Mod
                 {
                     CurrentVehicle.SetDriverWindow(false);
                 }
+
+                IsMakingInsultingGesture = false;
+                
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}", 5);
         }
@@ -2052,13 +2076,10 @@ namespace Mod
             Game.LocalPlayer.Character.Kill();
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
-
             if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = 0.4f;
             }
-
-
             Scanner.OnSuspectWasted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
         }

@@ -31,7 +31,7 @@ public class Radio
             {
                 SetRadioStation(DesiredStation);
             }
-            VehicleToMonitor.HasAutoSetRadio = true;
+            
         }
     }
     public void SetNextTrack()
@@ -46,6 +46,12 @@ public class Radio
         if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsEngineOn)
         {
             NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
+
+            if (!VehicleToMonitor.HasAutoSetRadio)
+            {
+                VehicleToMonitor.HasAutoSetRadio = true;
+                EntryPoint.WriteToConsole($"Player Event: Set Radio For the First Time {StationName}", 5);
+            }
         }
     }
 }

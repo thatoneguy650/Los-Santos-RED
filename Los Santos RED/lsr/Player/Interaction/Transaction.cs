@@ -68,7 +68,7 @@ public class Transaction : Interaction
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
-    private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f) && Player.CanConverse;
+    private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f || Player.IsSitting) && Player.CanConverse;
 
     public void ClearPreviews()
     {
@@ -278,19 +278,17 @@ public class Transaction : Interaction
             IsUsingCustomCam = false;
             NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
         }
+        else if (Player.IsSitting || Store.Type == LocationType.Restaurant)
+        {
+            IsUsingHintCamera = false;
+            IsUsingCustomCam = false;
+        }
         else
         {
             IsUsingCustomCam = true;
             IsUsingHintCamera = false;
             DisableControl();
-
-
-
             DoEntryCam();
-
-
-
-
             if (Store.HasCustomItemPostion)
             {
                 HighlightLocationWithCamera();
@@ -425,7 +423,7 @@ public class Transaction : Interaction
     }
     private void Tick()
     {
-        while (CanContinueConversation)
+        while (CanContinueConversation && !IsDisposed)
         {
             menuPool.ProcessMenus();
             if (!IsActivelyConversing && !IsAnyMenuVisible)
