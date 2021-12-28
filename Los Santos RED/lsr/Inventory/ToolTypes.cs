@@ -14,4 +14,5 @@ public enum ToolTypes
     Shovel = 5,
     Pliers = 6,
     Drill = 7,
+    Crowbar = 8,
 }

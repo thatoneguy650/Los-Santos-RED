@@ -136,7 +136,7 @@ public class PedCrimes
                         }
                     }
                 }
-                if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
+                if (WantedLevel == 0 && CurrentlyViolatingWantedLevel == 0 && player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
                 {
                     CheckOtherPedCrimes(world, player);
                     //GameFiber.Yield();//TR//should this only yield if it did something? dont think i need this back, but it was the last to be removed

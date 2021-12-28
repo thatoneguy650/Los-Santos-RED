@@ -226,8 +226,9 @@ namespace Mod
                     }
                 }
                 LocationsCalculated++;
-                if(LocationsCalculated >= 50)//20//5
+                if(LocationsCalculated >= 20)//50//20//5
                 {
+                    LocationsCalculated = 0;
                     GameFiber.Yield();
                 }
             }
@@ -266,7 +267,7 @@ namespace Mod
             }
             gameLocation.SetNearby();
             gameLocation.Update();
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
         private void SpawnVendor(GameLocation gameLocation)
         {

@@ -103,7 +103,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> BravadoMenu = ShopMenus.GetMenu("BravadoMenu")?.Items;
         List<MenuItem> LuxuryAutosMenu = ShopMenus.GetMenu("LuxuryAutosMenu")?.Items;
         List<MenuItem> PremiumDeluxeMenu = ShopMenus.GetMenu("PremiumDeluxeMenu")?.Items;
-        
+        List<MenuItem> BeanMachineMenu = ShopMenus.GetMenu("BeanMachineMenu")?.Items;
 
         LocationsList = new List<GameLocation>
         {
@@ -406,17 +406,17 @@ public class PlacesOfInterest : IPlacesOfInterest
 
                 //Coffee
                     //Bean Machine
-                    new GameLocation(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-835.4522f, -610.4766f, 29.02697f), 142.0655f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-602.2112f, -1105.766f, 22.32427f), 273.8795f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-659.5289f, -814.0433f, 24.53778f), 232.0023f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu ,BannerImage = "beanmachine.png"},
-                    new GameLocation(new Vector3(-687.0801f, -855.6792f, 23.89398f), 0.2374549f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-1345.296f, -609.976f, 28.61888f), 304.4266f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-270.3488f, -977.3488f, 31.21763f), 164.5747f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
-                    new GameLocation(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = CoffeeMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-835.4522f, -610.4766f, 29.02697f), 142.0655f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-602.2112f, -1105.766f, 22.32427f), 273.8795f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-659.5289f, -814.0433f, 24.53778f), 232.0023f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu ,BannerImage = "beanmachine.png"},
+                    new GameLocation(new Vector3(-687.0801f, -855.6792f, 23.89398f), 0.2374549f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-1345.296f, -609.976f, 28.61888f), 304.4266f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-270.3488f, -977.3488f, 31.21763f), 164.5747f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+                    new GameLocation(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
 
                 new GameLocation(new Vector3(-1206.975f, -1135.029f, 7.693257f), 109.1408f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co")  { Menu = CoffeeMenu },
                 new GameLocation(new Vector3(-1278.833f, -876.438f, 11.9303f), 123.2498f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },

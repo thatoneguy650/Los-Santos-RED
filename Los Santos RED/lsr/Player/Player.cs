@@ -2426,7 +2426,7 @@ namespace Mod
                         existingVehicleExt.SetAsEntered();
                     }
                     existingVehicleExt.Update(this);
-                    //GameFiber.Yield();//TR removed 4
+                    GameFiber.Yield();//TR removed 4
                     if (!existingVehicleExt.IsStolen)
                     {
                         if (IsDriver && (OwnedVehicle == null || existingVehicleExt.Handle != OwnedVehicle.Handle))

@@ -278,7 +278,7 @@ public class Transaction : Interaction
             IsUsingCustomCam = false;
             NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
         }
-        else if (Player.IsSitting || Store.Type == LocationType.Restaurant)
+        else if (Player.IsSitting && Store.Type == LocationType.Restaurant)
         {
             IsUsingHintCamera = false;
             IsUsingCustomCam = false;

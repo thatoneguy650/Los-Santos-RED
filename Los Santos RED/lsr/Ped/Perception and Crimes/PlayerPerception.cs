@@ -226,15 +226,15 @@ public class PlayerPerception
         {
             bool distanceRan = UpdateTargetDistance(placeLastSeen, target.Position);
             bool losRan = UpdateTargetLineOfSight(Target.IsWanted);
-            if(distanceRan || losRan)
-            {
-               // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
-            }
+            //if(distanceRan || losRan)
+            //{
+            //   // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
+            //}
 
-            if(losRan && Originator.IsCop)
-            {
-                GameFiber.Yield();//TR
-            }
+            //if(losRan && Originator.IsCop)
+            //{
+            //    GameFiber.Yield();//TR//TR New 8 Test 1, REMOVE SINCE IM DOING IT ALREADY IN THE OTHER ONE
+            //}
 
             UpdateWitnessedCrimes();
             //GameFiber.Yield();
@@ -377,9 +377,17 @@ public class PlayerPerception
             }
             else if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
             {
-                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))//55f
+                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead)//55f
                 {
-                    SetTargetSeen();
+                    if(NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -393,9 +401,17 @@ public class PlayerPerception
                 {
                     DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
                 }
-                if (DistanceToTarget <= DistanceToSee && !Originator.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                if (DistanceToTarget <= DistanceToSee && !Originator.Pedestrian.IsDead)
                 {
-                    SetTargetSeen();
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -404,9 +420,17 @@ public class PlayerPerception
             }
             else
             {
-                if (DistanceToTarget <= Settings.SettingsManager.CivilianSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))//55f
+                if (DistanceToTarget <= Settings.SettingsManager.CivilianSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead)//55f
                 {
-                    SetTargetSeen();
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {

@@ -107,21 +107,36 @@ public class ModItems : IModItems
             //Generic Tools
             new ModItem("Screwdriver","Might get you into some locked things") {
                 ModelItem = new PhysicalItem("prop_tool_screwdvr01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Screwdriver },
-            new ModItem("Hammer","It's hammer time") {
+            new ModItem("Hammer","3 Year guarantee as standard. EASI-GRIP handle. It's hammer time!") {
                 ModelItem = new PhysicalItem("prop_tool_hammer",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Hammer  },
-            new ModItem("Drill","Not your dentists drill") {
+            new ModItem("Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
                 ModelItem = new PhysicalItem("prop_tool_drill",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Drill  },
-            new ModItem("Pliers","When you really need to grab something") {
+            new ModItem("Pliers","For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
                 ModelItem = new PhysicalItem("prop_tool_pliers",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Pliers  },
-            new ModItem("Shovel","Gets rid of lots of problems") {
+            new ModItem("Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.") {
                 ModelItem = new PhysicalItem("prop_tool_shovel",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Shovel  },
             new ModItem("Wrench","What harm could a loose bolt have?") {
                 ModelItem = new PhysicalItem("prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Wrench   },
-            new ModItem("Lighter","Arson strongly discouraged") {
+            new ModItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged") {
                 ModelItem = new PhysicalItem("ng_proc_ciglight01a",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.01f },
+            new ModItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.") {
+                ModelItem = new PhysicalItem("prop_ing_crowbar",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Crowbar  },
 
+
+            new ModItem("DIC Lighter Ultra","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Long burn version.") {
+                ModelItem = new PhysicalItem("p_cs_lighter_01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.005f },
+            new ModItem("Dippo Lighter","Want to have all the hassle of carrying a lighter only for it to be out of fluid when you need it? Dippo is for you!") {
+                ModelItem = new PhysicalItem("v_res_tt_lighter",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.05f },
+            new ModItem("DIC Lighter Silver","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Too poor for gold?") {
+                ModelItem = new PhysicalItem("ex_prop_exec_lighter_01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
+            new ModItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!") {
+                ModelItem = new PhysicalItem("lux_prop_lighter_luxe",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
+            ///p_cs_lighter_01.ydr, same as above
+            /////v_res_tt_lighter.ydr zippo
+            /////lux_prop_lighter_luxe.ydr kinda disposable shaped but gold
+            //ex_prop_exec_lighter_01.ydr same as above but silver
             //Generic Food/Drink/SMoke
-            new ModItem("Hot Dog","Niko would be proud",eConsumableType.Eat) {
+            new ModItem("Hot Dog","Your favorite mystery meat sold on street corners everywhere. Niko would be proud",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 },
             new ModItem("Hot Sausage","Get all your jokes out",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_cs_hotdog_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 },
@@ -138,6 +153,14 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 } ,
             new ModItem("40 oz","Drink like a true thug!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_cs_beer_bot_40oz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol" },
+            new ModItem("Bagel Sandwich","Bagel with extras, what more do you need?",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("p_amb_bagel_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)), HealthGained = 12 } ,
+
+
+
+            new ModItem("Bottle of JUNK Energy", "The Quick Fix!",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_energy_drink",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) , HealthGained = 30},
+
             new ModItem("Can of eCola", "Deliciously Infectious!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) , HealthGained = 10},
             new ModItem("Can of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
@@ -147,7 +170,7 @@ public class ModItems : IModItems
             new ModItem("Cup of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("ng_proc_sodacup_01b",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 10 },
             new ModItem("Cup of Coffee","Finally something without sugar! Sugar on Request",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
+               ModelItem = new PhysicalItem("p_ing_coffeecup_02",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 }, //ModelItem = new PhysicalItem("prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
             new ModItem("French Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
             new ModItem("Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
@@ -305,9 +328,9 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 12 },
 
             //CB
-            new ModItem("Cluckin' Little Meal",eConsumableType.Eat) {
+            new ModItem("Cluckin' Little Meal","May contain meat",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 },
-            new ModItem("Cluckin' Big Meal",eConsumableType.Eat) {
+            new ModItem("Cluckin' Big Meal","200% bigger breasts",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 10 } ,
             new ModItem("Cluckin' Huge Meal",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 15 } ,
@@ -320,6 +343,26 @@ public class ModItems : IModItems
             new ModItem("Fowlburger",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_burg1",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
                 PackageItem = new PhysicalItem("prop_food_burg3"), HealthGained = 10 } ,
+
+
+            //Bean Machine
+            new ModItem("High Noon Coffee","Drip coffee, carbonated water, fruit syrup and taurine.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("The Eco-ffee","Decaf light, rain forest rain, saved whale milk, chemically reclaimed freerange organic tofu, and recycled brown sugar",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 12 },
+            new ModItem("Speedball Coffee","Caffeine tripe-shot, guarana, bat guano, and mate.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 15 },
+            new ModItem("Gunkacchino Coffee","Caffeine, refined sugar, trans fat, high-fructose corn syrup, and cheesecake base.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 17 },
+            new ModItem("Bratte Coffee","Double shot latte, and 100 pumps of caramel.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 5 },
+            new ModItem("Flusher Coffee","Caffeine, organic castor oil, concanetrated OJ, chicken vindaldo, and senna pods.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Caffeagra Coffee","Caffeine (Straight up), rhino horn, oyster shell, and sildenafil citrate.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 17 },
+            new ModItem("Big Fruit Smoothie","Frothalot, watermel, carbonated water, taurine, and fruit syrup.",eConsumableType.Drink) {
+               ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 15 },
+
 
             //Viceroy
             new ModItem("City View King",eConsumableType.Service),
@@ -376,7 +419,7 @@ public class ModItems : IModItems
             new ModItem("Prime Rib 16 oz",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Bone-In Ribeye",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_cs_steak"), HealthGained = 20 } ,
             new ModItem("Grilled Pork Chops",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
             new ModItem("Grilled Shrimp",eConsumableType.Eat) {
@@ -404,25 +447,40 @@ public class ModItems : IModItems
             new ModItem("Northern Lights Preroll",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
             new ModItem("White Widow Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
             new ModItem("OG Kush Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
             new ModItem("Northern Lights Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
             new ModItem("Bong",eConsumableType.None) {
                 ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
 
 
 
+            //prop_cs_crackpipe.ydr
+            //prop_cs_coke_line.ydr
+            //prop_armour_pickup.ydr body armor
 
 
+            //prop_cs_steak.ydr steak!
+            //prop_turkey_leg_01.ydr TURKEY LEG!
+
+
+           //prop_weed_bottle.ydr
+
+            //p_cs_papers_01.ydr rolling papers closed
+            //p_cs_papers_02.ydr rolling papers open 
+            //p_cs_papers_03.ydr rolling papaers completemly closed
+
+            //p_ing_coffeecup_01.yft bean machine coffee
+            //p_ing_coffeecup_02.yft blank normal coffee cup
 
             new ModItem("Gram of Schwag",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
             new ModItem("Gram of Mids",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
             new ModItem("Gram of Dank",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
+                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
 
             new ModItem("SPANK",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "SPANK" },
@@ -446,6 +504,13 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox" },
             new ModItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix" },
+
+
+
+            //prop_inhaler_01.ydr USE INHALER FOR SOME OF THESE
+
+
+
             //        WeedDealerMenu = new List<MenuItem>() {
             //new MenuItem("Brick Gram",6, 1),
             //new MenuItem("Mid Gram",9, 3),
