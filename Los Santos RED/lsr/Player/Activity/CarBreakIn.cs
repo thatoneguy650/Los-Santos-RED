@@ -18,10 +18,14 @@ public class CarBreakIn
     private Vehicle TargetVehicle;
     private bool WereWindowsIntact;
     private bool HasBrokenWindow;
-    public CarBreakIn(ICarStealable player, Vehicle targetVehicle)
+    private ISettingsProvideable Settings;
+    private int SeatTryingToEnter;
+    public CarBreakIn(ICarStealable player, Vehicle targetVehicle, ISettingsProvideable settings, int seatTryingToEnter)
     { 
         Player = player;
         TargetVehicle = targetVehicle;
+        Settings = settings;
+        SeatTryingToEnter = seatTryingToEnter;
     }
     public void BreakIn()
     {
@@ -37,6 +41,10 @@ public class CarBreakIn
                 {
                     if(!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
                     {
+                        if (Settings.SettingsManager.PlayerSettings.InjureOnWindowBreak)
+                        {
+                            Player.Character.Health -= 5;
+                        }
                         HasBrokenWindow = true;
                         TargetVehicle.AlarmTimeLeft = new TimeSpan(0, 0, 30);
                     }

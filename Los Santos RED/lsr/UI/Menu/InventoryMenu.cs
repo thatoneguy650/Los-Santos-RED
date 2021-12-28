@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Interface;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
+using System.Collections.Generic;
 
 public class InventoryMenu : Menu
 {
@@ -52,18 +54,22 @@ public class InventoryMenu : Menu
         {
             if(cii.ModItem != null)
             {
-                inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, $"{cii.ModItem.Type} {cii.ModItem?.Name} Total: {cii.Amount}") { Enabled = Player.CanPerformActivities });
+               // inventoryMenu.AddItem(new UIMenuListScrollerItem<string>(cii.ModItem?.Name, cii.Description, new List<string>() { "Use", "Drop" }) { Enabled = Player.CanPerformActivities });
+                inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { Enabled = Player.CanPerformActivities });
             }
         }        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         ModItem selectedStuff = ModItems.Get(selectedItem.Text);
-        if(selectedStuff != null && selectedStuff.CanConsume)
+        if (selectedStuff != null)
         {
-            Player.StartConsumingActivity(selectedStuff);
-            Player.RemoveFromInventory(selectedStuff, 1);
-            EntryPoint.WriteToConsole($"Removed {selectedStuff.Name} ", 3);
+            if (selectedStuff.CanConsume)
+            {
+                Player.StartConsumingActivity(selectedStuff);
+              // Player.RemoveFromInventory(selectedStuff, 1);
+                EntryPoint.WriteToConsole($"Removed {selectedStuff.Name} ", 3);  
+            }
         }
         inventoryMenu.Visible = false;
     }

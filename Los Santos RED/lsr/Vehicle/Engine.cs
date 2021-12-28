@@ -76,6 +76,17 @@ public class Engine
     {
         if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
         {
+            if(VehicleToMonitor.IsHotWireLocked)
+            {
+                VehicleToMonitor.Vehicle.MustBeHotwired = false;
+                VehicleToMonitor.Vehicle.IsDriveable = false;
+                VehicleToMonitor.Vehicle.IsEngineOn = false;
+                IsRunning = false;
+                return;
+            }
+
+
+
             if (VehicleToMonitor.Vehicle.IsEngineStarting)
             {
                 IsRunning = true;

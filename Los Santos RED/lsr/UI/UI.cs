@@ -479,17 +479,21 @@ public class UI : IMenuProvideable
                             instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
                         }
                     }
-                    else
+                    else if (buttonPrompt.Modifier != Keys.None)
                     {
-                        if (buttonPrompt.Modifier != Keys.None)
-                        {
-                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, InstructionalKey.MouseLeft));
-                        }
-                        else
-                        {
-                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, InstructionalKey.MouseLeft));
-                        }
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey()));
                     }
+                    //else
+                    //{
+                    //    if (buttonPrompt.Modifier != Keys.None)
+                    //    {
+                    //        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, InstructionalKey.MouseLeft));
+                    //    }
+                    //    else
+                    //    {
+                    //        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, InstructionalKey.MouseLeft));
+                    //    }
+                    //}
 
 
                 }

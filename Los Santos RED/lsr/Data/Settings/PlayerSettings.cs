@@ -87,6 +87,9 @@ public class PlayerSettings
     public bool AllowRadioInPoliceVehicles { get; set; } = true;
     public string MaleFreeModeVoice { get; set; } = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
     public string FemaleFreeModeVoice { get; set; } = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
+    public bool InjureOnWindowBreak { get; set; } = true;
+    public bool RequireScrewdriverForLockPickEntry { get; set; } = false;
+    public bool RequireScrewdriverForHotwire { get; set; } = false;
 
     public PlayerSettings()
     {

@@ -58,5 +58,6 @@ namespace LosSantosRED.lsr.Interface
         void ToggleBodyArmor(int Type);
         void SetBodyArmor(int value);
         void StartLayingDown(bool v);
+        void StartHotwiring();
     }
 }

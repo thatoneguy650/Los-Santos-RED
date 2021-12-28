@@ -111,6 +111,7 @@
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\Inventory\ToolTypes.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />

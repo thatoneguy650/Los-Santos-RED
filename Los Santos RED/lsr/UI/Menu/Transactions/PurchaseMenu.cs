@@ -385,9 +385,9 @@ public class PurchaseMenu : Menu
                         description += $"~n~~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
                         if(myItem.AmountPerPackage > 1)
                         {
-                            description += $"~n~~o~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
+                            description += $"~n~~b~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
                         }
-                        description += $"~n~Type: {myItem.FormattedItemType}";
+                        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         if(myItem.RestoresHealth)
                         {
                             description += $"~n~~g~+{myItem.HealthGained} ~s~HP";

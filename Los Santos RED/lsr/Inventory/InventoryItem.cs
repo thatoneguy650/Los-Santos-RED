@@ -7,16 +7,83 @@ using System.Threading.Tasks;
 [Serializable()]
 public class InventoryItem
 {
+    public InventoryItem(ModItem modItem)
+    {
+        ModItem = modItem;
+    }
     public InventoryItem(ModItem modItem, int amount)
     {
         ModItem = modItem;
-        Amount = amount;
+        RemainingPercent.Clear();
+        for (int i = 0; i < amount; i++)
+        {
+            RemainingPercent.Add(1.0f);
+        }
     }
     public InventoryItem()
     {
 
     }
+    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{(ModItem.IsTool ? ModItem.ToolType.ToString() : ModItem.Type.ToString())}~s~~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent.Sum(),0)}%~s~)" : "") + (ModItem.RequiresTool? $"~n~Requires: ~r~{ModItem.RequiredToolType}" : "")
+        + (ModItem.RestoresHealth ? $"~n~~g~+{ModItem.HealthGained} ~s~HP" : "");
+
+
     public ModItem ModItem { get; set; }
-    public int Amount { get; set; }
+    public int Amount => RemainingPercent.Count();
+    public List<float> RemainingPercent { get; set; } = new List<float>() { 1.0f };
+    public void AddAmount(int toadd)
+    {
+        for (int i = 0; i < toadd; i++)
+        {
+            RemainingPercent.Add(1.0f);
+        }
+    }
+    public bool RemoveAmount(int toRemove)
+    {
+        if(toRemove > Amount)
+        {
+            return false;
+        }
+        else
+        {
+            for (int i = toRemove; i > 0; i--)
+            {
+                RemainingPercent.RemoveAt(i);
+            }
+            return true;
+        }
+    }
+
+    public bool RemovePercent(float percentToRemove)
+    {
+        bool hasSubtracted = false;//this is bad, two loops, this shouldnt need any, w/e
+        List<float> newPercent = new List<float>();
+        foreach (float currentPercents in RemainingPercent.OrderBy(x=>x))
+        {
+            if(currentPercents >= percentToRemove && !hasSubtracted)
+            {
+                newPercent.Add(currentPercents-percentToRemove);
+                hasSubtracted = true;
+                
+            }
+            else
+            {
+                newPercent.Add(currentPercents);
+            }
+            EntryPoint.WriteToConsole($"RemovePercent hasSubtracted {hasSubtracted} Was {currentPercents} Remove {percentToRemove} Current {currentPercents - percentToRemove}", 5);
+        }
+        if(hasSubtracted)
+        {
+            newPercent.RemoveAll(x => x <= 0.01f);
+            RemainingPercent = newPercent;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 }
 

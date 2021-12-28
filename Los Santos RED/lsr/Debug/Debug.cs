@@ -452,7 +452,8 @@ public class Debug
         Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
 
         Player.AddToInventory(ModItems.Get("Equanox"), 4);
-
+        Player.AddToInventory(ModItems.Get("Screwdriver"), 1);
+        Player.AddToInventory(ModItems.Get("Lighter"), 1);
         //Weather.DebugPlayReport();
 
 

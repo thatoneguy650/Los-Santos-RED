@@ -18,9 +18,21 @@ namespace LosSantosRED.lsr.Player
         }
         public Inventory(IInventoryable player)
         {
-            //Player = player;
-        }
 
+        }
+        public bool UseTool(ToolTypes tool)
+        {
+            foreach(InventoryItem ii in ItemsList.Where(x=> x.ModItem.ToolType == tool).OrderBy(x=> x.RemainingPercent.Sum()))
+            {
+                if(Use(ii.ModItem))
+                {
+                    ItemsList.RemoveAll(x => x.RemainingPercent.Sum() <= 0.005f);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool HasTool(ToolTypes tool) => ItemsList.Any(x => x.ModItem.ToolType == tool);
         public void Add(ModItem modItem, int amount)
         {
             InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
@@ -30,7 +42,7 @@ namespace LosSantosRED.lsr.Player
             }
             else
             {
-                ExistingItem.Amount += amount;
+                ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
             }
         }
         public bool Remove(ModItem modItem)
@@ -53,13 +65,25 @@ namespace LosSantosRED.lsr.Player
             {
                 if (ExistingItem.Amount > amount)
                 {
-                    ExistingItem.Amount -= amount;
+                    ExistingItem.RemoveAmount(amount);//ExistingItem.Amount -= amount;
                 }
                 else
                 {
                     ItemsList.Remove(ExistingItem);
                 }
                 return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool Use(ModItem modItem)
+        {
+            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+            if (ExistingItem != null)
+            {
+                return ExistingItem.RemovePercent(modItem.PercentLostOnUse);         
             }
             else
             {
@@ -78,62 +102,5 @@ namespace LosSantosRED.lsr.Player
         {
             ItemsList.Clear();
         }
-
-
-
-
-        //public void Add(ConsumableSubstance consumableSubstance, int amount)
-        //{
-        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
-        //    if (ExistingItem == null)
-        //    {
-        //        ConsumableList.Add(new ConsumableInventoryItem(consumableSubstance,amount));
-        //    }
-        //    else
-        //    {
-        //        ExistingItem.Amount += amount;
-        //    }
-        //}
-        //public void Remove(ConsumableSubstance consumableSubstance)
-        //{
-        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
-        //    if (ExistingItem != null)
-        //    {
-        //        ConsumableList.Remove(ExistingItem);
-        //    }
-        //}
-        //public void Remove(ConsumableSubstance consumableSubstance, int amount)
-        //{
-        //    ConsumableInventoryItem ExistingItem = ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
-        //    if (ExistingItem != null)
-        //    {
-        //        if (ExistingItem.Amount > amount)
-        //        {
-        //            ExistingItem.Amount -= amount;
-        //        }
-        //        else
-        //        {
-        //            ConsumableList.Remove(ExistingItem);
-        //        }
-        //    }
-        //}
-        //public ConsumableInventoryItem Get(ConsumableSubstance consumableSubstance)
-        //{
-        //    return ConsumableList.FirstOrDefault(x => x.ConsumableSubstance.Name == consumableSubstance.Name);
-        //}
-        //public void PrintInventory()
-        //{
-        //    EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
-        //    foreach (ConsumableInventoryItem cii in ConsumableList)
-        //    {
-        //        EntryPoint.WriteToConsole($"{cii.ConsumableSubstance.Name} {cii.ConsumableSubstance.Type} {cii.ConsumableSubstance.ModelName} {cii.Amount}", 5);
-        //    }
-        //    EntryPoint.WriteToConsole("PLAYER PrintInventory", 5);
-        //}
-
-        //public void Clear()
-        //{
-        //    ConsumableList.Clear();
-        //}
     }
 }

@@ -42,18 +42,40 @@ public class ModItem
     public PhysicalItem PackageItem { get; set; }
     public string Name { get; set; }
     public string Description { get; set; } = "";
+
+
     public int AmountPerPackage { get; set; } = 1;
+
+
+
     public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest;
     public eConsumableType Type { get; set; } = eConsumableType.None;
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
     public bool RestoresHealth => HealthGained > 0;
     public int HealthGained { get; set; } = 0;
+
+
+
     public bool RequiresDLC { get; set; } = false;
+
+
+    public bool IsTool => ToolType != ToolTypes.None;
+    public ToolTypes ToolType { get; set; } = ToolTypes.None;
+    public bool RequiresTool => RequiredToolType != ToolTypes.None;
+    public ToolTypes RequiredToolType { get; set; } = ToolTypes.None;
+    public float PercentLostOnUse { get; set; } = 0.0f;
+
+
+
     public string FormattedItemType
     {
         get
         {
+            if(IsTool)
+            {
+                return ToolType.ToString();
+            }
             if(Type == eConsumableType.Drink)
             {
                 return "Drinkable";

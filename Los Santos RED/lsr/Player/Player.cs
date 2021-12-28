@@ -22,9 +22,9 @@ namespace Mod
         private string CurrentVehicleDebugString;
         
 
-        private DynamicActivity SittingActivity;
+        private DynamicActivity LowerBodyActivity;
+        private DynamicActivity UpperBodyActivity;
 
-        private DynamicActivity DynamicActivity;
         private IEntityProvideable EntityProvider;
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
@@ -72,6 +72,7 @@ namespace Mod
         private Blip OwnedVehicleBlip;
         private IIntoxicants Intoxicants;
         private GameLocation CurrentInteriorLocation;
+        private bool DriverDoorOpen;
 
         //private uint GameTimeStartedSprinting;
         //private uint GameTimeStoppedSprinting;
@@ -181,7 +182,7 @@ namespace Mod
         public bool HasItemInInventory(string Name) => Inventory.Get(Name)?.Amount > 0;
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
-        public bool HasCurrentActivity => DynamicActivity != null;
+        public bool HasCurrentActivity => UpperBodyActivity != null;
         public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
@@ -918,7 +919,40 @@ namespace Mod
                 ButtonPrompts.RemoveAll(x => x.Group == "AIControl");
             }
 
+            //if(IsInVehicle && IsDriver && !IsMoving && CurrentVehicle != null && CurrentVehicle.Engine.IsRunning)
+            //{
+            //    if (!ButtonPrompts.Any(x => x.Identifier == $"VehicleEngineStop"))
+            //    {
+            //        ButtonPrompts.RemoveAll(x => x.Group == "VehicleEngine");
+            //        ButtonPrompts.Add(new ButtonPrompt($"Stop Engine", "VehicleEngine", $"VehicleEngineStop", Settings.SettingsManager.KeySettings.EngineToggle, Settings.SettingsManager.KeySettings.EngineToggleModifier, 2));
+            //    }
+            //}
+            //else if (IsInVehicle && IsDriver && !IsMoving && CurrentVehicle != null && !CurrentVehicle.Engine.IsRunning)
+            //{
+            //    if (!ButtonPrompts.Any(x => x.Identifier == $"VehicleEngineStart"))
+            //    {
+            //        ButtonPrompts.RemoveAll(x => x.Group == "VehicleEngine");
+            //        ButtonPrompts.Add(new ButtonPrompt($"Start Engine", "VehicleEngine", $"VehicleEngineStart", Settings.SettingsManager.KeySettings.EngineToggle, Settings.SettingsManager.KeySettings.EngineToggleModifier, 2));
+            //    }
+            //}
+            //else
+            //{
+            //    ButtonPrompts.RemoveAll(x => x.Group == "VehicleEngine");
+            //}
 
+
+            //if (IsInVehicle && IsDriver && DriverDoorOpen)
+            //{
+            //    if (!ButtonPrompts.Any(x => x.Identifier == $"VehicleDoor"))
+            //    {
+            //        ButtonPrompts.RemoveAll(x => x.Group == "VehicleDoor");
+            //        ButtonPrompts.Add(new ButtonPrompt($"Close Driver Door", "VehicleDoor", $"VehicleDoor", Settings.SettingsManager.KeySettings.ManualDriverDoorClose, Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, 2));
+            //    }
+            //}
+            //else
+            //{
+            //    ButtonPrompts.RemoveAll(x => x.Group == "VehicleDoor");
+            //}
 
         }
         public void ArrestWarrantUpdate() => CriminalHistory.Update();
@@ -1110,10 +1144,38 @@ namespace Mod
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
                 GameFiber.Yield();
-                IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
+                
+
+                if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+                {
+                    IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
+                    //bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
+                    //if (isValid)
+                    //{
+                    //    CurrentVehicle.Vehicle.HasBone("door_dside_f");
+                    //    float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
+                    //    if(DoorAngle >= 0.0001f)
+                    //    {
+                    //        DriverDoorOpen = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        DriverDoorOpen = false;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    DriverDoorOpen = false;
+                    //}
+                }
+
+
+
                 if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
                 {
                     VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
+
+
                 }
                 else
                 {
@@ -1149,7 +1211,7 @@ namespace Mod
 
 
 
-                if (Settings.SettingsManager.PlayerSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
+                if (Settings.SettingsManager.PlayerSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
                 {
                     if (!IsMobileRadioEnabled)
                     {
@@ -1192,6 +1254,13 @@ namespace Mod
                 //    CurrentVehicleDebugString = $"Health {CurrentVehicle.Vehicle.Health} EngineHealth {CurrentVehicle.Vehicle.EngineHealth} IsStolen {CurrentVehicle.IsStolen} CopsRecogn {CurrentVehicle.CopsRecognizeAsStolen}";
                 //}
                 //GameFiber.Yield();//TR Yield RemovedTest 1
+
+
+
+                
+
+
+
             }
             else
             {
@@ -1388,6 +1457,7 @@ namespace Mod
         public void StartSprinting() => Sprinting.Start();
         public void StopSprinting() => Sprinting.Stop();
         public void ClearInventory() => Inventory.Clear();
+        public bool RemoveFromInventory(ModItem modItem) => Inventory.Remove(modItem);
         public bool RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
@@ -1487,13 +1557,13 @@ namespace Mod
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new ScenarioActivity(this);
-                DynamicActivity.Start();
+                UpperBodyActivity = new ScenarioActivity(this);
+                UpperBodyActivity.Start();
             }
         }
 
@@ -1502,63 +1572,67 @@ namespace Mod
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new SuicideActivity(this, Settings);
-                DynamicActivity.Start();
+                UpperBodyActivity = new SuicideActivity(this, Settings);
+                UpperBodyActivity.Start();
             }
         }
         public void StartConsumingActivity(ModItem modItem)
         {
             if (!IsPerformingActivity && CanPerformActivities && modItem.CanConsume)// modItem.Type != eConsumableType.None)
             {
-                if (DynamicActivity != null)
+                if(modItem.RequiresTool)
                 {
-                    DynamicActivity.Cancel();
+                    if(!Inventory.UseTool(modItem.RequiredToolType))
+                    {
+                        Game.DisplayNotification($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
+                        return;
+                    }
+                }
+                RemoveFromInventory(modItem, 1);
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
                 if (modItem.Type == eConsumableType.Drink)
                 {
-                    DynamicActivity = new DrinkingActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new DrinkingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Eat)
                 {
-                    DynamicActivity = new EatingActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new EatingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Smoke)
                 {
-                    DynamicActivity = new SmokingActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new SmokingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Ingest)
                 {
-                    DynamicActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
                 }
-                DynamicActivity?.Start();
+                UpperBodyActivity?.Start();
             }
-            //else if (IsPerformingActivity && DynamicActivity != null && DynamicActivity.GetType() == typeof(SittingActivity) && modItem.CanConsume)
-            //{
-            //    DynamicActivity.ModItem = modItem;
-            //    //(SittingActivity)DynamicActivity.AddItem(modItem);
-            //}
         }
         public void StopDynamicActivity()
         {
             if (IsPerformingActivity)
             {
-                DynamicActivity?.Cancel();
+                UpperBodyActivity?.Cancel();
                 IsPerformingActivity = false;
             }
         }
         public void PauseDynamicActivity()
         {
-            DynamicActivity?.Pause();
+            UpperBodyActivity?.Pause();
         }
         public void ContinueDynamicActivity()
         {
-            DynamicActivity?.Continue();
+            UpperBodyActivity?.Continue();
         }
         public void StartServiceActivity(ModItem modItem, GameLocation location)
         {
@@ -1585,88 +1659,84 @@ namespace Mod
         {
             if (!IsPerformingActivity && CanPerformActivities)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new GestureActivity(this, gestureData);
-                DynamicActivity.Start();
+                UpperBodyActivity = new GestureActivity(this, gestureData);
+                UpperBodyActivity.Start();
             }
         }
         public void StartSittingDown(bool findSittingProp, bool enterForward)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
-                if (SittingActivity != null)
+                if (LowerBodyActivity != null)
                 {
-                    SittingActivity.Cancel();
+                    LowerBodyActivity.Cancel();
                 }
-                //IsSitting = true;
-                //IsPerformingActivity = true;
-                SittingActivity = new SittingActivity(this, Settings, findSittingProp, enterForward);
-                SittingActivity.Start();
+                LowerBodyActivity = new SittingActivity(this, Settings, findSittingProp, enterForward);
+                LowerBodyActivity.Start();
             }
         }
         public void StartLayingDown(bool FindSittingProp)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
-                if (SittingActivity != null)
+                if (LowerBodyActivity != null)
                 {
-                    SittingActivity.Cancel();
+                    LowerBodyActivity.Cancel();
                 }
-                //IsSitting = true;
-                //IsPerformingActivity = true;
-                SittingActivity = new LayingActivity(this, Settings, FindSittingProp);
-                SittingActivity.Start();
+                LowerBodyActivity = new LayingActivity(this, Settings, FindSittingProp);
+                LowerBodyActivity.Start();
             }
         }
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, EntityProvider);
-                DynamicActivity.Start();
+                UpperBodyActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, EntityProvider);
+                UpperBodyActivity.Start();
             }
         }
         public void ChangePlate(LicensePlate toChange)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, toChange, Settings, EntityProvider);
-                DynamicActivity.Start();
+                UpperBodyActivity = new PlateTheft(this, toChange, Settings, EntityProvider);
+                UpperBodyActivity.Start();
             }
         }
         public void RemovePlate()
         {
             if (!IsPerformingActivity && CanPerformActivities)
             {
-                if (DynamicActivity != null)
+                if (UpperBodyActivity != null)
                 {
-                    DynamicActivity.Cancel();
+                    UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, Settings, EntityProvider);
-                DynamicActivity.Start();
+                UpperBodyActivity = new PlateTheft(this, Settings, EntityProvider);
+                UpperBodyActivity.Start();
             }
         }
 
@@ -1807,6 +1877,14 @@ namespace Mod
                 HasOnBodyArmor = true;
             }
 
+        }
+        public void StartHotwiring()
+        {
+            if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsHotWireLocked)
+            {
+                CurrentVehicle.IsHotWireLocked = false;
+                CurrentVehicle.Vehicle.MustBeHotwired = true;
+            }
         }
 
         //Events
@@ -1953,7 +2031,22 @@ namespace Mod
                             CurrentVehicle.AttemptToLock();
                             //GameFiber.Yield();//TR Yield RemovedTest 2
                         }
-                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
+                        bool hasScrewDriver = Inventory.HasTool(ToolTypes.Screwdriver);
+                        if (Settings.SettingsManager.PlayerSettings.RequireScrewdriverForHotwire)
+                        {
+                            if (CurrentVehicle.Vehicle.MustBeHotwired)
+                            {
+                                CurrentVehicle.IsHotWireLocked = true;
+                                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                            }
+                            if (CurrentVehicle.IsHotWireLocked && hasScrewDriver)
+                            {
+                                CurrentVehicle.IsHotWireLocked = false;
+                                CurrentVehicle.Vehicle.MustBeHotwired = true;
+                            }
+                        }
+
+                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.PlayerSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
                             CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
@@ -1968,7 +2061,7 @@ namespace Mod
                         else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
+                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
                             MyBreakIn.BreakIn();
                         }
                         else if (SeatTryingToEnter != -1)

@@ -23,6 +23,7 @@ public class ActionMenu : Menu
     private UIMenuItem EnterAsPassenger;
     private UIMenuItem ShuffleSeat;
     private UIMenuItem IntimidateDriver;
+    private UIMenuItem HotwireVehicle;
     private UIMenuItem ContinueConsuming;
     private MenuPool MenuPool;
     private UIMenuListScrollerItem<GestureData> GestureMenu;
@@ -154,7 +155,7 @@ public class ActionMenu : Menu
         ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
 
         IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
-
+        HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
 
         ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
         ToggleBodyArmor.Value = 0;
@@ -175,6 +176,7 @@ public class ActionMenu : Menu
         Actions.AddItem(EnterAsPassenger);
         Actions.AddItem(ShuffleSeat);
         Actions.AddItem(IntimidateDriver);
+        Actions.AddItem(HotwireVehicle);
 #endif
 
 
@@ -260,6 +262,10 @@ public class ActionMenu : Menu
         else if (selectedItem == ToggleBodyArmor)
         {
             Player.ToggleBodyArmor(ToggleBodyArmor.Value);
+        }
+        else if (selectedItem == HotwireVehicle)
+        {
+            Player.StartHotwiring();
         }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;
