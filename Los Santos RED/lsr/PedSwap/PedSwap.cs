@@ -596,7 +596,7 @@ public class PedSwap : IPedSwap
         {
             EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
         }
-        Player.CurrentModelName = TargetPedModel.Name;
+        Player.ModelName = TargetPedModel.Name;
         Player.CurrentModelVariation = TargetPedVariation;
         NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);

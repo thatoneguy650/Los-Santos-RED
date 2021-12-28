@@ -555,7 +555,15 @@ public class Transaction : Interaction
         {
             foreach (string AmbientSpeech in Possibilities)
             {
-                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                {
+                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                else
+                {
+                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
                 GameFiber.Sleep(100);
                 if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
                 {

@@ -15,7 +15,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsMoveControlPressed { get; }
         PedVariation CurrentModelVariation { get; set; }
-        string CurrentModelName { get; set; }
         Vector3 Position { get; }
         VehicleExt CurrentVehicle { get; }
         //PoolHandle OwnedVehicleHandle { get; set; }
@@ -33,6 +32,7 @@ namespace LosSantosRED.lsr.Interface
         int CurrentPrimaryHairColor { get; set; }
         int CurrentSecondaryColor { get; set; }
         bool IsCustomizingPed { get; set; }
+        string ModelName { get; set; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

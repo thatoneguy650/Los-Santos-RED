@@ -85,12 +85,15 @@ public class PlayerSettings
     public float Sprint_MoveSpeedOverride { get; set; } = 4.0f;//5.0f;
     public bool ForceFirstPersonOnVehicleDuck { get; set; } = true;
     public bool AllowRadioInPoliceVehicles { get; set; } = true;
+    public string MaleFreeModeVoice { get; set; } = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
+    public string FemaleFreeModeVoice { get; set; } = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
+
     public PlayerSettings()
     {
         #if DEBUG
                 AutoTuneRadioStation = "RADIO_19_USER";
-                KeepRadioAutoTuned = true;
-                //AutoTuneRadioOnEntry = true;
+               // KeepRadioAutoTuned = true;
+                AutoTuneRadioOnEntry = true;
         #endif
     }
 

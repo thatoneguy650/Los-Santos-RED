@@ -10,11 +10,21 @@ public class KeySettings
     public Keys DebugMenuKey { get; set; } = Keys.F11;
     public Keys MenuKey { get; set; } = Keys.F10;
     public Keys SurrenderKey { get; set; } = Keys.E;
+    public Keys SurrenderKeyModifier { get; set; } = Keys.Shift;
     public Keys DropWeaponKey { get; set; } = Keys.G;
+    public Keys DropWeaponKeyModifer { get; set; } = Keys.None;
     public Keys RightIndicatorKey { get; set; } = Keys.E;
+    public Keys RightIndicatorKeyModifer { get; set; } = Keys.Shift;
     public Keys LeftIndicatorKey { get; set; } = Keys.Q;
+    public Keys LeftIndicatorKeyModifer { get; set; } = Keys.Shift;
     public Keys HazardKey { get; set; } = Keys.Space;
-    public Keys EngineToggle { get; set; } = Keys.Z;// Keys.X;
+    public Keys HazardKeyModifer { get; set; } = Keys.Shift;
+    public Keys EngineToggle { get; set; } = Keys.Z;
+    public Keys EngineToggleModifier { get; set; } = Keys.Shift;
+    public Keys ManualDriverDoorClose { get; set; } = Keys.None;
+    public Keys ManualDriverDoorCloseModifier { get; set; } = Keys.Control;
+    public Keys SprintKey { get; set; } = Keys.Z;
+    public Keys SprintKeyModifier { get; set; } = Keys.None;
 
 
 
@@ -23,7 +33,7 @@ public class KeySettings
     public Keys InteractNegativeOrNo { get; set; } = Keys.K;
     public Keys InteractCancel { get; set; } = Keys.L;
     public Keys ScenarioStart { get; set; } = Keys.P;
-    public Keys SprintKey { get; set; } = Keys.Z;
+
 
     public KeySettings()
     {

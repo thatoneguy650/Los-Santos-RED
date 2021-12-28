@@ -133,12 +133,13 @@ namespace Mod
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
         public Ped Character => Game.LocalPlayer.Character;
-        public bool CharacterModelIsFreeMode => Character.Model.Name.ToLower() == "mp_f_freemode_01" || Character.Model.Name.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
+        public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
+
+        public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerSettings.FemaleFreeModeVoice;
         public int GroupID { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
-        public string CurrentModelName { get; set; }//should be private but needed?
         public PedVariation CurrentModelVariation { get; set; }
         public int CurrentPrimaryHairColor { get; set; }
         public int CurrentSecondaryColor { get; set; }
@@ -694,7 +695,7 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
-            CurrentModelName = Game.LocalPlayer.Character.Model.Name;
+            ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
             {

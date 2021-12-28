@@ -58,8 +58,18 @@ public class SurrenderActivity : DynamicActivity
         }
         Player.SetUnarmed();
         Player.HandsAreUp = true;
-        AnimationDictionary.RequestAnimationDictionay("ped");
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+
+        if(Player.IsInVehicle)
+        {
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
+        }
+        else
+        {
+            AnimationDictionary.RequestAnimationDictionay("ped");
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+        }
+
     }
     public void SetArrestedAnimation(bool StayStanding)
     {

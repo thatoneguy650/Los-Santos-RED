@@ -256,7 +256,31 @@ namespace LosSantosRED.lsr.Helper
                 NativeFunction.Natives.REMOVE_IPL(iplName);
             }
         }
+        private static bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
+        {
+            bool Spoke = false;
 
+            foreach (string AmbientSpeech in Possibilities)
+            {
+                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                GameFiber.Sleep(100);
+                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
+                {
+                    Spoke = true;
+                }
+                if (Spoke)
+                {
+                    break;
+                }
+            }
+            GameFiber.Sleep(100);
+            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete)
+            {
+                Spoke = true;
+                GameFiber.Yield();
+            }  
+            return Spoke;
+        }
         public static string VehicleMakeName(uint modelHash)
         {
             string MakeName;

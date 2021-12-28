@@ -193,33 +193,5 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData("","",AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }
-        private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
-        {
-            bool Spoke = false;
-            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
-            {
-                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
-                if (ToSpeak.IsAnySpeechPlaying)
-                {
-                    Spoke = true;
-                }
-                if (Spoke)
-                {
-                    break;
-                }
-            }
-            GameFiber.Sleep(100);
-            while (ToSpeak.IsAnySpeechPlaying && WaitForComplete)
-            {
-                Spoke = true;
-                GameFiber.Yield();
-            }
-            if (!Spoke)
-            {
-                Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
-            }
-            return Spoke;
-        }
     }
 }

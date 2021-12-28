@@ -790,13 +790,21 @@ public class PurchaseMenu : Menu
         {
             foreach (string AmbientSpeech in Possibilities)
             {
-                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                {
+                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                else
+                {
+                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
                 GameFiber.Sleep(100);
                 if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
                 {
                     Spoke = true;
                 }
-                //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+
                 if (Spoke)
                 {
                     break;
@@ -807,10 +815,6 @@ public class PurchaseMenu : Menu
             {
                 Spoke = true;
                 GameFiber.Yield();
-            }
-            if (!Spoke)
-            {
-                // Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
             }
         }
         return Spoke;

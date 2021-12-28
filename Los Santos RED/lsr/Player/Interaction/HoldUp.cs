@@ -176,7 +176,15 @@ public class HoldUp : Interaction
         bool Spoke = false;
         foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
         {
-            ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+            if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+            {
+                ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+            }
+            else
+            {
+                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+            }
+            //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
             GameFiber.Sleep(100);
             if (ToSpeak.IsAnySpeechPlaying)
             {

@@ -127,10 +127,13 @@ public class PedCrimes
                 }
                 else
                 {
-                    CheckPoliceSight(world);
-                    if(player.IsCop)
+                    if (CurrentlyViolatingWantedLevel > 0)//TR THIS IS NEW, STOP CHECKING EACH CIV AND EACH COP EACH TIME UNLESS THEY ARE BEING BAD GUYS!
                     {
-                        CheckPlayerSight(player);
+                        CheckPoliceSight(world);
+                        if (player.IsCop)
+                        {
+                            CheckPlayerSight(player);
+                        }
                     }
                 }
                 if (player.IsNotWanted && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)
@@ -162,6 +165,7 @@ public class PedCrimes
                             OnPedHeardByPolice();
                             return;
                         }
+                        GameFiber.Yield();//TR THIS IS ADDED WITH THE REDUCED CALLS, IF THERE ARE TONS OF CRIMINALS, ITS OK THAT THIS IS SLOW?
                         if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
                         {
                             OnPedSeenByPolice();

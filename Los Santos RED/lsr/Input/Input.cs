@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -37,24 +38,25 @@ namespace LosSantosRED.lsr
         }
         private uint GameTimeLastPressedEngineToggle;
         private uint GameTimeLastPressedDoorClose;
+        public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
+        public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
+        private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
+        private bool IsPressingDropWeapon => IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKeyModifer);
+        private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier);
+        private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer);
+        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);// Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
+        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);// Game.IsControlKeyDownRightNow;
+        private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
+        private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
+
 
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
-        public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
-        public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
-        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SurrenderKey) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
-        private bool IsPressingSprint => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SprintKey);// && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingRightIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.RightIndicatorKey) && Game.IsShiftKeyDownRightNow;
 
-        private bool IsPressingDoorClose => Game.IsControlKeyDownRightNow;
-
-        private bool IsPressingLeftIndicator => Game.IsKeyDown(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingHazards => Game.IsKeyDown(Settings.SettingsManager.KeySettings.HazardKey) && Game.IsShiftKeyDownRightNow;
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
-        public bool IsPressingEngineToggle => Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
+
         public void Update()
         {
             SurrenderCheck();
@@ -229,6 +231,30 @@ namespace LosSantosRED.lsr
                     MenuProvider.ToggleDebugMenu();
                 }
             }
+        }
+        private bool IsKeyDownSafe(Keys key)
+        {
+            if(key == Keys.None)
+            {
+                return true;
+            }
+            else if(key == Keys.Control)
+            {
+                return Game.IsControlKeyDownRightNow;
+            }
+            else if (key == Keys.Shift)
+            {
+                return Game.IsShiftKeyDownRightNow;
+            }
+            else if (key == Keys.Alt)
+            {
+                return Game.IsAltKeyDownRightNow;
+            }
+            else
+            {
+                return Game.IsKeyDownRightNow(key);
+            }
+            return false;
         }
 
     }

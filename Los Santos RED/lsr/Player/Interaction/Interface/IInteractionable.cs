@@ -24,6 +24,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsTransacting { get; set; }
         bool IsConductingIllicitTransaction { get; set; }
         bool IsSitting { get; }
+        bool CharacterModelIsFreeMode { get; }
+        string FreeModeVoice { get; }
 
         void SetAngeredCop();
         void GiveMoney(int v);
