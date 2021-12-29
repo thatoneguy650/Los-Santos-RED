@@ -1654,12 +1654,12 @@ namespace Mod
         {
             UpperBodyActivity?.Continue();
         }
-        public void StartServiceActivity(ModItem modItem, GameLocation location)
+        public void StartServiceActivity(ModItem modItem, GameLocation location, int totalItems)
         {
             if (location.Type == LocationType.Hotel)
             {
                 IsPerformingActivity = true;
-                TimeControllable.FastForward(new DateTime(TimeControllable.CurrentYear, TimeControllable.CurrentMonth, TimeControllable.CurrentDay + 1, 11, 0, 0));
+                TimeControllable.FastForward(new DateTime(TimeControllable.CurrentYear, TimeControllable.CurrentMonth, TimeControllable.CurrentDay + totalItems, 11, 0, 0));
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
                     while (TimeControllable.IsFastForwarding)

@@ -17,7 +17,7 @@ namespace LosSantosRED.lsr.Interface
         bool RemoveFromInventory(ModItem toAdd, int v);
         void GiveMoney(int salesPrice);
         void AddToInventory(ModItem toAdd, int amountPerPackage);
-        void StartServiceActivity(ModItem toAdd, GameLocation store);
+        void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);
     }
 }

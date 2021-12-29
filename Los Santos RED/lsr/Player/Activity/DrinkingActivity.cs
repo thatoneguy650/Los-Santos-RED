@@ -168,11 +168,11 @@ namespace LosSantosRED.lsr.Player
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
 
 
-                AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
+                AnimEnterDictionary = "amb@world_human_drinking@coffee@male@enter";
                 AnimEnter = "enter";
-                AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
+                AnimExitDictionary = "amb@world_human_drinking@coffee@male@exit";
                 AnimExit = "exit";
-                AnimIdleDictionary = "amb@code_human_wander_drinking@male@idle_a";
+                AnimIdleDictionary = "amb@world_human_drinking@coffee@male@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
 
             }
@@ -189,11 +189,11 @@ namespace LosSantosRED.lsr.Player
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
 
 
-                AnimEnterDictionary = "amb@world_human_drinking@beer@female@enter";
+                AnimEnterDictionary = "amb@world_human_drinking@coffee@female@enter";
                 AnimEnter = "enter";
-                AnimExitDictionary = "amb@world_human_drinking@beer@female@exit";
+                AnimExitDictionary = "amb@world_human_drinking@coffee@female@exit";
                 AnimExit = "exit";
-                AnimIdleDictionary = "amb@code_human_wander_drinking@female@idle_a";
+                AnimIdleDictionary = "amb@world_human_drinking@coffee@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
             if(ModItem != null && ModItem.ModelItem != null)

@@ -387,22 +387,20 @@ public class PurchaseMenu : Menu
                         {
                             description = $"{cii.ModItemName} {formattedPurchasePrice}";
                         }
+                        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         description += $"~n~~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
                         if(myItem.AmountPerPackage > 1)
                         {
                             description += $"~n~~b~{((float)cii.PurchasePrice/ (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
-                        }
-                        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
+                        }              
                         if(myItem.RestoresHealth)
                         {
                             description += $"~n~~g~+{myItem.HealthGained} ~s~HP";
                         }
                         if(myItem.ConsumeOnPurchase && (myItem.Type == eConsumableType.Eat || myItem.Type == eConsumableType.Drink))
                         {
-                            description += $"~n~~o~Dine-In Only~s~";
+                            description += $"~n~~r~Dine-In Only~s~";
                         }
-                        //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
-
 
 
                         purchaseMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, 99, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}",Value = 1});
@@ -453,7 +451,7 @@ public class PurchaseMenu : Menu
                 ItemsBought++;
                 if (ToAdd.Type == eConsumableType.Service)
                 {
-                    Player.StartServiceActivity(ToAdd, Store);
+                    Player.StartServiceActivity(ToAdd, Store, TotalItems);
                 }
                 else //if (ToAdd.CanConsume)
                 {
@@ -519,6 +517,7 @@ public class PurchaseMenu : Menu
             MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == CurrentItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
+                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
                 if (Player.Money < menuItem.PurchasePrice)
                 {
                     Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");

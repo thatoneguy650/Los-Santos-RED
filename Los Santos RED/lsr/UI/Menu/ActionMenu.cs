@@ -170,9 +170,9 @@ public class ActionMenu : Menu
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
+        Actions.AddItem(ToggleBodyArmor);
 
 #if DEBUG
-        Actions.AddItem(ToggleBodyArmor);
         Actions.AddItem(EnterAsPassenger);
         Actions.AddItem(ShuffleSeat);
         Actions.AddItem(IntimidateDriver);

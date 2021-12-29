@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr.Interface
        // void StartSmoking();
        // void StartDrinkingActivity();
         void AddToInventory(ModItem offering, int v);
-        void StartServiceActivity(ModItem toAdd, GameLocation store);
+        void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);
         bool RemoveFromInventory(ModItem toAdd, int amountPerPackage);
         bool HasItemInInventory(string modItemName);

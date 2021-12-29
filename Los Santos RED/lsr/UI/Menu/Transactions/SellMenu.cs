@@ -130,7 +130,7 @@ public class SellMenu : Menu
                         {
                             description = $"{cii.ModItemName} {formattedSalesPrice}";
                         }
-                        description += $"~n~Type: {myItem.FormattedItemType}";
+                        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
                         sellMenu.AddItem(myMenuItem);
                     }

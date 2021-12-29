@@ -78,7 +78,7 @@ public class ModItem
         {
             if(IsTool)
             {
-                return ToolType.ToString();
+                return "Tool - " + ToolType.ToString();
             }
             if(Type == eConsumableType.Drink)
             {
@@ -90,7 +90,7 @@ public class ModItem
             }
             else if (Type == eConsumableType.Smoke)
             {
-                return "Smokeable";
+                return "Smokable";
             }
             else if (Type == eConsumableType.Ingest)
             {

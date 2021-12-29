@@ -625,7 +625,6 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
         }
     }
-
     private string GetTimeDisplay()
     {
         if(overrideTimeDisplay != "")
@@ -1033,7 +1032,6 @@ public class UI : IMenuProvideable
             }
         }
     }
-
     private void Toggle(Menu toToggle)
     {
         foreach (Menu menu in MenuList)

@@ -95,7 +95,7 @@ public class BustedMenu : Menu
         Menu.AddItem(Bribe);
         Menu.AddItem(PayFine);
         Menu.AddItem(Surrender);
-        Menu.AddItem(SurrenderLong);
+        //Menu.AddItem(SurrenderLong);
         Menu.AddItem(TakeoverRandomPed);
 
     }
