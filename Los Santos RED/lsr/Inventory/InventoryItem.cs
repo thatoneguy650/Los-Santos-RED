@@ -24,7 +24,7 @@ public class InventoryItem
     {
 
     }
-    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{(ModItem.IsTool ? ModItem.ToolType.ToString() : ModItem.Type.ToString())}~s~~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent.Sum(),0)}%~s~)" : "") + (ModItem.RequiresTool? $"~n~Requires: ~r~{ModItem.RequiredToolType}" : "")
+    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{(ModItem.IsTool ? ModItem.ToolType.ToString() : ModItem.Type.ToString())}~s~~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent.Sum(),0)}%~s~)" : "") + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "") + (ModItem.RequiresTool? $"~n~Requires: ~r~{ModItem.RequiredToolType}" : "")
         + (ModItem.RestoresHealth ? $"~n~~g~+{ModItem.HealthGained} ~s~HP" : "");
 
 

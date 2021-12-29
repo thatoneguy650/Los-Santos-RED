@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSitting { get; }
         bool CharacterModelIsFreeMode { get; }
         string FreeModeVoice { get; }
+        GameLocation CurrentShop { get; set; }
 
         void SetAngeredCop();
         void GiveMoney(int v);
@@ -36,5 +37,6 @@ namespace LosSantosRED.lsr.Interface
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);
         bool RemoveFromInventory(ModItem toAdd, int amountPerPackage);
         bool HasItemInInventory(string modItemName);
+        void ConsumeItem(ModItem toAdd);
     }
 }

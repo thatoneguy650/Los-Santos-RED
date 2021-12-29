@@ -35,60 +35,75 @@ namespace LosSantosRED.lsr.Player
         public bool HasTool(ToolTypes tool) => ItemsList.Any(x => x.ModItem.ToolType == tool);
         public void Add(ModItem modItem, int amount)
         {
-            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-            if (ExistingItem == null)
+            if (modItem != null)
             {
-                ItemsList.Add(new InventoryItem(modItem, amount));
-            }
-            else
-            {
-                ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
+                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                if (ExistingItem == null)
+                {
+                    ItemsList.Add(new InventoryItem(modItem, amount));
+                }
+                else
+                {
+                    ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
+                }
             }
         }
         public bool Remove(ModItem modItem)
         {
-            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-            if (ExistingItem != null)
+            if (modItem != null)
             {
-                ItemsList.Remove(ExistingItem);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool Remove(ModItem modItem, int amount)
-        {
-            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-            if (ExistingItem != null)
-            {
-                if (ExistingItem.Amount > amount)
+                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                if (ExistingItem != null)
                 {
-                    ExistingItem.RemoveAmount(amount);//ExistingItem.Amount -= amount;
+                    ItemsList.Remove(ExistingItem);
+                    return true;
                 }
                 else
                 {
-                    ItemsList.Remove(ExistingItem);
+                    return false;
                 }
-                return true;
             }
-            else
+            return false;
+        }
+        public bool Remove(ModItem modItem, int amount)
+        {
+            if (modItem != null)
             {
-                return false;
+                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                if (ExistingItem != null)
+                {
+                    if (ExistingItem.Amount > amount)
+                    {
+                        ExistingItem.RemoveAmount(amount);//ExistingItem.Amount -= amount;
+                    }
+                    else
+                    {
+                        ItemsList.Remove(ExistingItem);
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+            return false;
         }
         public bool Use(ModItem modItem)
         {
-            InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-            if (ExistingItem != null)
+            if (modItem != null)
             {
-                return ExistingItem.RemovePercent(modItem.PercentLostOnUse);         
+                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                if (ExistingItem != null)
+                {
+                    return ExistingItem.RemovePercent(modItem.PercentLostOnUse);
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
         public InventoryItem Get(ModItem modItem)
         {

@@ -44,6 +44,9 @@ public class ModItem
     public string Description { get; set; } = "";
 
 
+    public string MeasurementName { get; set; } = "Item";
+
+
     public int AmountPerPackage { get; set; } = 1;
 
 
@@ -54,6 +57,7 @@ public class ModItem
     public bool IsIntoxicating => IntoxicantName != "";
     public bool RestoresHealth => HealthGained > 0;
     public int HealthGained { get; set; } = 0;
+    public bool ConsumeOnPurchase { get; set; } = false;
 
 
 

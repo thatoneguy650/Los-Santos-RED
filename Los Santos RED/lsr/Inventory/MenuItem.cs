@@ -30,5 +30,6 @@ public class MenuItem
     public int PurchasePrice { get; set;} = 5;
     public int SalesPrice { get; set; } = -1;
     public bool IsIllicilt { get; set; } = false;
+
 }
 

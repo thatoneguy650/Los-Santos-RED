@@ -92,10 +92,10 @@ public class ModItems : IModItems
             */
 
             //Generic Services
-            new ModItem("Room: Single Twin","Cheapest room for the most discerning client",eConsumableType.Service),
-            new ModItem("Room: Single Queen","Clean sheets on request",eConsumableType.Service),
-            new ModItem("Room: Double Queen","Have a little company, but don't want to get too close?",eConsumableType.Service),
-            new ModItem("Room: Single King","Please clean off all mirrors after use",eConsumableType.Service),
+            new ModItem("Room: Single Twin","Cheapest room for the most discerning client",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Room: Single Queen","Clean sheets on request",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Room: Double Queen","Have a little company, but don't want to get too close?",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Room: Single King","Please clean off all mirrors after use",eConsumableType.Service) {ConsumeOnPurchase = true },
 
 
 
@@ -118,9 +118,14 @@ public class ModItems : IModItems
             new ModItem("Wrench","What harm could a loose bolt have?") {
                 ModelItem = new PhysicalItem("prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Wrench   },
             new ModItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged") {
-                ModelItem = new PhysicalItem("ng_proc_ciglight01a",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.01f },
+                ModelItem = new PhysicalItem("p_cs_lighter_01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.01f },
             new ModItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.") {
                 ModelItem = new PhysicalItem("prop_ing_crowbar",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Crowbar  },
+
+            new ModItem("Bong","Also known as a water pipe") {
+                ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), ToolType = ToolTypes.Bong } ,
+
+
 
 
             new ModItem("DIC Lighter Ultra","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Long burn version.") {
@@ -265,16 +270,16 @@ public class ModItems : IModItems
             //BurgerShot
             new ModItem("Money Shot Meal",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burg1",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 12},
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 12, ConsumeOnPurchase = true},
             new ModItem("The Bleeder Meal","",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burg1",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 20},
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_02"), HealthGained = 20, ConsumeOnPurchase = true},
             new ModItem("Torpedo Meal","Torpedo your hunger",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_03"), HealthGained = 15},
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_03"), HealthGained = 15, ConsumeOnPurchase = true},
             new ModItem("Meat Free Meal","For the bleeding hearts",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bs_tray_01"), HealthGained = 5},
+                ,PackageItem = new PhysicalItem("prop_food_bs_tray_01"), HealthGained = 5, ConsumeOnPurchase = true},
             new ModItem("Freedom Fries",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
             new ModItem("Double Shot Coffee",eConsumableType.Drink) {
@@ -290,7 +295,7 @@ public class ModItems : IModItems
             new ModItem("Ham and Tuna Sandwich",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_burg2",57005,new Vector3(0.14f, 0.01f, -0.06f),new Rotator(0f, 0f, 0f)), HealthGained = 10 } ,
             new ModItem("Chef's Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 5} ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 5, ConsumeOnPurchase = true} ,
 
             //BeefyBills
             new ModItem("Megacheese Burger",eConsumableType.Eat) {
@@ -306,18 +311,18 @@ public class ModItems : IModItems
             //Taco Bomb
             new ModItem("Breakfast Burrito",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 12},
+                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 12, ConsumeOnPurchase = true},
             new ModItem("Deep Fried Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10, ConsumeOnPurchase = true},
             new ModItem("Beef Bazooka",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_bs_burger2",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f))
-                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 15},
+                ,PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 15, ConsumeOnPurchase = true},
             new ModItem("Chimichingado Chiquito",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10, ConsumeOnPurchase = true},
             new ModItem("Cheesy Meat Flappers",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10, ConsumeOnPurchase = true},
             new ModItem("Volcano Mudsplatter Nachos",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10},
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 10, ConsumeOnPurchase = true},
 
             //WIgwam Menu
             new ModItem("Wigwam Burger",eConsumableType.Eat) {
@@ -329,17 +334,17 @@ public class ModItems : IModItems
 
             //CB
             new ModItem("Cluckin' Little Meal","May contain meat",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5, ConsumeOnPurchase = true },
             new ModItem("Cluckin' Big Meal","200% bigger breasts",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 10 } ,
+                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 10, ConsumeOnPurchase = true } ,
             new ModItem("Cluckin' Huge Meal",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 15 } ,
+                PackageItem = new PhysicalItem("prop_food_cb_tray_02"), HealthGained = 15, ConsumeOnPurchase = true } ,
             new ModItem("Wing Piece",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 10 },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 10, ConsumeOnPurchase = true },
             new ModItem("Little Peckers",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 },
+                PackageItem = new PhysicalItem("prop_food_cb_tray_03"), HealthGained = 5 , ConsumeOnPurchase = true},
             new ModItem("Balls & Rings",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_food_burg3",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 5 },
+                ModelItem = new PhysicalItem("prop_food_burg3",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 5, ConsumeOnPurchase = true },
             new ModItem("Fowlburger",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_burg1",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)),
                 PackageItem = new PhysicalItem("prop_food_burg3"), HealthGained = 10 } ,
@@ -365,15 +370,15 @@ public class ModItems : IModItems
 
 
             //Viceroy
-            new ModItem("City View King",eConsumableType.Service),
-            new ModItem("City View Deluxe King",eConsumableType.Service),
-            new ModItem("Partial Ocean View King",eConsumableType.Service),
-            new ModItem("Ocean View King",eConsumableType.Service),
-            new ModItem("City View Two Bedded Room",eConsumableType.Service),
-            new ModItem("Grande King",eConsumableType.Service),
-            new ModItem("Grande Ocean View King",eConsumableType.Service),
-            new ModItem("Empire Suite",eConsumableType.Service),
-            new ModItem("Monarch Suite",eConsumableType.Service),
+            new ModItem("City View King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("City View Deluxe King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Partial Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("City View Two Bedded Room",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Grande King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Grande Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Empire Suite",eConsumableType.Service) {ConsumeOnPurchase = true },
+            new ModItem("Monarch Suite",eConsumableType.Service) {ConsumeOnPurchase = true },
 
 
 
@@ -382,48 +387,48 @@ public class ModItems : IModItems
 
             //FancyDeli
             new ModItem("Chicken Club Salad",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Spicy Seafood Gumbo",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Muffaletta",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Zucchini Garden Pasta",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Pollo Mexicano",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Italian Cruz Po'boy",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Chipotle Chicken Panini",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
 
 
             //FancyFish
             new ModItem("Coconut Crusted Prawns",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Crab and Shrimp Louie",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Open-Faced Crab Melt",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("King Salmon",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Ahi Tuna",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Key Lime Pie",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             
             //FancyGeneric
             new ModItem("Smokehouse Burger",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 20 },
+                ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 20, ConsumeOnPurchase = true },
             new ModItem("Chicken Critters Basket",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Prime Rib 16 oz",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Bone-In Ribeye",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_cs_steak"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_cs_steak"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Grilled Pork Chops",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
             new ModItem("Grilled Shrimp",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1") , HealthGained = 20} ,
+                PackageItem = new PhysicalItem("prop_food_bag1") , HealthGained = 20, ConsumeOnPurchase = true } ,
 
             //Noodles
             new ModItem("Juek Suk tong Mandu",eConsumableType.Eat) {
@@ -431,29 +436,14 @@ public class ModItems : IModItems
             new ModItem("Hayan Jam Pong",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_ff_noodle_02",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 15 } ,
             new ModItem("Sal Gook Su Jam Pong",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle1",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
+                ModelItem = new PhysicalItem("prop_ff_noodle_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Chul Pan Bokkeum Jam Pong",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle2",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
+                ModelItem = new PhysicalItem("prop_ff_noodle_02",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Deul Gae Udon",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("v_ret_247_noodle3",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
+                ModelItem = new PhysicalItem("prop_ff_noodle_02",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
             new ModItem("Dakgogo Bokkeum Bap",eConsumableType.Eat) {
-                PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20 } ,
+                ModelItem = new PhysicalItem("prop_ff_noodle_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
 
-            //Weed
-            new ModItem("White Widow Preroll",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            new ModItem("OG Kush Preroll",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            new ModItem("Northern Lights Preroll",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            new ModItem("White Widow Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            new ModItem("OG Kush Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            new ModItem("Northern Lights Gram",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            new ModItem("Bong",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) } ,
 
 
 
@@ -475,21 +465,41 @@ public class ModItems : IModItems
             //p_ing_coffeecup_01.yft bean machine coffee
             //p_ing_coffeecup_02.yft blank normal coffee cup
 
-            new ModItem("Gram of Schwag",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
-            new ModItem("Gram of Mids",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
-            new ModItem("Gram of Dank",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Marijuana" },
+            //ba_meth_smallbag.ydr
+            //bkr_prop_meth_openbag_01a.ydr same as above but open
+            //bkr_prop_weed_bag_01a.ydr might not have textures? probably does
+            //bkr_prop_weed_smallbag_01a.ydr might not have texutres?
 
-            new ModItem("SPANK",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "SPANK" },
-            new ModItem("Toilet Cleaner",eConsumableType.Drink) {
-                ModelItem = new PhysicalItem("prop_detergent_01b",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
-            new ModItem("Gram of Coke",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Cocaine" },
-            new ModItem("Gram of Meth",eConsumableType.None) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Meth" },
+            //sf_prop_sf_bag_weed_01a.ydr regular weed closed with texures
+            //sf_prop_sf_bag_weed_open_01a.ydr ld organics bag, open
+
+            //p_meth_bag_01_s.ydr looks like small amount of white poweder in a platics bag, closed top
+            //prop_inhaler_01.ydr USE INHALER FOR SOME OF THESE
+
+            //Weed
+            new ModItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            new ModItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            new ModItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+
+            new ModItem("Schwag Weed","Was considered good in the 1970s at least",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            new ModItem("Mid Weed","One step above brick pack",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            new ModItem("Dank Weed","Little Jacob Tested, Truth Approved",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+
+            new ModItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+            new ModItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
+            new ModItem("Coke",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+            new ModItem("Meth",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Meth", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+
 
 
             new ModItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!",eConsumableType.Ingest) {
@@ -507,15 +517,18 @@ public class ModItems : IModItems
 
 
 
-            //prop_inhaler_01.ydr USE INHALER FOR SOME OF THESE
-
-
-
-            //        WeedDealerMenu = new List<MenuItem>() {
-            //new MenuItem("Brick Gram",6, 1),
-            //new MenuItem("Mid Gram",9, 3),
-            //new MenuItem("Dank Gram",12, 4),
-            //new MenuItem("Joint",3, 1)};
+            //new ModItem("White Widow Preroll",eConsumableType.Smoke) {
+            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            //new ModItem("OG Kush Preroll",eConsumableType.Smoke) {
+            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            //new ModItem("Northern Lights Preroll",eConsumableType.Smoke) {
+            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            //new ModItem("White Widow Gram",eConsumableType.None) {
+            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+            //new ModItem("OG Kush Gram",eConsumableType.None) {
+            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+            //new ModItem("Northern Lights Gram",eConsumableType.None) {
+            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
 
 
         //wrapped burger prop_food_bs_burg1

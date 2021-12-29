@@ -149,7 +149,7 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public PedExt CurrentTargetedPed { get; private set; }
-
+        public GameLocation CurrentShop { get; set; }
         public VehicleExt PreviousVehicle { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
@@ -792,6 +792,16 @@ namespace Mod
                             }
                         }, "DoorWatcher");
                     }
+                }
+            }
+        }
+        public void ConsumeItem(ModItem toAdd)
+        {
+            if(toAdd.CanConsume)
+            {
+                if(toAdd.RestoresHealth)
+                {
+                    AddHealth(toAdd.HealthGained);
                 }
             }
         }
@@ -1459,6 +1469,7 @@ namespace Mod
         public void ClearInventory() => Inventory.Clear();
         public bool RemoveFromInventory(ModItem modItem) => Inventory.Remove(modItem);
         public bool RemoveFromInventory(ModItem modItem, int amount) => Inventory.Remove(modItem, amount);
+        public bool UseInventoryItem(ModItem modItem) => Inventory.Use(modItem);
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void UnSetArrestedAnimation() => Surrendering.UnSetArrestedAnimation();
@@ -1593,7 +1604,16 @@ namespace Mod
                         return;
                     }
                 }
-                RemoveFromInventory(modItem, 1);
+
+                if(modItem.PercentLostOnUse > 0.0f)
+                {
+                    UseInventoryItem(modItem);
+                }
+                else
+                {
+                    RemoveFromInventory(modItem, 1);
+                }
+                
                 if (UpperBodyActivity != null)
                 {
                     UpperBodyActivity.Cancel();

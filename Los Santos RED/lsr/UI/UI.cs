@@ -886,31 +886,38 @@ public class UI : IMenuProvideable
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
+        if (DisplayablePlayer.CurrentShop != null)
         {
-            StreetDisplay += $" {CurrentDefaultTextColor}";
-            if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
-            {
-                StreetDisplay += "~y~";
-            }
-            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{CurrentDefaultTextColor}";
-
-            if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
-            {
-                StreetDisplay += $" at {CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {CurrentDefaultTextColor}";
-            }
+            StreetDisplay += $"{CurrentDefaultTextColor}Inside ~p~{DisplayablePlayer.CurrentShop.Name}{CurrentDefaultTextColor}";
         }
-        else if (DisplayablePlayer.CurrentLocation.IsInside)
+        else
         {
-            if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
+            if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
             {
-                #if DEBUG
-                    StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) {CurrentDefaultTextColor}";
-                #endif
+                StreetDisplay += $" {CurrentDefaultTextColor}";
+                if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
+                {
+                    StreetDisplay += "~y~";
+                }
+                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{CurrentDefaultTextColor}";
+
+                if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
+                {
+                    StreetDisplay += $" at {CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {CurrentDefaultTextColor}";
+                }
             }
-            else
+            else if (DisplayablePlayer.CurrentLocation.IsInside)
             {
-                StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{CurrentDefaultTextColor}";
+                if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
+                {
+#if DEBUG
+                    StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) {CurrentDefaultTextColor}";
+#endif
+                }
+                else
+                {
+                    StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{CurrentDefaultTextColor}";
+                }
             }
         }
         return StreetDisplay;

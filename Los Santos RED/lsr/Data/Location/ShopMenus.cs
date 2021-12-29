@@ -41,10 +41,10 @@ public class ShopMenus : IShopMenus
     public ShopMenu GetRanomdDrugMenu()
     {
         ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DealerMenu").PickRandom();
-        if(Possible != null)
-        {
-            Possible.Randomize();
-        }
+        //if(Possible != null)
+        //{
+        //    Possible.Randomize();
+        //}
         return Possible;
     }
     private void DefaultConfig()
@@ -56,14 +56,14 @@ public class ShopMenus : IShopMenus
             new ShopMenu("CheapHotelMenu","Cheap Hotel",new List<MenuItem>() { new MenuItem("Room: Single Twin",99),new MenuItem("Room: Single Queen", 130),new MenuItem("Room: Double Queen", 150),new MenuItem("Room: Single King", 160), }),
             new ShopMenu("ExpensiveHotelMenu","Expensive Hotel",new List<MenuItem>() { new MenuItem("Room: Single Queen", 189),new MenuItem("Room: Double Queen", 220),new MenuItem("Room: Single King", 250),new MenuItem("Room: Delux", 280), }),
             new ShopMenu("HookerMenu","Hooker",new List<MenuItem>() { new MenuItem("Handy", 50),new MenuItem("Head", 75),new MenuItem("Half And Half", 150),new MenuItem("Full",200),}),
-            
-            
+
+
             new ShopMenu("ConvenienceStoreMenu","Convenience Store",new List<MenuItem>() { new MenuItem("Hot Dog", 5),new MenuItem("Burger",3),new MenuItem("Phat Chips", 2),
                 new MenuItem("Ego Chaser Energy Bar", 2),
                 new MenuItem("King Size P's & Q's", 3),
                 new MenuItem("P's & Q's", 2),
                 new MenuItem("Meteorite Bar", 2),
-            
+
 
 
 
@@ -96,9 +96,24 @@ public class ShopMenus : IShopMenus
             new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             
             //Drugs
-            new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7) }),
-            new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7), new MenuItem("DIC Lighter Silver", 10), new MenuItem("DIC Lighter Gold", 15), new MenuItem("Dippo Lighter", 20), }),
-            new ShopMenu("WeedDealerMenu","Marijuana Dealer",new List<MenuItem>() { new MenuItem("Gram of Schwag", 6, 1) { IsIllicilt = true },new MenuItem("Gram of Mids",9, 3) { IsIllicilt = true }, new MenuItem("Gram of Dank",12, 4) { IsIllicilt = true }, new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
+            //new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7) }),
+           // new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7), new MenuItem("DIC Lighter Silver", 10), new MenuItem("DIC Lighter Gold", 15), new MenuItem("Dippo Lighter", 20), }),
+            //new ShopMenu("WeedDealerMenu","Marijuana Dealer",new List<MenuItem>() { new MenuItem("Schwag Weed", 6, 1) { IsIllicilt = true },new MenuItem("Mid Weed",9, 3) { IsIllicilt = true }, new MenuItem("Dank Weed",12, 4) { IsIllicilt = true }, new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
+
+            new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { 
+                new MenuItem("White Widow",7),
+                new MenuItem("OG Kush",8),
+                new MenuItem("Northern Lights",9),
+                new MenuItem("Bong",25),
+                new MenuItem("DIC Lighter",5), 
+                new MenuItem("DIC Lighter Ultra", 7),
+            }),
+
+            new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow",10),
+                new MenuItem("OG Kush",12),
+                new MenuItem("Northern Lights",13),
+                new MenuItem("Bong",35),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7), new MenuItem("DIC Lighter Silver", 10), new MenuItem("DIC Lighter Gold", 15), new MenuItem("Dippo Lighter", 20), }),
+
             new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
                 new MenuItem("Chesty", 19, 0),
                 new MenuItem("Bull Shark Testosterone", 25, 0),
@@ -109,21 +124,78 @@ public class ShopMenus : IShopMenus
             }),
 
 
-            new ShopMenu("DealerMenu","Marijuana Dealer",new List<MenuItem>() {
-                    new MenuItem("Gram of Schwag", 6, 1) { IsIllicilt = true },
-                    new MenuItem("Gram of Mids",9, 3) { IsIllicilt = true },
-                    new MenuItem("Gram of Dank",12, 4) { IsIllicilt = true },
-                    new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Marijuana Dealer 1",new List<MenuItem>() {
+            //        new MenuItem("Schwag Weed", 6, 1) { IsIllicilt = true },
+            //        new MenuItem("Mid Weed",9, 3) { IsIllicilt = true },
+            //        new MenuItem("Dank Weed",12, 4) { IsIllicilt = true },
+            //        new MenuItem("Joint",3, 1) { IsIllicilt = true }}),
 
-            new ShopMenu("DealerMenu","SPANK Dealer",new List<MenuItem>() {
-                    new MenuItem("SPANK", 250, 100) { IsIllicilt = true },
+            new ShopMenu("DealerMenu","Marijuana Dealer 1",new List<MenuItem>() {
+                    new MenuItem("Schwag Weed", 6, 1) { IsIllicilt = true },
+                    new MenuItem("Mid Weed",9, 3) { IsIllicilt = true },
+                    new MenuItem("Dank Weed",12, 4) { IsIllicilt = true }}),
+
+            new ShopMenu("DealerMenu","Marijuana Dealer 2",new List<MenuItem>() {
+                    new MenuItem("Schwag Weed", 3, 1) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 3",new List<MenuItem>() {
+                    new MenuItem("Schwag Weed", 6, 2) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 4",new List<MenuItem>() {
+                    new MenuItem("Schwag Weed", 5, 1) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 5",new List<MenuItem>() {
+                    new MenuItem("Schwag Weed", 4, 1) { IsIllicilt = true } }),
+
+            new ShopMenu("DealerMenu","Marijuana Dealer 6",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",12, 4) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 7",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",10, 6) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 8",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",11, 5) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 9",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",9, 5) { IsIllicilt = true } }),
+
+            new ShopMenu("DealerMenu","Marijuana Dealer 10",new List<MenuItem>() {
+                    new MenuItem("Dank Weed",20, 5) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 11",new List<MenuItem>() {
+                    new MenuItem("Dank Weed",11, 8) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 12",new List<MenuItem>() {
+                    new MenuItem("Dank Weed",12, 7) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Marijuana Dealer 13",new List<MenuItem>() {
+                    new MenuItem("Dank Weed",15, 8) { IsIllicilt = true } }),
+
+            new ShopMenu("DealerMenu","Marijuana Dealer 14",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",9, 3) { IsIllicilt = true },
+                    new MenuItem("Dank Weed",12, 4) { IsIllicilt = true }}),
+            new ShopMenu("DealerMenu","Marijuana Dealer 15",new List<MenuItem>() {
+                    new MenuItem("Mid Weed",9, 3) { IsIllicilt = true },
+                    new MenuItem("Dank Weed",12, 4) { IsIllicilt = true }}),
+
+            new ShopMenu("DealerMenu","Toilet Dealer 1",new List<MenuItem>() {
                     new MenuItem("Toilet Cleaner",25, 2) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Toilet Dealer 2",new List<MenuItem>() {
+                    new MenuItem("Toilet Cleaner",26, 5) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","Toilet Dealer 3",new List<MenuItem>() {
+                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true } }),
 
-            new ShopMenu("DealerMenu","Coke Dealer",new List<MenuItem>() {
-                    new MenuItem("Gram of Coke", 75, 23) { IsIllicilt = true }}),
+            new ShopMenu("DealerMenu","SPANK Dealer 1",new List<MenuItem>() {
+                    new MenuItem("SPANK", 45, 23) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","SPANK Dealer 2",new List<MenuItem>() {
+                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true } }),
+            new ShopMenu("DealerMenu","SPANK Dealer 3",new List<MenuItem>() {
+                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true } }),
 
-            new ShopMenu("DealerMenu","Meth Dealer",new List<MenuItem>() {
-                    new MenuItem("Gram of Meth", 20, 10) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Coke Dealer 1",new List<MenuItem>() {
+            //        new MenuItem("Gram of Coke", 75, 23) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Coke Dealer 2",new List<MenuItem>() {
+            //        new MenuItem("Gram of Coke", 65, 15) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Coke Dealer 3",new List<MenuItem>() {
+            //        new MenuItem("Gram of Coke", 80, 27) { IsIllicilt = true }}),
+
+            //new ShopMenu("DealerMenu","Meth Dealer 1",new List<MenuItem>() {
+            //        new MenuItem("Gram of Meth", 20, 10) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Meth Dealer 2",new List<MenuItem>() {
+            //        new MenuItem("Gram of Meth", 30, 15) { IsIllicilt = true }}),
+            //new ShopMenu("DealerMenu","Meth Dealer 3",new List<MenuItem>() {
+            //        new MenuItem("Gram of Meth", 25, 5) { IsIllicilt = true }}),
 
             //Specific
             new ShopMenu("BurgerShotMenu","Burger Shot",new List<MenuItem> { new MenuItem("Money Shot Meal", 7),new MenuItem("The Bleeder Meal", 4),new MenuItem("Torpedo Meal", 6),new MenuItem("Meat Free Meal", 5),new MenuItem("Freedom Fries", 2),new MenuItem("Liter of eCola", 2),new MenuItem("Liter of Sprunk", 2),new MenuItem("Bottle of Raine Water", 2),new MenuItem("Double Shot Coffee", 2) }),

@@ -94,7 +94,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> NoodleMenu = ShopMenus.GetMenu("NoodleMenu")?.Items;
         List<MenuItem> WeedMenu = ShopMenus.GetMenu("WeedMenu")?.Items;
         List<MenuItem> WeedAndCigMenu = ShopMenus.GetMenu("WeedAndCigMenu")?.Items;
-        List<MenuItem> WeedDealerMenu = ShopMenus.GetMenu("WeedDealerMenu")?.Items;
+        //List<MenuItem> WeedDealerMenu = ShopMenus.GetMenu("WeedDealerMenu")?.Items;
 
         List<MenuItem> VapidMenu = ShopMenus.GetMenu("VapidMenu")?.Items;
         List<MenuItem> PharmacyMenu = ShopMenus.GetMenu("PharmacyMenu")?.Items;

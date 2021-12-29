@@ -371,6 +371,10 @@ public class Debug
         //Game.DisplayNotification($"ModController.DebugSecondaryRunning {ModController.DebugSecondaryRunning}");
         //GameFiber.Sleep(500);
         //Dispatcher.DebugSpawnCop();
+
+
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth - 50;
+
     }
     private void DebugNumpad3()
     {
@@ -453,7 +457,7 @@ public class Debug
 
         Player.AddToInventory(ModItems.Get("Equanox"), 4);
         Player.AddToInventory(ModItems.Get("Screwdriver"), 1);
-        Player.AddToInventory(ModItems.Get("Lighter"), 1);
+        Player.AddToInventory(ModItems.Get("DIC Lighter"), 1);
         //Weather.DebugPlayReport();
 
 

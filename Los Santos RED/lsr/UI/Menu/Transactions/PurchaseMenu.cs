@@ -62,7 +62,11 @@ public class PurchaseMenu : Menu
         purchaseMenu.OnIndexChange += OnIndexChange;
         purchaseMenu.OnItemSelect += OnItemSelect;
         purchaseMenu.OnListChange += OnListChange;
+        purchaseMenu.OnScrollerChange += OnScrollerChange;
     }
+
+
+
     public void Setup()
     {
         PreloadModels();
@@ -369,14 +373,15 @@ public class PurchaseMenu : Menu
                         VehicleMenu.OnItemSelect += OnVehicleItemSelect;
                         VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
                         VehicleMenu.OnIndexChange += OnVehicleIndexChange;
+
+
+
+
+
                         //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
                     }
                     else
                     {
-
-
-
-
                         string description = myItem.Description;
                         if(description == "")
                         {
@@ -392,12 +397,16 @@ public class PurchaseMenu : Menu
                         {
                             description += $"~n~~g~+{myItem.HealthGained} ~s~HP";
                         }
+                        if(myItem.ConsumeOnPurchase && (myItem.Type == eConsumableType.Eat || myItem.Type == eConsumableType.Drink))
+                        {
+                            description += $"~n~~o~Dine-In Only~s~";
+                        }
+                        //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
 
 
 
-
-                        
-                        purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, description) { RightLabel = formattedPurchasePrice });
+                        purchaseMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, 99, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}",Value = 1});
+                    // { RightLabel = formattedPurchasePrice });
                     }
                 }
             }
@@ -417,7 +426,19 @@ public class PurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Purchase Menu: {CurrentItem.Name} OnItemSelect", 5);
                 return;
             }
-            if (Player.Money >= menuItem.PurchasePrice)
+            EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Text: {selectedItem.Text} TotalAmount {selectedItem.Text} Index {selectedItem.Text}", 5);
+
+
+            int TotalItems = 1;
+            if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
+            {
+                UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                TotalItems = myItem.Value;
+            }
+            int TotalPrice = menuItem.PurchasePrice * TotalItems;
+
+
+            if (Player.Money >= TotalPrice)
             {
                 bool subtractCash = true;
 
@@ -436,12 +457,19 @@ public class PurchaseMenu : Menu
                 }
                 else //if (ToAdd.CanConsume)
                 {
-                    Player.AddToInventory(ToAdd, ToAdd.AmountPerPackage);
-                    EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Amount: {ToAdd.AmountPerPackage}", 5);
+                    if(ToAdd.ConsumeOnPurchase)
+                    {
+                        Player.ConsumeItem(ToAdd);
+                    }
+                    else
+                    {
+                        Player.AddToInventory(ToAdd, TotalItems * ToAdd.AmountPerPackage);
+                    }
+                    EntryPoint.WriteToConsole($"ADDED {ToAdd.Name} {ToAdd.GetType()}  Amount: {ToAdd.AmountPerPackage} TotalAmount {index * ToAdd.AmountPerPackage} Index {index}", 5);
                 }
                 if (subtractCash)
                 {
-                    Player.GiveMoney(-1 * menuItem.PurchasePrice);
+                    Player.GiveMoney(-1 * TotalPrice);
                 }
             }
         }
@@ -477,6 +505,10 @@ public class PurchaseMenu : Menu
         }
     }
     private void OnListChange(UIMenu sender, UIMenuListItem listItem, int newIndex)
+    {
+
+    }
+    private void OnScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
 
     }
@@ -541,7 +573,6 @@ public class PurchaseMenu : Menu
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
             }
         }
-
     }
     private void CreatePreview(UIMenuItem myItem)
     {
@@ -836,6 +867,15 @@ public class PurchaseMenu : Menu
         public override string ToString()
         {
             return ColorName;
+        }
+    }
+    private class MoneyAmount
+    {
+        public int PricePerItem { get; set; }
+        public int ItemsToPurchase { get; set; }
+        public override string ToString()
+        {
+            return $"{ItemsToPurchase} Item(s) - {(PricePerItem * ItemsToPurchase).ToString("C0")}";
         }
     }
 }

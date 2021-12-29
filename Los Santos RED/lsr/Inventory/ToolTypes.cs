@@ -15,4 +15,5 @@ public enum ToolTypes
     Pliers = 6,
     Drill = 7,
     Crowbar = 8,
+    Bong = 9,
 }

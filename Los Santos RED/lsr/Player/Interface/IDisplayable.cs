@@ -53,5 +53,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsSprinting { get; }
         float StaminaPercent { get; }
         float IntoxicatedIntensityPercent { get; }
+        GameLocation CurrentShop { get; }
     }
 }

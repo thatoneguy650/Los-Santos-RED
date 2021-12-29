@@ -69,13 +69,11 @@ public class Transaction : Interaction
     }
     public override string DebugString => "";
     private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f || Player.IsSitting) && Player.CanConverse;
-
     public void ClearPreviews()
     {
         PurchaseMenu?.ClearPreviews();
         SellMenu?.ClearPreviews();
     }
-
     public override void Start()
     {
         try
@@ -120,6 +118,7 @@ public class Transaction : Interaction
             Player.ButtonPrompts.RemoveAll(x => x.Group == "Transaction");
             Player.IsConversing = false;
             Player.IsTransacting = false;
+            Player.CurrentShop = null;
             if (IsUsingCustomCam)
             {
 
@@ -289,6 +288,7 @@ public class Transaction : Interaction
             IsUsingHintCamera = false;
             DisableControl();
             DoEntryCam();
+            Player.CurrentShop = Store;
             if (Store.HasCustomItemPostion)
             {
                 HighlightLocationWithCamera();
