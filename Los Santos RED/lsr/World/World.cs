@@ -102,7 +102,7 @@ namespace Mod
                 {
                     if (MyLocation.ShouldAlwaysHaveBlip)
                     {
-                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.Type);
+                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.HasBlipSprite, MyLocation.Icon);
                         AddEntity(myBlip.AddToMap());
                         GameFiber.Yield();
                     }
@@ -214,7 +214,7 @@ namespace Mod
             int LocationsCalculated = 0;
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 4))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
                     {
@@ -243,6 +243,7 @@ namespace Mod
                     GameFiber.Yield();
                 }
             }
+            GameFiber.Yield();
             UpdateVendingMachines();
         }
         public void UpdateNearLocations()
@@ -250,6 +251,7 @@ namespace Mod
             foreach (GameLocation gl in ActiveLocations)
             {
                 gl.Update();
+                GameFiber.Yield();
             }
         }
         private void UpdateVendingMachines()
@@ -268,7 +270,7 @@ namespace Mod
                             if(!ActiveLocations.Any(x=> x.Type == LocationType.VendingMachine && x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
                             {
                                ShopMenu toBuy = ShopMenus.GetVendingMenu(modelName);
-                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items };
+                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
                                 newVend.SetProp(obj);
                                 SetupLocation(newVend);
                                 ActiveLocations.Add(newVend);
@@ -377,12 +379,9 @@ namespace Mod
                 AddEntity(Person);
             }
         }
-
-
-
         private void SetupBlip(GameLocation gameLocation)
         {
-            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);
+            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.HasBlipSprite, gameLocation.Icon);
             Blip createdBlip = myBlip.AddToMap();
             gameLocation.SetCreatedBlip(createdBlip);
             AddEntity(createdBlip);

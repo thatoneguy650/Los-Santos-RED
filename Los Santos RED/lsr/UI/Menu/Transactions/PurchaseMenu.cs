@@ -36,6 +36,8 @@ public class PurchaseMenu : Menu
     private string PlayingDict;
     private string PlayingAnim;
     private bool hasAttachedProp;
+    private Vector3 PropEntryPosition;
+    private float PropEntryHeading;
 
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
@@ -83,6 +85,7 @@ public class PurchaseMenu : Menu
         if(Store.Type == LocationType.VendingMachine)
         {
             AnimationDictionary.RequestAnimationDictionay("mini@sprunk");
+            GetPropEntry();
         }
         ColorList = new List<ColorLookup>()
         {
@@ -395,6 +398,7 @@ public class PurchaseMenu : Menu
                         {
                             description = $"{cii.ModItemName} {formattedPurchasePrice}";
                         }
+                        description += "~n~~s~";
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         description += $"~n~~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
                         if(myItem.AmountPerPackage > 1)
@@ -638,44 +642,51 @@ public class PurchaseMenu : Menu
     }
     private void PreviewProp(ModItem itemToShow)
     {
-        string ModelToSpawn = "";
-        bool useClose = true;
-        if (itemToShow.PackageItem != null)
+        try
         {
-            ModelToSpawn = itemToShow.PackageItem.ModelName;
-            useClose = !itemToShow.PackageItem.IsLarge;
-        }
-        if (ModelToSpawn == "")
-        {
-            ModelToSpawn = itemToShow.ModelItem.ModelName;
-            useClose = !itemToShow.ModelItem.IsLarge;
-        }
-        if (ModelToSpawn != "")
-        {
-            if (useClose)
+            string ModelToSpawn = "";
+            bool useClose = true;
+            if (itemToShow.PackageItem != null)
             {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+                ModelToSpawn = itemToShow.PackageItem.ModelName;
+                useClose = !itemToShow.PackageItem.IsLarge;
+            }
+            if (ModelToSpawn == "")
+            {
+                ModelToSpawn = itemToShow.ModelItem.ModelName;
+                useClose = !itemToShow.ModelItem.IsLarge;
+            }
+            if (ModelToSpawn != "")
+            {
+                if (useClose)
+                {
+                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+                }
+                else
+                {
+                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
+                }
+                if (SellingProp.Exists())
+                {
+                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
+                    if (SellingProp != null && SellingProp.Exists())
+                    {
+                        NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
+                    }
+                }
+                EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN", 5);
             }
             else
             {
-                SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
-            }
-            if (SellingProp.Exists())
-            {
-                SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
-                if (SellingProp != null && SellingProp.Exists())
+                if (SellingProp.Exists())
                 {
-                    NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
+                    SellingProp.Delete();
                 }
             }
-            EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN", 5);
         }
-        else
+        catch(Exception ex)
         {
-            if (SellingProp.Exists())
-            {
-                SellingProp.Delete();
-            }
+            Game.DisplayNotification($"Error Displaying Model {ex.Message} {ex.StackTrace}");
         }
     }
     public void ClearPreviews()
@@ -698,28 +709,35 @@ public class PurchaseMenu : Menu
     {
         foreach (MenuItem menuItem in Store.Menu)//preload all item models so it doesnt bog the menu down
         {
-            if (menuItem.Purchaseable)
+            try
             {
-                ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
-                if (myItem != null)
+                if (menuItem.Purchaseable)
                 {
-                    if (myItem.PackageItem != null && myItem.PackageItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
+                    ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
+                    if (myItem != null)
                     {
-                        new Model(myItem.PackageItem.ModelName).LoadAndWait();
-                    }
-                    else if (myItem.ModelItem != null && myItem.ModelItem.Type != ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
-                    {
-                        new Model(myItem.ModelItem.ModelName).LoadAndWait();
-                    }
-                    else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
-                    {
-                        Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
-                        if(MyVehicle.Exists())
+                        if (myItem.PackageItem != null && myItem.PackageItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
                         {
-                            MyVehicle.Delete();
+                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                        }
+                        else if (myItem.ModelItem != null && myItem.ModelItem.Type != ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
+                        {
+                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                        }
+                        else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
+                        {
+                            Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
+                            if (MyVehicle.Exists())
+                            {
+                                MyVehicle.Delete();
+                            }
                         }
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                Game.DisplayNotification($"Error Preloading Model {ex.Message} {ex.StackTrace}");
             }
         }
     }
@@ -833,98 +851,14 @@ public class PurchaseMenu : Menu
         }
         if(Store != null && Store.PropObject != null && Store.PropObject.Exists())
         {
-            Vector3 DesiredPos = Store.PropObject.GetOffsetPositionFront(-1f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(Store.PropObject.Heading-180f);
-            float ObjectHeading = Store.PropObject.Heading - 180f;
-            if (ObjectHeading >= 180f)
+            if (MoveToMachine())
             {
-                DesiredHeading = ObjectHeading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ObjectHeading + 180f;
-            }
-            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPos.X, DesiredPos.Y, DesiredPos.Z, 1.0f, -1, DesiredHeading, 0.2f);
-            uint GameTimeStartedSitting = Game.GameTime;
-            float heading = Game.LocalPlayer.Character.Heading;
-            bool IsFacingDirection = false;
-            bool IsCloseEnough = false;
-            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
-            {
-                if (Player.IsMoveControlPressed)
+                if(UseMachine(item))
                 {
-                    IsCancelled = true;
-                }
-                IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(DesiredPos) < 0.2f;
-                GameFiber.Yield();
-            }
-            GameFiber.Sleep(250);
-            GameTimeStartedSitting = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
-            {
-                heading = Game.LocalPlayer.Character.Heading;
-                if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)//0.5f)
-                {
-                    IsFacingDirection = true;
-                    EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
-                }
-                GameFiber.Yield();
-            }
-            GameFiber.Sleep(250);
-            if (IsCloseEnough && IsFacingDirection && !IsCancelled)
-            {
-                EntryPoint.WriteToConsole($"Sitting IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
-            }
-            else
-            {
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                return;// false;
-            }
 
-            string modelName = "";
-            bool HasProp = false;
-            if (item.PackageItem != null && item.PackageItem.ModelName != "")
-            {
-                modelName = item.PackageItem.ModelName;
-                HasProp = true;
-            }
-            else if (item.ModelItem != null && item.ModelItem.ModelName != "")
-            {
-                modelName = item.ModelItem.ModelName;
-                HasProp = true;
-            }
-            PlayingDict = "mini@sprunk";
-            PlayingAnim = "plyr_buy_drink_pt1";
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
-            EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            while (Player.CanPerformActivities && !IsCancelled)
-            {
-                Player.SetUnarmed();
-                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.5f)
-                {
-                    if (HasProp && modelName != "" && !hasAttachedProp)
-                    {
-                        SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-                        GameFiber.Yield();
-                        if (SellingProp.Exists())
-                        {
-                            SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
-                        }
-                        hasAttachedProp = true;
-                    }
                 }
-                if (AnimationTime >= 0.7f)
-                {
-                    break;
-                }
-                GameFiber.Yield();
             }
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        }
-        
-        //GameFiber.Sleep(500);
+        }  
         if (SellingProp.Exists())
         {
             SellingProp.Delete();
@@ -936,6 +870,111 @@ public class PurchaseMenu : Menu
             Player.IsConductingIllicitTransaction = false;
         }  
     }
+    private void GetPropEntry()
+    {
+        if (Store != null && Store.PropObject != null && Store.PropObject.Exists())
+        {
+            PropEntryPosition = Store.PropObject.GetOffsetPositionFront(-1f);
+            PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
+            float ObjectHeading = Store.PropObject.Heading - 180f;
+            if (ObjectHeading >= 180f)
+            {
+                PropEntryHeading = ObjectHeading - 180f;
+            }
+            else
+            {
+                PropEntryHeading = ObjectHeading + 180f;
+            }
+        }
+    }
+    private bool MoveToMachine()
+    {
+        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
+        uint GameTimeStartedSitting = Game.GameTime;
+        float heading = Game.LocalPlayer.Character.Heading;
+        bool IsFacingDirection = false;
+        bool IsCloseEnough = false;
+        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+        {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(PropEntryPosition) < 0.2f;
+            GameFiber.Yield();
+        }
+        GameFiber.Sleep(250);
+        GameTimeStartedSitting = Game.GameTime;
+        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+        {
+            heading = Game.LocalPlayer.Character.Heading;
+            if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
+            {
+                IsFacingDirection = true;
+                EntryPoint.WriteToConsole($"Moving to Machine FACING TRUE {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
+            }
+            GameFiber.Yield();
+        }
+        GameFiber.Sleep(250);
+        if (IsCloseEnough && IsFacingDirection && !IsCancelled)
+        {
+            EntryPoint.WriteToConsole($"Moving to Machine IN POSITION {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
+            return true;
+        }
+        else
+        {
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            return false;
+        }
+    }
+    private bool UseMachine(ModItem item)
+    {
+        string modelName = "";
+        bool HasProp = false;
+        if (item.PackageItem != null && item.PackageItem.ModelName != "")
+        {
+            modelName = item.PackageItem.ModelName;
+            HasProp = true;
+        }
+        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
+        {
+            modelName = item.ModelItem.ModelName;
+            HasProp = true;
+        }
+        PlayingDict = "mini@sprunk";
+        PlayingAnim = "plyr_buy_drink_pt1";
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
+        EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
+        bool IsCompleted = false;
+        while (Player.CanPerformActivities && !IsCancelled)
+        {
+            Player.SetUnarmed();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+            if (AnimationTime >= 0.5f)
+            {
+                if (HasProp && modelName != "" && !hasAttachedProp)
+                {
+                    SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+                    GameFiber.Yield();
+                    if (SellingProp.Exists())
+                    {
+                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                    }
+                    hasAttachedProp = true;
+                }
+            }
+            if (AnimationTime >= 0.7f)
+            {
+                IsCompleted = true;
+                break;
+            }
+            GameFiber.Yield();
+        }
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        return IsCompleted;
+    }
+
+
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {
         bool Spoke = false;

@@ -87,7 +87,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 if (Bottle.Exists())
                 {
-                    Bottle.IsGravityDisabled = false;
+                    //Bottle.IsGravityDisabled = false;
                 }
                 else
                 {

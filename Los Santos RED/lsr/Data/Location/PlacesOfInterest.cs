@@ -59,7 +59,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> HookerMenu = ShopMenus.GetMenu("HookerMenu")?.Items;
         List<MenuItem> ConvenienceStoreMenu = ShopMenus.GetMenu("ConvenienceStoreMenu")?.Items;
         List<MenuItem> TwentyFourSevenMenu = ShopMenus.GetMenu("TwentyFourSevenMenu")?.Items;
-        List<MenuItem> ConvenienceAndLiquorStoreMenu = ShopMenus.GetMenu("ConvenienceAndLiquorStoreMenu")?.Items;
         List<MenuItem> FancyDeliMenu = ShopMenus.GetMenu("FancyDeliMenu")?.Items;
         List<MenuItem> FancyFishMenu = ShopMenus.GetMenu("FancyFishMenu")?.Items;
         List<MenuItem> FancyGenericMenu = ShopMenus.GetMenu("FancyGenericMenu")?.Items;
@@ -74,7 +73,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> BeefyBillsMenu = ShopMenus.GetMenu("BeefyBillsMenu")?.Items;
         List<MenuItem> PizzaMenu = ShopMenus.GetMenu("PizzaMenu")?.Items;
         List<MenuItem> DonutMenu = ShopMenus.GetMenu("DonutMenu")?.Items;
-        List<MenuItem> StoreMenu = ShopMenus.GetMenu("StoreMenu")?.Items;
         List<MenuItem> FruitMenu = ShopMenus.GetMenu("FruitMenu")?.Items;
         List<MenuItem> UpNAtomMenu = ShopMenus.GetMenu("UpNAtomMenu")?.Items;
         List<MenuItem> TacoFarmerMenu = ShopMenus.GetMenu("TacoFarmerMenu")?.Items;
@@ -94,7 +92,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> NoodleMenu = ShopMenus.GetMenu("NoodleMenu")?.Items;
         List<MenuItem> WeedMenu = ShopMenus.GetMenu("WeedMenu")?.Items;
         List<MenuItem> WeedAndCigMenu = ShopMenus.GetMenu("WeedAndCigMenu")?.Items;
-        //List<MenuItem> WeedDealerMenu = ShopMenus.GetMenu("WeedDealerMenu")?.Items;
 
         List<MenuItem> VapidMenu = ShopMenus.GetMenu("VapidMenu")?.Items;
         List<MenuItem> PharmacyMenu = ShopMenus.GetMenu("PharmacyMenu")?.Items;

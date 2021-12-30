@@ -150,6 +150,11 @@ public class ModItems : IModItems
             new ModItem("Nuts","You're gonna love my nuts",eConsumableType.Eat) {HealthGained = 10 },
             new ModItem("Bottle of Raine Water","The water that rich people drink, and the main reason why there are now entire continents of plastic bottles floating in the ocean",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("ba_prop_club_water_bottle",57005,new Vector3(0.12f, -0.1f, -0.07f),new Rotator(-70.0f, 0.0f, 0.0f)), HealthGained = 20 },
+
+
+            new ModItem("Bottle of GREY Water","Expensive water that tastes worse than tap!",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("h4_prop_battle_waterbottle_01a",57005,new Vector3(0.12f, -0.1f, -0.07f),new Rotator(-70.0f, 0.0f, 0.0f)), HealthGained = 20 },
+
             new ModItem("Burger","100% Certified Food",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthGained = 10 },
             new ModItem("Donut","MMMMMMM Donuts",eConsumableType.Eat) {
@@ -161,8 +166,6 @@ public class ModItems : IModItems
             new ModItem("Bagel Sandwich","Bagel with extras, what more do you need?",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("p_amb_bagel_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)), HealthGained = 12 } ,
 
-
-
             new ModItem("Bottle of JUNK Energy", "The Quick Fix!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_energy_drink",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) , HealthGained = 30},
 
@@ -170,12 +173,20 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("ng_proc_sodacan_01a",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)) , HealthGained = 10},
             new ModItem("Can of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("ng_proc_sodacan_01b",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Can of Orang-O-Tang", "Orange AND Tang! Orang-O-Tang!",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("prop_orang_can_01",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)), HealthGained = 10 },
+
+            new ModItem("Carton of Milk", "Full Fat. Farmed and produced in U.S.A.",eConsumableType.Drink) { HealthGained = 10,
+               //ModelItem = new PhysicalItem("v_res_tt_milk",57005,new Vector3(0.13f, -0.06f, -0.06f),new Rotator(-73.0f, 0.0f, 0.0f)),  
+            },
+
             new ModItem("Cup of eCola", "Deliciously Infectious!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_food_juice01",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 10 },
             new ModItem("Cup of Sprunk", "Slurp Sprunk Mmm! Delicious",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("ng_proc_sodacup_01b",57005,new Vector3(0.07f, -0.1f, -0.1f),new Rotator(-74.0f, 28.0f, 3.0f)), HealthGained = 10 },
             new ModItem("Cup of Coffee","Finally something without sugar! Sugar on Request",eConsumableType.Drink) {
                ModelItem = new PhysicalItem("p_ing_coffeecup_02",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 }, //ModelItem = new PhysicalItem("prop_food_coffee",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 10 },
+            
             new ModItem("French Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_food_chips",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 5 },
             new ModItem("Fries","Freedom fries made from true Cataldo potatoes!",eConsumableType.Eat) {
@@ -192,6 +203,19 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 } ,
             new ModItem("Tuna Sandwich","Haven't got enough heavy metals in you at your job? Try tuna!",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_sandwich_01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthGained = 10 } ,
+            new ModItem("Taco",eConsumableType.Eat) { HealthGained = 10 },
+            new ModItem("Strawberry Rails Cereal","The breakfast food you snort!",eConsumableType.Eat) { HealthGained = 50,
+                //ModelItem = new PhysicalItem("v_res_tt_cereal01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),  
+            } ,
+            new ModItem("Crackles O' Dawn Cereal","Smile at the crack!",eConsumableType.Eat) { HealthGained = 60,
+                //ModelItem = new PhysicalItem("v_res_tt_cereal02",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)),  
+            } ,
+            new ModItem("White Bread","Extra white, with minimal taste.",eConsumableType.Eat) { HealthGained = 10, AmountPerPackage = 25,
+                //ModelItem = new PhysicalItem("v_res_fa_bread03",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), ,
+                //PackageItem = new PhysicalItem("v_res_fa_bread01",57005,new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f))
+            } ,
+
+
 
 
             new ModItem("Bottle of A.M.","Mornings Golden Shower",eConsumableType.Drink) {
@@ -214,12 +238,34 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_beer_stz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),IntoxicantName = "Alcohol" },
             new ModItem("Bottle of Dusche","Das Ist Gut Ja!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_beerdusche",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
-            new ModItem("Phat Chips","They are extra phat",eConsumableType.Eat) {
-                ModelItem = new PhysicalItem("ng_proc_food_chips01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+
+
+            new ModItem("Can of Hoplivion Double IPA","So many hops it should be illegal.",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("h4_prop_h4_can_beer_01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
+            new ModItem("Can of Blarneys","Making your mouth feel lucky",eConsumableType.Drink) {
+                //ModelItem = new PhysicalItem("v_res_tt_can01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)),
+                IntoxicantName = "Alcohol" },
+            new ModItem("Can of Logger","A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned",eConsumableType.Drink) {
+                //ModelItem = new PhysicalItem("v_res_tt_can02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), 
+                IntoxicantName = "Alcohol"},
+
+            new ModItem("Sinsimito Tequila","Extra Anejo 100% De Agave. 42% Alcohol by volume",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("h4_prop_h4_t_bottle_02a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
+            new ModItem("Cazafortuna Tequila","Tequila Anejo. 100% Blue Agave 40% Alcohol by volume",eConsumableType.Drink) {
+                ModelItem = new PhysicalItem("h4_prop_h4_t_bottle_01a",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Alcohol"},
+
+
+            new ModItem("Sticky Rib Phat Chips","They are extra phat. Sticky Rib Flavor.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("v_ret_ml_chips1",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Habanero Phat Chips","They are extra phat. Habanero flavor",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("v_ret_ml_chips2",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Supersalt Phat Chips","They are extra phat. Supersalt flavor.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("v_ret_ml_chips3",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
+            new ModItem("Big Cheese Phat Chips","They are extra phat. Big Cheese flavor.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("v_ret_ml_chips4",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthGained = 10 },
 
             new ModItem("Ego Chaser Energy Bar","Contains 20,000 Calories! ~n~'It's all about you'",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_choc_ego",57005,new Vector3(0.13f, 0.05f, -0.02f),new Rotator(25f, -11f, -95f)), HealthGained = 20 },
-
             new ModItem("King Size P's & Q's","The candy bar that kids and stoners love. EXTRA Large",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_candy_pqs",57005,new Vector3(0.16f, 0.01f, -0.02f),new Rotator(-178f, -169f, 169f)), HealthGained = 15 },
             new ModItem("P's & Q's","The candy bar that kids and stoners love",eConsumableType.Eat) {
@@ -227,15 +273,10 @@ public class ModItems : IModItems
             new ModItem("Meteorite Bar","Dark chocolate with a GOOEY core",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_choc_meto",57005,new Vector3(0.12f, 0.03f, -0.02f),new Rotator(169f, 170f, 76f)), HealthGained = 10 },
 
-            
-
-            new ModItem("Taco",eConsumableType.Eat) { HealthGained = 10 },
             new ModItem("Redwood Regular", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter },
-
-
             new ModItem("Redwood Mild", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda. Milder version",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("ng_proc_cigarette01a",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),
                 PackageItem = new PhysicalItem("v_ret_ml_cigs2",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter },
@@ -256,7 +297,11 @@ public class ModItems : IModItems
             new ModItem("Estancia Cigar","Medium Cut. Hand Rolled.",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("prop_cigar_02",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),
                 PackageItem = new PhysicalItem("p_cigar_pack_02_s",57005, new Vector3(0.17f, 0.02f, 0.0f),new Rotator(0.0f, -78f, 0f)),AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter },
-            
+            new ModItem("ElectroToke Vape","The Electrotoke uses highly sophisticated micro-molecule atomization technology to make the ingestion of hard drugs healthy, dscreet, pleasurable and, best of all, completely safe.",eConsumableType.Smoke) {
+                ModelItem = new PhysicalItem("h4_prop_battle_vape_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },        
+
+
+            //h4_prop_battle_vape_01.ydr
 
             //UPNATOM
             new ModItem("Triple Burger", "Three times the meat, three times the cholesterol", eConsumableType.Eat) {
@@ -503,17 +548,25 @@ public class ModItems : IModItems
 
 
             new ModItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10},  
             new ModItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
+                //PackageItem = new PhysicalItem("v_res_tt_pharm2",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), 
+            },
+            new ModItem("Lax to the Max","Lubricated suppositories. Get flowing again!",eConsumableType.Ingest) {
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
+                //PackageItem = new PhysicalItem("v_res_tt_pharm3",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), 
+            },
             new ModItem("Mollis","For outstanding erections. Get the performance you've always dreamed of",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Mollis" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Mollis",AmountPerPackage = 10,
+                //PackageItem = new PhysicalItem("v_res_tt_pharm1",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),  
+            },
             new ModItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Chesty" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Chesty", AmountPerPackage = 10 },
             new ModItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. Equanox may cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox", AmountPerPackage = 10 },
             new ModItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix", AmountPerPackage = 10 },
 
 
 

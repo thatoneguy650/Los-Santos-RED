@@ -821,7 +821,7 @@ namespace Mod
             UpdateStateData();
             GameFiber.Yield();
             Intoxication.Update();
-            //GameFiber.Yield();//TR Yield RemovedTest 1
+            GameFiber.Yield();//TR Yield RemovedTest 1
         }
         private void UpdateButtonPrompts()
         {
