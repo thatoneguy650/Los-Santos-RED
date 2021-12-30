@@ -132,6 +132,10 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return BlipSprite.UGCMission;
                 }
+                else if (Type == LocationType.VendingMachine)
+                {
+                    return BlipSprite.PointOfInterest;
+                }
                 else
                 {
                     return BlipSprite.PointOfInterest;

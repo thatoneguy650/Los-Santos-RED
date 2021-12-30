@@ -369,6 +369,7 @@ namespace LosSantosRED.lsr
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.ActiveNearLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
+                new ModTask(500, "World.UpdateNear", World.UpdateNearLocations, 2),//1000
                 //new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 

@@ -39,6 +39,7 @@ public class Transaction : Interaction
     private bool IsTasked;
     private Vector3 EgressCamPosition;
     private float EgressCamFOV = 55f;
+    private bool IsCancelled;
 
     private bool IsAnyMenuVisible => menuPool.IsAnyMenuOpen();//(ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
     private enum eSetPlayerControlFlag
@@ -271,11 +272,14 @@ public class Transaction : Interaction
             IsUsingCustomCam = false;
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
         }
-        else if (Player.IsInVehicle || Store.Type == LocationType.DriveThru)
+        else if (Player.IsInVehicle || Store.Type == LocationType.DriveThru || Store.Type == LocationType.VendingMachine)
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
             NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
+
+
+
         }
         else if (Player.IsSitting && Store.Type == LocationType.Restaurant)
         {
@@ -359,6 +363,60 @@ public class Transaction : Interaction
         //get player start entrance pos, 3 m out from door
         //set player to walk from start entrance pos to entrance pos while camera goes 
         //stop camera, transition to the regular store cam
+    }
+    private void MoveToObject()
+    {
+        if (Store != null && Store.PropObject != null && Store.PropObject.Exists())
+        {
+            Vector3 DesiredPos = Store.PropObject.GetOffsetPositionFront(-0.5f);
+            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+            float DesiredHeading = Math.Abs(Store.PropObject.Heading - 180f);
+            float ObjectHeading = Store.PropObject.Heading - 180f;
+            if (ObjectHeading >= 180f)
+            {
+                DesiredHeading = ObjectHeading - 180f;
+            }
+            else
+            {
+                DesiredHeading = ObjectHeading + 180f;
+            }
+            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPos.X, DesiredPos.Y, DesiredPos.Z, 1.0f, -1, DesiredHeading, 0.2f);
+            uint GameTimeStartedSitting = Game.GameTime;
+            float heading = Game.LocalPlayer.Character.Heading;
+            bool IsFacingDirection = false;
+            bool IsCloseEnough = false;
+            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+            {
+                if (Player.IsMoveControlPressed)
+                {
+                    IsCancelled = true;
+                }
+                IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(DesiredPos) < 0.2f;
+                GameFiber.Yield();
+            }
+            GameFiber.Sleep(250);
+            GameTimeStartedSitting = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+            {
+                heading = Game.LocalPlayer.Character.Heading;
+                if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)//0.5f)
+                {
+                    IsFacingDirection = true;
+                    EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+                }
+                GameFiber.Yield();
+            }
+            GameFiber.Sleep(250);
+            if (IsCloseEnough && IsFacingDirection && !IsCancelled)
+            {
+                EntryPoint.WriteToConsole($"Sitting IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+            }
+            else
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                return;// false;
+            }
+        }
     }
     private void DoExitCam()
     {
@@ -590,8 +648,23 @@ public class Transaction : Interaction
     }
     private void Greet()
     {
-        if(Ped != null && Ped.Pedestrian.Exists())
+        if(Store != null && Store.Type == LocationType.VendingMachine && Store.PropObject != null && Store.PropObject.Exists())
         {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Store.PropObject, 2000);
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Store.PropObject, -1, 0, 2);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        else if(Ped != null && Ped.Pedestrian.Exists())
+        {
+
             IsActivelyConversing = true;
             GameTimeStartedConversing = Game.GameTime;
             IsActivelyConversing = true;

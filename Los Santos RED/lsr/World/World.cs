@@ -27,6 +27,9 @@ namespace Mod
         private IWeapons Weapons;     
         private ITimeReportable Time;
         private IInteriors Interiors;
+        private List<string> VendingMachines = new List<string>();
+        private List<uint> VendingMachinesHash;
+        private IShopMenus ShopMenus;
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio)
         {
             PlacesOfInterest = placesOfInterest;
@@ -37,6 +40,7 @@ namespace Mod
             Crimes = crimes;
             Time = time;
             Interiors = interiors;
+            ShopMenus = shopMenus;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
@@ -79,6 +83,15 @@ namespace Mod
                 }
                 GameFiber.Yield();
             }
+
+            VendingMachines = new List<string>()
+            { "prop_vend_soda_01","prop_vend_soda_02","prop_vend_coffe_01","prop_vend_condom_01","prop_vend_fags_01","prop_vend_snak_01","prop_vend_water_01"};
+
+            VendingMachinesHash = new List<uint>()
+            {0x3b21c5e7,0x426a547c,0x418f055a};
+            
+
+
         }
         public void AddBlipsToMap()
         {
@@ -162,9 +175,7 @@ namespace Mod
                 }
             }
         }
-        //public void ScanForPedestrians() => Pedestrians.Scan();
         public void CreateNewPedestrians() => Pedestrians.CreateNew();
-        //public void ScanForVehicles() => Vehicles.Scan();
         public void CreateNewVehicles() => Vehicles.CreateNew();
         public void UpdateVehiclePlates()
         {
@@ -211,10 +222,10 @@ namespace Mod
                         SetupLocation(gl);
                         GameFiber.Yield();
                     }
-                    else
-                    {
-                        gl.Update();
-                    }
+                    //else
+                    //{
+                    //    gl.Update();
+                    //}
                 }
                 else
                 {
@@ -230,6 +241,58 @@ namespace Mod
                 {
                     LocationsCalculated = 0;
                     GameFiber.Yield();
+                }
+            }
+            UpdateVendingMachines();
+        }
+        public void UpdateNearLocations()
+        {
+            foreach (GameLocation gl in ActiveLocations)
+            {
+                gl.Update();
+            }
+        }
+        private void UpdateVendingMachines()
+        {
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+            foreach (Rage.Object obj in Objects)
+            {
+                if (obj.Exists())
+                {
+                    string modelName = obj.Model.Name.ToLower();
+                    if (VendingMachines.Contains(modelName) || VendingMachinesHash.Contains(obj.Model.Hash))
+                    {
+                        float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+                        if(distanceTo <= 50f)
+                        {
+                            if(!ActiveLocations.Any(x=> x.Type == LocationType.VendingMachine && x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+                            {
+                               ShopMenu toBuy = ShopMenus.GetVendingMenu(modelName);
+                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items };
+                                newVend.SetProp(obj);
+                                SetupLocation(newVend);
+                                ActiveLocations.Add(newVend);
+                                EntryPoint.WriteToConsole($"Nearby Vending {toBuy.Name} ADDED Props FOUND {modelName}", 5);
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+            }
+            GameFiber.Yield();
+            for (int i = ActiveLocations.Count - 1; i >= 0; i--)
+            {
+                GameLocation gl = ActiveLocations[i];
+                if (gl.Type == LocationType.VendingMachine && gl.DistanceToPlayer >= 100f)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                {
+                    if (ActiveLocations.Contains(gl))
+                    {
+                        EntryPoint.WriteToConsole($"Nearby Vending {gl.Name} REMOVED", 5);
+                        ActiveLocations.Remove(gl);
+                        RemoveLocation(gl);
+                        GameFiber.Yield();
+
+                    }
                 }
             }
         }
@@ -314,6 +377,9 @@ namespace Mod
                 AddEntity(Person);
             }
         }
+
+
+
         private void SetupBlip(GameLocation gameLocation)
         {
             MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.Type);

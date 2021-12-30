@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
     {
         ShopMenu GetMenu(string v);
         ShopMenu GetRanomdDrugMenu();
+        ShopMenu GetVendingMenu(string v);
     }
 }

@@ -1064,23 +1064,36 @@ namespace Mod
             ClosestTeleportEntrance = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
+                float ClosestDistance = 999f;
                 foreach (GameLocation gl in EntityProvider.ActiveLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.DistanceToPlayer <= 3f)
+                    if (gl.DistanceToPlayer <= 3.0f)
                     {
                         if (!gl.HasVendor && gl.CanTransact)
                         {
-                            ClosestSimpleTransaction = gl;
-                            break;
+                            if(gl.DistanceToPlayer < ClosestDistance)
+                            {
+                                ClosestSimpleTransaction = gl;
+                                ClosestDistance = gl.DistanceToPlayer;
+                            }                
+                            //break;
                         }
                         else if (gl.HasTeleportEnter)
                         {
-                            ClosestTeleportEntrance = gl;
+                            if (gl.DistanceToPlayer < ClosestDistance)
+                            {
+                                ClosestSimpleTransaction = gl;
+                                ClosestDistance = gl.DistanceToPlayer;
+                            }
                         }
                     }
                     else if (IsSitting && gl.Type == LocationType.Restaurant && gl.DistanceToPlayer <= 30f && gl.CanTransact)
                     {
-                        ClosestSimpleTransaction = gl;
+                        if (gl.DistanceToPlayer < ClosestDistance)
+                        {
+                            ClosestSimpleTransaction = gl;
+                            ClosestDistance = gl.DistanceToPlayer;
+                        }
                     }
                 }
             }

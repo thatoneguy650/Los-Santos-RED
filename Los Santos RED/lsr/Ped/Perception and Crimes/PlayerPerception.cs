@@ -317,7 +317,7 @@ public class PlayerPerception
         if(Originator.IsCop)
         {
             DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-            //GameFiber.Yield();//TR is new, doesnt seem to do much....
+            GameFiber.Yield();//TR 9 had before, doesnt do much i bet
         }
         else
         {

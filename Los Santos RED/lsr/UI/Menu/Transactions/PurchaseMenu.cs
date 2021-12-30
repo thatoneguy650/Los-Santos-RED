@@ -32,6 +32,10 @@ public class PurchaseMenu : Menu
     private ModItem CurrentItem;
     private string PlateString = "";
     private Transaction Transaction;
+    private bool IsCancelled;
+    private string PlayingDict;
+    private string PlayingAnim;
+    private bool hasAttachedProp;
 
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
@@ -75,6 +79,10 @@ public class PurchaseMenu : Menu
         {
             AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
             AnimationDictionary.RequestAnimationDictionay("mp_common");
+        }
+        if(Store.Type == LocationType.VendingMachine)
+        {
+            AnimationDictionary.RequestAnimationDictionay("mini@sprunk");
         }
         ColorList = new List<ColorLookup>()
         {
@@ -442,7 +450,11 @@ public class PurchaseMenu : Menu
 
                 if (Ped != null && Ped.Pedestrian.Exists())
                 {
-                    StartBuyAnimation(ToAdd, menuItem.IsIllicilt);
+                    StartVendorBuyAnimation(ToAdd, menuItem.IsIllicilt);
+                }
+                else if (Store != null && Store.Type == LocationType.VendingMachine)
+                {
+                    StartMachineBuyAnimation(ToAdd, menuItem.IsIllicilt);
                 }
                 else
                 {
@@ -743,7 +755,7 @@ public class PurchaseMenu : Menu
             return false;
         }
     }
-    private void StartBuyAnimation(ModItem item, bool isIllicit)
+    private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
     {
         Hide();
         IsActivelyConversing = true;
@@ -753,9 +765,6 @@ public class PurchaseMenu : Menu
             Player.IsConductingIllicitTransaction = true;
             Ped.IsConductingIllicitTransaction = true;
         }
-
-
-
         Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
@@ -812,6 +821,120 @@ public class PurchaseMenu : Menu
             Ped.IsConductingIllicitTransaction = false;
         }
         //Show();     
+    }
+    private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
+    {
+        Hide();
+        IsActivelyConversing = true;
+        if (isIllicit)
+        {
+            Player.IsConductingIllicitTransaction = true;
+            Ped.IsConductingIllicitTransaction = true;
+        }
+        if(Store != null && Store.PropObject != null && Store.PropObject.Exists())
+        {
+            Vector3 DesiredPos = Store.PropObject.GetOffsetPositionFront(-1f);
+            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+            float DesiredHeading = Math.Abs(Store.PropObject.Heading-180f);
+            float ObjectHeading = Store.PropObject.Heading - 180f;
+            if (ObjectHeading >= 180f)
+            {
+                DesiredHeading = ObjectHeading - 180f;
+            }
+            else
+            {
+                DesiredHeading = ObjectHeading + 180f;
+            }
+            NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPos.X, DesiredPos.Y, DesiredPos.Z, 1.0f, -1, DesiredHeading, 0.2f);
+            uint GameTimeStartedSitting = Game.GameTime;
+            float heading = Game.LocalPlayer.Character.Heading;
+            bool IsFacingDirection = false;
+            bool IsCloseEnough = false;
+            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+            {
+                if (Player.IsMoveControlPressed)
+                {
+                    IsCancelled = true;
+                }
+                IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(DesiredPos) < 0.2f;
+                GameFiber.Yield();
+            }
+            GameFiber.Sleep(250);
+            GameTimeStartedSitting = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+            {
+                heading = Game.LocalPlayer.Character.Heading;
+                if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)) <= 0.5f)//0.5f)
+                {
+                    IsFacingDirection = true;
+                    EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+                }
+                GameFiber.Yield();
+            }
+            GameFiber.Sleep(250);
+            if (IsCloseEnough && IsFacingDirection && !IsCancelled)
+            {
+                EntryPoint.WriteToConsole($"Sitting IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPos)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+            }
+            else
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                return;// false;
+            }
+
+            string modelName = "";
+            bool HasProp = false;
+            if (item.PackageItem != null && item.PackageItem.ModelName != "")
+            {
+                modelName = item.PackageItem.ModelName;
+                HasProp = true;
+            }
+            else if (item.ModelItem != null && item.ModelItem.ModelName != "")
+            {
+                modelName = item.ModelItem.ModelName;
+                HasProp = true;
+            }
+            PlayingDict = "mini@sprunk";
+            PlayingAnim = "plyr_buy_drink_pt1";
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
+            EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
+            while (Player.CanPerformActivities && !IsCancelled)
+            {
+                Player.SetUnarmed();
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 0.5f)
+                {
+                    if (HasProp && modelName != "" && !hasAttachedProp)
+                    {
+                        SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+                        GameFiber.Yield();
+                        if (SellingProp.Exists())
+                        {
+                            SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                        }
+                        hasAttachedProp = true;
+                    }
+                }
+                if (AnimationTime >= 0.7f)
+                {
+                    break;
+                }
+                GameFiber.Yield();
+            }
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        }
+        
+        //GameFiber.Sleep(500);
+        if (SellingProp.Exists())
+        {
+            SellingProp.Delete();
+        }
+        hasAttachedProp = false;
+        IsActivelyConversing = false;
+        if (isIllicit)
+        {
+            Player.IsConductingIllicitTransaction = false;
+        }  
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {

@@ -18,6 +18,7 @@ public class GameLocation
     private Blip createdBlip;
     private int CellsAway = 99;
     private bool isNearby = false;
+    private Rage.Object propObject;
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
@@ -53,6 +54,7 @@ public class GameLocation
     public float ItemPreviewHeading { get; set; } = 0f;
     public float ItemDeliveryHeading { get; set; } = 0f;
     public List<string> VendorModels { get; set; } = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
+    public Rage.Object PropObject => propObject;
     public void SetCreatedBlip(Blip toset)
     {
         createdBlip = toset;
@@ -172,7 +174,10 @@ public class GameLocation
         }
         return isNearby;
     }
-
+    public void SetProp(Rage.Object prop)
+    {
+        propObject = prop;
+    }
     public void SetNearby()
     {
         isNearby = true;

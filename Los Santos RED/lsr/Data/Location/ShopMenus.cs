@@ -47,6 +47,37 @@ public class ShopMenus : IShopMenus
         //}
         return Possible;
     }
+    public ShopMenu GetVendingMenu(string propName)
+    {
+        if (propName == "prop_vend_snak_01")
+        {
+            return ShopMenuList.Where(x => x.ID == "CandyVendingMenu").PickRandom();
+        }
+        else if (propName == "prop_vend_water_01" || propName == "0x418f055a")
+        {
+            return ShopMenuList.Where(x => x.ID == "WaterVendingMenu").PickRandom();
+        }
+        else if (propName == "prop_vend_soda_01" || propName == "0x426a547c")
+        {
+            return ShopMenuList.Where(x => x.ID == "SprunkVendingMenu").PickRandom();
+        }
+        else if (propName == "prop_vend_soda_02" || propName == "0x3b21c5e7")
+        {
+            return ShopMenuList.Where(x => x.ID == "eColaVendingMenu").PickRandom();
+        }
+        else if (propName == "prop_vend_coffe_01")
+        {
+            return ShopMenuList.Where(x => x.ID == "BeanMachineVendingMenu").PickRandom();
+        }
+        else if (propName == "prop_vend_fags_01")
+        {
+            return ShopMenuList.Where(x => x.ID == "CigVendingMenu").PickRandom();
+        }
+        else
+        {
+            return ShopMenuList.Where(x => x.ID == "VendingMenu").PickRandom();
+        }
+    }
     private void DefaultConfig()
     {
         ShopMenuList = new List<ShopMenu>()
@@ -95,6 +126,37 @@ public class ShopMenus : IShopMenus
             new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             
+
+            //Vending
+            new ShopMenu("CandyVendingMenu","Candybox Machine",new List<MenuItem>() { 
+                new MenuItem("Phat Chips", 2),
+                new MenuItem("Ego Chaser Energy Bar", 2),
+                new MenuItem("King Size P's & Q's", 3),
+                new MenuItem("P's & Q's", 2),
+                new MenuItem("Meteorite Bar", 2), }),
+
+            new ShopMenu("WaterVendingMenu","Raine Machine",new List<MenuItem>() {
+                new MenuItem("Bottle of Raine Water", 2) }),
+
+            new ShopMenu("SprunkVendingMenu","Sprunk Machine",new List<MenuItem>() {
+                new MenuItem("Can of Sprunk", 1) }),
+
+            new ShopMenu("eColaVendingMenu","eCola Machine",new List<MenuItem>() {
+                new MenuItem("Can of eCola", 1) }),
+
+            new ShopMenu("BeanMachineVendingMenu","Bean Machine",new List<MenuItem>() {
+                new MenuItem("High Noon Coffee", 2) }),
+
+            new ShopMenu("CigVendingMenu","Cigarette Machine",new List<MenuItem>() { 
+                new MenuItem("Redwood Regular", 30),
+                new MenuItem("Redwood Mild", 32),
+                new MenuItem("Debonaire", 35),
+                new MenuItem("Debonaire Menthol", 38),
+                new MenuItem("Caradique", 35),
+                new MenuItem("69 Brand", 40),
+                new MenuItem("Estancia Cigar", 50),
+                new MenuItem("DIC Lighter", 5), }),
+
             //Drugs
             //new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7) }),
            // new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow Preroll",2),new MenuItem("OG Kush Preroll",3),new MenuItem("Northern Lights Preroll",3),new MenuItem("White Widow Gram",7),new MenuItem("OG Kush Gram",8),new MenuItem("Northern Lights Gram",9),new MenuItem("Bong",25),new MenuItem("Redwood Regular", 30),new MenuItem("Redwood Mild", 32),new MenuItem("Debonaire", 35),new MenuItem("Debonaire Menthol", 38),new MenuItem("Caradique", 35),new MenuItem("69 Brand", 40),new MenuItem("Estancia Cigar", 50),new MenuItem("DIC Lighter",5), new MenuItem("DIC Lighter Ultra", 7), new MenuItem("DIC Lighter Silver", 10), new MenuItem("DIC Lighter Gold", 15), new MenuItem("Dippo Lighter", 20), }),

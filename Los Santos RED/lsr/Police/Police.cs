@@ -13,6 +13,8 @@ namespace LosSantosRED.lsr
         private uint PoliceLastSeenVehicleHandle;
         private IEntityProvideable World;
         private ISettingsProvideable Settings;
+        private uint GameTimeLastUpdatedPolice;
+
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings)
         {
             World = world;
@@ -29,6 +31,8 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 Player.Arrest();
             }
+            EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice}", 5);
+            GameTimeLastUpdatedPolice = Game.GameTime;
         }
         private void UpdateCops()
         {
@@ -40,6 +44,7 @@ namespace LosSantosRED.lsr
                     if (Cop.Pedestrian.Exists())
                     {
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
+
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
                             Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
