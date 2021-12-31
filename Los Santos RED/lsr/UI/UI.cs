@@ -915,7 +915,10 @@ public class UI : IMenuProvideable
                 }
                 else
                 {
+
                     StreetDisplay += $"{CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{CurrentDefaultTextColor}";
+
+
                 }
             }
         }

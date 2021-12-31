@@ -10,5 +10,6 @@ public enum ePhysicalItemType
     Prop,
     Ped,
     Vehicle,
+    Weapon,
 }
 

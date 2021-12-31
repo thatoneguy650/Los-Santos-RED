@@ -176,11 +176,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cazafortuna Tequila", 35),
             }),
             new ShopMenu("BarMenu","Bar",new List<MenuItem>() { 
-                new MenuItem("Burger", 5),
-                new MenuItem("Hot Dog", 5),
-                new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Cup of eCola", 2),
-                new MenuItem("40 oz", 5),
+                //new MenuItem("Burger", 5),
+                //new MenuItem("Hot Dog", 5),
+                //new MenuItem("Bottle of Raine Water", 2),
+                //new MenuItem("Cup of eCola", 2),
+                //new MenuItem("40 oz", 5),
                 new MenuItem("Bottle of Barracho", 4),
                 new MenuItem("Bottle of PiBwasser", 4),
                 new MenuItem("Bottle of Blarneys", 5),
@@ -698,8 +698,29 @@ public class ShopMenus : IShopMenus
             //new ModItem("Big Fruit Smoothie","Frothalot, watermel, carbonated water, taurine, and fruit syrup.",eConsumableType.Drink) {
             //   ModelItem = new PhysicalItem("p_ing_coffeecup_01",57005,new Vector3(0.12f, -0.06f, -0.08f),new Rotator(-78.0f, 0.0f, 0.0f)), HealthGained = 15 },
 
+            //Weapons
+
+            new ShopMenu("AmmunationMenu","Ammunation",new List<MenuItem>() {
+                new MenuItem("Hawk & Little PTF092F",550),
+                new MenuItem("Hawk & Little Thunder",650),
+                new MenuItem("Hawk & Little Combat Pistol",950),
+                new MenuItem("Hawk & Little Desert Slug",1500),
+                new MenuItem("Hawk & Little 1919",1200),
+                new MenuItem("Hawk & Little Raging Mare",1700),
+                new MenuItem("Hawk & Little Raging Mare Dx",1950),
+                new MenuItem("Vom Feuer P69",790),
+                new MenuItem("Vom Feuer SCRAMP",990),
+                new MenuItem("Shrewsbury S7",1100),
+                new MenuItem("Shrewsbury S7A",1200),
+                new MenuItem("Coil Tesla",550),
+                new MenuItem("BS M1922",995),
 
 
+
+
+
+
+            }),
 
             //Vehicles
 

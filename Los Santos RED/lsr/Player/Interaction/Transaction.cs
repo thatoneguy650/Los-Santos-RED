@@ -71,7 +71,7 @@ public class Transaction : Interaction
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
-    private bool CanContinueConversation => (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f || Player.IsSitting) && Player.CanConverse;
+    private bool CanContinueConversation => (Store.HasVendor && Player.Character.DistanceTo2D(Store.VendorPosition) <= 6f) || (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f || Player.IsSitting) && Player.CanConverse;
     public void ClearPreviews()
     {
         PurchaseMenu?.ClearPreviews();
@@ -254,7 +254,7 @@ public class Transaction : Interaction
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
-            NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
+            NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, 5000, 2000, 2000);
             GetPropEntry();
             if(!MoveToMachine())
             {

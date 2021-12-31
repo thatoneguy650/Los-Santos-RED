@@ -368,7 +368,7 @@ namespace Mod
             GameFiber.Yield();
             if (ped.Exists())
             {
-                ped.IsPersistent = false;
+                ped.IsPersistent = true;//THIS IS ON FOR NOW!
                 ped.RandomizeVariation();
                 ped.Tasks.StandStill(-1);
                 ped.KeepTasks = true;
@@ -386,7 +386,7 @@ namespace Mod
             gameLocation.SetCreatedBlip(createdBlip);
             AddEntity(createdBlip);
         }
-        private void RemoveLocation(GameLocation gameLocation)
+        public void RemoveLocation(GameLocation gameLocation)
         {
             if (gameLocation.HasInterior)
             {

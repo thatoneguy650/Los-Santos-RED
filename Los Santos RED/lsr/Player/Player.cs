@@ -1082,7 +1082,7 @@ namespace Mod
                         {
                             if (gl.DistanceToPlayer < ClosestDistance)
                             {
-                                ClosestSimpleTransaction = gl;
+                                ClosestTeleportEntrance = gl;
                                 ClosestDistance = gl.DistanceToPlayer;
                             }
                         }

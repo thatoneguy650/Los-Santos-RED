@@ -49,8 +49,8 @@ public class Debug
     private IModItems ModItems;
     private bool boolFlipper;
     private Weather Weather;
-
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather)
+    private PlacesOfInterest PlacesOfInterest;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -67,6 +67,7 @@ public class Debug
         Weapons = weapons;
         ModItems = modItems;
         Weather = weather;
+        PlacesOfInterest = placesOfInterest;
     }
     public void Dispose()
     {
@@ -402,6 +403,27 @@ public class Debug
         //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
         //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
         //GameFiber.Sleep(500);
+        float ClosestDistance = 999f;
+        GameLocation gameLocation = null;
+        foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
+        {
+            float distance = gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+            if (distance < ClosestDistance)
+            {
+                gameLocation = gl;
+                ClosestDistance = distance;
+            }
+        }
+        if(gameLocation != null)
+        {
+            EntryPoint.WriteToConsole($"Debug Recycling Location {gameLocation.Name}", 5);
+            World.RemoveLocation(gameLocation);
+            GameFiber.Sleep(2500);
+            World.SetupLocation(gameLocation);
+        }
+        
+
+
 
 
         if (Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
@@ -552,53 +574,38 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-
-
-
-        if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
+        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists()))
         {
-            float PreAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
-            NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(Game.LocalPlayer.Character.CurrentVehicle, 0, true, true);
-            float PostANgle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
-            EntryPoint.WriteToConsole($"PreAngle {PreAngle} PostANgle {PostANgle}", 5);   
-            //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2.0f, 1, 0);
+            if (ped.Pedestrian.Exists() && ShopPeds.Contains(ped.Pedestrian.Model.Name.ToLower()))
+            {
+                EntryPoint.WriteToConsole($"DEBUG Deleted Ped {ped.Pedestrian.Handle} {ped.Pedestrian.Model.Name}", 5);
+                ped.Pedestrian.Delete();
+            }
         }
+                //}
+                //if (ShopPeds.Contains(ModelName))
+                //        {
+                //            return false;
+                //        }
+
+
+                //}
+
+                //if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                //{
+                //    float PreAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
+                //    NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(Game.LocalPlayer.Character.CurrentVehicle, 0, true, true);
+                //    float PostANgle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Game.LocalPlayer.Character.CurrentVehicle, 0);
+                //    EntryPoint.WriteToConsole($"PreAngle {PreAngle} PostANgle {PostANgle}", 5);   
+                //    //NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2.0f, 1, 0);
+                //}
 
 
 
-        //ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
-        //Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
-        //GameFiber.Sleep(500);
-
-
-
-
-
-
-
-        //List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
-        //float ClosestDistance = 999f;
-        //foreach (Rage.Object obj in Objects)
-        //{
-        //    if (obj.Exists())// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
-        //    {
-        //        string modelName = obj.Model.Name.ToLower();
-        //        float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-        //        if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
-        //        {
-
-        //            if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
-        //            {
-        //                ClosestDistance = DistanceToObject;
-        //            }
-
-        //        }
-        //        if (DistanceToObject <= 5f)
-        //        {
-        //            EntryPoint.WriteToConsole($"PROP HUNT: Found {modelName} Hash: {obj.Model.Hash} X: {obj.Model.Dimensions.X} Y: {obj.Model.Dimensions.Y} {DistanceToObject}", 5);
-        //        }
-        //    }
-        //}
+                //ModController.DebugQuinaryRunning = !ModController.DebugQuinaryRunning;
+                //Game.DisplayNotification($"ModController.DebugQuinaryRunning {ModController.DebugQuinaryRunning}");
+                //GameFiber.Sleep(500);
 
 
 
@@ -606,6 +613,29 @@ public class Debug
 
 
 
+                //List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+                //float ClosestDistance = 999f;
+                //foreach (Rage.Object obj in Objects)
+                //{
+                //    if (obj.Exists())// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
+                //    {
+                //        string modelName = obj.Model.Name.ToLower();
+                //        float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+                //        if (modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
+                //        {
+
+                //            if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)
+                //            {
+                //                ClosestDistance = DistanceToObject;
+                //            }
+
+                //        }
+                //        if (DistanceToObject <= 5f)
+                //        {
+                //            EntryPoint.WriteToConsole($"PROP HUNT: Found {modelName} Hash: {obj.Model.Hash} X: {obj.Model.Dimensions.X} Y: {obj.Model.Dimensions.Y} {DistanceToObject}", 5);
+                //        }
+                //    }
+                //}
 
 
 
@@ -616,7 +646,14 @@ public class Debug
 
 
 
-        Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
+
+
+
+
+
+
+
+                Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
         Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
         Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
         Player.AddToInventory(ModItems.Get("Alco Patch"), 4);

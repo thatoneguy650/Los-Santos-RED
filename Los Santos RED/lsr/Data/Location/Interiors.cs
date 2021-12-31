@@ -47,13 +47,40 @@ public class Interiors : IInteriors
             new Interior(19458,"Sub Urban"),
 
 
-            new Interior(29698,"Ammunation"),
-            new Interior(59138,"Ammunation"),
-            new Interior(80386,"Ammunation"),
-            new Interior(48130,"Ammunation"),
-            new Interior(115458,"Ammunation"),
-            new Interior(94978,"Ammunation"),
-            new Interior(37122,"Ammunation"),
+            //new Interior(29698,"Ammunation"),
+            //new Interior(59138,"Ammunation"),
+            //new Interior(80386,"Ammunation"),
+            //new Interior(48130,"Ammunation"),
+            //new Interior(115458,"Ammunation"),
+            //new Interior(94978,"Ammunation"),
+            //new Interior(37122,"Ammunation"),
+
+
+            new Interior(-555,"Ammunation Vespucci Boulevard",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-8873588, new Vector3(842.7685f, -1024.539f, 28.34478f)),
+                    new InteriorDoor(97297972, new Vector3(845.3694f, -1024.539f, 28.34478f)),}),
+
+            new Interior(-554,"Ammunation Lindsay Circus",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-8873588, new Vector3(-662.6415f, -944.3256f, 21.97915f)),
+                    new InteriorDoor(97297972, new Vector3(-665.2424f, -944.3256f, 21.97915f)) }),
+
+            new Interior(29698,"Ammu Nation Vinewood Plaza",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-8873588, new Vector3(243.8379f, -46.52324f, 70.09098f)),
+                    new InteriorDoor(97297972, new Vector3(244.7275f, -44.07911f, 70.09098f)) }),
+            //243.8133f, -44.96839f, 69.89659f
+
+
+
+
             new Interior(49922,"Los Santos Tattoo"),     
             new Interior(93442,"Los Santos Customs"),
             new Interior(102146,"Herr Kutz Barber"),
@@ -73,6 +100,31 @@ public class Interiors : IInteriors
 
             new Interior(3842,"Paleto Bay Police Station",new List<string>() { "v_sheriff2" },new List<string>() { "cs1_16_sheriff_cap" },new List<InteriorDoor>() { new InteriorDoor(-1501157055, new Vector3(-444.4985f, 6017.06f, 31.86633f)),new InteriorDoor(-1501157055, new Vector3(-442.66f, 6015.222f, 31.86633f))}) { DisabledInteriorCoords = new Vector3(-444.89068603515625f, 6013.5869140625f, 30.7164f) },
 
+
+            new Interior(72706,"Tequila-La",
+                new List<string>() { "v_rockclub" },
+                new List<string>() {  },
+                new List<InteriorDoor>() { 
+                    new InteriorDoor(993120320, new Vector3(-565.1712f, 276.6259f, 83.28626f)),
+                    new InteriorDoor(993120320, new Vector3(-561.2866f, 293.5044f, 87.77851f))}) 
+            { DisabledInteriorCoords = new Vector3(-556.5089111328125f, 286.318115234375f, 81.1763f) },
+
+
+            new Interior(107778,"Bahama Mama's",
+                new List<string>() { "v_bahama" },
+                new List<string>() { },
+                new List<InteriorDoor>() { }) 
+            { DisabledInteriorCoords = new Vector3(-1388.0013427734375f, -618.419677734375f, 30.819599151611328f) },
+
+            new Interior(24578,"7611 Goma St",
+                new List<string>() {  },
+                new List<string>() { "vb_30_crimetape" },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-607040053, new Vector3(-1149.709f, -1521.088f, 10.78267f)),})
+            { DisabledInteriorCoords = new Vector3(-1388.0013427734375f, -618.419677734375f, 30.819599151611328f),InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
+
+
+
             /*        NativeFunction.CallByName<bool>("DISABLE_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
         NativeFunction.CallByName<bool>("CAP_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
         NativeFunction.CallByName<bool>("REQUEST_IPL", "v_sheriff2");
@@ -82,7 +134,7 @@ public class Interiors : IInteriors
 
 
 
-            //new Interior(171777,"Apartment"){ InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
+           // new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
             new Interior(81666,"LSCFD Fire Station 7"),
             new Interior(62722,"24/7"),
             new Interior(89602,"Yellow Jacket Inn"),

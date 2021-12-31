@@ -260,7 +260,7 @@ public class Pedestrians
         GameFiber.Yield();
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
-            //if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01")
+            //if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && (Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01" || Pedestrian.Model.Name.ToLower() == "s_m_y_ammucity_01" || Pedestrian.Model.Name.ToLower() ==  "s_m_m_ammucountry"))
             //{
             //    Pedestrian.Delete();
             //    continue;
@@ -362,7 +362,7 @@ public class Pedestrians
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
     }
     private void AddCop(Ped Pedestrian)
     {

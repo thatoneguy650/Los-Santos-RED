@@ -88,6 +88,10 @@ public class Interior
             }
             if(DisabledInteriorCoords != Vector3.Zero)
             {
+                if (ID < 0)
+                {
+                    ID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                }
                 NativeFunction.Natives.DISABLE_INTERIOR(ID, false);
                 NativeFunction.Natives.CAP_INTERIOR(ID, false);
                 GameFiber.Yield();
@@ -127,6 +131,11 @@ public class Interior
                 }
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
+                    if(ID < 0)
+                    {
+                        ID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                    }
+
                     NativeFunction.Natives.DISABLE_INTERIOR(ID, true);
                     NativeFunction.Natives.CAP_INTERIOR(ID, true);
                     GameFiber.Yield();

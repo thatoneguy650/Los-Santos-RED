@@ -95,6 +95,12 @@ public class DebugMenu : Menu
 
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
+
+
+
+
+
+
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
         Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
 
@@ -113,6 +119,15 @@ public class DebugMenu : Menu
         Debug.AddItem(LogInteriorMenu);
         Debug.AddItem(LogCameraPositionMenu);
         Debug.AddItem(SetDateToToday);
+
+
+        foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
+        {
+            Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
+        }
+
+
+
     }
     private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -175,6 +190,17 @@ public class DebugMenu : Menu
         {
 
         }
+        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
+        {
+            UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;
+            if (myItem.SelectedItem != null)
+            {
+                Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
+                Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
+            }
+        }
+
+
         Debug.Visible = false;
     }
     private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
@@ -238,8 +264,15 @@ public class DebugMenu : Menu
                         FreeCamScale = 1.0f;
                     }
                 }
+
+                if (Game.IsKeyDownRightNow(Keys.J))
+                {
+                    Game.LocalPlayer.Character.Position = FreeCam.Position;
+                    Game.LocalPlayer.Character.Heading = FreeCam.Heading;
+                }
+
                 string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
-                Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}");
+                Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}~n~Press J To Move Player to Position");
                 GameFiber.Yield();
             }
             FreeCam.Active = false;

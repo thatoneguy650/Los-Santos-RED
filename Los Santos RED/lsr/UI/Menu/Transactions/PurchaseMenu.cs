@@ -391,6 +391,69 @@ public class PurchaseMenu : Menu
 
                         //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
                     }
+                    else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
+                    {
+                        UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
+                        WeaponMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+
+                        string description;
+                        if (myItem.Description.Length >= 200)
+                        {
+                            description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+                        }
+                        else
+                        {
+                            description = myItem.Description;
+                        }
+
+                        //if (description == "")
+                        //{
+                        //    description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
+                        //}
+                        description += "~n~~s~";
+
+                        if (myItem.RequiresDLC)
+                        {
+                            description += $"~n~~b~DLC Weapon";
+                        }
+
+                        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
+                        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                        if (Store?.BannerImage != "")
+                        {
+                            WeaponMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+                            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+                        }
+                        if (Store == null || Store.Name == "")
+                        {
+                            WeaponMenu.RemoveBanner();
+                        }
+                        UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
+
+                        UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
+
+                        UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
+                        UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
+                        description = myItem.Description;
+                        if (description == "")
+                        {
+                            description = $"List Price {formattedPurchasePrice}";
+                        }
+                        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
+                        //VehicleMenu.AddItem(SetPlate);
+                        //VehicleMenu.AddItem(ColorMenu);
+                        //VehicleMenu.AddItem(PrimaryColorMenu);
+                        //VehicleMenu.AddItem(SecondaryColorMenu);
+                        WeaponMenu.AddItem(Purchase);
+                        WeaponMenu.OnItemSelect += OnWeaponItemSelect;
+                        WeaponMenu.OnScrollerChange += OnWeaponScrollerChange;
+
+
+
+
+
+                        //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
+                    }
                     else
                     {
                         string description = myItem.Description;
@@ -526,6 +589,12 @@ public class PurchaseMenu : Menu
     {
 
     }
+
+
+
+
+
+
     private void OnVehicleItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Purchase" && CurrentItem != null)
@@ -589,6 +658,74 @@ public class PurchaseMenu : Menu
             }
         }
     }
+
+
+    private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem.Text == "Purchase" && CurrentItem != null)
+        {
+            MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == CurrentItem.Name).FirstOrDefault();
+            if (menuItem != null)
+            {
+                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+                if (Player.Money < menuItem.PurchasePrice)
+                {
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    return;
+                }
+                if (!PurchaseVehicle(CurrentItem))
+                {
+                    return;
+                }
+                Player.GiveMoney(-1 * menuItem.PurchasePrice);
+            }
+            sender.Visible = false;
+            Dispose();
+        }
+        if (selectedItem.Text == "Set Plate" && CurrentItem != null)
+        {
+            //PlateString = NativeHelper.GetKeyboardInput("");
+            //if (SellingVehicle.Exists() && PlateString != "")
+            //{
+            //    SellingVehicle.LicensePlate = PlateString.Substring(0,8);
+            //}
+        }
+    }
+
+    private void OnWeaponScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
+    {
+        if (item.Text == "Primary Color")
+        {
+            PrimaryColor = newIndex;
+            if (SellingVehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+            }
+        }
+        else if (item.Text == "Secondary Color")
+        {
+            SecondaryColor = newIndex;
+            if (SellingVehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+            }
+        }
+        else if (item.Text == "Color")
+        {
+            PrimaryColor = newIndex;
+            SecondaryColor = newIndex;
+            if (SellingVehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+            }
+        }
+    }
+
+
+
+
+
+
     private void CreatePreview(UIMenuItem myItem)
     {
         ClearPreviews();
@@ -716,6 +853,14 @@ public class PurchaseMenu : Menu
                     ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
                     if (myItem != null)
                     {
+                        if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon && myItem.ModelItem.ModelName != "")
+                        {
+                            //Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
+                            //if (MyVehicle.Exists())
+                            //{
+                            //    MyVehicle.Delete();
+                            //}
+                        }
                         if (myItem.PackageItem != null && myItem.PackageItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
                         {
                             new Model(myItem.PackageItem.ModelName).LoadAndWait();
@@ -772,6 +917,42 @@ public class PurchaseMenu : Menu
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
             return false;
         }
+    }
+    private bool PurchaseWeapon(ModItem modItem)
+    {
+
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(modItem.ModelItem.ModelName, 60, false);
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
+        return true;
+        //bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+        //if (!ItemInDeliveryBay)
+        //{
+        //    Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
+        //    if (NewVehicle.Exists())
+        //    {
+        //        //if (PlateString != "")
+        //        //{
+        //        //    NewVehicle.LicensePlate = PlateString.Substring(0, 8);
+        //        //}
+        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
+        //        NewVehicle.Wash();
+        //        VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
+        //        World.AddEntity(MyNewCar, ResponseType.None);
+        //        Player.TakeOwnershipOfVehicle(MyNewCar);
+        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        //        return false;
+        //    }
+        //}
+        //else
+        //{
+        //    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
+        //    return false;
+        //}
     }
     private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
     {

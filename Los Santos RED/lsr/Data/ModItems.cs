@@ -642,6 +642,20 @@ public class ModItems : IModItems
 
             //ng_proc_drug01a002
 
+        //Guns
+        new ModItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false) { ModelItem = new PhysicalItem("weapon_pistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true) { ModelItem = new PhysicalItem("weapon_pistol_mk2") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false) { ModelItem = new PhysicalItem("weapon_combatpistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false) { ModelItem = new PhysicalItem("weapon_pistol50") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer P69","Not your grandma's ceramics. Although this pint-sized pistol is small enough to fit into her purse and won't set off a metal detector.", true) { ModelItem = new PhysicalItem("weapon_ceramicpistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer SCRAMP","High-penetration, fully-automatic pistol. Holds 18 rounds in magazine with option to extend to 36 rounds.", false) { ModelItem = new PhysicalItem("weapon_appistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little 1919","The heavyweight champion of the magazine fed, semi-automatic handgun world. Delivers accuracy and a serious forearm workout every time.", false) { ModelItem = new PhysicalItem("weapon_heavypistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Raging Mare","A handgun with enough stopping power to drop a crazed rhino, and heavy enough to beat it to death if you're out of ammo.", true) { ModelItem = new PhysicalItem("weapon_revolver") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Raging Mare Dx","If you can lift it, this is the closest you'll get to shooting someone with a freight train.", true) { ModelItem = new PhysicalItem("weapon_revolver_mk2") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury S7","Like condoms or hairspray, this fits in your pocket for a night on the town. The price of a bottle at a club, it's half as accurate as a champagne cork, and twice as deadly.", false) { ModelItem = new PhysicalItem("weapon_snspistol") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury S7A","The ultimate purse-filler: if you want to make Saturday Night really special, this is your ticket.", true) { ModelItem = new PhysicalItem("weapon_snspistol_mk2") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false) { ModelItem = new PhysicalItem("weapon_stungun") { Type = ePhysicalItemType.Weapon }},
+        new ModItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true) { ModelItem = new PhysicalItem("weapon_vintagepistol") { Type = ePhysicalItemType.Weapon }},
 
         //Cars & Motorcycles
         new ModItem("Albany Alpha", true) { ModelItem = new PhysicalItem("alpha") { Type = ePhysicalItemType.Vehicle }},
