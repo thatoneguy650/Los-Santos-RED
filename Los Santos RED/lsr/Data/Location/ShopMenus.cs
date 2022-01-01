@@ -273,7 +273,12 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Ego Chaser Energy Bar", 2),
                 new MenuItem("King Size P's & Q's", 3),
                 new MenuItem("P's & Q's", 2),
-                new MenuItem("Meteorite Bar", 2), }) { BannerOverride = "candybox.png" },
+                new MenuItem("Meteorite Bar", 2),
+            new MenuItem("Hawk & Little PTF092F", 550),
+
+
+
+            }) { BannerOverride = "candybox.png" },
 
             new ShopMenu("WaterVendingMenu","Raine Machine",new List<MenuItem>() {
                 new MenuItem("Bottle of Raine Water", 2) }) { BannerOverride = "raine.png" },

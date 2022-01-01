@@ -13,54 +13,61 @@ using System.Threading.Tasks;
 
 [Serializable()]
 public class GameLocation
-{
-    private float distanceToPlayer = 999f;
+{   
     private Blip createdBlip;
+    private Merchant merchant;
+    private Interior interior;
+    private Rage.Object propObject;
+    private float distanceToPlayer = 999f;
     private int CellsAway = 99;
     private bool isNearby = false;
-    private Rage.Object propObject;
-    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
-    public float VendorHeading { get; set; } = 0f;
-    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
-    public float EntranceHeading { get; set; }
-    public LocationType Type { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public int CellX { get; set; }
-    public int CellY { get; set; }
-    public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
-    public bool HasVendor => VendorPosition != Vector3.Zero;
-    public int InteriorID { get; set; } = -1;
-    public bool HasInterior => InteriorID != -1;
-    public bool ShouldAlwaysHaveBlip => false;//Type == LocationType.Police || Type == LocationType.Hospital;
-    public bool HasBlipSprite => Type != LocationType.VendingMachine;
-    public bool IsStore => Type != LocationType.Police && Type != LocationType.Hospital && Type != LocationType.Grave && Type != LocationType.FireStation;
-    public Blip CreatedBlip => createdBlip;
-    public bool CanTransact => Menu.Any();
-    public bool Is247 => CloseTime >= 24;
-    public int OpenTime { get; set; } = 6;
-    public int CloseTime { get; set; } = 20;
-    public bool HasCustomCamera => CameraPosition != Vector3.Zero;
-    public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
-    public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
-    public bool CanEnter { get; set; } = true;
-    public Vector3 CameraPosition { get; set; } = Vector3.Zero;
-    public Vector3 CameraDirection { get; set; } = Vector3.Zero;
-    public Rotator CameraRotation { get; set; }
-    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
-    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
-    public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
-    public float TeleportEnterHeading { get; set; } = 0f;
-    public string BannerImage { get; set; } = "";
-    public float ItemPreviewHeading { get; set; } = 0f;
-    public float ItemDeliveryHeading { get; set; } = 0f;
-    public List<string> VendorModels { get; set; } = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
-    public Rage.Object PropObject => propObject;
-    public void SetCreatedBlip(Blip toset)
+    private uint GameTimeLastCheckedDistance;
+    private uint GameTimeLastCheckedNearby;
+    private uint DistanceUpdateIntervalTime
     {
-        createdBlip = toset;
+        get
+        {
+            if (DistanceToPlayer >= 999f)
+            {
+                return 10000;
+            }
+            else if (DistanceToPlayer >= 500)
+            {
+                return 5000;
+            }
+            else if (DistanceToPlayer >= 200)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
     }
-    public BlipSprite Icon
+    private uint NearbyUpdateIntervalTime
+    {
+        get
+        {
+            if (CellsAway >= 20)
+            {
+                return 8000;
+            }
+            else if (CellsAway >= 10)
+            {
+                return 4000;
+            }
+            else if (CellsAway >= 6)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
+    }
+    public BlipSprite BlipSprite
     {
         get
         {
@@ -182,6 +189,57 @@ public class GameLocation
             }
         }
     }
+
+    //Store
+    public string BannerImage { get; set; } = "";
+    public bool CanTransact => Menu.Any();
+    public bool IsStore => Type != LocationType.Police && Type != LocationType.Hospital && Type != LocationType.Grave && Type != LocationType.FireStation;
+    public LocationType Type { get; set; }
+    public List<MenuItem> Menu { get; set; } = new List<MenuItem>();
+
+    //Store with Merchant
+    public Merchant Merchant => merchant;
+    public bool HasVendor => VendorPosition != Vector3.Zero;
+    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
+    public float VendorHeading { get; set; } = 0f;
+    public List<string> VendorModels { get; set; } = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
+
+    //Car Dealers only?
+    public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
+    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    public float ItemPreviewHeading { get; set; } = 0f;
+    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
+    public float ItemDeliveryHeading { get; set; } = 0f;
+
+
+    //Vending machines only?
+    public Rage.Object PropObject => propObject;
+
+
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public int CellX { get; set; }
+    public int CellY { get; set; }
+    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
+    public float EntranceHeading { get; set; }
+    public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
+    public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
+    public float TeleportEnterHeading { get; set; } = 0f;
+    public Blip Blip => createdBlip;
+    public bool ShouldAlwaysHaveBlip => false;
+    public bool IsBlipEnabled { get; set; } = true;
+    public bool Is247 => CloseTime >= 24;
+    public int OpenTime { get; set; } = 6;
+    public int CloseTime { get; set; } = 20;
+    public bool HasInterior => InteriorID != -1;
+    public int InteriorID { get; set; } = -1;
+    public Interior Interior => interior;
+    public bool HasCustomCamera => CameraPosition != Vector3.Zero;
+    public Vector3 CameraPosition { get; set; } = Vector3.Zero;
+    public Vector3 CameraDirection { get; set; } = Vector3.Zero;
+    public Rotator CameraRotation { get; set; }
+
+
     public GameLocation()
     {
 
@@ -208,6 +266,19 @@ public class GameLocation
         CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
+    public GameLocation(Vector3 _EntrancePosition, float _EntranceHeading, LocationType _Type, string _Name, string _Description, Rage.Object prop)
+    {
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
+        Type = _Type;
+        Name = _Name;
+        Description = _Description;
+        propObject = prop;
+        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
+    }
+    public float DistanceToPlayer => distanceToPlayer;
+    public bool IsWalkup { get; set; } = false;
     public override string ToString()
     {
         return Name.ToString();
@@ -216,54 +287,29 @@ public class GameLocation
     {
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
     }
-    private uint GameTimeLastCheckedDistance;
-    private uint GameTimeLastCheckedNearby;
-    private uint DistanceUpdateIntervalTime
+    public void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
-        get
+        if (HasInterior)
         {
-            if (DistanceToPlayer >= 999f)
+            interior = interiors.GetInterior(InteriorID);
+            if (interior != null)
             {
-                return 10000;
-            }
-            else if (DistanceToPlayer >= 500)
-            {
-                return 5000;
-            }
-            else if (DistanceToPlayer >= 200)
-            {
-                return 2000;
-            }
-            else
-            {
-                return 1000;
+                interior.Load();
             }
         }
-    }
-    private uint NearbyUpdateIntervalTime
-    {
-        get
+        if (HasVendor)
         {
-            if (CellsAway >= 20)
-            {
-                return 8000;
-            }
-            else if (CellsAway >= 10)
-            {
-                return 4000;
-            }
-            else if (CellsAway >= 6)
-            {
-                return 2000;
-            }
-            else
-            {
-                return 1000;
-            }
+            SpawnVendor(settings, crimes, weapons);
+            GameFiber.Yield();
         }
+        if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
+        {
+            createdBlip = new MapBlip(EntrancePosition, Name, BlipSprite).AddToMap();
+            GameFiber.Yield();
+        }
+        SetNearby();
+        Update();
     }
-    public float DistanceToPlayer => distanceToPlayer;
-    public bool IsWalkup { get; set; } = false;
     public void Update()
     {
         if (isNearby)
@@ -278,6 +324,21 @@ public class GameLocation
         {
             distanceToPlayer = 999f;
             GameTimeLastCheckedDistance = Game.GameTime;
+        }
+    }
+    public void Dispose()
+    {
+        if(createdBlip.Exists())
+        {
+            createdBlip.Delete();
+        }
+        if(Merchant != null && Merchant.Pedestrian.Exists())
+        {
+            Merchant.Pedestrian.Delete();
+        }
+        if (interior != null)
+        {
+            interior.Unload();
         }
     }
     public bool IsNearby(int cellX, int cellY, int Distance)
@@ -297,13 +358,39 @@ public class GameLocation
         }
         return isNearby;
     }
-    public void SetProp(Rage.Object prop)
-    {
-        propObject = prop;
-    }
     public void SetNearby()
     {
         isNearby = true;
+    }
+    private void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    {
+        Ped ped;
+        string ModelName = VendorModels.PickRandom();
+        if (RandomItems.RandomPercent(30))
+        {
+            Model modelToCreate = new Model(Game.GetHashKey(ModelName));
+            modelToCreate.LoadAndWait();
+            ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
+        }
+        else
+        {
+            Model modelToCreate = new Model(Game.GetHashKey(ModelName));
+            modelToCreate.LoadAndWait();
+            ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
+        }
+        GameFiber.Yield();
+        if (ped.Exists())
+        {
+            ped.IsPersistent = true;//THIS IS ON FOR NOW!
+            ped.RandomizeVariation();
+            ped.Tasks.StandStill(-1);
+            ped.KeepTasks = true;
+            EntryPoint.SpawnedEntities.Add(ped);
+            GameFiber.Yield();
+            merchant = new Merchant(ped, settings, false, false, false, "Vendor", new PedGroup("Vendor", Name, "Vendor", false), crimes, weapons);
+            merchant.Store = this;
+            //AddEntity(Person);
+        }
     }
 }
 

@@ -100,40 +100,55 @@ namespace Mod
             {
                 foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
                 {
-                    if (MyLocation.ShouldAlwaysHaveBlip)
+                    if (MyLocation.ShouldAlwaysHaveBlip && MyLocation.IsBlipEnabled)
                     {
-                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.HasBlipSprite, MyLocation.Icon);
+                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.BlipSprite);
                         AddEntity(myBlip.AddToMap());
                         GameFiber.Yield();
                     }
                 }
             }
         }
-        public void AddEntity(Blip myBlip) => CreatedBlips.Add(myBlip);
-        public void AddEntity(PedExt pedExt)
+        public void AddEntity(Blip myBlip)
         {
-            if(pedExt.GetType() == typeof(Cop))
+            if (myBlip.Exists())
             {
-                Pedestrians.Police.Add((Cop)pedExt);
-            }
-            else if (pedExt.GetType() == typeof(EMT))
-            {
-                Pedestrians.EMTs.Add((EMT)pedExt);
-            }
-            else if (pedExt.GetType() == typeof(Firefighter))
-            {
-                Pedestrians.Firefighters.Add((Firefighter)pedExt);
-            }
-            else if (pedExt.GetType() == typeof(Merchant))
-            {
-                Pedestrians.Merchants.Add((Merchant)pedExt);
-            }
-            else 
-            {
-                Pedestrians.Civilians.Add(pedExt);
+                CreatedBlips.Add(myBlip);
             }
         }
-        public void AddEntity(VehicleExt vehicle, ResponseType responseType) => Vehicles.AddToList(vehicle, responseType);
+        public void AddEntity(PedExt pedExt)
+        {
+            if (pedExt != null)
+            {
+                if (pedExt.GetType() == typeof(Cop))
+                {
+                    Pedestrians.Police.Add((Cop)pedExt);
+                }
+                else if (pedExt.GetType() == typeof(EMT))
+                {
+                    Pedestrians.EMTs.Add((EMT)pedExt);
+                }
+                else if (pedExt.GetType() == typeof(Firefighter))
+                {
+                    Pedestrians.Firefighters.Add((Firefighter)pedExt);
+                }
+                else if (pedExt.GetType() == typeof(Merchant))
+                {
+                    Pedestrians.Merchants.Add((Merchant)pedExt);
+                }
+                else
+                {
+                    Pedestrians.Civilians.Add(pedExt);
+                }
+            }
+        }
+        public void AddEntity(VehicleExt vehicle, ResponseType responseType)
+        {
+            if (vehicle != null)
+            {
+                Vehicles.AddToList(vehicle, responseType);
+            }
+        }
         public bool AnyCopsNearCop(Cop cop, int CellsAway) => Pedestrians.AnyCopsNearCop(cop, CellsAway);
         public bool AnyCopsNearPosition(Vector3 position, float radius) => Pedestrians.AnyCopsNearPosition(position, radius);
         public void ClearSpawned()
@@ -149,14 +164,7 @@ namespace Mod
             ClearSpawned();
             foreach(GameLocation loc in ActiveLocations)
             {
-                if(loc.HasInterior)
-                {
-                    Interior myInt = Interiors.GetInterior(loc.InteriorID);
-                    if (myInt != null)
-                    {
-                        myInt.Unload();
-                    }
-                }
+                loc.Dispose();
             }
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
@@ -219,20 +227,18 @@ namespace Mod
                     if (!ActiveLocations.Contains(gl))
                     {
                         ActiveLocations.Add(gl);
-                        SetupLocation(gl);
+                        gl.Setup(Interiors,Settings,Crimes,Weapons);
+                        AddEntity(gl.Merchant);
+                        AddEntity(gl.Blip);
                         GameFiber.Yield();
                     }
-                    //else
-                    //{
-                    //    gl.Update();
-                    //}
                 }
                 else
                 {
                     if (ActiveLocations.Contains(gl))
                     {
                         ActiveLocations.Remove(gl);
-                        RemoveLocation(gl);
+                        gl.Dispose();
                         GameFiber.Yield();
                     }
                 }
@@ -270,9 +276,9 @@ namespace Mod
                             if(!ActiveLocations.Any(x=> x.Type == LocationType.VendingMachine && x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
                             {
                                ShopMenu toBuy = ShopMenus.GetVendingMenu(modelName);
-                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
-                                newVend.SetProp(obj);
-                                SetupLocation(newVend);
+                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
+                                newVend.Setup(Interiors, Settings, Crimes, Weapons);
+                                AddEntity(newVend.Blip);
                                 ActiveLocations.Add(newVend);
                                 EntryPoint.WriteToConsole($"Nearby Vending {toBuy.Name} ADDED Props FOUND {modelName}", 5);
                             }
@@ -291,7 +297,7 @@ namespace Mod
                     {
                         EntryPoint.WriteToConsole($"Nearby Vending {gl.Name} REMOVED", 5);
                         ActiveLocations.Remove(gl);
-                        RemoveLocation(gl);
+                        gl.Dispose();
                         GameFiber.Yield();
 
                     }
@@ -305,107 +311,11 @@ namespace Mod
                 if (!ActiveLocations.Contains(gl))
                 {
                     ActiveLocations.Add(gl);
-                    SetupLocation(gl);
+                    gl.Setup(Interiors, Settings, Crimes, Weapons);
+                    AddEntity(gl.Merchant);
+                    AddEntity(gl.Blip);
                     GameFiber.Yield();
                 }
-            }
-        }
-        public void SetupLocation(GameLocation gameLocation)
-        {
-            if(gameLocation.HasInterior)
-            {
-                Interior myInt = Interiors.GetInterior(gameLocation.InteriorID);
-                if (myInt != null)
-                {
-                    myInt.Load();
-                }
-            }
-            if (gameLocation.HasVendor)
-            {
-                SpawnVendor(gameLocation);
-                GameFiber.Yield();
-            }
-            if (!gameLocation.ShouldAlwaysHaveBlip)
-            {
-                SetupBlip(gameLocation);
-                GameFiber.Yield();
-            }
-            gameLocation.SetNearby();
-            gameLocation.Update();
-            //GameFiber.Yield();
-        }
-        private void SpawnVendor(GameLocation gameLocation)
-        {
-            Ped ped;
-            string ModelName = gameLocation.VendorModels.PickRandom();
-            foreach (PedExt possibleCollision in CivilianList)
-            {
-                if (possibleCollision.Pedestrian.Exists() && possibleCollision.Pedestrian.DistanceTo2D(gameLocation.VendorPosition) <= 5f)
-                {
-                    possibleCollision.Pedestrian.Delete();
-                }
-            }
-
-            if (RandomItems.RandomPercent(30))
-            {
-                //ped = new Ped(ModelName, new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-                Model modelToCreate = new Model(Game.GetHashKey(ModelName));
-                modelToCreate.LoadAndWait();
-                ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z + 1f, gameLocation.VendorHeading, false, false);
-                //EntryPoint.SpawnedEntities.Add(ped);
-                //EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
-            }
-            else
-            {
-                //ped = new Ped(new Vector3(gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z), gameLocation.VendorHeading);
-                Model modelToCreate = new Model(Game.GetHashKey(ModelName));
-                modelToCreate.LoadAndWait();
-                ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), gameLocation.VendorPosition.X, gameLocation.VendorPosition.Y, gameLocation.VendorPosition.Z + 1f, gameLocation.VendorHeading, false, false);
-
-                // EntryPoint.WriteToConsole($"VENDOR: CREATED {ped.Handle}", 5);
-            }
-
-            GameFiber.Yield();
-            if (ped.Exists())
-            {
-                ped.IsPersistent = true;//THIS IS ON FOR NOW!
-                ped.RandomizeVariation();
-                ped.Tasks.StandStill(-1);
-                ped.KeepTasks = true;
-                EntryPoint.SpawnedEntities.Add(ped);
-                GameFiber.Yield();
-                Merchant Person = new Merchant(ped, Settings, false, false, false, "Vendor", new PedGroup("Vendor", gameLocation.Name, "Vendor", false), Crimes, Weapons);
-                Person.Store = gameLocation;
-                AddEntity(Person);
-            }
-        }
-        private void SetupBlip(GameLocation gameLocation)
-        {
-            MapBlip myBlip = new MapBlip(gameLocation.EntrancePosition, gameLocation.Name, gameLocation.HasBlipSprite, gameLocation.Icon);
-            Blip createdBlip = myBlip.AddToMap();
-            gameLocation.SetCreatedBlip(createdBlip);
-            AddEntity(createdBlip);
-        }
-        public void RemoveLocation(GameLocation gameLocation)
-        {
-            if (gameLocation.HasInterior)
-            {
-                Interior myInt = Interiors.GetInterior(gameLocation.InteriorID);
-                if (myInt != null)
-                {
-                    myInt.Unload();
-                }
-            }
-            if (!gameLocation.ShouldAlwaysHaveBlip)
-            {
-                RemoveBlip(gameLocation);
-            }
-        }
-        private void RemoveBlip(GameLocation gameLocation)
-        {
-            if (gameLocation.CreatedBlip.Exists())
-            {
-                gameLocation.CreatedBlip.Delete();
             }
         }
     }

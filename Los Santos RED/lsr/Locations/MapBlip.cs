@@ -11,13 +11,18 @@ namespace LosSantosRED.lsr.Util.Locations
 {
     public class MapBlip
     {
-        private bool HasSprite;
-        public MapBlip(Vector3 locationPosition, string name, bool hasSprite, BlipSprite blipSprite)
+        private bool HasSprite = true;
+        public MapBlip(Vector3 locationPosition, string name, BlipSprite blipSprite)
         {
             LocationPosition = locationPosition;
             Name = name;
-            HasSprite = hasSprite;
             BlipSprite = blipSprite;
+        }
+        public MapBlip(Vector3 locationPosition, string name)
+        {
+            LocationPosition = locationPosition;
+            Name = name;
+            HasSprite = false;
         }
         public Vector3 LocationPosition { get; }
         public string Name { get; }

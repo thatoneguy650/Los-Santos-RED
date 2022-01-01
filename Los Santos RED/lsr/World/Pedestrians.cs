@@ -260,11 +260,12 @@ public class Pedestrians
         GameFiber.Yield();
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
-            //if(Settings.SettingsManager.WorldSettings.RemoveMPShopKeepPed && (Pedestrian.Model.Name.ToLower() == "mp_m_shopkeep_01" || Pedestrian.Model.Name.ToLower() == "s_m_y_ammucity_01" || Pedestrian.Model.Name.ToLower() ==  "s_m_m_ammucountry"))
-            //{
-            //    Pedestrian.Delete();
-            //    continue;
-            //}
+            string modelName = Pedestrian.Model.Name.ToLower();
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01" || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            {
+                Pedestrian.Delete();
+                continue;
+            }
             uint localHandle = Pedestrian.Handle;
             if (Pedestrian.IsPoliceArmy())
             {

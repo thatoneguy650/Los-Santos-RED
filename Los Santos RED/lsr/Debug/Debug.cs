@@ -50,7 +50,8 @@ public class Debug
     private bool boolFlipper;
     private Weather Weather;
     private PlacesOfInterest PlacesOfInterest;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest)
+    private Interiors Interiors;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -68,6 +69,7 @@ public class Debug
         ModItems = modItems;
         Weather = weather;
         PlacesOfInterest = placesOfInterest;
+        Interiors = interiors;
     }
     public void Dispose()
     {
@@ -417,9 +419,9 @@ public class Debug
         if(gameLocation != null)
         {
             EntryPoint.WriteToConsole($"Debug Recycling Location {gameLocation.Name}", 5);
-            World.RemoveLocation(gameLocation);
+            gameLocation.Setup(Interiors,Settings,Crimes,Weapons);
             GameFiber.Sleep(2500);
-            World.SetupLocation(gameLocation);
+            gameLocation.Dispose();
         }
         
 

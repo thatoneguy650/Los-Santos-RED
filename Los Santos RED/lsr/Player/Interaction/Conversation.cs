@@ -32,7 +32,7 @@ public class Conversation : Interaction
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
     }
     public override void Start()
     {

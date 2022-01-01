@@ -332,7 +332,7 @@ public class PlayerPerception
             //    DistanceToTarget = maxCellsAway * 70f;
             //}
         }
-        if (Originator.IsCop)
+        if (Originator.IsCop && Originator.Pedestrian.Exists())
         {
             DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
         }

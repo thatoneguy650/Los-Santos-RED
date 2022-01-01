@@ -297,20 +297,35 @@ public class SellMenu : Menu
     {
         foreach (MenuItem menuItem in Store.Menu)//preload all item models so it doesnt bog the menu down
         {
-            if (menuItem.Sellable)
+            try
             {
-                ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
-                if (myItem != null)
+                if (menuItem.Sellable)
                 {
-                    if (myItem.PackageItem != null && myItem.PackageItem.ModelName != "")
+                    ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
+                    if (myItem != null)
                     {
-                        new Model(myItem.PackageItem.ModelName).LoadAndWait();
-                    }
-                    else if (myItem.ModelItem != null && myItem.ModelItem.ModelName != "")
-                    {
-                        new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                        if(myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle)
+                        {
+
+                        }
+                        else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon)
+                        {
+
+                        }
+                        else if (myItem.PackageItem != null && myItem.PackageItem.Type == ePhysicalItemType.Prop && myItem.PackageItem.ModelName != "")
+                        {
+                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                        }
+                        else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Prop && myItem.ModelItem.ModelName != "")
+                        {
+                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Game.DisplayNotification($"Error Preloading Model {ex.Message} {ex.StackTrace}");
             }
         }
     }

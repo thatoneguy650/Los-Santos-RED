@@ -9,22 +9,19 @@ public class WeaponComponent
 {
     public uint Hash { get; set; }
     public string Name { get; set; }
-    
+    public ComponentSlot ComponentSlot { get; set; }
     public WeaponComponent()
     {
 
     }
-    public WeaponComponent(string _Name, uint _Hash)
+    public WeaponComponent(string _Name, uint _Hash, ComponentSlot _ComponentSlot)
     {
         Name = _Name;
         Hash = _Hash;
+        ComponentSlot = _ComponentSlot;
     }
     public WeaponComponent(string _Name)
     {
         Name = _Name;
     }
-    //public uint GetHash()
-    //{
-    //    return Hash;
-    //}
 }

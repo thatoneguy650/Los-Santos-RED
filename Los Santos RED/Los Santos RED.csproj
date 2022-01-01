@@ -231,6 +231,7 @@
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
+    <Compile Include="lsr\Weapon\ComponentSlot.cs" />
     <Compile Include="lsr\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
@@ -321,7 +322,7 @@
     <Compile Include="lsr\Dispatcher\DispatchablePerson.cs" />
     <Compile Include="lsr\Dispatcher\DispatchableVehicle.cs" />
     <Compile Include="lsr\Locations\CountyJurisdiction.cs" />
-    <Compile Include="lsr\Locations\GameLocation.cs" />
+    <Compile Include="lsr\Locations\Places\GameLocation.cs" />
     <Compile Include="lsr\Locations\LocationType.cs" />
     <Compile Include="lsr\Locations\Street.cs" />
     <Compile Include="lsr\Locations\ZoneJurisdiction.cs" />

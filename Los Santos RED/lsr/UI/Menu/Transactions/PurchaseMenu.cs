@@ -38,12 +38,13 @@ public class PurchaseMenu : Menu
     private bool hasAttachedProp;
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
+    private IWeapons Weapons;
 
     public bool Visible => purchaseMenu.Visible;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public bool BoughtItem => ItemsBought > 0;
 
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons)
     {
         Ped = ped;
         ModItems = modItems;
@@ -55,6 +56,7 @@ public class PurchaseMenu : Menu
         Settings = settings;
         MenuPool = menuPool;
         Transaction = parentTransaction;
+        Weapons = weapons;
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
         if (Store.BannerImage != "")
         {
@@ -394,8 +396,7 @@ public class PurchaseMenu : Menu
                     else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
                     {
                         UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
-                        WeaponMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
-
+                        //WeaponMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
                         string description;
                         if (myItem.Description.Length >= 200)
                         {
@@ -405,18 +406,11 @@ public class PurchaseMenu : Menu
                         {
                             description = myItem.Description;
                         }
-
-                        //if (description == "")
-                        //{
-                        //    description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
-                        //}
                         description += "~n~~s~";
-
                         if (myItem.RequiresDLC)
                         {
                             description += $"~n~~b~DLC Weapon";
                         }
-
                         purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
                         purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
                         if (Store?.BannerImage != "")
@@ -428,31 +422,39 @@ public class PurchaseMenu : Menu
                         {
                             WeaponMenu.RemoveBanner();
                         }
-                        UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
+                        WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
+                        if(myWeapon != null)
+                        {
+                            foreach (ComponentSlot cs in myWeapon.PossibleComponents.GroupBy(x => x.ComponentSlot).Select(x => x.Key))
+                            {
+                                List<string> stuffList = new List<string>() { "Default" };
+                                stuffList.AddRange(myWeapon.PossibleComponents.Where(x => x.ComponentSlot == cs).Select(x => x.Name).ToList());
+                                WeaponMenu.AddItem(new UIMenuListScrollerItem<string>(cs.ToString(), cs.ToString(), stuffList));
 
-                        UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
 
-                        UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
-                        UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
+
+                                //UIMenu ComponentMenu = MenuPool.AddSubMenu(WeaponMenu, cs.ToString());
+                                //ComponentMenu.OnCheckboxChange += OnWeaponCheckboxChange;
+                                //foreach (WeaponComponent component in myWeapon.PossibleComponents.Where(x => x.ComponentSlot == cs))
+                                //{
+                                //    ComponentMenu.AddItem(new UIMenuCheckboxItem(component.Name, false, component.Name));
+                                //}
+                            }
+                            //foreach(WeaponComponent component in myWeapon.PossibleComponents)
+                            //{
+                            //    WeaponMenu.AddItem(new UIMenuCheckboxItem(component.Name,false, component.Name));
+                            //}
+                        }
                         description = myItem.Description;
                         if (description == "")
                         {
                             description = $"List Price {formattedPurchasePrice}";
                         }
                         UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
-                        //VehicleMenu.AddItem(SetPlate);
-                        //VehicleMenu.AddItem(ColorMenu);
-                        //VehicleMenu.AddItem(PrimaryColorMenu);
-                        //VehicleMenu.AddItem(SecondaryColorMenu);
                         WeaponMenu.AddItem(Purchase);
                         WeaponMenu.OnItemSelect += OnWeaponItemSelect;
                         WeaponMenu.OnScrollerChange += OnWeaponScrollerChange;
-
-
-
-
-
-                        //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
+                        WeaponMenu.OnCheckboxChange += OnWeaponCheckboxChange;
                     }
                     else
                     {
@@ -486,6 +488,9 @@ public class PurchaseMenu : Menu
         }
         OnIndexChange(purchaseMenu, purchaseMenu.CurrentSelection);
     }
+
+
+
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
@@ -494,6 +499,13 @@ public class PurchaseMenu : Menu
         if (ToAdd != null && menuItem != null)
         {
             if (ToAdd.ModelItem?.Type == ePhysicalItemType.Vehicle)
+            {
+                CurrentItem = ToAdd;
+                EntryPoint.WriteToConsole($"Purchase Menu: {CurrentItem.Name} OnItemSelect", 5);
+                return;
+            }
+
+            else if (ToAdd.ModelItem?.Type == ePhysicalItemType.Weapon)
             {
                 CurrentItem = ToAdd;
                 EntryPoint.WriteToConsole($"Purchase Menu: {CurrentItem.Name} OnItemSelect", 5);
@@ -591,10 +603,6 @@ public class PurchaseMenu : Menu
     }
 
 
-
-
-
-
     private void OnVehicleItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Purchase" && CurrentItem != null)
@@ -659,7 +667,6 @@ public class PurchaseMenu : Menu
         }
     }
 
-
     private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Purchase" && CurrentItem != null)
@@ -667,13 +674,13 @@ public class PurchaseMenu : Menu
             MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == CurrentItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
-                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+                EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
                 if (Player.Money < menuItem.PurchasePrice)
                 {
                     Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
-                if (!PurchaseVehicle(CurrentItem))
+                if (!PurchaseWeapon(CurrentItem))
                 {
                     return;
                 }
@@ -682,50 +689,137 @@ public class PurchaseMenu : Menu
             sender.Visible = false;
             Dispose();
         }
-        if (selectedItem.Text == "Set Plate" && CurrentItem != null)
-        {
-            //PlateString = NativeHelper.GetKeyboardInput("");
-            //if (SellingVehicle.Exists() && PlateString != "")
-            //{
-            //    SellingVehicle.LicensePlate = PlateString.Substring(0,8);
-            //}
-        }
     }
-
     private void OnWeaponScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
-        if (item.Text == "Primary Color")
+        try
         {
-            PrimaryColor = newIndex;
-            if (SellingVehicle.Exists())
+            WeaponInformation myWeapon = Weapons.GetWeapon(CurrentItem.ModelItem.ModelName);
+            if (myWeapon != null)
             {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+                EntryPoint.WriteToConsole($"OnWeaponScrollerChange Weapon Start {CurrentItem.ModelItem.ModelName} {myWeapon.ModelName}", 5);
+                WeaponComponent myComponent = myWeapon.PossibleComponents.Where(x => x.Name == item.OptionText).FirstOrDefault();
+                if (myComponent != null)
+                {
+                    uint ComponentHash = NativeFunction.Natives.GET_WEAPON_COMPONENT_TYPE_MODEL<uint>(myComponent.Hash);
+                    NativeFunction.Natives.REQUEST_MODEL(ComponentHash);
+                    uint GameTimeRequested = Game.GameTime;
+                    while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(ComponentHash))
+                    {
+                        if (Game.GameTime - GameTimeRequested >= 500)
+                        {
+                            break;
+                        }
+                        GameFiber.Yield();
+                    }
+                    EntryPoint.WriteToConsole($"OnWeaponCheckboxChange 1 COMPONENT {myComponent.Name} {myComponent.ComponentSlot}", 5);
+                    foreach (WeaponComponent wc in myWeapon.PossibleComponents.Where(x => x.ComponentSlot == myComponent.ComponentSlot))
+                    {
+                        NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(SellingProp, wc.Hash);
+                        EntryPoint.WriteToConsole($"OnWeaponCheckboxChange Existing Component Removed 1223 {myComponent.Name} {myComponent.ComponentSlot}", 5);
+                    }
+                    if (item.Text != "Default")
+                    {
+                        if (NativeFunction.Natives.DOES_WEAPON_TAKE_WEAPON_COMPONENT<bool>(myWeapon.Hash, myComponent.Hash) && !NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, myComponent.Hash))
+                        {
+                            NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_WEAPON_OBJECT(SellingProp, myComponent.Hash);
+                        }
+                    }
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"OnWeaponCheckboxChange Component Not Found {item.Text}", 5);
+                    WeaponComponent defaultCLip = myWeapon.PossibleComponents.Where(x => x.Name == "Default Clip").FirstOrDefault();
+                    if (defaultCLip != null)
+                    {
+                        if (NativeFunction.Natives.DOES_WEAPON_TAKE_WEAPON_COMPONENT<bool>(myWeapon.Hash, defaultCLip.Hash) && !NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, defaultCLip.Hash))
+                        {
+                            NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_WEAPON_OBJECT(SellingProp, defaultCLip.Hash);
+                            EntryPoint.WriteToConsole($"OnWeaponCheckboxChange Added Default Clip {defaultCLip.Name}", 5);
+                        }
+                    }
+
+
+
+                    foreach (WeaponComponent wc in myWeapon.PossibleComponents.Where(x => x.ComponentSlot.ToString() == item.Text))
+                    {
+                        if(wc.ComponentSlot == ComponentSlot.Magazine)
+                        {
+                            if(wc.Name != "Default Clip" && NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, wc.Hash))
+                            {
+                                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(SellingProp, wc.Hash);
+                                EntryPoint.WriteToConsole($"OnWeaponCheckboxChange Removed Component {wc.Name}", 5);
+                            }
+                        }
+                        else
+                        {
+                            if (NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, wc.Hash))
+                            {
+                                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(SellingProp, wc.Hash);
+                            }
+                        }
+
+
+                        
+                        //EntryPoint.WriteToConsole($"OnWeaponCheckboxChange Existing Component Removed         DEFAULT                              {wc.Hash} {wc.ComponentSlot}", 5);
+                    }
+                }
             }
         }
-        else if (item.Text == "Secondary Color")
+        catch(Exception ex)
         {
-            SecondaryColor = newIndex;
-            if (SellingVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
-            }
+            EntryPoint.WriteToConsole($"Weapon Preview Error {ex.Message} {ex.StackTrace}", 0);
         }
-        else if (item.Text == "Color")
+    }
+    private void OnWeaponCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkboxItem, bool Checked)
+    {
+        WeaponInformation myWeapon = Weapons.GetWeapon(CurrentItem.ModelItem.ModelName);
+        if (myWeapon != null)
         {
-            PrimaryColor = newIndex;
-            SecondaryColor = newIndex;
-            if (SellingVehicle.Exists())
+            EntryPoint.WriteToConsole($"OnWeaponCheckboxChange 1 Weapon {CurrentItem.ModelItem.ModelName} {myWeapon.ModelName}", 5);
+            WeaponComponent myComponent = myWeapon.PossibleComponents.Where(x => x.Name == checkboxItem.Text).FirstOrDefault();
+            if (myComponent != null)
             {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+                uint ComponentHash = NativeFunction.Natives.GET_WEAPON_COMPONENT_TYPE_MODEL<uint>(myComponent.Hash);
+                NativeFunction.Natives.REQUEST_MODEL(ComponentHash);
+                uint GameTimeRequested = Game.GameTime;
+                while (!NativeFunction.Natives.HAS_MODEL_LOADED<bool>(ComponentHash))
+                {
+                    if (Game.GameTime - GameTimeRequested >= 500)
+                    {
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+
+                EntryPoint.WriteToConsole($"OnWeaponCheckboxChange 1 COMPONENT {myComponent.Name} {myComponent.ComponentSlot}", 5);
+                foreach (WeaponComponent wc in myWeapon.PossibleComponents.Where(x => x.ComponentSlot == myComponent.ComponentSlot))
+                {
+                    if (NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, myComponent.Hash))
+                    {
+                        NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(SellingProp, myComponent.Hash);
+                        EntryPoint.WriteToConsole($"OnWeaponCheckboxChange 1 REMOVED {myComponent.Name} {myComponent.ComponentSlot}", 5);
+                    }
+                }
+                if (Checked)
+                {
+                    if (1 == 1 || NativeFunction.Natives.DOES_WEAPON_TAKE_WEAPON_COMPONENT<bool>(myWeapon.Hash, myComponent.Hash))
+                    {
+                        //uint ComponentHash = NativeFunction.Natives.GET_WEAPON_COMPONENT_TYPE_MODEL<uint>(myComponent.Hash);
+                        NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_WEAPON_OBJECT(SellingProp, myComponent.Hash);
+                    }
+                }
+                else
+                {
+                    if (NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(SellingProp, myComponent.Hash))
+                    {
+                        NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(SellingProp, myComponent.Hash);
+                    }
+                }
+                EntryPoint.WriteToConsole($"OnWeaponCheckboxChange 1 myComponent {myComponent.Name} {myComponent.Hash} {myComponent.Hash}", 5);
             }
         }
     }
-
-
-
-
-
-
     private void CreatePreview(UIMenuItem myItem)
     {
         ClearPreviews();
@@ -748,16 +842,50 @@ public class PurchaseMenu : Menu
                 {
                     PreviewPed(itemToShow);
                 }
+                else if (itemToShow.ModelItem?.Type == ePhysicalItemType.Weapon)
+                {
+                    PreviewWeapon(itemToShow);
+                }
             }
         }
     }
     private void PreviewPed(ModItem itemToShow)
     {
-        //if (itemToShow != null && itemToShow.ModelItem != null)
-        //{
-        //    SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
-        //}
-        GameFiber.Yield();
+        //GameFiber.Yield();
+    }
+    private void PreviewWeapon(ModItem itemToShow)
+    {
+        try
+        {
+            if (itemToShow != null && itemToShow.ModelItem != null && itemToShow.ModelItem.ModelName != "")
+            {
+                Vector3 Position = Vector3.Zero;
+                if (StoreCam.Exists())
+                {
+                    Position = StoreCam.Position + StoreCam.Direction / 2;
+                }
+                else
+                {
+                    Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+                    Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
+                    Position = GPCamPos + GPCamDir / 2;
+                }
+                SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+                if (SellingProp.Exists())
+                {
+                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
+                    if (SellingProp != null && SellingProp.Exists())
+                    {
+                        NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(SellingProp, false);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification($"Error Displaying Model {ex.Message} {ex.StackTrace}");
+        }
+        //GameFiber.Yield();
     }
     private void PreviewVehicle(ModItem itemToShow)
     {
@@ -765,16 +893,12 @@ public class PurchaseMenu : Menu
         {
             SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
         }
-       // GameFiber.Yield();
+        //GameFiber.Yield();
         if (SellingVehicle.Exists())
         {
             SellingVehicle.Wash();
             NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
             NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SellingVehicle, 5.0f);
-            //if (PlateString != "")
-            //{
-            //    SellingVehicle.LicensePlate = PlateString.Substring(0, 8);
-            //}
         }
     }
     private void PreviewProp(ModItem itemToShow)
@@ -793,16 +917,51 @@ public class PurchaseMenu : Menu
                 ModelToSpawn = itemToShow.ModelItem.ModelName;
                 useClose = !itemToShow.ModelItem.IsLarge;
             }
-            if (ModelToSpawn != "")
+
+            Vector3 Position = Vector3.Zero;
+            if (StoreCam.Exists())
             {
                 if (useClose)
                 {
-                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+                    Position = StoreCam.Position + StoreCam.Direction;
                 }
                 else
                 {
-                    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
+                    Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f);
                 }
+            }
+            else
+            {
+                Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+                Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
+
+                if(useClose)
+                {
+                    Position = GPCamPos + GPCamDir / 2;
+                }
+                else
+                {
+                    Position = GPCamPos + GPCamDir.ToNormalized() * 3f;
+                }
+            }
+
+
+
+
+
+            if (ModelToSpawn != "")
+            {
+                SellingProp = new Rage.Object(ModelToSpawn, Position);
+
+                //if (useClose)
+                //{
+                //    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
+                //}
+                //else
+                //{
+                //    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
+                //}
+                //GameFiber.Yield();
                 if (SellingProp.Exists())
                 {
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
@@ -855,19 +1014,7 @@ public class PurchaseMenu : Menu
                     {
                         if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon && myItem.ModelItem.ModelName != "")
                         {
-                            //Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
-                            //if (MyVehicle.Exists())
-                            //{
-                            //    MyVehicle.Delete();
-                            //}
-                        }
-                        if (myItem.PackageItem != null && myItem.PackageItem.Type != ePhysicalItemType.Vehicle && myItem.PackageItem.ModelName != "")
-                        {
-                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
-                        }
-                        else if (myItem.ModelItem != null && myItem.ModelItem.Type != ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
-                        {
-                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                            NativeFunction.Natives.REQUEST_WEAPON_ASSET(myItem.ModelItem.ModelHash,31,0);
                         }
                         else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
                         {
@@ -876,6 +1023,14 @@ public class PurchaseMenu : Menu
                             {
                                 MyVehicle.Delete();
                             }
+                        }
+                        else if (myItem.PackageItem != null && myItem.PackageItem.Type == ePhysicalItemType.Prop && myItem.PackageItem.ModelName != "")
+                        {
+                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                        }
+                        else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Prop && myItem.ModelItem.ModelName != "")
+                        {
+                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
                         }
                     }
                 }
@@ -920,39 +1075,14 @@ public class PurchaseMenu : Menu
     }
     private bool PurchaseWeapon(ModItem modItem)
     {
-
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(modItem.ModelItem.ModelName, 60, false);
+        if(SellingProp.Exists())
+        {
+            NativeFunction.Natives.GIVE_WEAPON_OBJECT_TO_PED(SellingProp, Game.LocalPlayer.Character);
+            NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, modItem.ModelItem.ModelHash, 60);
+        }
+        //Game.LocalPlayer.Character.Inventory.GiveNewWeapon(modItem.ModelItem.ModelName, 60, false);
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
         return true;
-        //bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
-        //if (!ItemInDeliveryBay)
-        //{
-        //    Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
-        //    if (NewVehicle.Exists())
-        //    {
-        //        //if (PlateString != "")
-        //        //{
-        //        //    NewVehicle.LicensePlate = PlateString.Substring(0, 8);
-        //        //}
-        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
-        //        NewVehicle.Wash();
-        //        VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
-        //        World.AddEntity(MyNewCar, ResponseType.None);
-        //        Player.TakeOwnershipOfVehicle(MyNewCar);
-        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
-        //        return false;
-        //    }
-        //}
-        //else
-        //{
-        //    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
-        //    return false;
-        //}
     }
     private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
     {

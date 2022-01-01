@@ -15,6 +15,7 @@ public class Transaction : Interaction
 {
     private bool IsUsingHintCamera = false;
     private bool IsUsingCustomCamera = false;
+    private bool IsHintPed = false;
 
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
@@ -42,6 +43,7 @@ public class Transaction : Interaction
     private bool IsCancelled;
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
+    private IWeapons Weapons;
 
     private bool IsAnyMenuVisible => menuPool.IsAnyMenuOpen();//(ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
     private enum eSetPlayerControlFlag
@@ -59,7 +61,7 @@ public class Transaction : Interaction
         SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
         SPC_ALLOW_PAD_SHAKE = (1 << 12)
     };
-    public Transaction(IInteractionable player, PedExt ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time, IEntityProvideable world)
+    public Transaction(IInteractionable player, PedExt ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeReportable time, IEntityProvideable world, IWeapons weapons)
     {
         Ped = ped;
         Player = player;
@@ -68,6 +70,7 @@ public class Transaction : Interaction
         ModItems = modItems;
         Time = time;
         World = world;
+        Weapons = weapons;
         menuPool = new MenuPool();
     }
     public override string DebugString => "";
@@ -146,7 +149,19 @@ public class Transaction : Interaction
             }
             else if (IsUsingHintCamera)
             {
-                NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+                //if (IsHintPed)
+                //{
+                //    if (Ped.Pedestrian.Exists())
+                //    {
+                //        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, 1000, 0, 1000);
+                //    }
+                //}
+                //else
+                //{
+                //    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, 1000, 0, 1000);
+                //}
+                //GameFiber.Sleep(1000);
+                NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
             }
             if(Store != null && Store.Type == LocationType.VendingMachine)
             {
@@ -213,13 +228,13 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this);
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, true, World, Settings, this, Weapons);//PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);
+            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, true, this);//SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);
             SellMenu.Setup();
             hasSellMenu = true;
         }
@@ -242,19 +257,22 @@ public class Transaction : Interaction
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
+            IsHintPed = true;
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
         }
         else if (Player.IsInVehicle || Store.Type == LocationType.DriveThru)
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
+            IsHintPed = false;
             NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
         }
         else if (Store.Type == LocationType.VendingMachine)
         {
             IsUsingHintCamera = true;
             IsUsingCustomCam = false;
-            NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, 5000, 2000, 2000);
+            IsHintPed = false;
+            NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, -1, 2000, 2000);
             GetPropEntry();
             if(!MoveToMachine())
             {

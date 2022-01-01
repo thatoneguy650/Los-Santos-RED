@@ -74,15 +74,6 @@ namespace Mod
         private GameLocation CurrentInteriorLocation;
         private bool DriverDoorOpen;
 
-        //private uint GameTimeStartedSprinting;
-        //private uint GameTimeStoppedSprinting;
-        //private bool isSprinting = false;
-        //private float SprintMeter = 50f;
-        //private float SprintMax = 50f;
-        //private float SprintStartMin = 10f;
-        //private uint GameTimeLastUpdatedSprint = 0;
-        //private uint TimeSprinting => isSprinting ? Game.GameTime - GameTimeStartedSprinting : 0;
-        //private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants)
         {
             ModelName = modelName;
@@ -1553,13 +1544,13 @@ namespace Mod
                 {
                     EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
                     Merchant myPed = (Merchant)CurrentLookedAtPed;
-                    Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider);
+                    Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
                     Interaction.Start();
                 }
                 else
                 {
                     EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
-                    Interaction = new Transaction(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, EntityProvider);
+                    Interaction = new Transaction(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
                     Interaction.Start();
                 }
             }
@@ -1573,7 +1564,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider);
+                Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
                 Interaction.Start();
             }
         }

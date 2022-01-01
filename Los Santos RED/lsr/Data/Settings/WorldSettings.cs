@@ -22,9 +22,7 @@ public class WorldSettings
     public bool RequireVehicleForAudio { get; set; } = false;
     public bool WeatherAudio_MuteRadio { get; set; } = true;
     public bool PlayWeatherAudioInVehicleOnly { get; set; } = true;
-
-
-
+    public bool ReplaceVanillaShopKeepers { get; set; } = true;
     public WorldSettings()
     {
 

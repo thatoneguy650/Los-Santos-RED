@@ -23,10 +23,24 @@ public class PhysicalItem
         AttachRotation = attachRotation;
         ModelName = modelName;
     }
+    public PhysicalItem(string modelName, uint modelHash)
+    {
+        ModelName = modelName;
+        ModelHash = modelHash;
+    }
+    public PhysicalItem(string modelName, uint modelHash, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation)
+    {
+        AttachBoneIndex = attachBoneIndex;
+        AttachOffset = attachOffset;
+        AttachRotation = attachRotation;
+        ModelName = modelName;
+        ModelHash = modelHash;
+    }
     public int AttachBoneIndex { get; set; } = 57005;
     public Vector3 AttachOffset { get; set; } = Vector3.Zero;
     public Rotator AttachRotation { get; set; } = Rotator.Zero;
     public string ModelName { get; set; } = "";
+    public uint ModelHash { get; set; } = 0;
     public bool IsLarge { get; set; } = false;
     public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
 }
