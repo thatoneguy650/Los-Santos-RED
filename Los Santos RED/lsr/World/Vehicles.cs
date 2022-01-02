@@ -82,7 +82,10 @@ public class Vehicles
                 GameFiber.Yield();
             }
         }
-        EntryPoint.WriteToConsole($"Vehicles.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedVehicles}", 5);
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Vehicles.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedVehicles}", 5);
+        }
         GameTimeLastCreatedVehicles = Game.GameTime;
     }
     public void CleanUp()

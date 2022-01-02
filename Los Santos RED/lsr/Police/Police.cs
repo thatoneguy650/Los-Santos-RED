@@ -31,7 +31,10 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 Player.Arrest();
             }
-            EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice}", 5);
+            if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+            {
+                EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice}", 5);
+            }
             GameTimeLastUpdatedPolice = Game.GameTime;
         }
         private void UpdateCops()

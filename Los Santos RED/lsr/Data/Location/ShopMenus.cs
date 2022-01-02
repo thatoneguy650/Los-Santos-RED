@@ -727,6 +727,113 @@ public class ShopMenus : IShopMenus
 
             }),
 
+
+             new ShopMenu("WeaponsMenu","WeaponsMenu",new List<MenuItem>() {
+                new MenuItem("Baseball Bat",70),
+                new MenuItem("Crowbar 2",35),
+                new MenuItem("Golf Club",150),
+                new MenuItem("Hammer 2",25),
+                new MenuItem("Hatchet",80),
+                new MenuItem("Brass Knuckles",150),
+                new MenuItem("Combat Knife",120),
+
+                new MenuItem("Machete",29),
+                new MenuItem("Switchblade",78),
+                new MenuItem("Nightstick",57),
+                new MenuItem("Wrench 2",24),
+                new MenuItem("Pool Cue",45),
+
+
+                //Pistola
+                new MenuItem("Hawk & Little PTF092F",550),
+                new MenuItem("Hawk & Little Thunder",650),
+                new MenuItem("Hawk & Little Combat Pistol",950),
+                new MenuItem("Hawk & Little Desert Slug",1500),
+                new MenuItem("Hawk & Little 1919",1200),
+                new MenuItem("Hawk & Little Raging Mare",1700),
+                new MenuItem("Hawk & Little Raging Mare Dx",1950),
+                new MenuItem("Vom Feuer P69",790),
+                new MenuItem("Vom Feuer SCRAMP",990),
+                new MenuItem("Shrewsbury S7",1100),
+                new MenuItem("Shrewsbury S7A",1200),
+                new MenuItem("Coil Tesla",550),
+                new MenuItem("BS M1922",995),
+
+
+                //Shotgun
+                new MenuItem("Shrewsbury 420 Sawed-Off",250),
+                new MenuItem("Shrewsbury 420",400),
+                new MenuItem("Vom Feuer 569",500),
+                new MenuItem("Vom Feuer IBS-12",670),
+                new MenuItem("Hawk & Little HLSG",780),
+                new MenuItem("Shrewsbury Taiga-12",670),
+                new MenuItem("Toto 12 Guage Sawed-Off",350),
+                new MenuItem("Shrewsbury Defender",990),
+                new MenuItem("Leotardo SPAZ-11",2300),
+
+     
+                //SMG
+                new MenuItem("Shrewsbury Luzi",600),
+                new MenuItem("Hawk & Little MP6",1500),
+                new MenuItem("Hawk & Little XPM",1600),
+                new MenuItem("Vom Feuer Fisher",900),
+                new MenuItem("Coil PXM",1200),
+                new MenuItem("Vom Feuer KEK-9",250),
+                new MenuItem("Hawk & Little Millipede",450),
+
+                //AR
+                new MenuItem("Shrewsbury A7-4K",650),
+                new MenuItem("Shrewsbury A2-1K",790),
+                new MenuItem("Vom Feuer A5-1R",700),
+                new MenuItem("Vom Feuer A5-1R MK2",950),
+                new MenuItem("Vom Feuer BFR",1200),
+                new MenuItem("Vom Feuer SL6",1900),
+                new MenuItem("Vom Feuer SL6 MK2",2200),
+                new MenuItem("Hawk & Little ZBZ-23",1200),
+                new MenuItem("Hawk & Little ZBZ-25X",1300),
+                new MenuItem("Shrewsbury Stinkov",750),
+                new MenuItem("Vom Feuer GUH-B4",1400),
+                new MenuItem("Vom Feuer POCK",1700),
+
+                //LMG
+                new MenuItem("Shrewsbury PDA",4500),
+                new MenuItem("Vom Feuer BAT",4340),
+                new MenuItem("Vom Feuer M70E1",5000),
+                new MenuItem("Hawk & Little Kenan",950),
+
+                //SNIPER
+                new MenuItem("Shrewsbury PWN",2500),
+                new MenuItem("Bartlett M92",5790),
+                new MenuItem("Bartlett M92 Mk2",6780),
+                new MenuItem("Vom Feuer M23 DBS",1500),
+                new MenuItem("Vom Feuer M23 DBS Scout",1600),
+
+                //OTHER
+                new MenuItem("RPG-7",12550),
+                new MenuItem("Hawk & Little MGL",18889),
+                new MenuItem("M61 Grenade",800),
+                new MenuItem("Improvised Incendiary",150),
+                new MenuItem("BZ Gas Grenade",250),
+                new MenuItem("Tear Gas Grenade",125),
+
+
+
+
+
+                    }),
+
+
+
+
+
+
+
+
+
+
+
+
+
             //Vehicles
 
             new ShopMenu("BenefactorGallavanterMenu","Benefactor/Gallavanter",new List<MenuItem>() { 

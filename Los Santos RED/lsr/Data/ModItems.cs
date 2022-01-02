@@ -643,6 +643,23 @@ public class ModItems : IModItems
             //ng_proc_drug01a002
 
         //Guns
+
+        new ModItem("Baseball Bat","", false) { ModelItem = new PhysicalItem("weapon_bat",0x958A4A8F) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Crowbar 2","", false) { ModelItem = new PhysicalItem("weapon_crowbar",0x84BD7BFD) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Golf Club","", false) { ModelItem = new PhysicalItem("weapon_golfclub",0x440E4788) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hammer 2","", false) { ModelItem = new PhysicalItem("weapon_hammer",0x4E875F73) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hatchet","", false) { ModelItem = new PhysicalItem("weapon_hatchet",0xF9DCBF2D) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Brass Knuckles","", false) { ModelItem = new PhysicalItem("weapon_knuckle",0xD8DF3C3C) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Combat Knife","", false) { ModelItem = new PhysicalItem("weapon_knife",0x99B507EA) { Type = ePhysicalItemType.Weapon }},
+
+        new ModItem("Machete","", false) { ModelItem = new PhysicalItem("weapon_machete",0xDD5DF8D9) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Switchblade","", false) { ModelItem = new PhysicalItem("weapon_switchblade",0xDFE37640) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Nightstick","", false) { ModelItem = new PhysicalItem("weapon_nightstick",0x678B81B1) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Wrench 2","", false) { ModelItem = new PhysicalItem("weapon_wrench",0x19044EE0) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Pool Cue","", false) { ModelItem = new PhysicalItem("weapon_poolcue",0x94117305) { Type = ePhysicalItemType.Weapon }},
+
+
+        //Pistola
         new ModItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false) { ModelItem = new PhysicalItem("weapon_pistol",0x1B06D571) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true) { ModelItem = new PhysicalItem("weapon_pistol_mk2",0xBFE256D4) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false) { ModelItem = new PhysicalItem("weapon_combatpistol",0x5EF9FEC4) { Type = ePhysicalItemType.Weapon }},
@@ -656,6 +673,63 @@ public class ModItems : IModItems
         new ModItem("Shrewsbury S7A","The ultimate purse-filler: if you want to make Saturday Night really special, this is your ticket.", true) { ModelItem = new PhysicalItem("weapon_snspistol_mk2",0x88374054) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false) { ModelItem = new PhysicalItem("weapon_stungun",0x45CD9CF3) { Type = ePhysicalItemType.Weapon }},
         new ModItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true) { ModelItem = new PhysicalItem("weapon_vintagepistol",0x83839C4) { Type = ePhysicalItemType.Weapon }},
+
+
+        //Shotgun
+        new ModItem("Shrewsbury 420 Sawed-Off","This single-barrel, sawed-off shotgun compensates for its low range and ammo capacity with devastating efficiency in close combat.", false) { ModelItem = new PhysicalItem("weapon_sawnoffshotgun",0x7846A318) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury 420","Standard shotgun ideal for short-range combat. A high-projectile spread makes up for its lower accuracy at long range.", false) { ModelItem = new PhysicalItem("weapon_pumpshotgun",0x1D073A89) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer 569","Only one thing pumps more action than a pump action: watch out, the recoil is almost as deadly as the shot.", true) { ModelItem = new PhysicalItem("weapon_pumpshotgun_mk2",0x555AF99A) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer IBS-12","Fully automatic shotgun with 8 round magazine and high rate of fire.", false) { ModelItem = new PhysicalItem("weapon_assaultshotgun",0xE284C527) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little HLSG","More than makes up for its slow, pump-action rate of fire with its range and spread. Decimates anything in its projectile path.", false) { ModelItem = new PhysicalItem("weapon_bullpupshotgun",0x9D61E50F) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury Taiga-12","The weapon to reach for when you absolutely need to make a horrible mess of the room. Best used near easy-wipe surfaces only.", true) { ModelItem = new PhysicalItem("weapon_heavyshotgun",0x3AABBBAA) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Toto 12 Guage Sawed-Off","Do one thing, do it well. Who needs a high rate of fire when your first shot turns the other guy into a fine mist?.", true) { ModelItem = new PhysicalItem("weapon_dbshotgun",0xEF951FBB) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury Defender","How many effective tools for riot control can you tuck into your pants? Ok, two. But this is the other one.", true) { ModelItem = new PhysicalItem("weapon_autoshotgun",0x12E82D3D) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Leotardo SPAZ-11","There's only one semi-automatic shotgun with a fire rate that sets the LSFD alarm bells ringing, and you're looking at it.", true) { ModelItem = new PhysicalItem("weapon_combatshotgun",0x5A96BA4) { Type = ePhysicalItemType.Weapon }},
+
+     
+        //SMG
+        new ModItem("Shrewsbury Luzi","Combines compact design with a high rate of fire at approximately 700-900 rounds per minute.", false) { ModelItem = new PhysicalItem("weapon_microsmg",0x13532244) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little MP6","This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false) { ModelItem = new PhysicalItem("weapon_smg",0x2BE6766B) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little XPM","Lightweight, compact, with a rate of fire to die very messily for: turn any confined space into a kill box at the click of a well-oiled trigger.", true) { ModelItem = new PhysicalItem("weapon_smg_mk2",0x78A97CD0) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer Fisher","A high-capacity submachine gun that is both compact and lightweight. Holds up to 30 bullets in one magazine.", false) { ModelItem = new PhysicalItem("weapon_assaultsmg",0xEFE7E2DF) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Coil PXM","Who said personal weaponry couldn't be worthy of military personnel? Thanks to our lobbyists, not Congress. Integral suppressor.", false) { ModelItem = new PhysicalItem("weapon_combatpdw",0x0A3D4D34) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer KEK-9","This fully automatic is the snare drum to your twin-engine V8 bass: no drive-by sounds quite right without it.", false) { ModelItem = new PhysicalItem("weapon_machinepistol",0xDB1AA450) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Millipede","Increasingly popular since the marketing team looked beyond spec ops units and started caring about the little guys in low income areas.", false) { ModelItem = new PhysicalItem("weapon_minismg",0xBD248B55) { Type = ePhysicalItemType.Weapon }},
+
+        //AR
+        new ModItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false) { ModelItem = new PhysicalItem("weapon_assaultrifle",0xBFEFFF6D) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury A2-1K","The definitive revision of an all-time classic: all it takes is a little work, and looks can kill after all.", true) { ModelItem = new PhysicalItem("weapon_assaultrifle_mk2",0x394F415C) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer A5-1R","Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false) { ModelItem = new PhysicalItem("weapon_carbinerifle",0x83BF0278) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer A5-1R MK2","This is bespoke, artisan firepower: you couldn't deliver a hail of bullets with more love and care if you inserted them by hand.", true) { ModelItem = new PhysicalItem("weapon_carbinerifle_mk2",0xFAD1F1C9) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer BFR","The most lightweight and compact of all assault rifles, without compromising accuracy and rate of fire.", false) { ModelItem = new PhysicalItem("weapon_advancedrifle",0xAF113F99) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer SL6","Combining accuracy, maneuverability, firepower and low recoil, this is an extremely versatile assault rifle for any combat situation.", false) { ModelItem = new PhysicalItem("weapon_specialcarbine",0xC0A3098D) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer SL6 MK2","The jack of all trades just got a serious upgrade: bow to the master.", true) { ModelItem = new PhysicalItem("weapon_specialcarbine_mk2",0x969C3D67) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little ZBZ-23","The latest Chinese import taking America by storm, this rifle is known for its balanced handling. Lightweight and very controllable in automatic fire.", false) { ModelItem = new PhysicalItem("weapon_bullpuprifle",0x7F229F94) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little ZBZ-25X","So precise, so exquisite, it's not so much a hail of bullets as a symphony.", true) { ModelItem = new PhysicalItem("weapon_bullpuprifle_mk2",0x84D6FAFD) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Shrewsbury Stinkov","Half the size, all the power, double the recoil: there's no riskier way to say 'I'm compensating for something'.", false) { ModelItem = new PhysicalItem("weapon_compactrifle",0x624FE830) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer GUH-B4","This immensely powerful assault rifle was designed for highly qualified, exceptionally skilled soldiers. Yes, you can buy it.", false) { ModelItem = new PhysicalItem("weapon_militaryrifle",0x9D1F17E6) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer POCK","The no-holds barred 30-round answer to that eternal question: how do I get this guy off my back?", true) { ModelItem = new PhysicalItem("weapon_heavyrifle",0xC78D71B4) { Type = ePhysicalItemType.Weapon }},
+
+        //LMG
+        new ModItem("Shrewsbury PDA","General purpose machine gun that combines rugged design with dependable performance. Long range penetrative power. Very effective against large groups.", false) { ModelItem = new PhysicalItem("weapon_mg",0x9D07F764) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer BAT","Lightweight, compact machine gun that combines excellent maneuverability with a high rate of fire to devastating effect.", false) { ModelItem = new PhysicalItem("weapon_combatmg",0x7FD62962) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer M70E1","You can never have too much of a good thing: after all, if the first shot counts, then the next hundred or so must count for double.", true) { ModelItem = new PhysicalItem("weapon_combatmg_mk2",0xDBBD7280) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little Kenan","Complete your look with a Prohibition gun. Looks great being fired from an Albany Roosevelt or paired with a pinstripe suit.", false) { ModelItem = new PhysicalItem("weapon_gusenberg",0x61012683) { Type = ePhysicalItemType.Weapon }},
+
+        //SNIPER
+        new ModItem("Shrewsbury PWN","Standard sniper rifle. Ideal for situations that require accuracy at long range. Limitations include slow reload speed and very low rate of fire.", false) { ModelItem = new PhysicalItem("weapon_sniperrifle",0x05FC3C11) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Bartlett M92","Features armor-piercing rounds for heavy damage. Comes with laser scope as standard.", false) { ModelItem = new PhysicalItem("weapon_heavysniper",0x0C472FE2) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Bartlett M92 Mk2","Far away, yet always intimate: if you're looking for a secure foundation for that long-distance relationship, this is it.", true) { ModelItem = new PhysicalItem("weapon_heavysniper_mk2",0xA914799) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer M23 DBS","Whether you're up close or a disconcertingly long way away, this weapon will get the job done. A multi-range tool for tools.", false) { ModelItem = new PhysicalItem("weapon_marksmanrifle",0xC734385A) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Vom Feuer M23 DBS Scout","Known in military circles as The Dislocator, this mod set will destroy both the target and your shoulder, in that order.", true) { ModelItem = new PhysicalItem("weapon_marksmanrifle_mk2",0x6A6C02E0) { Type = ePhysicalItemType.Weapon }},
+
+        //OTHER
+        new ModItem("RPG-7","A portable, shoulder-launched, anti-tank weapon that fires explosive warheads. Very effective for taking down vehicles or large groups of assailants.", false) { ModelItem = new PhysicalItem("weapon_rpg",0xB1CA77B1) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little MGL","A compact, lightweight grenade launcher with semi-automatic functionality. Holds up to 10 rounds.", false) { ModelItem = new PhysicalItem("weapon_grenadelauncher",0xA284510B) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("M61 Grenade","Standard fragmentation grenade. Pull pin, throw, then find cover. Ideal for eliminating clustered assailants.", false) { ModelItem = new PhysicalItem("weapon_grenade",0x93E220BD) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Improvised Incendiary","Crude yet highly effective incendiary weapon. No happy hour with this cocktail.", false) { ModelItem = new PhysicalItem("weapon_molotov",0x24B17070) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("BZ Gas Grenade","BZ gas grenade, particularly effective at incapacitating multiple assailants.", false) { ModelItem = new PhysicalItem("weapon_bzgas",0xA0973D5E) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Tear Gas Grenade","Tear gas grenade, particularly effective at incapacitating multiple assailants. Sustained exposure can be lethal.", false) { ModelItem = new PhysicalItem("weapon_smokegrenade",0xBFE256D4) { Type = ePhysicalItemType.Weapon }},
 
         //Cars & Motorcycles
         new ModItem("Albany Alpha", true) { ModelItem = new PhysicalItem("alpha") { Type = ePhysicalItemType.Vehicle }},

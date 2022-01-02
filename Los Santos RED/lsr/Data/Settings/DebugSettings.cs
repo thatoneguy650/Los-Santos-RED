@@ -9,7 +9,7 @@ public class DebugSettings
     public bool ShowPoliceTaskArrows { get; set; } = false;
     public bool ShowCivilianTaskArrows { get; set; } = false;
     public bool ShowCivilianPerceptionArrows { get; set; } = false;
-
+    public bool PrintUpdateTimes { get; set; } = false;
     public DebugSettings()
     {
 

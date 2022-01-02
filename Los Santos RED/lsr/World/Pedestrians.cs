@@ -261,7 +261,7 @@ public class Pedestrians
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
             string modelName = Pedestrian.Model.Name.ToLower();
-            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01" || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
                 Pedestrian.Delete();
                 continue;
@@ -285,7 +285,10 @@ public class Pedestrians
             }
             
         }
-        EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
+        }
         GameTimeLastCreatedPeds = Game.GameTime;
     }
     private void AddCivilian(Ped Pedestrian)

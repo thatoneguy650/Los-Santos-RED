@@ -102,7 +102,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> PremiumDeluxeMenu = ShopMenus.GetMenu("PremiumDeluxeMenu")?.Items;
         List<MenuItem> BeanMachineMenu = ShopMenus.GetMenu("BeanMachineMenu")?.Items;
         List<MenuItem> AmmunationMenu = ShopMenus.GetMenu("AmmunationMenu")?.Items;
-
+        List<MenuItem> WeaponsMenu = ShopMenus.GetMenu("WeaponsMenu")?.Items;
 
         LocationsList = new List<GameLocation>
         {
@@ -155,8 +155,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             //Stores
 
             //Gun
-            new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
-            new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = AmmunationMenu },
+            //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
+            new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },

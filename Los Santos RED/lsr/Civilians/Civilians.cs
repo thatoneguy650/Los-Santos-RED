@@ -12,13 +12,15 @@ public class Civilians
     private IEntityProvideable World;
     private IPoliceRespondable PoliceRespondable;
     private IPerceptable Perceptable;
+    private ISettingsProvideable Settings;
     private uint GameTimeLastUpdatedPeds;
 
-    public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable)
+    public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings)
     {
         World = world;
         PoliceRespondable = policeRespondable;
         Perceptable = perceptable;
+        Settings = settings;
     }
     public int PersistentCount
     {
@@ -59,7 +61,10 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
             }
         }
-        EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds}", 5);
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds}", 5);
+        }
         GameTimeLastUpdatedPeds = Game.GameTime;
     }
 }

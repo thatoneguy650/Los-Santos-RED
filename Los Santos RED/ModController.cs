@@ -139,7 +139,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
             GameFiber.Yield();
-            Civilians = new Civilians(World, Player, Player);
+            Civilians = new Civilians(World, Player, Player, Settings);
             GameFiber.Yield();
             PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes, Names);
             GameFiber.Yield();

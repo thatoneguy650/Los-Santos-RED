@@ -802,6 +802,9 @@ public class Weapons : IWeapons
         };
         WeaponsList.Add(new WeaponInformation("weapon_militaryrifle", 120, WeaponCategory.AR, 3, 0x9D1F17E6, false, true, false) { PossibleComponents = MilitaryRifleComponents });
 
+
+        WeaponsList.Add(new WeaponInformation("weapon_heavyrifle", 120, WeaponCategory.AR, 3, 0xC78D71B4, false, true, false));
+
         //LMG
 
         List<WeaponComponent> MGComponents = new List<WeaponComponent>
