@@ -815,11 +815,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Improvised Incendiary",150),
                 new MenuItem("BZ Gas Grenade",250),
                 new MenuItem("Tear Gas Grenade",125),
-
-
-
-
-
                     }),
 
 

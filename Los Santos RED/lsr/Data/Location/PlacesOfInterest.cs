@@ -118,9 +118,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             //new Vector3(253.351f, -1364.622f, 39.53437f), 327.1821f morgue interior teleport position
             //new Vector3(239.75195f, -1360.64965f, 39.53437f), 337.4726f
 
-
-
-
             //Grave
             new GameLocation(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, LocationType.Grave, "Grave 1","") {OpenTime = 0,CloseTime = 24 },
 
@@ -154,9 +151,18 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             //Stores
 
+            //Beauty
+            new GameLocation(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, LocationType.BeautyShop, "Carson's Beauty Supply", ""),
+            new GameLocation(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, LocationType.BeautyShop, "Chantelle's Beauty Salon", ""),
+            new GameLocation(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, LocationType.BeautyShop, "Discount Beauty Store", ""),
+
             //Gun
             //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
             new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
+            new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
+            new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
+            new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
+            new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
@@ -244,8 +250,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-170.9145f, -1449.77f, 31.64507f), 50.18372f, LocationType.ConvenienceStore, "Cert-L Market", ""){ Menu = ConvenienceStoreMenu },
             new GameLocation(new Vector3(-3152.666f, 1110.093f, 20.87176f), 245.5282f, LocationType.ConvenienceStore, "Nelsons", ""){ Menu = ConvenienceStoreMenu },
             new GameLocation(new Vector3(1331.857f, -1643.031f, 52.13754f), 352.7884f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
-           new GameLocation(new Vector3(1089.146f, -776.6399f, 58.34211f), 357.3385f, LocationType.ConvenienceStore, "Chico's Hypermarket", ""){ Menu = ConvenienceStoreMenu },
-           new GameLocation(new Vector3(1168.982f, -291.6786f, 69.02177f), 324.2124f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(1089.146f, -776.6399f, 58.34211f), 357.3385f, LocationType.ConvenienceStore, "Chico's Hypermarket", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(1168.982f, -291.6786f, 69.02177f), 324.2124f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(105.3277f, -1689.715f, 29.29169f), 138.498f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(-297.9112f, -1332.895f, 31.29597f), 314.8022f, LocationType.ConvenienceStore, "Long Pig Mini Market", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
 
             //Gas
             new GameLocation(new Vector3(166.2001f, -1553.691f, 29.26175f), 218.9514f, LocationType.GasStation, "Ron", "") { Menu = RonMenu, OpenTime = 4, CloseTime = 22, CameraPosition = new Vector3(175.2995f, -1593.878f, 39.27175f), CameraDirection = new Vector3(-0.1031758f, 0.9726905f, -0.2079136f), CameraRotation = new Rotator(-12.00011f, 0f, 6.054868f) },
@@ -274,6 +283,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1039.753f,2666.26f,39.55253f), 143.6208f, LocationType.GasStation, "Grande Senora Cafe & Gas","Extra Grande!") { Menu = GasStationMenu },
             new GameLocation(new Vector3(2001.239f, 3779.786f, 32.18078f), 208.5214f, LocationType.GasStation, "Sandy's Gas", "And Full Service!"){ Menu = GasStationMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(646.0997f, 267.417f, 103.2494f), 58.99448f, LocationType.GasStation, "Globe Oil", "Globe Oil") { Menu = GasStationMenu },
+            new GameLocation(new Vector3(-342.2267f, -1475.199f, 30.74949f), 265.7801f, LocationType.GasStation, "Globe Oil", "") { Menu = GasStationMenu },
             new GameLocation(new Vector3(1776.308f, 3327.483f, 41.43329f), 328.0875f, LocationType.GasStation, "Flywheels Gas", "Flywheels Gas") { Menu = GasStationMenu },   
 
             //Food Stand
@@ -335,6 +345,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GameLocation(new Vector3(-1392.125f, -732.2938f, 24.64698f), 37.13289f, LocationType.Restaurant, "Les Bianco's", "Les Bianco's") {Menu = FancyGenericMenu },
                 new GameLocation(new Vector3(-1420.425f, -709.2584f, 24.60311f), 126.5269f, LocationType.Restaurant, "Pescado Rojo", "Pescado Rojo") {Menu = FancyFishMenu },
                 new GameLocation(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, LocationType.Restaurant, "The Fish Net", "The Fish Net") {Menu = FancyFishMenu },
+                new GameLocation(new Vector3(95.79929f, -1682.817f, 29.25364f), 138.4551f, LocationType.Restaurant, "Yum Fish", "") {Menu = FancyFishMenu },
                 new GameLocation(new Vector3(-238.903f, -777.356f, 34.09171f), 71.47642f, LocationType.Restaurant, "Cafe Redemption", "") {Menu = FancyDeliMenu },
                 new GameLocation(new Vector3(370.4181f, -1027.565f, 29.33361f), 184.4234f, LocationType.Restaurant, "Ground & Pound Cafe", "") {Menu = FancyGenericMenu },
                 new GameLocation(new Vector3(502.6628f, 113.1527f, 96.62571f), 164.3104f, LocationType.Restaurant, "Jazz Desserts", ""){Menu = FancyGenericMenu },
@@ -519,6 +530,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(104.8123f, -932.9781f, 29.81516f), 248.7484f, LocationType.Hotel, "The Emissary", ""){Menu = ExpensiveHotelMenu },
             new GameLocation(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, LocationType.Hotel, "Vinewood Gardens", ""){Menu = ExpensiveHotelMenu },
             new GameLocation(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, LocationType.Hotel, "Cheep Motel", "POOL!"){Menu = CheapHotelMenu},
+            new GameLocation(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, LocationType.Hotel, "Crastenburg", ""){Menu = ExpensiveHotelMenu },
 
             //Pharmacy
             new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
@@ -526,6 +538,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(326.7227f, -1074.448f, 29.47332f), 359.3641f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
             new GameLocation(new Vector3(805.143f, -1063.586f, 28.42115f), 90.00111f, LocationType.Pharmacy, "Meltz's Pharmacy", "") {Menu = PharmacyMenu },
             new GameLocation(new Vector3(1225.14f, -391.3563f, 68.68563f), 28.81875f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
+            new GameLocation(new Vector3(151.0329f, 6647.418f, 31.594f), 135.0961f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
+            new GameLocation(new Vector3(-172.4879f, 6381.202f, 31.47279f), 222.4285f, LocationType.Pharmacy, "Bay Side Drugs", "") {Menu = PharmacyMenu },
+            new GameLocation(new Vector3(214.0241f, -1835.08f, 27.54375f), 318.7183f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
 
             //Hardware
             new GameLocation(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, LocationType.HardwareStore, "You Tool", "You Tool") {Menu = ToolMenu,BannerImage = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
@@ -580,7 +595,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             //PawnShop
             new GameLocation(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, LocationType.PawnShop, "F.T. Pawn", "") {Menu = ToolMenu },
-
+            new GameLocation(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, LocationType.PawnShop, "Pawn & Jewelery", "") {Menu = ToolMenu },
 
             //Garage
            // new GameLocation(new Vector3(226.205f, -992.613f, -98.99996f), 150.3918f, LocationType.Garage, "Underground Garage", ""),

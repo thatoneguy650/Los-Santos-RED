@@ -644,19 +644,19 @@ public class ModItems : IModItems
 
         //Guns
 
-        new ModItem("Baseball Bat","", false) { ModelItem = new PhysicalItem("weapon_bat",0x958A4A8F) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Crowbar 2","", false) { ModelItem = new PhysicalItem("weapon_crowbar",0x84BD7BFD) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Golf Club","", false) { ModelItem = new PhysicalItem("weapon_golfclub",0x440E4788) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Hammer 2","", false) { ModelItem = new PhysicalItem("weapon_hammer",0x4E875F73) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Hatchet","", false) { ModelItem = new PhysicalItem("weapon_hatchet",0xF9DCBF2D) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Brass Knuckles","", false) { ModelItem = new PhysicalItem("weapon_knuckle",0xD8DF3C3C) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Combat Knife","", false) { ModelItem = new PhysicalItem("weapon_knife",0x99B507EA) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Baseball Bat","Aluminum baseball bat with leather grip. Lightweight yet powerful for all you big hitters out there.", false) { ModelItem = new PhysicalItem("weapon_bat",0x958A4A8F) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Crowbar 2","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false) { ModelItem = new PhysicalItem("weapon_crowbar",0x84BD7BFD) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Golf Club","Standard length, mid iron golf club with rubber grip for a lethal short game.", false) { ModelItem = new PhysicalItem("weapon_golfclub",0x440E4788) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hammer 2","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false) { ModelItem = new PhysicalItem("weapon_hammer",0x4E875F73) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hatchet","Add a good old-fashioned hatchet to your armory, and always have a back up for when ammo is hard to come by.", false) { ModelItem = new PhysicalItem("weapon_hatchet",0xF9DCBF2D) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Brass Knuckles","Perfect for knocking out gold teeth, or as a gift to the trophy partner who has everything.", false) { ModelItem = new PhysicalItem("weapon_knuckle",0xD8DF3C3C) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Combat Knife","This carbon steel 7 inch bladed knife is dual edged with a serrated spine to provide improved stabbing and thrusting capabilities.", false) { ModelItem = new PhysicalItem("weapon_knife",0x99B507EA) { Type = ePhysicalItemType.Weapon }},
 
-        new ModItem("Machete","", false) { ModelItem = new PhysicalItem("weapon_machete",0xDD5DF8D9) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Switchblade","", false) { ModelItem = new PhysicalItem("weapon_switchblade",0xDFE37640) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Nightstick","", false) { ModelItem = new PhysicalItem("weapon_nightstick",0x678B81B1) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Wrench 2","", false) { ModelItem = new PhysicalItem("weapon_wrench",0x19044EE0) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Pool Cue","", false) { ModelItem = new PhysicalItem("weapon_poolcue",0x94117305) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Machete","America's West African arms trade isn't just about giving. Rediscover the simple life with this rusty cleaver.", false) { ModelItem = new PhysicalItem("weapon_machete",0xDD5DF8D9) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Switchblade","From your pocket to hilt-deep in the other guy's ribs in under a second: folding knives will never go out of style.", false) { ModelItem = new PhysicalItem("weapon_switchblade",0xDFE37640) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Nightstick","24 inch polycarbonate side-handled nightstick.", false) { ModelItem = new PhysicalItem("weapon_nightstick",0x678B81B1) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Wrench 2","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false) { ModelItem = new PhysicalItem("weapon_wrench",0x19044EE0) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Pool Cue","Ah, there's no sound as satisfying as the crack of a perfect break, especially when it's the other guy's spine.", false) { ModelItem = new PhysicalItem("weapon_poolcue",0x94117305) { Type = ePhysicalItemType.Weapon }},
 
 
         //Pistola

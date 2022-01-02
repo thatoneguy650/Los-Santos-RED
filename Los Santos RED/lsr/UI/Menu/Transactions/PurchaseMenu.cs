@@ -357,6 +357,8 @@ public class PurchaseMenu : Menu
                             UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, myWeapon.Category.ToString());
                             WeaponMenu.OnIndexChange += OnIndexChange;
                             WeaponMenu.OnItemSelect += OnItemSelect;
+                            WeaponMenu.OnMenuOpen += OnMenuOpen;
+                            WeaponMenu.OnMenuClose += OnMenuClose;
                         }
                     }
 
@@ -372,6 +374,7 @@ public class PurchaseMenu : Menu
                             UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, ClassName);
                             VehicleMenu.OnIndexChange += OnIndexChange;
                             VehicleMenu.OnItemSelect += OnItemSelect;
+                            VehicleMenu.OnMenuClose += OnMenuClose;
                         }
                     }
 
@@ -379,6 +382,45 @@ public class PurchaseMenu : Menu
             }
         }
     }
+
+    private void OnMenuClose(UIMenu sender)
+    {
+        EntryPoint.WriteToConsole($"OnMenuClose {sender.SubtitleText} {sender.CurrentSelection}", 5);
+        ClearPreviews();
+        //if (sender.CurrentSelection != -1)
+        //{
+        //    CreatePreview(sender.MenuItems[sender.CurrentSelection]);
+        //}
+    }
+
+    private void OnMenuOpen(UIMenu sender)
+    {
+        EntryPoint.WriteToConsole($"OnMenuOpen {sender.SubtitleText} {sender.CurrentSelection}", 5);
+        if (sender.CurrentSelection != -1)
+        {
+            CreatePreview(sender.MenuItems[sender.CurrentSelection]);
+        }
+    }
+
+    //private void OnMenuChange(UIMenu oldMenu, UIMenu newMenu, bool forward)
+    //{
+    //    EntryPoint.WriteToConsole($"OnMenuChange {newMenu.SubtitleText} {newMenu.CurrentSelection}", 5);
+    //    if (newMenu.CurrentSelection != -1)
+    //    {
+    //        //UIMenuItem myMenu = sender.MenuItems[newIndex];
+    //        //if (myMenu != null)
+    //        //{
+    //        //    ModItem itemToShow = ModItems.Items.Where(x => x.Name == myMenu.Text).FirstOrDefault();
+    //        //    if (itemToShow != null && itemToShow.ModelItem?.Type == ePhysicalItemType.Vehicle)
+    //        //    {
+    //        //        myMenu.Description = itemToShow.Name + " TEST!";
+    //        //    }
+    //        //}
+
+    //        CreatePreview(newMenu.MenuItems[newMenu.CurrentSelection]);
+    //    }
+    //}
+
     private void AddWeaponEntry(MenuItem cii, ModItem myItem)
     {
 
@@ -492,28 +534,10 @@ public class PurchaseMenu : Menu
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
-
         string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
-
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        UIMenu VehicleMenu = null;
-        foreach (UIMenu uimen in MenuPool.ToList())
-        {
-            if (uimen.TitleText == ClassName)
-            {
-                VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
-                break;
-            }
-        }
-        if (VehicleMenu == null)
-        {
-            VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
-        }
-        // UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
-        VehicleMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
-
         string description;
         if (myItem.Description.Length >= 200)
         {
@@ -523,17 +547,7 @@ public class PurchaseMenu : Menu
         {
             description = myItem.Description;
         }
-
-        //if (description == "")
-        //{
-        //    description = $"{cii.ModItemName}";// {formattedPurchasePrice}";
-        //}
         description += "~n~~s~";
-
-        //string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        //string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        //string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
-
         if (MakeName != "")
         {
             description += $"~n~Manufacturer: ~b~{MakeName}~s~";
@@ -550,9 +564,28 @@ public class PurchaseMenu : Menu
         {
             description += $"~n~~b~DLC Vehicle";
         }
+        UIMenu VehicleMenu = null;
+        bool FoundCategoryMenu = false;
+        foreach (UIMenu uimen in MenuPool.ToList())
+        {
+            if (uimen.SubtitleText == ClassName)
+            {
+                FoundCategoryMenu = true;
+                VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
+                uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
+                break;
+            }
 
-        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
-        purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+        }
+        if (!FoundCategoryMenu && VehicleMenu == null)
+        {
+            VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
+            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
+            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
+        }
         if (Store?.BannerImage != "")
         {
             VehicleMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
@@ -563,9 +596,7 @@ public class PurchaseMenu : Menu
             VehicleMenu.RemoveBanner();
         }
         UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
-
         UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
-
         UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
         UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
         description = myItem.Description;
@@ -574,7 +605,6 @@ public class PurchaseMenu : Menu
             description = $"List Price {formattedPurchasePrice}";
         }
         UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
-        //VehicleMenu.AddItem(SetPlate);
         VehicleMenu.AddItem(ColorMenu);
         VehicleMenu.AddItem(PrimaryColorMenu);
         VehicleMenu.AddItem(SecondaryColorMenu);
@@ -582,12 +612,6 @@ public class PurchaseMenu : Menu
         VehicleMenu.OnItemSelect += OnVehicleItemSelect;
         VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
         VehicleMenu.OnIndexChange += OnVehicleIndexChange;
-
-
-
-
-
-        //purchaseMenu.AddItem(new UIMenuItem(cii.ModItemName, $"{cii.ModItemName} {formattedPurchasePrice}"));
     }
     private void AddPropEntry(MenuItem cii, ModItem myItem)
     {
@@ -623,6 +647,7 @@ public class PurchaseMenu : Menu
 
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
+        EntryPoint.WriteToConsole($"OnItemSelect {selectedItem.Text}", 5);
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
         MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         bool ExitAfterPurchase = false;
@@ -696,6 +721,15 @@ public class PurchaseMenu : Menu
                 }
             }
         }
+
+
+        else 
+        {
+            CreatePreview(selectedItem);
+        }
+
+
+
         //GameFiber.Sleep(500);
         //while (Player.IsPerformingActivity)
         //{
@@ -712,6 +746,7 @@ public class PurchaseMenu : Menu
     }
     private void OnIndexChange(UIMenu sender, int newIndex)
     {
+        EntryPoint.WriteToConsole($"OnIndexChange {sender.SubtitleText} {newIndex}", 5);
         if (newIndex != -1)
         {
             //UIMenuItem myMenu = sender.MenuItems[newIndex];
@@ -999,13 +1034,13 @@ public class PurchaseMenu : Menu
                 Vector3 Position = Vector3.Zero;
                 if (StoreCam.Exists())
                 {
-                    Position = StoreCam.Position + StoreCam.Direction / 2;
+                    Position = StoreCam.Position + StoreCam.Direction / 2f;
                 }
                 else
                 {
                     Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                     Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
-                    Position = GPCamPos + GPCamDir / 2;
+                    Position = GPCamPos + GPCamDir / 2f;
                 }
                 SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
                 if (SellingProp.Exists())
@@ -1015,15 +1050,15 @@ public class PurchaseMenu : Menu
                     float width = SellingProp.Model.Dimensions.Y;
                     if (StoreCam.Exists())
                     {
-                        Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 2f) + (StoreCam.Direction.ToNormalized() * length / 2);//
+                        Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 0.5f) + (StoreCam.Direction.ToNormalized() * length / 2f);//
                     }
                     else
                     {
                         Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                         Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
-                        Position = GPCamPos + (GPCamDir.ToNormalized() * 2f) + (GPCamDir.ToNormalized() * length / 2);
+                        Position = GPCamPos + (GPCamDir.ToNormalized() * 0.5f) + (GPCamDir.ToNormalized() * length / 2f);
                     }
-
+                    SellingProp.Position = Position;
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
                     if (SellingProp != null && SellingProp.Exists())
                     {
