@@ -5,6 +5,10 @@
     public int WantedSpawnChance { get; set; } = 0;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 6;
+    public int HealthMin { get; set; } = 85;
+    public int HealthMax { get; set; } = 125;
+    public int ArmorMin { get; set; } = 0;
+    public int ArmorMax { get; set; } = 50;
     public PedVariation RequiredVariation { get; set; }
     public bool CanCurrentlySpawn(int WantedLevel)
     {

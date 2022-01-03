@@ -487,16 +487,19 @@ public class Transaction : Interaction
             menuPool.ProcessMenus();
             if (!IsActivelyConversing && !IsAnyMenuVisible)
             {
+                EntryPoint.WriteToConsole("Transaction Dispose 1",5);
                 Dispose();
             }
             if(ModItemMenu.MenuItems.Count() == 1 && ModItemMenu.Visible)
             {
+                EntryPoint.WriteToConsole("Transaction Dispose 2", 5);
                 Dispose();
             }
             PurchaseMenu?.Update();
             SellMenu?.Update();
             GameFiber.Yield();
         }
+        EntryPoint.WriteToConsole("Transaction Dispose 3", 5);
         Dispose();
         GameFiber.Sleep(1000);
     }

@@ -144,13 +144,13 @@ namespace LosSantosRED.lsr
         private void CheckViolations()
         {
             CheckPedDamageCrimes();
-            //GameFiber.Yield();//TR Yield RemovedTest 1
+            GameFiber.Yield();//TR Yield RemovedTest 1, added 12
             CheckWeaponCrimes();
-            //GameFiber.Yield();//TR Yield RemovedTest 1
+           GameFiber.Yield();//TR Yield RemovedTest 1, added 12
             CheckTheftCrimes();
-            //GameFiber.Yield();//TR Yield RemovedTest 1
+            GameFiber.Yield();//TR Yield RemovedTest 1, added 12
             CheckOtherCrimes();
-            //GameFiber.Yield();//TR Yield RemovedTest 1
+            GameFiber.Yield();//TR Yield RemovedTest 1, added 12
         }
         private void AddViolating(Crime crime)
         {

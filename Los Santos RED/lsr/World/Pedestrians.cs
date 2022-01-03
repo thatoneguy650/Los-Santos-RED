@@ -366,6 +366,12 @@ public class Pedestrians
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
+        else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.RandomDrugDealPercent))
+        {
+            toAdd = ShopMenus.GetRanomdDrugMenu();
+        }
+
+
         Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
     }
     private void AddCop(Ped Pedestrian)
@@ -373,20 +379,9 @@ public class Pedestrians
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
+            SetCopStats(Pedestrian, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor));
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale));
             myCop.IssueWeapons(Weapons);
-            //if (Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips && Pedestrian.Exists())
-            //{
-            //    Blip myBlip = Pedestrian.AttachBlip();
-            //    myBlip.Color = AssignedAgency.Color;
-            //    myBlip.Scale = 0.6f;
-            //    string CopName = AssignedAgency.ID;
-            //    myBlip.Name = CopName;
-            //    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            //    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CopName);
-            //    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            //}
-            SetCopStats(Pedestrian);
             Police.Add(myCop);
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }
@@ -469,7 +464,7 @@ public class Pedestrians
            // NativeFunction.Natives.SET_DRIVER_ABILITY(Pedestrian, 100f);
         }
     }
-    private void SetCopStats(Ped Pedestrian)
+    private void SetCopStats(Ped Pedestrian, int health, int armor)
     {
         if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
         {
@@ -477,14 +472,12 @@ public class Pedestrians
         }
         if(Settings.SettingsManager.PoliceSettings.OverrideHealth)
         {
-            int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100;
-            Pedestrian.MaxHealth = DesiredHealth;
-            Pedestrian.Health = DesiredHealth;
+            Pedestrian.MaxHealth = health;
+            Pedestrian.Health = health;
         }
         if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
         {
-            int DesiredArmor = RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor);
-            Pedestrian.Armor = DesiredArmor;
+            Pedestrian.Armor = armor;
         }
         //NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         //NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);

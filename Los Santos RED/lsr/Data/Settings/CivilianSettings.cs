@@ -26,6 +26,7 @@ public class CivilianSettings
     public bool AllowCivilinsToCallPoliceOnOtherCivilians { get; set; } = true;
     public bool ShowRandomCriminalBlips { get; set; } = true;
     public float GangDrugDealPercentage { get; set; } = 40f;
+    public float RandomDrugDealPercent { get; set; } = 5f;
 
     public CivilianSettings()
     {

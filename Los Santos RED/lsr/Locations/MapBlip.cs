@@ -38,13 +38,13 @@ namespace LosSantosRED.lsr.Util.Locations
             {
                 MyLocationBlip.Sprite = BlipSprite;
             }
-            //else
-            //{
-            //    MyLocationBlip.Scale = 0.5f;
-            //}
+            else
+            {
+                MyLocationBlip.Scale = 0.5f;
+            }
 
 
-            MyLocationBlip.Scale = 0.5f;
+            //MyLocationBlip.Scale = 0.5f;
             MyLocationBlip.Color = Color.White;
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");

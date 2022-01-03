@@ -150,6 +150,10 @@ public class SpawnTask
             GameFiber.Yield();
             if (ped.Exists())
             {
+                int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
+                ped.MaxHealth = DesiredHealth;
+                ped.Health = DesiredHealth;
+                ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
                 ped.RandomizeVariation();
                 if (VehicleType != null && VehicleType.IsMotorcycle)

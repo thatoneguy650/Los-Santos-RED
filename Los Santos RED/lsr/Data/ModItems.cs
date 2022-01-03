@@ -660,7 +660,7 @@ public class ModItems : IModItems
 
 
         //Pistola
-        new ModItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false) { ModelItem = new PhysicalItem("weapon_pistol",0x1B06D571) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false) {  ModelItem = new PhysicalItem("weapon_pistol",0x1B06D571) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true) { ModelItem = new PhysicalItem("weapon_pistol_mk2",0xBFE256D4) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false) { ModelItem = new PhysicalItem("weapon_combatpistol",0x5EF9FEC4) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false) { ModelItem = new PhysicalItem("weapon_pistol50",0x99AEEB3B) { Type = ePhysicalItemType.Weapon }},

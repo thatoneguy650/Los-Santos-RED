@@ -66,6 +66,16 @@ public class PedSwap : IPedSwap
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
     }
+
+    public void RemoveOffset()
+    {
+        ResetOffsetForCurrentModel();
+    }
+    public void AddOffset()
+    {
+        SetPlayerOffset();
+    }
+
     public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
     {
         try

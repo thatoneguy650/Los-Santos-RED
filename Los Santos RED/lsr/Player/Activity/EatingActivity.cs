@@ -75,19 +75,20 @@ namespace LosSantosRED.lsr.Player
                     //modelToCreate.LoadAndWait();
                     //Food = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(Data.PropModelName), position.X, position.Y, position.Z, 0f);
                     Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                    if (Food.Exists())
+                    {
+                        Food.IsGravityDisabled = false;
+                    }
+                    else
+                    {
+                        IsCancelled = true;
+                    }
                 }
                 catch(Exception e)
                 {
                     Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
                 }
-                if (Food.Exists())
-                {
-                    Food.IsGravityDisabled = false;
-                }
-                else
-                {
-                    IsCancelled = true;
-                }
+
             }
         }
         private void Enter()

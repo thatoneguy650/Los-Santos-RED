@@ -16,6 +16,8 @@ public class PedSwapMenu : Menu
 
     //private UIMenu PedSwapCustomizeUIMenu;
     private UIMenuItem BecomeRandomCop;
+    private UIMenuItem AddOffset;
+    private UIMenuItem RemoveOffset;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
    // private PedSwapCustomMenu PedSwapCustomMenu;
@@ -67,10 +69,16 @@ public class PedSwapMenu : Menu
         BecomeRandomPed = new UIMenuItem("Become Random Pedestrian", "Becomes a random ped model.");
         BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian", "Becomes a customized ped from user input.");
         BecomeRandomCop = new UIMenuItem("Become Random Cop", "Becomes a random cop around the player (Alpha)");
+
+        AddOffset = new UIMenuItem("Add Offset", "Alias the current model name as a main character");
+        RemoveOffset = new UIMenuItem("Remove Offset", "Remove any aliasing");
+
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
         PedSwapUIMenu.AddItem(BecomeCustomPed);
         PedSwapUIMenu.AddItem(BecomeRandomCop);
+        PedSwapUIMenu.AddItem(AddOffset);
+        PedSwapUIMenu.AddItem(RemoveOffset);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -96,8 +104,14 @@ public class PedSwapMenu : Menu
         else if (selectedItem == BecomeCustomPed)
         {
             PedSwap.BecomeCustomPed();
-            //PedSwapCustomMenu.StartShit();
-            //PedSwapCustomMenu.Show();
+        }
+        else if (selectedItem == AddOffset)
+        {
+            PedSwap.AddOffset();
+        }
+        else if (selectedItem == RemoveOffset)
+        {
+            PedSwap.RemoveOffset();
         }
         PedSwapUIMenu.Visible = false;
     }

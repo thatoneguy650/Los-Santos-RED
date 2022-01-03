@@ -102,8 +102,10 @@ public class DebugMenu : Menu
 
 
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
-        Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
 
+
+
+        Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
 
 
 

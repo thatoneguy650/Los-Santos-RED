@@ -390,14 +390,54 @@ public class ShopMenus : IShopMenus
             new ShopMenu("DealerMenu","Toilet Dealer 2",new List<MenuItem>() {
                     new MenuItem("Toilet Cleaner",26, 5) { IsIllicilt = true } }),
             new ShopMenu("DealerMenu","Toilet Dealer 3",new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true } }),
+                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },
+                    new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true },
+                    new MenuItem("Brass Knuckles",200) { IsIllicilt = true },}),
+            new ShopMenu("DealerMenu","Toilet Dealer 4",new List<MenuItem>() {
+                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },
+                    new MenuItem("Shrewsbury 420 Sawed-Off",340) { IsIllicilt = true },
+                    new MenuItem("Brass Knuckles",200) { IsIllicilt = true },}),
+            new ShopMenu("DealerMenu","Toilet Dealer 53",new List<MenuItem>() {
+                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },
+                    new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true },
+                    new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },}),
 
             new ShopMenu("DealerMenu","SPANK Dealer 1",new List<MenuItem>() {
                     new MenuItem("SPANK", 45, 23) { IsIllicilt = true } }),
             new ShopMenu("DealerMenu","SPANK Dealer 2",new List<MenuItem>() {
                     new MenuItem("SPANK", 55, 25) { IsIllicilt = true } }),
             new ShopMenu("DealerMenu","SPANK Dealer 3",new List<MenuItem>() {
-                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true } }),
+                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
+                    new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
+                    new MenuItem("Combat Knife",120) { IsIllicilt = true },
+                    new MenuItem("Switchblade",300) { IsIllicilt = true },}),
+            new ShopMenu("DealerMenu","SPANK Dealer 4",new List<MenuItem>() {
+                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+            new ShopMenu("DealerMenu","SPANK Dealer 5",new List<MenuItem>() {
+                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
+                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
+
+
+            new ShopMenu("GunVendorMenu","Gun Vendor",new List<MenuItem>() {
+                new MenuItem("Shrewsbury 420 Sawed-Off",340) { IsIllicilt = true },
+                new MenuItem("Hawk & Little PTF092F",680) { IsIllicilt = true },
+                new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },
+                new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
+                new MenuItem("M61 Grenade",1000) { IsIllicilt = true },
+                new MenuItem("Baseball Bat",70) { IsIllicilt = true },
+                new MenuItem("Crowbar 2",35) { IsIllicilt = true },
+                new MenuItem("Golf Club",150) { IsIllicilt = true },
+                new MenuItem("Hammer 2",25) { IsIllicilt = true },
+                new MenuItem("Hatchet",80) { IsIllicilt = true },
+                new MenuItem("Brass Knuckles",200) { IsIllicilt = true },
+                new MenuItem("Combat Knife",120) { IsIllicilt = true },
+                new MenuItem("Machete",29) { IsIllicilt = true },
+                new MenuItem("Switchblade",300) { IsIllicilt = true },
+                new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true },
+                new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },
+                new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } 
+            }),
 
             //new ShopMenu("DealerMenu","Coke Dealer 1",new List<MenuItem>() {
             //        new MenuItem("Gram of Coke", 75, 23) { IsIllicilt = true }}),
@@ -745,8 +785,8 @@ public class ShopMenus : IShopMenus
 
 
                 //Pistola
-                new MenuItem("Hawk & Little PTF092F",550),
-                new MenuItem("Hawk & Little Thunder",650),
+                new MenuItem("Hawk & Little PTF092F",550) { Extras = new List<MenuItemExtra>() { new MenuItemExtra("Default Clip",0), new MenuItemExtra("Extended Clip", 300), new MenuItemExtra("Flashlight", 230), new MenuItemExtra("Suppressor", 550) },  },
+                new MenuItem("Hawk & Little Thunder",650) { Extras = new List<MenuItemExtra>() { new MenuItemExtra("Default Clip", 0), new MenuItemExtra("Extended Clip", 300), new MenuItemExtra("Flashlight", 230), new MenuItemExtra("Suppressor", 550) } },
                 new MenuItem("Hawk & Little Combat Pistol",950),
                 new MenuItem("Hawk & Little Desert Slug",1500),
                 new MenuItem("Hawk & Little 1919",1200),
