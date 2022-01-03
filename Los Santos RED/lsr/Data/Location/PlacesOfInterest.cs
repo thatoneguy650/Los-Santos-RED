@@ -619,7 +619,15 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
 
 
-
+                /*prop_vend_snak_01.yft candy vending machine
+        prop_vend_coffe_01.ydr coffee machine
+        prop_vend_condom_01.ydr condom machine, but up on wall
+        prop_vend_fags_01.ydr cigarette machine, but up on wall
+        prop_vend_soda_01.yft eCola machine
+        prop_vend_soda_02.yft sprunkmacine full
+        prop_vend_water_01.yft water machine full raine
+        prop_vend_fridge01.yft frigde with soda like at the ends of grocery store aisle
+        prop_gumball_01.yft 103 , 3 is most like gumba;ll, 2 is like those m& m machines with 3 items*/
 
 
 
@@ -648,7 +656,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-  
+
 }
 
 

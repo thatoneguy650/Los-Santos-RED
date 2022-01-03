@@ -995,23 +995,23 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_rayminigun", 50, WeaponCategory.Heavy, 4, 0xB62D1F67, false, true, false) { IsRegular = false });
 
         //Throwable
-        WeaponsList.Add(new WeaponInformation("weapon_grenade", 10, WeaponCategory.Throwable, 2, 0x93E220BD, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_grenade", 1, WeaponCategory.Throwable, 2, 0x93E220BD, false, false, false));
 
 
-        WeaponsList.Add(new WeaponInformation("weapon_bzgas", 10, WeaponCategory.Throwable, 2, 0xA0973D5E, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_molotov", 10, WeaponCategory.Throwable, 2, 0x24B17070, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_stickybomb", 10, WeaponCategory.Throwable, 2, 0x2C3731D9, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_proxmine", 10, WeaponCategory.Throwable, 2, 0xAB564B93, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_snowball", 10, WeaponCategory.Throwable, 2, 0x787F0BB, false, false, false) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_pipebomb", 10, WeaponCategory.Throwable, 2, 0xBA45E8B8, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_ball", 10, WeaponCategory.Throwable, 2, 0x23C9F95C, false, false, false) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_smokegrenade", 10, WeaponCategory.Throwable, 2, 0xFDBC8A50, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_flare", 10, WeaponCategory.Throwable, 2, 0x497FACC3, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_bzgas", 1, WeaponCategory.Throwable, 2, 0xA0973D5E, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_molotov", 1, WeaponCategory.Throwable, 2, 0x24B17070, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_stickybomb", 1, WeaponCategory.Throwable, 2, 0x2C3731D9, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_proxmine", 1, WeaponCategory.Throwable, 2, 0xAB564B93, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_snowball", 1, WeaponCategory.Throwable, 2, 0x787F0BB, false, false, false) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_pipebomb", 1, WeaponCategory.Throwable, 2, 0xBA45E8B8, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_ball", 1, WeaponCategory.Throwable, 2, 0x23C9F95C, false, false, false) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_smokegrenade", 1, WeaponCategory.Throwable, 2, 0xFDBC8A50, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_flare", 1, WeaponCategory.Throwable, 2, 0x497FACC3, false, false, false));
 
-        WeaponsList.Add(new WeaponInformation("weapon_petrolcan", 2, WeaponCategory.Misc, 0, 0x34A67B97, false, false, false));
-        WeaponsList.Add(new WeaponInformation("gadget_parachute", 10, WeaponCategory.Misc, 0, 0xFBAB5776, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_fireextinguisher", 10, WeaponCategory.Misc, 0, 0x060EC506, false, false, false));
-        WeaponsList.Add(new WeaponInformation("weapon_hazardcan", 10, WeaponCategory.Misc, 0, 0xBA536372, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_petrolcan", 1, WeaponCategory.Misc, 0, 0x34A67B97, false, false, false));
+        WeaponsList.Add(new WeaponInformation("gadget_parachute", 1, WeaponCategory.Misc, 0, 0xFBAB5776, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_fireextinguisher", 1, WeaponCategory.Misc, 0, 0x060EC506, false, false, false));
+        WeaponsList.Add(new WeaponInformation("weapon_hazardcan", 1, WeaponCategory.Misc, 0, 0xBA536372, false, false, false));
 
     }
 }

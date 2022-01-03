@@ -228,13 +228,13 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons);
+            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, true, World, Settings, this, Weapons);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);
+            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, true, this);//was IsUsingCustomCam before
             SellMenu.Setup();
             hasSellMenu = true;
         }

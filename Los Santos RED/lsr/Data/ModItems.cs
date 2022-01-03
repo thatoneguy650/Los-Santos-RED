@@ -107,20 +107,20 @@ public class ModItems : IModItems
             //Generic Tools
             new ModItem("Screwdriver","Might get you into some locked things") {
                 ModelItem = new PhysicalItem("prop_tool_screwdvr01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Screwdriver },
-            new ModItem("Hammer","3 Year guarantee as standard. EASI-GRIP handle. It's hammer time!") {
-                ModelItem = new PhysicalItem("prop_tool_hammer",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Hammer  },
+            //new ModItem("Hammer","3 Year guarantee as standard. EASI-GRIP handle. It's hammer time!") {
+            //    ModelItem = new PhysicalItem("prop_tool_hammer",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Hammer  },
             new ModItem("Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
                 ModelItem = new PhysicalItem("prop_tool_drill",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Drill  },
             new ModItem("Pliers","For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
                 ModelItem = new PhysicalItem("prop_tool_pliers",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Pliers  },
             new ModItem("Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.") {
                 ModelItem = new PhysicalItem("prop_tool_shovel",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Shovel  },
-            new ModItem("Wrench","What harm could a loose bolt have?") {
-                ModelItem = new PhysicalItem("prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Wrench   },
+            //new ModItem("Wrench","What harm could a loose bolt have?") {
+            //    ModelItem = new PhysicalItem("prop_tool_wrench",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Wrench   },
             new ModItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged") {
                 ModelItem = new PhysicalItem("p_cs_lighter_01",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)), ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.01f },
-            new ModItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.") {
-                ModelItem = new PhysicalItem("prop_ing_crowbar",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Crowbar  },
+            //new ModItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.") {
+            //    ModelItem = new PhysicalItem("prop_ing_crowbar",57005,new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) { IsLarge = true }, ToolType = ToolTypes.Crowbar  },
 
             new ModItem("Bong","Also known as a water pipe") {
                 ModelItem = new PhysicalItem("prop_bong_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), ToolType = ToolTypes.Bong } ,
@@ -425,11 +425,7 @@ public class ModItems : IModItems
             new ModItem("Empire Suite",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
             new ModItem("Monarch Suite",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
 
-
-
             //Generic
-
-
             //FancyDeli
             new ModItem("Chicken Club Salad",eConsumableType.Eat) {
                 PackageItem = new PhysicalItem("prop_food_bag1"), HealthGained = 20, ConsumeOnPurchase = true } ,
@@ -489,38 +485,6 @@ public class ModItems : IModItems
             new ModItem("Dakgogo Bokkeum Bap",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_ff_noodle_01",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), HealthGained = 20 } ,
 
-
-
-
-            //prop_cs_crackpipe.ydr
-            //prop_cs_coke_line.ydr
-            //prop_armour_pickup.ydr body armor
-
-
-            //prop_cs_steak.ydr steak!
-            //prop_turkey_leg_01.ydr TURKEY LEG!
-
-
-           //prop_weed_bottle.ydr
-
-            //p_cs_papers_01.ydr rolling papers closed
-            //p_cs_papers_02.ydr rolling papers open 
-            //p_cs_papers_03.ydr rolling papaers completemly closed
-
-            //p_ing_coffeecup_01.yft bean machine coffee
-            //p_ing_coffeecup_02.yft blank normal coffee cup
-
-            //ba_meth_smallbag.ydr
-            //bkr_prop_meth_openbag_01a.ydr same as above but open
-            //bkr_prop_weed_bag_01a.ydr might not have textures? probably does
-            //bkr_prop_weed_smallbag_01a.ydr might not have texutres?
-
-            //sf_prop_sf_bag_weed_01a.ydr regular weed closed with texures
-            //sf_prop_sf_bag_weed_open_01a.ydr ld organics bag, open
-
-            //p_meth_bag_01_s.ydr looks like small amount of white poweder in a platics bag, closed top
-            //prop_inhaler_01.ydr USE INHALER FOR SOME OF THESE
-
             //Weed
             new ModItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
@@ -568,96 +532,20 @@ public class ModItems : IModItems
             new ModItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'",eConsumableType.Ingest) {
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix", AmountPerPackage = 10 },
 
-
-
-            //new ModItem("White Widow Preroll",eConsumableType.Smoke) {
-            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            //new ModItem("OG Kush Preroll",eConsumableType.Smoke) {
-            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            //new ModItem("Northern Lights Preroll",eConsumableType.Smoke) {
-            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            //new ModItem("White Widow Gram",eConsumableType.None) {
-            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            //new ModItem("OG Kush Gram",eConsumableType.None) {
-            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-            //new ModItem("Northern Lights Gram",eConsumableType.None) {
-            //    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
-
-
-        //wrapped burger prop_food_bs_burg1
-        //wrapped sandwich prop_food_bs_burger2
-        //empty BS tray prop_food_bs_tray_01
-        //buirger fries BS Tray prop_food_bs_tray_02
-        //sandwich lettuce BS tray prop_food_bs_tray_03
-
-
-        //empty CB tray prop_food_cb_tray_01
-        //burger tray CB prop_food_cb_tray_02
-        //niugget tray CB prop_food_cb_tray_03
-
-
-
-        //generic bag 1 prop_food_bag1
-        //generic bag 2 prop_food_bag2
-        //generic wrapped burger prop_food_burg1
-        //generic wrapped sandwich prop_food_burg2
-        //generic burger box prop_food_burg3
-        //generic fries prop_food_chips
-        //generic coffee prop_food_coffee
-        //generic cup ecola1 prop_food_juice01
-        //generic cup ecola2 prop_food_juice02
-
-        //generic empty tray prop_food_tray_01
-        //geneir cburger tray prop_food_tray_02
-        //generic sandwich tray prop_food_tray_03
-
-
-        //generic red wine prop_wine_red
-        //generic wine bottle prop_wine_bot_01
-        //geneirc wine bottle prop_wine_bot_02
-        //generic wine rose prop_wine_rose
-        //generic wine white prop_wine_white
-        //generic wine red prop_wine_red
-
-        //packed cigarettes redwood prop_ld_fags_01
-        //packed cigarettes Debonaire prop_ld_fags_02
-
-
-        //packed redwood 1 v_ret_ml_cigs
-        //packed redwood 2 v_ret_ml_cigs2
-        //packed debonaire 1 v_ret_ml_cigs3
-        //packed debonaire 2 v_ret_ml_cigs4
-
-        //packed Caradique? v_ret_ml_cigs5
-        //packed 69 Brand v_ret_ml_cigs6
-
-        //generic single piull bottle prop_cs_pills
-
-        //Sandwiches
-
-
-
-
-        //PILLS
-
-            //ng_proc_drug01a002
-
-        //Guns
-
+        //WEAPONS
+        //Melee
         new ModItem("Baseball Bat","Aluminum baseball bat with leather grip. Lightweight yet powerful for all you big hitters out there.", false) { ModelItem = new PhysicalItem("weapon_bat",0x958A4A8F) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Crowbar 2","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false) { ModelItem = new PhysicalItem("weapon_crowbar",0x84BD7BFD) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false) { ModelItem = new PhysicalItem("weapon_crowbar",0x84BD7BFD) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Golf Club","Standard length, mid iron golf club with rubber grip for a lethal short game.", false) { ModelItem = new PhysicalItem("weapon_golfclub",0x440E4788) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Hammer 2","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false) { ModelItem = new PhysicalItem("weapon_hammer",0x4E875F73) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Hammer","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false) { ModelItem = new PhysicalItem("weapon_hammer",0x4E875F73) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hatchet","Add a good old-fashioned hatchet to your armory, and always have a back up for when ammo is hard to come by.", false) { ModelItem = new PhysicalItem("weapon_hatchet",0xF9DCBF2D) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Brass Knuckles","Perfect for knocking out gold teeth, or as a gift to the trophy partner who has everything.", false) { ModelItem = new PhysicalItem("weapon_knuckle",0xD8DF3C3C) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Combat Knife","This carbon steel 7 inch bladed knife is dual edged with a serrated spine to provide improved stabbing and thrusting capabilities.", false) { ModelItem = new PhysicalItem("weapon_knife",0x99B507EA) { Type = ePhysicalItemType.Weapon }},
-
         new ModItem("Machete","America's West African arms trade isn't just about giving. Rediscover the simple life with this rusty cleaver.", false) { ModelItem = new PhysicalItem("weapon_machete",0xDD5DF8D9) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Switchblade","From your pocket to hilt-deep in the other guy's ribs in under a second: folding knives will never go out of style.", false) { ModelItem = new PhysicalItem("weapon_switchblade",0xDFE37640) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Nightstick","24 inch polycarbonate side-handled nightstick.", false) { ModelItem = new PhysicalItem("weapon_nightstick",0x678B81B1) { Type = ePhysicalItemType.Weapon }},
-        new ModItem("Wrench 2","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false) { ModelItem = new PhysicalItem("weapon_wrench",0x19044EE0) { Type = ePhysicalItemType.Weapon }},
+        new ModItem("Wrench","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false) { ModelItem = new PhysicalItem("weapon_wrench",0x19044EE0) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Pool Cue","Ah, there's no sound as satisfying as the crack of a perfect break, especially when it's the other guy's spine.", false) { ModelItem = new PhysicalItem("weapon_poolcue",0x94117305) { Type = ePhysicalItemType.Weapon }},
-
 
         //Pistola
         new ModItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false) {  ModelItem = new PhysicalItem("weapon_pistol",0x1B06D571) { Type = ePhysicalItemType.Weapon }},
@@ -674,7 +562,6 @@ public class ModItems : IModItems
         new ModItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false) { ModelItem = new PhysicalItem("weapon_stungun",0x45CD9CF3) { Type = ePhysicalItemType.Weapon }},
         new ModItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true) { ModelItem = new PhysicalItem("weapon_vintagepistol",0x83839C4) { Type = ePhysicalItemType.Weapon }},
 
-
         //Shotgun
         new ModItem("Shrewsbury 420 Sawed-Off","This single-barrel, sawed-off shotgun compensates for its low range and ammo capacity with devastating efficiency in close combat.", false) { ModelItem = new PhysicalItem("weapon_sawnoffshotgun",0x7846A318) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Shrewsbury 420","Standard shotgun ideal for short-range combat. A high-projectile spread makes up for its lower accuracy at long range.", false) { ModelItem = new PhysicalItem("weapon_pumpshotgun",0x1D073A89) { Type = ePhysicalItemType.Weapon }},
@@ -685,8 +572,7 @@ public class ModItems : IModItems
         new ModItem("Toto 12 Guage Sawed-Off","Do one thing, do it well. Who needs a high rate of fire when your first shot turns the other guy into a fine mist?.", true) { ModelItem = new PhysicalItem("weapon_dbshotgun",0xEF951FBB) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Shrewsbury Defender","How many effective tools for riot control can you tuck into your pants? Ok, two. But this is the other one.", true) { ModelItem = new PhysicalItem("weapon_autoshotgun",0x12E82D3D) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Leotardo SPAZ-11","There's only one semi-automatic shotgun with a fire rate that sets the LSFD alarm bells ringing, and you're looking at it.", true) { ModelItem = new PhysicalItem("weapon_combatshotgun",0x5A96BA4) { Type = ePhysicalItemType.Weapon }},
-
-     
+    
         //SMG
         new ModItem("Shrewsbury Luzi","Combines compact design with a high rate of fire at approximately 700-900 rounds per minute.", false) { ModelItem = new PhysicalItem("weapon_microsmg",0x13532244) { Type = ePhysicalItemType.Weapon }},
         new ModItem("Hawk & Little MP6","This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false) { ModelItem = new PhysicalItem("weapon_smg",0x2BE6766B) { Type = ePhysicalItemType.Weapon }},
@@ -1330,3 +1216,105 @@ public class ModItems : IModItems
 
 }
 
+
+
+
+//prop_cs_crackpipe.ydr
+//prop_cs_coke_line.ydr
+//prop_armour_pickup.ydr body armor
+
+
+//prop_cs_steak.ydr steak!
+//prop_turkey_leg_01.ydr TURKEY LEG!
+
+
+//prop_weed_bottle.ydr
+
+//p_cs_papers_01.ydr rolling papers closed
+//p_cs_papers_02.ydr rolling papers open 
+//p_cs_papers_03.ydr rolling papaers completemly closed
+
+//p_ing_coffeecup_01.yft bean machine coffee
+//p_ing_coffeecup_02.yft blank normal coffee cup
+
+//ba_meth_smallbag.ydr
+//bkr_prop_meth_openbag_01a.ydr same as above but open
+//bkr_prop_weed_bag_01a.ydr might not have textures? probably does
+//bkr_prop_weed_smallbag_01a.ydr might not have texutres?
+
+//sf_prop_sf_bag_weed_01a.ydr regular weed closed with texures
+//sf_prop_sf_bag_weed_open_01a.ydr ld organics bag, open
+
+//p_meth_bag_01_s.ydr looks like small amount of white poweder in a platics bag, closed top
+//prop_inhaler_01.ydr USE INHALER FOR SOME OF THESE
+//new ModItem("White Widow Preroll",eConsumableType.Smoke) {
+//    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+//new ModItem("OG Kush Preroll",eConsumableType.Smoke) {
+//    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+//new ModItem("Northern Lights Preroll",eConsumableType.Smoke) {
+//    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)), AmountPerPackage = 5, IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+//new ModItem("White Widow Gram",eConsumableType.None) {
+//    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+//new ModItem("OG Kush Gram",eConsumableType.None) {
+//    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+//new ModItem("Northern Lights Gram",eConsumableType.None) {
+//    ModelItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)) },
+
+
+//wrapped burger prop_food_bs_burg1
+//wrapped sandwich prop_food_bs_burger2
+//empty BS tray prop_food_bs_tray_01
+//buirger fries BS Tray prop_food_bs_tray_02
+//sandwich lettuce BS tray prop_food_bs_tray_03
+
+
+//empty CB tray prop_food_cb_tray_01
+//burger tray CB prop_food_cb_tray_02
+//niugget tray CB prop_food_cb_tray_03
+
+
+
+//generic bag 1 prop_food_bag1
+//generic bag 2 prop_food_bag2
+//generic wrapped burger prop_food_burg1
+//generic wrapped sandwich prop_food_burg2
+//generic burger box prop_food_burg3
+//generic fries prop_food_chips
+//generic coffee prop_food_coffee
+//generic cup ecola1 prop_food_juice01
+//generic cup ecola2 prop_food_juice02
+
+//generic empty tray prop_food_tray_01
+//geneir cburger tray prop_food_tray_02
+//generic sandwich tray prop_food_tray_03
+
+
+//generic red wine prop_wine_red
+//generic wine bottle prop_wine_bot_01
+//geneirc wine bottle prop_wine_bot_02
+//generic wine rose prop_wine_rose
+//generic wine white prop_wine_white
+//generic wine red prop_wine_red
+
+//packed cigarettes redwood prop_ld_fags_01
+//packed cigarettes Debonaire prop_ld_fags_02
+
+
+//packed redwood 1 v_ret_ml_cigs
+//packed redwood 2 v_ret_ml_cigs2
+//packed debonaire 1 v_ret_ml_cigs3
+//packed debonaire 2 v_ret_ml_cigs4
+
+//packed Caradique? v_ret_ml_cigs5
+//packed 69 Brand v_ret_ml_cigs6
+
+//generic single piull bottle prop_cs_pills
+
+//Sandwiches
+
+
+
+
+//PILLS
+
+//ng_proc_drug01a002

@@ -156,7 +156,6 @@ namespace LosSantosRED.lsr
         public void AnnounceCrime(Crime crimeAssociated, CrimeSceneDescription reportInformation)
         {
             Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
-            
             if (ToAnnounce != null)
             {
                 if (!ToAnnounce.HasVeryRecentlyBeenPlayed && ((ToAnnounce.CanBeReportedMultipleTimes && ToAnnounce.TimesPlayed <= 2) || ToAnnounce.TimesPlayed == 0))
@@ -1000,10 +999,40 @@ namespace LosSantosRED.lsr
                 dispatchEvent.HasUnitAudio = true;
             }
         }
+        private void AddAttentionRandomUnit(DispatchEvent dispatchEvent)
+        {
+            dispatchEvent.SoundsToPlay.Add(RadioStart.PickRandom());
+            dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName,
+                                                                    attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
+            dispatchEvent.SoundsToPlay.Add(new List<string>() { car_code_composite.SevenEdwardSeven.FileName,
+                                                                    car_code_composite._1Adam13.FileName,
+                                                                    car_code_composite._1Adam5.FileName,
+                                                                    car_code_composite._1David4.FileName,
+                                                                    car_code_composite._2Edward5.FileName,
+                                                                    car_code_composite._2Edward6.FileName,
+                                                                    car_code_composite._2Lincoln8.FileName,
+                                                                    car_code_composite._3Lincoln12.FileName,
+                                                                    car_code_composite._3Lincoln2.FileName,
+                                                                    car_code_composite._4Mary5.FileName,
+                                                                    car_code_composite._6David6.FileName,
+                                                                    car_code_composite._7Edward14.FileName,
+                                                                    car_code_composite._8Lincoln5.FileName,
+                                                                    car_code_composite._8Mary7.FileName,
+                                                                    car_code_composite._9David1.FileName,
+                                                                    car_code_composite._9Lincoln15.FileName}.PickRandom());
+            dispatchEvent.SoundsToPlay.Add(RadioEnd.PickRandom());
+        }
         private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed)
         {
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
             DispatchEvent EventToPlay = new DispatchEvent();
+
+
+            if (DispatchToPlay == OfficerDown && DispatchToPlay.LatestInformation.InstancesObserved <= 1 && !Player.AnyPoliceCanSeePlayer)
+            {
+                AddAttentionRandomUnit(EventToPlay);
+                EntryPoint.WriteToConsole($"SCANNER EVENT: OFFICER DOWN ADDED NEW PREAMBLE", 3);
+            }
             if (DispatchToPlay.HasPreamble)
             {
                 EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
@@ -1290,7 +1319,7 @@ namespace LosSantosRED.lsr
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {
-            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
+             CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
             if (ToLookup != null && ToLookup.Dispatch != null)
             {
                 ToLookup.Dispatch.Priority = crimeAssociated.Priority;
