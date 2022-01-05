@@ -33,6 +33,8 @@ namespace LosSantosRED.lsr.Interface
         int CurrentSecondaryColor { get; set; }
         bool IsCustomizingPed { get; set; }
         string ModelName { get; set; }
+        bool CharacterModelIsFreeMode { get; }
+        List<ButtonPrompt> ButtonPrompts { get; }
 
         void SetUnarmed();
         void DisplayPlayerNotification();

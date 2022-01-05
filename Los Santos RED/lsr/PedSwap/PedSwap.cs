@@ -66,7 +66,6 @@ public class PedSwap : IPedSwap
         InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialModel;
     }
-
     public void RemoveOffset()
     {
         ResetOffsetForCurrentModel();
@@ -75,12 +74,12 @@ public class PedSwap : IPedSwap
     {
         SetPlayerOffset();
     }
-
     public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
     {
         try
         {
-            ResetOffsetForCurrentModel();
+            ResetOffsetForCurrentModel();           
+            EntryPoint.WriteToConsole($"modelName {TargetPed.Model.Name} TargetPedModelName.ToLower() {TargetPedModelName.ToLower()} Player.CurrentHeadBlendData {Player.CurrentHeadBlendData.shapeFirst}", 5);
             if (!TargetPed.Exists())
             {
                 return;
@@ -93,8 +92,9 @@ public class PedSwap : IPedSwap
             GiveHistory();
             if (headblendData != null)
             {
-                if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
+                if(Player.CharacterModelIsFreeMode)//if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
                 {
+                    EntryPoint.WriteToConsole($"BecomeExistingPed SETTING HEADBLEND DATA! {headblendData.shapeFirst} Player.Character.Model.Name {Game.LocalPlayer.Character.Model.Name}", 5);
                     Player.CurrentHeadBlendData = headblendData.Copy();
                     Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
                     Player.CurrentSecondaryColor = secondaryHairColor.Copy();
@@ -169,9 +169,10 @@ public class PedSwap : IPedSwap
     {   
         GameFiber.StartNew(delegate
         {
+            ResetOffsetForCurrentModel();
             Player.IsCustomizingPed = true;
             MenuPool menuPool = new MenuPool();
-            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this, Names);
+            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this, Names, Player);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
             GameFiber.Yield();
@@ -181,6 +182,10 @@ public class PedSwap : IPedSwap
                 GameFiber.Yield();
             }
             PedSwapCustomMenu.Dispose();
+            if (!PedSwapCustomMenu.ChoseNewModel)
+            {
+                AddOffset();
+            }
             Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
         

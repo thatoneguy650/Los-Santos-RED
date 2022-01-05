@@ -796,6 +796,20 @@ namespace Mod
                 }
             }
         }
+        public void SetHeadblend()
+        {
+            EntryPoint.WriteToConsole($"HEAD {CurrentHeadBlendData.shapeFirst} {CurrentHeadBlendData.shapeSecond} {CurrentHeadBlendData.shapeMix} {CurrentHeadBlendData.skinMix} {CurrentHeadBlendData.thirdMix}", 5);
+            NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, CurrentHeadBlendData.shapeFirst, CurrentHeadBlendData.shapeSecond, CurrentHeadBlendData.shapeThird, CurrentHeadBlendData.skinFirst, CurrentHeadBlendData.skinSecond, CurrentHeadBlendData.skinThird, CurrentHeadBlendData.shapeMix, CurrentHeadBlendData.skinMix, CurrentHeadBlendData.thirdMix, false);
+
+            EntryPoint.WriteToConsole($"HAIR {CurrentPrimaryHairColor} {CurrentSecondaryColor}", 5);
+            NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, CurrentPrimaryHairColor, CurrentSecondaryColor);
+            foreach (HeadOverlay ho in CurrentHeadOverlays)
+            {
+                EntryPoint.WriteToConsole($"OVERLAY {ho.OverlayID} {ho.Index} {ho.Opacity} {ho.PrimaryColor} {ho.SecondaryColor}", 5);
+                NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
+                NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
+            }
+        }
 
         //Updates
         public void Update()
@@ -1920,7 +1934,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
@@ -1929,7 +1943,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
         }
         public void OnVehicleCrashed()
         {
@@ -1938,7 +1952,7 @@ namespace Mod
             {
                 Scanner.OnVehicleCrashed();
             }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
         }
         public void OnVehicleStartedFire()
         {

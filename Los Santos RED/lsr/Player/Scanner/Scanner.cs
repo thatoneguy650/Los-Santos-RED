@@ -38,6 +38,7 @@ namespace LosSantosRED.lsr
         private Dispatch Mugging;
         private Dispatch NoFurtherUnitsNeeded;
         private Dispatch OfficerDown;
+        private Dispatch OfficerMIA;
         private Dispatch OfficerNeedsAssistance;
         private Dispatch Harassment;
         private Dispatch OfficersNeeded;
@@ -972,7 +973,7 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
-            if(!AddedZoneUnits && RandomItems.RandomPercent(30))
+            if(!AddedZoneUnits)
             {
                 dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName, 
                                                                     attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
@@ -1026,11 +1027,12 @@ namespace LosSantosRED.lsr
         {
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
             DispatchEvent EventToPlay = new DispatchEvent();
-
-
-            if (DispatchToPlay == OfficerDown && DispatchToPlay.LatestInformation.InstancesObserved <= 1 && !Player.AnyPoliceCanSeePlayer)
+            if (DispatchToPlay == OfficerDown && DispatchToPlay.LatestInformation.InstancesObserved == 0 && !Player.AnyPoliceCanSeePlayer)
             {
+                OfficerMIA.Priority = OfficerDown.Priority;
+                DispatchToPlay = OfficerMIA;
                 AddAttentionRandomUnit(EventToPlay);
+                EventToPlay.SoundsToPlay.Add("PAUSE");//gives a 1.5 second pause? maybe do this better?
                 EntryPoint.WriteToConsole($"SCANNER EVENT: OFFICER DOWN ADDED NEW PREAMBLE", 3);
             }
             if (DispatchToPlay.HasPreamble)
@@ -1393,6 +1395,13 @@ namespace LosSantosRED.lsr
                 {
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
+
+                        if(audioname == "PAUSE")
+                        {
+                            GameFiber.Sleep(1500);
+                        }
+
+
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
                         if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
                         {
@@ -1505,9 +1514,9 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AcriticalsituationOfficerdown.FileName },"we have a critical situation, officer down"),
-                new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AnofferdownpossiblyKIA.FileName },"we have an officer down, possibly KIA"),
+               // new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AnofferdownpossiblyKIA.FileName },"we have an officer down, possibly KIA"),
                 new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.Anofficerdown.FileName },"we have an officer down"),
-                new AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officer_down.Anofficerdownconditionunknown.FileName },"we have an officer down, condition unknown"),
+               // new AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officer_down.Anofficerdownconditionunknown.FileName },"we have an officer down, condition unknown"),
             },
                 SecondaryAudioSet = new List<AudioSet>()
             {
@@ -1526,12 +1535,38 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officers_down.Severalofficersdown.FileName },"we have several officers down"),
             },
             };
+
+
+            OfficerMIA = new Dispatch()
+            {
+                Name = "Officer MIA",
+                IncludeAttentionAllUnits = true,
+                ResultsInLethalForce = true,
+
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AnofferdownpossiblyKIA.FileName },"we have an officer down, possibly KIA"),
+                new AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officer_down.Anofficerdownconditionunknown.FileName },"we have an officer down, condition unknown"),
+            },
+                SecondaryAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { dispatch_respond_code.AllunitsrespondCode99.FileName },"all units repond code-99"),
+                new AudioSet(new List<string>() { dispatch_respond_code.AllunitsrespondCode99emergency.FileName },"all units repond code-99 emergency"),
+                new AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName },"code-99 all units repond"),
+                new AudioSet(new List<string>() { custom_wanted_level_line.Code99allavailableunitsconvergeonsuspect.FileName },"code-99 all available units converge on suspect"),
+                new AudioSet(new List<string>() { custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName },"we have a 10-99  all available units repond"),
+                new AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName },"code-99 all units respond"),
+                new AudioSet(new List<string>() { dispatch_respond_code.EmergencyallunitsrespondCode99.FileName },"emergency all units respond code-99"),
+                new AudioSet(new List<string>() { escort_boss.Immediateassistancerequired.FileName },"immediate assistance required"),
+            },
+            };
             ShotsFiredAtAnOfficer = new Dispatch()
             {
                 Name = "Shots Fired at an Officer",
                 IncludeAttentionAllUnits = true,
                 ResultsInLethalForce = true,
-                LocationDescription = LocationSpecificity.StreetAndZone,
+                LocationDescription = LocationSpecificity.Street,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName },"shots fired at an officer"),

@@ -548,6 +548,12 @@ public class Chase : ComplexTask
             if (IsFirstRun)
             {
                 NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+
+
+
+
+
+
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
                 if (Ped.IsInHelicopter)
@@ -563,20 +569,31 @@ public class Chase : ComplexTask
                     if (ShouldChaseRecklessly && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
                     {
                         IsChasingRecklessly = true;
-                        unsafe
-                        {
-                            int lol = 0;
-                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
-                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                        }
+                        NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+                        NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                        //unsafe
+                        //{
+                        //    int lol = 0;
+                        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        //    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        //}
                     }
                     else
                     {
                         IsChasingRecklessly = false;
+                        if (Player.WantedLevel < 3)
+                        {
+                            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+                            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+                        }
+                        else if (Player.WantedLevel >= 3)
+                        {
+                            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, true);
+                        }
                         NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
                     }
                 }
@@ -592,20 +609,31 @@ public class Chase : ComplexTask
                         if (ShouldChaseRecklessly && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
                         {
                             IsChasingRecklessly = true;
-                            unsafe
-                            {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                            }
+                            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+                            NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+                            //unsafe
+                            //{
+                            //    int lol = 0;
+                            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            //    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                            //}
                         }
                         else
                         {
                             IsChasingRecklessly = false;
+                            if(Player.WantedLevel < 3)
+                            {
+                                NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 8f);
+                                NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+                            }
+                            else if (Player.WantedLevel >= 3)
+                            {
+                                NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, true);
+                            }
                             NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
                         }
                     }
