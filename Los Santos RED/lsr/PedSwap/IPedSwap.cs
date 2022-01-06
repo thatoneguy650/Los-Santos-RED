@@ -10,14 +10,20 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPedSwap
     {
-        void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays);
+        void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation);
+        void BecomeSamePed(string modelName, PedVariation variation);
+
+
+
+
+
         void BecomeExistingPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
         void BecomeRandomPed();
         void BecomeRandomCop();
         void BecomeCustomPed();
-        void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays);
+        void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation);
         void RemoveOffset();
         void AddOffset();
-        void BecomeSamePed(Ped pedModel, HeadBlendData headBlendData, int currentSelectedPrimaryHairColor, int currentSelectedSecondaryHairColor, List<HeadOverlay> headOverlays);
+
     }
 }

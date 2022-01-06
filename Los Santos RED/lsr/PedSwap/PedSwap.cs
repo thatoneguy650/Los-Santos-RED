@@ -18,6 +18,33 @@ public class PedSwap : IPedSwap
     private IWeapons Weapons;
     private ICrimes Crimes;
     private INameProvideable Names;
+    private CustomizePedMenu PedSwapCustomMenu;
+
+
+
+    private Model InitialPlayerModel;
+    private PedVariation InitialPlayerVariation;
+
+    private Model CurrentModelPlayerIs;
+
+
+    private Ped CurrentPed;
+    private Vector3 CurrentPedPosition;
+    private bool CurrentPedIsDead;
+    private bool CurrentPedIsBusted;
+    private string CurrentPedName;
+    private Vehicle CurrentPedVehicle;
+    private int CurrentPedVehicleSeat;
+
+    private PedVariation TargetPedVariation;
+    private bool TargetPedIsMale;
+    private string TargetPedModelName;
+    private Model TargetPedModel;
+    private RelationshipGroup TargetPedRelationshipGroup;
+    private bool TargetPedInVehicle;
+    private Vector3 TargetPedPosition;
+    private bool TargetPedUsingScenario;
+    private Vehicle TargetPedVehicle;
     public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons  weapons, ICrimes crimes, INameProvideable names)
     {
         World = world;
@@ -28,43 +55,12 @@ public class PedSwap : IPedSwap
         Crimes = crimes;
         Names = names;
     }
-    private Ped CurrentPed;
-    private Vector3 CurrentPedPosition;
-    private bool CurrentPedIsDead;
-    private bool CurrentPedIsBusted;
-    private string CurrentPedName;
-    private PedVariation TargetPedVariation;
-    private bool TargetPedIsMale;
-    //private string LastModelHash;
-    private string TargetPedModelName;
-    private Model TargetPedModel;
-    private RelationshipGroup TargetPedRelationshipGroup;
-    private bool TargetPedAlreadyTakenOver;
-    private uint TargetPedHash;
-    private bool TargetPedInVehicle;
-    private Vector3 TargetPedPosition;
-    private bool TargetPedUsingScenario;
-    private Vehicle TargetPedVehicle;
-    private PedVariation InitialVariation;
-    
-    private Vehicle CurrentPedVehicle;
-    private int CurrentPedVehicleSeat;
-    
-    private Model InitialModel;
-    private Model CurrentModelPlayerIs;
-    private Camera CharCam;
-    private Vector3 PreviousPos;
-    private Model ModelSelected;
-    private Ped PedModel;
-    private PedSwapCustomMenu PedSwapCustomMenu;
-
     public int CurrentPedMoney { get; private set; }
-    public uint OwnedVehicleHandle { get; private set; }
     public void Setup()
     {
-        InitialModel = Game.LocalPlayer.Character.Model;
-        InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
-        CurrentModelPlayerIs = InitialModel;
+        InitialPlayerModel = Game.LocalPlayer.Character.Model;
+        InitialPlayerVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+        CurrentModelPlayerIs = InitialPlayerModel;
     }
     public void RemoveOffset()
     {
@@ -73,100 +69,6 @@ public class PedSwap : IPedSwap
     public void AddOffset()
     {
         SetPlayerOffset();
-    }
-    public void BecomeExistingPed(Ped TargetPed, string fullName, int money, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
-    {
-        try
-        {
-            ResetOffsetForCurrentModel();           
-            EntryPoint.WriteToConsole($"modelName {TargetPed.Model.Name} TargetPedModelName.ToLower() {TargetPedModelName.ToLower()} Player.CurrentHeadBlendData {Player.CurrentHeadBlendData.shapeFirst}", 5);
-            if (!TargetPed.Exists())
-            {
-                return;
-            }
-            StoreTargetPedData(TargetPed);
-            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.IsCop = false;
-            HandlePreviousPed(true);
-            PostTakeover(CurrentModelPlayerIs.Name, false, fullName, money);
-            GiveHistory();
-            if (headblendData != null)
-            {
-                if(Player.CharacterModelIsFreeMode)//if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
-                {
-                    EntryPoint.WriteToConsole($"BecomeExistingPed SETTING HEADBLEND DATA! {headblendData.shapeFirst} Player.Character.Model.Name {Game.LocalPlayer.Character.Model.Name}", 5);
-                    Player.CurrentHeadBlendData = headblendData.Copy();
-                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
-                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
-                    Player.CurrentHeadOverlays = headOverlays.Copy();
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
-                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
-                    foreach (HeadOverlay ho in headOverlays)
-                    {
-                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
-                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
-                    }
-                }
-            }
-        }
-        catch (Exception e3)
-        {
-            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
-        }
-    }
-    public void BecomeSamePed(Ped TargetPed, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
-    {
-        try
-        {
-           // ResetOffsetForCurrentModel();
-            EntryPoint.WriteToConsole($"modelName {TargetPed.Model.Name} TargetPedModelName.ToLower() {TargetPedModelName.ToLower()} Player.CurrentHeadBlendData {Player.CurrentHeadBlendData.shapeFirst}", 5);
-            if (!TargetPed.Exists())
-            {
-                return;
-            }
-            StoreTargetPedData(TargetPed);
-            //NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.IsCop = false;
-
-            Player.ModelName = TargetPedModel.Name;
-            Player.CurrentModelVariation = TargetPedVariation;
-
-
-            // HandlePreviousPed(true);
-            //NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
-            {
-                SetPlayerOffset();
-                NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
-                NativeHelper.ChangeModel(CurrentModelPlayerIs.Name);
-            }
-            if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-            {
-                TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-            }
-            if (headblendData != null)
-            {
-                if (Player.CharacterModelIsFreeMode)//if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
-                {
-                    EntryPoint.WriteToConsole($"BecomeExistingPed SETTING HEADBLEND DATA! {headblendData.shapeFirst} Player.Character.Model.Name {Game.LocalPlayer.Character.Model.Name}", 5);
-                    Player.CurrentHeadBlendData = headblendData.Copy();
-                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
-                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
-                    Player.CurrentHeadOverlays = headOverlays.Copy();
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
-                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
-                    foreach (HeadOverlay ho in headOverlays)
-                    {
-                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
-                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
-                    }
-                }
-            }
-        }
-        catch (Exception e3)
-        {
-            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
-        }
     }
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
@@ -226,7 +128,7 @@ public class PedSwap : IPedSwap
             ResetOffsetForCurrentModel();
             Player.IsCustomizingPed = true;
             MenuPool menuPool = new MenuPool();
-            PedSwapCustomMenu = new PedSwapCustomMenu(menuPool, PedModel, this, Names, Player);
+            PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
             GameFiber.Yield();
@@ -274,7 +176,74 @@ public class PedSwap : IPedSwap
         Entities.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons);
     }
-    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
+    private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
+    {
+        NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            SetPlayerOffset();
+            NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+            NativeHelper.ChangeModel(ModelToChange);
+        }
+        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+        {
+            TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
+        }
+        if (TargetPedInVehicle)
+        {
+            if (TargetPedVehicle.Exists())
+            {
+                Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
+                NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
+            }
+            VehicleExt NewVehicle = Entities.GetVehicleExt(TargetPedVehicle);
+            if (NewVehicle != null)
+            {
+                NewVehicle.IsStolen = false;
+                if (NewVehicle.Vehicle.Exists())
+                {
+                    Player.TakeOwnershipOfVehicle(NewVehicle);
+                    NewVehicle.Vehicle.IsStolen = false;
+                }
+            }
+        }
+        else
+        {
+            Player.ClearVehicleOwnership();
+            Game.LocalPlayer.Character.IsCollisionEnabled = true;
+        }
+        if (setRandomDemographics)
+        {
+            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale);
+        }
+        else
+        {
+            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
+        }
+        Player.ModelName = TargetPedModel.Name;
+        Player.CurrentModelVariation = TargetPedVariation;
+        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+        NativeFunction.Natives.x80C8B1846639BB19(0);
+        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
+        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        {
+            Game.TimeScale = 1f;
+        }
+        NativeFunction.Natives.xB4EDDC19532BFB85();
+        Game.HandleRespawn();
+        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
+        NativeFunction.Natives.xC0AA53F866B3134D();
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+        ActivatePreviousScenarios();
+        Player.SetUnarmed();
+        World.UnPauseTime();
+        GameFiber.Wait(50);
+        Player.DisplayPlayerNotification();
+    }
+    public void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation)
     {
         try
         {
@@ -286,43 +255,108 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            if (variation != null)
-            {
-                variation.ReplacePedComponentVariation(TargetPed);
-            }
+            World.PauseTime();
+            CurrentPed = Game.LocalPlayer.Character;
+            CurrentModelPlayerIs = TargetPed.Model;
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
-            StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
             HandlePreviousPed(true);
-            PostTakeover(CurrentModelPlayerIs.Name, false, playerName, money);
-            if (headblendData != null)
+            PostLoad(modelName, false, playerName, money, variation);
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+    public void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation)
+    {
+        try
+        {
+            ResetOffsetForCurrentModel();
+            if (!TargetPed.Exists())
             {
-                if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
-                {
-                    Player.CurrentHeadBlendData = headblendData.Copy();
-                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
-                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
-                    Player.CurrentHeadOverlays = headOverlays.Copy();
-
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
-                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
-                    foreach (HeadOverlay ho in headOverlays)
-                    {
-                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
-                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
-                    }
-
-                }
+                return;
+            }
+            World.PauseTime();
+            CurrentPed = Game.LocalPlayer.Character;
+            CurrentModelPlayerIs = TargetPed.Model;
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            Player.IsCop = false;
+            HandlePreviousPed(true);
+            PostLoad(modelName, false, fullName, money, variation);
+            GiveHistory();
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+    public void BecomeSamePed(string modelName, PedVariation variation)
+    {
+        try
+        { 
+            Player.IsCop = false;
+            Player.ModelName = modelName;
+            Player.CurrentModelVariation = variation.Copy();
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+            {
+                SetPlayerOffset();
+                NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+                NativeHelper.ChangeModel(modelName);
+            }
+            if (variation != null)
+            {
+                variation.ApplyToPed(Game.LocalPlayer.Character);
             }
         }
         catch (Exception e3)
         {
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
+    }
+    private void PostLoad(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, PedVariation variation)
+    {
+        NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
+        bool isMale = Game.LocalPlayer.Character.IsMale;
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            SetPlayerOffset();
+            NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+            NativeHelper.ChangeModel(ModelToChange);
+        }
+        variation.ApplyToPed(Game.LocalPlayer.Character);
+        if (setRandomDemographics)
+        {
+            EntryPoint.ModController.NewPlayer(ModelToChange, isMale);
+        }
+        else
+        {
+            EntryPoint.ModController.NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign);
+        }
+        Player.ModelName = ModelToChange;
+        Player.CurrentModelVariation = variation.Copy();
+        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+        NativeFunction.Natives.x80C8B1846639BB19(0);
+        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
+        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        {
+            Game.TimeScale = 1f;
+        }
+        NativeFunction.Natives.xB4EDDC19532BFB85();
+        Game.HandleRespawn();
+        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
+        NativeFunction.Natives.xC0AA53F866B3134D();
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        Player.SetUnarmed();
+        World.UnPauseTime();
+        GameFiber.Wait(50);
+        Player.DisplayPlayerNotification();
     }
     private void ResetOffsetForCurrentModel()
     {
@@ -418,11 +452,11 @@ public class PedSwap : IPedSwap
        // ResetExistingModelHash();
 
 
-        NativeHelper.ChangeModel(InitialModel.Name);
-        InitialVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+        NativeHelper.ChangeModel(InitialPlayerModel.Name);
+        InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
-            SetPlayerOffset(InitialModel.Hash);
+            SetPlayerOffset(InitialPlayerModel.Hash);
         }
         if (Car.Exists() && WasInCar)
         {
@@ -499,8 +533,6 @@ public class PedSwap : IPedSwap
         TargetPedVariation = NativeHelper.GetPedVariation(TargetPed);
         TargetPedPosition = TargetPed.Position;
         TargetPedRelationshipGroup = TargetPed.RelationshipGroup;
-        TargetPedAlreadyTakenOver = false;
-        TargetPedHash = TargetPed.Model.Hash;
         World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
@@ -607,86 +639,6 @@ public class PedSwap : IPedSwap
             }
         }
         FormerPlayer.IsPersistent = false;
-    }
-    private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
-    {
-        NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
-        {
-            SetPlayerOffset();
-            NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
-            NativeHelper.ChangeModel(ModelToChange);
-        }
-
-        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-        {
-            TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        }
-
-        if (TargetPedInVehicle)
-        {  
-            if (TargetPedVehicle.Exists())
-            {
-                Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-                NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
-            }
-            VehicleExt NewVehicle = Entities.GetVehicleExt(TargetPedVehicle);
-            if (NewVehicle != null)
-            {
-                NewVehicle.IsStolen = false;
-                if (NewVehicle.Vehicle.Exists())
-                {
-                    Player.TakeOwnershipOfVehicle(NewVehicle);
-                    NewVehicle.Vehicle.IsStolen = false;
-                }
-            }
-            //Player.UpdateCurrentVehicle();
-            //if(Player.CurrentVehicle != null)
-            //{
-            //    Player.CurrentVehicle.IsStolen = false;
-            //    if (Player.CurrentVehicle.Vehicle.Exists())
-            //    {
-            //        Player.TakeOwnershipOfVehicle(Player.CurrentVehicle);
-            //        //Player.OwnedVehicleHandle = Player.CurrentVehicle.Vehicle.Handle;
-            //        Player.CurrentVehicle.Vehicle.IsStolen = false;
-            //    }
-            //}
-        }
-        else
-        {
-            Player.ClearVehicleOwnership();
-            Game.LocalPlayer.Character.IsCollisionEnabled = true;
-        }
-        if(setRandomDemographics)
-        {
-            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale);
-        }
-        else
-        {
-            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
-        }
-        Player.ModelName = TargetPedModel.Name;
-        Player.CurrentModelVariation = TargetPedVariation;
-        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-        NativeFunction.Natives.x80C8B1846639BB19(0);
-        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
-        {
-            Game.TimeScale = 1f;
-        }
-        NativeFunction.Natives.xB4EDDC19532BFB85();
-        Game.HandleRespawn();
-        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
-        NativeFunction.Natives.xC0AA53F866B3134D();
-        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-        ActivatePreviousScenarios();
-        Player.SetUnarmed();
-        World.UnPauseTime();
-        GameFiber.Wait(50);
-        Player.DisplayPlayerNotification();
     }
     private void ActivatePreviousScenarios()
     {
@@ -798,41 +750,6 @@ public class PedSwap : IPedSwap
 
 
         
-        //unsafe
-        //{
-        //    var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
-        //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
-        //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
-        //}
-    }
-    private void SetPlayerOffsetOld()
-    {
-        ////i have no idea how this works
-        const int WORLD_OFFSET = 8;
-        const int SECOND_OFFSET = 0x20;
-        const int THIRD_OFFSET = 0x18;
-
-        Memory GTA = new Memory("GTA5");
-        UInt64 WorldFlirtPointer = GTA.PointerScan("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07");
-        UInt64 World = GTA.ReadRelativeAddress(WorldFlirtPointer);
-        UInt64 Player = GTA.Read<UInt64>(World, new int[] { WORLD_OFFSET });
-        UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
-        UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
-
-        if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Michael")
-        {
-            GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
-        }
-        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Franklin")
-        {
-            GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
-        }
-        else if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Trevor")
-        {
-            GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
-        }
-
-        //bigbruh in discord, supplied the below, seems to work just fine
         //unsafe
         //{
         //    var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;

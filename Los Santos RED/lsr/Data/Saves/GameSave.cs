@@ -35,7 +35,7 @@ namespace LosSantosRED.lsr.Data
             ModelName = player.ModelName;
             Money = player.Money;
             IsMale = player.IsMale;
-            CurrentModelVariation = player.CurrentModelVariation;
+            CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
             InventoryItems.Clear();
             foreach (InventoryItem cii in player.Inventory.Items)
@@ -46,10 +46,10 @@ namespace LosSantosRED.lsr.Data
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
-            CurrentHeadBlendData = player.CurrentHeadBlendData;
-            CurrentPrimaryHairColor = player.CurrentPrimaryHairColor;
-            CurrentSecondaryColor = player.CurrentSecondaryColor;
-            CurrentHeadOverlays = player.CurrentHeadOverlays;
+            //CurrentHeadBlendData = player.CurrentHeadBlendData;
+            //CurrentPrimaryHairColor = player.CurrentPrimaryHairColor;
+            //CurrentSecondaryColor = player.CurrentSecondaryColor;
+            //CurrentHeadOverlays = player.CurrentHeadOverlays;
             if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
             {
                 int primaryColor;
@@ -65,17 +65,20 @@ namespace LosSantosRED.lsr.Data
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-        public int CurrentPrimaryHairColor { get; set; }
-        public int CurrentSecondaryColor { get; set; }
-        public List<HeadOverlay> CurrentHeadOverlays { get; set; }
-        public HeadBlendData CurrentHeadBlendData { get; set; }
+        //public int CurrentPrimaryHairColor { get; set; }
+        //public int CurrentSecondaryColor { get; set; }
+        //public List<HeadOverlayData> CurrentHeadOverlays { get; set; }
+        //public HeadBlendData CurrentHeadBlendData { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public VehicleVariation OwnedVehicleVariation { get; set; }
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World)
         {
-            pedSwap.BecomeSavedPed(PlayerName, IsMale, Money, ModelName, CurrentModelVariation, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+            pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+
+
+
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {
@@ -89,11 +92,17 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
+
+
+
             player.Inventory.Clear();
             foreach (InventoryItem cii in InventoryItems)
             {
                 player.Inventory.Add(cii.ModItem, cii.Amount);
             }
+
+
+
 
             if(OwnedVehicleVariation != null)
             {

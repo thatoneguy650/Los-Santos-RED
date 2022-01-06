@@ -16,10 +16,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsMale { get; }
         int Money { get; }
         Inventory Inventory { get; set; }
-        HeadBlendData CurrentHeadBlendData { get; }
-        List<HeadOverlay> CurrentHeadOverlays { get; }
-        int CurrentPrimaryHairColor { get; }
-        int CurrentSecondaryColor { get; }
+        //HeadBlendData CurrentHeadBlendData { get; }
+        //List<HeadOverlayData> CurrentHeadOverlays { get; }
+        //int CurrentPrimaryHairColor { get; }
+        //int CurrentSecondaryColor { get; }
         VehicleExt OwnedVehicle { get; }
     }
 }

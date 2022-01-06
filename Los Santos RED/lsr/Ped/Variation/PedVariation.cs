@@ -7,46 +7,72 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 [Serializable]
-   public class PedVariation
+public class PedVariation
+{
+    public PedVariation()
     {
 
-        public PedVariation()
-        {
-
-        }
-
+    }
     public PedVariation(List<PedPropComponent> _MyPedProps)
     {
-        MyPedProps = _MyPedProps;
+        Props = _MyPedProps;
     }
     public PedVariation(List<PedComponent> _MyPedComponents)
     {
-        MyPedComponents = _MyPedComponents;
+        Components = _MyPedComponents;
     }
-
     public PedVariation(List<PedComponent> _MyPedComponents, List<PedPropComponent> _MyPedProps)
     {
-        MyPedComponents = _MyPedComponents;
-        MyPedProps = _MyPedProps;
+        Components = _MyPedComponents;
+        Props = _MyPedProps;
     }
-    public List<PedComponent> MyPedComponents = new List<PedComponent>();
-    public List<PedPropComponent> MyPedProps = new List<PedPropComponent>();
-    public void ReplacePedComponentVariation(Ped myPed)
+    public PedVariation(List<PedComponent> _MyPedComponents, List<PedPropComponent> _MyPedProps, List<HeadOverlayData> headOverlays, HeadBlendData headBlendData, int primaryHairColor, int secondaryHairColor)
+    {
+        Components = _MyPedComponents;
+        Props = _MyPedProps;
+        HeadOverlays = headOverlays;
+        HeadBlendData = headBlendData;
+        PrimaryHairColor = primaryHairColor;
+        SecondaryHairColor = secondaryHairColor;
+    }
+    public List<PedComponent> Components { get; set; } = new List<PedComponent>();
+    public List<PedPropComponent> Props { get; set; } = new List<PedPropComponent>();
+    public List<HeadOverlayData> HeadOverlays { get; set; } = new List<HeadOverlayData>();
+    public HeadBlendData HeadBlendData { get; set; } = new HeadBlendData();
+    public int PrimaryHairColor { get; set; } = -1;
+    public int SecondaryHairColor { get; set; } = -1;
+    public void ApplyToPed(Ped ped)
     {
         try
         {
-            foreach (PedComponent Component in MyPedComponents)
+            NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+            foreach (PedComponent Component in Components)
             {
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
             }
-            foreach (PedPropComponent Prop in MyPedProps)
+            NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
+            foreach (PedPropComponent Prop in Props)
             {
-                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+                NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+            }
+            //Freemode only below
+            if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
+            {
+                NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix, false);
+                if (PrimaryHairColor != -1 && SecondaryHairColor != -1)
+                {
+                    NativeFunction.Natives.x4CFFC65454C93A49(ped, PrimaryHairColor, SecondaryHairColor);
+                }
+                foreach (HeadOverlayData headOverlayData in HeadOverlays)
+                {
+                    NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
+                    NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
+                }
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            //EntryPoint.WriteToConsole("ReplacePedComponentVariation Error; " + e.Message);
+            EntryPoint.WriteToConsole($"ReplacePedComponentVariation Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
 }

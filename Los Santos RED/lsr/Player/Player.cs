@@ -133,10 +133,10 @@ namespace Mod
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
         public PedVariation CurrentModelVariation { get; set; }
-        public int CurrentPrimaryHairColor { get; set; }
-        public int CurrentSecondaryColor { get; set; }
-        public List<HeadOverlay> CurrentHeadOverlays { get; set; }
-        public HeadBlendData CurrentHeadBlendData { get; set; }
+        //public int CurrentPrimaryHairColor { get; set; }
+        //public int CurrentSecondaryColor { get; set; }
+        //public List<HeadOverlayData> CurrentHeadOverlays { get; set; }
+        //public HeadBlendData CurrentHeadBlendData { get; set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public PedExt CurrentTargetedPed { get; private set; }
@@ -794,20 +794,6 @@ namespace Mod
                 {
                     AddHealth(toAdd.HealthGained);
                 }
-            }
-        }
-        public void SetHeadblend()
-        {
-            EntryPoint.WriteToConsole($"HEAD {CurrentHeadBlendData.shapeFirst} {CurrentHeadBlendData.shapeSecond} {CurrentHeadBlendData.shapeMix} {CurrentHeadBlendData.skinMix} {CurrentHeadBlendData.thirdMix}", 5);
-            NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, CurrentHeadBlendData.shapeFirst, CurrentHeadBlendData.shapeSecond, CurrentHeadBlendData.shapeThird, CurrentHeadBlendData.skinFirst, CurrentHeadBlendData.skinSecond, CurrentHeadBlendData.skinThird, CurrentHeadBlendData.shapeMix, CurrentHeadBlendData.skinMix, CurrentHeadBlendData.thirdMix, false);
-
-            EntryPoint.WriteToConsole($"HAIR {CurrentPrimaryHairColor} {CurrentSecondaryColor}", 5);
-            NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, CurrentPrimaryHairColor, CurrentSecondaryColor);
-            foreach (HeadOverlay ho in CurrentHeadOverlays)
-            {
-                EntryPoint.WriteToConsole($"OVERLAY {ho.OverlayID} {ho.Index} {ho.Opacity} {ho.PrimaryColor} {ho.SecondaryColor}", 5);
-                NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
-                NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
             }
         }
 

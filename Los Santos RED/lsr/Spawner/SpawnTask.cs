@@ -167,7 +167,7 @@ public class SpawnTask
                 }
                 if (PersonType.RequiredVariation != null)
                 {
-                    PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
+                    PersonType.RequiredVariation.ApplyToPed(ped);
                 }
                 GameFiber.Yield();
                 if(!ped.Exists())

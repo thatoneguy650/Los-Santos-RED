@@ -189,16 +189,16 @@ namespace LosSantosRED.lsr.Helper
             {
                 PedVariation myPedVariation = new PedVariation
                 {
-                    MyPedComponents = new List<PedComponent>(),
-                    MyPedProps = new List<PedPropComponent>()
+                    Components = new List<PedComponent>(),
+                    Props = new List<PedPropComponent>()
                 };
                 for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
                 {
-                    myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
+                    myPedVariation.Components.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
                 }
                 for (int PropNumber = 0; PropNumber < 8; PropNumber++)
                 {
-                    myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
+                    myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
                 return myPedVariation;
             }

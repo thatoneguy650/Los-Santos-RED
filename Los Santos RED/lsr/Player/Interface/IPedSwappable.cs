@@ -27,10 +27,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         Cop AliasedCop { get; set; }
         string PlayerName { get; }
-        List<HeadOverlay> CurrentHeadOverlays { get; set; }
-        HeadBlendData CurrentHeadBlendData { get; set; }
-        int CurrentPrimaryHairColor { get; set; }
-        int CurrentSecondaryColor { get; set; }
+        //List<HeadOverlayData> CurrentHeadOverlays { get; set; }
+        //HeadBlendData CurrentHeadBlendData { get; set; }
+        //int CurrentPrimaryHairColor { get; set; }
+        //int CurrentSecondaryColor { get; set; }
         bool IsCustomizingPed { get; set; }
         string ModelName { get; set; }
         bool CharacterModelIsFreeMode { get; }

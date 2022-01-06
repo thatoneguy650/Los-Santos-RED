@@ -116,7 +116,7 @@
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
-    <Compile Include="lsr\Ped\Variation\HeadOverlay.cs" />
+    <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
     <Compile Include="lsr\Player\Activity\Data\GestureData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
-    <Compile Include="lsr\UI\Menu\PedSwapCustomMenu.cs" />
+    <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />

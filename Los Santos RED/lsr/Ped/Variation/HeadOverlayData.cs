@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class HeadOverlay
+public class HeadOverlayData
 {
-    public HeadOverlay()
+    public HeadOverlayData()
     {
 
     }
-    public HeadOverlay(int overlayID, string part)
+    public HeadOverlayData(int overlayID, string part)
     {
         OverlayID = overlayID;
         Part = part;
