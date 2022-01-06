@@ -101,6 +101,68 @@ public class Interiors : IInteriors
             new Interior(3842,"Paleto Bay Police Station",new List<string>() { "v_sheriff2" },new List<string>() { "cs1_16_sheriff_cap" },new List<InteriorDoor>() { new InteriorDoor(-1501157055, new Vector3(-444.4985f, 6017.06f, 31.86633f)),new InteriorDoor(-1501157055, new Vector3(-442.66f, 6015.222f, 31.86633f))}) { DisabledInteriorCoords = new Vector3(-444.89068603515625f, 6013.5869140625f, 30.7164f) },
 
 
+
+
+
+            new Interior(-9994,"Rob's Liquors",//San Andreas Ave Del Perro
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-1212951353, new Vector3(-1226.894f, -903.1218f, 12.47039f)),
+                    new InteriorDoor(1173348778, new Vector3(-1224.755f, -911.4182f, 12.47039f)),
+                    new InteriorDoor(1173348778, new Vector3(-1219.633f, -912.406f, 12.47626f)),
+                }),
+
+            new Interior(-9993,"Rob's Liquors",//Route 1
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-1212951353, new Vector3(-2973.535f, 390.1414f, 15.18735f)),
+                    new InteriorDoor(1173348778, new Vector3(-2965.648f, 386.7928f, 15.18735f)),
+                    new InteriorDoor(1173348778, new Vector3(-2961.749f, 390.2573f, 15.19322f)),
+                }),
+
+            new Interior(-9992,"Rob's Liquors",//Prosperity Street
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-1212951353, new Vector3(-1490.411f, -383.8453f, 40.30745f)),
+                    new InteriorDoor(1173348778, new Vector3(-1482.679f, -380.153f, 40.30745f)),
+                    new InteriorDoor(1173348778, new Vector3(-1482.693f, -374.9365f, 40.31332f)),
+                }),
+
+            new Interior(-9991,"Rob's Liquors",//El Rancho Boulevard
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(-1212951353, new Vector3(1141.038f, -980.3225f, 46.55986f)),
+                    new InteriorDoor(1173348778, new Vector3(1132.645f, -978.6059f, 46.55986f)),
+                    new InteriorDoor(1173348778, new Vector3(1129.51f, -982.7756f, 46.56573f)),
+                }),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             new Interior(72706,"Tequila-La",
                 new List<string>() { "v_rockclub" },
                 new List<string>() {  },

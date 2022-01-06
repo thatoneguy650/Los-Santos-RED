@@ -162,8 +162,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Barracho", 3),
                 new MenuItem("Bottle of PiBwasser", 3),
                 new MenuItem("Bottle of Blarneys", 3),
-                new MenuItem("Bottle of Logger", 3,1),
-                new MenuItem("Bottle of Patriot", 3,1),
+                new MenuItem("Bottle of Logger", 3),
+                new MenuItem("Bottle of Patriot", 3),
                 new MenuItem("Bottle of Pride", 3),
                 new MenuItem("Bottle of Stronzo", 4),
                 new MenuItem("Bottle of A.M.", 4),
@@ -274,7 +274,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("King Size P's & Q's", 3),
                 new MenuItem("P's & Q's", 2),
                 new MenuItem("Meteorite Bar", 2),
-            new MenuItem("Hawk & Little PTF092F", 550),
+            //new MenuItem("Hawk & Little PTF092F", 550),
 
 
 

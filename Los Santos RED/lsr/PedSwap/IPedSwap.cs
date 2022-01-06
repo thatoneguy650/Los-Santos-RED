@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays);
         void RemoveOffset();
         void AddOffset();
+        void BecomeSamePed(Ped pedModel, HeadBlendData headBlendData, int currentSelectedPrimaryHairColor, int currentSelectedSecondaryHairColor, List<HeadOverlay> headOverlays);
     }
 }

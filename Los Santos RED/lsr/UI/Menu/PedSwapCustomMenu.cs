@@ -99,7 +99,6 @@ public class PedSwapCustomMenu : Menu
         SetupCamera();
         ModelSelected = Player.ModelName;
         SetupPedModel();
-        SetupMenu();
         Player.CurrentModelVariation.ReplacePedComponentVariation(PedModel);
         CurrentSelectedName = Player.PlayerName;
         CurrentSelectedMoney = Player.Money;
@@ -111,6 +110,11 @@ public class PedSwapCustomMenu : Menu
             CurrentSelectedPrimaryHairColor = Player.CurrentPrimaryHairColor;
             CurrentSelectedSecondaryHairColor = Player.CurrentSecondaryColor;
             SetHeadblendData();
+        }
+        SetupMenu();
+        if (PedModelIsFreeMode)
+        {
+            HeadOverlays = Player.CurrentHeadOverlays;
         }
         Game.FadeScreenIn(1500, true);
     }
@@ -139,8 +143,7 @@ public class PedSwapCustomMenu : Menu
         }
         try
         {
-            PedModel = new Ped(ModelSelected, new Vector3(402.8473f, -996.7224f, -99.00025f), 182.7549f);
-            //PedModel = new Ped(ModelSelected, new Vector3(402.8473f, -996.3224f, -99.00025f), 182.7549f);           
+            PedModel = new Ped(ModelSelected, new Vector3(402.8473f, -996.7224f, -99.00025f), 182.7549f);       
         }
         catch(Exception ex)
         {
@@ -149,6 +152,9 @@ public class PedSwapCustomMenu : Menu
         GameFiber.Yield();
         if (PedModel.Exists())
         {
+            CurrentHeadblend = null;
+            CurrentSelectedPrimaryHairColor = 0;
+            CurrentSelectedSecondaryHairColor = 0;
             PedModel.IsPersistent = true;
             PedModel.IsVisible = true;
             PedModel.BlockPermanentEvents = true;
@@ -314,7 +320,7 @@ public class PedSwapCustomMenu : Menu
         PedSwapCustomUIMenu.Clear();
 
         DemographicsSubMenu = MenuPool.AddSubMenu(PedSwapCustomUIMenu, "Set Demographics");
-        DemographicsSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        DemographicsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         DemographicsSubMenu.OnItemSelect += OnItemSelect;
         DemographicsSubMenu.OnIndexChange += OnIndexChange;
 
@@ -337,7 +343,7 @@ public class PedSwapCustomMenu : Menu
 
         //Submenu
         CustomizeHeadMenu = MenuPool.AddSubMenu(PedSwapCustomUIMenu, "Set Head");
-        CustomizeHeadMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        CustomizeHeadMenu.SetBannerType(EntryPoint.LSRedColor);
         CustomizeHeadMenu.OnItemSelect += OnItemSelect;
         CustomizeHeadMenu.OnIndexChange += OnIndexChange;
         CustomizeHeadMenu.OnScrollerChange += OnScrollerChange;
@@ -351,6 +357,8 @@ public class PedSwapCustomMenu : Menu
         //Parent2IDMenu = new UIMenuNumericScrollerItem<int>("Set Parent 2", "Select parent ID 2", 0, 45, 1);
         Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select percent of parent ID 1 to use", 0.0f, 1.0f, 0.1f);
         Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select percent of parent ID 2 to use", 0.0f, 1.0f, 0.1f);
+        Parent1MixMenu.Formatter = v => v.ToString("P0");
+        Parent2MixMenu.Formatter = v => v.ToString("P0");
 
 
         if (CurrentHeadblend != null)
@@ -382,22 +390,44 @@ public class PedSwapCustomMenu : Menu
         CustomizeHeadMenu.AddItem(HairPrimaryColorMenu);
         CustomizeHeadMenu.AddItem(HairSecondaryColorMenu);
 
+
+        if(Player.CurrentHeadOverlays != null && !ChoseNewModel)
+        {
+            HeadOverlays = Player.CurrentHeadOverlays;
+        }
+
+
+
         foreach (HeadOverlay ho in HeadOverlays)
         {
             UIMenu overlayHeaderMenu = MenuPool.AddSubMenu(CustomizeHeadMenu, ho.Part);
+            overlayHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
             overlayHeaderMenu.TitleText = $"{ho.Part}";
             UIMenuListScrollerItem<ColorLookup>  PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Color", "Select primary color", ColorList);
             UIMenuListScrollerItem<ColorLookup>  SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Color", "Select secondary color", ColorList);
             UIMenuNumericScrollerItem<float> OpacityMenu = new UIMenuNumericScrollerItem<float>($"Opacity", $"Modify opacity", 0.0f, 1.0f, 0.1f);
-            OpacityMenu.Index = 10;
+            PrimaryColorMenu.Index = ho.PrimaryColor;
+            SecondaryColorMenu.Index = ho.SecondaryColor;
+            OpacityMenu.Value = ho.Opacity;
+            OpacityMenu.Formatter = v => v.ToString("P0");
+           // OpacityMenu.Index = 10;
             overlayHeaderMenu.AddItem(PrimaryColorMenu);
             overlayHeaderMenu.AddItem(SecondaryColorMenu);
             overlayHeaderMenu.AddItem(OpacityMenu);
             int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);
             UIMenuNumericScrollerItem<int> OverlayIndexMenu = new UIMenuNumericScrollerItem<int>($"Index", $"Modify index", -1, TotalItems-1, 1);
-            OverlayIndexMenu.Index = 0;
+            OverlayIndexMenu.Formatter = v => v == -1 ? "None" : "Overlay " + v.ToString();
+
+
+            if(ho.Index != 255)
+            {
+                OverlayIndexMenu.Value = ho.Index;
+            }
+            else
+            {
+                OverlayIndexMenu.Value = -1;
+            }
             overlayHeaderMenu.AddItem(OverlayIndexMenu);
-           // overlayHeaderMenu.OnItemSelect += OnHeadOverlayItemSelect;
             overlayHeaderMenu.OnScrollerChange += OnHeadOverlayScrollerChange;
         }
 
@@ -462,6 +492,11 @@ public class PedSwapCustomMenu : Menu
             }
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
+                PedComponent existingComponent = null;
+                if (Player.CurrentModelVariation != null)
+                {
+                    existingComponent = Player.CurrentModelVariation.MyPedComponents.FirstOrDefault(x => x.ComponentID == ComponentNumber);
+                }
                 int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(PedModel, ComponentNumber);
                 string description = $"Component: {ComponentNumber}";
                 FashionComponent fashionComponent =  ComponentLookup.FirstOrDefault(x => x.ComponentID == ComponentNumber);
@@ -470,11 +505,21 @@ public class PedSwapCustomMenu : Menu
                     description = fashionComponent.ComponentName;
                 }
                 UIMenu ComponentSubMenu = MenuPool.AddSubMenu(ComponentsUIMenu, description);
+
                 for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(PedModel, ComponentNumber, DrawableNumber) - 1;
-                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "Arrow to change texture, select to reset texture", -1, NumberOfTextureVariations, 1);
+                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "Arrow to change texture, select to reset texture", 0, NumberOfTextureVariations, 1);
+                    if(existingComponent != null && existingComponent.DrawableID == DrawableNumber)
+                    {
+                        Test.Value = existingComponent.TextureID;
+                    }
+                    Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     ComponentSubMenu.AddItem(Test);
+                }
+                if (existingComponent != null)
+                {
+                    ComponentSubMenu.CurrentSelection = existingComponent.DrawableID;
                 }
                 ComponentSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
                 ComponentSubMenu.OnItemSelect += OnComponentItemSelect;
@@ -483,6 +528,11 @@ public class PedSwapCustomMenu : Menu
             }
             for (int PropsNumber = 0; PropsNumber < 3; PropsNumber++)
             {
+                PedPropComponent existingComponent = null;
+                if (Player.CurrentModelVariation != null)
+                {
+                    existingComponent = Player.CurrentModelVariation.MyPedProps.FirstOrDefault(x => x.PropID == PropsNumber);
+                }
                 int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS<int>(Game.LocalPlayer.Character, PropsNumber);
                 string description = $"Prop: {PropsNumber}";
                 FashionProp fashionProp = PropLookup.FirstOrDefault(x => x.PropID == PropsNumber);
@@ -494,8 +544,17 @@ public class PedSwapCustomMenu : Menu
                 for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(PedModel, PropsNumber, DrawableNumber);
-                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "", -1, NumberOfTextureVariations, 1);
+                    UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "", 0, NumberOfTextureVariations, 1);
+                    if (existingComponent != null && existingComponent.DrawableID == DrawableNumber)
+                    {
+                        Test.Value = existingComponent.TextureID;
+                    }
+                    Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     PropSubMenu.AddItem(Test);
+                }
+                if (existingComponent != null)
+                {
+                    PropSubMenu.CurrentSelection = existingComponent.DrawableID;
                 }
                 PropSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
                 PropSubMenu.OnScrollerChange += OnPropsScollerChange;
@@ -527,39 +586,25 @@ public class PedSwapCustomMenu : Menu
 
     public void Update()
     {
-        if (1==1)
+        if (1 == 1)
         {
-            if (!Player.ButtonPrompts.Any(x => x.Identifier == $"ChangeCamera"))
+            if (!Player.ButtonPrompts.Any(x => x.Group == $"ChangeCamera"))
             {
                 Player.ButtonPrompts.RemoveAll(x => x.Group == "ChangeCamera");
                 Player.ButtonPrompts.Add(new ButtonPrompt($"Turn Left", "ChangeCamera", $"RotateModelLeft", System.Windows.Forms.Keys.J, 1));
                 Player.ButtonPrompts.Add(new ButtonPrompt($"Turn Right", "ChangeCamera", $"RotateModelRight", System.Windows.Forms.Keys.K, 2));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Zoom", "ChangeCamera", $"ChangeCamera", System.Windows.Forms.Keys.I, 3));
                 Player.ButtonPrompts.Add(new ButtonPrompt($"Camera Up", "ChangeCamera", $"CameraUp", System.Windows.Forms.Keys.O, 4));
                 Player.ButtonPrompts.Add(new ButtonPrompt($"Camera Down", "ChangeCamera", $"CameraDown", System.Windows.Forms.Keys.L, 5));
+                Player.ButtonPrompts.Add(new ButtonPrompt($"Zoom In", "ChangeCamera", $"ZoomCameraIn", System.Windows.Forms.Keys.U, 3));
+                Player.ButtonPrompts.Add(new ButtonPrompt($"Zoom Out", "ChangeCamera", $"ZoomCameraOut", System.Windows.Forms.Keys.I, 4));
                 Player.ButtonPrompts.Add(new ButtonPrompt($"Reset", "ChangeCamera", $"ResetCamera", System.Windows.Forms.Keys.P, 6));
             }
         }
-        if(Player.ButtonPrompts.Any(x=>x.Identifier == "ChangeCamera" && x.IsPressedNow))
-        {
-            if(PedModel.Exists())
-            {
-                CharCam.Position = new Vector3(402.8473f, -997.3224f, -98.30025f);
-                //Vector3 ToLookAt = new Vector3(402.8473f, -996.7224f, -98.30025f);//new Vector3(402.8473f, -996.7224f, -98.00025f);
-                //Vector3 _direction = (ToLookAt - CharCam.Position).ToNormalized();
-
-
-
-                CharCam.Direction = NativeHelper.GetCameraDirection(CharCam);//_direction;
-            }
-        }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "ResetCamera" && x.IsPressedNow))
+        if (Player.ButtonPrompts.Any(x => x.Identifier == "ResetCamera" && x.IsPressedNow))
         {
             PedModel.Tasks.AchieveHeading(182.7549f, 5000);
             CharCam.Position = new Vector3(402.8473f, -998.3224f, -98.00025f);
-           // Vector3 ToLookAt = new Vector3(402.8473f, -996.3224f, -99.00025f);
-            //Vector3 _direction = (ToLookAt - CharCam.Position).ToNormalized();
-            CharCam.Direction = NativeHelper.GetCameraDirection(CharCam);//_direction;CharCam.Direction = _direction;
+            CharCam.Direction = NativeHelper.GetCameraDirection(CharCam);
         }
         else if (Player.ButtonPrompts.Any(x => x.Identifier == "RotateModelLeft" && x.IsPressedNow))
         {
@@ -575,13 +620,23 @@ public class PedSwapCustomMenu : Menu
                 PedModel.Tasks.AchieveHeading(PedModel.Heading - 45, 5000);
             }
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraUp" && x.IsPressedNow))
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraUp" && (x.IsPressedNow || x.IsHeldNow)))
         {
-            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z + 0.1f);
+            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z + 0.05f);
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraDown" && x.IsPressedNow))
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraDown" && (x.IsPressedNow || x.IsHeldNow)))
         {
-            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z - 0.1f);
+            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z - 0.05f);
+        }
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "ZoomCameraIn" && (x.IsPressedNow || x.IsHeldNow)))
+        {
+            EntryPoint.WriteToConsole("ZoomCameraIn", 5);
+            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y + 0.05f, CharCam.Position.Z);
+        }
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "ZoomCameraOut" && (x.IsPressedNow || x.IsHeldNow)))
+        {
+            EntryPoint.WriteToConsole("ZoomCameraOut", 5);
+            CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y - 0.05f, CharCam.Position.Z);
         }
         MenuPool.ProcessMenus();
     }
@@ -700,7 +755,16 @@ public class PedSwapCustomMenu : Menu
                 {
                     ChoseNewModel = true;
                     Game.FadeScreenOut(1500, true);
-                    PedSwap.BecomeExistingPed(PedModel, CurrentSelectedName, CurrentSelectedMoney, PedModelIsFreeMode ? CurrentHeadblend : null, CurrentSelectedPrimaryHairColor, CurrentSelectedSecondaryHairColor, HeadOverlays);
+
+                    if(ChoseNewModel)
+                    {
+                        PedSwap.BecomeSamePed(PedModel, PedModelIsFreeMode ? CurrentHeadblend : null, CurrentSelectedPrimaryHairColor, CurrentSelectedSecondaryHairColor, HeadOverlays);
+                    }
+                    else
+                    {
+                        PedSwap.BecomeExistingPed(PedModel, CurrentSelectedName, CurrentSelectedMoney, PedModelIsFreeMode ? CurrentHeadblend : null, CurrentSelectedPrimaryHairColor, CurrentSelectedSecondaryHairColor, HeadOverlays);
+                    }
+                    
                     Dispose();
                 }
             }

@@ -165,10 +165,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
 
             //Liquor
-            new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
-            new GameLocation(new Vector3(-2966.361f, 390.1463f, 15.04331f), 88.73301f,new Vector3(-2966.361f, 390.1463f, 15.04331f), 88.73301f, LocationType.LiquorStore, "Rob's Liquors", "Thats My Name, Don't Rob Me!"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
-            new GameLocation(new Vector3(1141.463f, -980.9073f, 46.41084f), 275.826f,new Vector3(1133.539f, -981.6532f, 47.52753f), 275.826f, LocationType.LiquorStore, "Rob's Liquors", "Thats My Name, Don't Rob Me!"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
-                       
+            new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = -9994 },
+            new GameLocation(new Vector3(-2966.361f, 390.1463f, 15.04331f), 88.73301f,new Vector3(-2966.361f, 390.1463f, 15.04331f), 88.73301f, LocationType.LiquorStore, "Rob's Liquors", "Thats My Name, Don't Rob Me!"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = -9993 },
+            new GameLocation(new Vector3(-1486.196f, -377.7115f, 40.16343f), 133.357f,new Vector3(-1486.196f, -377.7115f, 40.16343f), 133.357f, LocationType.LiquorStore, "Rob's Liquors", "Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = -9992 },
+            new GameLocation(new Vector3(1141.463f, -980.9073f, 46.41084f), 275.826f,new Vector3(1133.539f, -981.6532f, 47.52753f), 275.826f, LocationType.LiquorStore, "Rob's Liquors", "Thats My Name, Don't Rob Me!"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = -9991 },
+
+
+
+
+
+
+
            new GameLocation(new Vector3(-596.1056f, 277.69f, 82.16035f), 170.2155f, LocationType.LiquorStore, "Eclipse Liquor.Deli", "") { Menu = LiquorStoreMenu },
            new GameLocation(new Vector3(-239.7314f, 244.0006f, 92.03992f), 318.9458f, LocationType.LiquorStore, "Ellen's Liquor Lover", "") { Menu = LiquorStoreMenu },
            new GameLocation(new Vector3(807.3504f, -1073.531f, 28.92093f), 134.3175f, LocationType.LiquorStore, "Liquor Market", "") { Menu = LiquorStoreMenu },
@@ -176,7 +183,7 @@ public class PlacesOfInterest : IPlacesOfInterest
            new GameLocation(new Vector3(1212.343f, -445.0079f, 66.96259f), 74.05521f, LocationType.LiquorStore, "Liquor", "") { Menu = LiquorStoreMenu },
             new GameLocation(new Vector3(-1208.469f, -1384.053f, 4.085135f), 68.08948f, LocationType.LiquorStore, "Steamboat Beers", "Steamboat Beers") { Menu = LiquorStoreMenu },
             new GameLocation(new Vector3(-1106.07f, -1287.686f, 5.421459f), 161.3398f, LocationType.LiquorStore, "Vespucci Liquor Market", "Vespucci Liquor Market") { Menu = LiquorStoreMenu },
-            new GameLocation(new Vector3(-1486.196f, -377.7115f, 40.16343f), 133.357f,new Vector3(-1486.196f, -377.7115f, 40.16343f), 133.357f, LocationType.LiquorStore, "Rob's Liquors", "Rob's Liquors") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
+            
             new GameLocation(new Vector3(-697.8242f, -1182.286f, 10.71113f), 132.7831f, LocationType.LiquorStore, "Liquor Market", "Liquor Market") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(-882.7062f, -1155.351f, 5.162508f), 215.8305f, LocationType.LiquorStore, "Liquor Hole", "Liquor Hole") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22,BannerImage = "liquorhole.png" },
             new GameLocation(new Vector3(-601.9684f, 244.0188f, 82.3046f), 358.6468f, LocationType.LiquorStore, "Liquor Hole", "Liquor Hole") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22,BannerImage = "liquorhole.png" },

@@ -406,86 +406,94 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
-        //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
-        //GameFiber.Sleep(500);
-        float ClosestDistance = 999f;
-        GameLocation gameLocation = null;
-        foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
-        {
-            float distance = gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
-            if (distance < ClosestDistance)
-            {
-                gameLocation = gl;
-                ClosestDistance = distance;
-            }
-        }
-        if(gameLocation != null)
-        {
-            EntryPoint.WriteToConsole($"Debug Recycling Location {gameLocation.Name}", 5);
-            gameLocation.Setup(Interiors,Settings,Crimes,Weapons);
-            GameFiber.Sleep(2500);
-            gameLocation.Dispose();
-        }
+
+        // NativeFunction.Natives.x48608C3464F58AB4(0f, 50f, 0f);
+
+        Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
         
 
+      //  NativeFunction.Natives.x759E13EBC1C15C5A(50f);
+
+        //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
+        //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
+        ////GameFiber.Sleep(500);
+        //float ClosestDistance = 999f;
+        //GameLocation gameLocation = null;
+        //foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
+        //{
+        //    float distance = gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+        //    if (distance < ClosestDistance)
+        //    {
+        //        gameLocation = gl;
+        //        ClosestDistance = distance;
+        //    }
+        //}
+        //if(gameLocation != null)
+        //{
+        //    EntryPoint.WriteToConsole($"Debug Recycling Location {gameLocation.Name}", 5);
+        //    gameLocation.Setup(Interiors,Settings,Crimes,Weapons);
+        //    GameFiber.Sleep(2500);
+        //    gameLocation.Dispose();
+        //}
 
 
 
-        if (Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
-        {
-            bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
-            if (isValid)
-            {
-                float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 0);
 
-                if (DoorAngle > 0.0f)
-                {
-                    string toPlay = "";
-                    int TimeToWait = 250;
-                    if (DoorAngle >= 0.7)
-                    {
-                        toPlay = "d_close_in";
-                        TimeToWait = 500;
-                    }
-                    else
-                    {
-                        toPlay = "d_close_in_near";
-                    }
-                    EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
-                    AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1      
-                    GameFiber DoorWatcher = GameFiber.StartNew(delegate
-                    {
-                        GameFiber.Sleep(TimeToWait);
-                        if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-                        {
-                            NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
-                            GameFiber.Sleep(250);
-                            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-                        }
-                        else
-                        {
-                            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-                        }
-                    }, "DoorWatcher");
-                }
-            }
-        }
+
+        //if (Player.IsDriver && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
+        //{
+        //    bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(Player.CurrentVehicle.Vehicle, 0);
+        //    if (isValid)
+        //    {
+        //        float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 0);
+
+        //        if (DoorAngle > 0.0f)
+        //        {
+        //            string toPlay = "";
+        //            int TimeToWait = 250;
+        //            if (DoorAngle >= 0.7)
+        //            {
+        //                toPlay = "d_close_in";
+        //                TimeToWait = 500;
+        //            }
+        //            else
+        //            {
+        //                toPlay = "d_close_in_near";
+        //            }
+        //            EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+        //            AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
+        //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1      
+        //            GameFiber DoorWatcher = GameFiber.StartNew(delegate
+        //            {
+        //                GameFiber.Sleep(TimeToWait);
+        //                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+        //                {
+        //                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+        //                    GameFiber.Sleep(250);
+        //                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+        //                }
+        //                else
+        //                {
+        //                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+        //                }
+        //            }, "DoorWatcher");
+        //        }
+        //    }
+        //}
 
 
         //mp_doorbell
         //open_door
         //AnimationDictionary.RequestAnimationDictionay("switch@michael@biking_with_jimmy");
         //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "switch@michael@biking_with_jimmy", "exit_right_door", 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
-        Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
-        Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
-        Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
-        Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
+        //Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
+        //Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
+        //Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
+        //Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
 
-        Player.AddToInventory(ModItems.Get("Equanox"), 4);
-        Player.AddToInventory(ModItems.Get("Screwdriver"), 1);
-        Player.AddToInventory(ModItems.Get("DIC Lighter"), 1);
+        //Player.AddToInventory(ModItems.Get("Equanox"), 4);
+        //Player.AddToInventory(ModItems.Get("Screwdriver"), 1);
+        //Player.AddToInventory(ModItems.Get("DIC Lighter"), 1);
         //Weather.DebugPlayReport();
 
 
@@ -580,8 +588,13 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        
 
-        Player.SetHeadblend();
+
+        NativeFunction.Natives.x48608C3464F58AB4(25f,25f,0f);
+
+
+        //Player.SetHeadblend();
 
         //List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
         //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists()))

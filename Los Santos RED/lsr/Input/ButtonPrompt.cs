@@ -41,6 +41,7 @@ public class ButtonPrompt
     public bool IsPressedNow { get; set; }
     public string Group { get; set; }
     public int Order { get; set; }
+    public bool IsHeldNow { get; internal set; }
 }
 
 

@@ -114,6 +114,60 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+    public void BecomeSamePed(Ped TargetPed, HeadBlendData headblendData, int primaryHairColor, int secondaryHairColor, List<HeadOverlay> headOverlays)
+    {
+        try
+        {
+           // ResetOffsetForCurrentModel();
+            EntryPoint.WriteToConsole($"modelName {TargetPed.Model.Name} TargetPedModelName.ToLower() {TargetPedModelName.ToLower()} Player.CurrentHeadBlendData {Player.CurrentHeadBlendData.shapeFirst}", 5);
+            if (!TargetPed.Exists())
+            {
+                return;
+            }
+            StoreTargetPedData(TargetPed);
+            //NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            Player.IsCop = false;
+
+            Player.ModelName = TargetPedModel.Name;
+            Player.CurrentModelVariation = TargetPedVariation;
+
+
+            // HandlePreviousPed(true);
+            //NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+            {
+                SetPlayerOffset();
+                NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+                NativeHelper.ChangeModel(CurrentModelPlayerIs.Name);
+            }
+            if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+            {
+                TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+            }
+            if (headblendData != null)
+            {
+                if (Player.CharacterModelIsFreeMode)//if (TargetPedModelName.ToLower() == "mp_f_freemode_01" || TargetPedModelName.ToLower() == "mp_m_freemode_01")
+                {
+                    EntryPoint.WriteToConsole($"BecomeExistingPed SETTING HEADBLEND DATA! {headblendData.shapeFirst} Player.Character.Model.Name {Game.LocalPlayer.Character.Model.Name}", 5);
+                    Player.CurrentHeadBlendData = headblendData.Copy();
+                    Player.CurrentPrimaryHairColor = primaryHairColor.Copy();
+                    Player.CurrentSecondaryColor = secondaryHairColor.Copy();
+                    Player.CurrentHeadOverlays = headOverlays.Copy();
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(Game.LocalPlayer.Character, headblendData.shapeFirst, headblendData.shapeSecond, headblendData.shapeThird, headblendData.skinFirst, headblendData.skinSecond, headblendData.skinThird, headblendData.shapeMix, headblendData.skinMix, headblendData.thirdMix, false);
+                    NativeFunction.Natives.x4CFFC65454C93A49(Game.LocalPlayer.Character, primaryHairColor, secondaryHairColor);
+                    foreach (HeadOverlay ho in headOverlays)
+                    {
+                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(Game.LocalPlayer.Character, ho.OverlayID, ho.Index, ho.Opacity);
+                        NativeFunction.Natives.x497BF74A7B9CB952(Game.LocalPlayer.Character, ho.OverlayID, ho.ColorType, ho.PrimaryColor, ho.SecondaryColor);//colors?
+                    }
+                }
+            }
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try
