@@ -91,7 +91,7 @@ public class WeaponDropping
                     WeaponInformation Gun2 = Weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
                     if (Gun2 != null)
                     {
-                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Variation);
+                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
                     }
                     NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
                 }

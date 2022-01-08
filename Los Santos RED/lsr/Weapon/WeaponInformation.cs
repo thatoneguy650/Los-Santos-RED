@@ -48,22 +48,78 @@ public class WeaponInformation
             }
         }
     }
-    public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation weaponVariation)
+    public void ApplyWeaponVariation(Ped WeaponOwner, WeaponVariation weaponVariation)
     {
         if (weaponVariation == null)
         {
             return;
         }    
-        NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX<bool>(WeaponOwner, WeaponHash, weaponVariation.Tint);
+        NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX<bool>(WeaponOwner, Hash, weaponVariation.Tint);
         foreach (WeaponComponent ToRemove in PossibleComponents)
         {
-            NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, WeaponHash, ToRemove.Hash);
+            NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, Hash, ToRemove.Hash);
         }
         foreach (WeaponComponent ToAdd in weaponVariation.Components)
         {
             WeaponComponent MyComponent = PossibleComponents.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
             if (MyComponent != null)
-                NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, WeaponHash, MyComponent.Hash);
+            {
+                NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, Hash, MyComponent.Hash);
+            }
         }
+    }
+    public bool AddComponent(Ped WeaponOwner, WeaponComponent weaponComponent)
+    {
+        if (weaponComponent != null && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner, Hash, false) && !NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, Hash, weaponComponent.Hash))
+        {
+            ComponentSlot componentSlot = weaponComponent.ComponentSlot;
+            foreach (WeaponComponent ToRemove in PossibleComponents.Where(x => x.ComponentSlot == componentSlot))
+            {
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, Hash, ToRemove.Hash);
+            }
+            NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, Hash, weaponComponent.Hash);
+            return true;
+        }
+        return false;
+    }
+    public bool RemoveComponent(Ped WeaponOwner, WeaponComponent weaponComponent)
+    {
+        if (weaponComponent != null && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner, Hash, false))
+        {
+            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, Hash, weaponComponent.Hash))
+            {
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED(WeaponOwner, Hash, weaponComponent.Hash);
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool HasComponent(Ped WeaponOwner, WeaponComponent weaponComponent)
+    {
+        if (weaponComponent != null && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner, Hash, false))
+        {
+            return NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, Hash, weaponComponent.Hash);
+        }
+        return false;
+    }
+    public bool HasWeapon(Ped WeaponOwner)
+    {
+        if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner, Hash, false))
+        {
+            return true;
+        }
+        return false;
+    }
+    public bool SetSlotDefault(Ped WeaponOwner, ComponentSlot componentSlot)
+    {
+        if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner, Hash, false))
+        {
+            foreach (WeaponComponent ToRemove in PossibleComponents.Where(x => x.ComponentSlot == componentSlot))
+            {
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, Hash, ToRemove.Hash);
+            }
+            return true;
+        }
+        return false;
     }
 }

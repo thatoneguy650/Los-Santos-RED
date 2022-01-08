@@ -29,6 +29,22 @@ public class MenuItemExtra
     public bool Sellable => SalesPrice > 0;
     public int PurchasePrice { get; set; } = 5;
     public int SalesPrice { get; set; } = -1;
+    public bool HasItem { get; set; } = false;
 
+    public override string ToString()
+    {
+        if(HasItem)
+        {
+            return ExtraName + " - Equipped";
+        }
+        else if (Purchaseable)
+        {
+            return $"{ExtraName} - ${PurchasePrice}";
+        }
+        else
+        {
+            return ExtraName;
+        }
+    }
 }
 

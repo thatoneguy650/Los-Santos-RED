@@ -37,12 +37,11 @@ public class SellMenu : Menu
         ShouldPreviewItem = shouldPreviewItem;
         Transaction = transaction;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
-        if (Store.BannerImage != "")
+        if (Transaction.HasBannerImage)
         {
-            sellMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
-            Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+            sellMenu.SetBannerType(Transaction.BannerImage);
         }
-        if (Store.Name == "")
+        else if (Transaction.RemoveBanner)
         {
             sellMenu.RemoveBanner();
         }

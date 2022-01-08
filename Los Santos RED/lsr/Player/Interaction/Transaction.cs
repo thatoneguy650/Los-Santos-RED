@@ -22,7 +22,7 @@ public class Transaction : Interaction
     private GameLocation Store;
     private IInteractionable Player;
     private ISettingsProvideable Settings;
-    private MenuPool menuPool;
+    private MenuPool MenuPool;
     private UIMenu ModItemMenu;
     private Camera StoreCam;
     private Camera EntranceCam;
@@ -44,8 +44,7 @@ public class Transaction : Interaction
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
     private IWeapons Weapons;
-
-    private bool IsAnyMenuVisible => menuPool.IsAnyMenuOpen();//(ModItemMenu != null && ModItemMenu.Visible && ModItemMenu.MenuItems.Count() > 1) || (PurchaseMenu != null && PurchaseMenu.Visible) || (SellMenu != null && SellMenu.Visible);
+    private bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     private enum eSetPlayerControlFlag
     {
         SPC_AMBIENT_SCRIPT = (1 << 1),
@@ -71,10 +70,13 @@ public class Transaction : Interaction
         Time = time;
         World = world;
         Weapons = weapons;
-        menuPool = new MenuPool();
+        MenuPool = new MenuPool();
     }
     public override string DebugString => "";
     private bool CanContinueConversation => (Store.HasVendor && Player.Character.DistanceTo2D(Store.VendorPosition) <= 6f) || (Store.EntrancePosition == Vector3.Zero || Player.Character.DistanceTo2D(Store.EntrancePosition) <= 6f || Player.IsSitting) && Player.CanConverse;
+    public bool RemoveBanner { get; set; } = false;
+    public bool HasBannerImage { get; set; }
+    public Texture BannerImage { get; set; }
     public void ClearPreviews()
     {
         PurchaseMenu?.ClearPreviews();
@@ -113,7 +115,7 @@ public class Transaction : Interaction
     {
         if (!IsDisposed)
         {
-            Game.RawFrameRender -= (s, e) => menuPool.DrawBanners(e.Graphics);
+            Game.RawFrameRender -= (s, e) => MenuPool.DrawBanners(e.Graphics);
             IsDisposed = true;
             if (ModItemMenu != null)
             {
@@ -188,11 +190,12 @@ public class Transaction : Interaction
     }
     private void Setup()
     {
-        if(Store == null)
+        if (Store == null)
         {
             Store = new GameLocation() { Name = "" };
             Store.Menu = Ped.TransactionMenu;
             ModItemMenu = new UIMenu("", "Transaction");
+            RemoveBanner = true;
             ModItemMenu.RemoveBanner();
         }
         else
@@ -200,12 +203,14 @@ public class Transaction : Interaction
             ModItemMenu = new UIMenu(Store.Name, Store.Description);
             if (Store.BannerImage != "")
             {
-                ModItemMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
-                Game.RawFrameRender += (s, e) => menuPool.DrawBanners(e.Graphics);
+                HasBannerImage = true;
+                BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}");
+                ModItemMenu.SetBannerType(BannerImage);
+                Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
             }
         }
         ModItemMenu.OnItemSelect += OnItemSelect;
-        menuPool.Add(ModItemMenu);
+        MenuPool.Add(ModItemMenu);
         EntryPoint.WriteToConsole("Transaction: Setup Ran", 5);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -228,13 +233,13 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons);
+            PurchaseMenu = new PurchaseMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(menuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);//was IsUsingCustomCam before
+            SellMenu = new SellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this);//was IsUsingCustomCam before
             SellMenu.Setup();
             hasSellMenu = true;
         }
@@ -484,7 +489,7 @@ public class Transaction : Interaction
     {
         while (CanContinueConversation && !IsDisposed)
         {
-            menuPool.ProcessMenus();
+            MenuPool.ProcessMenus();
             if (!IsActivelyConversing && !IsAnyMenuVisible)
             {
                 EntryPoint.WriteToConsole("Transaction Dispose 1",5);

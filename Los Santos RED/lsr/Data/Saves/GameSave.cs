@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr.Data
                     WeaponInformation Gun2 = weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
                     if (Gun2 != null)
                     {
-                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Variation);
+                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
                     }
                 }
             }

@@ -229,7 +229,7 @@ public class Respawning// : IRespawning
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
-                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Variation);
+                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
                 NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
             }
         }
