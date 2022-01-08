@@ -96,6 +96,10 @@ namespace LosSantosRED.lsr
             {
                 Player.EnterLocation();
             }
+            else if (Player.ButtonPrompts.Any(x => x.Group == "PurchaseLocation" && x.IsPressedNow))//string for now...
+            {
+                Player.PurchaseLocation();
+            }
             else if (Player.ButtonPrompts.Any(x => x.Group == "ExitLocation" && x.IsPressedNow))//string for now...
             {
                 Player.ExitLocation();

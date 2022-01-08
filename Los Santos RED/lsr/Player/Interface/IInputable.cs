@@ -46,5 +46,6 @@ namespace LosSantosRED.lsr.Interface
         void EnterLocation();
         void ExitLocation();
         void CloseDriverDoor();
+        void PurchaseLocation();
     }
 }

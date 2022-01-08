@@ -379,7 +379,7 @@ public class AIApprehend : ComplexTask
                 EntryPoint.WriteToConsole($"COP EVENT: AI Apprehend Start: {Ped.Pedestrian.Handle}", 3);
             }
             FootChaseLoop();   
-            if (OtherTarget.Pedestrian.IsStunned && !OtherTarget.IsBusted)
+            if (OtherTarget.Pedestrian.IsStunned && !OtherTarget.IsBusted && !OtherTarget.IsZombie)
             {
                 OtherTarget.IsBusted = true;
                 if (Ped.Pedestrian.Exists())

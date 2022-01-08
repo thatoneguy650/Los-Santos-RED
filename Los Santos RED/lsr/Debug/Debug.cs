@@ -588,10 +588,12 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        
 
 
-        NativeFunction.Natives.x48608C3464F58AB4(25f,25f,0f);
+        World.IsZombieApocalypse = !World.IsZombieApocalypse;
+        Game.DisplayNotification($"World.IsZombieApocalypse {World.IsZombieApocalypse} {Game.GameTime}");
+        GameFiber.Sleep(500);
+        //NativeFunction.Natives.x48608C3464F58AB4(25f,25f,0f);
 
 
         //Player.SetHeadblend();
@@ -798,9 +800,10 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        ModController.DebugUIRunning = !ModController.DebugUIRunning;
-        Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
-        GameFiber.Sleep(500);
+        StuffTwo();
+        //ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
+        //GameFiber.Sleep(500);
 
         //NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
         //EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
@@ -953,7 +956,38 @@ public class Debug
             }
         }, "Run Debug Logic");
     }
+    private void StuffTwo()
+    {
+        try
+        {
+            GameFiber.StartNew(delegate
+            {
 
+                while (!Game.IsKeyDownRightNow(Keys.P))
+                {
+                    Game.DisplayHelp($"Press P to Stop J To Store");
+
+
+                    if (Game.IsKeyDownRightNow(Keys.J))
+                    {
+                        Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
+                        if(Target.Exists())
+                        {
+                            string Text = $"Object {Target.Model.Name} : new InteriorDoor({Target.Model.Hash}, new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f)),";
+                            Game.DisplayNotification(Text);
+                            EntryPoint.WriteToConsole(Text, 5);
+                        }
+                    }
+                    GameFiber.Yield();
+                }
+                NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+            }, "Run Debug Logic");
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification("Shit CRASHES!!!");
+        }
+    }
     private void BrowseTimecycles()
     {
         try
@@ -1785,6 +1819,15 @@ public class Debug
             EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
+        EntryPoint.WriteToConsole($"============================================ ZOMBIES START", 5);
+        foreach (PedExt ped in World.ZombieList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        {
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} IsZombie {ped.IsZombie} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} GroupName {ped.PedGroup?.InternalName} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ ZOMBIES END", 5);
         EntryPoint.WriteToConsole($"============================================ COPS START", 5);
         foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         {

@@ -44,6 +44,11 @@ namespace LosSantosRED.lsr.Util.Locations
             }
 
 
+            if(BlipSprite == BlipSprite.PointOfInterest)
+            {
+                MyLocationBlip.Scale = 0.5f;
+            }
+
             //MyLocationBlip.Scale = 0.5f;
             MyLocationBlip.Color = Color.White;
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);

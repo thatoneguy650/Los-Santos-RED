@@ -35,6 +35,9 @@ namespace LosSantosRED.lsr.Interface
         int SpawnedPoliceVehicleCount { get; }
         string DebugString { get; }
         List<GameLocation> ActiveLocations { get; }
+        List<Zombie> ZombieList { get; }
+        bool IsZombieApocalypse { get; }
+        int TotalSpawnedZombies { get; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);

@@ -110,6 +110,7 @@
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
+    <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
+    <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
     <Compile Include="lsr\Player\Activity\Data\GestureData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
+    <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />

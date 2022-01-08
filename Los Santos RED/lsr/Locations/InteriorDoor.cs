@@ -12,12 +12,12 @@ public class InteriorDoor
     {
 
     }
-    public InteriorDoor(int modelHash, Vector3 position)
+    public InteriorDoor(long modelHash, Vector3 position)
     {
         ModelHash = modelHash;
         Position = position;
     }
-    public int ModelHash { get; set; }
+    public long ModelHash { get; set; }
     public Vector3 Position { get; set; } = Vector3.Zero;
     public bool IsLocked { get; set; } = true;
     public Rotator Rotation { get; set; } = new Rotator(0f, 0f, 0f);

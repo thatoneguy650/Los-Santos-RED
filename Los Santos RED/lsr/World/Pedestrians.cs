@@ -45,6 +45,7 @@ public class Pedestrians
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
+    public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned
     {
@@ -81,13 +82,8 @@ public class Pedestrians
             return EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
-    public int TotalSpawnedFirefighters
-    {
-        get
-        {
-            return Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-        }
-    }
+    public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public bool AnyOtherTargetsTasked => Police.Any(x => x.CurrentTask?.OtherTarget != null);
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
@@ -162,6 +158,14 @@ public class Pedestrians
             }
         }
         Merchants.Clear();
+        foreach (Zombie zombie in Zombies)
+        {
+            if (zombie.Pedestrian.Exists() && zombie.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                zombie.Pedestrian.Delete();
+            }
+        }
+        Zombies.Clear();
     }
     public PedExt GetPedExt(uint Handle)
     {
@@ -248,12 +252,8 @@ public class Pedestrians
         Firefighters.RemoveAll(x => x.CanRemove);
         Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
+        Zombies.RemoveAll(x => x.CanRemove);
     }
-    //public void Scan()
-    //{
-    //    WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
-    //    //DebugString = $"Cop#: {Police.Count()} EMT#: {EMTs.Count()} Fire#: {Firefighters.Count()} Merch# {Merchants.Count()} Civ#: {Civilians.Count()}"; 
-    //}
     public void CreateNew()
     {
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
@@ -277,7 +277,7 @@ public class Pedestrians
             }
             else
             {
-                if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle))
+                if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle))
                 {
                     AddCivilian(Pedestrian);
                     GameFiber.Yield();
@@ -293,51 +293,13 @@ public class Pedestrians
     }
     private void AddCivilian(Ped Pedestrian)
     {
-        //if(Pedestrian.Exists())
-        //{
-        //    Vector3 Pos = Pedestrian.Position;
-        //    float Heading = Pedestrian.Heading;
-        //    Vehicle CurrentVehicle = Pedestrian.CurrentVehicle;
-        //    int SeatIndex = -1;
-        //    if (CurrentVehicle.Exists())
-        //    {
-        //        Pos = Pos + new Vector3(0f, 0f, 5f);
-        //        SeatIndex = Pedestrian.SeatIndex;
-        //    }
-        //    Pedestrian.Delete();
-        //    Pedestrian = new Ped("S_M_M_GENTRANSPORT", Pos, Heading);
-        //    if (Pedestrian.Exists())
-        //    {
-        //        Pedestrian.RandomizeVariation();
-        //        Pedestrian.IsPersistent = false;
-        //        if (CurrentVehicle.Exists())
-        //        {
-        //            Pedestrian.WarpIntoVehicle(CurrentVehicle, SeatIndex);
-        //        }
-        //    }
-        //}
-
-
-
-
         SetCivilianStats(Pedestrian);
-
-
-
-
-
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
         bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
         bool IsGangMember = false;
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {
-
-
-
-
-
-
             if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
             {
                 IsGangMember = true;
@@ -370,8 +332,6 @@ public class Pedestrians
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
-
-
         Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
     }
     private void AddCop(Ped Pedestrian)

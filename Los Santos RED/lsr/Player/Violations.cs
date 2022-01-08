@@ -364,10 +364,14 @@ namespace LosSantosRED.lsr
             bool isDrivingSuspiciously = false;
             UpdateTrafficStats();
             //GameFiber.Yield();//TR Yield RemovedTest 1
-            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear && Player.VehicleSpeedMPH >= 20f)//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.VehicleSpeedMPH >= 20f)//needed for non humans that are returned from this native
             {
-                isDrivingSuspiciously = true;
-                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
+                if (Player.AnyHumansNear)//TR ADDED 20 checking this might heavy?
+                {
+                    isDrivingSuspiciously = true;
+                    AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true; 
+                }
+                GameFiber.Yield();
             }
             if (RecentlyHitVehicle && Player.VehicleSpeedMPH >= 20f)
             {

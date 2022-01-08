@@ -39,8 +39,11 @@ public class DebugMenu : Menu
     private Camera FreeCam;
     private float FreeCamScale = 1.0f;
     private UIMenuItem FreeCamMenu;
+    private UIMenuItem LoadSPMap;
+    private UIMenuItem LoadMPMap;
+    private IEntityProvideable World;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time)
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world)
     {    
         Player = player;
         Weapons = weapons;
@@ -48,6 +51,7 @@ public class DebugMenu : Menu
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         Time = time;
+        World = world;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);
@@ -93,6 +97,10 @@ public class DebugMenu : Menu
         LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
         FreeCamMenu = new UIMenuItem("Free Cam", "Start Free Camera Mode");
 
+        LoadSPMap = new UIMenuItem("Load SP Map", "Loads the SP map if you have the MP map enabled");
+        LoadMPMap = new UIMenuItem("Load MP Map", "Load the MP map if you have the SP map enabled");
+
+
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
 
@@ -121,7 +129,8 @@ public class DebugMenu : Menu
         Debug.AddItem(LogInteriorMenu);
         Debug.AddItem(LogCameraPositionMenu);
         Debug.AddItem(SetDateToToday);
-
+        Debug.AddItem(LoadSPMap);
+        Debug.AddItem(LoadMPMap);
 
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
@@ -191,6 +200,14 @@ public class DebugMenu : Menu
         else if (selectedItem == Holder1)
         {
 
+        }
+        else if (selectedItem == LoadMPMap)
+        {
+            World.LoadMPMap();
+        }
+        else if (selectedItem == LoadSPMap)
+        {
+            World.LoadSPMap();
         }
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
         {

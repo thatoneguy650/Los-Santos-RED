@@ -27,7 +27,7 @@ public class PedCrimes
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
     private List<Ped> AlreadyCalledInPeds = new List<Ped>();
-    private bool ShouldCheck => PedExt.PedGroup == null || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC");
+    private bool ShouldCheck => PedExt.PedGroup == null || PedExt.PedGroup?.InternalName == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC");
     public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons)
     {
         PedExt = pedExt;
@@ -231,7 +231,12 @@ public class PedCrimes
         if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
         {
             OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
-            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
+            List<PedExt> TotalList = new List<PedExt>();
+            TotalList.AddRange(world.CivilianList);
+            TotalList.AddRange(world.ZombieList);
+
+
+            foreach (PedExt criminal in TotalList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
             {
                 if (!PedExt.Pedestrian.Exists())
                 {
@@ -370,6 +375,13 @@ public class PedCrimes
     {
         if (PedExt.Pedestrian.Exists() && !PedExt.IsBusted)
         {
+            if(PedExt.IsZombie)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingCivilians"));
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
+                return;
+            }
+
             if (IsWanted)
             {
                 if (GameTimeBecameWanted == 0)

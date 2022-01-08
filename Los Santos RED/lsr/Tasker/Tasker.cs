@@ -24,6 +24,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     private IPlacesOfInterest PlacesOfInterest;
     private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
     private RelationshipGroup CriminalsRG;
+    private RelationshipGroup ZombiesRG;
     private double AverageTimeBetweenCopUpdates = 0;
     private double AverageTimeBetweenCivUpdates = 0;
     private uint MaxTimeBetweenCopUpdates = 0;
@@ -45,6 +46,22 @@ public class Tasker : ITaskerable, ITaskerReportable
         CriminalsRG = new RelationshipGroup("CRIMINALS");
         RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
         CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+        ZombiesRG = new RelationshipGroup("ZOMBIES");
+        RelationshipGroup CIVMALERG = new RelationshipGroup("CIVMALE");
+        RelationshipGroup CIVFEMALERG = new RelationshipGroup("CIVFEMALE");
+
+        RelationshipGroup.Cop.SetRelationshipWith(ZombiesRG, Relationship.Hate);
+        ZombiesRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+        RelationshipGroup.Player.SetRelationshipWith(ZombiesRG, Relationship.Hate);
+        ZombiesRG.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+
+        Game.SetRelationshipBetweenRelationshipGroups(CIVMALERG, ZombiesRG, Relationship.Hate);
+        Game.SetRelationshipBetweenRelationshipGroups(ZombiesRG, CIVMALERG, Relationship.Hate);
+        Game.SetRelationshipBetweenRelationshipGroups(CIVFEMALERG, ZombiesRG, Relationship.Hate);
+        Game.SetRelationshipBetweenRelationshipGroups(ZombiesRG, CIVFEMALERG, Relationship.Hate);
+
         NativeFunction.Natives.REQUEST_ANIM_SET<bool>("move_m@drunk@verydrunk");
     }
     public void RunPoliceTasks()
@@ -298,7 +315,17 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     private void SetPossibleTargets()
     {
-        PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+        if (PedProvider.IsZombieApocalypse)
+        {
+            List<PedExt> TotalList = new List<PedExt>();
+            TotalList.AddRange(PedProvider.CivilianList);
+            TotalList.AddRange(PedProvider.ZombieList);
+            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+        }
+        else
+        {
+            PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+        }
         ClosestCopToPlayer = PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?

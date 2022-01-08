@@ -576,6 +576,7 @@ public class PedSwap : IPedSwap
         {
             FormerPlayer.RelationshipGroup = "CRIMINALS";
             Game.SetRelationshipBetweenRelationshipGroups("CRIMINALS", "COP", Relationship.Hate);
+            Game.SetRelationshipBetweenRelationshipGroups("COP", "CRIMINALS", Relationship.Hate);
         }
 
         if (FormerPlayer.IsInAnyVehicle(false) && FormerPlayer.CurrentVehicle.Exists())

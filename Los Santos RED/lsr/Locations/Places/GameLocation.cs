@@ -143,6 +143,22 @@ public class GameLocation
             {
                 return BlipSprite.GarageForSale;
             }
+            else if (Type == LocationType.GangDen)
+            {
+                return BlipSprite.Shrink;
+            }
+            else if (Type == LocationType.House)
+            {
+                return BlipSprite.GarageForSale;
+            }
+            else if (Type == LocationType.BeautyShop)
+            {
+                return BlipSprite.Barber;
+            }
+            else if (Type == LocationType.GunShop)
+            {
+                return BlipSprite.AmmuNation;
+            }
             else if (Type == LocationType.HardwareStore)
             {
                 return (BlipSprite)566; //BlipSprite.Repair;
@@ -238,8 +254,6 @@ public class GameLocation
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
-
-
     public GameLocation()
     {
 
@@ -279,6 +293,8 @@ public class GameLocation
     }
     public float DistanceToPlayer => distanceToPlayer;
     public bool IsWalkup { get; set; } = false;
+    public bool IsPurchaseable { get; set; } = false;
+    public bool IsPurchased { get; set; } = false;
     public override string ToString()
     {
         return Name.ToString();

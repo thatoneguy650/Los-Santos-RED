@@ -51,6 +51,7 @@ namespace Mod
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
         public bool IsMPMapLoaded { get; private set; }
+        public bool IsZombieApocalypse { get; set; } = false;
         public List<VehicleExt> CivilianVehicleList => Vehicles.CivilianVehicleList;
         public List<VehicleExt> PoliceVehicleList => Vehicles.PoliceVehicleList;
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
@@ -58,12 +59,14 @@ namespace Mod
         public int PoliceVehicleCount => Vehicles.PoliceVehiclesCount;
         public int SpawnedPoliceVehicleCount => Vehicles.SpawnedPoliceVehiclesCount;
         public int CivilianVehicleCount => Vehicles.CivilianVehiclesCount;
+        public List<Zombie> ZombieList => Pedestrians.Zombies.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public List<EMT> EMTList => Pedestrians.EMTs.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Firefighter> FirefighterList => Pedestrians.Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Merchant> MerchantList => Pedestrians.Merchants.Where(x => x.Pedestrian.Exists()).ToList();
         public int TotalSpawnedPolice => Pedestrians.TotalSpawnedPolice;
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
+        public int TotalSpawnedZombies => Pedestrians.TotalSpawnedZombies;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
         public string DebugString => Pedestrians.DebugString + " - " + Vehicles.DebugString;
         public void Setup()
@@ -136,6 +139,10 @@ namespace Mod
                 {
                     Pedestrians.Merchants.Add((Merchant)pedExt);
                 }
+                else if (pedExt.GetType() == typeof(Zombie))
+                {
+                    Pedestrians.Zombies.Add((Zombie)pedExt);
+                }
                 else
                 {
                     Pedestrians.Civilians.Add(pedExt);
@@ -203,8 +210,10 @@ namespace Mod
         {
             if (!IsMPMapLoaded)
             {
+                Game.FadeScreenOut(1500, true);
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
                 NativeFunction.Natives.x0888C3502DBBEEF5();// ON_ENTER_MP();
+                Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = true;
             }
         }
@@ -212,8 +221,10 @@ namespace Mod
         {
             if (IsMPMapLoaded)
             {
+                Game.FadeScreenOut(1500, true);
                 NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
                 NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
+                Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = false;
             }
         }

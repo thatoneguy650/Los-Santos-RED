@@ -38,6 +38,10 @@ public class PedExt : IComplexTaskable
         SpawnPosition = Pedestrian.Position;
         Name = _Name;
         GameTimeCreated = Game.GameTime;
+        if (PedGroup == null)
+        {
+            PedGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
+        }
         CurrentHealthState = new HealthState(this, settings);
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
@@ -99,6 +103,7 @@ public class PedExt : IComplexTaskable
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
+    public bool IsZombie { get; set; } = false;
     public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsDriver { get; private set; } = false;
@@ -150,7 +155,7 @@ public class PedExt : IComplexTaskable
     public int WantedLevel => PedCrimes.WantedLevel;
     public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
-    public bool WillCallPolice { get; set; } = true;
+    public bool WillCallPolice { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
     public bool WasEverSetPersistent { get; private set; }
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;

@@ -43,6 +43,9 @@ public class PurchaseMenu : Menu
     private MenuItem CurrentMenuItem;
     private WeaponInformation CurrentWeapon;
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
+    private Texture BannerImage;
+    private bool HasBannerImage = false;
+    private bool RemoveBanner = false;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons)
     {
@@ -60,11 +63,14 @@ public class PurchaseMenu : Menu
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
         if (Store.BannerImage != "")
         {
-            purchaseMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
+            HasBannerImage = true;
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}");
+            purchaseMenu.SetBannerType(BannerImage);
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
         }
         if (Store == null || Store.Name == "")
         {
+            RemoveBanner = true;
             purchaseMenu.RemoveBanner();
         }
         purchaseMenu.OnIndexChange += OnIndexChange;
@@ -312,6 +318,14 @@ public class PurchaseMenu : Menu
                             {
                                 WeaponCategories.Add(myWeapon.Category);
                                 UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, myWeapon.Category.ToString());
+                                if(HasBannerImage)
+                                {
+                                    WeaponMenu.SetBannerType(BannerImage);
+                                }
+                                else if (RemoveBanner)
+                                {
+                                    WeaponMenu.RemoveBanner();
+                                }
                                 WeaponMenu.OnIndexChange += OnIndexChange;
                                 WeaponMenu.OnItemSelect += OnItemSelect;
                                 WeaponMenu.OnMenuOpen += OnMenuOpen;
@@ -331,6 +345,14 @@ public class PurchaseMenu : Menu
                             {
                                 VehicleClasses.Add(ClassName);
                                 UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, ClassName);
+                                if (HasBannerImage)
+                                {
+                                    VehicleMenu.SetBannerType(BannerImage);
+                                }
+                                else if (RemoveBanner)
+                                {
+                                    VehicleMenu.RemoveBanner();
+                                }
                                 VehicleMenu.OnIndexChange += OnIndexChange;
                                 VehicleMenu.OnItemSelect += OnItemSelect;
                                 VehicleMenu.OnMenuClose += OnMenuClose;
@@ -431,12 +453,11 @@ public class PurchaseMenu : Menu
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
-        if (Store?.BannerImage != "")
+        if (HasBannerImage)
         {
-            WeaponMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
-            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+            WeaponMenu.SetBannerType(BannerImage);
         }
-        if (Store == null || Store.Name == "")
+        else if (RemoveBanner)
         {
             WeaponMenu.RemoveBanner();
         }
@@ -534,12 +555,11 @@ public class PurchaseMenu : Menu
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
-        if (Store?.BannerImage != "")
+        if (HasBannerImage)
         {
-            VehicleMenu.SetBannerType(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Store.BannerImage}"));
-            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+            VehicleMenu.SetBannerType(BannerImage);
         }
-        if (Store == null || Store.Name == "")
+        else if (RemoveBanner)
         {
             VehicleMenu.RemoveBanner();
         }
@@ -570,7 +590,7 @@ public class PurchaseMenu : Menu
         }
         description += "~n~~s~";
         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-        description += $"~n~~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
+        description += $"~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
         if (myItem.AmountPerPackage > 1)
         {
             description += $"~n~~b~{((float)cii.PurchasePrice / (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";

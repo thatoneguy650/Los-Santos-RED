@@ -79,6 +79,114 @@ public class Interiors : IInteriors
             //243.8133f, -44.96839f, 69.89659f
 
 
+            new Interior(41474,"24/7 Route 68",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(545.504f,2672.745f,42.30644f)),//left door
+                    new InteriorDoor(997554217, new Vector3(542.9252f,2672.406f,42.30644f))}),//right door
+
+
+            new Interior(16386,"24/7 Chumash",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(-3240.128f,1003.157f,12.98064f)),//left door
+                    new InteriorDoor(997554217, new Vector3(-3239.905f,1005.749f,12.98064f))}),//right door
+
+
+            new Interior(62722,"24/7 Palomino Freeway",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(2559.201f,384.0875f,108.7729f)),
+                    new InteriorDoor(997554217, new Vector3(2559.304f,386.6865f,108.7729f)),}),//right door
+            
+
+            new Interior(33282,"24/7 Strawberry",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(27.81761f,-1349.169f,29.64696f)),
+                    new InteriorDoor(997554217, new Vector3(30.4186f,-1349.169f,29.64696f)),}),//right door
+
+            new Interior(97538,"24/7 Banham Canyon",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(-3038.219f,588.2872f,8.058861f)),
+                    new InteriorDoor(997554217, new Vector3(-3039.012f,590.7643f,8.058861f)),}),//right door    
+            
+
+            new Interior(46850,"24/7 Downtown Vinewood",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(375.3528f,323.8015f,103.7163f)),
+                    new InteriorDoor(997554217, new Vector3(377.8753f,323.1672f,103.7163f)),}),//right door   
+
+
+            new Interior(36354,"24/7 Senora Freeway",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1437777724, new Vector3(1732.245f,6415.377f,34.76194f)),
+                    new InteriorDoor(1421582485, new Vector3(1734.097f,6413.048f,34.99545f)),}),//right door   
+
+            new Interior(13826,"24/7 Senora Freeway",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(2681.292f,3281.427f,55.39108f)),
+                    new InteriorDoor(997554217, new Vector3(2682.558f,3283.698f,55.39108f)),}),//right door   
+            
+            new Interior(55554,"24/7 Sandy Shores",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(1196685123, new Vector3(1963.917f,3740.075f,32.49369f)),
+                    new InteriorDoor(997554217, new Vector3(1966.17f,3741.376f,32.49369f)),}),//right door 
+
+            new Interior(47874, "Ltd Little Seoul",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3426294393, new Vector3(-713.0732f,-916.5409f,19.36553f)),
+                    new InteriorDoor(2065277225, new Vector3(-710.4722f,-916.5372f,19.36553f)),}) { IsSPOnly = true},//right door  
+
+
+
+
+
+            new Interior(45570, "Ltd Grapeseed",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3426294393, new Vector3(1699.661f,4930.278f,42.21359f)),
+                    new InteriorDoor(2065277225, new Vector3(1698.172f,4928.146f,42.21359f)),}) { IsSPOnly = true},//right door  
+
+            new Interior(80642,"LtD Davis",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3426294393, new Vector3(-53.96111f,-1755.717f,29.57094f)),
+                    new InteriorDoor(2065277225, new Vector3(-51.96669f,-1757.387f,29.57094f)),}),//right door   
+
+            new Interior(2050,"LtD Mirror Park",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}),//right door   
+
+            new Interior(33026,"Scoops Liquor Barn"),
+
+            //new Interior(-8888,"Lost M.C. Clubhouse",//only works with MP MAP
+            //    new List<string>() { "bkr_bi_hw1_13_int" },
+            //    new List<string>() {  },
+            //    new List<InteriorDoor>() { }),//right door  
+            
+
 
 
             new Interior(49922,"Los Santos Tattoo"),     
@@ -101,43 +209,47 @@ public class Interiors : IInteriors
             new Interior(3842,"Paleto Bay Police Station",new List<string>() { "v_sheriff2" },new List<string>() { "cs1_16_sheriff_cap" },new List<InteriorDoor>() { new InteriorDoor(-1501157055, new Vector3(-444.4985f, 6017.06f, 31.86633f)),new InteriorDoor(-1501157055, new Vector3(-442.66f, 6015.222f, 31.86633f))}) { DisabledInteriorCoords = new Vector3(-444.89068603515625f, 6013.5869140625f, 30.7164f) },
 
 
+            //
 
 
-
-            new Interior(-9994,"Rob's Liquors",//San Andreas Ave Del Perro
+            new Interior(50178,"Rob's Liquors",//San Andreas Ave Del Perro
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(-1212951353, new Vector3(-1226.894f, -903.1218f, 12.47039f)),
-                    new InteriorDoor(1173348778, new Vector3(-1224.755f, -911.4182f, 12.47039f)),
-                    new InteriorDoor(1173348778, new Vector3(-1219.633f, -912.406f, 12.47626f)),
+                    new InteriorDoor(3082015943, new Vector3(-1226.894f,-903.1218f,12.47039f)),
                 }),
 
-            new Interior(-9993,"Rob's Liquors",//Route 1
+
+            //19202
+
+            new Interior(19202,"Rob's Liquors",//Route 1
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(-1212951353, new Vector3(-2973.535f, 390.1414f, 15.18735f)),
-                    new InteriorDoor(1173348778, new Vector3(-2965.648f, 386.7928f, 15.18735f)),
-                    new InteriorDoor(1173348778, new Vector3(-2961.749f, 390.2573f, 15.19322f)),
+                    new InteriorDoor(3082015943, new Vector3(-2973.535f,390.1414f,15.18735f)),
+                   // new InteriorDoor(-1212951353, new Vector3(-2973.535f, 390.1414f, 15.18735f)),
+                    //new InteriorDoor(1173348778, new Vector3(-2965.648f, 386.7928f, 15.18735f)),
+                    //new InteriorDoor(1173348778, new Vector3(-2961.749f, 390.2573f, 15.19322f)),
                 }),
 
-            new Interior(-9992,"Rob's Liquors",//Prosperity Street
+            new Interior(98818,"Rob's Liquors",//Prosperity Street
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(-1212951353, new Vector3(-1490.411f, -383.8453f, 40.30745f)),
-                    new InteriorDoor(1173348778, new Vector3(-1482.679f, -380.153f, 40.30745f)),
-                    new InteriorDoor(1173348778, new Vector3(-1482.693f, -374.9365f, 40.31332f)),
+                    new InteriorDoor(3082015943, new Vector3(-1490.411f,-383.8453f,40.30745f)),
+                    //new InteriorDoor(-1212951353, new Vector3(-1490.411f, -383.8453f, 40.30745f)),
+                    //new InteriorDoor(1173348778, new Vector3(-1482.679f, -380.153f, 40.30745f)),
+                    //new InteriorDoor(1173348778, new Vector3(-1482.693f, -374.9365f, 40.31332f)),
                 }),
 
-            new Interior(-9991,"Rob's Liquors",//El Rancho Boulevard
+            new Interior(73986,"Rob's Liquors",//El Rancho Boulevard
                 new List<string>() {  },
                 new List<string>() {  },
                 new List<InteriorDoor>() {
-                    new InteriorDoor(-1212951353, new Vector3(1141.038f, -980.3225f, 46.55986f)),
-                    new InteriorDoor(1173348778, new Vector3(1132.645f, -978.6059f, 46.55986f)),
-                    new InteriorDoor(1173348778, new Vector3(1129.51f, -982.7756f, 46.56573f)),
+                    new InteriorDoor(3082015943, new Vector3(1141.038f,-980.3225f,46.55986f)),
+                    //new InteriorDoor(-1212951353, new Vector3(1141.038f, -980.3225f, 46.55986f)),
+                    //new InteriorDoor(1173348778, new Vector3(1132.645f, -978.6059f, 46.55986f)),
+                    //new InteriorDoor(1173348778, new Vector3(1129.51f, -982.7756f, 46.56573f)),
                 }),
 
 
@@ -198,7 +310,7 @@ public class Interiors : IInteriors
 
            // new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
             new Interior(81666,"LSCFD Fire Station 7"),
-            new Interior(62722,"24/7"),
+            
             new Interior(89602,"Yellow Jacket Inn"),
             new Interior(50178,"Rob's Liquors"),
             new Interior(10754,"Sub Urban"),
@@ -207,7 +319,7 @@ public class Interiors : IInteriors
             new Interior(37378,"Bob Mullet Hair & Beauty"),
             new Interior(14338,"Ponsonby"),
             new Interior(7170, "Premium Deluxe Motorsport",new List<string>() { "shr_int" },new List<string>() { "fakeint" },new List<string>() { "shutter_open","csr_beforeMission" }),
-            new Interior(47874, "Ltd Gasoline") { IsSPOnly = true } ,
+            
             new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,
             new Interior(39682,"Torture Room") { IsSPOnly = true } ,
             new Interior(76290,"Dell Perro Heights, Apt 4") { IsSPOnly = true } ,

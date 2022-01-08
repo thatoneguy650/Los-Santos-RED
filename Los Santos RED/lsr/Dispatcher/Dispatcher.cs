@@ -19,9 +19,10 @@ public class Dispatcher
     private LEDispatcher LEDispatcher;
     private EMSDispatcher EMSDispatcher;
     private FireDispatcher FireDispatcher;
+    private ZombieDispatcher ZombieDispatcher;
     private IWeapons Weapons;
     private INameProvideable Names;
-    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes)
     {
         Player = player;
         World = world;
@@ -35,6 +36,7 @@ public class Dispatcher
         LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
         EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
         FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
+        ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, crimes);
     }
     public void Dispatch()
     {
@@ -45,12 +47,22 @@ public class Dispatcher
                 FireDispatcher.Dispatch();
             }
         }
+        if(World.IsZombieApocalypse)
+        {
+            GameFiber.Yield();
+            ZombieDispatcher.Dispatch();
+        }
     }
     public void Recall()
     {
         LEDispatcher.Recall();
         EMSDispatcher.Recall();
         FireDispatcher.Recall();
+        if (World.IsZombieApocalypse)
+        {
+            GameFiber.Yield();
+            ZombieDispatcher.Recall();
+        }
     }
     public void Dispose()
     {

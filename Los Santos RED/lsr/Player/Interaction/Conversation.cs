@@ -175,7 +175,7 @@ public class Conversation : Interaction
                 {
                     Spoke = true;
                 }
-                //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+                EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}",5);
                 if (Spoke)
                 {
                     break;

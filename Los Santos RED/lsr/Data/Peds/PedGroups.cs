@@ -43,14 +43,14 @@ public class PedGroups : IPedGroups
                 new PedGroup("GANG_2","GANG_2","Gange 2 Member",true),
                 new PedGroup("GANG_9","GANG_9","Gange 9 Member",true),
                 new PedGroup("GANG_10","GANG_10","Gang 10 Member",true),
-                new PedGroup("The Lost MC","AMBIENT_GANG_LOST","Lost Member",true),
-                new PedGroup("Los Santos Vagos","AMBIENT_GANG_MEXICAN","Vagos Member",true),
-                new PedGroup("The Families","AMBIENT_GANG_FAMILY","Families Member",true),
-                new PedGroup("Ballas","AMBIENT_GANG_BALLAS","Ballas Member",true),
-                new PedGroup("Marabunta Grande","AMBIENT_GANG_MARABUNTE","Marabunta Grande Member",true),
-                new PedGroup("Altruist Cult","AMBIENT_GANG_CULT","Altruist Cult Member",true),
-                new PedGroup("Varrios Los Aztecas","AMBIENT_GANG_SALVA","Varrios Los Aztecas Member",true),
-                new PedGroup("Los Santos Triads","AMBIENT_GANG_WEICHENG","Triad Member",true),
+                new PedGroup("The Lost MC","AMBIENT_GANG_LOST","Lost Member",true),//
+                new PedGroup("Los Santos Vagos","AMBIENT_GANG_MEXICAN","Vagos Member",true),//
+                new PedGroup("The Families","AMBIENT_GANG_FAMILY","Families Member",true),//
+                new PedGroup("Ballas","AMBIENT_GANG_BALLAS","Ballas Member",true),//
+                new PedGroup("Marabunta Grande","AMBIENT_GANG_MARABUNTE","Marabunta Grande Member",true),//cant find em, put it in el burro
+                new PedGroup("Altruist Cult","AMBIENT_GANG_CULT","Altruist Cult Member",true),//shoot at you on site
+                new PedGroup("Varrios Los Aztecas","AMBIENT_GANG_SALVA","Varrios Los Aztecas Member",true),//added near lesters
+                new PedGroup("Los Santos Triads","AMBIENT_GANG_WEICHENG","Triad Member",true),//
                 new PedGroup("Rednecks","AMBIENT_GANG_HILLBILLY","Redneck",true),
                 new PedGroup("Dealer","DEALER","Dealer",true),
                 new PedGroup("Hates","HATES_PLAYER","Hates Player",true),

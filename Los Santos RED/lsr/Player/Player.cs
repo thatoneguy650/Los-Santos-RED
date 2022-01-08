@@ -39,6 +39,8 @@ namespace Mod
         private HealthState HealthState;
         private GameLocation ClosestSimpleTransaction;
         private GameLocation ClosestTeleportEntrance;
+        private GameLocation ClosestPurchaseLocation;
+
         private int wantedLevel = 0;
         private bool isActive = true;
         private bool isAiming;
@@ -888,11 +890,34 @@ namespace Mod
                         ButtonPrompts.Add(new ButtonPrompt($"Enter {ClosestTeleportEntrance.Name}", "EnterLocation", $"Enter {ClosestTeleportEntrance.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
                     }
                 }
+                else if (ClosestPurchaseLocation != null && ClosestPurchaseLocation.IsPurchased)
+                {
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"Enter {ClosestPurchaseLocation.Name}"))
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
+                        ButtonPrompts.Add(new ButtonPrompt($"Enter {ClosestPurchaseLocation.Name}", "EnterLocation", $"Enter {ClosestPurchaseLocation.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
+                    }
+                }
                 else
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "EnterLocation");
                 }
             }
+
+            if (ClosestPurchaseLocation != null && !ClosestPurchaseLocation.IsPurchased)
+            {
+                if (!ButtonPrompts.Any(x => x.Identifier == $"Purchase {ClosestPurchaseLocation.Name}"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "PurchaseLocation");
+                    ButtonPrompts.Add(new ButtonPrompt($"Purchase {ClosestPurchaseLocation.Name}", "PurchaseLocation", $"Purchase {ClosestPurchaseLocation.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
+                }
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "PurchaseLocation");
+            }
+
+
 
 
             if (IsCop && AliasedCop != null && AliasedCop.Pedestrian.Exists())
@@ -1053,6 +1078,7 @@ namespace Mod
             //GameFiber.Yield();//TR Yield RemovedTest 1
             ClosestSimpleTransaction = null;
             ClosestTeleportEntrance = null;
+            ClosestPurchaseLocation = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
                 float ClosestDistance = 999f;
@@ -1074,6 +1100,14 @@ namespace Mod
                             if (gl.DistanceToPlayer < ClosestDistance)
                             {
                                 ClosestTeleportEntrance = gl;
+                                ClosestDistance = gl.DistanceToPlayer;
+                            }
+                        }
+                        else if (gl.IsPurchaseable)
+                        {
+                            if (gl.DistanceToPlayer < ClosestDistance)
+                            {
+                                ClosestPurchaseLocation = gl;
                                 ClosestDistance = gl.DistanceToPlayer;
                             }
                         }
@@ -1775,6 +1809,10 @@ namespace Mod
                 Character.Heading = ClosestTeleportEntrance.TeleportEnterHeading;
                 Game.FadeScreenIn(1500, true);
             }
+            else if (ClosestPurchaseLocation != null && ClosestPurchaseLocation.IsPurchased)
+            {
+                Game.DisplayNotification("ENTERED BRO");
+            }
         }
         public void ExitLocation()
         {
@@ -1785,6 +1823,15 @@ namespace Mod
                 Character.Heading = CurrentInteriorLocation.EntranceHeading;
                 CurrentInteriorLocation = null;
                 Game.FadeScreenIn(1500, true);
+            }
+        }
+
+        public void PurchaseLocation()
+        {
+            if (ClosestPurchaseLocation != null && !ClosestPurchaseLocation.IsPurchased)
+            {
+                ClosestPurchaseLocation.IsPurchased = true;
+                Game.DisplayNotification("PURCHASED BRO");
             }
         }
         public void EnterVehicleAsPassenger()
