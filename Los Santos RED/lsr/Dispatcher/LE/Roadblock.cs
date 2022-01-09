@@ -293,7 +293,10 @@ public class Roadblock
                 return false;
             }
         }
-        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, false, Settings, Weapons, Names, false);
+        SpawnLocation pos1 = new SpawnLocation(position);
+        pos1.StreetPosition = position;
+
+        SpawnTask spawnTask = new SpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false);
         spawnTask.AttemptSpawn();
         foreach(VehicleExt roadblockCar in spawnTask.CreatedVehicles)
         {
@@ -301,7 +304,9 @@ public class Roadblock
         }
         if (addPed)
         {
-            SpawnTask pedSpawn = new SpawnTask(Agency, PedPosition, PedPosition, PedHeading, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false);
+            SpawnLocation pos2 = new SpawnLocation(PedPosition);
+            pos2.StreetPosition = PedPosition;
+            SpawnTask pedSpawn = new SpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false);
             pedSpawn.AttemptSpawn();
             foreach(PedExt person in pedSpawn.CreatedPeople)
             {

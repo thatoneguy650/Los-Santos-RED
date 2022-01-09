@@ -27,7 +27,30 @@ public class PedCrimes
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
     private List<Ped> AlreadyCalledInPeds = new List<Ped>();
-    private bool ShouldCheck => PedExt.PedGroup == null || PedExt.PedGroup?.InternalName == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName != "FIREMAN" && PedExt.PedGroup?.InternalName != "MEDIC");
+    private bool ShouldCheck
+    {
+        get
+        {
+            if(PedExt != null)
+            {
+                if(PedExt.PedGroup == null)
+                {
+                    return true;
+                }
+                else if (PedExt.PedGroup?.InternalName?.ToUpper() == "ZOMBIE")
+                {
+                    return true;
+                }
+                else if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" && PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" && PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
+                {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+           // return PedExt != null && (PedExt.PedGroup == null || PedExt.PedGroup?.InternalName.ToUpper() == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName.ToUpper() != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName.ToUpper() != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName.ToUpper() != "FIREMAN" && PedExt.PedGroup?.InternalName.ToUpper() != "MEDIC"));
+        }
+    }
     public PedCrimes(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons)
     {
         PedExt = pedExt;
@@ -154,27 +177,30 @@ public class PedCrimes
                 {
                     if(NativeHelper.IsNearby(PedExt.CellX,PedExt.CellY,cop.CellX,cop.CellY,4))
                     {
-                        float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
-                        if (DistanceTo <= 0.1f)
+                        if (PedExt.Pedestrian.Exists())
                         {
-                            DistanceTo = 999f;
-                        }
-                        if (DistanceTo <= 10f)//right next to them = they can see ALL!
-                        {
-                            OnPedSeenByPolice();
-                            OnPedHeardByPolice();
-                            return;
-                        }
-                        GameFiber.Yield();//TR THIS IS ADDED WITH THE REDUCED CALLS, IF THERE ARE TONS OF CRIMINALS, ITS OK THAT THIS IS SLOW?
-                        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
-                        {
-                            OnPedSeenByPolice();
-                            OnPedHeardByPolice();
-                            return;
-                        }
-                        if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
-                        {
-                            OnPedHeardByPolice();
+                            float DistanceTo = cop.Pedestrian.DistanceTo2D(PedExt.Pedestrian.Position);
+                            if (DistanceTo <= 0.1f)
+                            {
+                                DistanceTo = 999f;
+                            }
+                            if (DistanceTo <= 10f)//right next to them = they can see ALL!
+                            {
+                                OnPedSeenByPolice();
+                                OnPedHeardByPolice();
+                                return;
+                            }
+                            GameFiber.Yield();//TR THIS IS ADDED WITH THE REDUCED CALLS, IF THERE ARE TONS OF CRIMINALS, ITS OK THAT THIS IS SLOW?
+                            if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
+                            {
+                                OnPedSeenByPolice();
+                                OnPedHeardByPolice();
+                                return;
+                            }
+                            if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
+                            {
+                                OnPedHeardByPolice();
+                            }
                         }
                     }
                 }

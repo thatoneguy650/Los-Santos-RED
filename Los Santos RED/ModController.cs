@@ -133,7 +133,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants);
@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Input = new Input(Player, Settings, UI, PedSwap);
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups,Gangs,GangTerritories);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups,Gangs,GangTerritories, ShopMenus);
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();

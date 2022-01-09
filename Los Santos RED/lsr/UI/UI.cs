@@ -934,7 +934,11 @@ public class UI : IMenuProvideable
             {
                 toDisplay += $"{CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
             }
-            if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
+            if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryGang && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials != "")
+            {
+                toDisplay += $"{CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials;
+            }
+            else if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
             {
                 toDisplay += $"{CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
             }

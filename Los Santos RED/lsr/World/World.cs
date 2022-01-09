@@ -30,7 +30,9 @@ namespace Mod
         private List<string> VendingMachines = new List<string>();
         private List<uint> VendingMachinesHash;
         private IShopMenus ShopMenus;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs)
+        private IGangTerritories GangTerritories;
+        private IGangs Gangs;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -41,7 +43,9 @@ namespace Mod
             Time = time;
             Interiors = interiors;
             ShopMenus = shopMenus;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, gangs);
+            Gangs = gangs;
+            GangTerritories = gangTerritories;
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
@@ -88,7 +92,7 @@ namespace Mod
             foreach (Zone zone in Zones.ZoneList)
             {
                 zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName,ResponseType.LawEnforcement)?.ColorInitials;
-
+                zone.AssignedGangInitials = GangTerritories.GetMainGang(zone.InternalGameName)?.ColorInitials;
                 Agency secondaryAgency = Jurisdictions.GetNthAgency(zone.InternalGameName, ResponseType.LawEnforcement, 2);
                 if(secondaryAgency != null)
                 {

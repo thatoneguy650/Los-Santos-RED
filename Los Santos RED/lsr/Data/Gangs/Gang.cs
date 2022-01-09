@@ -12,16 +12,18 @@ public class Gang
     public Gang()
     {
     }
-    public Gang(string _ID, string _FullName)
+    public Gang(string _ID, string _FullName, string _ShortName)
     {
         ID = _ID;
         FullName = _FullName;
+        ShortName = _ShortName;
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
+        ShortName = _ShortName;
         Personnel = _CopModels;
         ColorString = _AgencyColorString;
         Vehicles = _Vehicles;
@@ -36,11 +38,12 @@ public class Gang
     {
         get
         {
-            return ColorPrefix + ID;
+            return ColorPrefix + ShortName;
         }
     }
     public string ColorPrefix { get; set; } = "~s~";
     public string FullName { get; set; } = "Unknown";
+    public string ShortName { get; set; } = "Unk";
     public bool HasMotorcycles => Vehicles.Any(x => x.IsMotorcycle);
     public string ID { get; set; } = "UNK";
     public string LicensePlatePrefix { get; set; } = "";

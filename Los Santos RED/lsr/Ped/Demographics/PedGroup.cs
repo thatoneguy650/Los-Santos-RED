@@ -16,7 +16,7 @@ public class PedGroup
     }
 
     public string Name { get; set; }
-    public string InternalName { get; set; }
+    public string InternalName { get; set; } = "";
     public string MemberName { get; set; }
     public bool CanChangeRelationship { get; set; }
 }

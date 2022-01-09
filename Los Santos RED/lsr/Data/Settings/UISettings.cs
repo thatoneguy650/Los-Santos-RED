@@ -68,6 +68,7 @@ public class UISettings
     public GTAFont ZoneFont { get; set; } = GTAFont.FontHouseScript;
     public bool ZoneDisplayShowPrimaryAgency { get; set; } = true;
     public bool ZoneDisplayShowSecondaryAgency { get; set; } = false;
+    public bool ZoneDisplayShowPrimaryGang { get; set; } = true;
 
     public bool AlwaysShowCash { get; set; } = true;
     public bool AlwaysShowRadar { get; set; } = true;
@@ -95,6 +96,7 @@ public class UISettings
     public float StaminaBarPositionY { get; set; } = 0.9925f;
     public float StaminaBarWidth { get; set; } = 0.07f;
     public float StaminaBarHeight { get; set; } = 0.0075f;
+
 
     public UISettings()
     {

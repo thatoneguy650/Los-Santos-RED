@@ -151,9 +151,6 @@ public class CustomizePedMenu : Menu
             ModelPed.Delete();
         }
         WorkingVariation = new PedVariation();
-        ModelPed.IsPersistent = true;
-        ModelPed.IsVisible = true;
-        ModelPed.BlockPermanentEvents = true;
     }
 
     private void SetupMenu()

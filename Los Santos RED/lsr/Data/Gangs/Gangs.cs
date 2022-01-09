@@ -103,6 +103,11 @@ public class Gangs : IGangs
             new DispatchablePerson("g_m_y_azteca_01",100,100) };
 
         List<DispatchablePerson> TriadsPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_chigoon_01",33,33),
+            new DispatchablePerson("g_m_m_chigoon_02",33,33),
+            new DispatchablePerson("g_m_m_korboss_01",33,33) };
+
+        List<DispatchablePerson> KoreanPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_korean_01",33,33),
             new DispatchablePerson("g_m_y_korean_02",33,33),
             new DispatchablePerson("g_m_y_korlieut_01",33,33) };
@@ -112,6 +117,21 @@ public class Gangs : IGangs
             new DispatchablePerson("a_m_m_hillbilly_02",30,30),
             new DispatchablePerson("a_m_m_hillbilly_01",30,30),
             new DispatchablePerson("a_m_m_hillbilly_02",10,10) };
+
+        List<DispatchablePerson> ArmenianPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_armboss_01",30,30),
+            new DispatchablePerson("g_m_m_armgoon_01",30,30),
+            new DispatchablePerson("g_m_m_armlieut_01",30,30),
+            new DispatchablePerson("g_m_y_armgoon_02",10,10) };
+
+        List<DispatchablePerson> CartelPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_mexboss_01",30,30),
+            new DispatchablePerson("g_m_m_mexboss_02",30,30),
+            new DispatchablePerson("g_m_y_mexgang_01",30,30) };
+
+        List<DispatchablePerson> ItalianPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_highsec_01",30,30),
+            new DispatchablePerson("s_m_m_highsec_02",30,30), };
 
         //Vehicles
         List<DispatchableVehicle> LostMCVehicles = new List<DispatchableVehicle>() {
@@ -162,18 +182,24 @@ public class Gangs : IGangs
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Holographic Sight"), new WeaponComponent("Grip"), new WeaponComponent("Extended Clip" )})),
             new IssuableWeapon("weapon_carbinerifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )})),
         };
-        DefaultGang = new Gang("~s~", "UNK", "Unknown Gang", "White", null, null, "", null, null) { MaxWantedLevelSpawn = 0 };
+        DefaultGang = new Gang("~s~", "UNK", "Unknown Gang","Unk", "White", null, null, "", null, null) { MaxWantedLevelSpawn = 0 };
         GangsList = new List<Gang>
         {
-            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "White", LostMCPEds, LostMCVehicles, "LOST ",AllSidearms,AllLongGuns),
-            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Los Santos Vagos", "Orange", VagosPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Green", FamiliesPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas", "Purple", BallasPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Blue", MarabuntaPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult", "White", AltruistPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Yellow", VarriosPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Los Santos Triads", "Red", TriadsPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
-            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Black", RedneckPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST", "White", LostMCPEds, LostMCVehicles, "LOST ",AllSidearms,AllLongGuns),
+            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Los Santos Vagos","Vagos", "Orange", VagosPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Los Santos Triads","Triads", "Red", TriadsPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", ItalianPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, GenericVehicles, "",AllSidearms,AllLongGuns),
+
+
             DefaultGang
         };
     }

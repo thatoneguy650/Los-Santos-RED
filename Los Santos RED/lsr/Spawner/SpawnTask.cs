@@ -13,9 +13,9 @@ public class SpawnTask
     private DispatchablePerson PersonType;
     private Agency Agency;
     private bool AddBlip;
-    private Vector3 InitialPosition;
-    private Vector3 StreetPosition;
-    private float Heading;
+    //private Vector3 InitialPosition;
+    //private Vector3 StreetPosition;
+    //private float Heading;
     private VehicleExt Vehicle;
     private DispatchableVehicle VehicleType;
     private ISettingsProvideable Settings;
@@ -26,36 +26,42 @@ public class SpawnTask
     private Gang Gang;
     private IPedGroups RelationshipGroups;
     private ICrimes Crimes;
+    private IShopMenus ShopMenus;
 
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
+    private SpawnLocation SpawnLocation;
+
+    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
     {
         Agency = agency;
         PersonType = officerType;
         VehicleType = vehicleType;
         AddBlip = addBlip;
-        InitialPosition = initialPosition;
-        StreetPosition = streetPosition;
-        Heading = heading;
+        SpawnLocation = spawnLocation;
+        //InitialPosition = initialPosition;
+        //StreetPosition = streetPosition;
+        //Heading = heading;
         Settings = settings;
         Weapons = weapons;
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
     }
-    public SpawnTask(Gang gang, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups)
+    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus)
     {
         Gang = gang;
         PersonType = officerType;
         VehicleType = vehicleType;
         AddBlip = addBlip;
-        InitialPosition = initialPosition;
-        StreetPosition = streetPosition;
-        Heading = heading;
+        SpawnLocation = spawnLocation;
+        //InitialPosition = initialPosition;
+        //StreetPosition = streetPosition;
+        //Heading = heading;
         Settings = settings;
         Weapons = weapons;
         Names = names;
         Crimes = crimes;
         RelationshipGroups = pedGroups;
         AddOptionalPassengers = addOptionalPassengers;
+        ShopMenus = shopMenus;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -65,19 +71,23 @@ public class SpawnTask
         {
             if(VehicleType == null)
             {
-                return InitialPosition;
+                if(SpawnLocation.HasSidewalk)
+                {
+                    return SpawnLocation.SidewalkPosition;
+                }
+                return SpawnLocation.InitialPosition;
             }
             else if (VehicleType.IsHelicopter)
             {
-                return InitialPosition + new Vector3(0f, 0f, 250f);
+                return SpawnLocation.InitialPosition + new Vector3(0f, 0f, 250f);
             }
             else if (VehicleType.IsBoat)
             {
-                return InitialPosition;
+                return SpawnLocation.InitialPosition;
             }
             else
             {
-                return StreetPosition;
+                return SpawnLocation.StreetPosition;
             }
         }
     }
@@ -138,6 +148,15 @@ public class SpawnTask
                 else if (PersonType != null)
                 {
                     CreatePerson();
+                    if (Gang != null)
+                    {
+                        int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
+                        for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
+                        {
+                            PedExt Buddy = CreatePerson();
+                            EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                        }
+                    }
                 }
 
             }
@@ -165,7 +184,7 @@ public class SpawnTask
         try
         {
             EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {PersonType.ModelName}", 3);
-            Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+            Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
             //Model modelToCreate = new Model(Game.GetHashKey(PersonType.ModelName));
             //modelToCreate.LoadAndWait();
             //Ped ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(PersonType.ModelName), Position.X, Position.Y, Position.Z + 1f, Heading, false, false);
@@ -244,9 +263,17 @@ public class SpawnTask
                     {
                         myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
                     }
-                    GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons);
+
+                    ShopMenu toAdd = null;
+                    if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
+                    {
+                        toAdd = ShopMenus.GetRanomdDrugMenu();
+                    }
+
+                    GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
                     Person = GangMember;
                     GangMember.IssueWeapons(Weapons);
+
 
                     //ped.BlockPermanentEvents = false;
                     //ped.KeepTasks = false;
@@ -279,7 +306,7 @@ public class SpawnTask
         try
         {
             EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {VehicleType.ModelName}", 3);
-            SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, Heading);
+            SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             //Model modelToCreate = new Model(Game.GetHashKey(VehicleType.ModelName));
             //modelToCreate.LoadAndWait();
             //SpawnedVehicle = NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey(VehicleType.ModelName), Position.X, Position.Y, Position.Z, Heading, false, false);

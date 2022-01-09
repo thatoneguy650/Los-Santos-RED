@@ -67,7 +67,7 @@ public class Zone
     }
     public string AssignedLEAgencyInitials { get; set; }
     public string AssignedSecondLEAgencyInitials { get; set; }
-
+    public string AssignedGangInitials { get; set; }
 
     public bool IsSpecificLocation { get; set; } = false;
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;

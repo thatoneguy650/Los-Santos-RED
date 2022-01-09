@@ -390,7 +390,7 @@ public class Pedestrians
         Gang MyGang = Gangs.GetGang(relationshipGroupName);
         if(MyGang == null)
         {
-            MyGang = new Gang(relationshipGroupName, relationshipGroupName);
+            MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName);
         }
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage);

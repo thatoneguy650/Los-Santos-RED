@@ -141,25 +141,25 @@ public class Vehicles
                 }
 
             }
-            //foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && x.Vehicle.Exists() && !x.WasSpawnedEmpty))
-            //{
-            //    if (PoliceCar.Vehicle.Exists())
-            //    {
-            //        if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
-            //        {
-            //            if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
-            //            {
-            //                if (PoliceCar.Vehicle.IsPersistent)
-            //                {
-            //                    EntryPoint.PersistentVehiclesDeleted++;
-            //                }
-            //                EntryPoint.WriteToConsole($"RemoveAbandonedGangVehicles {PoliceCar.Vehicle.Handle}", 5);
-            //                PoliceCar.Vehicle.Delete();
-            //                GameFiber.Yield();
-            //            }
-            //        }
-            //    }
-            //}
+            foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent))
+            {
+                if (PoliceCar.Vehicle.Exists())
+                {
+                    if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                    {
+                        if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                        {
+                            if (PoliceCar.Vehicle.IsPersistent)
+                            {
+                                EntryPoint.PersistentVehiclesDeleted++;
+                            }
+                            EntryPoint.WriteToConsole($"RemoveAbandonedGangVehicles {PoliceCar.Vehicle.Handle}", 5);
+                            PoliceCar.Vehicle.Delete();
+                            GameFiber.Yield();
+                        }
+                    }
+                }
+            }
         }
         catch(InvalidOperationException ex)
         {
