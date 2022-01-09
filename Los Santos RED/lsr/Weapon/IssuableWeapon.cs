@@ -66,5 +66,10 @@ public class IssuableWeapon
     {
         return ModelHash;
     }
+
+    internal void ApplyVariation(object pedestrian)
+    {
+        throw new NotImplementedException();
+    }
 }
 

@@ -30,7 +30,7 @@ namespace Mod
         private List<string> VendingMachines = new List<string>();
         private List<uint> VendingMachinesHash;
         private IShopMenus ShopMenus;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio)
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -41,7 +41,7 @@ namespace Mod
             Time = time;
             Interiors = interiors;
             ShopMenus = shopMenus;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, gangs);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
@@ -49,6 +49,18 @@ namespace Mod
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
+
+        public List<PedExt> TaskableCiviliansList
+        {
+            get
+            {
+                List<PedExt> pedExts = new List<PedExt>();
+                pedExts.AddRange(CivilianList);
+                pedExts.AddRange(GangMemberList);
+                return pedExts;
+            }
+        }
+
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
         public bool IsMPMapLoaded { get; private set; }
         public bool IsZombieApocalypse { get; set; } = false;
@@ -59,6 +71,7 @@ namespace Mod
         public int PoliceVehicleCount => Vehicles.PoliceVehiclesCount;
         public int SpawnedPoliceVehicleCount => Vehicles.SpawnedPoliceVehiclesCount;
         public int CivilianVehicleCount => Vehicles.CivilianVehiclesCount;
+        public List<GangMember> GangMemberList => Pedestrians.GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Zombie> ZombieList => Pedestrians.Zombies.Where(x => x.Pedestrian.Exists()).ToList();
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public List<EMT> EMTList => Pedestrians.EMTs.Where(x => x.Pedestrian.Exists()).ToList();
@@ -68,6 +81,7 @@ namespace Mod
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
         public int TotalSpawnedZombies => Pedestrians.TotalSpawnedZombies;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
+        public int TotalSpawnedGangMembers => Pedestrians.TotalSpawnedGangMembers;
         public string DebugString => Pedestrians.DebugString + " - " + Vehicles.DebugString;
         public void Setup()
         {
@@ -142,6 +156,10 @@ namespace Mod
                 else if (pedExt.GetType() == typeof(Zombie))
                 {
                     Pedestrians.Zombies.Add((Zombie)pedExt);
+                }
+                else if (pedExt.GetType() == typeof(GangMember))
+                {
+                    Pedestrians.GangMembers.Add((GangMember)pedExt);
                 }
                 else
                 {

@@ -1148,35 +1148,6 @@ public class PurchaseMenu : Menu
             EntryPoint.WriteToConsole($"Weapon Preview Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
-    //private void WeaponMenuOnMenuOpen(UIMenu sender)
-    //{
-    //    EntryPoint.WriteToConsole($"WeaponMenuOnMenuOpen {sender.SubtitleText} {sender.CurrentSelection}", 5);
-    //    foreach (UIMenuItem uimi in sender.MenuItems)
-    //    {
-    //        EntryPoint.WriteToConsole($"WeaponMenuOnMenuOpen {sender.SubtitleText} {uimi.GetType().ToString()}", 5);
-    //        if (uimi.GetType() == typeof(UIMenuListScrollerItem<MenuItemExtra>))
-    //        {
-    //            UIMenuListScrollerItem<MenuItemExtra> myItem = (UIMenuListScrollerItem<MenuItemExtra>)uimi;
-    //            EntryPoint.WriteToConsole($"WeaponMenuOnMenuOpen {sender.SubtitleText} Index {myItem.Index}", 5);
-    //            myItem.Index = 0;
-    //            //myItem.SelectedItem = myItem.Items.OrderBy(x => x.ExtraName.ToLower().Contains("default")).ThenBy(x => x.PurchasePrice).FirstOrDefault();
-    //        }
-    //        if (uimi.Text == "Purchase")
-    //        {
-    //            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
-    //            {
-    //                uimi.Enabled = false;
-    //                uimi.RightLabel = "Owned";
-    //            }
-    //            else
-    //            {
-    //                uimi.Enabled = true;
-    //                uimi.RightLabel = $"${CurrentMenuItem.PurchasePrice}";
-    //            }
-                
-    //        }
-    //    }
-    //}
     private void PreviewWeapon(ModItem itemToShow)
     {
         try
@@ -1281,7 +1252,6 @@ public class PurchaseMenu : Menu
         //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
-
 
 
     private void AddPropEntry(MenuItem cii, ModItem myItem)

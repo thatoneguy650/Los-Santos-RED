@@ -86,7 +86,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     public void RunCiviliansTasks()
     {
         ExpireSeatAssignments();
-        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
+        foreach (PedExt Ped in PedProvider.TaskableCiviliansList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
             try
             { 
@@ -132,7 +132,7 @@ public class Tasker : ITaskerable, ITaskerReportable
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             ExpireSeatAssignments();
-            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+            foreach (PedExt Civilian in PedProvider.TaskableCiviliansList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
                 try
                 { 
@@ -152,7 +152,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
-            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 230f))
+            foreach (PedExt Civilian in PedProvider.TaskableCiviliansList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer > 230f))
             {
                 Civilian.CurrentTask = null;
             }
@@ -161,7 +161,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
+        PedExt Criminal = PedProvider.TaskableCiviliansList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).OrderByDescending(x=> x.IsGangMember).FirstOrDefault();//85f//150f
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
             if (Settings.SettingsManager.CivilianSettings.ShowRandomCriminalBlips && Criminal.Pedestrian.Exists())
@@ -318,13 +318,13 @@ public class Tasker : ITaskerable, ITaskerReportable
         if (PedProvider.IsZombieApocalypse)
         {
             List<PedExt> TotalList = new List<PedExt>();
-            TotalList.AddRange(PedProvider.CivilianList);
+            TotalList.AddRange(PedProvider.TaskableCiviliansList);
             TotalList.AddRange(PedProvider.ZombieList);
             PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         else
         {
-            PossibleTargets = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+            PossibleTargets = PedProvider.TaskableCiviliansList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         ClosestCopToPlayer = PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
@@ -439,6 +439,20 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
+        if(Civilian.GetType() == typeof(GangMember))
+        {
+            GangMember gm = (GangMember)Civilian;
+            if(gm.WasModSpawned)
+            {
+                if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
+                {
+                    EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
+                    gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
+                    GameFiber.Yield();//TR Added back 4
+                    gm.CurrentTask.Start();
+                }
+            }
+        }
         if(Civilian.IsBusted)
         {
             if (Civilian.DistanceToPlayer <= 75f)
@@ -457,7 +471,6 @@ public class Tasker : ITaskerable, ITaskerReportable
             bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
             bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
             bool SeenMundaneCrime = Civilian.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
-
             if (SeenScaryCrime || SeenAngryCrime)
             {
                 if (Civilian.WillCallPolice)
@@ -563,7 +576,6 @@ public class Tasker : ITaskerable, ITaskerReportable
             Target = target;
             DistanceToTarget = distanceToTarget;
         }
-
         public PedExt Target { get; set; }
         public float DistanceToTarget { get; set; } = 999f;
     }

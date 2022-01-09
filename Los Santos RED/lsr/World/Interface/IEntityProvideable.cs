@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         int PoliceBoatsCount { get; }
         int TotalSpawnedFirefighters { get; }
         int TotalSpawnedEMTs { get; }
+        int TotalSpawnedGangMembers { get; }
         int TotalSpawnedPolice { get; }
         List<Firefighter> FirefighterList { get; }
         List<EMT> EMTList { get; }
@@ -36,8 +37,10 @@ namespace LosSantosRED.lsr.Interface
         string DebugString { get; }
         List<GameLocation> ActiveLocations { get; }
         List<Zombie> ZombieList { get; }
+        List<GangMember> GangMemberList { get; }
         bool IsZombieApocalypse { get; }
         int TotalSpawnedZombies { get; }
+        List<PedExt> TaskableCiviliansList { get; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);

@@ -67,6 +67,8 @@ namespace LosSantosRED.lsr
         private string PrevLastRanQuinaryTask;
         private string PrevLastRanNonPriorityTask;
         private string LastRanNonPriorityTask;
+        private Gangs Gangs;
+        private GangTerritories GangTerritories;
 
         public ModController()
         {
@@ -131,7 +133,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants);
@@ -151,7 +153,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Input = new Input(Player, Settings, UI, PedSwap);
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups,Gangs,GangTerritories);
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();
@@ -268,9 +270,20 @@ namespace LosSantosRED.lsr
             Agencies = new Agencies();
             Agencies.ReadConfig();
             GameFiber.Yield();
+
+            Gangs = new Gangs();
+            Gangs.ReadConfig();
+            GameFiber.Yield();
+
+
             Jurisdictions = new Jurisdictions(Agencies);
             Jurisdictions.ReadConfig();
             GameFiber.Yield();
+
+            GangTerritories = new GangTerritories(Gangs);
+            GangTerritories.ReadConfig();
+            GameFiber.Yield();
+
             RadioStations = new RadioStations();
             RadioStations.ReadConfig();
             GameFiber.Yield();

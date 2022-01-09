@@ -99,6 +99,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\Data\Gangs\Gang.cs" />
+    <Compile Include="lsr\Data\Gangs\Gangs.cs" />
+    <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IGangs.cs" />
+    <Compile Include="lsr\Data\Interface\IGangTerritories.cs" />
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
+    <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
@@ -117,6 +123,8 @@
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
+    <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
+    <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
@@ -137,6 +145,7 @@
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
+    <Compile Include="lsr\Tasker\Civilian\CivIdle.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
     <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />

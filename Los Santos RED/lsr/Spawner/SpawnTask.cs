@@ -23,6 +23,10 @@ public class SpawnTask
     private INameProvideable Names;
     private Vehicle SpawnedVehicle;
     private bool AddOptionalPassengers = false;
+    private Gang Gang;
+    private IPedGroups RelationshipGroups;
+    private ICrimes Crimes;
+
     public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
     {
         Agency = agency;
@@ -35,6 +39,22 @@ public class SpawnTask
         Settings = settings;
         Weapons = weapons;
         Names = names;
+        AddOptionalPassengers = addOptionalPassengers;
+    }
+    public SpawnTask(Gang gang, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups)
+    {
+        Gang = gang;
+        PersonType = officerType;
+        VehicleType = vehicleType;
+        AddBlip = addBlip;
+        InitialPosition = initialPosition;
+        StreetPosition = streetPosition;
+        Heading = heading;
+        Settings = settings;
+        Weapons = weapons;
+        Names = names;
+        Crimes = crimes;
+        RelationshipGroups = pedGroups;
         AddOptionalPassengers = addOptionalPassengers;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
@@ -65,15 +85,18 @@ public class SpawnTask
     {
         try
         {
-            if (Agency != null)
+            EntryPoint.WriteToConsole($"SPAWNTASK AttemptSpawn FIRST! PersonType {PersonType?.ModelName}", 3);
+            if (Agency != null || Gang != null)
             {
                 if (VehicleType != null)
                 {
                     Vehicle = CreateVehicle();
                     if (Vehicle != null && Vehicle.Vehicle.Exists())
                     {
+                        EntryPoint.WriteToConsole($"SPAWNTASK 11111111111", 3);
                         if (PersonType != null)
                         {
+                            EntryPoint.WriteToConsole($"SPAWNTASK 222222 {PersonType.ModelName}", 3);
                             PedExt Person = CreatePerson();
                             if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
@@ -156,7 +179,7 @@ public class SpawnTask
                 ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
                 ped.RandomizeVariation();
-                if (VehicleType != null && VehicleType.IsMotorcycle)
+                if (VehicleType != null && VehicleType.IsMotorcycle && Agency != null)
                 {
                     ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
                     NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
@@ -176,29 +199,69 @@ public class SpawnTask
                 }
                 ped.IsPersistent = true;
                 EntryPoint.PersistentPedsCreated++;
-                if (AddBlip && ped.Exists())
-                {
-                    Blip myBlip = ped.AttachBlip();
-                    myBlip.Color = Agency.Color;
-                    myBlip.Scale = 0.6f;
-                }
                 PedExt Person = null;
-                if (Agency.ResponseType == ResponseType.LawEnforcement)
+                if (Agency != null)
                 {
-                    NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                    Cop PrimaryCop = new Cop(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
-                    PrimaryCop.IssueWeapons(Weapons);
-                    Person = PrimaryCop;
+                    if (AddBlip && ped.Exists())
+                    {
+                        Blip myBlip = ped.AttachBlip();
+                        myBlip.Color = Agency.Color;
+                        myBlip.Scale = 0.6f;
+                    }
+                    if (Agency.ResponseType == ResponseType.LawEnforcement)
+                    {
+                        NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
+                        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        PrimaryCop.IssueWeapons(Weapons);
+                        Person = PrimaryCop;
+                    }
+                    else if (Agency.ResponseType == ResponseType.EMS)
+                    {
+                        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        Person = PrimaryEmt;
+                    }
+                    else if (Agency.ResponseType == ResponseType.Fire)
+                    {
+                        Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        Person = PrimaryFirefighter;
+                    }
                 }
-                else if (Agency.ResponseType == ResponseType.EMS)
+                else if(Gang != null)
                 {
-                    EMT PrimaryEmt = new EMT(ped,Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
-                    Person = PrimaryEmt;
-                }
-                else if (Agency.ResponseType == ResponseType.Fire)
-                {
-                    Firefighter PrimaryFirefighter = new Firefighter(ped,Settings, ped.Health, Agency, true, null,Weapons,Names.GetRandomName(ped.IsMale));
-                    Person = PrimaryFirefighter;
+                    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED GANG MEMBER {Gang.ID}", 0);
+                    if (AddBlip && ped.Exists())
+                    {
+                        Blip myBlip = ped.AttachBlip();
+                        myBlip.Color = Gang.Color;
+                        myBlip.Scale = 0.6f;
+                    }
+
+                    RelationshipGroup rg = new RelationshipGroup(Gang.ID);
+                    ped.RelationshipGroup = rg;
+
+                    PedGroup myGroup = RelationshipGroups.GetPedGroup(Gang.ID);
+                    if (myGroup == null)
+                    {
+                        myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
+                    }
+                    GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons);
+                    Person = GangMember;
+                    GangMember.IssueWeapons(Weapons);
+
+                    //ped.BlockPermanentEvents = false;
+                    //ped.KeepTasks = false;
+                    //ped.Tasks.Clear();
+
+                    //if (ped.IsInAnyVehicle(false) && ped.CurrentVehicle.Exists())
+                    //{
+                    //    NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(ped, ped.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
+                    //}
+                    //else
+                    //{
+                    //    NativeFunction.Natives.TASK_WANDER_STANDARD(ped, 0, 0);
+                    //}
+
+
                 }
                 CreatedPeople.Add(Person);
                 return Person;
@@ -237,8 +300,12 @@ public class SpawnTask
                     CopVehicle.WasModSpawned = true;
                     SpawnedVehicle.IsPersistent = true;
                     EntryPoint.PersistentVehiclesCreated++;
-                    CopVehicle.UpdateLivery(Agency);
-                    CopVehicle.UpgradePerformance();
+
+                    if (Agency != null)
+                    {
+                        CopVehicle.UpdateLivery(Agency);
+                        CopVehicle.UpgradePerformance();
+                    }
                     CreatedVehicles.Add(CopVehicle);
                     GameFiber.Yield();
                     return CopVehicle;

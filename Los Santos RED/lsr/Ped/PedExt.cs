@@ -344,9 +344,22 @@ public class PedExt : IComplexTaskable
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
                     {
-                        CanBeAmbientTasked = false;
-                        WillCallPolice = false;
-                        WillFight = false;
+                        if (this.GetType() == typeof(GangMember))
+                        {
+                            GangMember gm = (GangMember)this;
+                            if (!gm.WasModSpawned)
+                            {
+                                CanBeAmbientTasked = false;
+                                WillCallPolice = false;
+                                WillFight = false;
+                            }
+                        }
+                        else
+                        {
+                            CanBeAmbientTasked = false;
+                            WillCallPolice = false;
+                            WillFight = false;
+                        }
                         WasEverSetPersistent = true;
                     }
                     GameTimeLastUpdated = Game.GameTime;

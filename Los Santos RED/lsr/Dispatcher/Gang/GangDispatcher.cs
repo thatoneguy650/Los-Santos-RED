@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-public class EMSDispatcher
+public class GangDispatcher
 {
-    private readonly IAgencies Agencies;
+    private readonly IGangs Gangs;
     private readonly IDispatchable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
     private readonly float MinimumDeleteDistance = 150f;//200f
@@ -18,42 +18,46 @@ public class EMSDispatcher
     private readonly ISettingsProvideable Settings;
     private readonly IStreets Streets;
     private readonly IEntityProvideable World;
-    private readonly IJurisdictions Jurisdictions;
     private readonly IZones Zones;
     private uint GameTimeAttemptedDispatch;
     private uint GameTimeAttemptedRecall;
     private bool HasDispatchedThisTick;
     private IWeapons Weapons;
     private INameProvideable Names;
-    public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    private IGangTerritories GangTerritories;
+    private IPedGroups PedGroups;
+    private ICrimes Crimes;
+    public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes)
     {
         Player = player;
         World = world;
-        Agencies = agencies;
+        Gangs = gangs;
         Settings = settings;
         Streets = streets;
         Zones = zones;
-        Jurisdictions = jurisdictions;
+        GangTerritories = gangTerritories;
         Weapons = weapons;
         Names = names;
+        PedGroups = pedGroups;
+        Crimes = crimes;
     }
-    private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
-    private List<EMT> DeletableOfficers => World.EMTList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-    private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
-    private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
-    private bool HasNeedToDispatch => World.TotalSpawnedEMTs == 0;
-    private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 60000;
+    private float ClosestOfficerSpawnToPlayerAllowed => 50f;
+    private List<GangMember> DeletableOfficers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private float DistanceToDelete => 300f;
+    private float DistanceToDeleteOnFoot => 250f;
+    private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= 3;
+    private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 15000;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
-    private float MaxDistanceToSpawn => 900f;
-    private float MinDistanceToSpawn => 350f;
-    private int TimeBetweenSpawn => 60000;
+    private float MaxDistanceToSpawn => 200f;
+    private float MinDistanceToSpawn => 100f;
+    private int TimeBetweenSpawn => 15000;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.EMSSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
+        if (IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn", 3);
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
             SpawnLocation spawnLocation = new SpawnLocation();
@@ -67,29 +71,37 @@ public class EMSDispatcher
             while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
-                Agency agency = GetRandomAgency(spawnLocation);
-                if (agency != null)
+                Gang gang = GetRandomGang(spawnLocation);
+                if (gang != null)
                 {
-                    //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID}", 3);
+                    DispatchableVehicle VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
                     if (VehicleType != null)
                     {
-                        //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {VehicleType.ModelName}", 3);
-                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle {VehicleType.ModelName}", 3);
+                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
                         if (PersonType != null)
                         {
-                            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
+                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, true, Settings, Weapons, Names, true, Crimes,PedGroups);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
-                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.EMS));
+                                foreach(PedExt created in spawnTask.CreatedPeople)
+                                {
+                                    World.AddEntity(created);
+
+                                }
+
+
+
+                                //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.None));
                                 HasDispatchedThisTick = true;
                             }
                             catch (Exception ex)
                             {
-                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
                             }
                         }
                     }
@@ -97,7 +109,7 @@ public class EMSDispatcher
             }
             else
             {
-                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn EMS Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Gang Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -109,11 +121,11 @@ public class EMSDispatcher
     }
     public void Recall()
     {
-        if (Settings.SettingsManager.EMSSettings.ManageDispatching && IsTimeToRecall)
+        if (IsTimeToRecall)
         {
-            foreach (EMT emt in DeletableOfficers)
+            foreach (GangMember emt in DeletableOfficers)
             {
-                if(ShouldBeRecalled(emt))
+                if (ShouldBeRecalled(emt))
                 {
                     Delete(emt);
                     GameFiber.Yield();
@@ -122,9 +134,9 @@ public class EMSDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
-    private bool ShouldBeRecalled(EMT emt)
+    private bool ShouldBeRecalled(GangMember emt)
     {
-        if(emt.IsInVehicle)
+        if (emt.IsInVehicle)
         {
             return emt.DistanceToPlayer >= DistanceToDelete;
         }
@@ -176,20 +188,20 @@ public class EMSDispatcher
             MyBlip.Delete();
         }
     }
-    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
+    private List<Gang> GetGangs(Vector3 Position, int WantedLevel)
     {
-        List<Agency> ToReturn = new List<Agency>();
+        List<Gang> ToReturn = new List<Gang>();
         Zone CurrentZone = Zones.GetZone(Position);
-        Agency ZoneAgency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel, ResponseType.EMS);
+        Gang ZoneAgency = GangTerritories.GetRandomGang(CurrentZone.InternalGameName, WantedLevel);
         if (ZoneAgency != null)
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
-            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.EMS));
+            ToReturn.AddRange(Gangs.GetSpawnableGangs(WantedLevel));
         }
-        foreach (Agency ag in ToReturn)
+        foreach (Gang ag in ToReturn)
         {
             //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
@@ -200,7 +212,7 @@ public class EMSDispatcher
         Vector3 Position;
         if (Player.IsInVehicle)
         {
-            Position = Player.Character.GetOffsetPositionFront(250f);//350f
+            Position = Player.Character.GetOffsetPositionFront(150f);//350f
         }
         else
         {
@@ -209,29 +221,29 @@ public class EMSDispatcher
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }
-    private Agency GetRandomAgency(SpawnLocation spawnLocation)
+    private Gang GetRandomGang(SpawnLocation spawnLocation)
     {
-        Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, Player.WantedLevel);
-        agency = PossibleAgencies.PickRandom();
-        if (agency == null)
+        Gang Gang;
+        List<Gang> PossibleAgencies = GetGangs(spawnLocation.StreetPosition, Player.WantedLevel);
+        Gang = PossibleAgencies.PickRandom();
+        if (Gang == null)
         {
-            agency = GetAgencies(spawnLocation.InitialPosition, Player.WantedLevel).PickRandom();
+            Gang = GetGangs(spawnLocation.InitialPosition, Player.WantedLevel).PickRandom();
         }
-        if (agency == null)
+        if (Gang == null)
         {
             //EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
         }
-        return agency;
+        return Gang;
     }
-    private Agency GetRandomAgency(Vector3 spawnLocation)
+    private Gang GetRandomGang(Vector3 spawnLocation)
     {
-        Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation, Player.WantedLevel);
+        Gang agency;
+        List<Gang> PossibleAgencies = GetGangs(spawnLocation, Player.WantedLevel);
         agency = PossibleAgencies.PickRandom();
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation, Player.WantedLevel).PickRandom();
+            agency = GetGangs(spawnLocation, Player.WantedLevel).PickRandom();
         }
         if (agency == null)
         {

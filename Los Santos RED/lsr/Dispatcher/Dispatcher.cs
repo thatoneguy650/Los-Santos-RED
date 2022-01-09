@@ -20,9 +20,10 @@ public class Dispatcher
     private EMSDispatcher EMSDispatcher;
     private FireDispatcher FireDispatcher;
     private ZombieDispatcher ZombieDispatcher;
+    private GangDispatcher GangDispatcher;
     private IWeapons Weapons;
     private INameProvideable Names;
-    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes)
+    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories)
     {
         Player = player;
         World = world;
@@ -37,6 +38,7 @@ public class Dispatcher
         EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
         FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names);
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, crimes);
+        GangDispatcher = new GangDispatcher(World, Player, gangs, Settings, Streets, Zones, gangTerritories, Weapons, Names, pedGroups, crimes);
     }
     public void Dispatch()
     {
@@ -52,6 +54,9 @@ public class Dispatcher
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();
         }
+        GangDispatcher.Dispatch();
+
+
     }
     public void Recall()
     {
@@ -63,6 +68,7 @@ public class Dispatcher
             GameFiber.Yield();
             ZombieDispatcher.Recall();
         }
+        GangDispatcher.Recall();
     }
     public void Dispose()
     {

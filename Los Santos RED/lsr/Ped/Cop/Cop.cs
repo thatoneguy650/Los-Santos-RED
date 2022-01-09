@@ -4,7 +4,7 @@ using Rage;
 using Rage.Native;
 using System.Collections.Generic;
 
-public class Cop : PedExt
+public class Cop : PedExt, IWeaponIssuable
 {
     private AssistManager AssistManager;
     private uint GameTimeSpawned;
@@ -33,6 +33,7 @@ public class Cop : PedExt
         Voice = new Voice(this);
         AssistManager = new AssistManager(this); 
     }
+    public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;

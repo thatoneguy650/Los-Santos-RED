@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class WeaponInventory
 {
-    private Cop Cop;
+    private IWeaponIssuable Cop;
     private uint GameTimeLastWeaponCheck;
     private bool IsSetDeadly;
     private bool IsSetLessLethal;
@@ -21,7 +21,7 @@ public class WeaponInventory
     private bool HasHeavyWeaponOnPerson;
     private ISettingsProvideable Settings;
     private int DesiredAccuracy => IsSetLessLethal ? 30 : Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-    public WeaponInventory(Cop cop, ISettingsProvideable settings)
+    public WeaponInventory(IWeaponIssuable cop, ISettingsProvideable settings)
     {
         Cop = cop;
         Settings = settings;
@@ -32,8 +32,8 @@ public class WeaponInventory
     public bool HasPistol => Sidearm != null;
     public void IssueWeapons(IWeapons weapons)
     {
-        Sidearm = Cop.AssignedAgency.GetRandomWeapon(true, weapons);
-        LongGun = Cop.AssignedAgency.GetRandomWeapon(false, weapons);
+        Sidearm = Cop.GetRandomWeapon(true, weapons);
+        LongGun = Cop.GetRandomWeapon(false, weapons);
         if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)WeaponHash.StunGun, false))
         {
             NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)WeaponHash.StunGun, 100, false, false);
