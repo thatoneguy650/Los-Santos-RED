@@ -59,6 +59,12 @@ public class PedGroups : IPedGroups
 
 
 
+                new PedGroup("Yardies","AMBIENT_GANG_YARDIES","Yardies Member",true),//
+                new PedGroup("Armenian Mob","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
+                new PedGroup("Armenian Mob","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
+                new PedGroup("Armenian Mob","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
+
+
 
                 new PedGroup("Dealer","DEALER","Dealer",true),
                 new PedGroup("Hates","HATES_PLAYER","Hates Player",true),

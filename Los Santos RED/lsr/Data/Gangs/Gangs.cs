@@ -17,6 +17,7 @@ public class Gangs : IGangs
     {
 
     }
+    public List<Gang> AllGangs => GangsList;
     public void ReadConfig()
     {
 #if DEBUG
@@ -138,6 +139,11 @@ public class Gangs : IGangs
             new DispatchablePerson("g_m_y_lost_01",30,30),
             new DispatchablePerson("g_m_y_lost_02",30,30),
             new DispatchablePerson("g_m_y_lost_03",30,30),
+
+            new DispatchablePerson("ig_clay",30,30),
+            
+
+
             new DispatchablePerson("g_f_y_lost_01",10,10) };
 
         List<DispatchablePerson> VagosPeds = new List<DispatchablePerson>() {
@@ -174,12 +180,18 @@ public class Gangs : IGangs
         };
 
         List<DispatchablePerson> VarriosPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_azteca_01",100,100) };
+            new DispatchablePerson("g_m_y_azteca_01",100,100),
+            new DispatchablePerson("ig_ortega",20,20),
+        };
 
         List<DispatchablePerson> TriadsPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_m_chigoon_01",33,33),
             new DispatchablePerson("g_m_m_chigoon_02",33,33),
-            new DispatchablePerson("g_m_m_korboss_01",33,33) };
+            new DispatchablePerson("g_m_m_korboss_01",33,33),
+            new DispatchablePerson("ig_hao",33,33),
+        
+
+        };
 
         List<DispatchablePerson> KoreanPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_korean_01",33,33),
@@ -201,11 +213,28 @@ public class Gangs : IGangs
         List<DispatchablePerson> CartelPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_m_mexboss_01",30,30),
             new DispatchablePerson("g_m_m_mexboss_02",30,30),
-            new DispatchablePerson("g_m_y_mexgang_01",30,30) };
+            new DispatchablePerson("g_m_y_mexgang_01",30,30),
+            new DispatchablePerson("a_m_y_mexthug_01",30,30),
+        };
 
         List<DispatchablePerson> ItalianPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_highsec_01",30,30),
-            new DispatchablePerson("s_m_m_highsec_02",30,30), };
+            new DispatchablePerson("s_m_m_highsec_01",30,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_02",30,30),
+            new DispatchablePerson("u_m_m_jewelsec_01",30,30),
+             new DispatchablePerson("u_m_m_aldinapoli",30,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+        };
+        //u_m_m_jewelsec_01//has some bad heads
+        //u_m_m_aldinapoli
+        //s_m_y_devinsec_01//nope has bad alts, no no no no
+        //s_m_y_casino_01//has some bad heads
+        
+
+        List<DispatchablePerson> YardiesPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_og_boss_01",30,30),
+            new DispatchablePerson("a_m_o_soucent_01",30,30),
+            new DispatchablePerson("a_m_y_soucent_02",30,30),};
 
         //Vehicles
         List<DispatchableVehicle> LostMCVehicles = new List<DispatchableVehicle>() {
@@ -440,6 +469,10 @@ public class Gangs : IGangs
             new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", ItalianPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns),
             new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns),
             new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns),
+
+            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns),
+
+
             DefaultGang
         };
     }

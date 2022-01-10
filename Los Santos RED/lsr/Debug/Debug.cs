@@ -51,7 +51,8 @@ public class Debug
     private Weather Weather;
     private PlacesOfInterest PlacesOfInterest;
     private Interiors Interiors;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors)
+    private Gangs Gangs;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -70,6 +71,7 @@ public class Debug
         Weather = weather;
         PlacesOfInterest = placesOfInterest;
         Interiors = interiors;
+        Gangs = gangs;
     }
     public void Dispose()
     {
@@ -588,11 +590,18 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
+        foreach (Gang gang in Gangs.AllGangs)
+        {
+            RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
+            int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(myRG.Hash, gangRG.Hash);
+            int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(gangRG.Hash, myRG.Hash);
+            EntryPoint.WriteToConsole($"Gang {gang.FullName} Rel1 {Rel1} Rel2 {Rel2}", 5);
 
-
-        World.IsZombieApocalypse = !World.IsZombieApocalypse;
-        Game.DisplayNotification($"World.IsZombieApocalypse {World.IsZombieApocalypse} {Game.GameTime}");
-        GameFiber.Sleep(500);
+        }
+        //World.IsZombieApocalypse = !World.IsZombieApocalypse;
+        //Game.DisplayNotification($"World.IsZombieApocalypse {World.IsZombieApocalypse} {Game.GameTime}");
+        //GameFiber.Sleep(500);
         //NativeFunction.Natives.x48608C3464F58AB4(25f,25f,0f);
 
 

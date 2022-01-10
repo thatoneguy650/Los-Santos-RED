@@ -163,6 +163,10 @@ public class Transaction : Interaction
                 //    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(Store.EntrancePosition.X, Store.EntrancePosition.Y, Store.EntrancePosition.Z, 1000, 0, 1000);
                 //}
                 //GameFiber.Sleep(1000);
+
+                EntryPoint.WriteToConsole($"Transaction: DISPOSE STOP_GAMEPLAY_HINT RAN YOU FUCKER", 3);
+
+
                 NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
             }
             if(Store != null && Store.Type == LocationType.VendingMachine)
@@ -228,6 +232,10 @@ public class Transaction : Interaction
     }
     private void ShowMenu()
     {
+        if (IsDisposed)
+        {
+            return;
+        }
         ModItemMenu.Clear();
         bool hasPurchaseMenu = false;
         bool hasSellMenu = false;
@@ -281,7 +289,8 @@ public class Transaction : Interaction
             GetPropEntry();
             if(!MoveToMachine())
             {
-                IsDisposed = true;
+                EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER", 5);
+                Dispose();
             }
         }
         else if (Player.IsSitting && Store.Type == LocationType.Restaurant)
@@ -348,6 +357,10 @@ public class Transaction : Interaction
         GameTimeStartedSitting = Game.GameTime;
         while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
         {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
             heading = Game.LocalPlayer.Character.Heading;
             if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
             {
@@ -657,6 +670,10 @@ public class Transaction : Interaction
     }
     private void Greet()
     {
+        if(IsDisposed)
+        {
+            return;
+        }
         if(Store != null && Store.Type == LocationType.VendingMachine && Store.PropObject != null && Store.PropObject.Exists())
         {
             unsafe

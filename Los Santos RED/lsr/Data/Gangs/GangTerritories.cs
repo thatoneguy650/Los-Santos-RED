@@ -131,7 +131,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEACH", 0, 100, 100),//Vespucci Beach
 
             //new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 

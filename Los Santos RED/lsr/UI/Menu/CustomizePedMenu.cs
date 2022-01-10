@@ -316,10 +316,10 @@ public class CustomizePedMenu : Menu
                     Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     ComponentSubMenu.AddItem(Test);
                 }
-                if (existingComponent != null)
-                {
-                    ComponentSubMenu.CurrentSelection = existingComponent.DrawableID;
-                }
+                //if (existingComponent != null)
+                //{
+                //    ComponentSubMenu.CurrentSelection = existingComponent.DrawableID;
+                //}
                 ComponentSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
                 ComponentSubMenu.OnItemSelect += OnComponentItemSelect;
                 ComponentSubMenu.OnScrollerChange += OnComponentScollerChange;
@@ -351,10 +351,10 @@ public class CustomizePedMenu : Menu
                     Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     PropSubMenu.AddItem(Test);
                 }
-                if (existingComponent != null)
-                {
-                    PropSubMenu.CurrentSelection = existingComponent.DrawableID;
-                }
+                //if (existingComponent != null)
+                //{
+                //    PropSubMenu.CurrentSelection = existingComponent.DrawableID;
+                //}
                 PropSubMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
                 PropSubMenu.OnItemSelect += OnPropItemSelect;
                 PropSubMenu.OnScrollerChange += OnPropsScollerChange;
@@ -780,6 +780,11 @@ public class CustomizePedMenu : Menu
             {
                 //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(ModelPed, CurrentComponent, CurrentDrawable, CurrentTexture, 0);
                 PedComponent pedComponent = WorkingVariation.Components.FirstOrDefault(x => x.ComponentID == CurrentComponent);
+                if(pedComponent == null)
+                {
+                    pedComponent = new PedComponent(CurrentComponent, CurrentDrawable, CurrentTexture,0);
+                    WorkingVariation.Components.Add(pedComponent);
+                }
                 pedComponent.DrawableID = CurrentDrawable;
                 pedComponent.TextureID = CurrentTexture;
                 WorkingVariation.ApplyToPed(ModelPed);
@@ -803,11 +808,18 @@ public class CustomizePedMenu : Menu
             IsValid = NativeFunction.Natives.IS_PED_COMPONENT_VARIATION_VALID<bool>(ModelPed, CurrentComponent, CurrentDrawable, CurrentTexture);
             if (IsValid || !IsValid)
             {
+
                 //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(ModelPed, CurrentComponent, CurrentDrawable, CurrentTexture, 0);
                 PedComponent pedComponent = WorkingVariation.Components.FirstOrDefault(x => x.ComponentID == CurrentComponent);
+                if (pedComponent == null)
+                {
+                    pedComponent = new PedComponent(CurrentComponent, CurrentDrawable, CurrentTexture, 0);
+                    WorkingVariation.Components.Add(pedComponent);
+                }
                 pedComponent.DrawableID = CurrentDrawable;
                 pedComponent.TextureID = CurrentTexture;
                 WorkingVariation.ApplyToPed(ModelPed);
+                
             }
         }
         EntryPoint.WriteToConsole($"OnComponentScollerChange IsValid {IsValid} {CurrentSelectedComponent} {DrawableSelected} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
@@ -825,6 +837,11 @@ public class CustomizePedMenu : Menu
             NativeFunction.Natives.CLEAR_PED_PROP(ModelPed, propID);
             //NativeFunction.Natives.SET_PED_PROP_INDEX<bool>(ModelPed, CurrentComponent, CurrentDrawable, CurrentTexture, true);
             PedPropComponent pedPropComponent = WorkingVariation.Props.FirstOrDefault(x => x.PropID == CurrentComponent);
+            if (pedPropComponent == null)
+            {
+                pedPropComponent = new PedPropComponent(CurrentComponent, CurrentDrawable, CurrentTexture);
+                WorkingVariation.Props.Add(pedPropComponent);
+            }
             pedPropComponent.DrawableID = CurrentDrawable;
             pedPropComponent.TextureID = CurrentTexture;
             WorkingVariation.ApplyToPed(ModelPed);
@@ -848,6 +865,11 @@ public class CustomizePedMenu : Menu
             NativeFunction.Natives.CLEAR_PED_PROP(ModelPed, propID);
             //NativeFunction.Natives.SET_PED_PROP_INDEX<bool>(ModelPed, CurrentComponent, CurrentDrawable, CurrentTexture, true);
             PedPropComponent pedPropComponent = WorkingVariation.Props.FirstOrDefault(x => x.PropID == CurrentComponent);
+            if (pedPropComponent == null)
+            {
+                pedPropComponent = new PedPropComponent(CurrentComponent, CurrentDrawable, CurrentTexture);
+                WorkingVariation.Props.Add(pedPropComponent);
+            }
             pedPropComponent.DrawableID = CurrentDrawable;
             pedPropComponent.TextureID = CurrentTexture;
             WorkingVariation.ApplyToPed(ModelPed);

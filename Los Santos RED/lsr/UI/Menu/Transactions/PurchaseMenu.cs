@@ -1513,6 +1513,10 @@ public class PurchaseMenu : Menu
 
                 }
             }
+            else
+            {
+                Dispose();
+            }
         }  
         if (SellingProp.Exists())
         {
@@ -1562,6 +1566,10 @@ public class PurchaseMenu : Menu
         GameTimeStartedSitting = Game.GameTime;
         while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
         {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
             heading = Game.LocalPlayer.Character.Heading;
             if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
             {

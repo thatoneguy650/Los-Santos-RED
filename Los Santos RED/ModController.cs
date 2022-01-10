@@ -160,7 +160,7 @@ namespace LosSantosRED.lsr
             Weather = new Weather(WavAudio, Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs);
             Debug.Setup();
             GameFiber.Yield();
             World.AddBlipsToMap();
