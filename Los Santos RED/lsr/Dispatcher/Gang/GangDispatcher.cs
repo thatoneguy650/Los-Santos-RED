@@ -77,11 +77,18 @@ public class GangDispatcher
                 Gang gang = GetRandomGang(spawnLocation);
                 if (gang != null)
                 {
+                    int TotalGangMembers = World.GangMemberList.Count(x => x.Gang?.ID == gang.ID);
+
+                    if(TotalGangMembers >= gang.SpawnLimit)
+                    {
+                        return true;
+                    }
+
                     EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
                     DispatchableVehicle VehicleType = null;
                     if (!spawnLocation.HasSidewalk)
                     {
-                        if (RandomItems.RandomPercent(2))//want most gangs to be on foot?
+                        if (RandomItems.RandomPercent(5))//want most gangs to be on foot?
                         {
                             VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
                         }

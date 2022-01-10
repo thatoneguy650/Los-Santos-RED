@@ -127,16 +127,16 @@ public class CivIdle : ComplexTask
 
 
 
-                WanderTask();
+                WanderTask(IsFirstRun);
             }
             else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
             {
-                WanderTask();
+                WanderTask(IsFirstRun);
                 EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
             }
         }
     }
-    private void WanderTask()
+    private void WanderTask(bool IsFirstRun)
     {
         if (Ped.Pedestrian.Exists())
         {
@@ -171,7 +171,7 @@ public class CivIdle : ComplexTask
             {
                 //Ped.Pedestrian.Tasks.Wander();
                 Vector3 pedPos = Ped.Pedestrian.Position;
-                if (NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 15f, true))
+                if (IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 15f, true))
                 {
                     NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 10000);
                     EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);

@@ -40,8 +40,8 @@ public class PedGroups : IPedGroups
                 new PedGroup("Private Security","PRIVATE_SECURITY","Guard",false),
                 new PedGroup("Firefigher","FIREMAN","Firefigher",false),
                 new PedGroup("GANG_1","GANG_1","Gang 1 Member",true),
-                new PedGroup("GANG_2","GANG_2","Gange 2 Member",true),
-                new PedGroup("GANG_9","GANG_9","Gange 9 Member",true),
+                new PedGroup("GANG_2","GANG_2","Gang 2 Member",true),
+                new PedGroup("GANG_9","GANG_9","Gang 9 Member",true),
                 new PedGroup("GANG_10","GANG_10","Gang 10 Member",true),
                 new PedGroup("The Lost MC","AMBIENT_GANG_LOST","Lost Member",true),//
                 new PedGroup("Los Santos Vagos","AMBIENT_GANG_MEXICAN","Vagos Member",true),//
@@ -50,15 +50,12 @@ public class PedGroups : IPedGroups
                 new PedGroup("Marabunta Grande","AMBIENT_GANG_MARABUNTE","Marabunta Grande Member",true),//cant find em, put it in el burro
                 new PedGroup("Altruist Cult","AMBIENT_GANG_CULT","Altruist Cult Member",true),//shoot at you on site
                 new PedGroup("Varrios Los Aztecas","AMBIENT_GANG_SALVA","Varrios Los Aztecas Member",true),//added near lesters
-                
                 new PedGroup("Rednecks","AMBIENT_GANG_HILLBILLY","Redneck",true),
-
-
                 new PedGroup("Kkangpae","AMBIENT_GANG_KKANGPAE","Kkangpae Member",true),//
                 new PedGroup("Los Santos Triads","AMBIENT_GANG_WEICHENG","Triad Member",true),//
                 new PedGroup("Gambetti Crime Family","AMBIENT_GANG_GAMBETTI","Gambetti Associate",true),//
                 new PedGroup("Madrazo Cartel","AMBIENT_GANG_MADRAZO","Cartel Member",true),//
-                new PedGroup("Armenian Mod","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
+                new PedGroup("Armenian Mob","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
 
 
 

@@ -49,7 +49,7 @@ public class Gang
     public string LicensePlatePrefix { get; set; } = "";
     public uint MaxWantedLevelSpawn { get; set; } = 6;
     public uint MinWantedLevelSpawn { get; set; } = 0;
-    public int SpawnLimit { get; set; } = 99;
+    public int SpawnLimit { get; set; } = 5;
     public bool SpawnsOnHighway { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
