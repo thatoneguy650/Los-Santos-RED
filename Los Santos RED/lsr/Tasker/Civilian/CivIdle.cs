@@ -140,8 +140,8 @@ public class CivIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
             if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())

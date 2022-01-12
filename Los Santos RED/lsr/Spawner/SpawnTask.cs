@@ -196,6 +196,14 @@ public class SpawnTask
                 ped.MaxHealth = DesiredHealth;
                 ped.Health = DesiredHealth;
                 ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
+
+
+
+
+
+
+
+
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
                 ped.RandomizeVariation();
                 if (VehicleType != null && VehicleType.IsMotorcycle && Agency != null)
@@ -216,11 +224,21 @@ public class SpawnTask
                 {
                     return null;
                 }
-                ped.IsPersistent = true;
-                EntryPoint.PersistentPedsCreated++;
+
                 PedExt Person = null;
                 if (Agency != null)
                 {
+
+
+
+
+                    ped.IsPersistent = true;
+                    EntryPoint.PersistentPedsCreated++;//TR
+
+
+
+
+
                     if (AddBlip && ped.Exists())
                     {
                         Blip myBlip = ped.AttachBlip();
@@ -231,7 +249,10 @@ public class SpawnTask
                     {
                         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
                         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
-                        PrimaryCop.IssueWeapons(Weapons);
+                        PrimaryCop.IssueWeapons(Weapons,(uint)WeaponHash.StunGun,true,true);
+                        PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(Agency.AccuracyMin, Agency.AccuracyMax);
+                        PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(Agency.ShootRateMin, Agency.ShootRateMax);
+                        PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(Agency.CombatAbilityMin, Agency.CombatAbilityMax);
                         Person = PrimaryCop;
                     }
                     else if (Agency.ResponseType == ResponseType.EMS)
@@ -247,7 +268,7 @@ public class SpawnTask
                 }
                 else if(Gang != null)
                 {
-                    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED GANG MEMBER {Gang.ID}", 0);
+                    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED GANG MEMBER {Gang.ID}", 5);
                     if (AddBlip && ped.Exists())
                     {
                         Blip myBlip = ped.AttachBlip();
@@ -263,22 +284,29 @@ public class SpawnTask
                     {
                         myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
                     }
-
                     ShopMenu toAdd = null;
                     if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
                     {
-                        toAdd = ShopMenus.GetRanomdDrugMenu();
+                        toAdd = ShopMenus.GetRanomdDrugMenu();//move this into the gang as well
                     }
-
                     GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
                     Person = GangMember;
-                    GangMember.IssueWeapons(Weapons);
-
-
+                    WeaponInformation melee =  Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
+                    uint meleeHash = 0;
+                    if (melee != null && RandomItems.RandomPercent(Gang.PercentageWithMelee))
+                    {
+                        meleeHash = (uint)melee.Hash;
+                    }
+                    GangMember.IssueWeapons(Weapons, meleeHash, RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
+                    GangMember.Accuracy = RandomItems.GetRandomNumberInt(Gang.AccuracyMin, Gang.AccuracyMax);
+                    GangMember.ShootRate = RandomItems.GetRandomNumberInt(Gang.ShootRateMin, Gang.ShootRateMax);
+                    GangMember.CombatAbility = RandomItems.GetRandomNumberInt(Gang.CombatAbilityMin, Gang.CombatAbilityMax);
+                    ped.Accuracy = GangMember.Accuracy;
+                    NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
+                    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
                     //ped.BlockPermanentEvents = false;
                     //ped.KeepTasks = false;
                     //ped.Tasks.Clear();
-
                     //if (ped.IsInAnyVehicle(false) && ped.CurrentVehicle.Exists())
                     //{
                     //    NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(ped, ped.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
@@ -287,8 +315,6 @@ public class SpawnTask
                     //{
                     //    NativeFunction.Natives.TASK_WANDER_STANDARD(ped, 0, 0);
                     //}
-
-
                 }
                 CreatedPeople.Add(Person);
                 return Person;

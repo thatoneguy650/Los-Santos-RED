@@ -174,7 +174,7 @@ public class PedSwap : IPedSwap
         IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer");
         Entities.AddEntity(Player.AliasedCop);
-        Player.AliasedCop.IssueWeapons(Weapons);
+        Player.AliasedCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun, true, true);
     }
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
     {

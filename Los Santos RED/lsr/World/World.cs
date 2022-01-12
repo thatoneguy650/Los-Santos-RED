@@ -86,6 +86,7 @@ namespace Mod
         public int TotalSpawnedZombies => Pedestrians.TotalSpawnedZombies;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;
         public int TotalSpawnedGangMembers => Pedestrians.TotalSpawnedGangMembers;
+        public int TotalWantedLevel { get; set; }
         public string DebugString => Pedestrians.DebugString + " - " + Vehicles.DebugString;
         public void Setup()
         {

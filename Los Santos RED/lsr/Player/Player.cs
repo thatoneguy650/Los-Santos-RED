@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable, IGangRelateable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -75,8 +75,8 @@ namespace Mod
         private IIntoxicants Intoxicants;
         private GameLocation CurrentInteriorLocation;
         private bool DriverDoorOpen;
-
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants)
+        private GangRelationships GangRelationships;
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -108,6 +108,8 @@ namespace Mod
 
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
+            GangRelationships = new GangRelationships(gangs, this);
+            GangRelationships.Setup();
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
@@ -116,6 +118,9 @@ namespace Mod
         public bool AnyPoliceCanSeePlayer { get; set; }
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
+        public bool AnyGangMemberCanSeePlayer { get; set; }
+        public bool AnyGangMemberCanHearPlayer { get; set; }
+        public bool AnyGangMemberRecentlySeenPlayer { get; set; }
         public bool BeingArrested { get; private set; }
         public bool IsCop { get; set; } = false;
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -542,6 +547,18 @@ namespace Mod
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{PlayerName}", "~s~Vehicle: None");
             }
         }
+        public void DisplayPlayerGangNotification()
+        {
+            string NotifcationText = GangRelationships.PrintRelationships();
+            if (NotifcationText != "")
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", NotifcationText);
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", "~s~Gangs: N/A");
+            }
+        }
         public void Dispose()
         {
             Investigation.Dispose(); //remove blip
@@ -549,6 +566,7 @@ namespace Mod
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
             SearchMode.Dispose();
+            GangRelationships.Dispose();
             isActive = false;
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -634,6 +652,10 @@ namespace Mod
             if (resetTimesDied)
             {
                 Respawning.Reset();
+
+
+
+
             }
             if (clearWeapons)
             {
@@ -987,7 +1009,7 @@ namespace Mod
         public void ScannerUpdate() => Scanner.Tick();
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
         public void ViolationsUpdate() => Violations.Update();
-
+        public void GangRelationshipsUpdate() => GangRelationships.Update();
         public void UpdateStateData()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1165,9 +1187,10 @@ namespace Mod
             }
 
 
-            if(IsMakingInsultingGesture && CurrentLookedAtPed != null && !CurrentLookedAtPed.IsFedUpWithPlayer)
+            if(IsMakingInsultingGesture && CurrentLookedAtPed != null)// && !CurrentLookedAtPed.IsFedUpWithPlayer)
             {
-                CurrentLookedAtPed.TimesInsultedByPlayer++;
+                CurrentLookedAtPed.InsultedByPlayer();
+                //CurrentLookedAtPed.TimesInsultedByPlayer++;
             }
 
             //GameFiber.Yield();//TR Yield RemovedTest 1
@@ -1497,6 +1520,12 @@ namespace Mod
 
 
         //Delegate Items
+        public void SetReputation(Gang gang, int value) => GangRelationships.SetReputation(gang, value);
+        public void ChangeReputation(Gang gang, int value) => GangRelationships.ChangeReputation(gang, value);
+        public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);
+        public void DefaultGangReputation() => GangRelationships.ResetReputations();
+        public void RandomizeGangReputation() => GangRelationships.RandomReputations();
+
         public void RaiseHands() => Surrendering.RaiseHands();
         public void LowerHands() => Surrendering.LowerHands();
         public void DropWeapon() => WeaponDropping.DropWeapon();
@@ -2545,6 +2574,7 @@ namespace Mod
             CrimeSceneDescription description = new CrimeSceneDescription(false, isObservedByPolice, Location, false) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved };
             Scanner.AnnounceCrime(crimeObserved, description);
         }
+
 
     }
 }

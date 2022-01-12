@@ -439,20 +439,20 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
-        if(Civilian.GetType() == typeof(GangMember))
-        {
-            GangMember gm = (GangMember)Civilian;
-            if(gm.WasModSpawned)
-            {
-                if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
-                {
-                    EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
-                    gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
-                    GameFiber.Yield();//TR Added back 4
-                    gm.CurrentTask.Start();
-                }
-            }
-        }
+        //if(Civilian.GetType() == typeof(GangMember))
+        //{
+        //    GangMember gm = (GangMember)Civilian;
+        //    if(gm.WasModSpawned)
+        //    {
+        //        if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
+        //        {
+        //            EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
+        //            gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
+        //            GameFiber.Yield();//TR Added back 4
+        //            gm.CurrentTask.Start();
+        //        }
+        //    }
+        //}
         if(Civilian.IsBusted)
         {
             if (Civilian.DistanceToPlayer <= 75f)
@@ -514,11 +514,11 @@ public class Tasker : ITaskerable, ITaskerReportable
                     }
                 }
             }
-            else if (Civilian.IsFedUpWithPlayer && Civilian.WillFight)
+            else if (Civilian.CanAttackPlayer && Civilian.WillFight)// && !Civilian.IsGangMember )
             {
                 if (Civilian.CurrentTask?.Name != "Fight")
                 {
-                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
+                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };//gang memebrs already have guns
                     GameFiber.Yield();//TR Added back 7
                     Civilian.CurrentTask.Start();
                 }
@@ -532,6 +532,31 @@ public class Tasker : ITaskerable, ITaskerReportable
                         Civilian.CurrentTask = new CalmCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
                         Civilian.CurrentTask.Start();
+                    }
+                }
+            }
+            else if (Civilian.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)Civilian;
+                //if(Player.AnyGangMemberRecentlySeenPlayer && (Civilian.CanAttackPlayer || Player.IsHostile(gm.Gang)))
+                //{
+                //    if (Civilian.CurrentTask?.Name != "Fight")
+                //    {
+                //        Civilian.CurrentTask = new Fight(Civilian, Player, null);
+                //        GameFiber.Yield();//TR Added back 7
+                //        Civilian.CurrentTask.Start();
+                //    }
+                //}
+                //else 
+                
+                if (gm.WasModSpawned)
+                {
+                    if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
+                    {
+                        EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
+                        gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
+                        GameFiber.Yield();//TR Added back 4
+                        gm.CurrentTask.Start();
                     }
                 }
             }

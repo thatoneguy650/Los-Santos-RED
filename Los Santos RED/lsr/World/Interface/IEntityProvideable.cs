@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsZombieApocalypse { get; }
         int TotalSpawnedZombies { get; }
         List<PedExt> TaskableCiviliansList { get; }
+        int TotalWantedLevel { get; set; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);

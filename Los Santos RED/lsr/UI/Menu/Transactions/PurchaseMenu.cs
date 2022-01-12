@@ -1423,8 +1423,7 @@ public class PurchaseMenu : Menu
     {
         Hide();
         IsActivelyConversing = true;
-
-        if(isIllicit)
+        if (isIllicit)
         {
             Player.IsConductingIllicitTransaction = true;
             Ped.IsConductingIllicitTransaction = true;
@@ -1490,6 +1489,11 @@ public class PurchaseMenu : Menu
         {
             Player.IsConductingIllicitTransaction = false;
             Ped.IsConductingIllicitTransaction = false;
+        }
+        if (Ped.GetType() == typeof(GangMember))
+        {
+            GangMember gm = (GangMember)Ped;
+            Player.ChangeReputation(gm.Gang, 200);
         }
         Show();     
     }

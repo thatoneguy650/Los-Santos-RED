@@ -18,5 +18,8 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         int CellX { get; }
         int CellY { get; }
+        bool AnyGangMemberCanSeePlayer { get; set; }
+        bool AnyGangMemberCanHearPlayer { get; set; }
+        bool AnyGangMemberRecentlySeenPlayer { get; set; }
     }
 }

@@ -42,6 +42,10 @@ public class Gangs : IGangs
             Serialization.SerializeParams(GangsList, ConfigFileName);
         }
     }
+    public List<Gang> GetAllGangs()
+    {
+        return GangsList;
+    }
     public Gang GetGang(string GangInitials)
     {
         return GangsList.Where(x => x.ID.ToLower() == GangInitials.ToLower()).FirstOrDefault();

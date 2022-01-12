@@ -15,6 +15,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsInHelicopter { get; }
         bool IsDriver { get; }
+        bool IsCop { get; }
+        int CombatAbility { get; }
+        int Accuracy { get; }
+        int ShootRate { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
     }

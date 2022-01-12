@@ -74,7 +74,7 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Zombie Data");
             }
         }
-        foreach (PedExt ped in World.GangMemberList.OrderBy(x => x.GameTimeLastUpdated))
+        foreach (GangMember ped in World.GangMemberList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {
@@ -86,6 +86,54 @@ public class Civilians
                 EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating GangMember Data");
             }
+        }
+
+        bool anyGangMemberCanSeePlayer = false;
+        bool anyGangMemberCanHearPlayer = false;
+        bool anyGangMemberRecentlySeenPlayer = false;
+        foreach (GangMember gangBanger in World.GangMemberList)
+        {
+            if (gangBanger.Pedestrian.Exists() && gangBanger.Pedestrian.IsAlive)
+            {
+                if (gangBanger.CanSeePlayer)
+                {
+                    anyGangMemberCanSeePlayer = true;
+                    anyGangMemberCanHearPlayer = true;
+                    anyGangMemberRecentlySeenPlayer = true;
+                }
+                else if (gangBanger.WithinWeaponsAudioRange)
+                {
+                    anyGangMemberCanHearPlayer = true;
+                }
+                if (gangBanger.SeenPlayerWithin(Settings.SettingsManager.PoliceSettings.RecentlySeenTime))
+                {
+                    anyGangMemberRecentlySeenPlayer = true;
+                }
+            }
+            if (anyGangMemberCanSeePlayer)
+            {
+                break;
+            }
+            GameFiber.Yield();
+        }
+
+        Perceptable.AnyGangMemberCanSeePlayer = anyGangMemberCanSeePlayer;
+        Perceptable.AnyGangMemberCanHearPlayer = anyGangMemberCanHearPlayer;
+        Perceptable.AnyGangMemberRecentlySeenPlayer = anyGangMemberRecentlySeenPlayer;
+
+
+
+
+
+
+        PedExt worstPed = World.CivilianList.OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        {
+            World.TotalWantedLevel = worstPed.WantedLevel;
+        }
+        else
+        {
+            World.TotalWantedLevel = PoliceRespondable.WantedLevel;
         }
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {

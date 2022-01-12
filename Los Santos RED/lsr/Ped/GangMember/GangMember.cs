@@ -18,8 +18,12 @@ public class GangMember : PedExt, IWeaponIssuable
             GameTimeSpawned = Game.GameTime;
         }
     }
+    public int ShootRate { get; set; } = 600;
+    public int Accuracy { get; set; } = 10;
+    public int CombatAbility { get; set; } = 0;
+
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
-    public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
+    public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, meleeHash, issueSidearm, issueLongGun);
     public Gang Gang { get; set; } = new Gang();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool WasModSpawned { get; private set; }

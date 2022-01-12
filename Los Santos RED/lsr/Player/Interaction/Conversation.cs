@@ -90,7 +90,11 @@ public class Conversation : Interaction
         SayInsult(Player.Character);
         SayInsult(Ped.Pedestrian);
 
-        Ped.TimesInsultedByPlayer++;
+        //Ped.TimesInsultedByPlayer++;
+        Ped.InsultedByPlayer();
+
+
+
         GameFiber.Sleep(200);
 
 
@@ -127,7 +131,8 @@ public class Conversation : Interaction
         }
         if (Ped.TimesInsultedByPlayer > 0)
         {
-            Ped.TimesInsultedByPlayer--;
+            //Ped.TimesInsultedByPlayer--;
+            Ped.ApolgizedToPlayer();
         }
         GameFiber.Sleep(200);
         IsActivelyConversing = false;

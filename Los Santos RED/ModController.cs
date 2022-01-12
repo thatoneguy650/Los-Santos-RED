@@ -136,7 +136,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -336,6 +336,11 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Police.Update", Police.Update,7),//added yields//cant get 300 ms updates in here anyways
                // new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
 
+
+
+
+
+
             };
 
             TertiaryTasks = new List<ModTask>()
@@ -383,6 +388,10 @@ namespace LosSantosRED.lsr
                 new ModTask(2000, "World.ActiveNearLocations", World.ActiveNearLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                 new ModTask(500, "World.UpdateNear", World.UpdateNearLocations, 2),//1000
+
+
+                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationshipsUpdate, 3),//might become a priority...
+
                 //new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 

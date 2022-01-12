@@ -59,5 +59,9 @@ namespace LosSantosRED.lsr.Interface
         void SetBodyArmor(int value);
         void StartLayingDown(bool v);
         void StartHotwiring();
+        void DisplayPlayerGangNotification();
+        void SetReputation(Gang gang, int randomnum);
+        void DefaultGangReputation();
+        void RandomizeGangReputation();
     }
 }

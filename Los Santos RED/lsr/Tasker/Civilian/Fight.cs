@@ -24,14 +24,11 @@ public class Fight : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole($"TASKER: Fight Start: {Ped.Pedestrian.Handle}", 3);
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
-
+            //Ped.Pedestrian.BlockPermanentEvents = true;//tr3
+            //Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(Ped.Pedestrian, 0, false);
-
-
             if (ToIssue != null)
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Ped.Pedestrian, (uint)ToIssue.Hash, ToIssue.AmmoAmount, false, false);
@@ -40,7 +37,14 @@ public class Fight : ComplexTask
                 //Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
             }
             //Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
-            NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+            if(Ped.IsGangMember)
+            {
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 75f, 0);//TR
+            }
+            else
+            {
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+            }
             GameTimeLastRan = Game.GameTime;
         }
     }

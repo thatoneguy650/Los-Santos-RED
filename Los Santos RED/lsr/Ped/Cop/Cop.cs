@@ -40,9 +40,15 @@ public class Cop : PedExt, IWeaponIssuable
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
-    public void IssueWeapons(IWeapons weapons) => WeaponInventory.IssueWeapons(weapons);
+    public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, meleeHash, issueSidearm, issueLongGun);
     public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
     public IssuableWeapon LongGun => WeaponInventory.LongGun;
+
+
+    public int ShootRate { get; set; }
+    public int Accuracy { get; set; }
+    public int CombatAbility { get; set; }
+
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);

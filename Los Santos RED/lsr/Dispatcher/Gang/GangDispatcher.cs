@@ -109,9 +109,6 @@ public class GangDispatcher
                                     World.AddEntity(created);
 
                                 }
-
-
-
                                 //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                                 spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.None));
                                 HasDispatchedThisTick = true;

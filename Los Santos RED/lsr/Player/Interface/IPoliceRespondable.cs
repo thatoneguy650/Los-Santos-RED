@@ -49,6 +49,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsAttemptingToSurrender { get; }
         bool IsCop { get; }
         float ClosestPoliceDistanceToPlayer { get; set; }
+        bool RecentlyShot { get; }
+
         void Arrest();
       //  void StoreCriminalHistory();
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
@@ -65,5 +67,6 @@ namespace LosSantosRED.lsr.Interface
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
         void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
+        void ChangeReputation(Gang gang, int v);
     }
 }

@@ -410,7 +410,15 @@ public class Debug
     {
 
         // NativeFunction.Natives.x48608C3464F58AB4(0f, 50f, 0f);
+        RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
+        foreach (Gang gang in Gangs.AllGangs)
+        {
+            RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
+            int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(myRG.Hash, gangRG.Hash);
+            int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(gangRG.Hash, myRG.Hash);
+            EntryPoint.WriteToConsole($"Gang {gang.FullName} Rel1 {Rel1} Rel2 {Rel2}", 5);
 
+        }
         Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
         
 
@@ -593,12 +601,13 @@ public class Debug
         RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
         foreach (Gang gang in Gangs.AllGangs)
         {
-            RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
-            int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(myRG.Hash, gangRG.Hash);
-            int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(gangRG.Hash, myRG.Hash);
-            EntryPoint.WriteToConsole($"Gang {gang.FullName} Rel1 {Rel1} Rel2 {Rel2}", 5);
-
+            int randomnum = RandomItems.GetRandomNumberInt(-200, 600);
+            Player.SetReputation(gang, randomnum);
         }
+
+
+
+
         //World.IsZombieApocalypse = !World.IsZombieApocalypse;
         //Game.DisplayNotification($"World.IsZombieApocalypse {World.IsZombieApocalypse} {Game.GameTime}");
         //GameFiber.Sleep(500);

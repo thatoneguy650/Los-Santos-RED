@@ -60,6 +60,23 @@ public class Agency
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 99;
     public bool SpawnsOnHighway { get; set; } = false;
+
+
+    public int AccuracyMin { get; set; } = 40;
+    public int AccuracyMax { get; set; } = 40;
+
+
+    public int ShootRateMin { get; set; } = 500;
+    public int ShootRateMax { get; set; } = 500;
+
+
+    public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
+    public int CombatAbilityMax { get; set; } = 2;//0 - poor, 1- average, 2 - professional
+
+
+
+
+
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();

@@ -260,7 +260,7 @@ public class PedCrimes
             List<PedExt> TotalList = new List<PedExt>();
             TotalList.AddRange(world.CivilianList);
             TotalList.AddRange(world.ZombieList);
-
+            TotalList.AddRange(world.GangMemberList);
 
             foreach (PedExt criminal in TotalList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
             {

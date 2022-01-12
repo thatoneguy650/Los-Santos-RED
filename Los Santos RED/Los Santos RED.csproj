@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
+    <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
     <Compile Include="lsr\Data\Interface\IGangs.cs" />
@@ -136,9 +137,12 @@
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
+    <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
+    <Compile Include="lsr\Player\Gang\GangReputation.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IBusRideable.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
+    <Compile Include="lsr\Player\Interface\IGangRelateable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
     <Compile Include="lsr\Player\Interface\ISprintable.cs" />
     <Compile Include="lsr\Player\Interface\IWeatherReportable.cs" />

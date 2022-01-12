@@ -66,9 +66,5 @@ public static class RandomItems
         return (float)(MyRand.NextDouble() * (maximum - minimum) + minimum);
     }
 
-    internal static bool RandomPercent(object gangDrugDealPercentage)
-    {
-        throw new NotImplementedException();
-    }
 }
 

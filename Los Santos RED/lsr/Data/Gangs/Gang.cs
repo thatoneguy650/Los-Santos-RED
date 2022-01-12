@@ -51,6 +51,29 @@ public class Gang
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 5;
     public bool SpawnsOnHighway { get; set; } = false;
+
+
+    // public float PlayerReputationLevel { get; set; }
+    public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
+
+    public float PercentageWithLongGuns { get; set; } = 20f;
+    public float PercentageWithSidearms { get; set; } = 85f;
+    public float PercentageWithMelee { get; set; } = 95f;
+
+
+    public int AccuracyMin { get; set; } = 5;
+    public int AccuracyMax { get; set; } = 15;
+
+
+    public int ShootRateMin { get; set; } = 500;
+    public int ShootRateMax { get; set; } = 800;
+
+
+    public int CombatAbilityMin { get; set; } = 0;//0 - poor, 1- average, 2 - professional
+    public int CombatAbilityMax { get; set; } = 1;//0 - poor, 1- average, 2 - professional
+
+
+    public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();

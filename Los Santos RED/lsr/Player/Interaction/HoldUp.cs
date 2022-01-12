@@ -41,7 +41,16 @@ public class HoldUp : Interaction
     }
     private void CheckIntimidation()
     {
-        Target.TimesInsultedByPlayer += 5;
+
+        Target.HatesPlayer = true;
+        if (Target.GetType() == typeof(GangMember))
+        {
+            GangMember gm = (GangMember)Target;
+            Player.ChangeReputation(gm.Gang, -500);
+        }
+
+
+        //Target.TimesInsultedByPlayer += 5;
         GameTimeStartedIntimidating = Game.GameTime;
         GameTimeStoppedTargetting = 0;
         int TimeToWait = RandomItems.MyRand.Next(1500, 2500);

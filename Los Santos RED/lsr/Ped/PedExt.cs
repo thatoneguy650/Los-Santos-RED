@@ -30,6 +30,9 @@ public class PedExt : IComplexTaskable
     private bool hasCheckedWeapon = false;
     private Vector3 position;
     private uint GameTimeCreated = 0;
+   // private int TimesInsultedByPlayer = 0;
+    private uint GameTimeLastInsultedByPlayer;
+
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
@@ -62,6 +65,8 @@ public class PedExt : IComplexTaskable
     public bool CanBeTasked { get; set; } = true;
     public bool CanConverse => Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
+    public int RelationShipToPlayer { get; set; } = 255;
+    public int RelationShipFromPlayer { get; set; } = 255;
     public bool CanRemove
     {
         get
@@ -100,7 +105,7 @@ public class PedExt : IComplexTaskable
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasSpokenWithPlayer { get; set; }
     public int Health { get; set; }
-    public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
+    public int InsultLimit => IsGangMember || IsCop ? 2 : 3;
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
     public bool IsZombie { get; set; } = false;
@@ -110,6 +115,8 @@ public class PedExt : IComplexTaskable
     public bool IsDrunk { get; set; } = false;
     public bool IsSuicidal { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
+    public bool HatesPlayer { get; set; } = false;
+    public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool IsGangMember { get; set; } = false;
     public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
     public bool WasSetCriminal { get; set; } = false;
@@ -149,7 +156,7 @@ public class PedExt : IComplexTaskable
     public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 3000;
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
-    public int TimesInsultedByPlayer { get; set; }
+    public int TimesInsultedByPlayer { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;
@@ -222,6 +229,32 @@ public class PedExt : IComplexTaskable
     public VehicleExt AssignedVehicle { get; set; }
     public int AssignedSeat { get; set; }
     public bool IsConductingIllicitTransaction { get; set; } = false;
+    public void InsultedByPlayer()
+    {
+        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
+        {
+            TimesInsultedByPlayer += 1;
+            GameTimeLastInsultedByPlayer = Game.GameTime;
+            if (this.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)this;
+                PlayerToCheck.ChangeReputation(gm.Gang, -100);
+            }
+        }
+    }
+    public void ApolgizedToPlayer()
+    {
+        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
+        {
+            TimesInsultedByPlayer -= 1;
+            GameTimeLastInsultedByPlayer = Game.GameTime;
+            if (this.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)this;
+                PlayerToCheck.ChangeReputation(gm.Gang, 100);
+            }
+        }
+    }
 
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
@@ -351,7 +384,7 @@ public class PedExt : IComplexTaskable
                             {
                                 CanBeAmbientTasked = false;
                                 WillCallPolice = false;
-                                WillFight = false;
+                                WillFight = true;
                             }
                         }
                         else
@@ -362,6 +395,32 @@ public class PedExt : IComplexTaskable
                         }
                         WasEverSetPersistent = true;
                     }
+                    //if(IsGangMember)
+                    //{
+
+                    //    if(IsFedUpWithPlayer)
+                    //    {
+
+                    //    }
+
+
+                    //    int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(perceptable.Character, Pedestrian);
+                    //    int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Pedestrian, perceptable.Character);
+
+                    //    if(Rel1 != RelationShipToPlayer)
+                    //    {
+                    //        EntryPoint.WriteToConsole($"GangMember {Pedestrian.Handle} RelationShipToPlayer changed WAS {RelationShipToPlayer} IS {Rel1}", 5);
+                    //        RelationShipToPlayer = Rel1;
+                    //    }
+
+                    //    if (Rel2 != RelationShipFromPlayer)
+                    //    {
+                    //        EntryPoint.WriteToConsole($"GangMember {Pedestrian.Handle} RelationShipFromPlayer changed WAS {RelationShipFromPlayer} IS {Rel2}", 5);
+                    //        RelationShipFromPlayer = Rel2;
+                    //    }
+
+                    //}
+
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }

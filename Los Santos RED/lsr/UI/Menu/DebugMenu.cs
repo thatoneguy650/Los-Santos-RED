@@ -26,6 +26,8 @@ public class DebugMenu : Menu
     private UIMenuItem LogLocationSimpleMenu;
     private UIMenuListItem GetRandomWeapon;
     private UIMenuListItem TeleportToPOI;
+    private UIMenuItem DefaultGangRep;
+    private UIMenuItem RandomGangRep;
     private UIMenuItem SetDateToToday;
     private UIMenuItem Holder1;
     private IActionable Player;
@@ -42,6 +44,7 @@ public class DebugMenu : Menu
     private UIMenuItem LoadSPMap;
     private UIMenuItem LoadMPMap;
     private IEntityProvideable World;
+
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world)
     {    
@@ -107,6 +110,8 @@ public class DebugMenu : Menu
 
 
 
+        DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
+        RandomGangRep = new UIMenuItem("Set Gang Rep Random", "Sets the player reputation to each gang to a randomized number");
 
 
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
@@ -123,6 +128,9 @@ public class DebugMenu : Menu
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(AutoSetRadioStation);
         Debug.AddItem(TeleportToPOI);
+        Debug.AddItem(DefaultGangRep);
+        Debug.AddItem(RandomGangRep);
+
         Debug.AddItem(FreeCamMenu);
         Debug.AddItem(LogLocationMenu);
         Debug.AddItem(LogLocationSimpleMenu);
@@ -209,6 +217,15 @@ public class DebugMenu : Menu
         {
             World.LoadSPMap();
         }
+        else if (selectedItem == RandomGangRep)
+        {
+            Player.RandomizeGangReputation();
+        }
+        else if (selectedItem == DefaultGangRep)
+        {
+            Player.DefaultGangReputation();
+        }
+
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
         {
             UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;

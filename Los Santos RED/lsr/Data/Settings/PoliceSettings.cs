@@ -21,9 +21,12 @@ public class PoliceSettings
     public bool ShowSpawnedBlips { get; set; } = false;
     public bool ShowVanillaBlips { get; set; } = false;
     public bool OverrideAccuracy { get; set; } = true;
+    public int GeneralCombatAbility { get; set; } = 1;
     public int GeneralAccuracy { get; set; } = 40;
+    public int TaserAccuracy { get; set; } = 30;
     public int VehicleAccuracy { get; set; } = 10;
-    public int GeneralShootRate { get; set; } = 100;
+    public int GeneralShootRate { get; set; } = 500;//even 800 is crazy, 100 is way too low tho
+    public int TaserShootRate { get; set; } = 100;
     public int VehicleShootRate { get; set; } = 20;
     public float AutoRecognizeDistance { get; set; } = 15f;
     public float AlwaysRecognizeDistance { get; set; } = 7f;
@@ -84,7 +87,8 @@ public class PoliceSettings
     public bool DeadlyChaseRequiresThreeStars { get; set; } = true;
     public int MaxWantedLevel { get; set; } = 6;
     public float AddOptionalPassengerPercentage { get; set; } = 75f;
-    
+    public bool KnowsShootingSourceLocation { get; set; } = true;
+
 
     public PoliceSettings()
     {

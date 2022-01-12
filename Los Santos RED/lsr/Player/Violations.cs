@@ -70,6 +70,11 @@ namespace LosSantosRED.lsr
             }
             else
             {
+                if (myPed.GetType() == typeof(GangMember))
+                {
+                    GangMember gm = (GangMember)myPed;
+                    Player.ChangeReputation(gm.Gang, -500);
+                }
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
         }
@@ -86,6 +91,14 @@ namespace LosSantosRED.lsr
             }
             else
             {
+                if(myPed.IsGangMember)
+                {
+                    if(myPed.GetType() == typeof(GangMember))
+                    {
+                        GangMember gm = (GangMember)myPed;
+                        Player.ChangeReputation(gm.Gang, -1000);
+                    }
+                }
                 PlayerKilledCivilians.Add(myPed);
                 GameTimeLastKilledCivilian = Game.GameTime;
                 GameTimeLastHurtCivilian = Game.GameTime;

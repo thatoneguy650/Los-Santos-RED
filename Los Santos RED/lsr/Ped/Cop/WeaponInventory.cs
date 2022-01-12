@@ -30,23 +30,32 @@ public class WeaponInventory
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public string DebugWeaponState { get; set; }
     public bool HasPistol => Sidearm != null;
-    public void IssueWeapons(IWeapons weapons)
+    public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun)
     {
-        Sidearm = Cop.GetRandomWeapon(true, weapons);
-        LongGun = Cop.GetRandomWeapon(false, weapons);
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)WeaponHash.StunGun, false))
+        if (meleeHash != 0)
         {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)WeaponHash.StunGun, 100, false, false);
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, meleeHash, false))//(uint)WeaponHash.StunGun
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, meleeHash, 100, false, false);
+            }
         }
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
+        if (issueSidearm)
         {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
-            Sidearm.ApplyVariation(Cop.Pedestrian);
+            Sidearm = Cop.GetRandomWeapon(true, weapons);
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
+                Sidearm.ApplyVariation(Cop.Pedestrian);
+            }
         }
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))
+        if (issueLongGun)
         {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
-            LongGun.ApplyVariation(Cop.Pedestrian);
+            LongGun = Cop.GetRandomWeapon(false, weapons);
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
+                LongGun.ApplyVariation(Cop.Pedestrian);
+            }
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys    
@@ -165,30 +174,54 @@ public class WeaponInventory
                         }
                     }
                 }
+                //if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
+                //{
+                //    if(Cop.CurrentTask?.Name == "AIApprehend")
+                //    {
+                //        Cop.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
+                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 1000);
+                //    }
+                //    else if (Cop.IsInVehicle)
+                //    {
+                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
+                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
+                //    }
+                //    else if (IsSetLessLethal)
+                //    {
+                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.TaserAccuracy;
+                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.TaserShootRate);
+                //    }
+                //    else
+                //    {
+                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                //    }
+                //}
                 if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
                 {
-                    if (Cop.IsInVehicle)
+                    if (Cop.CurrentTask?.Name == "AIApprehend")
+                    {
+                        Cop.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 1000);
+                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, 2);
+                    }
+                    else if (Cop.IsInVehicle)
                     {
                         Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
                         NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
+                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, Cop.CombatAbility);
                     }
                     else if (IsSetLessLethal)
                     {
-                        Cop.Pedestrian.Accuracy = 30;
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);
+                        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.TaserAccuracy;
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.TaserShootRate);
+                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, Cop.CombatAbility);
                     }
                     else
                     {
-                        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-                        if (IsDeadlyChase)
-                        {
-                            NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate + 100);
-                        }
-                        else
-                        {
-                            NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
-                        }
-
+                        Cop.Pedestrian.Accuracy = Cop.Accuracy;//Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+                        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Cop.ShootRate);// Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, Cop.CombatAbility);
                     }
                 }
             }
@@ -203,7 +236,7 @@ public class WeaponInventory
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)WeaponHash.StunGun, 100, false, false);
             }
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
+            if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);

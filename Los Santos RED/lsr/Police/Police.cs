@@ -50,6 +50,8 @@ namespace LosSantosRED.lsr
 
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
+
+                            
                             Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
                             GameFiber.Yield();//TR this is new
                         }
@@ -119,6 +121,20 @@ namespace LosSantosRED.lsr
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
+
+
+            if(Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !anyPoliceCanSeePlayer)
+            {
+                if(Player.RecentlyShot && anyPoliceCanHearPlayer)
+                {
+                    Player.AnyPoliceCanSeePlayer = true;
+                    Player.AnyPoliceRecentlySeenPlayer = true;
+                }
+            }
+
+
+
+
             if(Player.IsWanted)
             {
                 if (Player.AnyPoliceRecentlySeenPlayer)

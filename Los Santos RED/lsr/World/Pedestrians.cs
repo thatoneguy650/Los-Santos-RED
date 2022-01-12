@@ -417,7 +417,25 @@ public class Pedestrians
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
-        GangMembers.Add(new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+
+        GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+
+
+
+        WeaponInformation melee = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
+        uint meleeHash = 0;
+        if (melee != null && RandomItems.RandomPercent(MyGang.PercentageWithMelee))
+        {
+            meleeHash = (uint)melee.Hash;
+        }
+        gm.IssueWeapons(Weapons, meleeHash, RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
+        gm.Accuracy = RandomItems.GetRandomNumberInt(MyGang.AccuracyMin, MyGang.AccuracyMax);
+        gm.ShootRate = RandomItems.GetRandomNumberInt(MyGang.ShootRateMin, MyGang.ShootRateMax);
+        gm.CombatAbility = RandomItems.GetRandomNumberInt(MyGang.CombatAbilityMin, MyGang.CombatAbilityMax);
+        Pedestrian.Accuracy = gm.Accuracy;
+        NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
+        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+        GangMembers.Add(gm);
     }
     private void AddCop(Ped Pedestrian)
     {
@@ -426,7 +444,13 @@ public class Pedestrians
         {
             SetCopStats(Pedestrian, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor));
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale));
-            myCop.IssueWeapons(Weapons);
+            myCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun,true,true);
+            myCop.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+            myCop.ShootRate = Settings.SettingsManager.PoliceSettings.GeneralShootRate;
+            myCop.CombatAbility = Settings.SettingsManager.PoliceSettings.GeneralCombatAbility;
+
+
+
             Police.Add(myCop);
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }
