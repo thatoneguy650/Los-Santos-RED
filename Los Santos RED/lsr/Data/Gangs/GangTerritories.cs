@@ -139,7 +139,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","BRADT", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","BURTON", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","BURTON", 0, 100, 100),//burton
 
             //new ZoneJurisdiction("LSMC","CALAFB", 0, 100, 100),
 
@@ -178,7 +178,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","ELYSIAN", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_DIABLOS","ELYSIAN", 0, 100, 100),//elysian island
 
             //new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
@@ -210,7 +210,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","LDAM", 0, 100, 100),
 
-            //new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","LEGSQU", 0, 100, 100),//Legion Square
 
             new ZoneJurisdiction("AMBIENT_GANG_MADRAZO","LMESA", 0, 100, 100),//La Mesa
 
@@ -218,7 +218,7 @@ public class GangTerritories : IGangTerritories
 
             new ZoneJurisdiction("AMBIENT_GANG_LOST","MIRR", 0, 100, 100),//mirror park
 
-            //new ZoneJurisdiction("LSMC","MORN", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","MORN", 0, 100, 100),//Morningwood
 
             //new ZoneJurisdiction("LSMC","MOVIE", 0, 100, 100),
 
@@ -259,7 +259,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","ROCKF", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","ROCKF", 0, 100, 100),//Rockford Hills
 
             //new ZoneJurisdiction("LSMC","RTRAK", 0, 100, 100),
 
@@ -295,7 +295,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","WINDF", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","WVINE", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","WVINE", 0, 100, 100),//West Vinewood
 
             //new ZoneJurisdiction("SAPR","ZANCUDO", 0, 100, 100),
 

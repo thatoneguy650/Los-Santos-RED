@@ -27,7 +27,7 @@ public class GangRelationships
     {
         foreach (Gang gang in Gangs.GetAllGangs())
         {
-            GangReputations.Add(new GangReputation(gang));
+            GangReputations.Add(new GangReputation(gang, Player));
         }
     }
     public void Update()
@@ -57,7 +57,7 @@ public class GangRelationships
         GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
         if(gr == null)
         {
-            gr = new GangReputation(gang);
+            gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
         gr.ReputationLevel += amount;
@@ -75,7 +75,7 @@ public class GangRelationships
         GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
         if (gr == null)
         {
-            gr = new GangReputation(gang);
+            gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
         gr.ReputationLevel = value;
@@ -117,7 +117,7 @@ public class GangRelationships
         GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
         if (gr == null)
         {
-            gr = new GangReputation(gang);
+            gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
         return gr;
@@ -135,11 +135,26 @@ public class GangRelationships
         }
         else
         {
-            GangReputation newRep = new GangReputation(gang);
+            GangReputation newRep = new GangReputation(gang, Player);
             GangReputations.Add(newRep);
             return newRep.GangRelationship == GangRespect.Hostile;
         }
     }
 
+    public void FriendlyReputations()
+    {
+        foreach (GangReputation rg in GangReputations)
+        {
+            rg.ReputationLevel = rg.RepMaximum;
+        }
+    }
+
+    public void HostileReputations()
+    {
+        foreach (GangReputation rg in GangReputations)
+        {
+            rg.ReputationLevel = rg.RepMinimum;
+        }
+    }
 }
 

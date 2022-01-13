@@ -26,7 +26,7 @@ public class PedCrimes
     private IWeapons Weapons;
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
-    private List<Ped> AlreadyCalledInPeds = new List<Ped>();
+   // private List<Ped> AlreadyCalledInPeds = new List<Ped>();
     private bool ShouldCheck
     {
         get
@@ -254,15 +254,26 @@ public class PedCrimes
     }
     private void CheckOtherPedCrimes(IEntityProvideable world, IPoliceRespondable playerToCheck)
     {
-        if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
+        if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes)// && (PedExt.WillCallPolice || PedExt.IsGangMember))
         {
             OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
             List<PedExt> TotalList = new List<PedExt>();
             TotalList.AddRange(world.CivilianList);
             TotalList.AddRange(world.ZombieList);
-            TotalList.AddRange(world.GangMemberList);
+            //TotalList.AddRange(world.GangMemberList);
 
-            foreach (PedExt criminal in TotalList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && !AlreadyCalledInPeds.Contains(x.Pedestrian) && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
+            if (PedExt.GetType() == typeof(GangMember))
+            {
+                GangMember gangMember = (GangMember)PedExt;
+                TotalList.AddRange(world.GangMemberList.Where(x => x.Gang?.ID != gangMember.Gang?.ID));
+            }
+            else
+            {
+                TotalList.AddRange(world.GangMemberList);
+            }
+
+
+            foreach (PedExt criminal in TotalList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive && NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, x.CellX, x.CellY, 4)).OrderByDescending(x=>x.CurrentlyViolatingWantedLevel).Take(1))
             {
                 if (!PedExt.Pedestrian.Exists())
                 {
@@ -275,128 +286,157 @@ public class PedCrimes
                     {
                         return;
                     }
+
                     float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
-                    uint VehicleWitnessed = 0;
-                    uint WeaponWitnessed = 0;
-                    Vector3 LocationWitnessed = criminal.Pedestrian.Position;
-                    VehicleExt fullVehicle = null;
-                    WeaponInformation fullWeapon = null;
-                    if (distanceToCriminal <= 60f)
+                    if (!PedExt.IsGangMember && PedExt.WillCallPolice)
                     {
-                        Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
-                        if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
+
+                       
+                        uint VehicleWitnessed = 0;
+                        uint WeaponWitnessed = 0;
+                        Vector3 LocationWitnessed = criminal.Pedestrian.Position;
+                        VehicleExt fullVehicle = null;
+                        WeaponInformation fullWeapon = null;
+                        if (distanceToCriminal <= 60f)
                         {
-                            VehicleWitnessed = criminal.Pedestrian.CurrentVehicle.Handle;
+                            Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
+                            if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
+                            {
+                                VehicleWitnessed = criminal.Pedestrian.CurrentVehicle.Handle;
+                            }
+                            else if (tryingToEnter.Exists())
+                            {
+                                VehicleWitnessed = tryingToEnter.Handle;
+                            }
+                            uint currentWeapon;
+                            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
+                            if (currentWeapon != 2725352035 && currentWeapon != 0)
+                            {
+                                WeaponWitnessed = currentWeapon;
+                            }
+                            fullVehicle = world.GetVehicleExt(VehicleWitnessed);
+                            fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
+                            GameFiber.Yield();//this is new, before it jusdt yielded forever
                         }
-                        else if (tryingToEnter.Exists())
+                        else
                         {
-                            VehicleWitnessed = tryingToEnter.Handle;
+                            VehicleWitnessed = 0;
+                            WeaponWitnessed = 0;
+                            //LocationWitnessed = Vector3.Zero;
+                            fullVehicle = null;
+                            fullWeapon = null;
                         }
-                        uint currentWeapon;
-                        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
-                        if (currentWeapon != 2725352035 && currentWeapon != 0)
+                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))//60f
                         {
-                            WeaponWitnessed = currentWeapon;
+                            foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+                            {
+                                AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                            }
                         }
-                        fullVehicle = world.GetVehicleExt(VehicleWitnessed);
-                        fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
-                        GameFiber.Yield();//this is new, before it jusdt yielded forever
+                        else if (distanceToCriminal <= 100f)
+                        {
+                            foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
+                            {
+                                AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                            }
+                        }
+
                     }
                     else
                     {
-                        VehicleWitnessed = 0;
-                        WeaponWitnessed = 0;
-                        //LocationWitnessed = Vector3.Zero;
-                        fullVehicle = null;
-                        fullWeapon = null;
-                    }
-                    if (distanceToCriminal <= 60f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))
-                    {
-                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))//60f
                         {
-                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                            foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+                            {
+                                AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
+                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                            }
+                        }
+                        else if (distanceToCriminal <= 100f)
+                        {
+                            foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
+                            {
+                                AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
+                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                            }
                         }
                     }
-                    else if (distanceToCriminal <= 100f)
-                    {
-                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
-                        {
-                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
-                        }
-                    }        
+
+
+    
                 }
             }
         }
     }
-    private void CheckOtherPedCrimesOLD(IEntityProvideable world, IPoliceRespondable playerToCheck)
-    {
-        if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
-        {
-            OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
-            foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive))
-            {
-                if (!PedExt.Pedestrian.Exists())
-                {
-                    break;
-                }
-                else
-                {
-                    float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
-                    uint VehicleWitnessed = 0;
-                    uint WeaponWitnessed = 0;
-                    Vector3 LocationWitnessed = criminal.Pedestrian.Position;
-                    VehicleExt fullVehicle = null;
-                    WeaponInformation fullWeapon = null;
-                    if (distanceToCriminal <= 60f)
-                    {
-                        Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
-                        if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
-                        {
-                            VehicleWitnessed = criminal.Pedestrian.CurrentVehicle.Handle;
-                        }
-                        else if (tryingToEnter.Exists())
-                        {
-                            VehicleWitnessed = tryingToEnter.Handle;
-                        }
-                        uint currentWeapon;
-                        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
-                        if (currentWeapon != 2725352035 && currentWeapon != 0)
-                        {
-                            WeaponWitnessed = currentWeapon;
-                        }
-                        fullVehicle = world.GetVehicleExt(VehicleWitnessed);
-                        fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
-                    }
-                    else
-                    {
-                        VehicleWitnessed = 0;
-                        WeaponWitnessed = 0;
-                        //LocationWitnessed = Vector3.Zero;
-                        fullVehicle = null;
-                        fullWeapon = null;
-                    }
-                    if (distanceToCriminal <= 60f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))
-                    {
-                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
-                        {
-                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
-                        }
-                    }
-                    else if (distanceToCriminal <= 100f)
-                    {
-                        foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
-                        {
-                            AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                            GameTimeLastWitnessedCivilianCrime = Game.GameTime;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //private void CheckOtherPedCrimesOLD(IEntityProvideable world, IPoliceRespondable playerToCheck)
+    //{
+    //    if (IsNotWanted && !IsCurrentlyViolatingAnyCrimes && PedExt.WillCallPolice)
+    //    {
+    //        OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
+    //        foreach (PedExt criminal in world.CivilianList.Where(x => x.Pedestrian.Exists() && x.IsCurrentlyViolatingAnyCivilianReportableCrimes && x.Pedestrian.IsAlive))
+    //        {
+    //            if (!PedExt.Pedestrian.Exists())
+    //            {
+    //                break;
+    //            }
+    //            else
+    //            {
+    //                float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
+    //                uint VehicleWitnessed = 0;
+    //                uint WeaponWitnessed = 0;
+    //                Vector3 LocationWitnessed = criminal.Pedestrian.Position;
+    //                VehicleExt fullVehicle = null;
+    //                WeaponInformation fullWeapon = null;
+    //                if (distanceToCriminal <= 60f)
+    //                {
+    //                    Vehicle tryingToEnter = criminal.Pedestrian.VehicleTryingToEnter;
+    //                    if (criminal.Pedestrian.IsInAnyVehicle(false) && criminal.Pedestrian.CurrentVehicle.Exists())
+    //                    {
+    //                        VehicleWitnessed = criminal.Pedestrian.CurrentVehicle.Handle;
+    //                    }
+    //                    else if (tryingToEnter.Exists())
+    //                    {
+    //                        VehicleWitnessed = tryingToEnter.Handle;
+    //                    }
+    //                    uint currentWeapon;
+    //                    NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(criminal.Pedestrian, out currentWeapon, true);
+    //                    if (currentWeapon != 2725352035 && currentWeapon != 0)
+    //                    {
+    //                        WeaponWitnessed = currentWeapon;
+    //                    }
+    //                    fullVehicle = world.GetVehicleExt(VehicleWitnessed);
+    //                    fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
+    //                }
+    //                else
+    //                {
+    //                    VehicleWitnessed = 0;
+    //                    WeaponWitnessed = 0;
+    //                    //LocationWitnessed = Vector3.Zero;
+    //                    fullVehicle = null;
+    //                    fullWeapon = null;
+    //                }
+    //                if (distanceToCriminal <= 60f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))
+    //                {
+    //                    foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+    //                    {
+    //                        AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+    //                        GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+    //                    }
+    //                }
+    //                else if (distanceToCriminal <= 100f)
+    //                {
+    //                    foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
+    //                    {
+    //                        AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+    //                        GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     private void CheckCrimes(IEntityProvideable world, IPoliceRespondable player)
     {
         if (PedExt.Pedestrian.Exists() && !PedExt.IsBusted)
@@ -459,32 +499,14 @@ public class PedCrimes
             {
                 IsShootingCheckerActive = false;
             }
-            //if (!IsDeadlyChase && EverCommittedCrime)
-            //{
-            //    foreach (PedExt civie in world.CivilianList)
-            //    {
-            //        if (civie.Pedestrian.Exists() && civie.Pedestrian.IsDead && civie.CheckKilledBy(PedExt.Pedestrian) && civie.Pedestrian.DistanceTo2D(civie.Pedestrian) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance)
-            //        {
-            //            AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));
-            //            return;
-            //        }
-            //    }
-            //}
-            //if (PedExt.IsInVehicle && PedExt.WasSetCriminal)
-            //{
-            //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));
-            //}
-
-            if(PedExt.IsConductingIllicitTransaction)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            if (PedExt.IsDealingDrugs)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
             }
-            //if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_franklin") > 0f)
-            //{
-            //    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));//lslife integration?
-            //}
-
-
+            if (PedExt.IsDealingIllegalGuns)//if (PedExt.WasEverSetPersistent && NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(PedExt.Pedestrian, "switch@franklin@002110_04_magd_3_weed_exchange", "002110_04_magd_3_weed_exchange_shopkeeper") > 0f)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));//lslife integration?
+            }
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
             {
                 foreach (Cop cop in world.PoliceList)
@@ -500,7 +522,7 @@ public class PedCrimes
                     }
                 }
             }
-
+            GameFiber.Yield();
             if (PedExt.Pedestrian.Exists())//do a yiled above
             {
                 if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
@@ -537,6 +559,7 @@ public class PedCrimes
                     if (!EverCommittedCrime)
                     {
                         EverCommittedCrime = true;
+                        PedExt.WillCallPolice = false;
                         EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
                     }
                 }

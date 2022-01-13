@@ -32,18 +32,22 @@ public class Fight : ComplexTask
             if (ToIssue != null)
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Ped.Pedestrian, (uint)ToIssue.Hash, ToIssue.AmmoAmount, false, false);
-
-
                 //Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
             }
-            //Ped.Pedestrian?.Tasks?.FightAgainst(Player.Character, -1);
-            if(Ped.IsGangMember)
+            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
-                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 75f, 0);//TR
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
             }
             else
             {
-                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+                if (Ped.IsGangMember)
+                {
+                    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 75f, 0);//TR
+                }
+                else
+                {
+                    NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+                }
             }
             GameTimeLastRan = Game.GameTime;
         }

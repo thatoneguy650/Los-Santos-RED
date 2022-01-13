@@ -17,6 +17,13 @@ public class WeaponInformation
     public bool IsOneHanded { get; set; } = false;
     public bool IsLegal { get; set; } = false;
     public bool IsRegular { get; set; } = true;
+
+
+    public float MinVerticalRecoil { get; set; } = 0.0f;
+    public float MaxVerticalRecoil { get; set; } = 0.0f;
+    public float MinHorizontalRecoil { get; set; } = 0.0f;
+    public float MaxHorizontalRecoil { get; set; } = 0.0f;
+
     public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public WeaponInformation()
     {
@@ -32,6 +39,21 @@ public class WeaponInformation
         IsOneHanded = _IsOneHanded;
         IsTwoHanded = _IsTwoHanded;
         IsLegal = _IsLegal;
+    }
+    public WeaponInformation(string _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, uint _Hash, bool _IsOneHanded, bool _IsTwoHanded, bool _IsLegal, float _MinVerticalRecoil, float _MaxVerticalRecoil, float _MinHorizontalRecoil, float _MaxHorizontalRecoil)
+    {
+        ModelName = _Name;
+        AmmoAmount = _AmmoAmount;
+        Category = _Category;
+        WeaponLevel = _WeaponLevel;
+        Hash = _Hash;
+        IsOneHanded = _IsOneHanded;
+        IsTwoHanded = _IsTwoHanded;
+        IsLegal = _IsLegal;
+        MinVerticalRecoil = _MinVerticalRecoil;
+        MaxVerticalRecoil = _MaxVerticalRecoil;
+        MinHorizontalRecoil = _MinHorizontalRecoil;
+        MaxHorizontalRecoil = _MaxHorizontalRecoil;
     }
     public bool IsLowEnd
     {
@@ -121,5 +143,67 @@ public class WeaponInformation
             return true;
         }
         return false;
+    }
+    private void SetDefaultRecoilForCategory()
+    {
+        if (Category == WeaponCategory.AR)
+        {
+            MinVerticalRecoil = 0.25f;
+            MaxVerticalRecoil = 0.35f;
+            MinHorizontalRecoil = 0.1f;
+            MaxHorizontalRecoil = 0.2f;
+        }
+        else if (Category == WeaponCategory.Heavy)
+        {
+            MinVerticalRecoil = 0.4f;
+            MaxVerticalRecoil = 0.5f;
+            MinHorizontalRecoil = 0.1f;
+            MaxHorizontalRecoil = 0.2f;
+        }
+        else if (Category == WeaponCategory.LMG)
+        {
+            MinVerticalRecoil = 0.3f;
+            MaxVerticalRecoil = 0.4f;
+            MinHorizontalRecoil = 0.1f;
+            MaxHorizontalRecoil = 0.2f;
+        }
+        else if (Category == WeaponCategory.Pistol)
+        {
+            MinVerticalRecoil = 1.0f;
+            MaxVerticalRecoil = 1.2f;
+            MinHorizontalRecoil = 0.7f;
+            MaxHorizontalRecoil = 0.9f;
+        }
+        else if (Category == WeaponCategory.Shotgun)
+        {
+            MinVerticalRecoil = 0.6f;
+            MaxVerticalRecoil = 0.7f;
+            MinHorizontalRecoil = 0.3f;
+            MaxHorizontalRecoil = 0.4f;
+        }
+        else if (Category == WeaponCategory.SMG)
+        {
+            if (IsOneHanded)
+            {
+                MinVerticalRecoil = 0.9f;
+                MaxVerticalRecoil = 1.2f;
+                MinHorizontalRecoil = 0.5f;
+                MaxHorizontalRecoil = 0.7f;
+            }
+            else
+            {
+                MinVerticalRecoil = 0.7f;
+                MaxVerticalRecoil = 0.9f;
+                MinHorizontalRecoil = 0.4f;
+                MaxHorizontalRecoil = 0.5f;
+            }
+        }
+        else if (Category == WeaponCategory.Sniper)
+        {
+            MinVerticalRecoil = 0.5f;
+            MaxVerticalRecoil = 0.75f;
+            MinHorizontalRecoil = 0.1f;
+            MaxHorizontalRecoil = 0.2f;
+        }
     }
 }

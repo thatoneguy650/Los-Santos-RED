@@ -23,7 +23,14 @@ public class Flee : ComplexTask
         {
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
             //Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
-            NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 100f, -1, false, false);
+            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
+            {
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 100f, -1, false, false);
+            }
+            else
+            {
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 100f, -1, false, false);
+            }                
             GameTimeLastRan = Game.GameTime;
         }
     }

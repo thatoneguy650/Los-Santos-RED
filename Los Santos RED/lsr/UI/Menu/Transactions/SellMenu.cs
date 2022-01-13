@@ -331,11 +331,40 @@ public class SellMenu : Menu
     private void StartSellAnimation(ModItem item, bool isIllicit)
     {
         Hide();
+        string modelName = "";
+        bool HasProp = false;
+        bool isWeapon = false;
+        if (item.PackageItem != null && item.PackageItem.ModelName != "")
+        {
+            modelName = item.PackageItem.ModelName;
+            HasProp = true;
+            if (item.PackageItem.Type == ePhysicalItemType.Weapon)
+            {
+                isWeapon = true;
+            }
+        }
+        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
+        {
+            modelName = item.ModelItem.ModelName;
+            HasProp = true;
+            if (item.ModelItem.Type == ePhysicalItemType.Weapon)
+            {
+                isWeapon = true;
+            }
+        }
         IsActivelyConversing = true;
         if (isIllicit)
         {
-            Player.IsConductingIllicitTransaction = true;
-            Ped.IsConductingIllicitTransaction = true;
+            if (isWeapon)
+            {
+                Player.IsDealingIllegalGuns = true;
+                Ped.IsDealingIllegalGuns = true;
+            }
+            else
+            {
+                Player.IsDealingDrugs = true;
+                Ped.IsDealingDrugs = true;
+            }
         }
         Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
@@ -345,19 +374,8 @@ public class SellMenu : Menu
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
-        string modelName = "";
-        bool HasProp = false;
-        if (item.PackageItem != null && item.PackageItem.ModelName != "")
-        {
-            modelName = item.PackageItem.ModelName;
-            HasProp = true;
-        }
-        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
-        {
-            modelName = item.ModelItem.ModelName;
-            HasProp = true;
-        }
-        if (Ped.Pedestrian.Exists() && HasProp && modelName != "")
+       
+        if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             GameFiber.Yield();
@@ -387,8 +405,16 @@ public class SellMenu : Menu
         IsActivelyConversing = false;
         if (isIllicit)
         {
-            Player.IsConductingIllicitTransaction = false;
-            Ped.IsConductingIllicitTransaction = false;
+            if (isWeapon)
+            {
+                Player.IsDealingIllegalGuns = false;
+                Ped.IsDealingIllegalGuns = false;
+            }
+            else
+            {
+                Player.IsDealingDrugs = false;
+                Ped.IsDealingDrugs = false;
+            }
         }
         //Show();     
     }

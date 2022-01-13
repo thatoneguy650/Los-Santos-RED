@@ -43,16 +43,16 @@ public class GangDispatcher
         Crimes = crimes;
         ShopMenus = shopMenus;
     }
-    private float ClosestOfficerSpawnToPlayerAllowed => 50f;
+    private float ClosestOfficerSpawnToPlayerAllowed => 45f;
     private List<GangMember> DeletableOfficers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
     private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= 5;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 15000;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
-    private float MaxDistanceToSpawn => 200f;
-    private float MinDistanceToSpawn => 100f;
-    private int TimeBetweenSpawn => 15000;
+    private float MaxDistanceToSpawn => 150f;
+    private float MinDistanceToSpawn => 50f;
+    private int TimeBetweenSpawn => 2000;//15000;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -86,13 +86,13 @@ public class GangDispatcher
 
                     EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
                     DispatchableVehicle VehicleType = null;
-                    if (!spawnLocation.HasSidewalk)
+
+
+                    //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                    if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
                     {
-                        if (RandomItems.RandomPercent(5))//want most gangs to be on foot?
-                        {
-                            VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                        }
-                    }                    
+                         VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                    }
                     if (VehicleType != null || spawnLocation.HasSidewalk)
                     {
                         EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
@@ -102,7 +102,7 @@ public class GangDispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, true, Settings, Weapons, Names, true, Crimes,PedGroups,ShopMenus);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.CivilianSettings.ShowSpawnedGangBlip, Settings, Weapons, Names, true, Crimes,PedGroups,ShopMenus);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 foreach(PedExt created in spawnTask.CreatedPeople)
                                 {

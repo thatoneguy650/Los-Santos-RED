@@ -44,7 +44,8 @@ public class DebugMenu : Menu
     private UIMenuItem LoadSPMap;
     private UIMenuItem LoadMPMap;
     private IEntityProvideable World;
-
+    private UIMenuItem HostileGangRep;
+    private UIMenuItem FriendlyGangRep;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world)
     {    
@@ -112,8 +113,8 @@ public class DebugMenu : Menu
 
         DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
         RandomGangRep = new UIMenuItem("Set Gang Rep Random", "Sets the player reputation to each gang to a randomized number");
-
-
+        HostileGangRep = new UIMenuItem("Set Gang Rep Hostile", "Sets the player reputation to each gang to hostile");
+        FriendlyGangRep = new UIMenuItem("Set Gang Rep Friendly", "Sets the player reputation to each gang to friendly");
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
 
 
@@ -130,6 +131,8 @@ public class DebugMenu : Menu
         Debug.AddItem(TeleportToPOI);
         Debug.AddItem(DefaultGangRep);
         Debug.AddItem(RandomGangRep);
+        Debug.AddItem(HostileGangRep);
+        Debug.AddItem(FriendlyGangRep);
 
         Debug.AddItem(FreeCamMenu);
         Debug.AddItem(LogLocationMenu);
@@ -220,10 +223,22 @@ public class DebugMenu : Menu
         else if (selectedItem == RandomGangRep)
         {
             Player.RandomizeGangReputation();
+            Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == DefaultGangRep)
         {
             Player.DefaultGangReputation();
+            Player.DisplayPlayerGangNotification();
+        }
+        else if (selectedItem == HostileGangRep)
+        {
+            Player.HostileGangReputation();
+            Player.DisplayPlayerGangNotification();
+        }
+        else if (selectedItem == FriendlyGangRep)
+        {
+            Player.FriendlyGangReputation();
+            Player.DisplayPlayerGangNotification();
         }
 
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))

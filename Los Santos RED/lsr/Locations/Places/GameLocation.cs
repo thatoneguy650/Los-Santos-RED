@@ -206,6 +206,10 @@ public class GameLocation
         }
     }
 
+    //Gang Stuff
+    public string GangID { get; set; } = "";
+    public bool IsEnabled { get; set; } = true;
+
     //Store
     public string BannerImage { get; set; } = "";
     public bool CanTransact => Menu.Any();

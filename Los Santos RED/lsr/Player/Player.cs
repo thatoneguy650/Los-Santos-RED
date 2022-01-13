@@ -20,6 +20,7 @@ namespace Mod
         private ICrimes Crimes;
         private CriminalHistory CriminalHistory;
         private string CurrentVehicleDebugString;
+        private uint GangNotificationID = 0;
         
 
         private DynamicActivity LowerBodyActivity;
@@ -216,7 +217,9 @@ namespace Mod
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1);//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
-        public bool IsConductingIllicitTransaction { get; set; }
+        //public bool IsConductingIllicitTransaction { get; set; }
+        public bool IsDealingDrugs { get; set; } = false;
+        public bool IsDealingIllegalGuns { get; set; } = false;
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
@@ -549,14 +552,15 @@ namespace Mod
         }
         public void DisplayPlayerGangNotification()
         {
+            Game.RemoveNotification(GangNotificationID);
             string NotifcationText = GangRelationships.PrintRelationships();
             if (NotifcationText != "")
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", NotifcationText);
+                GangNotificationID = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", NotifcationText);
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", "~s~Gangs: N/A");
+                GangNotificationID = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", "~s~Gangs: N/A");
             }
         }
         public void Dispose()
@@ -610,7 +614,7 @@ namespace Mod
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships)
         {
             IsDead = false;
             IsBusted = false;
@@ -673,6 +677,10 @@ namespace Mod
             {
                 Intoxication.Dispose();
             }
+            if(resetGangRelationships)
+            {
+                GangRelationships.ResetReputations();
+            }
         }
         public void SetDemographics(string modelName, bool isMale, string playerName, int money)
         {
@@ -728,12 +736,51 @@ namespace Mod
                 {
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
+                        Recoil();
                         GameTimeLastShot = Game.GameTime;
+
+
+
+
+
+
                     }
                     GameFiber.Yield();
                 }
 
             }, "IsShootingChecker");
+
+
+
+
+        }
+        private void Recoil()
+        {
+            if (Settings.SettingsManager.PlayerSettings.ApplyRecoil && CurrentWeapon != null)// && !IsInVehicle)
+            {
+                if (CurrentWeapon.Category == WeaponCategory.Throwable || CurrentWeapon.Category == WeaponCategory.Vehicle || CurrentWeapon.Category == WeaponCategory.Melee || CurrentWeapon.Category == WeaponCategory.Misc || CurrentWeapon.Category == WeaponCategory.Unknown)
+                {
+                    return;
+                }
+                if(IsInVehicle && !Settings.SettingsManager.PlayerSettings.ApplyRecoilInVehicle)
+                {
+                    return;
+                }
+                float currentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
+                float currentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+                float AdjustedPitch = RandomItems.GetRandomNumber(CurrentWeapon.MinVerticalRecoil, CurrentWeapon.MaxVerticalRecoil);
+                float AdjustedHeading = RandomItems.GetRandomNumber(CurrentWeapon.MinHorizontalRecoil, CurrentWeapon.MaxHorizontalRecoil);
+                if (IsInVehicle)
+                {
+                    AdjustedPitch *= 3.0f;
+                }
+                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(currentPitch + AdjustedPitch, AdjustedPitch);
+                if(RandomItems.RandomPercent(50))
+                {
+                    AdjustedHeading *= -1.0f;
+                }
+                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(currentHeading + AdjustedHeading);
+            }
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
@@ -820,7 +867,10 @@ namespace Mod
                 }
             }
         }
-
+        public void SetDenStatus(Gang gang, bool v)
+        {
+            EntityProvider.SetLocationsActive(gang.ID, v);
+        }
         //Updates
         public void Update()
         {
@@ -1525,6 +1575,9 @@ namespace Mod
         public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);
         public void DefaultGangReputation() => GangRelationships.ResetReputations();
         public void RandomizeGangReputation() => GangRelationships.RandomReputations();
+        public void HostileGangReputation() => GangRelationships.HostileReputations();
+
+        public void FriendlyGangReputation() => GangRelationships.FriendlyReputations();
 
         public void RaiseHands() => Surrendering.RaiseHands();
         public void LowerHands() => Surrendering.LowerHands();

@@ -42,7 +42,7 @@ public class WeaponInventory
         if (issueSidearm)
         {
             Sidearm = Cop.GetRandomWeapon(true, weapons);
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
+            if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)Sidearm.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
@@ -51,7 +51,7 @@ public class WeaponInventory
         if (issueLongGun)
         {
             LongGun = Cop.GetRandomWeapon(false, weapons);
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))
+            if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Cop.Pedestrian, (uint)LongGun.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Cop.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(Cop.Pedestrian);

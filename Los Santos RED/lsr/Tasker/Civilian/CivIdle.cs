@@ -156,7 +156,7 @@ public class CivIdle : ComplexTask
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                            //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -171,7 +171,7 @@ public class CivIdle : ComplexTask
             {
                 //Ped.Pedestrian.Tasks.Wander();
                 Vector3 pedPos = Ped.Pedestrian.Position;
-                if (IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 15f, true))
+                if (1==0 && IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 15f, true))
                 {
                     NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 10000);
                     EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
@@ -220,7 +220,7 @@ public class CivIdle : ComplexTask
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(8000, 16000));
+                //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(8000, 16000));
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

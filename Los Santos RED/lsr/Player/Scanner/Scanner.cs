@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr
         private Dispatch AssaultingCivilians;
         private Dispatch AimingWeaponAtPolice;
         private Dispatch DealingDrugs;
+        private Dispatch DealingGuns;
         private Dispatch AssaultingCiviliansWithDeadlyWeapon;
         private Dispatch FelonySpeeding;
         private Dispatch GrandTheftAuto;
@@ -1250,6 +1251,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("AssaultingCivilians",AssaultingCivilians),
             new CrimeDispatch("AssaultingWithDeadlyWeapon",AssaultingCiviliansWithDeadlyWeapon),
             new CrimeDispatch("DealingDrugs",DealingDrugs),
+            new CrimeDispatch("DealingGuns",DealingGuns),
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
 
         };
@@ -1305,6 +1307,7 @@ namespace LosSantosRED.lsr
             ,AssaultingCivilians
             ,AssaultingCiviliansWithDeadlyWeapon
             ,DealingDrugs
+            ,DealingGuns
             ,WantedSuspectSpotted
             ,RequestNooseUnitsAlt
             ,RequestNooseUnitsAlt2
@@ -1921,6 +1924,20 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_drug_deal.Narcoticstrafficking.FileName},"narcotics trafficing"),
             },
             };
+
+
+            DealingGuns = new Dispatch()
+            {
+                Name = "Illegal Weapons Dealing",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_firearms_possession.Afirearmspossession.FileName},"a firearms possession"),
+            },
+            };
+
+
             AssaultingCiviliansWithDeadlyWeapon = new Dispatch()
             {
                 Name = "Assault With a Deadly Weapon",

@@ -53,7 +53,18 @@ public class PedGroups : IPedGroups
                 new PedGroup("Rednecks","AMBIENT_GANG_HILLBILLY","Redneck",true),
                 new PedGroup("Kkangpae","AMBIENT_GANG_KKANGPAE","Kkangpae Member",true),//
                 new PedGroup("Los Santos Triads","AMBIENT_GANG_WEICHENG","Triad Member",true),//
+
                 new PedGroup("Gambetti Crime Family","AMBIENT_GANG_GAMBETTI","Gambetti Associate",true),//
+                new PedGroup("Pavano Crime Family", "AMBIENT_GANG_PAVANO", "Pavano Associate",true),
+                new PedGroup("Lupisella Crime Family", "AMBIENT_GANG_LUPISELLA", "Lupisella Associate",true),
+                new PedGroup("Messina Crime Family", "AMBIENT_GANG_MESSINA", "Messina Associate",true),
+                new PedGroup("Ancelotti Crime Family", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Associate",true),
+
+
+
+
+
+
                 new PedGroup("Madrazo Cartel","AMBIENT_GANG_MADRAZO","Cartel Member",true),//
                 new PedGroup("Armenian Mob","AMBIENT_GANG_ARMENIAN","Armenian Member",true),//
 

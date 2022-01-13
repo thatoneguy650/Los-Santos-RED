@@ -167,13 +167,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(234.4411f, -1946.841f, 22.95617f), 3.404058f, LocationType.LiquorStore, "Liquor Store", "") { Menu = LiquorStoreMenu },
             new GameLocation(new Vector3(1212.343f, -445.0079f, 66.96259f), 74.05521f, LocationType.LiquorStore, "Liquor", "") { Menu = LiquorStoreMenu },
             new GameLocation(new Vector3(-1208.469f, -1384.053f, 4.085135f), 68.08948f, LocationType.LiquorStore, "Steamboat Beers", "Steamboat Beers") { Menu = LiquorStoreMenu },
-            new GameLocation(new Vector3(-1106.07f, -1287.686f, 5.421459f), 161.3398f, LocationType.LiquorStore, "Vespucci Liquor Market", "Vespucci Liquor Market") { Menu = LiquorStoreMenu },      
+            new GameLocation(new Vector3(-1106.07f, -1287.686f, 5.421459f), 161.3398f, LocationType.LiquorStore, "Vespucci Liquor Market", "Vespucci Liquor Market") { Menu = LiquorStoreMenu },
             new GameLocation(new Vector3(-697.8242f, -1182.286f, 10.71113f), 132.7831f, LocationType.LiquorStore, "Liquor Market", "Liquor Market") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(-882.7062f, -1155.351f, 5.162508f), 215.8305f, LocationType.LiquorStore, "Liquor Hole", "Liquor Hole") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22,BannerImage = "liquorhole.png" },
             new GameLocation(new Vector3(-601.9684f, 244.0188f, 82.3046f), 358.6468f, LocationType.LiquorStore, "Liquor Hole", "Liquor Hole") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22,BannerImage = "liquorhole.png" },
             new GameLocation(new Vector3(456.5478f, 130.5207f, 99.28537f), 162.9724f, LocationType.LiquorStore, "Vinewood Liquor", "Vinewood Liquor") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(1391.861f, 3606.275f, 34.98093f), 199.2899f,new Vector3(1391.861f, 3606.275f, 34.98093f), 199.2899f, LocationType.LiquorStore, "Liquor Ace", "Liquor Ace") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
-            new GameLocation(new Vector3(1952.552f, 3840.833f, 32.17612f), 298.8575f, LocationType.LiquorStore, "Sandy Shores Liquor", "Sandy Shores Liquor") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },            
+            new GameLocation(new Vector3(1952.552f, 3840.833f, 32.17612f), 298.8575f, LocationType.LiquorStore, "Sandy Shores Liquor", "Sandy Shores Liquor") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(2455.443f, 4058.518f, 38.06472f), 250.6311f, LocationType.LiquorStore, "Liquor Market 24/7", "Liquor Market"){ Menu = LiquorStoreMenu, OpenTime = 0, CloseTime = 24 },
             new GameLocation(new Vector3(2481.348f, 4100.31f, 38.13171f), 249.6295f, LocationType.LiquorStore, "Liquor Store", "Liquor Store"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(2566.804f, 4274.108f, 41.98908f), 239.0765f, LocationType.LiquorStore, "Grape Smuggler's Liquor", "Grape Liquor"){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
@@ -219,7 +219,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-696.9965f, -858.7673f, 23.69209f), 85.51252f, LocationType.ConvenienceStore, "24/7", "24/7"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
             new GameLocation(new Vector3(152.5101f, 237.4131f, 106.9718f), 165.2823f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
             new GameLocation(new Vector3(201.8985f, -26.30606f, 69.90953f), 249.8224f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" }, 
+            new GameLocation(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
             new GameLocation(new Vector3(-1264.064f, -1162.599f, 6.764161f), 161.218f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine"){ Menu = FruitVineMenu },
             new GameLocation(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
             new GameLocation(new Vector3(164.9962f, 351.1263f, 109.6859f), 4.847032f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
@@ -256,7 +256,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-2544.116f, 2315.928f, 33.21614f), 3.216755f, LocationType.GasStation, "Ron", ""){ Menu = RonMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(818.2819f, -1040.907f, 26.75079f), 358.5326f, LocationType.GasStation, "Ron", ""){ Menu = RonMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(1211.169f, -1388.923f, 35.3769f), 180.4454f, LocationType.GasStation, "Ron", ""){ Menu = RonMenu, OpenTime = 4, CloseTime = 22 },
-            new GameLocation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, LocationType.GasStation, "LtD","A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24 },     
+            new GameLocation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, LocationType.GasStation, "LtD","A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24 },
             new GameLocation(new Vector3(-531.5529f, -1220.763f, 18.455f), 347.6858f, LocationType.GasStation, "Xero", ""){ Menu = XeroMenu,OpenTime = 0, CloseTime = 24,BannerImage = "xero.png" },
             new GameLocation(new Vector3(289.5112f, -1266.584f, 29.44076f), 92.24692f, LocationType.GasStation, "Xero", ""){ Menu = XeroMenu,OpenTime = 0, CloseTime = 24,BannerImage = "xero.png" },
             new GameLocation(new Vector3(-92.79028f, 6409.667f, 31.64035f), 48.08112f, LocationType.GasStation, "Xero", ""){ Menu = XeroMenu,OpenTime = 0, CloseTime = 24,BannerImage = "xero.png" },
@@ -271,8 +271,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1201.978f, 2654.854f, 37.85188f), 315.5364f, LocationType.GasStation, "Route 68 Store", "") { Menu = GasStationMenu },
             //Food Stand
             new GameLocation(new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f,new Vector3(403.3527f, 106.0655f, 101.4575f), 241.199f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" },
-            new GameLocation(new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f,new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" }, 
-            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f,new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burger Bar","Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" }, 
+            new GameLocation(new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f,new Vector3(245.8918f, 161.5893f, 104.9487f), 3.803493f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" },
+            new GameLocation(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f,new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, LocationType.FoodStand, "Beefy Bills Burger Bar","Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" },
             new GameLocation(new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f,new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" },
             new GameLocation(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f,new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f, LocationType.FoodStand, "Beefy Bills Burger Bar", "Extra BEEFY!"){ Menu = BeefyBillsMenu,BannerImage = "beefybills.png" },
             new GameLocation(new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f,new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f, LocationType.FoodStand, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ Menu = ChihuahuaHotDogMenu,BannerImage = "chihuahuahotdogs.png" },
@@ -327,6 +327,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-361.3964f, 275.7073f, 86.42198f), 212.2804f, LocationType.Restaurant, "Last Train Diner", "") {Menu = FancyDeliMenu },
             new GameLocation(new Vector3(-3047.75f, 615.6793f, 7.405877f), 248.6187f, LocationType.Restaurant, "Mom's Pie Diner", "") {Menu = FancyDeliMenu },
             new GameLocation(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, LocationType.Restaurant, "Haute", ""){Menu = FancyFishMenu },
+            new GameLocation(new Vector3(398.0291f, 175.6789f, 103.8558f), 71.74517f, LocationType.Restaurant, "Clappers", "") {Menu = FancyGenericMenu },
             //Sandwiches
             new GameLocation(new Vector3(-1249.812f, -296.1564f, 37.35062f), 206.9039f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
             new GameLocation(new Vector3(-1539.498f, -427.3804f, 35.59194f), 233.1319f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
@@ -376,7 +377,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             //Bagels&Donuts
             new GameLocation(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
             new GameLocation(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, LocationType.Restaurant, "Rusty Browns", "") { Menu = CoffeeMenu,BannerImage = "rustybrowns.png" },      
+            new GameLocation(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, LocationType.Restaurant, "Rusty Browns", "") { Menu = CoffeeMenu,BannerImage = "rustybrowns.png" },
+            new GameLocation(new Vector3(55.28403f, -799.5469f, 31.58599f), 341.3315f, LocationType.Restaurant, "Ground & Pound Cafe", "") { Menu = CoffeeMenu },
             //Coffee
             new GameLocation(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
             new GameLocation(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
@@ -486,6 +488,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, LocationType.Hotel, "Vinewood Gardens", ""){Menu = ExpensiveHotelMenu },
             new GameLocation(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, LocationType.Hotel, "Cheep Motel", "POOL!"){Menu = CheapHotelMenu},
             new GameLocation(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, LocationType.Hotel, "Crastenburg", ""){Menu = ExpensiveHotelMenu },
+            new GameLocation(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, LocationType.Hotel, "Hotel Von Crastenburg",""){Menu = ExpensiveHotelMenu },
 
             //Pharmacy
             new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
@@ -498,6 +501,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(214.0241f, -1835.08f, 27.54375f), 318.7183f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
             new GameLocation(new Vector3(591.2585f, 2744.49f, 42.0425f), 184.8661f, LocationType.Pharmacy, "Dollar Pills", "") {Menu = PharmacyMenu },
             new GameLocation(new Vector3(825.8448f, -97.80138f, 80.59971f), 321.7153f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
+            new GameLocation(new Vector3(84.03228f, -810.2528f, 31.41642f), 350.9262f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
+
+
+
 
             //Hardware
             new GameLocation(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, LocationType.HardwareStore, "You Tool", "You Tool") {Menu = ToolMenu,BannerImage = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
@@ -544,15 +551,19 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ItemDeliveryPosition = new Vector3(1236.887f, 2709.858f, 38.00579f), ItemDeliveryHeading = 201.5402f},
 
             //Gang Dens
-            new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesGangDenMenu },
-            new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
-            new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu },
+            new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesGangDenMenu, GangID = "AMBIENT_GANG_FAMILY", IsEnabled = false },
+            new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_BALLAS", IsEnabled = false  },
+            new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_MEXICAN", IsEnabled = false  },
+            new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_SALVA", IsEnabled = false  },
+            new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_MARABUNTE", IsEnabled = false  },
+            new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_CULT", IsEnabled = false  },
+            new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
+            new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
+            new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
+            new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
+            new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
+
+
 
         #if DEBUG
 

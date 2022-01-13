@@ -144,10 +144,13 @@ public class Gang
         else
         {
             weaponToIssue = LongGuns.PickRandom();
+        }if (weaponToIssue != null)
+        {
+            WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
+            weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
+            return weaponToIssue;
         }
-        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
-        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
-        return weaponToIssue;
+        return null;
     }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
 }

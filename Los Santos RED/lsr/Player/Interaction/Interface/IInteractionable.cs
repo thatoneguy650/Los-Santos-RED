@@ -22,13 +22,15 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         bool IsPerformingActivity { get; }
         bool IsTransacting { get; set; }
-        bool IsConductingIllicitTransaction { get; set; }
+       // bool IsConductingIllicitTransaction { get; set; }
         bool IsSitting { get; }
         bool CharacterModelIsFreeMode { get; }
         string FreeModeVoice { get; }
         GameLocation CurrentShop { get; set; }
         bool IsMoveControlPressed { get; }
         bool CanPerformActivities { get; }
+        bool IsDealingDrugs { get; set; }
+        bool IsDealingIllegalGuns { get; set; }
 
         void SetAngeredCop();
         void GiveMoney(int v);

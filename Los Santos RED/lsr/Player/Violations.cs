@@ -366,9 +366,13 @@ namespace LosSantosRED.lsr
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "InsultingOfficer"));
                 
             }
-            if(Player.IsConductingIllicitTransaction)
+            if(Player.IsDealingDrugs)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingDrugs"));
+            }
+            if (Player.IsDealingIllegalGuns)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));
             }
 
         }

@@ -43,7 +43,6 @@ public class CalmCallIn : ComplexTask
             {
                 ReportCrime();
             }
-
         }
         else
         {

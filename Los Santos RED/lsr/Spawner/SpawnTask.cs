@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
+using System.Drawing;
 
 public class SpawnTask
 {
@@ -342,11 +343,15 @@ public class SpawnTask
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
             {
-                EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);
+                EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle} {VehicleType.RequiredColor}", 2);
                 //if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
                 //{
                 //    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
                 //}
+                if (VehicleType.HasSetColor && VehicleType.RequiredColor != Color.Transparent)
+                {
+                    SpawnedVehicle.PrimaryColor = VehicleType.RequiredColor;
+                }
                 VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 if (SpawnedVehicle.Exists())
                 {

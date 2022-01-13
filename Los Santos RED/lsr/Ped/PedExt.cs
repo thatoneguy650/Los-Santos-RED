@@ -228,7 +228,11 @@ public class PedExt : IComplexTaskable
     public List<MenuItem> TransactionMenu { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
     public int AssignedSeat { get; set; }
-    public bool IsConductingIllicitTransaction { get; set; } = false;
+   // public bool IsConductingIllicitTransaction { get; set; } = false;
+
+    public bool IsDealingDrugs { get; set; } = false;
+    public bool IsDealingIllegalGuns { get; set; } = false;
+
     public void InsultedByPlayer()
     {
         if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
@@ -255,7 +259,6 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-
     public bool CheckHurtBy(Ped ToCheck, bool OnlyLast)
     {
         if (LastHurtBy == ToCheck)
@@ -395,32 +398,6 @@ public class PedExt : IComplexTaskable
                         }
                         WasEverSetPersistent = true;
                     }
-                    //if(IsGangMember)
-                    //{
-
-                    //    if(IsFedUpWithPlayer)
-                    //    {
-
-                    //    }
-
-
-                    //    int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(perceptable.Character, Pedestrian);
-                    //    int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Pedestrian, perceptable.Character);
-
-                    //    if(Rel1 != RelationShipToPlayer)
-                    //    {
-                    //        EntryPoint.WriteToConsole($"GangMember {Pedestrian.Handle} RelationShipToPlayer changed WAS {RelationShipToPlayer} IS {Rel1}", 5);
-                    //        RelationShipToPlayer = Rel1;
-                    //    }
-
-                    //    if (Rel2 != RelationShipFromPlayer)
-                    //    {
-                    //        EntryPoint.WriteToConsole($"GangMember {Pedestrian.Handle} RelationShipFromPlayer changed WAS {RelationShipFromPlayer} IS {Rel2}", 5);
-                    //        RelationShipFromPlayer = Rel2;
-                    //    }
-
-                    //}
-
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }

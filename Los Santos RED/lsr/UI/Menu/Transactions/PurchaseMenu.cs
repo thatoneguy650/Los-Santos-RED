@@ -921,7 +921,7 @@ public class PurchaseMenu : Menu
                 else
                 {
                     uimen.Enabled = true;
-                    uimen.RightLabel = "Owned";
+                   // uimen.RightLabel = "Owned";
                 }
             }
             else if (uimen.Text == "Purchase Ammo")
@@ -1412,7 +1412,6 @@ public class PurchaseMenu : Menu
         }
         return false;
     }
-
     private void PreviewPed(ModItem itemToShow)
     {
         //GameFiber.Yield();
@@ -1421,25 +1420,12 @@ public class PurchaseMenu : Menu
     //Vendor Only
     private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
     {
-        Hide();
-        IsActivelyConversing = true;
-        if (isIllicit)
-        {
-            Player.IsConductingIllicitTransaction = true;
-            Ped.IsConductingIllicitTransaction = true;
-        }
-        Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
-        if (Ped.Pedestrian.Exists())
-        {
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-        }
-        GameFiber.Sleep(500);
+        //Hide();
+
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
-        if(item.PackageItem != null && item.PackageItem.ModelName != "")
+        if (item.PackageItem != null && item.PackageItem.ModelName != "")
         {
             modelName = item.PackageItem.ModelName;
             HasProp = true;
@@ -1452,11 +1438,33 @@ public class PurchaseMenu : Menu
         {
             modelName = item.ModelItem.ModelName;
             HasProp = true;
-            if(item.ModelItem.Type == ePhysicalItemType.Weapon)
+            if (item.ModelItem.Type == ePhysicalItemType.Weapon)
             {
                 isWeapon = true;
             }
         }
+        IsActivelyConversing = true;
+        if (isIllicit)
+        {
+            if(isWeapon)
+            {
+                Player.IsDealingIllegalGuns = true;
+                Ped.IsDealingIllegalGuns = true;
+            }
+            else
+            {
+                Player.IsDealingDrugs = true;
+                Ped.IsDealingDrugs = true;
+            }
+        }
+        Player.ButtonPrompts.Clear();
+        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        if (Ped.Pedestrian.Exists())
+        {
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
+        }
+        GameFiber.Sleep(500);
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
@@ -1487,15 +1495,23 @@ public class PurchaseMenu : Menu
         IsActivelyConversing = false;
         if (isIllicit)
         {
-            Player.IsConductingIllicitTransaction = false;
-            Ped.IsConductingIllicitTransaction = false;
+            if (isWeapon)
+            {
+                Player.IsDealingIllegalGuns = false;
+                Ped.IsDealingIllegalGuns = false;
+            }
+            else
+            {
+                Player.IsDealingDrugs = false;
+                Ped.IsDealingDrugs = false;
+            }
         }
         if (Ped.GetType() == typeof(GangMember))
         {
             GangMember gm = (GangMember)Ped;
             Player.ChangeReputation(gm.Gang, 200);
         }
-        Show();     
+        //Show();     
     }
 
     //Vending Machine Only
@@ -1503,11 +1519,6 @@ public class PurchaseMenu : Menu
     {
         Hide();
         IsActivelyConversing = true;
-        if (isIllicit)
-        {
-            Player.IsConductingIllicitTransaction = true;
-            Ped.IsConductingIllicitTransaction = true;
-        }
         if(Store != null && Store.PropObject != null && Store.PropObject.Exists())
         {
             if (MoveToMachine())
@@ -1528,10 +1539,6 @@ public class PurchaseMenu : Menu
         }
         hasAttachedProp = false;
         IsActivelyConversing = false;
-        if (isIllicit)
-        {
-            Player.IsConductingIllicitTransaction = false;
-        }  
     }
     private void GetPropEntry()
     {

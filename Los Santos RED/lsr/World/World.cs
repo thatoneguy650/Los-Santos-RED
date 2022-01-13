@@ -93,7 +93,15 @@ namespace Mod
             foreach (Zone zone in Zones.ZoneList)
             {
                 zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName,ResponseType.LawEnforcement)?.ColorInitials;
-                zone.AssignedGangInitials = GangTerritories.GetMainGang(zone.InternalGameName)?.ColorInitials;
+                Gang mainGang = GangTerritories.GetMainGang(zone.InternalGameName);
+                if(mainGang != null)
+                {
+                    zone.AssignedGangInitials = mainGang.ColorInitials;
+                }
+                else
+                {
+                    zone.AssignedGangInitials = "";
+                }
                 Agency secondaryAgency = Jurisdictions.GetNthAgency(zone.InternalGameName, ResponseType.LawEnforcement, 2);
                 if(secondaryAgency != null)
                 {
@@ -256,7 +264,7 @@ namespace Mod
             int LocationsCalculated = 0;
             foreach(GameLocation gl in PlacesOfInterest.GetAllPlaces())
             {
-                if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveLocations.Contains(gl))
                     {
@@ -340,7 +348,7 @@ namespace Mod
         }
         public void ActivateLocation(GameLocation gl)
         {
-            if (gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 4))
+            if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 4))
             {
                 if (!ActiveLocations.Contains(gl))
                 {
@@ -350,6 +358,14 @@ namespace Mod
                     AddEntity(gl.Blip);
                     GameFiber.Yield();
                 }
+            }
+        }
+
+        public void SetLocationsActive(string iD, bool v)
+        {
+            foreach (GameLocation gl in PlacesOfInterest.GetAllPlaces().Where(x=> x.GangID == iD))
+            {
+                gl.IsEnabled = v;
             }
         }
     }

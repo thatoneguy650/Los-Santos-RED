@@ -63,5 +63,7 @@ namespace LosSantosRED.lsr.Interface
         void SetReputation(Gang gang, int randomnum);
         void DefaultGangReputation();
         void RandomizeGangReputation();
+        void HostileGangReputation();
+        void FriendlyGangReputation();
     }
 }

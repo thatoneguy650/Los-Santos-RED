@@ -132,10 +132,30 @@ public class Tasker : ITaskerable, ITaskerReportable
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             ExpireSeatAssignments();
-            foreach (PedExt Civilian in PedProvider.TaskableCiviliansList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+            foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
             {
                 try
                 { 
+                    if (Civilian.DistanceToPlayer <= 200f)
+                    {
+                        UpdateCurrentTask(Civilian);
+                    }
+                    else if (Civilian.CurrentTask != null)
+                    {
+                        Civilian.CurrentTask = null;
+                    }
+                    GameFiber.Yield();
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
+                }
+            }
+            foreach (GangMember Civilian in PedProvider.GangMemberList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//75f//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+            {
+                try
+                {
                     if (Civilian.DistanceToPlayer <= 200f)
                     {
                         UpdateCurrentTask(Civilian);
@@ -439,20 +459,6 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
-        //if(Civilian.GetType() == typeof(GangMember))
-        //{
-        //    GangMember gm = (GangMember)Civilian;
-        //    if(gm.WasModSpawned)
-        //    {
-        //        if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
-        //        {
-        //            EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
-        //            gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
-        //            GameFiber.Yield();//TR Added back 4
-        //            gm.CurrentTask.Start();
-        //        }
-        //    }
-        //}
         if(Civilian.IsBusted)
         {
             if (Civilian.DistanceToPlayer <= 75f)
@@ -529,40 +535,68 @@ public class Tasker : ITaskerable, ITaskerReportable
                 {
                     if (Civilian.CurrentTask?.Name != "CalmCallIn")
                     {
-                        Civilian.CurrentTask = new CalmCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        Civilian.CurrentTask = new CalmCallIn(Civilian, Player);//oither target not needed, they just call in all crimes
                         GameFiber.Yield();//TR Added back 7
                         Civilian.CurrentTask.Start();
-                    }
-                }
-            }
-            else if (Civilian.GetType() == typeof(GangMember))
-            {
-                GangMember gm = (GangMember)Civilian;
-                //if(Player.AnyGangMemberRecentlySeenPlayer && (Civilian.CanAttackPlayer || Player.IsHostile(gm.Gang)))
-                //{
-                //    if (Civilian.CurrentTask?.Name != "Fight")
-                //    {
-                //        Civilian.CurrentTask = new Fight(Civilian, Player, null);
-                //        GameFiber.Yield();//TR Added back 7
-                //        Civilian.CurrentTask.Start();
-                //    }
-                //}
-                //else 
-                
-                if (gm.WasModSpawned)
-                {
-                    if (gm.CurrentTask == null)// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
-                    {
-                        EntryPoint.WriteToConsole($"TASKER: gm {gm.Pedestrian.Handle} Task Changed from {gm.CurrentTask?.Name} to Idle", 3);
-                        gm.CurrentTask = new CivIdle(gm, Player, PedProvider, this, PlacesOfInterest);
-                        GameFiber.Yield();//TR Added back 4
-                        gm.CurrentTask.Start();
                     }
                 }
             }
         }
         Civilian.GameTimeLastUpdatedTask = Game.GameTime;
     }
+    private void UpdateCurrentTask(GangMember GangMember)//this should be moved out?
+    {
+        if (GangMember.IsBusted)
+        {
+            if (GangMember.DistanceToPlayer <= 75f)
+            {
+                if (GangMember.CurrentTask?.Name != "GetArrested")
+                {
+                    GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider, this);
+                    GameFiber.Yield();//TR Added back 7
+                    GangMember.CurrentTask.Start();
+                }
+            }
+        }
+        else if (GangMember.DistanceToPlayer <= 75f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
+        {
+            WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            bool SeenScaryCrime = GangMember.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenAngryCrime = GangMember.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenMundaneCrime = GangMember.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            if (SeenScaryCrime || SeenAngryCrime)
+            {
+                if (GangMember.WillFight)
+                {
+                    if (GangMember.CurrentTask?.Name != "Fight")
+                    {
+                        GangMember.CurrentTask = new Fight(GangMember, Player, null) { OtherTarget = HighestPriority?.Perpetrator };
+                        GameFiber.Yield();//TR Added back 7
+                        GangMember.CurrentTask.Start();
+                    }                    
+                }
+                else
+                {
+                    if (GangMember.CurrentTask?.Name != "Flee")
+                    {
+                        GangMember.CurrentTask = new Flee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        GameFiber.Yield();//TR Added back 7
+                        GangMember.CurrentTask.Start();
+                    }
+                }
+            }
+            else if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
+            {
+                EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
+                GangMember.CurrentTask = new CivIdle(GangMember, Player, PedProvider, this, PlacesOfInterest);
+                GameFiber.Yield();//TR Added back 4
+                GangMember.CurrentTask.Start();
+            }
+        }
+        GangMember.GameTimeLastUpdatedTask = Game.GameTime;
+    }
+
+
     private WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
         WeaponInformation ToIssue;

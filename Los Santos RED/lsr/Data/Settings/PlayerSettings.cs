@@ -90,6 +90,8 @@ public class PlayerSettings
     public bool InjureOnWindowBreak { get; set; } = true;
     public bool RequireScrewdriverForLockPickEntry { get; set; } = false;
     public bool RequireScrewdriverForHotwire { get; set; } = false;
+    public bool ApplyRecoil { get; set; } = true;
+    public bool ApplyRecoilInVehicle { get; set; } = true;
 
     public PlayerSettings()
     {

@@ -116,12 +116,20 @@ namespace LosSantosRED.lsr.Data
                         NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle,OwnedVehicleVariation.LicensePlate.PlateType);                     
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
                         NewVehicle.Wash();
-                        VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
-                        World.AddEntity(MyNewCar, ResponseType.None);
-                        player.TakeOwnershipOfVehicle(MyNewCar);
+                        VehicleExt MyVeh = World.GetVehicleExt(NewVehicle.Handle);
+                        if (MyVeh == null)
+                        {
+                            MyVeh = new VehicleExt(NewVehicle, settings);
+                            World.AddEntity(MyVeh, ResponseType.None);
+                        }
+                        //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
+                        player.TakeOwnershipOfVehicle(MyVeh);
                     }
                 }
             }
+
+
+            player.DisplayPlayerNotification();
 
         }
 

@@ -43,5 +43,6 @@ namespace LosSantosRED.lsr.Interface
         void SetWantedLevel(int v1, string v2, bool v3);
         void TakeOwnershipOfVehicle(VehicleExt currentVehicle);
         void ClearVehicleOwnership();
+        void UpdateVehicleData();
     }
 }

@@ -1,15 +1,16 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 
 [Serializable]
 public class GangReputation
 {
     private int reputationLevel = 200;
-    
-    private int RepMaximum = 2000;
-    private int RepMinimum = -2000;
-    private GangRespect PreviousGangRelationship;
+    private GangRespect PreviousGangRelationship = GangRespect.Neutral;
     public readonly int DefaultRepAmount = 200;
+    public readonly int RepMaximum = 2000;
+    public readonly int RepMinimum = -2000;
+    private IGangRelateable Player;
     public int ReputationLevel
     {
         get => reputationLevel;
@@ -38,9 +39,10 @@ public class GangReputation
     {
 
     }
-    public GangReputation(Gang gang)
+    public GangReputation(Gang gang, IGangRelateable player)
     {
         Gang = gang;
+        Player = player;
     }
     public Gang Gang { get; set; }
     public GangRespect GangRelationship
@@ -80,16 +82,24 @@ public class GangReputation
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+
+
+                Player.SetDenStatus(Gang, false);
+
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Respect);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
+
+                Player.SetDenStatus(Gang, true);
             }
             else if (GangRelationship == GangRespect.Neutral)
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
+
+                Player.SetDenStatus(Gang, false);
             }
             EntryPoint.WriteToConsole($"GangReputation {Gang.FullName} changed from {PreviousGangRelationship} to {GangRelationship}", 5);
             PreviousGangRelationship = GangRelationship;

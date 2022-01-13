@@ -355,8 +355,6 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
         Player.SetUnarmed();
         World.UnPauseTime();
-        GameFiber.Wait(50);
-        Player.DisplayPlayerNotification();
     }
     private void ResetOffsetForCurrentModel()
     {
