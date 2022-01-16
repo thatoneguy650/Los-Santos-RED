@@ -53,7 +53,7 @@ public abstract class ComplexTask
     public List<PedExt> OtherTargets { get; set; }
     public PedExt OtherTarget { get; set; }
     public string DebugString { get; set; }
-    public bool ShouldUpdate => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan >= RunInterval;
+    public bool ShouldUpdate => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan >= RunInterval;//TR this is very new....
     public abstract void Start();
     public abstract void Stop();
     public abstract void Update();

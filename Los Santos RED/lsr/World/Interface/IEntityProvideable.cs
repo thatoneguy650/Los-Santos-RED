@@ -40,7 +40,7 @@ namespace LosSantosRED.lsr.Interface
         List<GangMember> GangMemberList { get; }
         bool IsZombieApocalypse { get; }
         int TotalSpawnedZombies { get; }
-        List<PedExt> TaskableCiviliansList { get; }
+      //  List<PedExt> TaskableCiviliansList { get; }
         int TotalWantedLevel { get; set; }
 
         void AddEntity(Blip blip);

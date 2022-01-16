@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 public class CivilianSettings
 {
     public bool ManageCivilianTasking { get; set; } = true;
-    public float FightPercentage { get; set; } = 7f;//7f//5f
-    public float CallPolicePercentage { get; set; } = 35f;//65f;//55f
+    public float FightPercentage { get; set; } = 2f;//7f//5f//let the gangsters handle that shit bruh
+    public float CallPolicePercentage { get; set; } = 25f;//65f;//55f
     public float SecurityFightPercentage { get; set; } = 30f;//70f
-    public float GangFightPercentage { get; set; } = 85f;
+    public float GangFightPercentage { get; set; } = 55f;//85f
     public bool OverrideHealth { get; set; } = true;
     public int MinHealth { get; set; } = 70;
     public int MaxHealth { get; set; } = 100;
@@ -33,8 +33,6 @@ public class CivilianSettings
     {
 #if DEBUG
         ShowSpawnedGangBlip = true;
-        GangDrugDealPercentage = 100f;
-        RandomDrugDealPercent = 100f;
 #else
                // ShowSpawnedBlips = false;
 #endif

@@ -333,7 +333,7 @@ namespace LosSantosRED.lsr
 
 
               //  new ModTask(500, "Civilians.Update", Civilians.Update, 7),//250
-                new ModTask(500, "Police.Update", Police.Update,7),//added yields//cant get 300 ms updates in here anyways
+               // new ModTask(500, "Police.Update", Police.Update,7),//added yields//cant get 300 ms updates in here anyways
                // new ModTask(500, "Player.Intoxication.Update", Player.IntoxicationUpdate, 10),//added yields//cant get 300 ms updates in here anyways
 
 
@@ -347,9 +347,9 @@ namespace LosSantosRED.lsr
             {
               
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
-                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
+                new ModTask(750, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
                 new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 2),//500
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
+                new ModTask(750, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
@@ -369,17 +369,16 @@ namespace LosSantosRED.lsr
 
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.SetPoliceTasks, 2),
-                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 3),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.SetCivilianTasks, 4),
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 5),
+                new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 2),
+                new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 3),
 
                 //new ModTask(500, "Police.Update", Police.Update, 6),
             };
 
             QuinaryTasks = new List<ModTask>()
             {
-                new ModTask(250, "Civilians.Update", Civilians.Update, 0),//500//250
+                new ModTask(250, "Police.Update", Police.Update,0),
+                new ModTask(250, "Civilians.Update", Civilians.Update, 1),//500//250
                // new ModTask(500, "Police.Update", Police.Update, 1),//added yields//cant get 300 ms updates in here anyways
             };
 

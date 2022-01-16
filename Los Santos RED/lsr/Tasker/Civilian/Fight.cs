@@ -12,7 +12,7 @@ public class Fight : ComplexTask
 {
     WeaponInformation ToIssue;
     ITargetable Player;
-    public Fight(IComplexTaskable ped, ITargetable player, WeaponInformation toIssue) : base(player, ped, 0)
+    public Fight(IComplexTaskable ped, ITargetable player, WeaponInformation toIssue) : base(player, ped, 5000)
     {
         Name = "Fight";
         SubTaskName = "";

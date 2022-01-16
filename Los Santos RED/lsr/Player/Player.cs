@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable, IGangRelateable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -77,6 +77,11 @@ namespace Mod
         private GameLocation CurrentInteriorLocation;
         private bool DriverDoorOpen;
         private GangRelationships GangRelationships;
+        private WeaponSway WeaponSway;
+        private WeaponRecoil WeaponRecoil;
+        private string debugLine4;
+        private bool FirstAiming;
+
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs)
         {
             ModelName = modelName;
@@ -111,6 +116,9 @@ namespace Mod
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
             GangRelationships = new GangRelationships(gangs, this);
             GangRelationships.Setup();
+            WeaponSway = new WeaponSway(this,Settings);
+            WeaponRecoil = new WeaponRecoil(this, Settings);
+            
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
@@ -166,7 +174,7 @@ namespace Mod
         public string DebugLine1 => $"Speed: {Game.LocalPlayer.Character.Speed} isSprinting: {Sprinting.IsSprinting} SprintAmount: {Sprinting.Stamina}";//$"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine4 => Intoxication.DebugString;//$"Obs: {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine4 => debugLine4;//Intoxication.DebugString;//$"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";//IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
@@ -736,14 +744,23 @@ namespace Mod
                 {
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
-                        Recoil();
+                        debugLine4 = "RECOIL";
+                        WeaponRecoil.Update();
                         GameTimeLastShot = Game.GameTime;
-
-
-
-
-
-
+                    }
+                    else if(Game.LocalPlayer.IsFreeAiming)//(Game.LocalPlayer.Character.IsAiming)//|| Game.LocalPlayer.Character.isai)
+                    {
+                        //if(Game.GameTime - GameTimeLastShot >= 350 && 
+                        //if(Game.LocalPlayer.Character.IsAiming)// && !Game.LocalPlayer.Character.IsReloading)
+                        //{
+                            debugLine4 = "SWAY UPDATE";
+                            WeaponSway.Update();
+                        //}
+                        //else
+                        //{
+                        //    debugLine4 = "SWAY RESET";
+                        //    WeaponSway.Reset();
+                        //}
                     }
                     GameFiber.Yield();
                 }
@@ -754,34 +771,7 @@ namespace Mod
 
 
         }
-        private void Recoil()
-        {
-            if (Settings.SettingsManager.PlayerSettings.ApplyRecoil && CurrentWeapon != null)// && !IsInVehicle)
-            {
-                if (CurrentWeapon.Category == WeaponCategory.Throwable || CurrentWeapon.Category == WeaponCategory.Vehicle || CurrentWeapon.Category == WeaponCategory.Melee || CurrentWeapon.Category == WeaponCategory.Misc || CurrentWeapon.Category == WeaponCategory.Unknown)
-                {
-                    return;
-                }
-                if(IsInVehicle && !Settings.SettingsManager.PlayerSettings.ApplyRecoilInVehicle)
-                {
-                    return;
-                }
-                float currentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
-                float currentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-                float AdjustedPitch = RandomItems.GetRandomNumber(CurrentWeapon.MinVerticalRecoil, CurrentWeapon.MaxVerticalRecoil);
-                float AdjustedHeading = RandomItems.GetRandomNumber(CurrentWeapon.MinHorizontalRecoil, CurrentWeapon.MaxHorizontalRecoil);
-                if (IsInVehicle)
-                {
-                    AdjustedPitch *= 3.0f;
-                }
-                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(currentPitch + AdjustedPitch, AdjustedPitch);
-                if(RandomItems.RandomPercent(50))
-                {
-                    AdjustedHeading *= -1.0f;
-                }
-                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(currentHeading + AdjustedHeading);
-            }
-        }
+
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
             if (desiredWantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel)

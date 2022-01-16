@@ -33,7 +33,11 @@ public class PedCrimes
         {
             if(PedExt != null)
             {
-                if(PedExt.PedGroup == null)
+                if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" && PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" && PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
+                {
+                    return false;
+                }
+                else if (PedExt.PedGroup == null)
                 {
                     return true;
                 }
@@ -41,10 +45,7 @@ public class PedCrimes
                 {
                     return true;
                 }
-                else if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" && PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" && PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
-                {
-                    return false;
-                }
+
                 return true;
             }
             return false;
@@ -522,7 +523,7 @@ public class PedCrimes
                     }
                 }
             }
-            GameFiber.Yield();
+            //GameFiber.Yield();
             if (PedExt.Pedestrian.Exists())//do a yiled above
             {
                 if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)

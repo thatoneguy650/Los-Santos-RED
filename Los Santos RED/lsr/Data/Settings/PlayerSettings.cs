@@ -92,6 +92,13 @@ public class PlayerSettings
     public bool RequireScrewdriverForHotwire { get; set; } = false;
     public bool ApplyRecoil { get; set; } = true;
     public bool ApplyRecoilInVehicle { get; set; } = true;
+    public bool ApplySwayInVehicle { get; set; } = true;
+    public bool ApplySway { get; set; } = true;
+
+    public float VeritcalSwayAdjuster { get; set; } = 1.0f;
+    public float HorizontalSwayAdjuster { get; set; } = 1.0f;
+    public float VerticalRecoilAdjuster { get; set; } = 0.5f;//1.0f;
+    public float HorizontalRecoilAdjuster { get; set; } = 0.5f;//1.0f;
 
     public PlayerSettings()
     {

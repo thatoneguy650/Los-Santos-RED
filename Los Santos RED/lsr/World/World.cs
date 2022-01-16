@@ -54,16 +54,17 @@ namespace Mod
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
 
-        public List<PedExt> TaskableCiviliansList
-        {
-            get
-            {
-                List<PedExt> pedExts = new List<PedExt>();
-                pedExts.AddRange(CivilianList);
-                pedExts.AddRange(GangMemberList);
-                return pedExts;
-            }
-        }
+        //public List<PedExt> TaskableCiviliansList
+        //{
+        //    get
+        //    {
+        //        List<PedExt> pedExts = new List<PedExt>();
+        //        pedExts.AddRange(CivilianList);
+        //        pedExts.AddRange(MerchantList);
+        //        pedExts.AddRange(GangMemberList);
+        //        return pedExts;
+        //    }
+        //}
 
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
         public bool IsMPMapLoaded { get; private set; }

@@ -397,11 +397,14 @@ public class Pedestrians
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {
-            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
-            {
-                WillFight = true;
-            }
-            else if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
+            //if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
+            //{
+            //    WillFight = true;
+            //}
+            //else 
+            
+            
+            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
                 WillFight = false;
                 canBeAmbientTasked = false;

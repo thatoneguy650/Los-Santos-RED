@@ -110,11 +110,11 @@ public class PlayerPerception
         {
             if (Originator.IsCop)//IsCop)
             {
-                if (DistanceToTarget >= 300)
+                if (DistanceToTarget >= 300f)
                 {
                     return 1500;
                 }
-                if (DistanceToTarget >= 80F)
+                if (DistanceToTarget >= 80f)
                 {
                     return 300;
                 }
@@ -126,11 +126,11 @@ public class PlayerPerception
             else
             {
 
-                if (DistanceToTarget >= 300)
+                if (DistanceToTarget >= 300f)
                 {
                     return 2000;
                 }
-                if (DistanceToTarget >= 80F)
+                if (DistanceToTarget >= 80f)
                 {
                     return 300;
                 }
@@ -145,11 +145,11 @@ public class PlayerPerception
     {
         get
         {
-            if (DistanceToTarget >= 300)
+            if (DistanceToTarget >= 300f)
             {
                 return 2000;
             }
-            if (DistanceToTarget >= 80F)
+            if (DistanceToTarget >= 100f)
             {
                 return 750;
             }
@@ -317,7 +317,7 @@ public class PlayerPerception
         if(Originator.IsCop)
         {
             DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-            GameFiber.Yield();//TR 9 had before, doesnt do much i bet
+           // GameFiber.Yield();//TR 9 had before, doesnt do much i bet
         }
         else
         {
@@ -387,7 +387,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    //GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -411,7 +411,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    //GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -430,7 +430,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    //GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {

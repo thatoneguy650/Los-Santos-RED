@@ -35,12 +35,27 @@ public class Civilians
     }
     public void Update()
     {
+        int TotalRan = 0;
+        int TotalChecked = 0;
+        int localRan = 0;
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {
+                bool yield = false;
+                if (ped.NeedsFullUpdate)
+                {
+                    yield = true;
+                    TotalRan++;
+                    localRan++;
+                }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                GameFiber.Yield();
+                if (yield && localRan == 5)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalChecked++;
             }
             catch (Exception e)
             {
@@ -52,8 +67,20 @@ public class Civilians
         {
             try
             {
+                bool yield = false;
+                if (ped.NeedsFullUpdate)
+                {
+                    yield = true;
+                    TotalRan++;
+                    localRan++;
+                }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                GameFiber.Yield();
+                if (yield && localRan == 5)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalChecked++;
             }
             catch (Exception e)
             {
@@ -65,8 +92,20 @@ public class Civilians
         {
             try
             {
+                bool yield = false;
+                if (ped.NeedsFullUpdate)
+                {
+                    yield = true;
+                    TotalRan++;
+                    localRan++;
+                }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                GameFiber.Yield();
+                if (yield && localRan == 5)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalChecked++;
             }
             catch (Exception e)
             {
@@ -78,8 +117,20 @@ public class Civilians
         {
             try
             {
+                bool yield = false;
+                if(ped.NeedsFullUpdate)
+                {
+                    yield = true;
+                    TotalRan++;
+                    localRan++;
+                }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                GameFiber.Yield();
+                if (yield && localRan == 5)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalChecked++;
             }
             catch (Exception e)
             {
@@ -114,7 +165,7 @@ public class Civilians
             {
                 break;
             }
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
 
         Perceptable.AnyGangMemberCanSeePlayer = anyGangMemberCanSeePlayer;
@@ -137,7 +188,7 @@ public class Civilians
         }
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
-            EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds}", 5);
+            EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
         }
         GameTimeLastUpdatedPeds = Game.GameTime;
     }

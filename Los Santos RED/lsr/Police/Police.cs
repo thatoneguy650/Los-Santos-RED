@@ -14,6 +14,8 @@ namespace LosSantosRED.lsr
         private IEntityProvideable World;
         private ISettingsProvideable Settings;
         private uint GameTimeLastUpdatedPolice;
+        private int TotalRan;
+        private int TotalChecked;
 
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings)
         {
@@ -33,27 +35,36 @@ namespace LosSantosRED.lsr
             }
             if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
             {
-                EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice}", 5);
+                EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
             }
             GameTimeLastUpdatedPolice = Game.GameTime;
         }
         private void UpdateCops()
         {
             float closestDistanceToPlayer = 999f;
+            TotalRan = 0;
+            TotalChecked = 0;
+            int localRan = 0;
             foreach (Cop Cop in World.PoliceList)
             {
                 try
                 {
                     if (Cop.Pedestrian.Exists())
                     {
+                        bool yield = false;
+                        if (Cop.NeedsFullUpdate)
+                        {
+                            yield = true;
+                            TotalRan++;
+                            localRan++;
+                        }
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
-
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
 
                             
                             Cop.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
-                            GameFiber.Yield();//TR this is new
+                            //GameFiber.Yield();//TR this is new
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
@@ -69,7 +80,12 @@ namespace LosSantosRED.lsr
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
-                        GameFiber.Yield();
+                        if (yield && localRan == 5)
+                        {
+                            GameFiber.Yield();
+                            localRan = 0;
+                        }
+                        TotalChecked++;
                     }
                 }
                 catch (Exception e)
@@ -115,7 +131,7 @@ namespace LosSantosRED.lsr
                 {
                     break;
                 }
-                GameFiber.Yield();
+                //GameFiber.Yield();
             }
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;

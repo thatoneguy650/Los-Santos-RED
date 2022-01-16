@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class Flee : ComplexTask
 {
     private ITargetable Target;
-    public Flee(IComplexTaskable ped, ITargetable player) : base(player, ped, 0)
+    public Flee(IComplexTaskable ped, ITargetable player) : base(player, ped, 5000)
     {
         Name = "Flee";
         SubTaskName = "";

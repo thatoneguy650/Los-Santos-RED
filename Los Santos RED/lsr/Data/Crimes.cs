@@ -39,14 +39,14 @@ public class Crimes : ICrimes
         CrimeList = new List<Crime>()
         {
 
-            new Crime("KillingPolice", "Police Fatality", 3, true, 1, false) { CanViolateWithoutPerception = true },
-            new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, false) { CanReportBySound = true },
-            new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, false) { CanReportBySound = true },
-            new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false),
-            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5,false) { CanViolateWithoutPerception = true },
+            new Crime("KillingPolice", "Police Fatality", 3, true, 1, false, true, true) { CanViolateWithoutPerception = true },
+            new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, false, false, true) { CanReportBySound = true },
+            new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, false, false, true) { CanReportBySound = true },
+            new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false, false, true),
+            new Crime("HurtingPolice", "Assaulting Police", 3, false, 5,false, false, true) { CanViolateWithoutPerception = true },
             new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, false, true, true),
-            new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false),
-            new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, false),
+            new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false, false, true),
+            new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, false, false, true),
             new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true },
             new Crime("Kidnapping", "Kidnapping", 2, false, 10, false, false, false) { Enabled = false },
 
@@ -58,20 +58,20 @@ public class Crimes : ICrimes
 
             new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, true, true, true),
             new Crime("Mugging", "Mugging", 2, false, 12, true, true, true),
-            new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 13, false),
+            new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 13, false, false, true),
             new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 14, true, true, true),
             new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 15, true, true, true),
             
             new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, true, true, true),
             new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 17, true, true, true),
-            new Crime("ResistingArrest", "Resisting Arrest", 2, false, 18, false),
+            new Crime("ResistingArrest", "Resisting Arrest", 2, false, 18, false, false, true),
             new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 19, true, true, true),
             new Crime("DrunkDriving", "Drunk Driving", 2, false, 20, true, false, false),
 
 
             
-            new Crime("AssaultingWithDeadlyWeapon", "Assaulting With A Deadly Weapon", 2, false, 21, true),
-            new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true),
+            new Crime("AssaultingWithDeadlyWeapon", "Assaulting With A Deadly Weapon", 2, false, 21, true, true, true),
+            new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true, true, true),
 
             new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false),
             new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false),
@@ -86,7 +86,7 @@ public class Crimes : ICrimes
             new Crime("FelonySpeeding", "Speeding", 1, false, 37, false, false, false) { IsTrafficViolation = true },
             new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, false,false,false),
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false,false,false),
-            new Crime("InsultingOfficer", "Insulting a Police Officer", 2, false, 40, false),
+            new Crime("InsultingOfficer", "Insulting a Police Officer", 2, false, 40, false, false, true),
             new Crime("Harassment", "Harassment", 1, false, 41, true, false, false),
 
 

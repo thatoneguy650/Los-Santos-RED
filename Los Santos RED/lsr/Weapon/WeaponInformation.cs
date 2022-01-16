@@ -24,6 +24,10 @@ public class WeaponInformation
     public float MinHorizontalRecoil { get; set; } = 0.0f;
     public float MaxHorizontalRecoil { get; set; } = 0.0f;
 
+    public float MinHorizontalSway { get; set; } = 0.0f;
+    public float MaxHorizontalSway { get; set; } = 0.0f;
+    public float MinVerticaSway { get; set; } = 0.0f;
+    public float MaxVerticaSway { get; set; } = 0.0f;
     public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public WeaponInformation()
     {
@@ -40,7 +44,7 @@ public class WeaponInformation
         IsTwoHanded = _IsTwoHanded;
         IsLegal = _IsLegal;
     }
-    public WeaponInformation(string _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, uint _Hash, bool _IsOneHanded, bool _IsTwoHanded, bool _IsLegal, float _MinVerticalRecoil, float _MaxVerticalRecoil, float _MinHorizontalRecoil, float _MaxHorizontalRecoil)
+    public WeaponInformation(string _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, uint _Hash, bool _IsOneHanded, bool _IsTwoHanded, bool _IsLegal, float _MinVerticalRecoil, float _MaxVerticalRecoil, float _MinHorizontalRecoil, float _MaxHorizontalRecoil, float _MinHorizontalSway, float _MaxHorizontalSway, float _MinVerticaSway, float _MaxVerticaSway)
     {
         ModelName = _Name;
         AmmoAmount = _AmmoAmount;
@@ -54,6 +58,12 @@ public class WeaponInformation
         MaxVerticalRecoil = _MaxVerticalRecoil;
         MinHorizontalRecoil = _MinHorizontalRecoil;
         MaxHorizontalRecoil = _MaxHorizontalRecoil;
+
+
+        MinHorizontalSway = _MinHorizontalSway;
+        MaxHorizontalSway = _MaxHorizontalSway;
+        MinVerticaSway = _MinVerticaSway;
+        MaxVerticaSway = _MaxVerticaSway;
     }
     public bool IsLowEnd
     {

@@ -148,7 +148,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 700;
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= (IsCop ? 500 : 700);
     public Ped Pedestrian { get; set; }
     public PedGroup PedGroup { get; private set; }
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
@@ -172,53 +172,53 @@ public class PedExt : IComplexTaskable
         {
             if (IsCop)//IsCop)
             {
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                if (PlayerPerception?.DistanceToTarget >= 300)
                 {
-                    return 1500;
+                    return 3000;
                 }
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 80F)
+                else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
-                    return 500;
+                    return 2000;
+                }
+                else if (PlayerPerception?.DistanceToTarget >= 50f)
+                {
+                    return 1000;
                 }
                 else
                 {
-                    return 250;//150
+                    return 500;//150
                 }
-                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 600)
+                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
                 //{
-                //    return 1500;
+                //    return 2000;
                 //}
-                //else if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 100f)
                 //{
                 //    return 750;
                 //}
                 //else
                 //{
-                //    return 500;//150
+                //    return 250;//150
                 //}
             }
             else
             {
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
+                if (PlayerPerception?.DistanceToTarget >= 300)
                 {
-                    return 1500;
+                    return 4000;
                 }
-                if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 80F)
+                else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
-                    return 500;
+                    return 3000;
+                }
+                else if (PlayerPerception?.DistanceToTarget >= 50f)
+                {
+                    return 2000;
                 }
                 else
                 {
-                    return 250;//150
+                    return 750;//150
                 }
-                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
-                //{
-                //    return 750;//2000
-                //}
-                //else
-                //{
-                //    return 500;//500// 750;//500
-                //}
             }
         }
     }
@@ -380,7 +380,7 @@ public class PedExt : IComplexTaskable
                     }
                     if(!IsCop && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
                     {
-                        if (this.GetType() == typeof(GangMember))
+                        if (this.GetType() == typeof(GangMember))//gang members are no longer persistent entities for now
                         {
                             GangMember gm = (GangMember)this;
                             if (!gm.WasModSpawned)

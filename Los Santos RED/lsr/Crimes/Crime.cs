@@ -26,15 +26,15 @@ public class Crime
         AngersCivilians = angersCivilians;
         ScaresCivilians = scaresCivilians;
     }
-    public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, bool canBeReportedByCivilians)
-    {
-        ID = _ID;
-        ResultsInLethalForce = _ResultsInLethalForce;
-        ResultingWantedLevel = _ResultingWantedLevel;
-        Name = _Name;
-        Priority = priority;
-        CanBeReportedByCivilians = canBeReportedByCivilians;
-    }
+    //public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, bool canBeReportedByCivilians)
+    //{
+    //    ID = _ID;
+    //    ResultsInLethalForce = _ResultsInLethalForce;
+    //    ResultingWantedLevel = _ResultingWantedLevel;
+    //    Name = _Name;
+    //    Priority = priority;
+    //    CanBeReportedByCivilians = canBeReportedByCivilians;
+    //}
     public Crime()
     {
 
