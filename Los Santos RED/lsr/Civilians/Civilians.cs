@@ -125,7 +125,7 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (yield && localRan == 5)
+                if (yield && localRan == 1)
                 {
                     GameFiber.Yield();
                     localRan = 0;

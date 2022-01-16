@@ -15,6 +15,8 @@ public class Investigation
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
     private bool HavePlayerDescription = false;
+    private uint GameTimeLastUpdatedInvestigation;
+
     private Color blipColor => IsSuspicious? Color.Orange : Color.Yellow;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
@@ -96,6 +98,11 @@ public class Investigation
             }
         }
         UpdateBlip();
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Investigation Update (Secondary Tasks) 250ms? Ran Time Since {Game.GameTime - GameTimeLastUpdatedInvestigation}", 5);
+        }
+        GameTimeLastUpdatedInvestigation = Game.GameTime;
     }
     private void UpdateBlip()
     {

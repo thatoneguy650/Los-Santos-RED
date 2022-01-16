@@ -314,19 +314,19 @@ namespace LosSantosRED.lsr
             {
                   new ModTask(100, "Player.Update", Player.Update, 0),//1
 
-                 new ModTask(500, "UI.Update", UI.Update, 1),
+                 new ModTask(250, "UI.Update", UI.Update, 1),//500
 
             };
             SecondaryTasks = new List<ModTask>()
             {
-                new ModTask(500, "Player.Violations.Update", Player.ViolationsUpdate, 0),
-                new ModTask(500, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
-                new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 2),//150
-                new ModTask(500, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),//150
+                new ModTask(250, "Player.Violations.Update", Player.ViolationsUpdate, 0),
+                new ModTask(250, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
+                new ModTask(250, "Player.Investigation.Update", Player.Investigation.Update, 2),
+                new ModTask(250, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),
                 
-                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 4),
-                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 5),
-                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6),
+                new ModTask(250, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 4),
+                new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
+                new ModTask(250, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6),//these were all 500
 
 
 
@@ -347,9 +347,9 @@ namespace LosSantosRED.lsr
             {
               
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
-                new ModTask(750, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
+                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
                 new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 2),//500
-                new ModTask(750, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500

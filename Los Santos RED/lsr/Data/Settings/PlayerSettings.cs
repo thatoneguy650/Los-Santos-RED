@@ -97,8 +97,8 @@ public class PlayerSettings
 
     public float VeritcalSwayAdjuster { get; set; } = 1.0f;
     public float HorizontalSwayAdjuster { get; set; } = 1.0f;
-    public float VerticalRecoilAdjuster { get; set; } = 0.5f;//1.0f;
-    public float HorizontalRecoilAdjuster { get; set; } = 0.5f;//1.0f;
+    public float VerticalRecoilAdjuster { get; set; } = 1.0f;//0.5f;//1.0f;
+    public float HorizontalRecoilAdjuster { get; set; } = 1.0f;//0.5f;//1.0f;
 
     public PlayerSettings()
     {

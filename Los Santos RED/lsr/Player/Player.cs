@@ -21,7 +21,7 @@ namespace Mod
         private CriminalHistory CriminalHistory;
         private string CurrentVehicleDebugString;
         private uint GangNotificationID = 0;
-        
+
 
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
@@ -81,6 +81,7 @@ namespace Mod
         private WeaponRecoil WeaponRecoil;
         private string debugLine4;
         private bool FirstAiming;
+        private int roundsFired;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs)
         {
@@ -116,9 +117,9 @@ namespace Mod
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
             GangRelationships = new GangRelationships(gangs, this);
             GangRelationships.Setup();
-            WeaponSway = new WeaponSway(this,Settings);
+            WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
-            
+
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
@@ -174,7 +175,7 @@ namespace Mod
         public string DebugLine1 => $"Speed: {Game.LocalPlayer.Character.Speed} isSprinting: {Sprinting.IsSprinting} SprintAmount: {Sprinting.Stamina}";//$"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine4 => debugLine4;//Intoxication.DebugString;//$"Obs: {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine4  {get;set;}
         public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";//IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar} IsCarJacking {IsCarJacking} IsLockPicking {IsLockPicking} IsHotWiring {IsHotWiring}";//SearchMode.SearchModeDebug;//$" Street {CurrentLocation?.CurrentStreet?.Name} - {CurrentLocation?.CurrentCrossStreet?.Name} IsJacking {Game.LocalPlayer.Character.IsJacking} isJacking {isJacking} BreakingIntoCar {IsBreakingIntoCar}";//SearchMode.SearchModeDebug;
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
@@ -604,6 +605,8 @@ namespace Mod
             {
                 Game.TimeScale = 1f;
             }
+
+            Game.DisableControlAction(0, GameControl.Attack, false);
         }
         public void GiveMoney(int Amount)
         {
@@ -742,26 +745,47 @@ namespace Mod
             {
                 while (isActive)
                 {
+                   // NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 24, false);
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
-                        debugLine4 = "RECOIL";
                         WeaponRecoil.Update();
                         GameTimeLastShot = Game.GameTime;
+
+                        //roundsFired++;
+
+                        //if(roundsFired > 1)
+                        //{
+                        //    Game.DisableControlAction(0, GameControl.Attack, true);
+                            //EntryPoint.WriteToConsole("Selector Shot Single, DISABLE Action",5);
+                        //}
+
+
                     }
+
                     else if(Game.LocalPlayer.IsFreeAiming)//(Game.LocalPlayer.Character.IsAiming)//|| Game.LocalPlayer.Character.isai)
                     {
-                        //if(Game.GameTime - GameTimeLastShot >= 350 && 
-                        //if(Game.LocalPlayer.Character.IsAiming)// && !Game.LocalPlayer.Character.IsReloading)
-                        //{
-                            debugLine4 = "SWAY UPDATE";
-                            WeaponSway.Update();
-                        //}
-                        //else
-                        //{
-                        //    debugLine4 = "SWAY RESET";
-                        //    WeaponSway.Reset();
-                        //}
+                        WeaponSway.Update();
                     }
+
+
+                    //if(!Game.LocalPlayer.IsFreeAiming && !Game.LocalPlayer.Character.IsShooting && roundsFired > 0)
+                    //{
+                    //    if (!Game.IsControlPressed(0, GameControl.Attack))
+                    //    {
+                    //        roundsFired = 0;
+                    //        Game.DisableControlAction(0, GameControl.Attack, false);
+                    //        EntryPoint.WriteToConsole("Selector Shot Single, ENABLE Action", 5);
+                    //    }
+                    //}
+                    //if (roundsFired > 0)
+                    //{
+                    //    Game.DisableControlAction(0, GameControl.Attack, true);
+                    //    EntryPoint.WriteToConsole("Selector Shot Single, DISABLE Action", 5);
+                    //}
+                    
+                    //Game.DisableControlAction(0, GameControl.SkipCutscene, true);
+                    //Game.DisableControlAction(0, GameControl.Attack, true);
+                    //cant disable the control actions for some reason....
                     GameFiber.Yield();
                 }
 

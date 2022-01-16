@@ -11,6 +11,10 @@ public class WeaponRecoil
 {
     private IWeaponRecoilable Player;
     private ISettingsProvideable Settings;
+    private float CurrentPitch;
+    private float AdjustedPitch;
+    private float AdjustedHeading;
+    private dynamic CurrentHeading;
 
     public WeaponRecoil(IWeaponRecoilable player, ISettingsProvideable settings)
     {
@@ -18,10 +22,6 @@ public class WeaponRecoil
         Settings = settings;
     }
     public void Update()
-    {
-        Recoil();
-    }
-    private void Recoil()
     {
         if (Settings.SettingsManager.PlayerSettings.ApplyRecoil && Player.CurrentWeapon != null)// && !IsInVehicle)
         {
@@ -33,34 +33,40 @@ public class WeaponRecoil
             {
                 return;
             }
-            float currentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
-            float currentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-            float AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticalRecoil, Player.CurrentWeapon.MaxVerticalRecoil);
-            float AdjustedHeading = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinHorizontalRecoil, Player.CurrentWeapon.MaxHorizontalRecoil);
-            if (Player.IsInVehicle)
-            {
-                AdjustedPitch *= 3.0f;//5.0 is good with pistol too much for automatic
-                currentPitch *= -1.0f;
-            }
-            AdjustedPitch *= Settings.SettingsManager.PlayerSettings.VerticalRecoilAdjuster;
-
-
-            //if(Player.IsInVehicle)
-            //{
-            //    NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(currentPitch + AdjustedPitch, AdjustedPitch);
-            //}
-            //else
-            //{
-                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(currentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
-            //}
-            
-            if (RandomItems.RandomPercent(50))
-            {
-                AdjustedHeading *= -1.0f;
-            }
-            AdjustedHeading *= Settings.SettingsManager.PlayerSettings.HorizontalRecoilAdjuster;
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(currentHeading + AdjustedHeading);
+            ApplyRecoil();
+        } 
+    }
+    private void ApplyRecoil()
+    {
+        CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
+        AdjustPitch();
+        if (Player.IsInVehicle)
+        {
+            CurrentPitch *= -1.0f;
         }
+        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+
+        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        AdjustHeading();
+        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+    }
+    private void AdjustPitch()
+    {
+        AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticalRecoil, Player.CurrentWeapon.MaxVerticalRecoil);
+        if (Player.IsInVehicle)
+        {
+            AdjustedPitch *= 2.0f;//5.0 is good with pistol too much for automatic
+        }
+        AdjustedPitch *= Settings.SettingsManager.PlayerSettings.VerticalRecoilAdjuster;
+    }
+    private void AdjustHeading()
+    {
+        AdjustedHeading = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinHorizontalRecoil, Player.CurrentWeapon.MaxHorizontalRecoil);
+        if (RandomItems.RandomPercent(50))
+        {
+            AdjustedHeading *= -1.0f;
+        }
+        AdjustedHeading *= Settings.SettingsManager.PlayerSettings.HorizontalRecoilAdjuster;
     }
 }
 

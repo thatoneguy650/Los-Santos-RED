@@ -15,5 +15,6 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         bool IsInVehicle { get; }
         Ped Character { get; }
+        string DebugLine4 { get; set; }
     }
 }
