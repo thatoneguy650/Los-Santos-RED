@@ -31,6 +31,9 @@ public class KeySettings : ISettingsDefaultable
     public Keys InteractNegativeOrNo { get; set; }
     public Keys InteractCancel { get; set; }
     public Keys ScenarioStart { get; set; }
+    public Keys SelectorKey { get; set; }
+    public Keys SelectorKeyModifier { get; set; }
+
     public KeySettings()
     {
         SetDefault();
@@ -60,5 +63,7 @@ public class KeySettings : ISettingsDefaultable
         InteractNegativeOrNo = Keys.K;
         InteractCancel = Keys.L;
         ScenarioStart = Keys.P;
+        SelectorKey = Keys.X;
+        SelectorKeyModifier = Keys.LShiftKey;
     }
 }

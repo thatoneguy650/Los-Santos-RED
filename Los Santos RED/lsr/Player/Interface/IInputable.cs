@@ -31,6 +31,8 @@ namespace LosSantosRED.lsr.Interface
         Cop AliasedCop { get; }
         bool IsDisplayingCustomMenus { get; }
         bool IsCustomizingPed { get; }
+        bool IsPressingFireWeapon { get; set; }
+        bool ReleasedFireWeapon { get; set; }
 
         void RaiseHands();
         void LowerHands();
@@ -47,5 +49,6 @@ namespace LosSantosRED.lsr.Interface
         void ExitLocation();
         void CloseDriverDoor();
         void PurchaseLocation();
+        void ToggleSelector();
     }
 }

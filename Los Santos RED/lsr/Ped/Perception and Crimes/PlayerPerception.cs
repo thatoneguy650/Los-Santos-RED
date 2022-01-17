@@ -387,7 +387,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    //GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -411,7 +411,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    //GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {
@@ -430,7 +430,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    //GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR New 8 Test 1
                 }
                 else
                 {

@@ -44,8 +44,9 @@ public class UI : IMenuProvideable
     //private uint GameTimeZoneDisplayChanged = 0;
     //private int zoneDisplayAlpha;
     //private int streetDisplayAlpha;
-    private bool DrawTexture = true;
-    private Texture ToDraw;
+    private bool DrawSpeedLimitTexture = true;
+    private bool DrawWeaponSelectorTexture = true;
+    private Texture SpeedLimitToDraw;
     private Texture Sign10;
     private Texture Sign15;
     private Texture Sign20;
@@ -61,6 +62,12 @@ public class UI : IMenuProvideable
     private Texture Sign70;
     private Texture Sign75;
     private Texture Sign80;
+    private Texture selectorauto;
+    private Texture selectorsafe;
+    private Texture selectorsemi;
+    private Texture selectorthree;
+    private Texture selectortwo;
+
     //private uint GameTimeVehicleStatusDisplayStopped;
     //private uint GameTimeStreetDisplayRemoved;
     private Fader StreetFader;
@@ -81,6 +88,8 @@ public class UI : IMenuProvideable
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
     private string overrideTimeDisplay = "";
+    private Texture WeaponSelectorToDraw;
+
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
@@ -155,6 +164,14 @@ public class UI : IMenuProvideable
         Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
         Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
         Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+
+
+        selectorauto = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorauto.png");
+        selectorsafe = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsafe.png");
+        selectorsemi = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsemi.png");
+        selectorthree = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorthree.png");
+        selectortwo = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectortwo.png");
+
     }
     public void Dispose()
     {
@@ -373,6 +390,10 @@ public class UI : IMenuProvideable
             {
                 GetSpeedLimitDisplay();
             }
+            if (Settings.SettingsManager.UISettings.ShowSelectorDisplay)
+            {
+                GetSelectorDisplay();
+            }
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
                 lastVehicleStatusDisplay = GetVehicleStatusDisplay();
@@ -423,6 +444,9 @@ public class UI : IMenuProvideable
             }
         }
     }
+
+
+
     private void ShowDebugUI()
     {
         //float StartingPoint = 0.1f;
@@ -574,15 +598,26 @@ public class UI : IMenuProvideable
             //{
             //    return;
             //}
-            if (DrawTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
+            if (DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
             {
-                if (ToDraw != null && ToDraw.Size != null)
+                if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
                 {
                     float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
                     float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
-                    float posX = (Game.Resolution.Height - (ToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
-                    float posY = (Game.Resolution.Width - (ToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
-                    args.Graphics.DrawTexture(ToDraw, new RectangleF(posY, posX, ToDraw.Size.Width * Scale, ToDraw.Size.Height * Scale));
+                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
+                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
+                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
+                }
+            }
+            if (DrawWeaponSelectorTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
+            {
+                if (WeaponSelectorToDraw != null && WeaponSelectorToDraw.Size != null)
+                {
+                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+                    float Scale = Settings.SettingsManager.UISettings.SelectorScale * ConsistencyScale;
+                    float posX = (Game.Resolution.Height - (WeaponSelectorToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionX;
+                    float posY = (Game.Resolution.Width - (WeaponSelectorToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionY;
+                    args.Graphics.DrawTexture(WeaponSelectorToDraw, new RectangleF(posY, posX, WeaponSelectorToDraw.Size.Width * Scale, WeaponSelectorToDraw.Size.Height * Scale));
                 }
             }
         }
@@ -653,80 +688,126 @@ public class UI : IMenuProvideable
             }
             if (speedLimit <= 10f)
             {
-                ToDraw = Sign10;
+                SpeedLimitToDraw = Sign10;
             }
             else if (speedLimit <= 15f)
             {
-                ToDraw = Sign15;
+                SpeedLimitToDraw = Sign15;
             }
             else if (speedLimit <= 20f)
             {
-                ToDraw = Sign20;
+                SpeedLimitToDraw = Sign20;
             }
             else if (speedLimit <= 25f)
             {
-                ToDraw = Sign25;
+                SpeedLimitToDraw = Sign25;
             }
             else if (speedLimit <= 30f)
             {
-                ToDraw = Sign30;
+                SpeedLimitToDraw = Sign30;
             }
             else if (speedLimit <= 35f)
             {
-                ToDraw = Sign35;
+                SpeedLimitToDraw = Sign35;
             }
             else if (speedLimit <= 40f)
             {
-                ToDraw = Sign40;
+                SpeedLimitToDraw = Sign40;
             }
             else if (speedLimit <= 45f)
             {
-                ToDraw = Sign45;
+                SpeedLimitToDraw = Sign45;
             }
             else if (speedLimit <= 50f)
             {
-                ToDraw = Sign50;
+                SpeedLimitToDraw = Sign50;
             }
             else if (speedLimit <= 55f)
             {
-                ToDraw = Sign55;
+                SpeedLimitToDraw = Sign55;
             }
             else if (speedLimit <= 60f)
             {
-                ToDraw = Sign60;
+                SpeedLimitToDraw = Sign60;
             }
             else if (speedLimit <= 65f)
             {
-                ToDraw = Sign65;
+                SpeedLimitToDraw = Sign65;
             }
             else if (speedLimit <= 70f)
             {
-                ToDraw = Sign70;
+                SpeedLimitToDraw = Sign70;
             }
             else if (speedLimit <= 75f)
             {
-                ToDraw = Sign75;
+                SpeedLimitToDraw = Sign75;
             }
             else if (speedLimit <= 80f)
             {
-                ToDraw = Sign80;
+                SpeedLimitToDraw = Sign80;
             }
             else
             {
-                ToDraw = null;
+                SpeedLimitToDraw = null;
             }
         }
         else
         {
-            ToDraw = null;
+            SpeedLimitToDraw = null;
         }
-        if (ToDraw != null)
+        if (SpeedLimitToDraw != null)
         {
-            DrawTexture = true;
+            DrawSpeedLimitTexture = true;
         }
         else
         {
-            DrawTexture = false;
+            DrawSpeedLimitTexture = false;
+        }
+    }
+    private void GetSelectorDisplay()
+    {
+        if (DisplayablePlayer.CurrentWeapon != null)
+        {
+            if(DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.Safe)
+            {
+                WeaponSelectorToDraw = selectorsafe;
+            }
+            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.SemiAuto)
+            {
+                WeaponSelectorToDraw = selectorsemi;
+            }
+            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.TwoRoundBurst)
+            {
+                WeaponSelectorToDraw = selectortwo;
+            }
+            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.ThreeRoundBurst)
+            {
+                WeaponSelectorToDraw = selectorthree;
+            }
+            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.FiveRoundBurst)
+            {
+                WeaponSelectorToDraw = selectorauto;
+            }
+            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.FullAuto)
+            {
+                WeaponSelectorToDraw = selectorauto;
+            }
+            else
+            {
+                WeaponSelectorToDraw = null;
+            }
+        }
+        else
+        {
+            WeaponSelectorToDraw = null;
+        }
+        if (WeaponSelectorToDraw != null)
+        {
+            DrawWeaponSelectorTexture = true;
+        }
+        else
+        {
+            DrawWeaponSelectorTexture = false;
         }
     }
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)

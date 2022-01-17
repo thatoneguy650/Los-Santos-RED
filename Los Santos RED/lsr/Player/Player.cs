@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -79,9 +79,10 @@ namespace Mod
         private GangRelationships GangRelationships;
         private WeaponSway WeaponSway;
         private WeaponRecoil WeaponRecoil;
+        private WeaponSelector WeaponSelector;
         private string debugLine4;
         private bool FirstAiming;
-        private int roundsFired;
+
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs)
         {
@@ -119,6 +120,7 @@ namespace Mod
             GangRelationships.Setup();
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
+            WeaponSelector = new WeaponSelector(this, Settings);
 
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
@@ -275,6 +277,8 @@ namespace Mod
         public bool IsMale { get; set; }
         public bool IsMobileRadioEnabled { get; private set; }
         public bool IsMoveControlPressed { get; set; }
+        public bool IsPressingFireWeapon { get; set; }
+        public bool ReleasedFireWeapon { get; set; }
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
         public bool IsMovingDynamically { get; private set; }
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
@@ -288,6 +292,7 @@ namespace Mod
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
+        public eSelectorSetting CurrentSelectorSetting => WeaponSelector.CurrentSelectorSetting;
         public bool IsSprinting => Sprinting.IsSprinting;
         public float StaminaPercent => Sprinting.StaminaPercentage;
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
@@ -745,63 +750,28 @@ namespace Mod
             {
                 while (isActive)
                 {
-                   // NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 24, false);
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
                         WeaponRecoil.Update();
                         GameTimeLastShot = Game.GameTime;
-
-                        //roundsFired++;
-
-                        //if(roundsFired > 1)
-                        //{
-                        //    Game.DisableControlAction(0, GameControl.Attack, true);
-                            //EntryPoint.WriteToConsole("Selector Shot Single, DISABLE Action",5);
-                        //}
-
-
                     }
-
-                    else if(Game.LocalPlayer.IsFreeAiming)//(Game.LocalPlayer.Character.IsAiming)//|| Game.LocalPlayer.Character.isai)
+                    else if(Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming)
                     {
                         WeaponSway.Update();
                     }
-
-
-                    //if(!Game.LocalPlayer.IsFreeAiming && !Game.LocalPlayer.Character.IsShooting && roundsFired > 0)
-                    //{
-                    //    if (!Game.IsControlPressed(0, GameControl.Attack))
-                    //    {
-                    //        roundsFired = 0;
-                    //        Game.DisableControlAction(0, GameControl.Attack, false);
-                    //        EntryPoint.WriteToConsole("Selector Shot Single, ENABLE Action", 5);
-                    //    }
-                    //}
-                    //if (roundsFired > 0)
-                    //{
-                    //    Game.DisableControlAction(0, GameControl.Attack, true);
-                    //    EntryPoint.WriteToConsole("Selector Shot Single, DISABLE Action", 5);
-                    //}
-
-                    //Game.DisableControlAction(0, GameControl.SkipCutscene, true);
-                    //Game.DisableControlAction(0, GameControl.Attack, true);
-                    //cant disable the control actions for some reason....
-
-
-                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 32, true);//attack 1
-                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 257, true);//atack 2
-                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 69, true);//vehicle attack 1
-                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 70, true);//vehicle attack 2
-
                     GameFiber.Yield();
                 }
-
             }, "IsShootingChecker");
-
-
-
-
+            GameFiber.StartNew(delegate
+            {
+                while (isActive)
+                {
+                    WeaponSelector.Update();
+                    GameFiber.Yield();
+                }
+            }, "IsShootingChecker2");
         }
+
 
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
@@ -1591,6 +1561,9 @@ namespace Mod
 
 
         //Delegate Items
+        public void SetSelector(eSelectorSetting eSelectorSetting) => WeaponSelector.SetSelectorSetting(eSelectorSetting);
+        public void ToggleSelector() => WeaponSelector.ToggleSelector();
+
         public void SetReputation(Gang gang, int value) => GangRelationships.SetReputation(gang, value);
         public void ChangeReputation(Gang gang, int value) => GangRelationships.ChangeReputation(gang, value);
         public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);

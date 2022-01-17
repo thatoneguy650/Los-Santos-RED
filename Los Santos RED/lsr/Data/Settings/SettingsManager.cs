@@ -29,6 +29,8 @@ public class SettingsManager
     [Category("Player")]
     public SwaySettings SwaySettings { get; set; } = new SwaySettings();
     [Category("Player")]
+    public SelectorSettings SelectorSettings { get; set; } = new SelectorSettings();
+    [Category("Player")]
     public InvestigationSettings InvestigationSettings { get; set; } = new InvestigationSettings();
     [Category("Player")]
     public CriminalHistorySettings CriminalHistorySettings { get; set; } = new CriminalHistorySettings();

@@ -92,6 +92,14 @@ public class UISettings : ISettingsDefaultable
     public float StaminaBarWidth { get; set; }
     public float StaminaBarHeight { get; set; }
 
+
+    public bool ShowSelectorDisplay { get; set; }
+    public float SelectorPositionX { get; set; }
+    public float SelectorPositionY { get; set; }
+    public float SelectorScale { get; set; }
+
+
+
     public UISettings()
     {
         SetDefault();
@@ -185,5 +193,10 @@ public class UISettings : ISettingsDefaultable
         StaminaBarPositionY = 0.9925f;
         StaminaBarWidth = 0.07f;
         StaminaBarHeight = 0.0075f;
+
+        ShowSelectorDisplay = true;
+        SelectorPositionX = 0.7f;
+        SelectorPositionY = 0.98f;
+        SelectorScale = 0.5f;
     }
 }

@@ -120,6 +120,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\InvestigationSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RecoilSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SelectorSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SprintSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SwaySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ViolationSettings.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
+    <Compile Include="lsr\Player\eSelectorSetting.cs" />
     <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
@@ -157,12 +159,14 @@
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
     <Compile Include="lsr\Player\Interface\ISprintable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponRecoilable.cs" />
+    <Compile Include="lsr\Player\Interface\IWeaponSelectable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponSwayable.cs" />
     <Compile Include="lsr\Player\Interface\IWeatherReportable.cs" />
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
+    <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
     <Compile Include="lsr\Tasker\Civilian\CivIdle.cs" />
     <Compile Include="lsr\Tasker\Civilian\CivilianTasker.cs" />

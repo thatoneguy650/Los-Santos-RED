@@ -851,47 +851,50 @@ public class Debug
     {
 
 
+        Array values = Enum.GetValues(typeof(eSelectorSetting));
+        Random random = new Random();
+        eSelectorSetting randomBar = (eSelectorSetting)values.GetValue(random.Next(values.Length));
+        Player.SetSelector(randomBar);
+
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
 
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
-
-
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-            float ObjectHeading = ClosestEntity.Heading;
-            if (ClosestEntity.Heading >= 180f)
-            {
-                DesiredHeading = ClosestEntity.Heading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ClosestEntity.Heading + 180f;
-            }
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
 
 
 
 
-            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-            if (ClosestEntity.Model.Dimensions.X >= 2f)
-            {
+        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
 
-            }
+        //    }
 
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
-            {
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+        //    {
 
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                GameFiber.Yield();
-            }
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
 
-        }
+        //}
 
 
 
