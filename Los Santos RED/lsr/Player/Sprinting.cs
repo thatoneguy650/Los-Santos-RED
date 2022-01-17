@@ -20,16 +20,16 @@ public class Sprinting
     private uint TimeNotSprinting => !isSprinting ? Game.GameTime - GameTimeStoppedSprinting : 0;
     public bool IsSprinting => isSprinting;
     public float Stamina => CurrentStamina;
-    public float StaminaPercentage => CurrentStamina / Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina;
+    public float StaminaPercentage => CurrentStamina / Settings.SettingsManager.SprintSettings.MaxStamina;
     public Sprinting(ISprintable player, ISettingsProvideable settings)
     {
         Player = player;
         Settings = settings;
-        CurrentStamina = Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina;
+        CurrentStamina = Settings.SettingsManager.SprintSettings.MaxStamina;
     }
     public void Start()
     {
-        if (!isSprinting && CurrentStamina > Settings.SettingsManager.PlayerSettings.Sprint_MinStaminaToStart && Player.Character.Speed >= 2.0f)
+        if (!isSprinting && CurrentStamina > Settings.SettingsManager.SprintSettings.MinStaminaToStart && Player.Character.Speed >= 2.0f)
         {
             GameTimeStartedSprinting = Game.GameTime;
             isSprinting = true;
@@ -49,16 +49,16 @@ public class Sprinting
         {
             if (isSprinting)
             {
-                if (CurrentStamina >= Settings.SettingsManager.PlayerSettings.Sprint_DrainRate)
+                if (CurrentStamina >= Settings.SettingsManager.SprintSettings.DrainRate)
                 {
-                    CurrentStamina -= Settings.SettingsManager.PlayerSettings.Sprint_DrainRate;
+                    CurrentStamina -= Settings.SettingsManager.SprintSettings.DrainRate;
                 }
             }
             else
             {
-                if (CurrentStamina <= Settings.SettingsManager.PlayerSettings.Sprint_MaxStamina - Settings.SettingsManager.PlayerSettings.Sprint_RecoverRate)
+                if (CurrentStamina <= Settings.SettingsManager.SprintSettings.MaxStamina - Settings.SettingsManager.SprintSettings.RecoverRate)
                 {
-                    CurrentStamina += Settings.SettingsManager.PlayerSettings.Sprint_RecoverRate;
+                    CurrentStamina += Settings.SettingsManager.SprintSettings.RecoverRate;
                 }
             }
             if (isSprinting && CurrentStamina == 0)
@@ -73,7 +73,7 @@ public class Sprinting
         }
         if (isSprinting)
         {
-            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.PlayerSettings.Sprint_MoveSpeedOverride);
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.SprintSettings.MoveSpeedOverride);
         }
     }
 

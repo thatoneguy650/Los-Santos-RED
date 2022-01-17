@@ -120,8 +120,8 @@ namespace Mod
 
             VendingMachinesHash = new List<uint>()
             {0x3b21c5e7,0x426a547c,0x418f055a};
-            
 
+            Pedestrians.Setup();
 
         }
         public void AddBlipsToMap()

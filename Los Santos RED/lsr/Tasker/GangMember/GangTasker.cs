@@ -47,7 +47,6 @@ public class GangTasker
                         gangMember.CurrentTask = null;
                         continue;
                     }
-
                     if (gangMember.NeedsTaskAssignmentCheck)
                     {
                         if (gangMember.DistanceToPlayer <= 200f)

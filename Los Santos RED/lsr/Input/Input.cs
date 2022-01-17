@@ -183,7 +183,7 @@ namespace LosSantosRED.lsr
         }
         private void WeaponDropCheck()
         {
-            if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerSettings.AllowWeaponDropping)
+            if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
             {
                 Player.DropWeapon();
             }
@@ -194,7 +194,7 @@ namespace LosSantosRED.lsr
             {
                 if(!RecentlyPressedEngineToggle)
                 {
-                    if(IsPressingEngineToggle && Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
+                    if(IsPressingEngineToggle && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
                     {
                         Player.CurrentVehicle.Engine.Toggle();
                         GameTimeLastPressedEngineToggle = Game.GameTime;
@@ -202,7 +202,7 @@ namespace LosSantosRED.lsr
                 }
                 if (!RecentlyPressedIndicators)
                 {
-                    if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
+                    if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
                     {
                         if (IsPressingHazards)
                         {

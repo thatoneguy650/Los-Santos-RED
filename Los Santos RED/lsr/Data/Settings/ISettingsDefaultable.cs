@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class TimeSettings
+
+public interface ISettingsDefaultable
 {
-    public bool ScaleTime { get; set; } = true;
-    public TimeSettings()
-    {
-
-    }
-
+    void SetDefault();
 }

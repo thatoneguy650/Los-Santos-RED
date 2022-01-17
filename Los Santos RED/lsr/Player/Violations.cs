@@ -49,15 +49,15 @@ namespace LosSantosRED.lsr
         public bool IsSpeeding { get; set; }
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
-        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.PlayerSettings.Violations_MurderDistance);
-        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtCivilianTime;
-        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHurtPoliceTime;
-        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyKilledCivilianTime;
-        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyKilledPoliceTime;
-        private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= Settings.SettingsManager.PlayerSettings.Violations_RecentlyDrivingAgainstTraffiTime;
-        private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= Settings.SettingsManager.PlayerSettings.Violations_RecentlyDrivingOnPavementTime;
-        private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitPedTime;
-        private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.PlayerSettings.Violations_RecentlyHitVehicleTime;
+        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.ViolationSettings.MurderDistance);
+        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyHurtCivilianTime;
+        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= Settings.SettingsManager.ViolationSettings.RecentlyHurtPoliceTime;
+        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyKilledCivilianTime;
+        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= Settings.SettingsManager.ViolationSettings.RecentlyKilledPoliceTime;
+        private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= Settings.SettingsManager.ViolationSettings.RecentlyDrivingAgainstTrafficTime;
+        private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= Settings.SettingsManager.ViolationSettings.RecentlyDrivingOnPavementTime;
+        private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.ViolationSettings.RecentlyHitPedTime;
+        private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.ViolationSettings.RecentlyHitVehicleTime;
         private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;
         public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {
@@ -292,7 +292,7 @@ namespace LosSantosRED.lsr
                 {
                     if(Player.VehicleSpeedMPH >= 65f)
                     {
-                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                             //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
@@ -300,7 +300,7 @@ namespace LosSantosRED.lsr
                     }
                     else if (Player.VehicleSpeedMPH >= 35f)
                     {
-                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestMediumTriggerTime)
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                             //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST MEDIUM IN VEHICLE", 5);
@@ -308,7 +308,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if(Player.VehicleSpeedMPH >= 20f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
+                        if(Player.VehicleSpeedMPH >= 20f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                            // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
@@ -319,7 +319,7 @@ namespace LosSantosRED.lsr
                 {
                     if (Player.Character.Exists() && Player.Character.Speed >= 1.2f)
                     {
-                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestFastTriggerTime)//kept going or took off
+                        if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                            // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST", 5);
@@ -329,7 +329,7 @@ namespace LosSantosRED.lsr
                     {
                         if (Player.Character.Exists() && Player.Character.Speed >= 0.5f)
                         {
-                            if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.PlayerSettings.Violations_ResistingArrestSlowTriggerTime)
+                            if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                             {
                                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                                 //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW", 5);

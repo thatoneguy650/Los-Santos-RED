@@ -23,13 +23,17 @@ public class WeaponRecoil
     }
     public void Update()
     {
-        if (Settings.SettingsManager.PlayerSettings.ApplyRecoil && Player.CurrentWeapon != null)// && !IsInVehicle)
+        if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.CurrentWeapon != null)// && !IsInVehicle)
         {
             if (Player.CurrentWeapon.Category == WeaponCategory.Throwable || Player.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.CurrentWeapon.Category == WeaponCategory.Melee || Player.CurrentWeapon.Category == WeaponCategory.Misc || Player.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;
             }
-            if (Player.IsInVehicle && !Settings.SettingsManager.PlayerSettings.ApplyRecoilInVehicle)
+            if (Player.IsInVehicle && !Settings.SettingsManager.RecoilSettings.ApplyRecoilInVehicle)
+            {
+                return;
+            }
+            if(!Player.IsInVehicle && !Settings.SettingsManager.RecoilSettings.ApplyRecoilOnFoot)
             {
                 return;
             }
@@ -56,8 +60,13 @@ public class WeaponRecoil
         if (Player.IsInVehicle)
         {
             AdjustedPitch *= 2.0f;//5.0 is good with pistol too much for automatic
+            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalInVehicleRecoilAdjuster;
         }
-        AdjustedPitch *= Settings.SettingsManager.PlayerSettings.VerticalRecoilAdjuster;
+        else
+        {
+            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalOnFootRecoilAdjuster;
+        }
+        AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalRecoilAdjuster;
     }
     private void AdjustHeading()
     {
@@ -66,7 +75,15 @@ public class WeaponRecoil
         {
             AdjustedHeading *= -1.0f;
         }
-        AdjustedHeading *= Settings.SettingsManager.PlayerSettings.HorizontalRecoilAdjuster;
+        if(Player.IsInVehicle)
+        {
+            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalInVehicleRecoilAdjuster;
+        }
+        else
+        {
+            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalOnFootRecoilAdjuster;
+        }
+        AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalRecoilAdjuster;
     }
 }
 

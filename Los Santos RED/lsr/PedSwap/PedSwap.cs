@@ -227,7 +227,7 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
             Game.TimeScale = 1f;
         }
@@ -344,7 +344,7 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
             Game.TimeScale = 1f;
         }

@@ -241,7 +241,7 @@ public class Respawning// : IRespawning
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING
-        if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+        if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
         {
             Game.TimeScale = 1f;
         }

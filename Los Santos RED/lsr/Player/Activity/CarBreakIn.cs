@@ -41,7 +41,7 @@ public class CarBreakIn
                 {
                     if(!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
                     {
-                        if (Settings.SettingsManager.PlayerSettings.InjureOnWindowBreak)
+                        if (Settings.SettingsManager.VehicleSettings.InjureOnWindowBreak)
                         {
                             Player.Character.Health -= 5;
                         }

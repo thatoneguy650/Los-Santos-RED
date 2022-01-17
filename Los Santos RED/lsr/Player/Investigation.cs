@@ -25,12 +25,12 @@ public class Investigation
         World = world;
     }
     public string DebugText => $"Invest: IsActive {IsActive} IsSus {IsSuspicious} Distance {Distance} Position {Position}";
-    public float Distance => Settings.SettingsManager.PlayerSettings.Investigation_ActiveDistance;
+    public float Distance => Settings.SettingsManager.InvestigationSettings.ActiveDistance;
     public bool IsActive { get; private set; }
     public bool IsSuspicious => IsActive && IsNearPosition && HavePlayerDescription;
     public Vector3 Position { get; private set; }
     private bool IsOutsideInvestigationRange { get; set; }
-    private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.PlayerSettings.Investigation_TimeLimit;//60000;//short for testing was 180000
+    private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
     public bool IsNearPosition { get; private set; }
     public void Dispose()
     {
@@ -64,7 +64,7 @@ public class Investigation
             {
                 IsActive = true;
                 GameTimeStartedInvestigation = Game.GameTime;
-                if (Settings.SettingsManager.PlayerSettings.Investigation_CreateBlip)
+                if (Settings.SettingsManager.InvestigationSettings.CreateBlip)
                 {
                     InvestigationBlip = new Blip(Position, 250f)
                     {
@@ -84,8 +84,8 @@ public class Investigation
     }
     public void Update()
     {
-        IsNearPosition = Position != Vector3.Zero && Player.Character.DistanceTo2D(Position) <= Settings.SettingsManager.PlayerSettings.Investigation_SuspiciousDistance;
-        IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.PlayerSettings.Investigation_MaxDistance;
+        IsNearPosition = Position != Vector3.Zero && Player.Character.DistanceTo2D(Position) <= Settings.SettingsManager.InvestigationSettings.SuspiciousDistance;
+        IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
             if ((IsTimedOut && !World.AnyWantedCiviliansNearPlayer) || IsOutsideInvestigationRange) //remove after 3 minutes
@@ -106,7 +106,7 @@ public class Investigation
     }
     private void UpdateBlip()
     {
-        if (IsActive && Player.IsNotWanted && Settings.SettingsManager.PlayerSettings.Investigation_CreateBlip)
+        if (IsActive && Player.IsNotWanted && Settings.SettingsManager.InvestigationSettings.CreateBlip)
         {
             if (!InvestigationBlip.Exists())
             {

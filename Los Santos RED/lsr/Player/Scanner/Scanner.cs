@@ -448,7 +448,7 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (Settings.SettingsManager.PlayerSettings.Scanner_IsEnabled)
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -458,7 +458,7 @@ namespace LosSantosRED.lsr
                     GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                     {
 
-                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.PlayerSettings.Scanner_DelayMinTime, Settings.SettingsManager.PlayerSettings.Scanner_DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
                         if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
                         {
                             DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
@@ -697,7 +697,7 @@ namespace LosSantosRED.lsr
         {
             GameFiber.Yield();//TR Added 7
             Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
-            if (Existing == null && Settings.SettingsManager.PlayerSettings.Scanner_IsEnabled)
+            if (Existing == null && Settings.SettingsManager.ScannerSettings.IsEnabled)
             {
                 DispatchQueue.Add(ToAdd);
                 //EntryPoint.WriteToConsole("ScannerScript " + ToAdd.Name);
@@ -938,7 +938,7 @@ namespace LosSantosRED.lsr
                 if (ScannerAudio != "")
                 {
                     dispatchEvent.HasZoneAudio = true;
-                    if (MyZone.IsSpecificLocation || Settings.SettingsManager.PlayerSettings.Scanner_UseNearForLocations)
+                    if (MyZone.IsSpecificLocation || Settings.SettingsManager.ScannerSettings.UseNearForLocations)
                     {
                         dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
                         dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
@@ -1186,7 +1186,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckStatusToAnnounce()
         {
-            if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.PlayerSettings.Scanner_AllowStatusAnnouncements)
+            if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.ScannerSettings.AllowStatusAnnouncements)
             {
                 if (Player.PoliceResponse.HasBeenWantedFor > 25000)
                 {
@@ -1370,9 +1370,9 @@ namespace LosSantosRED.lsr
                 if (AbortedAudio)
                 {
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
-                    if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
+                    if(Settings.SettingsManager.ScannerSettings.SetVolume)
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false);
                     }
                     else
                     {
@@ -1385,7 +1385,7 @@ namespace LosSantosRED.lsr
                 {
                     GameFiber.Yield();
                 }
-                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.PlayerSettings.Scanner_EnableNotifications)
+                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
                 {
                     RemoveAllNotifications();
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
@@ -1394,7 +1394,7 @@ namespace LosSantosRED.lsr
                 CurrentlyPlayingCallIn = dispatchDescription;
                 CurrentlyPlayingDispatch = dispatchToPlay;
 
-                if (Settings.SettingsManager.PlayerSettings.Scanner_EnableAudio)
+                if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                 {
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
@@ -1406,9 +1406,9 @@ namespace LosSantosRED.lsr
 
 
                         //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
-                        if(Settings.SettingsManager.PlayerSettings.Scanner_SetVolume)
+                        if(Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
-                            AudioPlayer.Play(audioname, Settings.SettingsManager.PlayerSettings.Scanner_AudioVolume, false);
+                            AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);
                         }
                         else
                         {
@@ -1416,7 +1416,7 @@ namespace LosSantosRED.lsr
                         }
                         while (AudioPlayer.IsAudioPlaying)
                         {
-                            if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.PlayerSettings.Scanner_EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                            if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                             {
                                 Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                                 GameTimeLastDisplayedSubtitle = Game.GameTime;

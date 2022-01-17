@@ -144,7 +144,7 @@ namespace Mod
         public Ped Character => Game.LocalPlayer.Character;
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
 
-        public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerSettings.FemaleFreeModeVoice;
+        public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
         public int GroupID { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
@@ -326,7 +326,7 @@ namespace Mod
         public Vector3 RootPosition { get; set; }
         public int CellX { get; private set; }
         public int CellY { get; private set; }
-        public bool ShouldCheckViolations => !Settings.SettingsManager.PlayerSettings.Violations_TreatAsCop && !IsCop;
+        public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop;
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public uint TargettingHandle
@@ -347,14 +347,14 @@ namespace Mod
         {
             get
             {
-                uint Time = Settings.SettingsManager.PlayerSettings.Recognize_BaseTime;
+                uint Time = Settings.SettingsManager.PlayerOtherSettings.Recognize_BaseTime;
                 if (TimeControllable.IsNight)
                 {
-                    Time += Settings.SettingsManager.PlayerSettings.Recognize_NightPenalty;
+                    Time += Settings.SettingsManager.PlayerOtherSettings.Recognize_NightPenalty;
                 }
                 else if (IsInVehicle)
                 {
-                    Time += Settings.SettingsManager.PlayerSettings.Recognize_VehiclePenalty;
+                    Time += Settings.SettingsManager.PlayerOtherSettings.Recognize_VehiclePenalty;
                     if (NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character, 359, true))//isduckinginvehicle?
                     {
                         Time += 5000;
@@ -601,12 +601,12 @@ namespace Mod
 
             NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
             ClearVehicleOwnership();
-            if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = 1f;
             }
-
-            Game.DisableControlAction(0, GameControl.Attack, false);
+            NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
+            //Game.DisableControlAction(0, GameControl.Attack, false);
         }
         public void GiveMoney(int Amount)
         {
@@ -737,7 +737,7 @@ namespace Mod
                 UpdateCurrentVehicle();
                 TakeOwnershipOfVehicle(CurrentVehicle);
             }
-            if (Settings.SettingsManager.PlayerSettings.DisableAutoEngineStart)
+            if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             }
@@ -782,10 +782,17 @@ namespace Mod
                     //    Game.DisableControlAction(0, GameControl.Attack, true);
                     //    EntryPoint.WriteToConsole("Selector Shot Single, DISABLE Action", 5);
                     //}
-                    
+
                     //Game.DisableControlAction(0, GameControl.SkipCutscene, true);
                     //Game.DisableControlAction(0, GameControl.Attack, true);
                     //cant disable the control actions for some reason....
+
+
+                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 32, true);//attack 1
+                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 257, true);//atack 2
+                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 69, true);//vehicle attack 1
+                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 70, true);//vehicle attack 2
+
                     GameFiber.Yield();
                 }
 
@@ -1229,7 +1236,7 @@ namespace Mod
             Sprinting.Update();
 
 
-            if (Settings.SettingsManager.PlayerSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
             {
                 IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
                 ClosestScenario = new Scenario("", "Unknown");
@@ -1346,7 +1353,7 @@ namespace Mod
 
 
 
-                if (Settings.SettingsManager.PlayerSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
+                if (Settings.SettingsManager.VehicleSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
                 {
                     if (!IsMobileRadioEnabled)
                     {
@@ -2199,7 +2206,7 @@ namespace Mod
                             //GameFiber.Yield();//TR Yield RemovedTest 2
                         }
                         bool hasScrewDriver = Inventory.HasTool(ToolTypes.Screwdriver);
-                        if (Settings.SettingsManager.PlayerSettings.RequireScrewdriverForHotwire)
+                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
                         {
                             if (CurrentVehicle.Vehicle.MustBeHotwired)
                             {
@@ -2213,7 +2220,7 @@ namespace Mod
                             }
                         }
 
-                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.PlayerSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
+                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
                             CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
@@ -2317,7 +2324,7 @@ namespace Mod
                 Surrendering.SetArrestedAnimation(WantedLevel <= 2);//needs to move
             }
 
-            if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnBusted)
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
                 Game.TimeScale = 0.4f;
             }
@@ -2337,7 +2344,7 @@ namespace Mod
             Game.LocalPlayer.Character.Kill();
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
-            if (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath)
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = 0.4f;
             }
@@ -2435,7 +2442,7 @@ namespace Mod
         }
         private void OnStoppedDuckingInVehicle()
         {
-            if (Settings.SettingsManager.PlayerSettings.ForceFirstPersonOnVehicleDuck)
+            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
             {
                 int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
                 if (viewMode != storedViewMode)
@@ -2448,7 +2455,7 @@ namespace Mod
         }
         private void OnStartedDuckingInVehicle()
         {
-            if (Settings.SettingsManager.PlayerSettings.ForceFirstPersonOnVehicleDuck)
+            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
             {
                 int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
                 if (viewMode != 4)

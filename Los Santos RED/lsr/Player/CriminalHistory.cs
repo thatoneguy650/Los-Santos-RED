@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr
             Time = time;
         }
         private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
-        private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_SearchRadiusIncrement : Settings.SettingsManager.PlayerSettings.CriminalHistory_MinimumSearchRadius;// 400f;
+        private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.SearchRadiusIncrement : Settings.SettingsManager.CriminalHistorySettings.MinimumSearchRadius;// 400f;
         public bool HasHistory => CurrentHistory != null;
         public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.ResultsInLethalForce);
         public int MaxWantedLevel => LastWantedMaxLevel;
@@ -70,14 +70,14 @@ namespace LosSantosRED.lsr
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle", 3);
                     }
                 }
-                if(Player.PoliceResponse.HasBeenNotWantedFor >= (Settings.SettingsManager.PlayerSettings.CriminalHistory_RealTimeExpireWantedMultiplier * LastWantedMaxLevel))// 120000)
+                if(Player.PoliceResponse.HasBeenNotWantedFor >= (Settings.SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier * LastWantedMaxLevel))// 120000)
                 {
                     Clear();
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Real Time)", 3);
                 }
-                if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_CalendarTimeExpireWantedMultiplier), Time.CurrentDateTime) < 0)
+                if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier), Time.CurrentDateTime) < 0)
                 {
-                    EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.PlayerSettings.CriminalHistory_CalendarTimeExpireWantedMultiplier)} Current: {Time.CurrentDateTime}", 5);
+                    EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier)} Current: {Time.CurrentDateTime}", 5);
                     Clear();
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
                 }
@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateBlip()
         {
-            if (HasHistory && Player.IsNotWanted && Settings.SettingsManager.PlayerSettings.CriminalHistory_CreateBlip)
+            if (HasHistory && Player.IsNotWanted && Settings.SettingsManager.CriminalHistorySettings.CreateBlip)
             {
                 if (!CriminalHistoryBlip.Exists())
                 {

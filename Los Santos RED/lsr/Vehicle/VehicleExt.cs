@@ -144,7 +144,7 @@ namespace LSR.Vehicles
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-                if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
+                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
                 {
                     Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
                 }
@@ -162,11 +162,11 @@ namespace LSR.Vehicles
                 GameTimeEntered = Game.GameTime;
                 if (WasAlarmed)
                 {
-                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolenMin, Settings.SettingsManager.PlayerSettings.AlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger, alarmed cars get called in sooner
+                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.AlarmedCarTimeToReportStolenMin, Settings.SettingsManager.VehicleSettings.AlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger, alarmed cars get called in sooner
                 }
                 else
                 {
-                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolenMin, Settings.SettingsManager.PlayerSettings.NonAlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger
+                    GameTimeToReportStolen = GameTimeEntered + RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.NonAlarmedCarTimeToReportStolenMin, Settings.SettingsManager.VehicleSettings.NonAlarmedCarTimeToReportStolenMax);//IF it is stolen, this is when it would trigger
                 }
                 PlaceOriginallyEntered = Vehicle.Position;
             }
@@ -258,22 +258,22 @@ namespace LSR.Vehicles
             {
                 Engine.Update(driver);
                 //GameFiber.Yield();//TR Removed 5
-                if (Settings.SettingsManager.PlayerSettings.KeepRadioAutoTuned)
+                if (Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned)
                 {
-                    Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                    Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
                     //GameFiber.Yield();//TR Removed 5
                 }
-                else if (Settings.SettingsManager.PlayerSettings.AutoTuneRadioOnEntry && !HasAutoSetRadio)
+                else if (Settings.SettingsManager.VehicleSettings.AutoTuneRadioOnEntry && !HasAutoSetRadio)
                 {
-                    Radio.Update(Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation);
+                    Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
                     //GameFiber.Yield();//TR Removed 5
                 }
-                if (Settings.SettingsManager.PlayerSettings.AllowSetIndicatorState)
+                if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
                 {
                     Indicators.Update();
                     //GameFiber.Yield();//TR Removed 5
                 }
-                if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
+                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
                 {
                     FuelTank.Update();
                     //GameFiber.Yield();//TR Removed 5

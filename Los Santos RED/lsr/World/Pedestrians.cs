@@ -299,6 +299,22 @@ public class Pedestrians
         Civilians.RemoveAll(x => x.CanRemove);
         Zombies.RemoveAll(x => x.CanRemove);
     }
+    public void Setup()
+    {
+        foreach(Gang gang in Gangs.AllGangs)
+        {
+            RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
+            foreach (Gang otherGang in Gangs.AllGangs)
+            {
+                if(otherGang.ID != gang.ID)
+                {
+                    RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+                }
+            }
+        }
+    }
     public void CreateNew()
     {
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();

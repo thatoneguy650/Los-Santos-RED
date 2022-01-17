@@ -42,20 +42,23 @@ public class WeaponSway
     }
     private void Sway()
     {
-        if (Settings.SettingsManager.PlayerSettings.ApplySway && Player.CurrentWeapon != null)// && !IsInVehicle)
+        if (Settings.SettingsManager.SwaySettings.ApplySway && Player.CurrentWeapon != null)// && !IsInVehicle)
         {
             if (Player.CurrentWeapon.Category == WeaponCategory.Throwable || Player.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.CurrentWeapon.Category == WeaponCategory.Melee || Player.CurrentWeapon.Category == WeaponCategory.Misc || Player.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;
             }
-            if (Player.IsInVehicle && !Settings.SettingsManager.PlayerSettings.ApplySwayInVehicle)
+            if (Player.IsInVehicle && !Settings.SettingsManager.SwaySettings.ApplySwayInVehicle)
+            {
+                return;
+            }
+            if(!Player.IsInVehicle && !Settings.SettingsManager.SwaySettings.ApplySwayOnFoot)
             {
                 return;
             }
             ApplySway();
         }
     }
-
     private void ApplySway()
     {
         Speed = Player.Character.Speed;
@@ -73,9 +76,7 @@ public class WeaponSway
         AdjustHeading();
         NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
 
-
         Player.DebugLine4 = $"Speed {Speed:N2} % Hor {PercentHorizontalSwayElapsed:P2} %Ver {PercentVeritcalSwayElapsed:P2} VerDIr {VerticalSwayDirection} HorDIr {HorizontalSwayDirection}";
-
     }
     private void UpdateDirection()
     {
@@ -129,7 +130,7 @@ public class WeaponSway
     private void AdjustPitch()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticaSway, Player.CurrentWeapon.MaxVerticaSway);
-        AdjustedPitch *= Settings.SettingsManager.PlayerSettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!VerticalSwayDirection)
         {
             AdjustedPitch *= -1.0f;
@@ -137,6 +138,7 @@ public class WeaponSway
         if (Player.IsInVehicle)
         {       
             AdjustedPitch *= 0.1f;
+            AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalInVehicleSwayAdjuster;
         }
         else
         {
@@ -148,6 +150,7 @@ public class WeaponSway
             {
                 AdjustedPitch *= Speed;
             }
+            AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalOnFootSwayAdjuster;
         }
         uint SwayTime = Game.GameTime - GameTimeLastVerticalChangedSwayDirection;
         if (SwayTime >= GameTimeBetweenVerticalSwayChanges)
@@ -164,14 +167,11 @@ public class WeaponSway
             PercentVeritcalSwayElapsed = 1.0f - PercentVeritcalSwayElapsed;
         }
         AdjustedPitch *= PercentVeritcalSwayElapsed * 2.0f;
-
-
-
     }
     private void AdjustHeading()
     {
         AdjustedHeading = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinHorizontalSway, Player.CurrentWeapon.MaxHorizontalSway);
-        AdjustedHeading *= Settings.SettingsManager.PlayerSettings.HorizontalSwayAdjuster * 0.0075f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalSwayAdjuster * 0.0075f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!HorizontalSwayDirection)
         {
             AdjustedHeading *= -1.0f;
@@ -179,6 +179,7 @@ public class WeaponSway
         if (Player.IsInVehicle)
         {
             AdjustedHeading *= 3.0f;
+            AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalInVehicleSwayAdjuster;
         }
         else
         {
@@ -190,6 +191,7 @@ public class WeaponSway
             {
                 AdjustedHeading *= Speed * 2.0f;
             }
+            AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalOnFootSwayAdjuster;
         }
         uint SwayTime = Game.GameTime - GameTimeLastHorizontalChangedSwayDirection;
         if (SwayTime >= GameTimeBetweenHorizontalSwayChanges)
@@ -204,7 +206,6 @@ public class WeaponSway
         {
             PercentHorizontalSwayElapsed = 1.0f - PercentHorizontalSwayElapsed;
         }
-
         AdjustedHeading *= PercentHorizontalSwayElapsed * 2.0f;
     }
     private enum SwayDirection

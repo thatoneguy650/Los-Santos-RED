@@ -42,7 +42,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         Player = player;
         World = world;
         SettingsProvider = settingsProvideable;
-        SettingsUIMenu = menuPool.AddSubMenu(parentMenu, "Settings");
+        SettingsUIMenu = menuPool.AddSubMenu(parentMenu, "Settings OLD");
         SettingsUIMenu.SetBannerType(EntryPoint.LSRedColor);
         CreateSettingsMenu();
     }
@@ -119,7 +119,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         DebugSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Debug Settings");
         DebugSettingsIUMenu.SetBannerType(EntryPoint.LSRedColor);
 
-        CreateSettingSubMenu(typeof(PlayerSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerSettings, PlayerSettingsIUMenu);
+        CreateSettingSubMenu(typeof(PlayerOtherSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerOtherSettings, PlayerSettingsIUMenu);
         CreateSettingSubMenu(typeof(RespawnSettings).GetProperties(), SettingsProvider.SettingsManager.RespawnSettings, RespawnSettingsIUMenu);
         CreateSettingSubMenu(typeof(UISettings).GetProperties(), SettingsProvider.SettingsManager.UISettings, UISettingsIUMenu);
         CreateSettingSubMenu(typeof(KeySettings).GetProperties(), SettingsProvider.SettingsManager.KeySettings, KeyBindingSettingsIUMenu);
@@ -175,7 +175,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
 
     private void OnPlayerSettingsSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        UpdateSettings(sender, selectedItem, index, typeof(PlayerSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerSettings);
+        UpdateSettings(sender, selectedItem, index, typeof(PlayerOtherSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerOtherSettings);
         SettingsUIMenu.Visible = false;
     }
     private void OnRespawnSettingsSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -252,9 +252,9 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     {
         if (sender == PlayerSettingsIUMenu)
         {
-            PropertyInfo[] MyFields = typeof(PlayerSettings).GetProperties();
+            PropertyInfo[] MyFields = typeof(PlayerOtherSettings).GetProperties();
             PropertyInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
-            MySetting.SetValue(SettingsProvider.SettingsManager.PlayerSettings, Checked);
+            MySetting.SetValue(SettingsProvider.SettingsManager.PlayerOtherSettings, Checked);
         }
         else if (sender == RespawnSettingsIUMenu)
         {

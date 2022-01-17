@@ -107,7 +107,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new VehicleVariation("sentinel", 0, 0, new LSR.Vehicles.LicensePlate("FG33456A", 0, false)));
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false)));
 
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {

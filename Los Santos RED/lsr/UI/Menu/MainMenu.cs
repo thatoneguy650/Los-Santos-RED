@@ -10,7 +10,10 @@ public class MainMenu : Menu
     private ActionMenu ActionMenu;
     private PedSwapMenu PedSwapMenu;
     private SaveMenu SaveMenu;
-    private SettingsMenu SettingsMenu;
+    //private SettingsMenu SettingsMenu;
+
+    private SettingsMenuNew SettingsMenuNew;
+
     private UIMenu Main;
     private IActionable Player;
     private UIMenuItem CallPolice;
@@ -33,7 +36,12 @@ public class MainMenu : Menu
         menuPool.Add(Main);
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
-        SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
+        //SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
+
+        SettingsMenuNew = new SettingsMenuNew(menuPool, Main, Player, world, Settings);
+
+
+
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
@@ -56,7 +64,8 @@ public class MainMenu : Menu
             Main.Visible = true;
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            SettingsMenu.Hide();
+            //SettingsMenu.Hide();
+            SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
         }
@@ -72,7 +81,8 @@ public class MainMenu : Menu
 
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            SettingsMenu.Hide();
+            //SettingsMenu.Hide();
+            SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
         }
@@ -82,7 +92,8 @@ public class MainMenu : Menu
 
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            SettingsMenu.Hide();
+            //SettingsMenu.Hide();
+            SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
         }

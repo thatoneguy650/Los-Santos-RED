@@ -262,7 +262,7 @@ public class DebugMenu : Menu
         }
         if (list == AutoSetRadioStation)
         {
-            Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation = RadioStations.RadioStationList[index].InternalName;
+            Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation = RadioStations.RadioStationList[index].InternalName;
         }
         if (list == TeleportToPOI)
         {

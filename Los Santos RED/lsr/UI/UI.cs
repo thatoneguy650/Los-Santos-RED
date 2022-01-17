@@ -815,7 +815,7 @@ public class UI : IMenuProvideable
             {
                 CurrentSpeedDisplay += " ~y~(LI)";
             }
-            if (Settings.SettingsManager.PlayerSettings.UseCustomFuelSystem)
+            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
             {
                 CurrentSpeedDisplay += $"{CurrentDefaultTextColor} " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }
@@ -992,7 +992,7 @@ public class UI : IMenuProvideable
                 }
                 StartedDeathEffect = true;
             }
-            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= (Settings.SettingsManager.PlayerSettings.SetSlowMoOnDeath ? 1000 : 2000))
+            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath ? 1000 : 2000))
             {
                 GameTimeLastDied = 0;
                 Show(DeathMenu);
@@ -1019,7 +1019,7 @@ public class UI : IMenuProvideable
                 }
                 StartedBustedEffect = true;
             }
-            if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= (Settings.SettingsManager.PlayerSettings.SetSlowMoOnBusted ? 1000 : 2000))
+            if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted ? 1000 : 2000))
             {
                 GameTimeLastBusted = 0;
                 Show(BustedMenu);

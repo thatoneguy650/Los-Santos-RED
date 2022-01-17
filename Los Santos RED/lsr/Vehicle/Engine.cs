@@ -54,9 +54,9 @@ public class Engine
         {
             float Difference = Health - VehicleToMonitor.Vehicle.EngineHealth;
             bool Collided = NativeFunction.Natives.HAS_ENTITY_COLLIDED_WITH_ANYTHING<bool>(VehicleToMonitor.Vehicle);
-            if (Settings.SettingsManager.PlayerSettings.ScaleEngineDamage)
+            if (Settings.SettingsManager.VehicleSettings.ScaleEngineDamage)
             {
-                float ScaledDamage = Health - Settings.SettingsManager.PlayerSettings.ScaleEngineDamageMultiplier * Difference;
+                float ScaledDamage = Health - Settings.SettingsManager.VehicleSettings.ScaleEngineDamageMultiplier * Difference;
                 if (ScaledDamage <= -4000f)
                 {
                     ScaledDamage = -4000f;
@@ -74,7 +74,7 @@ public class Engine
     }
     private void UpdateState()
     {
-        if (Settings.SettingsManager.PlayerSettings.AllowSetEngineState)
+        if (Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
         {
             if(VehicleToMonitor.IsHotWireLocked)
             {
