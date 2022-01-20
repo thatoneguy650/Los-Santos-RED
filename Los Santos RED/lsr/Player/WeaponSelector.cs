@@ -19,29 +19,29 @@ public class WeaponSelector
     private int roundsFired;
     private bool canShoot;
     private bool isControlDisabled = false;
-    public eSelectorSetting CurrentSelectorSetting { get; private set; } = eSelectorSetting.FullAuto;
+    public SelectorOptions CurrentSelectorSetting { get; private set; } = SelectorOptions.FullAuto;
     private WeaponInformation prevCurrentWeapon;
     private int BulletLimt
     {
         get
         {
-            if(CurrentSelectorSetting == eSelectorSetting.Safe)
+            if(CurrentSelectorSetting == SelectorOptions.Safe)
             {
                 return 0;
             }
-            else if (CurrentSelectorSetting == eSelectorSetting.SemiAuto)
+            else if (CurrentSelectorSetting == SelectorOptions.SemiAuto)
             {
                 return 1;
             }
-            else if (CurrentSelectorSetting == eSelectorSetting.TwoRoundBurst)
+            else if (CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
             {
                 return 2;
             }
-            else if (CurrentSelectorSetting == eSelectorSetting.ThreeRoundBurst)
+            else if (CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
             {
                 return 3;
             }
-            else if (CurrentSelectorSetting == eSelectorSetting.FiveRoundBurst)
+            else if (CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
             {
                 return 5;
             }
@@ -72,9 +72,9 @@ public class WeaponSelector
         Player.DebugLine4 = $"Selector: {CurrentSelectorSetting} {roundsFired}/{BulletLimt}";
         //GameFiber.Yield();
     }
-    public void SetSelectorSetting(eSelectorSetting eSelectorSetting)
+    public void SetSelectorSetting(SelectorOptions eSelectorSetting)
     {
-        if(CurrentSelectorSetting == eSelectorSetting.Safe && eSelectorSetting != eSelectorSetting.Safe)
+        if(CurrentSelectorSetting == SelectorOptions.Safe && eSelectorSetting != SelectorOptions.Safe)
         {
             canShoot = true;
         }
@@ -160,38 +160,51 @@ public class WeaponSelector
     {
         canShoot = true;
         roundsFired = 0;
-        CurrentSelectorSetting = eSelectorSetting.FullAuto;
+
+        if(Player.CurrentWeapon != null)
+        {
+            if(Player.CurrentWeapon.SelectorOptions.HasFlag(SelectorOptions.FullAuto))
+            {
+                CurrentSelectorSetting = SelectorOptions.FullAuto;
+            }
+            else
+            {
+                CurrentSelectorSetting = SelectorOptions.SemiAuto;
+            }
+        }
+        else
+        {
+            CurrentSelectorSetting = SelectorOptions.FullAuto;
+        }
     }
 
     public void ToggleSelector()
     {
-        if(CurrentSelectorSetting == eSelectorSetting.Safe)
+        if (Player.CurrentWeapon != null)
         {
-            SetSelectorSetting(eSelectorSetting.SemiAuto);
+            EntryPoint.WriteToConsole($"ToggleSelector Initial Setting {CurrentSelectorSetting}", 5);
+            bool found1 = false;
+            bool found2 = false;
+            foreach (SelectorOptions x in Enum.GetValues(typeof(SelectorOptions)))
+            {
+                if (CurrentSelectorSetting == x)
+                {
+                    found1 = true;
+                }
+                else if (found1 && Player.CurrentWeapon.SelectorOptions.HasFlag(x))
+                {
+                    found2 = true;
+                    SetSelectorSetting(x);
+                    break;
+                }
+            }
+            if (!found2)
+            {
+                SetSelectorSetting(SelectorOptions.Safe);
+            }
+            EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}", 5);
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(0, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
         }
-        else if (CurrentSelectorSetting == eSelectorSetting.SemiAuto)
-        {
-            SetSelectorSetting(eSelectorSetting.TwoRoundBurst);
-        }
-        else if (CurrentSelectorSetting == eSelectorSetting.TwoRoundBurst)
-        {
-            SetSelectorSetting(eSelectorSetting.ThreeRoundBurst);
-        }
-        else if (CurrentSelectorSetting == eSelectorSetting.ThreeRoundBurst)
-        {
-            SetSelectorSetting(eSelectorSetting.FiveRoundBurst);
-        }
-        else if (CurrentSelectorSetting == eSelectorSetting.FiveRoundBurst)
-        {
-            SetSelectorSetting(eSelectorSetting.FullAuto);
-        }
-        else if (CurrentSelectorSetting == eSelectorSetting.FullAuto)
-        {
-            SetSelectorSetting(eSelectorSetting.Safe);
-        }
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(0, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
-
-
     }
 }
 

@@ -53,6 +53,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDealingDrugs { get; }
         bool IsDealingIllegalGuns { get; }
         bool IsDriver { get; }
+        bool HasBeenMoving { get; }
+        bool HasBeenMovingFast { get; }
 
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
         void OnVehicleCrashed();

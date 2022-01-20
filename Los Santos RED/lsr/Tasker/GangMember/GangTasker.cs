@@ -37,7 +37,7 @@ public class GangTasker
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             Tasker.ExpireSeatAssignments();
-            bool anyCopsNearPosition = PedProvider.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 3));
+            bool anyCopsNearPosition = PedProvider.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
             foreach (GangMember gangMember in PedProvider.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -75,6 +75,7 @@ public class GangTasker
 
     private void UpdateCurrentTask(GangMember GangMember, bool anyCopsNearFocusPoint)//this should be moved out?
     {
+        bool isHostile = Player.IsHostile(GangMember.Gang);
         if (GangMember.IsBusted)
         {
             if (GangMember.DistanceToPlayer <= 75f)
@@ -87,7 +88,7 @@ public class GangTasker
                 }
             }
         }
-        else if (GangMember.DistanceToPlayer <= 75f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
+        else if (GangMember.DistanceToPlayer <= 175f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
             WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             bool SeenReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
@@ -95,7 +96,7 @@ public class GangTasker
             //bool SeenMundaneCrime = GangMember.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
             if (SeenReactiveCrime)// || SeenAngryCrime)
             {
-                if (GangMember.WillFight && (GangMember.IsWanted || !anyCopsNearFocusPoint))// && (Player.IsNotWanted || !anyCopsNearFocusPoint))
+                if (GangMember.WillFight && (Player.IsNotWanted || isHostile))// && (Player.IsNotWanted || !anyCopsNearFocusPoint))
                 {
                     if (GangMember.CurrentTask?.Name != "GangFight")
                     {
@@ -106,18 +107,27 @@ public class GangTasker
                 }
                 else
                 {
-                    if (GangMember.CurrentTask?.Name != "Flee")
+                    if (GangMember.CurrentTask?.Name != "GangFlee")
                     {
-                        GangMember.CurrentTask = new Flee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
                         GangMember.CurrentTask.Start();
                     }
                 }
             }
+            else if (Player.IsWanted && GangMember.CurrentlyViolatingWantedLevel > 0 && !isHostile)
+            {
+                if (GangMember.CurrentTask?.Name != "GangFlee")
+                {
+                    GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                    GameFiber.Yield();//TR Added back 7
+                    GangMember.CurrentTask.Start();
+                }
+            }
             else if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
             {
                 EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
-                GangMember.CurrentTask = new CivIdle(GangMember, Player, PedProvider, Tasker, PlacesOfInterest);
+                GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, Tasker, PlacesOfInterest);
                 GameFiber.Yield();//TR Added back 4
                 GangMember.CurrentTask.Start();
             }

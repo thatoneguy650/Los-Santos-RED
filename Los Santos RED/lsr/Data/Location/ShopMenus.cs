@@ -426,7 +426,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                 new MenuItem("M61 Grenade",1000) { IsIllicilt = true },
                 new MenuItem("Baseball Bat",70) { IsIllicilt = true },
-                new MenuItem("Crowbar 2",35) { IsIllicilt = true },
+                new MenuItem("Crowbar",35) { IsIllicilt = true },
                 new MenuItem("Golf Club",150) { IsIllicilt = true },
                 new MenuItem("Hammer 2",25) { IsIllicilt = true },
                 new MenuItem("Hatchet",80) { IsIllicilt = true },
@@ -449,7 +449,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                 new MenuItem("M61 Grenade",1000) { IsIllicilt = true },
                 new MenuItem("Baseball Bat",70) { IsIllicilt = true },
-                new MenuItem("Crowbar 2",35) { IsIllicilt = true },
+                new MenuItem("Crowbar",35) { IsIllicilt = true },
                 new MenuItem("Golf Club",150) { IsIllicilt = true },
                 new MenuItem("Hammer 2",25) { IsIllicilt = true },
                 new MenuItem("Hatchet",80) { IsIllicilt = true },
@@ -791,7 +791,7 @@ public class ShopMenus : IShopMenus
 
                 new ShopMenu("WeaponsMenu","WeaponsMenu",new List<MenuItem>() {
                     new MenuItem("Baseball Bat",70),
-                    new MenuItem("Crowbar 2",35),
+                    new MenuItem("Crowbar",35),
                     new MenuItem("Golf Club",150),
                     new MenuItem("Hammer",25),
                     new MenuItem("Hatchet",80),
@@ -1201,15 +1201,15 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Grip", 130),} },
 
                 //OTHER
-                new MenuItem("RPG-7",12550){ AmmoAmount = 1,AmmoPrice = 500 },
+                new MenuItem("RPG-7",12550){ SubAmount = 1,SubPrice = 500 },
                 new MenuItem("Hawk & Little MGL",18889){ Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Flashlight", 90),
                     new MenuItemExtra("Scope", 567),
-                    new MenuItemExtra("Grip", 200), },AmmoAmount = 6,AmmoPrice = 500 },
-                new MenuItem("M61 Grenade",800) { AmmoAmount = 1,AmmoPrice = 800 },
-                new MenuItem("Improvised Incendiary",150) { AmmoAmount = 1,AmmoPrice = 150 },
-                new MenuItem("BZ Gas Grenade",250) { AmmoAmount = 1,AmmoPrice = 150 },
+                    new MenuItemExtra("Grip", 200), },SubAmount = 6,SubPrice = 500 },
+                new MenuItem("M61 Grenade",800) { SubAmount = 1,SubPrice = 800 },
+                new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
+                new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
 
@@ -1310,9 +1310,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Shrewsbury PWN",2200) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Suppressor", 340)} },
                 //OTHER
-                new MenuItem("M61 Grenade",500) { AmmoAmount = 1,AmmoPrice = 500 },
-                new MenuItem("Improvised Incendiary",60) { AmmoAmount = 1,AmmoPrice = 60 },
-                new MenuItem("BZ Gas Grenade",250) { AmmoAmount = 1,AmmoPrice = 250 },
+                new MenuItem("M61 Grenade",500) { SubAmount = 1,SubPrice = 500 },
+                new MenuItem("Improvised Incendiary",60) { SubAmount = 1,SubPrice = 60 },
+                new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 250 },
                     }),
 
 
@@ -1429,11 +1429,11 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bartlett M92",4578),
                 new MenuItem("Bartlett M92 Mk2",3456),
                 //OTHER
-                new MenuItem("RPG-7",1800){ AmmoAmount = 1,AmmoPrice = 500 },
-                new MenuItem("Hawk & Little MGL",2500){ AmmoAmount = 6,AmmoPrice = 200 },
-                new MenuItem("M61 Grenade",340) { AmmoAmount = 1,AmmoPrice = 340 },
-                new MenuItem("Improvised Incendiary",30) { AmmoAmount = 1,AmmoPrice = 30 },
-                new MenuItem("BZ Gas Grenade",100) { AmmoAmount = 1,AmmoPrice = 100 },
+                new MenuItem("RPG-7",1800){ SubAmount = 1,SubPrice = 500 },
+                new MenuItem("Hawk & Little MGL",2500){ SubAmount = 6,SubPrice = 200 },
+                new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
+                new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
+                new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
                     }),
 
 

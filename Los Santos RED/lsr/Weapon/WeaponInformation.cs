@@ -29,6 +29,7 @@ public class WeaponInformation
     public float MinVerticaSway { get; set; } = 0.0f;
     public float MaxVerticaSway { get; set; } = 0.0f;
     public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
+    public SelectorOptions SelectorOptions { get; set; } = SelectorOptions.Safe | SelectorOptions.SemiAuto;
     public WeaponInformation()
     {
 
@@ -44,7 +45,7 @@ public class WeaponInformation
         IsTwoHanded = _IsTwoHanded;
         IsLegal = _IsLegal;
     }
-    public WeaponInformation(string _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, uint _Hash, bool _IsOneHanded, bool _IsTwoHanded, bool _IsLegal, float _MinVerticalRecoil, float _MaxVerticalRecoil, float _MinHorizontalRecoil, float _MaxHorizontalRecoil, float _MinHorizontalSway, float _MaxHorizontalSway, float _MinVerticaSway, float _MaxVerticaSway)
+    public WeaponInformation(string _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, uint _Hash, bool _IsOneHanded, bool _IsTwoHanded, bool _IsLegal, float _MinVerticalRecoil, float _MaxVerticalRecoil, float _MinHorizontalRecoil, float _MaxHorizontalRecoil, float _MinHorizontalSway, float _MaxHorizontalSway, float _MinVerticaSway, float _MaxVerticaSway, SelectorOptions selectorOptions)
     {
         ModelName = _Name;
         AmmoAmount = _AmmoAmount;
@@ -64,6 +65,7 @@ public class WeaponInformation
         MaxHorizontalSway = _MaxHorizontalSway;
         MinVerticaSway = _MinVerticaSway;
         MaxVerticaSway = _MaxVerticaSway;
+        SelectorOptions = selectorOptions;
     }
     public bool IsLowEnd
     {

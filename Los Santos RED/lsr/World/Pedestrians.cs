@@ -304,6 +304,7 @@ public class Pedestrians
         foreach(Gang gang in Gangs.AllGangs)
         {
             RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
+            RelationshipGroup policeGroup = new RelationshipGroup("COP");
             foreach (Gang otherGang in Gangs.AllGangs)
             {
                 if(otherGang.ID != gang.ID)
@@ -313,6 +314,8 @@ public class Pedestrians
                     thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
                 }
             }
+            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
+            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
         }
     }
     public void CreateNew()
@@ -340,6 +343,11 @@ public class Pedestrians
             {
                 if(Pedestrian.IsGangMember() && !GangMembers.Any(x => x.Handle == localHandle))
                 {
+                    if (Settings.SettingsManager.GangSettings.RemoveVanillaGangs)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+                    {
+                        Pedestrian.Delete();
+                        continue;
+                    }
                     AddGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
@@ -469,8 +477,10 @@ public class Pedestrians
             myCop.CombatAbility = Settings.SettingsManager.PoliceSettings.GeneralCombatAbility;
 
 
-
-            Police.Add(myCop);
+            if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
+            {
+                Police.Add(myCop);
+            }
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }
         else

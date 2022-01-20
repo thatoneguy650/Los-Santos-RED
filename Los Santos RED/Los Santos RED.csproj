@@ -131,6 +131,14 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\iFruit\CustomiFruit.cs" />
+    <Compile Include="lsr\iFruit\iFruitAddon2.cs" />
+    <Compile Include="lsr\iFruit\iFruitContact.cs" />
+    <Compile Include="lsr\iFruit\iFruitContactCollection.cs" />
+    <Compile Include="lsr\iFruit\Image Types\ContactIcon.cs" />
+    <Compile Include="lsr\iFruit\Image Types\PhoneImage.cs" />
+    <Compile Include="lsr\iFruit\Image Types\Wallpaper.cs" />
+    <Compile Include="lsr\iFruit\Tools.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
@@ -149,9 +157,11 @@
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
+    <Compile Include="lsr\Player\CellPhone.cs" />
     <Compile Include="lsr\Player\eSelectorSetting.cs" />
     <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />
+    <Compile Include="lsr\Player\Interface\ICellPhoneable.cs" />
     <Compile Include="lsr\Player\Interaction\Transaction.cs" />
     <Compile Include="lsr\Player\Interface\IBusRideable.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
@@ -168,10 +178,11 @@
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
-    <Compile Include="lsr\Tasker\Civilian\CivIdle.cs" />
+    <Compile Include="lsr\Tasker\GangMember\GangIdle.cs" />
     <Compile Include="lsr\Tasker\Civilian\CivilianTasker.cs" />
     <Compile Include="lsr\Tasker\Cop\CopTasker.cs" />
     <Compile Include="lsr\Tasker\GangMember\GangFight.cs" />
+    <Compile Include="lsr\Tasker\GangMember\GangFlee.cs" />
     <Compile Include="lsr\Tasker\GangMember\GangTasker.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
@@ -274,6 +285,7 @@
     <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
     <Compile Include="lsr\Weapon\ComponentSlot.cs" />
     <Compile Include="lsr\Weapon\IssuableWeapon.cs" />
+    <Compile Include="lsr\Weapon\SelectorOptions.cs" />
     <Compile Include="lsr\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
     <Compile Include="lsr\Player\Activity\SuicideActivity.cs" />

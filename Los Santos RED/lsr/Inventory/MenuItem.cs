@@ -31,7 +31,7 @@ public class MenuItem
     public int SalesPrice { get; set; } = -1;
     public bool IsIllicilt { get; set; } = false;
     public List<MenuItemExtra> Extras { get; set; } = new List<MenuItemExtra>();
-    public int AmmoPrice { get; set; } = 1;
-    public int AmmoAmount { get; set; } = 30;
+    public int SubPrice { get; set; } = 1;
+    public int SubAmount { get; set; } = 30;
 }
 

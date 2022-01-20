@@ -118,7 +118,7 @@ public class CustomizePedMenu : Menu
     {
         if (Player.CurrentModelVariation != null)
         {
-            Player.CurrentModelVariation.ApplyToPed(ModelPed);
+            Player.CurrentModelVariation.ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
             WorkingVariation = Player.CurrentModelVariation;
         }
     }
@@ -151,6 +151,17 @@ public class CustomizePedMenu : Menu
             ModelPed.Delete();
         }
         WorkingVariation = new PedVariation();
+        if (ModelPed.Exists())
+        {
+            WorkingName = Names.GetRandomName(ModelPed.IsMale);
+        }
+        else
+        {
+            WorkingName = Names.GetRandomName(false);
+        }
+        ChangeName.Description = "Current: " + WorkingName;
+        RandomizeName.Description = "Current: " + WorkingName;
+        ChoseNewModel = true;
     }
 
     private void SetupMenu()
@@ -202,9 +213,9 @@ public class CustomizePedMenu : Menu
         Parent1IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 1", "Select parent ID 1", HeadList);
         Parent2IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 2", "Select parent ID 2", HeadList);
         Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select percent of parent ID 1 to use", 0.0f, 1.0f, 0.1f);   
-        Parent1MixMenu.Formatter = v => v.ToString("P0");
+        //Parent1MixMenu.Formatter = v => v.ToString("P0");
         Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select percent of parent ID 2 to use", 0.0f, 1.0f, 0.1f);
-        Parent2MixMenu.Formatter = v => v.ToString("P0");
+        //Parent2MixMenu.Formatter = v => v.ToString("P0");
         RandomizeHair = new UIMenuItem("Randomize Hair", "Set random hair (use components to select manually)");
         HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select primary hair color (requires head data)", ColorList);
         HairSecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Hair Color", "Select secondary hair color (requires head data)", ColorList);
@@ -532,11 +543,21 @@ public class CustomizePedMenu : Menu
     {
         int DrawableID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(ModelPed, 2));
         int TextureID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(ModelPed, 2, DrawableID) - 1);
-        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(ModelPed, 2, DrawableID, TextureID, 0);
+        //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(ModelPed, 2, DrawableID, TextureID, 0);
         WorkingVariation.PrimaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
         WorkingVariation.SecondaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
         HairPrimaryColorMenu.Index = WorkingVariation.PrimaryHairColor;
         HairSecondaryColorMenu.Index = WorkingVariation.SecondaryHairColor;
+        PedComponent hairComponent = WorkingVariation.Components.FirstOrDefault(x => x.ComponentID == 2);
+        if(hairComponent == null)
+        {
+            WorkingVariation.Components.Add(new PedComponent(2, DrawableID, TextureID, 0));
+        }
+        else
+        {
+            hairComponent.DrawableID = DrawableID;
+            hairComponent.TextureID = TextureID;
+        }
     }
 
     private void MainMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -565,11 +586,11 @@ public class CustomizePedMenu : Menu
         {
             if (ModelPed.Exists())
             {
-                ChoseNewModel = true;
+                //ChoseNewModel = true;
                 Game.FadeScreenOut(1500, true);
-                if (ChoseNewModel)
+                if (!ChoseNewModel)
                 {
-                    PedSwap.BecomeSamePed(NewModelName, WorkingVariation);
+                    PedSwap.BecomeSamePed(NewModelName, WorkingName, WorkingMoney, WorkingVariation);
                 }
                 else
                 {
@@ -740,7 +761,13 @@ public class CustomizePedMenu : Menu
         HeadOverlayData myOverlay = WorkingVariation.HeadOverlays.FirstOrDefault(x => x.Part == overlayName);
         if(myOverlay == null)
         {
-            return;
+            HeadOverlayData newmyOverlay = HeadOverlayLookups.FirstOrDefault(x => x.Part == overlayName);
+            if (newmyOverlay == null)
+            {
+                return;
+            }
+            myOverlay = new HeadOverlayData(newmyOverlay.OverlayID, newmyOverlay.Part) { ColorType = newmyOverlay.ColorType } ;
+            WorkingVariation.HeadOverlays.Add(myOverlay);
         }
         if (item.Text == "Set Primary Color")
         {

@@ -1,7 +1,6 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
-using Rage;
-using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWeaponRecoilable
+    public interface ICellPhoneable
     {
-        WeaponInformation CurrentWeapon { get; }
-        bool IsInVehicle { get; }
-        bool IsRagdoll { get; }
-        bool IsStunned { get; }
+        LocationData CurrentLocation { get; }
+
+        void CallPolice();
     }
 }

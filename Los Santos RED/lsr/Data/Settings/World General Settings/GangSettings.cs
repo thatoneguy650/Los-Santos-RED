@@ -17,11 +17,14 @@ public class GangSettings : ISettingsDefaultable
     public float GangDrugDealPercentage { get; set; }
     public float RandomDrugDealPercent { get; set; }
     public bool ShowSpawnedGangBlip { get; set; }
+    public bool RemoveVanillaGangs { get; set; }
+
     public GangSettings()
     {
         SetDefault();
 #if DEBUG
         ShowSpawnedGangBlip = true;
+        //RemoveVanillaGangs = true;
 #else
                // ShowSpawnedBlips = false;
 #endif
@@ -38,6 +41,7 @@ public class GangSettings : ISettingsDefaultable
         GangDrugDealPercentage = 40f;
         RandomDrugDealPercent = 5f;
         ShowSpawnedGangBlip = false;
+        RemoveVanillaGangs = false;
     }
 
 }

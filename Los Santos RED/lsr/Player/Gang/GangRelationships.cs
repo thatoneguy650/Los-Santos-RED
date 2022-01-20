@@ -33,13 +33,14 @@ public class GangRelationships
     public void Update()
     {
         string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGangInitials;//might need the key here instead of just iniitilas
+        int WantedRep = 5 * Player.WantedLevel;
         foreach (GangReputation rg in GangReputations)
         {
             if(Player.IsWanted)
             {
-                if (rg.Gang.ColorInitials == CurrentGangTerritoryID)
+                if (rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
                 {
-                    ChangeReputation(rg.Gang, -5);
+                    ChangeReputation(rg.Gang, -1 * WantedRep);
                 }
             }
             else

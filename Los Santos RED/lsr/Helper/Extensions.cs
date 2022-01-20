@@ -144,6 +144,18 @@ namespace ExtensionsMethods
             //    return false;
             //}
         }
+        public static T Next<T>(this T src) where T : struct
+        {
+            if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argument {0} is not an Enum", typeof(T).FullName));
+
+            T[] Arr = (T[])Enum.GetValues(src.GetType());
+            int j = Array.IndexOf<T>(Arr, src) + 1;
+            return (Arr.Length == j) ? Arr[0] : Arr[j];
+        }
+        public static List<Enum> GetFlags(this Enum e)
+        {
+            return Enum.GetValues(e.GetType()).Cast<Enum>().Where(e.HasFlag).ToList();
+        }
         public static bool IsConsideredMainCharacter(this Ped myPed)
         {
             int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);

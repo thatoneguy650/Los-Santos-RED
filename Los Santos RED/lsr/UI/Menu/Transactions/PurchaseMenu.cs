@@ -860,14 +860,14 @@ public class PurchaseMenu : Menu
                 }
             }
         }
-        UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Purchase Ammo", $"Select to purchase ammo for this weapon.", cii.AmmoAmount, 500, cii.AmmoAmount) { Index = 0, Formatter = v => $"{v} - ${cii.AmmoPrice * v}" };
+        UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Purchase Ammo", $"Select to purchase ammo for this weapon.", cii.SubAmount, 500, cii.SubAmount) { Index = 0, Formatter = v => $"{v} - ${cii.SubPrice * v}" };
         UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
         if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, myWeapon.Hash, false))
         {
             Purchase.Enabled = false;
         }
 
-        if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
+        if (myWeapon.Category != WeaponCategory.Melee)
         {
             WeaponMenu.AddItem(PurchaseAmmo);
         }
@@ -983,7 +983,7 @@ public class PurchaseMenu : Menu
             }
             if (CurrentMenuItem != null)
             {
-                int TotalPrice = CurrentMenuItem.AmmoPrice * TotalItems;
+                int TotalPrice = CurrentMenuItem.SubPrice * TotalItems;
                 EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {1}", 5);
                 if (Player.Money < TotalPrice)
                 {

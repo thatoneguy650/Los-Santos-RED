@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using iFruitAddon2;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
@@ -52,6 +53,7 @@ public class Debug
     private PlacesOfInterest PlacesOfInterest;
     private Interiors Interiors;
     private Gangs Gangs;
+    private CustomiFruit _iFruit;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs)
     {
         PlateTypes = plateTypes;
@@ -850,11 +852,11 @@ public class Debug
     public void DebugNumpad8()
     {
 
-
-        Array values = Enum.GetValues(typeof(eSelectorSetting));
-        Random random = new Random();
-        eSelectorSetting randomBar = (eSelectorSetting)values.GetValue(random.Next(values.Length));
-        Player.SetSelector(randomBar);
+        contacttest();
+        //Array values = Enum.GetValues(typeof(SelectorOptions));
+        //Random random = new Random();
+        //SelectorOptions randomBar = (SelectorOptions)values.GetValue(random.Next(values.Length));
+        //Player.SetSelector(randomBar);
 
         //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
         //if (ClosestEntity.Exists())
@@ -1024,6 +1026,78 @@ public class Debug
             Game.DisplayNotification("Shit CRASHES!!!");
         }
     }
+
+    private void contacttest()
+    {
+        Player.AddContact("Vagos Boss",ContactIcon.MP_MexBoss);
+        Player.AddContact("LOST MC Boss", ContactIcon.MP_BikerBoss);
+        //try
+        //{
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        // Custom phone creation
+        //        _iFruit = new CustomiFruit();
+
+        //        // Phone customization (totally optional)
+        //        /*
+        //        _iFruit.CenterButtonColor = System.Drawing.Color.Orange;
+        //        _iFruit.LeftButtonColor = System.Drawing.Color.LimeGreen;
+        //        _iFruit.RightButtonColor = System.Drawing.Color.Purple;
+        //        _iFruit.CenterButtonIcon = SoftKeyIcon.Fire;
+        //        _iFruit.LeftButtonIcon = SoftKeyIcon.Police;
+        //        _iFruit.RightButtonIcon = SoftKeyIcon.Website;
+        //        */
+
+        //        // New contact (wait 4 seconds (4000ms) before picking up the phone)
+        //        iFruitContact contactA = new iFruitContact("Unknown Gang Boss", 40);
+        //        contactA.Answered += ContactAnswered;   // Linking the Answered event with our function
+        //        contactA.DialTimeout = 4000;            // Delay before answering
+        //        contactA.Active = true;                 // true = the contact is available and will answer the phone
+        //        contactA.Icon = ContactIcon.MP_MexBoss;      // Contact's icon
+        //        _iFruit.Contacts.Add(contactA);         // Add the contact to the phone
+
+        //        // New contact (wait 4 seconds before displaying "Busy...")
+        //        iFruitContact contactB = new iFruitContact("Families Boss", 41);
+        //        contactB.DialTimeout = 4000;
+        //        contactB.Active = false;                // false = the contact is busy
+        //        contactB.Icon = ContactIcon.Blocked;
+        //        contactB.Bold = true;                   // Set the contact name in bold
+        //        _iFruit.Contacts.Add(contactB);
+
+
+
+        //        while (!Game.IsKeyDownRightNow(Keys.P))
+        //        {
+        //            Game.DisplayHelp($"Press P to Stop");
+        //            _iFruit.Update();
+
+        //            GameFiber.Yield();
+        //        }
+
+        //    }, "Run Debug Logic");
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplayNotification("Shit CRASHES!!!");
+        //}
+
+
+
+
+
+    }
+
+    //private void ContactAnswered(iFruitContact contact)
+    //{
+    //    // The contact has answered, we can execute our code
+    //    Game.DisplayNotification("The contact has answered.");
+
+    //    // We need to close the phone at a moment.
+    //    // We can close it as soon as the contact pick up calling _iFruit.Close().
+    //    // Here, we will close the phone in 5 seconds (5000ms).
+    //    _iFruit.Close(5000);
+    //}
+
     private void BrowseTimecycles()
     {
         try

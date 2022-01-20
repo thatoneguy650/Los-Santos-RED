@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr.Interface
         float IntoxicatedIntensityPercent { get; }
         GameLocation CurrentShop { get; }
         WeaponInformation CurrentWeapon { get; }
-        eSelectorSetting CurrentSelectorSetting { get; }
+        SelectorOptions CurrentSelectorSetting { get; }
+        short CurrentWeaponMagazineSize { get; }
     }
 }

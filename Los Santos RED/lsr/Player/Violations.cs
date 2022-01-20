@@ -298,7 +298,7 @@ namespace LosSantosRED.lsr
                             //EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST FAST IN VEHICLE", 5);
                         }
                     }
-                    else if (Player.VehicleSpeedMPH >= 35f)
+                    else if (Player.HasBeenMovingFast)//Player.VehicleSpeedMPH >= 35f)
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime)
                         {
@@ -308,7 +308,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if(Player.VehicleSpeedMPH >= 20f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
+                        if (Player.HasBeenMoving && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)//if(Player.VehicleSpeedMPH >= 20f && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                         {
                             AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
                            // EntryPoint.WriteToConsole($"VIOLATIONS: ADDED RESISTING ARREST SLOW IN VEHICLE", 5);
@@ -317,7 +317,7 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    if (Player.Character.Exists() && Player.Character.Speed >= 1.2f)
+                    if (Player.Character.Exists() && Player.HasBeenMovingFast)//Player.Character.Speed >= 1.2f)
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
                         {
@@ -327,7 +327,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if (Player.Character.Exists() && Player.Character.Speed >= 0.5f)
+                        if (Player.Character.Exists() && Player.HasBeenMoving)
                         {
                             if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                             {

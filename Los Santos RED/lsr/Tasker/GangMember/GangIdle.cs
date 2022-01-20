@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class CivIdle : ComplexTask
+public class GangIdle : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
@@ -56,7 +56,7 @@ public class CivIdle : ComplexTask
            // }
         }
     }
-    public CivIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "CivIdle";
         SubTaskName = "";

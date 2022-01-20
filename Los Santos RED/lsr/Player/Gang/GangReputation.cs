@@ -49,11 +49,11 @@ public class GangReputation
     {
         get
         {
-            if(ReputationLevel <= 0)
+            if(ReputationLevel < 0)
             {
                 return GangRespect.Hostile;
             }
-            else if(ReputationLevel > 0 && ReputationLevel < 500)
+            else if(ReputationLevel >= 0 && ReputationLevel < 500)
             {
                 return GangRespect.Neutral;
             }

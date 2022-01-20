@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
     {
         LocationData CurrentLocation { get; }
         bool IsWanted { get; }
+        int WantedLevel { get; }
 
         void SetDenStatus(Gang gang, bool v);
     }

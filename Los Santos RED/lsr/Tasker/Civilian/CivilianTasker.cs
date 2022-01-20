@@ -135,7 +135,7 @@ public class CivilianTasker
                 }
                 else if (Civilian.WillFight)
                 {
-                    if (SeenAngryCrime)
+                    if (SeenAngryCrime && Player.IsNotWanted)
                     {
                         if (Civilian.CurrentTask?.Name != "Fight")
                         {

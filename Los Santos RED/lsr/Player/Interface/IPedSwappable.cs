@@ -26,7 +26,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; set; }
         bool IsBusted { get; }
         Cop AliasedCop { get; set; }
-        string PlayerName { get; }
+        string PlayerName { get; set; }
         //List<HeadOverlayData> CurrentHeadOverlays { get; set; }
         //HeadBlendData CurrentHeadBlendData { get; set; }
         //int CurrentPrimaryHairColor { get; set; }

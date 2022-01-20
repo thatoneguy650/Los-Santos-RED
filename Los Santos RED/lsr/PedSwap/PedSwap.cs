@@ -289,19 +289,22 @@ public class PedSwap : IPedSwap
             HandlePreviousPed(true);
             PostLoad(modelName, false, fullName, money, variation);
             GiveHistory();
+            Player.DisplayPlayerNotification();
         }
         catch (Exception e3)
         {
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-    public void BecomeSamePed(string modelName, PedVariation variation)
+    public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation)
     {
         try
         { 
             Player.IsCop = false;
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
+            Player.PlayerName = fullName;
+            Player.SetMoney(money);
             if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
             {
                 SetPlayerOffset();
@@ -312,6 +315,7 @@ public class PedSwap : IPedSwap
             {
                 variation.ApplyToPed(Game.LocalPlayer.Character);
             }
+            Player.DisplayPlayerNotification();
         }
         catch (Exception e3)
         {

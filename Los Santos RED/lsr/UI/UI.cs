@@ -74,6 +74,7 @@ public class UI : IMenuProvideable
     private Fader ZoneFader;
     private Fader VehicleFader;
     private Fader PlayerFader;
+    private Fader WeaponFader;
     private bool ZoneDisplayingStreetAlpha = false;
     private bool playerIsInVehicle = false;
     private ITimeControllable Time;
@@ -83,12 +84,13 @@ public class UI : IMenuProvideable
     private string lastCrimesDisplay;
     private string lastVehicleStatusDisplay;
     private string lastPlayerDisplay;
+    private string lastWeaponDisplay;
     private string lastStreetDisplay;
     private string lastZoneDisplay;
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
     private string overrideTimeDisplay = "";
-    private Texture WeaponSelectorToDraw;
+    //private Texture WeaponSelectorToDraw;
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
@@ -112,6 +114,7 @@ public class UI : IMenuProvideable
         ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
+        WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
     }
     private enum GTAHudComponent
     {
@@ -166,11 +169,11 @@ public class UI : IMenuProvideable
         Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
 
 
-        selectorauto = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorauto.png");
-        selectorsafe = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsafe.png");
-        selectorsemi = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsemi.png");
-        selectorthree = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorthree.png");
-        selectortwo = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectortwo.png");
+        //selectorauto = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorauto.png");
+        //selectorsafe = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsafe.png");
+        //selectorsemi = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsemi.png");
+        //selectorthree = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorthree.png");
+        //selectortwo = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectortwo.png");
 
     }
     public void Dispose()
@@ -204,8 +207,6 @@ public class UI : IMenuProvideable
         GameTimeLastDrawnUI = Game.GameTime;
         if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
-
-
             if (Settings.SettingsManager.UISettings.ShowDebug)
             {
                 ShowDebugUI();
@@ -218,6 +219,22 @@ public class UI : IMenuProvideable
             {
                 DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
             }
+
+            if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+            {
+                WeaponFader.Update(lastWeaponDisplay);
+                if (Settings.SettingsManager.UISettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeWeaponDisplayDuringWantedAndInvestigation))
+                {
+                    DisplayTextOnScreen(WeaponFader.TextToShow, Settings.SettingsManager.UISettings.WeaponDisplayPositionX, Settings.SettingsManager.UISettings.WeaponDisplayPositionY, Settings.SettingsManager.UISettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.UISettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.UISettings.WeaponDisplayJustificationID, WeaponFader.AlphaValue);
+                }
+                else
+                {
+                    DisplayTextOnScreen(lastWeaponDisplay, Settings.SettingsManager.UISettings.WeaponDisplayPositionX, Settings.SettingsManager.UISettings.WeaponDisplayPositionY, Settings.SettingsManager.UISettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.UISettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.UISettings.WeaponDisplayJustificationID);
+                }
+            }
+
+
+
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
                 PlayerFader.Update(lastPlayerDisplay);
@@ -390,10 +407,10 @@ public class UI : IMenuProvideable
             {
                 GetSpeedLimitDisplay();
             }
-            if (Settings.SettingsManager.UISettings.ShowSelectorDisplay)
-            {
-                GetSelectorDisplay();
-            }
+            //if (Settings.SettingsManager.UISettings.ShowSelectorDisplay)
+            //{
+            //    GetSelectorDisplay();
+            //}
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
                 lastVehicleStatusDisplay = GetVehicleStatusDisplay();
@@ -401,10 +418,10 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
                 lastPlayerDisplay = GetPlayerDisplay();
-                //if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation))
-                //{
-                //    PlayerFader.Update(lastPlayerDisplay);
-                //}
+            }
+            if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+            {
+                lastWeaponDisplay = GetWeaponDisplay();
             }
             if (playerIsInVehicle != DisplayablePlayer.IsInVehicle)
             {
@@ -609,17 +626,17 @@ public class UI : IMenuProvideable
                     args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
                 }
             }
-            if (DrawWeaponSelectorTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
-            {
-                if (WeaponSelectorToDraw != null && WeaponSelectorToDraw.Size != null)
-                {
-                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-                    float Scale = Settings.SettingsManager.UISettings.SelectorScale * ConsistencyScale;
-                    float posX = (Game.Resolution.Height - (WeaponSelectorToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionX;
-                    float posY = (Game.Resolution.Width - (WeaponSelectorToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionY;
-                    args.Graphics.DrawTexture(WeaponSelectorToDraw, new RectangleF(posY, posX, WeaponSelectorToDraw.Size.Width * Scale, WeaponSelectorToDraw.Size.Height * Scale));
-                }
-            }
+            //if (DrawWeaponSelectorTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
+            //{
+            //    if (WeaponSelectorToDraw != null && WeaponSelectorToDraw.Size != null)
+            //    {
+            //        float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+            //        float Scale = Settings.SettingsManager.UISettings.SelectorScale * ConsistencyScale;
+            //        float posX = (Game.Resolution.Height - (WeaponSelectorToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionX;
+            //        float posY = (Game.Resolution.Width - (WeaponSelectorToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SelectorPositionY;
+            //        args.Graphics.DrawTexture(WeaponSelectorToDraw, new RectangleF(posY, posX, WeaponSelectorToDraw.Size.Width * Scale, WeaponSelectorToDraw.Size.Height * Scale));
+            //    }
+            //}
         }
         catch(Exception ex)
         {
@@ -673,6 +690,7 @@ public class UI : IMenuProvideable
         } 
         return TimeDisplay;
     }
+
     private void GetSpeedLimitDisplay()
     {
         if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
@@ -764,50 +782,98 @@ public class UI : IMenuProvideable
             DrawSpeedLimitTexture = false;
         }
     }
-    private void GetSelectorDisplay()
+    private string GetSelectorDisplay()
     {
         if (DisplayablePlayer.CurrentWeapon != null)
         {
-            if(DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.Safe)
+            if (Settings.SettingsManager.UISettings.WeaponDisplaySimpleSelector)
             {
-                WeaponSelectorToDraw = selectorsafe;
-            }
-            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.SemiAuto)
-            {
-                WeaponSelectorToDraw = selectorsemi;
-            }
-            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.TwoRoundBurst)
-            {
-                WeaponSelectorToDraw = selectortwo;
-            }
-            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.ThreeRoundBurst)
-            {
-                WeaponSelectorToDraw = selectorthree;
-            }
-            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.FiveRoundBurst)
-            {
-                WeaponSelectorToDraw = selectorauto;
-            }
-            else if (DisplayablePlayer.CurrentSelectorSetting == eSelectorSetting.FullAuto)
-            {
-                WeaponSelectorToDraw = selectorauto;
+                if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.Safe)
+                {
+                    return "~w~S~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                {
+                    return "~r~1~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                {
+                    return "~r~2~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                {
+                    return "~r~3~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                {
+                    return "~r~4~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                {
+                    return "~r~5~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                {
+                    if (DisplayablePlayer.CurrentWeaponMagazineSize == 0)
+                    {
+                        return $"~r~FULL AUTO~s~";
+                    }
+                    else
+                    {
+                        return $"~r~{DisplayablePlayer.CurrentWeaponMagazineSize}~s~";
+                    }
+                }
+                else
+                {
+                    return "";
+                }
             }
             else
             {
-                WeaponSelectorToDraw = null;
+                if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.Safe)
+                {
+                    return "~s~SAFE~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                {
+                    return "~r~Semi-Auto~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                {
+                    return "~r~2 Round Burst~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                {
+                    return "~r~3 Round Burst~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                {
+                    return "~r~4 Round Burst~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                {
+                    return "~r~5 Round Burst~s~";
+                }
+                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                {
+                    if (DisplayablePlayer.CurrentWeaponMagazineSize == 0)
+                    {
+                        return $"~r~FULL AUTO~s~";
+                    }
+                    else
+                    {
+                        return $"~r~FULL AUTO ~s~(~r~{DisplayablePlayer.CurrentWeaponMagazineSize}~s~)~s~";
+                    }
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
         else
         {
-            WeaponSelectorToDraw = null;
-        }
-        if (WeaponSelectorToDraw != null)
-        {
-            DrawWeaponSelectorTexture = true;
-        }
-        else
-        {
-            DrawWeaponSelectorTexture = false;
+            return "";
         }
     }
     private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
@@ -962,6 +1028,22 @@ public class UI : IMenuProvideable
             }
         }
         return PlayerDisplay;
+    }
+    private string GetWeaponDisplay()
+    {
+        string WeaponDisplay = "";
+        if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+        {
+            if (WeaponDisplay == "")
+            {
+                WeaponDisplay = $"{CurrentDefaultTextColor}" + GetSelectorDisplay();
+            }
+            else
+            {
+                WeaponDisplay += $" {CurrentDefaultTextColor}" + GetSelectorDisplay();
+            }
+        }
+        return WeaponDisplay;
     }
     private string GetStreetDisplay()
     {

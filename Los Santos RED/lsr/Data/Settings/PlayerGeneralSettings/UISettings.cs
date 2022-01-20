@@ -92,13 +92,17 @@ public class UISettings : ISettingsDefaultable
     public float StaminaBarWidth { get; set; }
     public float StaminaBarHeight { get; set; }
 
-
-    public bool ShowSelectorDisplay { get; set; }
-    public float SelectorPositionX { get; set; }
-    public float SelectorPositionY { get; set; }
-    public float SelectorScale { get; set; }
-
-
+    public bool ShowWeaponDisplay { get; set; }
+    public bool FadeWeaponDisplay { get; set; }
+    public float WeaponDisplayPositionX { get; set; }
+    public float WeaponDisplayPositionY { get; set; }
+    public float WeaponDisplayScale { get; set; }
+    public GTAFont WeaponDisplayFont { get; set; }
+    public int WeaponDisplayJustificationID { get; set; }
+    public bool FadeWeaponDisplayDuringWantedAndInvestigation { get; set; }
+    public uint WeaponDisplayTimeToShow { get; set; }
+    public uint WeaponDisplayTimeToFade { get; set; }
+    public bool WeaponDisplaySimpleSelector { get; set; }
 
     public UISettings()
     {
@@ -118,7 +122,7 @@ public class UISettings : ISettingsDefaultable
         CrimesViolatingJustificationID = 2;
         CrimesViolatingFont = GTAFont.FontChaletComprimeCologne;
         ShowSpeedLimitDisplay = true;
-        SpeedLimitPositionX = 0.78f;
+        SpeedLimitPositionX = 0.75f;//0.78f
         SpeedLimitPositionY = 0.98f;
         SpeedLimitScale = 0.2f;
         ShowVehicleStatusDisplay = true;
@@ -194,9 +198,16 @@ public class UISettings : ISettingsDefaultable
         StaminaBarWidth = 0.07f;
         StaminaBarHeight = 0.0075f;
 
-        ShowSelectorDisplay = true;
-        SelectorPositionX = 0.7f;
-        SelectorPositionY = 0.98f;
-        SelectorScale = 0.5f;
+        ShowWeaponDisplay = true;
+        FadeWeaponDisplay = true;
+        FadeWeaponDisplayDuringWantedAndInvestigation = false;
+        WeaponDisplayTimeToShow = 2500;
+        WeaponDisplayTimeToFade = 2500;
+        WeaponDisplayPositionX = 0.78f;
+        WeaponDisplayPositionY = 0.98f;
+        WeaponDisplayScale = 0.52f;
+        WeaponDisplayJustificationID = 2;
+        WeaponDisplayFont = GTAFont.FontHouseScript;
+        WeaponDisplaySimpleSelector = false;
     }
 }

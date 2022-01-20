@@ -33,7 +33,7 @@ public class PedCrimes
         {
             if(PedExt != null)
             {
-                if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" && PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" && PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
+                if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" || PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARDS" || PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" || PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" || PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
                 {
                     return false;
                 }

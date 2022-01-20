@@ -199,7 +199,7 @@ namespace LosSantosRED.lsr
             }
             if(IsPressingSelectorToggle)
             {
-                if (Game.GameTime - GameTimeLastPressedSelectorToggle >= 1000)
+                if (Game.GameTime - GameTimeLastPressedSelectorToggle >= 200)
                 {
                     Player.ToggleSelector();
                     GameTimeLastPressedSelectorToggle = Game.GameTime;
