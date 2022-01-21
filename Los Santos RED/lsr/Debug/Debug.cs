@@ -6,6 +6,7 @@ using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RNUIExamples;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ public class Debug
     private Interiors Interiors;
     private Gangs Gangs;
     private CustomiFruit _iFruit;
+    private bool Started1 = false;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs)
     {
         PlateTypes = plateTypes;
@@ -835,7 +837,8 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        StuffTwo();
+        PauseMenuExample.Main();
+        //StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;
         //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
         //GameFiber.Sleep(500);
@@ -851,8 +854,8 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-
-        contacttest();
+        Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
+        //contacttest();
         //Array values = Enum.GetValues(typeof(SelectorOptions));
         //Random random = new Random();
         //SelectorOptions randomBar = (SelectorOptions)values.GetValue(random.Next(values.Length));

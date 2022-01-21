@@ -378,7 +378,7 @@ public class PedExt : IComplexTaskable
                             CheckPlayerBusted();   
                         }
                     }
-                    if(!IsCop && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
+                    if(!IsCop && !IsMerchant && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
                     {
                         if (this.GetType() == typeof(GangMember))//gang members are no longer persistent entities for now
                         {

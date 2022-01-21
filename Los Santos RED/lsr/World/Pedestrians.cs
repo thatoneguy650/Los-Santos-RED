@@ -310,12 +310,12 @@ public class Pedestrians
                 if(otherGang.ID != gang.ID)
                 {
                     RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
+                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Like);
                 }
             }
-            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
-            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Like);
+            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
         }
     }
     public void CreateNew()
@@ -341,9 +341,13 @@ public class Pedestrians
             }
             else
             {
-                if(Pedestrian.IsGangMember() && !GangMembers.Any(x => x.Handle == localHandle))
+                if(Pedestrian.IsGangMember())
                 {
-                    if (Settings.SettingsManager.GangSettings.RemoveVanillaGangs)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+                    if(GangMembers.Any(x => x.Handle == localHandle))
+                    {
+                        continue;
+                    }
+                    if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
                     {
                         Pedestrian.Delete();
                         continue;
@@ -351,13 +355,12 @@ public class Pedestrians
                     AddGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
-                if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle))
+                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle))
                 {
                     AddCivilian(Pedestrian);
                     GameFiber.Yield();
                 }
             }
-            
         }
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
@@ -366,26 +369,25 @@ public class Pedestrians
         GameTimeLastCreatedPeds = Game.GameTime;
     }
     private void AddCivilian(Ped Pedestrian)
-    {
-        SetCivilianStats(Pedestrian);
-        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
-        bool WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
+    {  
+        bool WillFight = false;
+        bool WillCallPolice = false;
         bool IsGangMember = false;
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {
-            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
+            if (Pedestrian.IsSecurity())
             {
-                IsGangMember = true;
-                WillFight = true;
+                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage);
                 WillCallPolice = false;
             }
-            else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage) && Pedestrian.IsSecurity())
+            else
             {
-                WillFight = true;
-                WillCallPolice = false;
+                SetCivilianStats(Pedestrian);
+                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
+                WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
             }
-            else if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
+            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
                 WillFight = false;
                 WillCallPolice = false;
@@ -398,11 +400,7 @@ public class Pedestrians
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
         ShopMenu toAdd = null;
-        if (IsGangMember && RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
-        {
-            toAdd = ShopMenus.GetRanomdDrugMenu();
-        }
-        else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.RandomDrugDealPercent))
+        if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentage))
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
@@ -417,17 +415,10 @@ public class Pedestrians
             MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName);
         }
         SetCivilianStats(Pedestrian);
-        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage);
+        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage);
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
-        {
-            //if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage) && Pedestrian.IsGangMember())
-            //{
-            //    WillFight = true;
-            //}
-            //else 
-            
-            
+        {    
             if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
                 WillFight = false;
@@ -440,15 +431,11 @@ public class Pedestrians
             myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
         }
         ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
+        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
         {
             toAdd = ShopMenus.GetRanomdDrugMenu();
         }
-
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
-
-
-
         WeaponInformation melee = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
         uint meleeHash = 0;
         if (melee != null && RandomItems.RandomPercent(MyGang.PercentageWithMelee))
@@ -475,8 +462,6 @@ public class Pedestrians
             myCop.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
             myCop.ShootRate = Settings.SettingsManager.PoliceSettings.GeneralShootRate;
             myCop.CombatAbility = Settings.SettingsManager.PoliceSettings.GeneralCombatAbility;
-
-
             if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
             {
                 Police.Add(myCop);

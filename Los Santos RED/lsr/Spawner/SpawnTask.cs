@@ -31,10 +31,10 @@ public class SpawnTask
 
     private SpawnLocation SpawnLocation;
 
-    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
+    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
     {
         Agency = agency;
-        PersonType = officerType;
+        PersonType = personType;
         VehicleType = vehicleType;
         AddBlip = addBlip;
         SpawnLocation = spawnLocation;
@@ -46,10 +46,10 @@ public class SpawnTask
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
     }
-    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus)
+    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus)
     {
         Gang = gang;
-        PersonType = officerType;
+        PersonType = personType;
         VehicleType = vehicleType;
         AddBlip = addBlip;
         SpawnLocation = spawnLocation;
@@ -184,11 +184,8 @@ public class SpawnTask
     {
         try
         {
-            EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {PersonType.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {PersonType.ModelName}", 3);
             Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
-            //Model modelToCreate = new Model(Game.GetHashKey(PersonType.ModelName));
-            //modelToCreate.LoadAndWait();
-            //Ped ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(PersonType.ModelName), Position.X, Position.Y, Position.Z + 1f, Heading, false, false);
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             if (ped.Exists())
@@ -197,13 +194,6 @@ public class SpawnTask
                 ped.MaxHealth = DesiredHealth;
                 ped.Health = DesiredHealth;
                 ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
-
-
-
-
-
-
-
 
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
                 ped.RandomizeVariation();
@@ -225,20 +215,11 @@ public class SpawnTask
                 {
                     return null;
                 }
-
                 PedExt Person = null;
                 if (Agency != null)
                 {
-
-
-
-
                     ped.IsPersistent = true;
                     EntryPoint.PersistentPedsCreated++;//TR
-
-
-
-
 
                     if (AddBlip && ped.Exists())
                     {
@@ -248,6 +229,8 @@ public class SpawnTask
                     }
                     if (Agency.ResponseType == ResponseType.LawEnforcement)
                     {
+                        RelationshipGroup rg = new RelationshipGroup("COP");
+                        ped.RelationshipGroup = rg;
                         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
                         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
                         PrimaryCop.IssueWeapons(Weapons,(uint)WeaponHash.StunGun,true,true);
@@ -258,39 +241,41 @@ public class SpawnTask
                     }
                     else if (Agency.ResponseType == ResponseType.EMS)
                     {
+                        RelationshipGroup rg = new RelationshipGroup("MEDIC");
+                        ped.RelationshipGroup = rg;
                         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
                         Person = PrimaryEmt;
                     }
                     else if (Agency.ResponseType == ResponseType.Fire)
                     {
+                        RelationshipGroup rg = new RelationshipGroup("FIREMAN");
+                        ped.RelationshipGroup = rg;
                         Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
                         Person = PrimaryFirefighter;
                     }
                 }
                 else if(Gang != null)
                 {
-                    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED GANG MEMBER {Gang.ID}", 5);
+                    //EntryPoint.WriteToConsole($"SPAWN TASK: CREATED GANG MEMBER {Gang.ID}", 5);
                     if (AddBlip && ped.Exists())
                     {
                         Blip myBlip = ped.AttachBlip();
                         myBlip.Color = Gang.Color;
                         myBlip.Scale = 0.6f;
                     }
-
                     RelationshipGroup rg = new RelationshipGroup(Gang.ID);
                     ped.RelationshipGroup = rg;
-
                     PedGroup myGroup = RelationshipGroups.GetPedGroup(Gang.ID);
                     if (myGroup == null)
                     {
                         myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
                     }
                     ShopMenu toAdd = null;
-                    if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangDrugDealPercentage))
+                    if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
                     {
                         toAdd = ShopMenus.GetRanomdDrugMenu();//move this into the gang as well
                     }
-                    GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.GangFightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
+                    GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
                     Person = GangMember;
                     WeaponInformation melee =  Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
                     uint meleeHash = 0;
@@ -305,17 +290,6 @@ public class SpawnTask
                     ped.Accuracy = GangMember.Accuracy;
                     NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
                     NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
-                    //ped.BlockPermanentEvents = false;
-                    //ped.KeepTasks = false;
-                    //ped.Tasks.Clear();
-                    //if (ped.IsInAnyVehicle(false) && ped.CurrentVehicle.Exists())
-                    //{
-                    //    NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(ped, ped.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
-                    //}
-                    //else
-                    //{
-                    //    NativeFunction.Natives.TASK_WANDER_STANDARD(ped, 0, 0);
-                    //}
                 }
                 CreatedPeople.Add(Person);
                 return Person;

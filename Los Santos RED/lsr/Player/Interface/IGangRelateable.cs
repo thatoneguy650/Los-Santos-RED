@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; }
         bool IsWanted { get; }
         int WantedLevel { get; }
+        List<GangReputation> GangReputations { get; }
+        int Money { get; }
+        string PlayerName { get; }
+        List<Crime> WantedCrimes { get; }
+        VehicleExt OwnedVehicle { get; }
 
         void SetDenStatus(Gang gang, bool v);
     }

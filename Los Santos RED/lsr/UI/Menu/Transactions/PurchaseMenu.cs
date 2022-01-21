@@ -1421,7 +1421,8 @@ public class PurchaseMenu : Menu
     private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
     {
         //Hide();
-
+        IsActivelyConversing = true;
+        Hide();
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
@@ -1511,7 +1512,8 @@ public class PurchaseMenu : Menu
             GangMember gm = (GangMember)Ped;
             Player.ChangeReputation(gm.Gang, 200);
         }
-        //Show();     
+        //Show();   
+        Show();
     }
 
     //Vending Machine Only

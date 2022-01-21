@@ -190,6 +190,7 @@ namespace Mod
         public uint HasBeenWantedFor => PoliceResponse.HasBeenWantedFor;
         public void AddToInventory(ModItem toadd, int v) => Inventory.Add(toadd, v);
         public bool HasItemInInventory(string Name) => Inventory.Get(Name)?.Amount > 0;
+        public List<Crime> WantedCrimes => CriminalHistory.WantedCrimes;
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
         public bool HasCurrentActivity => UpperBodyActivity != null;
@@ -197,6 +198,10 @@ namespace Mod
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
         public Investigation Investigation { get; private set; }
+
+        public List<GangReputation> GangReputations => GangRelationships.GangReputations;
+
+
         public bool IsAiming
         {
             get => isAiming;

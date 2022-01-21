@@ -63,7 +63,7 @@ public class WeaponRecoil
         AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticalRecoil, Player.CurrentWeapon.MaxVerticalRecoil);
         if (Player.IsInVehicle)
         {
-            AdjustedPitch *= 1.0f;//2.0f;//5.0 is good with pistol too much for automatic
+            AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
             AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalInVehicleRecoilAdjuster;
         }
         else
@@ -81,6 +81,7 @@ public class WeaponRecoil
         }
         if(Player.IsInVehicle)
         {
+            AdjustedHeading *= 0.2f;
             AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalInVehicleRecoilAdjuster;
         }
         else

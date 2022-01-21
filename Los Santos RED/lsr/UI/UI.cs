@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ExtensionsMethods;
+using RAGENativeUI.PauseMenu;
 
 public class UI : IMenuProvideable
 {
@@ -90,12 +91,13 @@ public class UI : IMenuProvideable
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
     private string overrideTimeDisplay = "";
+    private ReportingMenu ReportingMenu;
     //private Texture WeaponSelectorToDraw;
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -107,7 +109,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
-        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems);
+        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
@@ -115,6 +117,7 @@ public class UI : IMenuProvideable
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
         WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
+        ReportingMenu = new ReportingMenu(gangRelateable, Time, placesOfInterest, gangs);
     }
     private enum GTAHudComponent
     {
@@ -174,7 +177,7 @@ public class UI : IMenuProvideable
         //selectorsemi = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorsemi.png");
         //selectorthree = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorthree.png");
         //selectortwo = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectortwo.png");
-
+        ReportingMenu.Setup();
     }
     public void Dispose()
     {
@@ -186,8 +189,11 @@ public class UI : IMenuProvideable
     }
     public void Tick()
     {
-       DrawUI();
-        MenuUpdate();
+        if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
+        {
+            DrawUI();
+        }
+       MenuUpdate();
     }
     public void Tick2()
     {
@@ -461,9 +467,6 @@ public class UI : IMenuProvideable
             }
         }
     }
-
-
-
     private void ShowDebugUI()
     {
         //float StartingPoint = 0.1f;
@@ -479,6 +482,13 @@ public class UI : IMenuProvideable
         //DisplayTextOnScreen($"{DisplayablePlayer.DebugLine9}", StartingPoint + 0.09f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen(World.DebugString, StartingPoint + 0.10f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //DisplayTextOnScreen(Tasker.TaskerDebug, StartingPoint + 0.12f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+    }
+    public void ToggleReportingMenu()
+    {
+        //if (!menuPool.IsAnyMenuOpen())
+        //{
+            ReportingMenu.Toggle();
+      //  }
     }
     public void ToggleMenu()
     {
@@ -690,7 +700,6 @@ public class UI : IMenuProvideable
         } 
         return TimeDisplay;
     }
-
     private void GetSpeedLimitDisplay()
     {
         if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
@@ -1111,6 +1120,7 @@ public class UI : IMenuProvideable
     private void MenuUpdate()
     {
         menuPool.ProcessMenus();
+        ReportingMenu.Update();
     }
     private void RadarUpdate()
     {

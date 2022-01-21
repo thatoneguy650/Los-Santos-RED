@@ -32,6 +32,7 @@ namespace LosSantosRED.lsr
         public bool HasHistory => CurrentHistory != null;
         public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.ResultsInLethalForce);
         public int MaxWantedLevel => LastWantedMaxLevel;
+        public List<Crime> WantedCrimes => CurrentHistory?.Crimes;
         public void Dispose()
         {
             if (CriminalHistoryBlip.Exists())
@@ -91,7 +92,8 @@ namespace LosSantosRED.lsr
         }
         public void AddCrime(Crime crime)
         {
-            if(CurrentHistory == null)
+            Player.PoliceResponse.OnLostWanted();
+            if (CurrentHistory == null)
             {
                 CurrentHistory = new BOLO(Vector3.Zero,new List<Crime>() { crime }, crime.ResultingWantedLevel);
             }

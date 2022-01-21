@@ -512,13 +512,13 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of Raine Water", 2) }),
             new ShopMenu("ChihuahuaHotDogMenu","Chihuahua HotDogs",new List<MenuItem>() { 
-                new MenuItem("Hot Dog", 5, 2),
+                new MenuItem("Hot Dog", 5),
                 new MenuItem("Hot Sausage", 5),
                 new MenuItem("Hot Pretzel", 2),
                 new MenuItem("3 Mini Pretzels", 3),
                 new MenuItem("Nuts", 2),
-                new MenuItem("Can of Sprunk", 1, 1),
-                new MenuItem("Bottle of Raine Water", 2, 1) }),
+                new MenuItem("Can of Sprunk", 1),
+                new MenuItem("Bottle of Raine Water", 2) }),
             new ShopMenu("TacoFarmerMenu","Taco Farmer",new List<MenuItem>() { 
                 new MenuItem("Taco", 2),
                 new MenuItem("Can of eCola", 1),

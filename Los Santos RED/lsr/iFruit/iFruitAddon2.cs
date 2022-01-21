@@ -8,6 +8,12 @@ using System.Reflection;
 
 
 /*
+ * 
+ * 
+ * 
+ * CREDIT: Bob74
+ * PORT OF: https://github.com/Bob74/iFruitAddon2
+ * 
     Changelog:
         2.1.0 (05/03/2018): - Changed the way contact index is stored to allow multiple mods to share the value (it wasn't working as expected).
                             - Added a "Bold" option to contacts. It sets the contact text in bold or not.

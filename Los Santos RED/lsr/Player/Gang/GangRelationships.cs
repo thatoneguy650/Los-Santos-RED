@@ -9,11 +9,8 @@ using System.Threading.Tasks;
 public class GangRelationships
 {
     private IGangs Gangs;
-    private List<GangReputation> GangReputations =  new List<GangReputation>();
-    //private int DefaultRepAmount = 200;
-    //private int RepMaximum = 2000;
-    //private int RepMinimum = -2000;
     private IGangRelateable Player;
+    public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
     public GangRelationships(IGangs gangs, IGangRelateable player)
     {
         Gangs = gangs;
@@ -141,7 +138,6 @@ public class GangRelationships
             return newRep.GangRelationship == GangRespect.Hostile;
         }
     }
-
     public void FriendlyReputations()
     {
         foreach (GangReputation rg in GangReputations)
@@ -149,7 +145,6 @@ public class GangRelationships
             rg.ReputationLevel = rg.RepMaximum;
         }
     }
-
     public void HostileReputations()
     {
         foreach (GangReputation rg in GangReputations)

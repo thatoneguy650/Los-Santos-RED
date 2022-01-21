@@ -22,15 +22,17 @@ public class MainMenu : Menu
 
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
-    private UIMenuItem ShowGangStatus;
+    private UIMenuItem ShowReportingMenu;
     private UIMenuItem TakeVehicleOwnership;
     private ISettingsProvideable Settings;
     private ITaskerable Tasker;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems)
+    private UI UI;
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui)
     {
         Player = player;
         Settings = settings;
         Tasker = tasker;
+        UI = ui;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         Main.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         menuPool.Add(Main);
@@ -100,16 +102,16 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
-        ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
-        ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-        ShowGangStatus = new UIMenuItem("Show Gang Relationship", "Show the player relationship to different gangs with a notification");
-        ShowGangStatus.RightBadge = UIMenuItem.BadgeStyle.Lock;
+        //ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
+        //ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        ShowReportingMenu = new UIMenuItem("Status Menu", "Show the player status menu");
+        ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star; 
-        Main.AddItem(ShowStatus);
-        Main.AddItem(ShowGangStatus);
+       // Main.AddItem(ShowStatus);
+        Main.AddItem(ShowReportingMenu);
         Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(UnloadMod);
     }
@@ -119,9 +121,10 @@ public class MainMenu : Menu
         {
             Player.DisplayPlayerNotification();
         }
-        else if (selectedItem == ShowGangStatus)
+        else if (selectedItem == ShowReportingMenu)
         {
-            Player.DisplayPlayerGangNotification();
+            UI.ToggleReportingMenu();
+            //Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == UnloadMod)
         {

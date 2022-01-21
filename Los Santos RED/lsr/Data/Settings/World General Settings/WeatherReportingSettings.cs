@@ -28,7 +28,7 @@ public class WeatherReportingSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ReportWeather = true;
-        ReportWeather_MinimumTimeBetweenReports = 30000;
+        ReportWeather_MinimumTimeBetweenReports = 10000;
         ReportWeather_MinimumTimeBetweenAudioReports = 180000;
         ReportChangedCurrentWeather = false;
         ReportChangedForecastedWeather = true;
@@ -36,8 +36,8 @@ public class WeatherReportingSettings : ISettingsDefaultable
         ReportWindyWeather_MinimumTimeBetweenAudioReports = 180000;
         ReportWindyWeather_MinimumSpeed = 11.5f;
         ShowWeatherNotifications = true;
-        PlayWeatherAudio = true;
-        RequireVehicleForAudio = false;
+        PlayWeatherAudio = false;
+        RequireVehicleForAudio = true;
         WeatherAudio_MuteRadio = true;
         PlayWeatherAudioInVehicleOnly = true;
     }

@@ -122,4 +122,21 @@ public class GangReputation
         }
         return Gang.ColorInitials.ToString() + ending + $" ({ReputationLevel})";
     }
+    public string ToStringBare()
+    {
+        string ending = "";
+        if (GangRelationship == GangRespect.Friendly)
+        {
+            ending = "~g~Friendly~s~";
+        }
+        else if (GangRelationship == GangRespect.Neutral)
+        {
+            ending = "~s~Neutral~s~";
+        }
+        else if (GangRelationship == GangRespect.Hostile)
+        {
+            ending = "~r~Hostile~s~";
+        }
+        return ending + $" ({ReputationLevel})";
+    }
 }

@@ -11,7 +11,6 @@ public class CivilianSettings : ISettingsDefaultable
     public float FightPercentage { get; set; }
     public float CallPolicePercentage { get; set; }
     public float SecurityFightPercentage { get; set; }
-    public float GangFightPercentage { get; set; }
     public bool OverrideHealth { get; set; }
     public int MinHealth { get; set; }
     public int MaxHealth { get; set; }
@@ -26,17 +25,15 @@ public class CivilianSettings : ISettingsDefaultable
     public bool CheckCivilianCrimes { get; set; }
     public bool AllowCivilinsToCallPoliceOnOtherCivilians { get; set; }
     public bool ShowRandomCriminalBlips { get; set; }
-    public float GangDrugDealPercentage { get; set; }
-    public float RandomDrugDealPercent { get; set; }
-    public bool ShowSpawnedGangBlip { get; set; }
+    public float DrugDealerPercentage { get; set; }
 
     public CivilianSettings()
     {
         SetDefault();
 #if DEBUG
-        ShowSpawnedGangBlip = true;
+
 #else
-               // ShowSpawnedBlips = false;
+
 #endif
     }
     public void SetDefault()
@@ -45,7 +42,6 @@ public class CivilianSettings : ISettingsDefaultable
         FightPercentage = 2f;//7f//5f//let
         CallPolicePercentage = 25f;//65f;//55f
         SecurityFightPercentage = 30f;//70f
-        GangFightPercentage = 55f;//85f
         OverrideHealth = true;
         MinHealth = 70;
         MaxHealth = 100;
@@ -60,9 +56,7 @@ public class CivilianSettings : ISettingsDefaultable
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         ShowRandomCriminalBlips = true;
-        GangDrugDealPercentage = 40f;
-        RandomDrugDealPercent = 5f;
-        ShowSpawnedGangBlip = false;
+        DrugDealerPercentage = 5f;
     }
 
 }

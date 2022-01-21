@@ -9,21 +9,16 @@ public class GangSettings : ISettingsDefaultable
 {
     public bool ManageTasking { get; set; }
     public float FightPercentage { get; set; }
-    public float CallPolicePercentage { get; set; }
-    public float SecurityFightPercentage { get; set; }
-    public float GangFightPercentage { get; set; }
-    public bool CheckCivilianCrimes { get; set; }
-    public bool ShowRandomCriminalBlips { get; set; }
-    public float GangDrugDealPercentage { get; set; }
-    public float RandomDrugDealPercent { get; set; }
-    public bool ShowSpawnedGangBlip { get; set; }
-    public bool RemoveVanillaGangs { get; set; }
-
+    public bool CheckCrimes { get; set; }
+    public float DrugDealerPercentage { get; set; }
+    public bool ShowSpawnedBlip { get; set; }
+    public bool RemoveVanillaSpawnedPeds { get; set; }
+    public int PercentSpawnOutsideTerritory { get; set; }
     public GangSettings()
     {
         SetDefault();
 #if DEBUG
-        ShowSpawnedGangBlip = true;
+        ShowSpawnedBlip = true;
         //RemoveVanillaGangs = true;
 #else
                // ShowSpawnedBlips = false;
@@ -32,16 +27,12 @@ public class GangSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ManageTasking = true;
-        FightPercentage = 2f;//7f//5f//let
-        CallPolicePercentage = 25f;//65f;//55f
-        SecurityFightPercentage = 30f;//70f
-        GangFightPercentage = 55f;//85f
-        CheckCivilianCrimes = true;
-        ShowRandomCriminalBlips = true;
-        GangDrugDealPercentage = 40f;
-        RandomDrugDealPercent = 5f;
-        ShowSpawnedGangBlip = false;
-        RemoveVanillaGangs = false;
+        FightPercentage = 55f;
+        CheckCrimes = true;
+        DrugDealerPercentage = 40f;
+        ShowSpawnedBlip = false;
+        RemoveVanillaSpawnedPeds = false;
+        PercentSpawnOutsideTerritory = 10;
     }
 
 }

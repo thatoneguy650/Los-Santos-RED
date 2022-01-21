@@ -281,6 +281,9 @@
     <Compile Include="lsr\Ped\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
+    <Compile Include="lsr\UI\Pause Menu\ReportingMenu.cs" />
+    <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
+    <Compile Include="lsr\UI\Pause Menu\Util.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
     <Compile Include="lsr\Weapon\ComponentSlot.cs" />
@@ -441,6 +444,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="lsr\iFruit\License.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

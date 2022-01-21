@@ -34,7 +34,7 @@ public class GangTasker
     }
     public void Update()
     {
-        if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
+        if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
             Tasker.ExpireSeatAssignments();
             bool anyCopsNearPosition = PedProvider.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
