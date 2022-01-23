@@ -453,6 +453,7 @@ namespace LosSantosRED.lsr
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
                 {
+                    EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, starting execution", 5);
                     ExecutingQueue = true;
                     GameFiber.Yield();
                     GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
@@ -488,6 +489,7 @@ namespace LosSantosRED.lsr
                             GameFiber.Yield();
                         }
                         ExecutingQueue = false;
+                        EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, finishing execution, DONE", 5);
                     }, "PlayDispatchQueue");
                 }
             }
@@ -913,9 +915,6 @@ namespace LosSantosRED.lsr
                 dispatchEvent.NotificationText += " Gat";
             }
         }
-
-
-
         private void AddWeaponsFree(DispatchEvent dispatchEvent)
         {
             if (!ReportedWeaponsFree)
@@ -1028,14 +1027,6 @@ namespace LosSantosRED.lsr
         {
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
             DispatchEvent EventToPlay = new DispatchEvent();
-            if (DispatchToPlay == OfficerDown && DispatchToPlay.LatestInformation.InstancesObserved == 0 && !Player.AnyPoliceCanSeePlayer)
-            {
-                OfficerMIA.Priority = OfficerDown.Priority;
-                DispatchToPlay = OfficerMIA;
-                AddAttentionRandomUnit(EventToPlay);
-                EventToPlay.SoundsToPlay.Add("PAUSE");//gives a 1.5 second pause? maybe do this better?
-                EntryPoint.WriteToConsole($"SCANNER EVENT: OFFICER DOWN ADDED NEW PREAMBLE", 3);
-            }
             if (DispatchToPlay.HasPreamble)
             {
                 EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
@@ -1065,9 +1056,6 @@ namespace LosSantosRED.lsr
             {
                 AddAttentionUnits(EventToPlay);
             }
-
-
-
             if (DispatchToPlay.IncludeReportedBy)
             {
                 if (DispatchToPlay.LatestInformation.SeenByOfficers)
@@ -1334,7 +1322,7 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription dispatchDescription, Dispatch dispatchToPlay)
         {
-            //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
+            EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
@@ -1347,16 +1335,12 @@ namespace LosSantosRED.lsr
                 AbortedAudio = true;
                 Abort();
             }
-
-
             if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && (dispatchToPlay.Name == SuspectSpotted.Name || dispatchToPlay.Name == WantedSuspectSpotted.Name) && CurrentlyPlayingDispatch.Name == SuspectEvaded.Name)
             {
                 EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
-
-
             if (AudioPlayer.IsAudioPlaying && AudioPlayer.IsPlayingLowPriority)
             {
                 EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
@@ -1381,7 +1365,8 @@ namespace LosSantosRED.lsr
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
                 }
-                while (AudioPlayer.IsAudioPlaying)
+                uint GameTimeStartedWaitingForAudio = Game.GameTime;
+                while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
                 {
                     GameFiber.Yield();
                 }
@@ -1393,19 +1378,11 @@ namespace LosSantosRED.lsr
                 CurrentlyPlaying = MyAudioEvent;
                 CurrentlyPlayingCallIn = dispatchDescription;
                 CurrentlyPlayingDispatch = dispatchToPlay;
-
                 if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                 {
                     foreach (string audioname in MyAudioEvent.SoundsToPlay)
                     {
-
-                        if(audioname == "PAUSE")
-                        {
-                            GameFiber.Sleep(1500);
-                        }
-
-
-                        //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
+                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
                         if(Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
                             AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);

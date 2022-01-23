@@ -58,7 +58,7 @@ public class GangIdle : ComplexTask
     }
     public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
-        Name = "CivIdle";
+        Name = "GangIdle";
         SubTaskName = "";
         World = world;
         Tasker = tasker;

@@ -17,10 +17,10 @@ public class WeatherReportingSettings : ISettingsDefaultable
     public uint ReportWindyWeather_MinimumTimeBetweenAudioReports { get; set; }
     public float ReportWindyWeather_MinimumSpeed { get; set; }
     public bool ShowWeatherNotifications { get; set; }
-    public bool PlayWeatherAudio { get; set; }
-    public bool RequireVehicleForAudio { get; set; }
-    public bool WeatherAudio_MuteRadio { get; set; }
-    public bool PlayWeatherAudioInVehicleOnly { get; set; }
+    //public bool PlayWeatherAudio { get; set; }
+   // public bool RequireVehicleForAudio { get; set; }
+   // public bool WeatherAudio_MuteRadio { get; set; }
+  //  public bool PlayWeatherAudioInVehicleOnly { get; set; }
     public WeatherReportingSettings()
     {
         SetDefault();
@@ -36,10 +36,10 @@ public class WeatherReportingSettings : ISettingsDefaultable
         ReportWindyWeather_MinimumTimeBetweenAudioReports = 180000;
         ReportWindyWeather_MinimumSpeed = 11.5f;
         ShowWeatherNotifications = true;
-        PlayWeatherAudio = false;
-        RequireVehicleForAudio = true;
-        WeatherAudio_MuteRadio = true;
-        PlayWeatherAudioInVehicleOnly = true;
+       // PlayWeatherAudio = false;
+       // RequireVehicleForAudio = true;
+       // WeatherAudio_MuteRadio = true;
+       // PlayWeatherAudioInVehicleOnly = true;
     }
 }
 

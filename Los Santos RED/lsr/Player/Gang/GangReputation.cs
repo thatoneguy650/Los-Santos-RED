@@ -85,7 +85,7 @@ public class GangReputation
 
 
                 Player.SetDenStatus(Gang, false);
-
+                Player.DisableContact(Gang.ContactName);
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
@@ -93,6 +93,7 @@ public class GangReputation
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
 
                 Player.SetDenStatus(Gang, true);
+                Player.AddContact(Gang.ContactName,Gang.ContactIcon);
             }
             else if (GangRelationship == GangRespect.Neutral)
             {
@@ -100,6 +101,7 @@ public class GangReputation
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
 
                 Player.SetDenStatus(Gang, false);
+                Player.DisableContact(Gang.ContactName);
             }
             EntryPoint.WriteToConsole($"GangReputation {Gang.FullName} changed from {PreviousGangRelationship} to {GangRelationship}", 5);
             PreviousGangRelationship = GangRelationship;
@@ -138,5 +140,39 @@ public class GangReputation
             ending = "~r~Hostile~s~";
         }
         return ending + $" ({ReputationLevel})";
+    }
+    public string ToStringBareRaw()
+    {
+        string ending = "";
+        if (GangRelationship == GangRespect.Friendly)
+        {
+            ending = "~g~Friendly~s~";
+        }
+        else if (GangRelationship == GangRespect.Neutral)
+        {
+            ending = "~s~Neutral~s~";
+        }
+        else if (GangRelationship == GangRespect.Hostile)
+        {
+            ending = "~r~Hostile~s~";
+        }
+        return ending;
+    }
+    public string ToBlip()
+    {
+        string ending = "";
+        if (GangRelationship == GangRespect.Friendly)
+        {
+            ending = "~g~(Friendly)~s~";
+        }
+        else if (GangRelationship == GangRespect.Neutral)
+        {
+            ending = "";
+        }
+        else if (GangRelationship == GangRespect.Hostile)
+        {
+            ending = "~r~(Hostile)~s~";
+        }
+        return ending;
     }
 }

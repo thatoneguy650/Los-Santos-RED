@@ -14,6 +14,8 @@ public class GangSettings : ISettingsDefaultable
     public bool ShowSpawnedBlip { get; set; }
     public bool RemoveVanillaSpawnedPeds { get; set; }
     public int PercentSpawnOutsideTerritory { get; set; }
+    public bool ManageDispatching { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -33,6 +35,7 @@ public class GangSettings : ISettingsDefaultable
         ShowSpawnedBlip = false;
         RemoveVanillaSpawnedPeds = false;
         PercentSpawnOutsideTerritory = 10;
+        ManageDispatching = true;
     }
 
 }

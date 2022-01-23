@@ -884,7 +884,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Advanced Scope", 0xBC54DA77, ComponentSlot.Optic),
             new WeaponComponent("Etched Wood Grip Finish", 0x4032B5E7,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_sniperrifle", 40, WeaponCategory.Sniper, 4, 100416529, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = SniperRifleComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_sniperrifle", 40, WeaponCategory.Sniper, 4, 100416529, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = SniperRifleComponents });
 
 
         List<WeaponComponent> HeavySniperComponents = new List<WeaponComponent>
@@ -893,7 +893,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Scope", 0xD2443DDC, ComponentSlot.Optic),
             new WeaponComponent("Advanced Scope", 0xBC54DA77, ComponentSlot.Optic)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_heavysniper", 40, WeaponCategory.Sniper, 4, 205991906, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_heavysniper", 40, WeaponCategory.Sniper, 4, 205991906, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperComponents });
 
 
         List<WeaponComponent> HeavySniperMK2Components = new List<WeaponComponent>
@@ -925,7 +925,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Boom!", 0xABC5ACC7,ComponentSlot.Coloring),
             new WeaponComponent("Patriotic", 0x6C32D2EB,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_heavysniper_mk2", 40, WeaponCategory.Sniper, 4, 0xA914799, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperMK2Components });
+        WeaponsList.Add(new WeaponInformation("weapon_heavysniper_mk2", 40, WeaponCategory.Sniper, 4, 0xA914799, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperMK2Components });
 
 
         List<WeaponComponent> MarksmanRifleComponents = new List<WeaponComponent>
@@ -979,7 +979,7 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle_mk2", 40, WeaponCategory.Sniper, 4, 0x6A6C02E0, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleMK2Components });
 
         //Heavy
-        WeaponsList.Add(new WeaponInformation("weapon_rpg", 3, WeaponCategory.Heavy, 4, 2982836145, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto));
+        WeaponsList.Add(new WeaponInformation("weapon_rpg", 3, WeaponCategory.Heavy, 4, 2982836145, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto));
 
         List<WeaponComponent> GrenadeLauncherComponents = new List<WeaponComponent>
         {
@@ -988,15 +988,15 @@ public class Weapons : IWeapons
             new WeaponComponent("Grip", 0xC164F53, ComponentSlot.ForwardGrip),
             new WeaponComponent("Scope", 0xAA2C45B4, ComponentSlot.Optic)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher", 32, WeaponCategory.Heavy, 4, 2726580491, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = GrenadeLauncherComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher", 32, WeaponCategory.Heavy, 4, 2726580491, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = GrenadeLauncherComponents });
 
-        WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher_smoke", 32, WeaponCategory.Heavy, 4, 1305664598, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_minigun", 500, WeaponCategory.Heavy, 4, 1119849093, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.FullAuto));
-        WeaponsList.Add(new WeaponInformation("weapon_firework", 20, WeaponCategory.Heavy, 4, 0x7F7497E5, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_railgun", 50, WeaponCategory.Heavy, 4, 0x6D544C99, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_hominglauncher", 3, WeaponCategory.Heavy, 4, 0x63AB0442, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
-        WeaponsList.Add(new WeaponInformation("weapon_compactlauncher", 10, WeaponCategory.Heavy, 4, 125959754, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto));
-        WeaponsList.Add(new WeaponInformation("weapon_rayminigun", 50, WeaponCategory.Heavy, 4, 0xB62D1F67, false, true, false, 0.4f, 0.5f, 0.1f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher_smoke", 32, WeaponCategory.Heavy, 4, 1305664598, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_minigun", 500, WeaponCategory.Heavy, 4, 1119849093, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.FullAuto));
+        WeaponsList.Add(new WeaponInformation("weapon_firework", 20, WeaponCategory.Heavy, 4, 0x7F7497E5, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_railgun", 50, WeaponCategory.Heavy, 4, 0x6D544C99, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_hominglauncher", 3, WeaponCategory.Heavy, 4, 0x63AB0442, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_compactlauncher", 10, WeaponCategory.Heavy, 4, 125959754, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto));
+        WeaponsList.Add(new WeaponInformation("weapon_rayminigun", 50, WeaponCategory.Heavy, 4, 0xB62D1F67, false, true, false, 0.4f, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
 
         //Throwable
         WeaponsList.Add(new WeaponInformation("weapon_grenade", 1, WeaponCategory.Throwable, 2, 0x93E220BD, false, false, false));

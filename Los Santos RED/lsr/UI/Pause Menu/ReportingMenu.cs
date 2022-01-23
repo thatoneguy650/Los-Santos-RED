@@ -22,12 +22,16 @@ public class ReportingMenu
     private ITimeReportable Time;
     private IPlacesOfInterest PlacesOfInterest;
     private IGangs Gangs;
-    public ReportingMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs)
+    private IGangTerritories GangTerritories;
+    private IZones Zones;
+    public ReportingMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones)
     {
         Player = player;
         Time = time;
         PlacesOfInterest = placesOfInterest;
         Gangs = gangs;
+        GangTerritories = gangTerritories;
+        Zones = zones;
     }
     public void Setup()
     {
@@ -72,9 +76,10 @@ public class ReportingMenu
 
         AddVehicles();
         AddCrimes();
-        AddGangDens();
-        AddGangReputation();
-
+        AddLocations();
+        //AddGangDens();
+        //AddGangReputation();
+        AddGangItems();
 
         tabView.RefreshIndex();
     }
@@ -123,16 +128,34 @@ public class ReportingMenu
     private void AddCrimes()
     {
         List<UIMenuItem> menuItems2 = new List<UIMenuItem>();
-        if (Player.WantedCrimes != null)
+        if (Player.IsWanted)
+        {
+            foreach (CrimeEvent crime in Player.PoliceResponse.CrimesObserved.OrderByDescending(x => x.AssociatedCrime?.ResultingWantedLevel))
+            {
+                string crimeText = crime.AssociatedCrime.Name;
+                crimeText += $" Instances: ({crime.Instances})";
+                menuItems2.Add(new UIMenuItem(crimeText, "") { RightLabel = $"Wanted Level: {crime.AssociatedCrime.ResultingWantedLevel}" });
+            }
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Current Crimes", menuItems2);
+            tabView.AddTab(interactiveListItem2);
+        }
+        else if (Player.WantedCrimes != null)
         {
             foreach (Crime crime in Player.WantedCrimes.OrderByDescending(x => x.ResultingWantedLevel))
             {
                 menuItems2.Add(new UIMenuItem(crime.Name, "") { RightLabel = $"Wanted Level: {crime.ResultingWantedLevel}" });
             }
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Criminal History", menuItems2);
+            tabView.AddTab(interactiveListItem2);
+        }
+        else
+        {
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Criminal History", menuItems2);
+            tabView.AddTab(interactiveListItem2);
         }
         //menuItems2[0].Activated += (m, s) => Game.DisplaySubtitle("Activated first item!");
-        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Criminal History", menuItems2);
-        tabView.AddTab(interactiveListItem2);
+        
+        
     }
     private void AddGangDens()
     {
@@ -164,6 +187,83 @@ public class ReportingMenu
         TabInteractiveListItem interactiveListItem = new TabInteractiveListItem("Gang Reputation", menuItems);
         tabView.AddTab(interactiveListItem);
     }
+
+
+    private void AddGangItems()
+    {
+        List<TabItem> items = new List<TabItem>();
+
+
+        foreach (GangReputation gr in Player.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
+        {
+            List<ZoneJurisdiction> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
+
+            GameLocation gangDen = PlacesOfInterest.GetLocations(LocationType.GangDen).Where(x => x.GangID == gr.Gang.ID).FirstOrDefault();
+            string DenText = "~y~Unknown~s~";
+            if (gangDen != null)
+            {
+                 DenText = gangDen.IsEnabled ? "~g~Available~s~" : "~o~Unavailable~s~";
+            }
+
+            string TerritoryText = "None";
+            if(gangTerritory.Any())
+            {
+                TerritoryText = "";
+                foreach (ZoneJurisdiction zj in gangTerritory)
+                {
+                    Zone myZone = Zones.GetZone(zj.ZoneInternalGameName);
+                    if(myZone != null)
+                    {
+                        TerritoryText += "~w~" + myZone.DisplayName + "~s~, ";
+                    }
+                }
+            }
+            string DescriptionText = "";
+
+
+            string ContactText = Player.IsContactEnabled(gr.Gang.ContactName) ? "~g~Available~s~" : "~r~Unavailable";
+
+
+            DescriptionText = "Relationship: " + gr.ToStringBare();
+            DescriptionText += $"~n~Den: {DenText}"; //+ gr.ToStringBare();
+            DescriptionText += $"~n~Territory: {TerritoryText.TrimEnd(' ', ',')}";
+            DescriptionText += $"~n~Contacts: {ContactText}";
+
+            TabItem tItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+
+            tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
+            items.Add(tItem);
+
+            //menuItems.Add(new UIMenuItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", gr.ToStringBare()) { RightLabel = gr.ToStringBare() });
+        }
+
+
+
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    TabItem tItem = new TabTextItem("Item #" + i, "Title #" + i, "Some random text for #" + i);
+        //    tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
+        //    items.Add(tItem);
+        //}
+        tabView.AddTab(submenuTab = new TabSubmenuItem("Gangs", items));
+    }
+    private void AddLocations()
+    {
+        List<TabItem> items = new List<TabItem>();
+        foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
+        {
+            List<UIMenuItem> subplaces = new List<UIMenuItem>(); ;
+            foreach (GameLocation gl in PlacesOfInterest.GetLocations(lt))
+            {
+                subplaces.Add(new UIMenuItem(gl.Name, ""));
+            }
+            TabItem tItem = new TabInteractiveListItem(lt.ToString(), subplaces);
+            tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
+            items.Add(tItem);
+        }
+        tabView.AddTab(submenuTab = new TabSubmenuItem("Locations", items) {   });
+    }
+
 
 }
 

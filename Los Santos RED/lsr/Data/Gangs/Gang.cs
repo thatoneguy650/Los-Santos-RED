@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using iFruitAddon2;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
@@ -17,6 +18,8 @@ public class Gang
         ID = _ID;
         FullName = _FullName;
         ShortName = _ShortName;
+        ContactName = _ShortName;
+        ContactIcon = "CHAR_DEFAULT";
     }
     public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
     {
@@ -30,6 +33,23 @@ public class Gang
         LicensePlatePrefix = _LicensePlatePrefix;
         SideArms = sideArms;
         LongGuns = longGuns;
+        ContactName = _ShortName;
+        ContactIcon = "CHAR_DEFAULT";
+    }
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon)
+    {
+        ColorPrefix = _ColorPrefix;
+        ID = _ID;
+        FullName = _FullName;
+        ShortName = _ShortName;
+        Personnel = _CopModels;
+        ColorString = _AgencyColorString;
+        Vehicles = _Vehicles;
+        LicensePlatePrefix = _LicensePlatePrefix;
+        SideArms = sideArms;
+        LongGuns = longGuns;
+        ContactName = _ContactName;
+        ContactIcon = contactIcon;
     }
     public Color Color => Color.FromName(ColorString);
     public string ColorString { get; set; } = "White";
@@ -52,13 +72,15 @@ public class Gang
     public int SpawnLimit { get; set; } = 5;
     public bool SpawnsOnHighway { get; set; } = false;
 
+    public string ContactName { get; set; }
+    public string ContactIcon { get; set; } 
 
     // public float PlayerReputationLevel { get; set; }
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
 
-    public float PercentageWithLongGuns { get; set; } = 20f;
-    public float PercentageWithSidearms { get; set; } = 85f;
-    public float PercentageWithMelee { get; set; } = 95f;
+    public float PercentageWithLongGuns { get; set; } = 5f;
+    public float PercentageWithSidearms { get; set; } = 40f;
+    public float PercentageWithMelee { get; set; } = 50f;
 
 
     public int AccuracyMin { get; set; } = 5;

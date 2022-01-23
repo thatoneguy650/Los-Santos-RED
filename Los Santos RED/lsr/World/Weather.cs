@@ -227,19 +227,19 @@ public class Weather
         {
             DisplayNotification(weatherFile.ForcedSponsorName, false);
         }
-        if (Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudio && CanAudioReportWeather && (Player.IsInVehicle || !Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudioInVehicleOnly))
-        {
-            if (Settings.SettingsManager.WeatherReportingSettings.RequireVehicleForAudio && !Player.IsInVehicle)
-            {
-                return;
-            }
-            if (Settings.SettingsManager.WeatherReportingSettings.WeatherAudio_MuteRadio && !Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned && Player.IsInVehicle)
-            {
-                StoredAndTurnOffRadio();
-            }
-            PlayAudioList(new List<string> { Weazel.Outro2.FileName, weatherFile.FileName, Weazel.Outro.FileName });
-            GameTimeLastAudioReportedWeather = Game.GameTime;
-        }
+        //if (Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudio && CanAudioReportWeather && (Player.IsInVehicle || !Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudioInVehicleOnly))
+        //{
+        //    if (Settings.SettingsManager.WeatherReportingSettings.RequireVehicleForAudio && !Player.IsInVehicle)
+        //    {
+        //        return;
+        //    }
+        //    if (Settings.SettingsManager.WeatherReportingSettings.WeatherAudio_MuteRadio && !Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned && Player.IsInVehicle)
+        //    {
+        //        StoredAndTurnOffRadio();
+        //    }
+        //    PlayAudioList(new List<string> { Weazel.Outro2.FileName, weatherFile.FileName, Weazel.Outro.FileName });
+        //    GameTimeLastAudioReportedWeather = Game.GameTime;
+        //}
     }
     private void ReportWindy()
     {
@@ -249,20 +249,20 @@ public class Weather
         {
             DisplayNotification(toReport.ForcedSponsorName, true);
         }
-        if (Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudio && CanAudioReportWind && (Player.IsInVehicle || !Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudioInVehicleOnly))
-        {
-            if (Settings.SettingsManager.WeatherReportingSettings.RequireVehicleForAudio && !Player.IsInVehicle)
-            {
-                return;
-            }
-            if (Settings.SettingsManager.WeatherReportingSettings.WeatherAudio_MuteRadio && !Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned && Player.IsInVehicle)
-            {
-                StoredAndTurnOffRadio();
-            }
-            PlayAudioList(new List<string> { Weazel.Outro2.FileName, toReport.FileName, Weazel.Outro.FileName });
-            GameTimeLastAudioReportedWeather = Game.GameTime;
-        }
-        EntryPoint.WriteToConsole($"ReportWindy", 5);
+        //if (Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudio && CanAudioReportWind && (Player.IsInVehicle || !Settings.SettingsManager.WeatherReportingSettings.PlayWeatherAudioInVehicleOnly))
+        //{
+        //    if (Settings.SettingsManager.WeatherReportingSettings.RequireVehicleForAudio && !Player.IsInVehicle)
+        //    {
+        //        return;
+        //    }
+        //    if (Settings.SettingsManager.WeatherReportingSettings.WeatherAudio_MuteRadio && !Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned && Player.IsInVehicle)
+        //    {
+        //        StoredAndTurnOffRadio();
+        //    }
+        //    PlayAudioList(new List<string> { Weazel.Outro2.FileName, toReport.FileName, Weazel.Outro.FileName });
+        //    GameTimeLastAudioReportedWeather = Game.GameTime;
+        //}
+        //EntryPoint.WriteToConsole($"ReportWindy", 5);
     }
     private void DisplayNotification(string ForcedSponsorName, bool isWindy)
     {

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Locations;
+﻿using iFruitAddon2;
+using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,11 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; }
         List<Crime> WantedCrimes { get; }
         VehicleExt OwnedVehicle { get; }
+        PoliceResponse PoliceResponse { get; }
 
         void SetDenStatus(Gang gang, bool v);
+        void AddContact(string contactName, string contactIcon);
+        void DisableContact(string contactName);
+        bool IsContactEnabled(string contactName);
     }
 }

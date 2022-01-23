@@ -192,26 +192,19 @@ public class CopTasker
                     copsPossibleTargets.Add(new CopTarget(possibleTarget, possibleTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian)));
                 }
             }
-
-            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Possible Targets {copsPossibleTargets.Count()} anyDeadlyChase {anyDeadlyChase}", 3);
-
-
             if (Player.IsBusted)
             {
                 if (anyDeadlyChase)
                 {
                     MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
-                    //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX,Cop.CellY,x.CellX,x.CellY,3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x=>x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
                 }
                 else
                 {
                     if (ClosestCopToPlayer == null || Cop.Handle != ClosestCopToPlayer.Handle)
                     {
                         MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
-                        //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
                     }
                 }
-
             }
             else if (Player.PoliceResponse.IsDeadlyChase)
             {
@@ -223,12 +216,6 @@ public class CopTasker
                     //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
                     MainTarget = null;
                 }
-                //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault(); //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
-                //if (MainTarget != null && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
-                //{
-                //    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
-                //    MainTarget = null;
-                //}
             }
             else
             {
@@ -239,32 +226,12 @@ public class CopTasker
                     //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Player is Closer Than Closest Target (Non Deadly)", 3);
                     MainTarget = null;
                 }
-
-                //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x=> x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
-                //if (Player.IsWanted && MainTarget != null && !MainTarget.IsDeadlyChase && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
-                //{
-                //    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Non Deadly)", 3);
-                //    MainTarget = null;
-                //}
             }
-
-
-
-
-
-
             if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && PedProvider.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
             {
                 // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Too many police already on busted person, sending away", 3);
                 MainTarget = null;
             }
-
-
-
-
-
-
-
         }
         if (MainTarget != null && MainTarget.Pedestrian.Exists() && MainTarget.Pedestrian.Handle == Game.LocalPlayer.Character.Handle)//for ped swappiung, they get confused!
         {
@@ -302,6 +269,111 @@ public class CopTasker
         public PedExt Target { get; set; }
         public float DistanceToTarget { get; set; } = 999f;
     }
+
+
+    //private PedExt PedToAttack(Cop Cop)
+    //{
+    //    if (!PossibleTargets.Any(x => x.IsWanted))
+    //    {
+    //        return null;
+    //    }
+    //    PedExt MainTarget = null;
+    //    if (Cop.Pedestrian.Exists() && Cop.DistanceToPlayer <= 200f)
+    //    {
+    //        List<CopTarget> copsPossibleTargets = new List<CopTarget>();
+    //        bool anyDeadlyChase = false;
+    //        foreach (PedExt possibleTarget in PossibleTargets)
+    //        {
+    //            if (possibleTarget.Pedestrian.Exists() && possibleTarget.IsWanted && !possibleTarget.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, possibleTarget.CellX, possibleTarget.CellY, 3))
+    //            {
+    //                if (possibleTarget.IsDeadlyChase)
+    //                {
+    //                    anyDeadlyChase = true;
+    //                }
+    //                copsPossibleTargets.Add(new CopTarget(possibleTarget, possibleTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian)));
+    //            }
+    //        }
+
+    //        // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Possible Targets {copsPossibleTargets.Count()} anyDeadlyChase {anyDeadlyChase}", 3);
+
+
+    //        if (Player.IsBusted)
+    //        {
+    //            if (anyDeadlyChase)
+    //            {
+    //                MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
+    //                //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX,Cop.CellY,x.CellX,x.CellY,3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x=>x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+    //            }
+    //            else
+    //            {
+    //                if (ClosestCopToPlayer == null || Cop.Handle != ClosestCopToPlayer.Handle)
+    //                {
+    //                    MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
+    //                    //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+    //                }
+    //            }
+
+    //        }
+    //        else if (Player.PoliceResponse.IsDeadlyChase)
+    //        {
+    //            CopTarget MaybeMainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault();
+    //            MainTarget = MaybeMainTarget?.Target;
+    //            if (MaybeMainTarget != null && MaybeMainTarget.Target != null && MaybeMainTarget.DistanceToTarget <= Cop.DistanceToPlayer + 20f)
+    //            {
+    //                //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Player is Closer Than Closest Target (Deadly)", 3);
+    //                //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
+    //                MainTarget = null;
+    //            }
+    //            //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault(); //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsDeadlyChase && x.WantedLevel > Player.WantedLevel).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+    //            //if (MainTarget != null && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
+    //            //{
+    //            //    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);
+    //            //    MainTarget = null;
+    //            //}
+    //        }
+    //        else
+    //        {
+    //            CopTarget MaybeMainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.DistanceToTarget <= 20f && !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault();
+    //            MainTarget = MaybeMainTarget?.Target;
+    //            if (Player.IsWanted && MaybeMainTarget != null && MaybeMainTarget.Target != null && !MaybeMainTarget.Target.IsDeadlyChase && MaybeMainTarget.DistanceToTarget <= Cop.DistanceToPlayer + 20f)
+    //            {
+    //                //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Player is Closer Than Closest Target (Non Deadly)", 3);
+    //                MainTarget = null;
+    //            }
+
+    //            //MainTarget = PossibleTargets.Where(x => x.Pedestrian.Exists() && x.IsWanted && !x.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, x.CellX, x.CellY, 3)).OrderByDescending(x => x.IsDeadlyChase).ThenByDescending(x=> x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 20f && !x.IsBusted).ThenByDescending(x => x.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.IsBusted).ThenBy(x => x.Pedestrian.DistanceTo2D(Cop.Pedestrian)).FirstOrDefault();
+    //            //if (Player.IsWanted && MainTarget != null && !MainTarget.IsDeadlyChase && MainTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= Cop.DistanceToPlayer + 20f)
+    //            //{
+    //            //    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Non Deadly)", 3);
+    //            //    MainTarget = null;
+    //            //}
+    //        }
+
+
+
+
+
+
+    //        if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && PedProvider.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
+    //        {
+    //            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Too many police already on busted person, sending away", 3);
+    //            MainTarget = null;
+    //        }
+
+
+
+
+
+
+
+    //    }
+    //    if (MainTarget != null && MainTarget.Pedestrian.Exists() && MainTarget.Pedestrian.Handle == Game.LocalPlayer.Character.Handle)//for ped swappiung, they get confused!
+    //    {
+    //        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: MainTarget Is Player", 3);
+    //        MainTarget = null;
+    //    }
+    //    return MainTarget;
+    //}
 }
 
 

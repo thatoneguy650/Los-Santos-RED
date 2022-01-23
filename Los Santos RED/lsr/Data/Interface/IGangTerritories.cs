@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         List<Gang> GetGangs(string internalGameName, int wantedLevel);
         Gang GetMainGang(string internalGameName);
         Gang GetNthGang(string internalGameName, int v);
+        List<ZoneJurisdiction> GetGangTerritory(string iD);
     }
 }

@@ -92,11 +92,9 @@ public class GangTasker
         {
             WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             bool SeenReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
-            //bool SeenAngryCrime = GangMember.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
-            //bool SeenMundaneCrime = GangMember.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
-            if (SeenReactiveCrime)// || SeenAngryCrime)
+            if (SeenReactiveCrime)
             {
-                if (GangMember.WillFight && (Player.IsNotWanted || isHostile))// && (Player.IsNotWanted || !anyCopsNearFocusPoint))
+                if (GangMember.WillFight && (Player.IsNotWanted || isHostile))
                 {
                     if (GangMember.CurrentTask?.Name != "GangFight")
                     {
@@ -115,7 +113,7 @@ public class GangTasker
                     }
                 }
             }
-            else if (Player.IsWanted && GangMember.CurrentlyViolatingWantedLevel > 0 && !isHostile)
+            else if (Player.IsWanted && (GangMember.CurrentlyViolatingWantedLevel > 0 || GangMember.DistanceToPlayer <= 60f) && !isHostile)
             {
                 if (GangMember.CurrentTask?.Name != "GangFlee")
                 {

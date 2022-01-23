@@ -325,7 +325,7 @@
     <Compile Include="lsr\Player\Activity\DrinkingActivity.cs" />
     <Compile Include="lsr\Player\Activity\LoopedParticle.cs" />
     <Compile Include="lsr\Player\Activity\SmokingActivity.cs" />
-    <Compile Include="lsr\Player\Activity\IntoxicatingEffect.cs" />
+    <Compile Include="lsr\Old\IntoxicatingEffect.cs" />
     <Compile Include="lsr\Player\Interface\IActionable.cs" />
     <Compile Include="lsr\Player\Interface\ICarStealable.cs" />
     <Compile Include="lsr\Player\Interface\IDisplayable.cs" />

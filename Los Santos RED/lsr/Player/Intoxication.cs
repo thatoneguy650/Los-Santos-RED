@@ -173,6 +173,7 @@ public class Intoxication
         if (CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
         {
             SetIntoxicated();
+            Update();
         }
     }
     public void StartIngesting(Intoxicant intoxicant)
@@ -228,8 +229,6 @@ public class Intoxication
                 }
             }
         }
-        
-        //PrimaryIntoxicator = CurrentIntoxicators.OrderByDescending(x => x.CurrentIntensity).FirstOrDefault();
         if (PrimaryIntoxicator != null)
         {
             OverLayEffect = PrimaryIntoxicator.Intoxicant?.OverLayEffect;
@@ -336,6 +335,8 @@ public class Intoxication
         NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
         NativeFunction.Natives.x80C8B1846639BB19(0);
         NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
+        Player.IntoxicatedIntensityPercent = 0.0f;
+        Player.IntoxicatedIntensity = 0.0f;
         //EntryPoint.WriteToConsole("Player Made Sober");
     }
 }

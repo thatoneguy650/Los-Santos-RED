@@ -334,7 +334,7 @@ public class LEDispatcher
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn IsWanted: {TotalIsWanted} WantedLevel:{World.TotalWantedLevel}", 3);
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn IsWanted: {TotalIsWanted} WantedLevel:{World.TotalWantedLevel}", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
             SpawnLocation spawnLocation = new SpawnLocation();
@@ -346,7 +346,7 @@ public class LEDispatcher
                 timesTried++;
                 GameFiber.Yield();
             }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
+            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
                 Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);

@@ -120,6 +120,7 @@ namespace Mod
 
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
+            Respawning.Setup();
             GangRelationships = new GangRelationships(gangs, this);
             GangRelationships.Setup();
             WeaponSway = new WeaponSway(this, Settings);
@@ -214,7 +215,7 @@ namespace Mod
                 }
             }
         }
-        public void IntoxicationUpdate() => Intoxication.Update();
+        //public void IntoxicationUpdate() => Intoxication.Update();
         public bool IsAimingInVehicle
         {
             get => isAimingInVehicle;
@@ -404,6 +405,14 @@ namespace Mod
         }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
+            if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
+            {
+                return;
+            }
+            else if (RecentlyPaidFine && crimeObserved.ResultingWantedLevel <= 1)
+            {
+                return;
+            }
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
@@ -645,11 +654,10 @@ namespace Mod
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
-            //HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings), Settings);
             HealthState.Reset();
             IsPerformingActivity = false;
 
-            IsIntoxicated = false;
+           // IsIntoxicated = false;
 
             if (resetWanted)
             {
@@ -659,32 +667,11 @@ namespace Mod
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
                 Scanner.Reset();
-                //OwnedVehicleHandle = 0;
                 Update();
-
-                //GameFiber.StartNew(delegate
-                //{
-                //    uint GameTimeLastResetWanted = Game.GameTime;
-                //    while (Game.GameTime - GameTimeLastResetWanted <= 5000)
-                //    {
-                //        if (Game.LocalPlayer.WantedLevel != 0)
-                //        {
-                //            SetWantedLevel(0, "Player Reset with resetWanted: resetting afterwards", true);
-                //        }
-                //        GameFiber.Yield();
-                //    }
-
-                //}, "Wanted Level Stopper");
-
-
             }
             if (resetTimesDied)
             {
                 Respawning.Reset();
-
-
-
-
             }
             if (clearWeapons)
             {
@@ -698,10 +685,17 @@ namespace Mod
             {
                 Inventory.Clear();
             }
+
+
             if (clearIntoxication)
             {
                 Intoxication.Dispose();
             }
+            else if (IsIntoxicated)
+            {
+                Intoxication.Restart();
+            }
+
             if(resetGangRelationships)
             {
                 GangRelationships.ResetReputations();
@@ -1641,6 +1635,9 @@ namespace Mod
         }
 
         //Delegate Items
+        public bool IsContactEnabled(string name) => CellPhone.IsContactEnabled(name);
+        public void DisableContact(string name) => CellPhone.DisableContact(name);
+        public void AddContact(string name, string contactIcon) => CellPhone.AddContact(name, contactIcon);
         public void AddContact(string name, iFruitAddon2.ContactIcon contactIcon) => CellPhone.AddContact(name, contactIcon);
         public void SetSelector(SelectorOptions eSelectorSetting) => WeaponSelector.SetSelectorSetting(eSelectorSetting);
         public void ToggleSelector() => WeaponSelector.ToggleSelector();

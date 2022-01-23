@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using iFruitAddon2;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
@@ -628,35 +629,35 @@ public class Gangs : IGangs
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang","Unk", "White", null, null, "", null, null) { MaxWantedLevelSpawn = 0 };
         GangsList = new List<Gang>
         {
-            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",LostSidearms,LostLongGuns),
-            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Los Santos Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",VagosSidearms,VagosLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",BallasSidearms,BallasLongGuns),
-            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MarabuntaSidearms,MarabuntaLongGuns),
-            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",VarriosSidearms,VarriosLongGuns),
-            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Los Santos Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",TriadsSidearms,TriadsLongGuns),
-            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",KkangpaeSidearms,KkangpaeLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns),
+            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",LostSidearms,LostLongGuns, "LOST MC President","CHAR_MP_BIKER_BOSS"),
+            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",VagosSidearms,VagosLongGuns,"Vagos Boss", "CHAR_MP_MEX_BOSS"),
+            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Families Boss","CHAR_MP_FAM_BOSS"),
+            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",BallasSidearms,BallasLongGuns,"Ballas Boss","CHAR_DEFAULT"),
+            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MarabuntaSidearms,MarabuntaLongGuns,"Marabunta Boss","CHAR_MP_MEX_LT"),
+            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","CHAR_DEFAULT"),
+            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",VarriosSidearms,VarriosLongGuns,"Varrios Boss","CHAR_ORTEGA"),
+            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_DEFAULT"),
+            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL"),
+            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",KkangpaeSidearms,KkangpaeLongGuns,"Kkangpae Leader","CHAR_DEFAULT"),
+            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Gambetti Boss","CHAR_DEFAULT"),
 
 
 
-            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns),
+            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Pavano Boss","CHAR_DEFAULT"),
+            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Lupisella Boss","CHAR_DEFAULT"),
+            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_DEFAULT"),
+            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DEFAULT"),
 
 
             
 
 
-            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",FamiliesSidearms,FamiliesLongGuns),
-            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",FamiliesSidearms,FamiliesLongGuns),
+            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Madrazo Boss","CHAR_DEFAULT"),
+            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Armenian Boss","CHAR_DEFAULT"),
+            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Yardie Boss","CHAR_DEFAULT"),
+            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Diablo Boss","CHAR_DEFAULT"),
 
-            DefaultGang
+            //DefaultGang
         };
     }
 

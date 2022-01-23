@@ -29,6 +29,8 @@ public class Respawning// : IRespawning
     private ITimeControllable Time;
     private IWeapons Weapons;
     private IEntityProvideable World;
+    private List<string> BribedCopResponses;
+    private List<string> CitationCopResponses;
     public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Time = time;
@@ -44,12 +46,31 @@ public class Respawning// : IRespawning
 
 
     public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 30000;
-    public bool RecentlyPaidFine => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
+    public bool RecentlyPaidFine => GameTimeLastPaidFine != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
     public int TimesDied { get; private set; }
     public void Reset()
     {
         TimesDied = 0;
+    }
+    public void Setup()
+    {
+        BribedCopResponses = new List<string>()
+        { 
+            "Thanks for the cash, you've got ~r~30 seconds~s~ to get lost.",
+            "If I can see you in ~r~30 seconds~s~ you will regret it.",
+            "I'll give you ~r~30 seconds~s~ to get the fuck outta here.",
+            "Make like a tree and get outta here. You've got ~r~30 seconds~s~.",
+            "Fuck off punk. T-Minus ~r~30 seconds~s~ to an ass beating.",
+            "You wanna go to jail or you wanna go home? You've got ~r~30 seconds~s~ to decide.",
+            "Pleasure doing business douchebag. You've got ~r~30 seconds~s~ to fuck off.",
+        };
+        CitationCopResponses = new List<string>()
+        {
+            $"Thank you for paying the citation amount of ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~. Fuck off before you regret it.",
+            $"You have paid the citation amount of ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~, now fuck off.",
+            $"Citation paid ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~. Move along."
+        };
     }
     public bool BribePolice(int Amount)
     {
@@ -70,7 +91,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", "Thanks for the cash, you've got 30 seconds to get lost.");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
 
@@ -90,7 +111,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false);
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", $"Thank you for paying the citation amount of ~r~${FineAmount}~s~, now fuck off.");
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;
             return true;
@@ -245,16 +266,18 @@ public class Respawning// : IRespawning
         {
             Game.TimeScale = 1f;
         }
-        NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
-        NativeFunction.Natives.x80C8B1846639BB19(0);//_SET_CAM_EFFECT (0 = cancelled)
+        if (clearIntoxication)
+        {
+            NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
+            NativeFunction.Natives.x80C8B1846639BB19(0);//_SET_CAM_EFFECT (0 = cancelled)
 
-        //new for drunk stuff
-        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
-        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
-
+            //new for drunk stuff
+            NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+            NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+            NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
+        }
         if (resetHealth)
         {
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;

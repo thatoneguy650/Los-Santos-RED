@@ -59,6 +59,11 @@ public class PedExt : IComplexTaskable
         IsMerchant = isMerchant;
     }
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
+
+
+    public List<Cop> AssignedCops { get; set; } = new List<Cop>();
+
+
     public uint ArrestingPedHandle { get; set; } = 0;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract);
@@ -152,8 +157,8 @@ public class PedExt : IComplexTaskable
     public Ped Pedestrian { get; set; }
     public PedGroup PedGroup { get; private set; }
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
-    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 3000;
-    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 3000;
+    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 1000;//3000
+    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 1000;//3000
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }

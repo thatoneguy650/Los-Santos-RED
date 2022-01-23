@@ -29,13 +29,13 @@ public class RecoilSettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-
+        ApplyRecoilInVehicle = true;
 #endif
     }
     public void SetDefault()
     {
         ApplyRecoil = true;
-        ApplyRecoilInVehicle = true;
+        ApplyRecoilInVehicle = false;
         ApplyRecoilOnFoot = true;
         VerticalRecoilAdjuster = 1.0f;
         HorizontalRecoilAdjuster = 1.0f;

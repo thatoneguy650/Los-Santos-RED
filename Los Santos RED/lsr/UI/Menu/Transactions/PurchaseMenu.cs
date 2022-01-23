@@ -867,7 +867,7 @@ public class PurchaseMenu : Menu
             Purchase.Enabled = false;
         }
 
-        if (myWeapon.Category != WeaponCategory.Melee)
+        if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
         {
             WeaponMenu.AddItem(PurchaseAmmo);
         }
@@ -913,7 +913,7 @@ public class PurchaseMenu : Menu
             }
             else if (uimen.Text == "Purchase")
             {
-                if(CurrentWeapon.HasWeapon(Player.Character))
+                if(CurrentWeapon.HasWeapon(Player.Character) && CurrentWeapon.Category != WeaponCategory.Throwable)
                 {
                     uimen.Enabled = false;
                     uimen.RightLabel = "Owned";
@@ -1227,7 +1227,14 @@ public class PurchaseMenu : Menu
         if (CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
         {
             NativeFunction.Natives.ADD_AMMO_TO_PED(Player.Character, CurrentWeapon.Hash, TotalItems);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
+            if (Ped != null && Ped.Pedestrian.Exists())
+            {
+
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
             return true;
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
@@ -1237,19 +1244,17 @@ public class PurchaseMenu : Menu
     {
         if (CurrentWeapon != null && CurrentWeapon.AddComponent(Player.Character, myComponent))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
+            if (Ped != null && Ped.Pedestrian.Exists())
+            {
+                StartVendorBuyAnimation(CurrentModItem, CurrentMenuItem.IsIllicilt);
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
             return true;
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
-        return false;
-    }
-    private bool AddComponent(WeaponComponent myComponent)
-    {
-        //if (CurrentWeapon != null && CurrentWeapon.AddComponent(Player.Character, myComponent))
-        //{
-        //    return true;
-        //}
-        //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
 

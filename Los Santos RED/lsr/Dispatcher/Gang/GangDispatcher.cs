@@ -45,7 +45,7 @@ public class GangDispatcher
         LikelyHoodOfAnySpawn = Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => 45f;
-    private List<GangMember> DeletableOfficers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private List<GangMember> DeleteableGangMembers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
     private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= 5;
@@ -57,7 +57,7 @@ public class GangDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (IsTimeToDispatch && HasNeedToDispatch)
+        if (Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn", 3);
@@ -134,7 +134,7 @@ public class GangDispatcher
     {
         if (IsTimeToRecall)
         {
-            foreach (GangMember emt in DeletableOfficers)
+            foreach (GangMember emt in DeleteableGangMembers)
             {
                 if (ShouldBeRecalled(emt))
                 {
