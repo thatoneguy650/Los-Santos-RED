@@ -46,10 +46,6 @@ namespace LosSantosRED.lsr.Data
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
-            //CurrentHeadBlendData = player.CurrentHeadBlendData;
-            //CurrentPrimaryHairColor = player.CurrentPrimaryHairColor;
-            //CurrentSecondaryColor = player.CurrentSecondaryColor;
-            //CurrentHeadOverlays = player.CurrentHeadOverlays;
             if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
             {
                 int primaryColor;
@@ -58,26 +54,33 @@ namespace LosSantosRED.lsr.Data
                 {
                     NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", player.OwnedVehicle.Vehicle, &primaryColor, &secondaryColor);
                 }
-                OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted));
+                OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted), player.OwnedVehicle.Vehicle.Position, player.OwnedVehicle.Vehicle.Heading);
             }
+            GangReputations = new List<GangRepSave>();
+            foreach(GangReputation gr in player.GangReputations)
+            {
+                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel));
+            }
+            PlayerPosition = player.Character.Position;
+            PlayerHeading = player.Character.Heading;
         }
+        public Vector3 PlayerPosition { get; set; }
+        public float PlayerHeading { get; set; }
         public string PlayerName { get; set; }
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-        //public int CurrentPrimaryHairColor { get; set; }
-        //public int CurrentSecondaryColor { get; set; }
-        //public List<HeadOverlayData> CurrentHeadOverlays { get; set; }
-        //public HeadBlendData CurrentHeadBlendData { get; set; }
+        public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public VehicleVariation OwnedVehicleVariation { get; set; }
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs)
         {
+            Game.FadeScreenOut(2500, true);
+
+
             pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
-
-
 
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
@@ -92,18 +95,11 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
-
-
-
             player.Inventory.Clear();
             foreach (InventoryItem cii in InventoryItems)
             {
                 player.Inventory.Add(cii.ModItem, cii.Amount);
             }
-
-
-
-
             if(OwnedVehicleVariation != null)
             {
                 NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position,out Vector3 SpawnPos, out float Heading,false);
@@ -120,17 +116,39 @@ namespace LosSantosRED.lsr.Data
                         if (MyVeh == null)
                         {
                             MyVeh = new VehicleExt(NewVehicle, settings);
+                            MyVeh.HasUpdatedPlateType = true;
                             World.AddEntity(MyVeh, ResponseType.None);
                         }
                         //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
                         player.TakeOwnershipOfVehicle(MyVeh);
+
+
+                        if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
+                        {
+                            NewVehicle.Position = OwnedVehicleVariation.LastPosition;
+                            NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
+                        }
+
+
                     }
                 }
             }
 
-
+            foreach(GangRepSave tuple in GangReputations)
+            {
+                Gang myGang = gangs.GetGang(tuple.GangID);
+                if (myGang != null)
+                {
+                    player.SetReputation(myGang, tuple.Reputation);
+                }
+            }
+            if (PlayerPosition != Vector3.Zero)
+            {
+                player.Character.Position = PlayerPosition;
+                player.Character.Heading = PlayerHeading;
+            }
+            Game.FadeScreenIn(2500, true);
             player.DisplayPlayerNotification();
-
         }
 
         public override string ToString()

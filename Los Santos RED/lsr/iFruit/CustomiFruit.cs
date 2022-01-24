@@ -13,6 +13,9 @@ namespace iFruitAddon2
         private bool _shouldDraw = true;
         private PhoneImage _wallpaper;
         private iFruitContactCollection _contacts;
+
+        private iFruitTextCollection _texts;
+
         private int _mScriptHash;
         private int _timerClose = -1;
 
@@ -54,18 +57,24 @@ namespace iFruitAddon2
             get { return _contacts; }
             set { _contacts = value; }
         }
+        public iFruitTextCollection Texts
+        {
+            get { return _texts; }
+            set { _texts = value; }
+        }
 
-        public CustomiFruit() : this(new iFruitContactCollection())
+        public CustomiFruit() : this(new iFruitContactCollection(), new iFruitTextCollection())
         { }
 
         /// <summary>
         /// Initialize the class.
         /// </summary>
         /// <param name="contacts"></param>
-        public CustomiFruit(iFruitContactCollection contacts)
+        public CustomiFruit(iFruitContactCollection contacts, iFruitTextCollection texts)
         {
             _instance = this;
             _contacts = contacts;
+            _texts = texts;
             _mScriptHash = (int)Game.GetHashKey("cellphone_flashhand");
         }
 
@@ -199,6 +208,12 @@ namespace iFruitAddon2
                     if (_wallpaper != null)
                         SetWallpaperTXD(_wallpaper.Name);
 
+
+
+                //    SetUnread();
+
+
+
                     _shouldDraw = !_shouldDraw;
                 }
             }
@@ -218,7 +233,45 @@ namespace iFruitAddon2
             }
 
             _contacts.Update(Handle);
+
+
+
+            _texts.Update(Handle);
+
+
+            //int selectedindexmain = GetSelectedIndex();
+            //EntryPoint.WriteToConsole($"OVERALL selectedindexmain {selectedindexmain}", 5);
+
+
         }
+        private void SetUnread()
+        {
+            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SET_DATA_SLOT");
+            NativeFunction.Natives.xC3D0841A0CC546A6(1);//2
+            NativeFunction.Natives.xC3D0841A0CC546A6(0);
+            NativeFunction.Natives.xC3D0841A0CC546A6(5);
+            NativeFunction.Natives.xC3D0841A0CC546A6(99);
+
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Text");
+            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+            NativeFunction.Natives.xC3D0841A0CC546A6(100);
+            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+        }
+
+
+        internal int GetSelectedIndex()
+        {
+            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "GET_CURRENT_SELECTION");
+            int num = NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE<int>();
+            while (!NativeFunction.Natives.x768FF8961BA904D6<bool>(num))         //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_BOOL
+                GameFiber.Wait(0);
+            int data = NativeFunction.Natives.x2DE7EFA66B906036<int>(num);       //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_INT
+            return data;
+        }
+
+
 
         /// <summary>
         /// Closes the phone.

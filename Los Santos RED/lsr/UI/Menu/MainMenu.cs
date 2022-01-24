@@ -27,7 +27,7 @@ public class MainMenu : Menu
     private ISettingsProvideable Settings;
     private ITaskerable Tasker;
     private UI UI;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui)
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs)
     {
         Player = player;
         Settings = settings;
@@ -44,7 +44,7 @@ public class MainMenu : Menu
 
 
 
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
         InventoryMenu = new InventoryMenu(menuPool, Main, Player, modItems);

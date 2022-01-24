@@ -1150,6 +1150,10 @@ namespace Mod
             CellY = (int)(position.Y / EntryPoint.CellSize);
             EntryPoint.FocusCellX = CellX;
             EntryPoint.FocusCellY = CellY;
+
+            EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
+
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
             ClosestSimpleTransaction = null;
             ClosestTeleportEntrance = null;

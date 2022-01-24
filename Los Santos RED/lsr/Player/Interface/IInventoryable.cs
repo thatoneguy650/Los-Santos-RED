@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; }
         bool IsPerformingActivity { get; }
         int Money { get; }
+        Ped Character { get; }
 
         bool RemoveFromInventory(ModItem toAdd, int v);
         void GiveMoney(int salesPrice);
@@ -20,5 +22,6 @@ namespace LosSantosRED.lsr.Interface
         void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);
         void DisplayPlayerNotification();
+        void SetReputation(Gang myGang, int item2);
     }
 }

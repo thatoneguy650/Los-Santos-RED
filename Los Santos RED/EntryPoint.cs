@@ -24,6 +24,7 @@ public static class EntryPoint
     public static float CellSize { get; private set; } = 50f;
     public static int FocusCellX { get; set; } = 0;
     public static int FocusCellY { get; set; } = 0;
+    public static Zone FocusZone { get; set; } = null;
     public static ModController ModController { get; set; }
     public static List<Entity> SpawnedEntities = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);

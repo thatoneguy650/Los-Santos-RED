@@ -13,6 +13,7 @@ public class CellPhone
 {
     private ICellPhoneable Player;
     private int ContactIndex = 40;
+    private int TextIndex = 0;
     private UIMenu EmergencyServicesMenu;
     private MenuPool MenuPool;
     private UIMenuItem RequestPolice;
@@ -35,8 +36,16 @@ public class CellPhone
         BreakPoliceCall();
         //AddContact("Vagos Boss", ContactIcon.MP_MexBoss);
         //AddContact("LOST MC Boss", ContactIcon.MP_BikerBoss);
-
-
+#if DEBUG
+        AddText("LOST MC President", ContactIcon.Abigail,"Heard some good things about you, hit us up out in ~p~Sandy Shores~s~ sometime soon", 9,35);
+        AddText("Vagos Boss", ContactIcon.Abigail, "If we ever see you again...",8,55);
+        AddText("Diablo Boss", ContactIcon.Abigail, "Why are you hanging around the hood?", 6, 22);
+        AddText("Yardie Boss", ContactIcon.Abigail, "Haven't heard from you in a while.", 5, 34);
+        AddText("Gambetti Boss", ContactIcon.Abigail, "Wheres the vig?", 5, 23);
+        AddText("Kkangpae Leader", ContactIcon.Abigail, "Watch your back", 4, 12);
+        AddText("Ballas Boss", ContactIcon.Abigail, "We need to discuss 'business'", 4, 1);
+        AddText("Families Boss", ContactIcon.Abigail, "Is that you driving through the hood with heat?", 3, 2);
+#endif
         ContactLookups = new List<ContactLookup>()
         {
              new ContactLookup(ContactIcon.Generic,"CHAR_DEFAULT"),
@@ -243,6 +252,21 @@ public class CellPhone
         ContactIndex++;
         AddedContacts.Add(contactA);
     }
+
+
+    public void AddText(string Name, ContactIcon contactIcon, string message, int hourSent, int minuteSent)
+    {
+        // New contact (wait 4 seconds (4000ms) before picking up the phone)
+        iFruitText textA = new iFruitText(Name, TextIndex, message, hourSent, minuteSent);
+        textA.Answered += ContactAnswered;   // Linking the Answered event with our function
+        textA.DialTimeout = 4000;            // Delay before answering
+        textA.Active = true;                 // true = the contact is available and will answer the phone
+        textA.Icon = contactIcon;      // Contact's icon
+        CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
+        TextIndex++;
+        //AddedContacts.Add(contactA);
+    }
+
     public void DisableContact(string Name)
     {
         iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);

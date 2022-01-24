@@ -273,7 +273,7 @@ public class SpawnTask
                     ShopMenu toAdd = null;
                     if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
                     {
-                        toAdd = ShopMenus.GetRanomdDrugMenu();//move this into the gang as well
+                        toAdd = ShopMenus.GetRandomDrugDealerMenu();//move this into the gang as well
                     }
                     GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
                     Person = GangMember;

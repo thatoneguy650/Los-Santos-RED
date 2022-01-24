@@ -25,7 +25,17 @@ public class CivilianSettings : ISettingsDefaultable
     public bool CheckCivilianCrimes { get; set; }
     public bool AllowCivilinsToCallPoliceOnOtherCivilians { get; set; }
     public bool ShowRandomCriminalBlips { get; set; }
-    public float DrugDealerPercentage { get; set; }
+    //public float DrugDealerPercentage { get; set; }
+
+
+    public float DrugDealerPercentageRichZones { get; set; }
+    public float DrugDealerPercentageMiddleZones { get; set; }
+    public float DrugDealerPercentagePoorZones { get; set; }
+
+    public float DrugCustomerPercentageRichZones { get; set; }
+    public float DrugCustomerPercentageMiddleZones { get; set; }
+    public float DrugCustomerPercentagePoorZones { get; set; }
+
 
     public CivilianSettings()
     {
@@ -56,7 +66,14 @@ public class CivilianSettings : ISettingsDefaultable
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         ShowRandomCriminalBlips = true;
-        DrugDealerPercentage = 5f;
+       // DrugDealerPercentage = 5f;
+        DrugDealerPercentageRichZones = 1f;
+        DrugDealerPercentageMiddleZones = 2f;
+        DrugDealerPercentagePoorZones = 5f;
+
+        DrugCustomerPercentageRichZones = 5f;
+        DrugCustomerPercentageMiddleZones = 7f;
+        DrugCustomerPercentagePoorZones = 10f;
     }
 
 }

@@ -399,12 +399,59 @@ public class Pedestrians
         {
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
-        ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentage))
-        {
-            toAdd = ShopMenus.GetRanomdDrugMenu();
-        }
+        ShopMenu toAdd = GetIllicitMenu();
         Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+    }
+    private ShopMenu GetIllicitMenu()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if(EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageRichZones))
+                {
+                    return ShopMenus.GetRandomDrugDealerMenu();
+                }
+                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageRichZones))
+                {
+                    return ShopMenus.GetRandomDrugCustomerMenu();
+                }
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageMiddleZones))
+                {
+                    return ShopMenus.GetRandomDrugDealerMenu();
+                }
+                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageMiddleZones))
+                {
+                    return ShopMenus.GetRandomDrugCustomerMenu();
+                }
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentagePoorZones))
+                {
+                    return ShopMenus.GetRandomDrugDealerMenu();
+                }
+                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentagePoorZones))
+                {
+                    return ShopMenus.GetRandomDrugCustomerMenu();
+                }
+            }
+        }
+        else
+        {
+            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageMiddleZones))
+            {
+                return ShopMenus.GetRandomDrugDealerMenu();
+            }
+            else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageMiddleZones))
+            {
+                return ShopMenus.GetRandomDrugCustomerMenu();
+            }
+        }
+        return null;
     }
     private void AddGangMember(Ped Pedestrian)
     {
@@ -433,7 +480,7 @@ public class Pedestrians
         ShopMenu toAdd = null;
         if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
         {
-            toAdd = ShopMenus.GetRanomdDrugMenu();
+            toAdd = ShopMenus.GetRandomDrugDealerMenu();
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
         WeaponInformation melee = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon

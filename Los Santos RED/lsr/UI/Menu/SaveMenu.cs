@@ -19,7 +19,8 @@ public class SaveMenu : Menu
     private IInventoryable PlayerInvetory;
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world)
+    private IGangs Gangs;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs)
     {
         PlayerSave = playersave;
         GameSaves = gameSaves;
@@ -28,6 +29,7 @@ public class SaveMenu : Menu
         PlayerInvetory = playerinventory;
         Settings = settings;
         World = world;
+        Gangs = gangs;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         Saves.SetBannerType(EntryPoint.LSRedColor);
         Saves.OnItemSelect += OnActionItemSelect;
@@ -71,7 +73,7 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs);
         }
         else if (selectedItem == SaveGameItem)
         {

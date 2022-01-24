@@ -10,7 +10,8 @@ namespace LosSantosRED.lsr.Interface
     public interface IShopMenus
     {
         ShopMenu GetMenu(string v);
-        ShopMenu GetRanomdDrugMenu();
+        ShopMenu GetRandomDrugDealerMenu();
         ShopMenu GetVendingMenu(string v);
+        ShopMenu GetRandomDrugCustomerMenu();
     }
 }

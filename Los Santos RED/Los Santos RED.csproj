@@ -115,6 +115,7 @@
     <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
+    <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
@@ -138,6 +139,8 @@
     <Compile Include="lsr\iFruit\Image Types\ContactIcon.cs" />
     <Compile Include="lsr\iFruit\Image Types\PhoneImage.cs" />
     <Compile Include="lsr\iFruit\Image Types\Wallpaper.cs" />
+    <Compile Include="lsr\iFruit\New\iFruitText.cs" />
+    <Compile Include="lsr\iFruit\New\iFruitTextCollection.cs" />
     <Compile Include="lsr\iFruit\Tools.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
