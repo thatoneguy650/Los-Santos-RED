@@ -107,6 +107,8 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> FamiliesGangDenMenu = ShopMenus.GetMenu("FamiliesGangDenMenu")?.Items;
         List<MenuItem> GenericGangDenMenu = ShopMenus.GetMenu("GenericGangDenMenu")?.Items;
 
+        List<MenuItem> ScrapMenu = ShopMenus.GetMenu("ScrapMenu")?.Items;
+
         LocationsList = new List<GameLocation>
         {
             //Hospital
@@ -147,6 +149,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, LocationType.BeautyShop, "Belinda May's Beauty Salon", ""),
             new GameLocation(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, LocationType.BeautyShop, "Aunt Tammy's Hair Salon", ""),
 
+            //Scrapyard
+            new GameLocation(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, LocationType.ScrapYard, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
+            new GameLocation(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, LocationType.ScrapYard, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
+            new GameLocation(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, LocationType.ScrapYard, "Red's Machine Supplies", "Parts Bought and Sold!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
             //Gun
             //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
             new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
@@ -244,6 +250,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-297.9112f, -1332.895f, 31.29597f), 314.8022f, LocationType.ConvenienceStore, "Long Pig Mini Market", ""){ Menu = ConvenienceStoreMenu },
             new GameLocation(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
             new GameLocation(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f, LocationType.ConvenienceStore, "B.J.'s Market", ""){ Menu = ConvenienceStoreMenu },
+            new GameLocation(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f, LocationType.ConvenienceStore, "Willie's Supermarket", ""){ Menu = ConvenienceStoreMenu },
 
             //Gas      
             new GameLocation(new Vector3(-711.9264f, -917.7573f, 19.21472f), 180.3014f,new Vector3(-705.7453f, -913.6598f, 19.21559f), 83.75771f, LocationType.GasStation, "LtD Little Seoul", "A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24, InteriorID = 47874 },
@@ -289,6 +296,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(2526.548f, 2037.936f, 19.82413f), 263.8982f,new Vector3(2526.548f, 2037.936f, 19.82413f), 263.8982f, LocationType.FoodStand, "Roadside Fruit", "Should Be OK To Eat") { Menu = FruitMenu },
             new GameLocation(new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f,new Vector3(1263.013f, 3548.566f, 35.14751f), 187.8834f, LocationType.FoodStand, "Roadside Fruit", "Should Be OK To Eat") { Menu = FruitMenu },
             new GameLocation(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f,new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, LocationType.FoodStand, "Grapeseed Fruit", "Grapeseed Fruit") { Menu = FruitMenu },
+            new GameLocation(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f,new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f, LocationType.FoodStand, "Roadside Fruit", "Roadside Fruit") { Menu = FruitMenu },
             //Bar
             new GameLocation(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, LocationType.Bar, "Pitchers", "Pitchers") { Menu = BarMenu },
             new GameLocation(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, LocationType.Bar, "Singletons", "Singletons") { Menu = BarMenu },

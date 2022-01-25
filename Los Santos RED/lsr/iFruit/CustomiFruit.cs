@@ -1,6 +1,7 @@
 ﻿using Rage;
 using Rage.Native;
 using System.Drawing;
+using System.Linq;
 
 namespace iFruitAddon2
 {
@@ -14,10 +15,17 @@ namespace iFruitAddon2
         private PhoneImage _wallpaper;
         private iFruitContactCollection _contacts;
 
+
+        private bool IsScriptHashRunning = false;
+
+
         private iFruitTextCollection _texts;
 
         private int _mScriptHash;
         private int _timerClose = -1;
+
+
+        public string DebugString { get; set; } = "";
 
         /// <summary>
         /// Left Button Color
@@ -183,8 +191,12 @@ namespace iFruitAddon2
 
         public void Update()
         {
+
+
+
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
+                IsScriptHashRunning = true;
                 if (_shouldDraw)
                 {
                     //Script.Wait(0);
@@ -208,7 +220,7 @@ namespace iFruitAddon2
                     if (_wallpaper != null)
                         SetWallpaperTXD(_wallpaper.Name);
 
-
+                    
 
                 //    SetUnread();
 
@@ -216,9 +228,14 @@ namespace iFruitAddon2
 
                     _shouldDraw = !_shouldDraw;
                 }
+
+
+
+
             }
             else
             {
+                IsScriptHashRunning = false;
                 _shouldDraw = true;
             }
 
@@ -232,29 +249,57 @@ namespace iFruitAddon2
                 }
             }
 
+
             _contacts.Update(Handle);
 
 
-
+            if (IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
+            {
+                SetUnread();
+            }
             _texts.Update(Handle);
+
+            //if(_texts.IsDrawing)
+            //{
+            //    LeftButtonIcon = SoftKeyIcon.Back;
+            //    RightButtonIcon = SoftKeyIcon.Delete;
+            //    RightButtonColor = Color.Red;
+            //    LeftButtonColor = Color.White;
+            //}
+            //else
+            //{
+            //    LeftButtonIcon = SoftKeyIcon.Blank;
+            //    RightButtonIcon = SoftKeyIcon.Blank;
+            //    RightButtonColor = Color.Empty;
+            //    LeftButtonColor = Color.Empty;
+            //}
 
 
             //int selectedindexmain = GetSelectedIndex();
             //EntryPoint.WriteToConsole($"OVERALL selectedindexmain {selectedindexmain}", 5);
+
+            DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning}";
 
 
         }
         private void SetUnread()
         {
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SET_DATA_SLOT");
-            NativeFunction.Natives.xC3D0841A0CC546A6(1);//2
-            NativeFunction.Natives.xC3D0841A0CC546A6(0);
-            NativeFunction.Natives.xC3D0841A0CC546A6(5);
-            NativeFunction.Natives.xC3D0841A0CC546A6(99);
+            NativeFunction.Natives.xC3D0841A0CC546A6(1);//is always 1?
+
+            NativeFunction.Natives.xC3D0841A0CC546A6(1);//second index of homescreen starting at 0?
+
+            int TotalNotifcations = _texts.Where(x => !x.IsRead).Count();
+
+            NativeFunction.Natives.xC3D0841A0CC546A6(2);//iconid?
+            NativeFunction.Natives.xC3D0841A0CC546A6(TotalNotifcations);//notifications
+            //NativeFunction.Natives.xC3D0841A0CC546A6(99);
 
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Text");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Text");//appname
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+            NativeFunction.Natives.xC3D0841A0CC546A6(100);//opacity
 
             NativeFunction.Natives.xC3D0841A0CC546A6(100);
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();

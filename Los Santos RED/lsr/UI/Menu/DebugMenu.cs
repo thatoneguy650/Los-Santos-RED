@@ -223,22 +223,18 @@ public class DebugMenu : Menu
         else if (selectedItem == RandomGangRep)
         {
             Player.RandomizeGangReputation();
-            Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == DefaultGangRep)
         {
             Player.DefaultGangReputation();
-            Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == HostileGangRep)
         {
             Player.HostileGangReputation();
-            Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == FriendlyGangRep)
         {
             Player.FriendlyGangReputation();
-            Player.DisplayPlayerGangNotification();
         }
 
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))

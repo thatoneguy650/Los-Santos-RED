@@ -99,6 +99,11 @@ public class ModItems : IModItems
 
 
 
+            new ModItem("Scrap Vehicle","Sell the vehicle for scrap",eConsumableType.Service) { ConsumeOnPurchase = true, MeasurementName = "Vehicle" },
+
+
+
+
             //new ModItem("Full",eConsumableType.Service),
             //new ModItem("Half And Half",eConsumableType.Service),
             //new ModItem("Head",eConsumableType.Service),

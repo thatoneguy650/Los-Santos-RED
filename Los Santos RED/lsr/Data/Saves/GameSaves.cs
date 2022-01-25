@@ -107,7 +107,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false),new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f));
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) });
         AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
         AlexisGameSave.PlayerHeading = 45f;
 
@@ -159,7 +159,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
             new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave SawyerGameSave = new GameSave("Sawyer Ward", 45000, "MP_M_FREEMODE_01", true, SawyerVariation, SawyerWeapons, new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), Vector3.Zero,0f));
+        GameSave SawyerGameSave = new GameSave("Sawyer Ward", 45000, "MP_M_FREEMODE_01", true, SawyerVariation, SawyerWeapons, new List<VehicleVariation>() { new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), Vector3.Zero, 0f) });
 
         PedVariation AlexisVariation2 = new PedVariation(new List<PedComponent>()
         {
@@ -212,7 +212,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave JenniferGameSave = new GameSave("Jennifer Lemont", 15500, "MP_F_FREEMODE_01", false, AlexisVariation2, AlexisWeapons2, new VehicleVariation("sentinel", 0, 0, new LSR.Vehicles.LicensePlate("FG33456A", 0, false), Vector3.Zero,0f));
+        GameSave JenniferGameSave = new GameSave("Jennifer Lemont", 15500, "MP_F_FREEMODE_01", false, AlexisVariation2, AlexisWeapons2, new List<VehicleVariation>() { new VehicleVariation("sentinel", 0, 0, new LSR.Vehicles.LicensePlate("FG33456A", 0, false), Vector3.Zero, 0f) });
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,

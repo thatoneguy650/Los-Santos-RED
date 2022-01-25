@@ -21,9 +21,10 @@ namespace LosSantosRED.lsr.Interface
         //List<HeadOverlayData> CurrentHeadOverlays { get; }
         //int CurrentPrimaryHairColor { get; }
         //int CurrentSecondaryColor { get; }
-        VehicleExt OwnedVehicle { get; }
+       // VehicleExt OwnedVehicle { get; }
         List<GangReputation> GangReputations { get; }
         Vector3 Position { get; }
         Ped Character { get; }
+        List<VehicleExt> OwnedVehicles { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace iFruitAddon2
             _mScriptHash = (int)Game.GetHashKey("appcontacts");
         }
 
-
+        public bool IsScriptRunning { get; set; } = false;
         internal void Update(int handle)
         {
             int _selectedIndex = 0;
@@ -25,13 +25,17 @@ namespace iFruitAddon2
             // If we are in the Contacts menu
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
+                IsScriptRunning = true;
                 _shouldDraw = true;
 
                 if (Game.IsControlPressed(2, GameControl.CellphoneSelect))
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
             }
             else
+            {
+                IsScriptRunning = false;
                 _selectedIndex = -1;
+            }
 
             // Browsing every added contacts
             foreach (iFruitContact contact in this)

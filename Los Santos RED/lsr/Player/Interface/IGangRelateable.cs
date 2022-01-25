@@ -18,8 +18,9 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         string PlayerName { get; }
         List<Crime> WantedCrimes { get; }
-        VehicleExt OwnedVehicle { get; }
+       // VehicleExt OwnedVehicle { get; }
         PoliceResponse PoliceResponse { get; }
+        List<VehicleExt> OwnedVehicles { get; }
 
         void SetDenStatus(Gang gang, bool v);
         void AddContact(string contactName, string contactIcon);

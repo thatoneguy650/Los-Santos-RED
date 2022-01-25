@@ -27,6 +27,8 @@ public class MainMenu : Menu
     private ISettingsProvideable Settings;
     private ITaskerable Tasker;
     private UI UI;
+    private UIMenuItem RemoveVehicleOwnership;
+
     public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs)
     {
         Player = player;
@@ -108,11 +110,16 @@ public class MainMenu : Menu
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
         TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
+
+        RemoveVehicleOwnership = new UIMenuItem("Remove Onwership", "Set closest vehicle as not owned");
+        RemoveVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
+
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star; 
        // Main.AddItem(ShowStatus);
         Main.AddItem(ShowReportingMenu);
         Main.AddItem(TakeVehicleOwnership);
+        Main.AddItem(RemoveVehicleOwnership);
         Main.AddItem(UnloadMod);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -133,6 +140,10 @@ public class MainMenu : Menu
         else if (selectedItem == TakeVehicleOwnership)
         {
             Player.TakeOwnershipOfNearestCar();
+        }
+        else if (selectedItem == RemoveVehicleOwnership)
+        {
+            Player.RemoveOwnershipOfNearestCar();
         }
         Main.Visible = false;
     }

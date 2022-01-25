@@ -155,6 +155,10 @@ public class GameLocation
             {
                 return BlipSprite.Barber;
             }
+            else if (Type == LocationType.ScrapYard)
+            {
+                return BlipSprite.CriminalCarsteal;
+            }
             else if (Type == LocationType.GunShop)
             {
                 return BlipSprite.AmmuNation;

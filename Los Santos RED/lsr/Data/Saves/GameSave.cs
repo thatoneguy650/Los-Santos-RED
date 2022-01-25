@@ -19,7 +19,7 @@ namespace LosSantosRED.lsr.Data
         {
 
         }
-        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, VehicleVariation vehicleVariation)
+        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, List<VehicleVariation> vehicleVariations)
         {
             PlayerName = playerName;
             Money = money;
@@ -27,7 +27,7 @@ namespace LosSantosRED.lsr.Data
             IsMale = isMale;
             CurrentModelVariation = currentModelVariation;
             WeaponInventory = weaponInventory;
-            OwnedVehicleVariation = vehicleVariation;
+            OwnedVehicleVariations = vehicleVariations;
         }
         public void Save(ISaveable player, IWeapons weapons)
         {
@@ -46,16 +46,28 @@ namespace LosSantosRED.lsr.Data
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
-            if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
+            OwnedVehicleVariations.Clear();
+            foreach (VehicleExt car in player.OwnedVehicles)
             {
                 int primaryColor;
                 int secondaryColor;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", player.OwnedVehicle.Vehicle, &primaryColor, &secondaryColor);
+                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
                 }
-                OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted), player.OwnedVehicle.Vehicle.Position, player.OwnedVehicle.Vehicle.Heading);
+                OwnedVehicleVariations.Add(new VehicleVariation(car.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
             }
+
+            //if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
+            //{
+            //    int primaryColor;
+            //    int secondaryColor;
+            //    unsafe
+            //    {
+            //        NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", player.OwnedVehicle.Vehicle, &primaryColor, &secondaryColor);
+            //    }
+            //    OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted), player.OwnedVehicle.Vehicle.Position, player.OwnedVehicle.Vehicle.Heading);
+            //}
             GangReputations = new List<GangRepSave>();
             foreach(GangReputation gr in player.GangReputations)
             {
@@ -74,7 +86,7 @@ namespace LosSantosRED.lsr.Data
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
-        public VehicleVariation OwnedVehicleVariation { get; set; }
+        public List<VehicleVariation> OwnedVehicleVariations { get; set; } = new List<VehicleVariation>();
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs)
         {
             Game.FadeScreenOut(2500, true);
@@ -100,16 +112,19 @@ namespace LosSantosRED.lsr.Data
             {
                 player.Inventory.Add(cii.ModItem, cii.Amount);
             }
-            if(OwnedVehicleVariation != null)
+
+            player.ClearVehicleOwnership();
+
+            foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)
             {
-                NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position,out Vector3 SpawnPos, out float Heading,false);
+                NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
                 if (SpawnPos != Vector3.Zero)
                 {
                     Vehicle NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
                     if (NewVehicle.Exists())
                     {
                         NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
-                        NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle,OwnedVehicleVariation.LicensePlate.PlateType);                     
+                        NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
                         NewVehicle.Wash();
                         VehicleExt MyVeh = World.GetVehicleExt(NewVehicle.Handle);
@@ -133,6 +148,40 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
             }
+
+            //if(OwnedVehicleVariation != null)
+            //{
+            //    NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position,out Vector3 SpawnPos, out float Heading,false);
+            //    if (SpawnPos != Vector3.Zero)
+            //    {
+            //        Vehicle NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
+            //        if (NewVehicle.Exists())
+            //        {
+            //            NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
+            //            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle,OwnedVehicleVariation.LicensePlate.PlateType);                     
+            //            NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+            //            NewVehicle.Wash();
+            //            VehicleExt MyVeh = World.GetVehicleExt(NewVehicle.Handle);
+            //            if (MyVeh == null)
+            //            {
+            //                MyVeh = new VehicleExt(NewVehicle, settings);
+            //                MyVeh.HasUpdatedPlateType = true;
+            //                World.AddEntity(MyVeh, ResponseType.None);
+            //            }
+            //            //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
+            //            player.TakeOwnershipOfVehicle(MyVeh);
+
+
+            //            if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
+            //            {
+            //                NewVehicle.Position = OwnedVehicleVariation.LastPosition;
+            //                NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
+            //            }
+
+
+            //        }
+            //    }
+            //}
 
             foreach(GangRepSave tuple in GangReputations)
             {

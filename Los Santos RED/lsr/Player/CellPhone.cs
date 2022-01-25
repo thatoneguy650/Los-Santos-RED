@@ -217,8 +217,6 @@ public class CellPhone
              new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
         };
 
-
-
     }
     public void Update()
     {

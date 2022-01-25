@@ -24,10 +24,12 @@ public class SellMenu : Menu
     private PedExt Ped;
     private bool IsActivelyConversing;
     private Transaction Transaction;
+    private VehicleExt ToSellVehicle;
+    private IEntityProvideable World;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction)
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction, IEntityProvideable world)
     {
         Ped = ped;
         ModItems = modItems;
@@ -36,6 +38,7 @@ public class SellMenu : Menu
         StoreCam = storeCamera;
         ShouldPreviewItem = shouldPreviewItem;
         Transaction = transaction;
+        World = world;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
         if (Transaction.HasBannerImage)
         {
@@ -90,14 +93,14 @@ public class SellMenu : Menu
     }
     public override void Show()
     {
-        CreatePurchaseMenu();
+        CreateSellMenu();
         sellMenu.Visible = true;
     }
     public override void Toggle()
     {
         if (!sellMenu.Visible)
         {
-            CreatePurchaseMenu();
+            CreateSellMenu();
             sellMenu.Visible = true;
         }
         else
@@ -106,9 +109,10 @@ public class SellMenu : Menu
             sellMenu.Visible = false;
         }
     }
-    private void CreatePurchaseMenu()
+    private void CreateSellMenu()
     {
         sellMenu.Clear();
+        ToSellVehicle = null;
         foreach (MenuItem cii in Store.Menu)
         {
             if (cii != null && cii.Sellable)
@@ -123,12 +127,24 @@ public class SellMenu : Menu
                     }
                     else
                     {
-                        bool enabled = Player.HasItemInInventory(cii.ModItemName);
                         string description = myItem.Description;
                         if (description == "")
                         {
                             description = $"{cii.ModItemName} {formattedSalesPrice}";
                         }
+
+                        bool enabled = Player.HasItemInInventory(cii.ModItemName);
+                        description += "~n~~s~";
+                        if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
+                        {
+                            ToSellVehicle = World.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
+                            if (ToSellVehicle != null)
+                            {
+                                enabled = true;
+                                description += $"~n~Selected Vehicle: ~p~{ToSellVehicle.MakeName()} ~p~{ToSellVehicle.ModelName()}~s~";
+                            }
+                        }                       
+
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
                         sellMenu.AddItem(myMenuItem);
@@ -153,13 +169,25 @@ public class SellMenu : Menu
             {
                 Hide();
             }
-            if (ToAdd.CanConsume)
+            if (ToAdd.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
             {
-                if (Player.RemoveFromInventory(ToAdd, 1))
+                ExitAfterPurchase = true;
+                Player.GiveMoney(menuItem.SalesPrice);
+                ItemsSold++;
+
+                ScrapVehicle();
+
+            }
+            else
+            {
+                if (ToAdd.CanConsume)
                 {
-                    Player.GiveMoney(menuItem.SalesPrice);
-                    ItemsSold++;
-                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
+                    if (Player.RemoveFromInventory(ToAdd, 1))
+                    {
+                        Player.GiveMoney(menuItem.SalesPrice);
+                        ItemsSold++;
+                        EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
+                    }
                 }
             }
         }
@@ -277,6 +305,10 @@ public class SellMenu : Menu
             }
         }
     }
+
+   
+
+
     public void ClearPreviews()
     {
         if (SellingProp.Exists())
@@ -458,4 +490,14 @@ public class SellMenu : Menu
         }
         return Spoke;
     }
+
+
+    private void ScrapVehicle()
+    {
+        if(ToSellVehicle != null && ToSellVehicle.Vehicle.Exists())
+        {
+            ToSellVehicle.Vehicle.Delete();
+        }
+    }
+
 }

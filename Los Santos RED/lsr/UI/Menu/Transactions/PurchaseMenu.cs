@@ -43,8 +43,9 @@ public class PurchaseMenu : Menu
     private MenuItem CurrentMenuItem;
     private WeaponInformation CurrentWeapon;
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
+    private ITimeControllable Time;
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons, ITimeControllable time)
     {
         Ped = ped;
         ModItems = modItems;
@@ -57,6 +58,7 @@ public class PurchaseMenu : Menu
         MenuPool = menuPool;
         Transaction = parentTransaction;
         Weapons = weapons;
+        Time = time;
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
         if(Transaction.HasBannerImage)
         {
@@ -524,7 +526,6 @@ public class PurchaseMenu : Menu
         }
         return Spoke;
     }
-
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         EntryPoint.WriteToConsole($"OnItemSelect {selectedItem.Text}", 5);
@@ -597,7 +598,6 @@ public class PurchaseMenu : Menu
         }
 
     }
-
 
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
@@ -1390,9 +1390,10 @@ public class PurchaseMenu : Menu
             //    Hide();
             //}
             ItemsBought++;
-            if (modItem.Type == eConsumableType.Service)
+            if (modItem.Type == eConsumableType.Service && Store?.Type == LocationType.Hotel)
             {
-                Player.StartServiceActivity(modItem, Store, TotalItems);
+                StayAtHotel(modItem, Store, TotalItems);
+                //Player.StartServiceActivity(modItem, Store, TotalItems);
             }
             else
             {
@@ -1653,6 +1654,24 @@ public class PurchaseMenu : Menu
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         return IsCompleted;
+    }
+
+    //Hotel
+    private void StayAtHotel(ModItem modItem, GameLocation location, int totalItems)
+    {
+        Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + totalItems, 11, 0, 0));
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            while (Time.IsFastForwarding)
+            {
+                if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
+                {
+                    Game.LocalPlayer.Character.Health++;
+                }
+                GameFiber.Yield();
+            }
+        }, "FastForwardWatcher");
+        EntryPoint.WriteToConsole($"PLAYER EVENT: StartServiceActivity HOTEL", 3);
     }
 
     private class ColorLookup

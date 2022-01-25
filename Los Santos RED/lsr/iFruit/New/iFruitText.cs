@@ -31,12 +31,16 @@ namespace iFruitAddon2
         /// <summary>
         /// The hour the message was sent
         /// </summary>
+        /// 
         public int HourSent { get; set; } = 1;
         /// <summary>
         /// The minute the message was sent
         /// </summary>
         public int MinuteSent { get; set; } = 0;
-
+        /// <summary>
+        /// The minute the message was sent
+        /// </summary>
+        public bool IsRead { get; set; } = false;
         /// <summary>
         /// The index where we should draw the item.
         /// </summary>
@@ -81,6 +85,16 @@ namespace iFruitAddon2
             NativeFunction.Natives.xC3D0841A0CC546A6(HourSent);
             NativeFunction.Natives.xC3D0841A0CC546A6(MinuteSent);
 
+            if(IsRead)
+            {
+                NativeFunction.Natives.xC3D0841A0CC546A6(34);
+            }
+            else
+            {
+                NativeFunction.Natives.xC3D0841A0CC546A6(33);
+            }
+
+
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
@@ -88,15 +102,6 @@ namespace iFruitAddon2
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Message);
             NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-
-            //NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_999");
-            //NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-            //NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_2000");
-            //NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Icon.Name.SetBold(Bold));
-            //NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-
 
 
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using RAGENativeUI.Elements;
 using RAGENativeUI.PauseMenu;
@@ -86,11 +87,11 @@ public class ReportingMenu
     private void AddVehicles()
     {
         List<UIMenuItem> menuItems2 = new List<UIMenuItem>();
-        if (Player.OwnedVehicle != null)
+        foreach(VehicleExt car in Player.OwnedVehicles)
         {
-            Color carColor = Player.OwnedVehicle.VehicleColor();
-            string Make = Player.OwnedVehicle.MakeName();
-            string Model = Player.OwnedVehicle.ModelName();
+            Color carColor = car.VehicleColor();
+            string Make = car.MakeName();
+            string Model = car.ModelName();
             string VehicleName = "";
 
             string hexColor = ColorTranslator.ToHtml(Color.FromArgb(carColor.ToArgb()));
@@ -108,20 +109,58 @@ public class ReportingMenu
                 VehicleName += " " + Model;
             }
             string rightText = "";
-            if (Player.OwnedVehicle.CarPlate != null)
+            if (car.CarPlate != null)
             {
-                if(Player.OwnedVehicle.CarPlate.IsWanted)
+                if (car.CarPlate.IsWanted)
                 {
-                    VehicleName += $" Plate: {Player.OwnedVehicle.CarPlate}";
+                    VehicleName += $" Plate: {car.CarPlate}";
                     rightText = " ~r~(Wanted)~s~";
                 }
                 else
                 {
-                    VehicleName += $" Plate: {Player.OwnedVehicle.CarPlate}~s~";
-                }  
+                    VehicleName += $" Plate: {car.CarPlate}~s~";
+                }
             }
             menuItems2.Add(new UIMenuItem(VehicleName, "") { RightLabel = rightText });
         }
+
+
+        //if (Player.OwnedVehicle != null)
+        //{
+        //    Color carColor = Player.OwnedVehicle.VehicleColor();
+        //    string Make = Player.OwnedVehicle.MakeName();
+        //    string Model = Player.OwnedVehicle.ModelName();
+        //    string VehicleName = "";
+
+        //    string hexColor = ColorTranslator.ToHtml(Color.FromArgb(carColor.ToArgb()));
+        //    if (carColor.ToString() != "")
+        //    {
+        //        VehicleName += $"<FONT color='{hexColor}'>" + carColor.Name + "~s~";
+        //    }
+        //    EntryPoint.WriteToConsole($"hexColor IS NOW: {hexColor}", 5);
+        //    if (Make != "")
+        //    {
+        //        VehicleName += " " + Make;
+        //    }
+        //    if (Model != "")
+        //    {
+        //        VehicleName += " " + Model;
+        //    }
+        //    string rightText = "";
+        //    if (Player.OwnedVehicle.CarPlate != null)
+        //    {
+        //        if(Player.OwnedVehicle.CarPlate.IsWanted)
+        //        {
+        //            VehicleName += $" Plate: {Player.OwnedVehicle.CarPlate}";
+        //            rightText = " ~r~(Wanted)~s~";
+        //        }
+        //        else
+        //        {
+        //            VehicleName += $" Plate: {Player.OwnedVehicle.CarPlate}~s~";
+        //        }  
+        //    }
+        //    menuItems2.Add(new UIMenuItem(VehicleName, "") { RightLabel = rightText });
+        //}
         TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Vehicles", menuItems2);
         tabView.AddTab(interactiveListItem2);
     }

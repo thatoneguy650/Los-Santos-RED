@@ -40,4 +40,5 @@ public enum LocationType : int
     BeautyShop = 31,
     House = 32,
     GangDen = 33,
+    ScrapYard = 34,
 }

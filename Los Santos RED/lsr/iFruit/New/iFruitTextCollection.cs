@@ -14,14 +14,14 @@ namespace iFruitAddon2
         private bool shownOnce;
         private int timesShow;
         private int CurrentTextIndex;
-
+        private bool HasLetGoOfSelect = false;
 
         public iFruitTextCollection()
         {
             _mScriptHash = (int)Game.GetHashKey("appTextMessage");
         }
-
-
+        public bool IsDrawing => _shouldDraw;
+        public bool IsScriptRunning { get; set; } = false;
         internal void Update(int handle)
         {
             int _selectedIndex = -1;
@@ -29,13 +29,29 @@ namespace iFruitAddon2
             // If we are in the Contacts menu
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
+                IsScriptRunning = true;
                 _shouldDraw = true;
-                GameFiber.Wait(50);
-                if (Game.IsControlPressed(2, GameControl.CellphoneSelect))
+                //GameFiber.Wait(50);
+
+                if(!HasLetGoOfSelect && !Game.IsControlPressed(2, GameControl.CellphoneSelect))
+                {
+                    HasLetGoOfSelect = true;
+                }
+
+
+                if (Game.IsControlPressed(2, GameControl.CellphoneSelect) && HasLetGoOfSelect)
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
+
+
+                //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
+                //NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
+                //NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
+                //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
             }
             else
             {
+                IsScriptRunning = false;
+                HasLetGoOfSelect = false;
                 timesShow = 0;
                 _selectedIndex = -1;
             }
@@ -46,10 +62,16 @@ namespace iFruitAddon2
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
 
-
+            int i = 0;
             // Browsing every added contacts
             foreach (iFruitText text in this)
             {
+                //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "activate");
+                //NativeFunction.Natives.xC3D0841A0CC546A6(i);//2
+                //NativeFunction.Natives.xC58424BA936EB458(_selectedIndex == text.Index);
+                //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+
                 text.Update(); // Update sounds or Answer call when _callTimer has ended.
 
                 if (_shouldDraw)
@@ -58,7 +80,9 @@ namespace iFruitAddon2
                 if (_selectedIndex != -1 && _selectedIndex == text.Index)
                 {
                     // Prevent original contact to be called
-                     Tools.Scripts.TerminateScript("appTextMessage");
+                     //Tools.Scripts.TerminateScript("appTextMessage");
+
+                    text.IsRead = true;
 
                     //text.Call();
                     DisplayTextUI(handle, text, "CELL_211", text.Icon.Name.SetBold(text.Bold));
@@ -68,12 +92,16 @@ namespace iFruitAddon2
                     // RemoveActiveNotification();
 
                 }
+                i++;
+
+
+
 
             }
 
 
 
-            if (_shouldDraw && timesShow <= 5)
+            if (IsScriptRunning && timesShow <= 5)
             {
                 NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
                 NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
@@ -91,6 +119,7 @@ namespace iFruitAddon2
         }
         public void DisplayTextUI(int handle, iFruitText text, string statusText = "CELL_211", string picName = "CELL_300")
         {
+            IsScriptRunning = false;
             string dialText;// = Game.GetGXTEntry(statusText); // "DIALING..." translated in current game's language
             unsafe
             {
@@ -131,95 +160,116 @@ namespace iFruitAddon2
 
             GameFiber.StartNew(delegate
             {
+               // GameFiber.Sleep(5000);
+               //
+               // NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
+                //NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
+               // NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
+               // NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-
-
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
+                //   // NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
 
 
-
-
-
-
-
-
-                while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneScrollBackward)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneLeft)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneScrollBackward))
-                {
-                    NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-
-
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
-                    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
-
-                    GameFiber.Yield();
-                }
-                
-
-                NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
-                NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-                NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
-                NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-                EntryPoint.WriteToConsole("TEXT MESSAGEWENT BACK!", 5);
-
-                GameFiber.Sleep(500);
-                NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 177, true);
-
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
+                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
 
 
 
 
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 172, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 173, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 175, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 176, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 178, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 179, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 180, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 182, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 183, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 184, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 185, true);
-                //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 186, true);
+                //    while(!NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
+                //    {
+                //        if (Game.IsKeyDown(System.Windows.Forms.Keys.F8))
+                //        {
+                //            break;
+                //        }
+                //        GameFiber.Yield();
+                //    }
+
+
+
+                //    //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneScrollBackward) || !NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneLeft)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneLeft)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneScrollBackward))
+                //    //{
+
+                //    //    if(Game.IsKeyDown(System.Windows.Forms.Keys.F8))
+                //    //    {
+                //    //        break;
+                //    //    }
+
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
+
+
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
+                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
+
+                //    //    GameFiber.Yield();
+                //    //}
+                //    timesShow = 0;
+                //    if (timesShow <= 5)
+                //    {
+                //        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
+                //        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
+                //        NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
+                //        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+                //        timesShow++;
+                //    }
+                //    EntryPoint.WriteToConsole("TEXT MESSAGE WENT BACK!", 5);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 177, true);
+                //   // GameFiber.Sleep(500);
+
+
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
+
+
+
+
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 172, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 173, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 175, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 176, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 178, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 179, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 180, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 182, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 183, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 184, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 185, true);
+                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 186, true);
 
 
             }, "Run Debug Logic");

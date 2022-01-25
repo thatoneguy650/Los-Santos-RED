@@ -21,6 +21,7 @@ namespace LSR.Vehicles
         private int Health = 1000;
         private bool IsOnFire;
 
+        public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }

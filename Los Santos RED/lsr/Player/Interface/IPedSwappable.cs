@@ -18,7 +18,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         VehicleExt CurrentVehicle { get; }
         //PoolHandle OwnedVehicleHandle { get; set; }
-        VehicleExt OwnedVehicle { get;  }
+       // VehicleExt OwnedVehicle { get;  }
         int WantedLevel { get; }
         Ped Character { get; }
         Inventory Inventory { get; set; }

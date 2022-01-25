@@ -90,6 +90,9 @@ public class ShopMenus : IShopMenus
             new ShopMenu("HookerMenu","Hooker",new List<MenuItem>() { new MenuItem("Handy", 50),new MenuItem("Head", 75),new MenuItem("Half And Half", 150),new MenuItem("Full",200),}),
 
 
+            new ShopMenu("ScrapMenu","Scrap",new List<MenuItem>() { new MenuItem("Scrap Vehicle", 0,2500)}),
+
+
             new ShopMenu("ConvenienceStoreMenu","Convenience Store",new List<MenuItem>() { 
                 new MenuItem("Hot Dog", 5),
                 new MenuItem("Burger",3),
