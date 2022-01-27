@@ -49,11 +49,11 @@ public class GangDispatcher
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
     private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= 5;
-    private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 15000;//15000;
+    private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 25000;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => 150f;
     private float MinDistanceToSpawn => 50f;
-    private int TimeBetweenSpawn => 2000;//15000;
+    private int TimeBetweenSpawn => 10000;//15000;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -223,7 +223,7 @@ public class GangDispatcher
         Vector3 Position;
         if (Player.IsInVehicle)
         {
-            Position = Player.Character.GetOffsetPositionFront(150f);//350f
+            Position = Player.Character.GetOffsetPositionFront(250f);//350f
         }
         else
         {

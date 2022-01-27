@@ -281,6 +281,10 @@ public class Respawning// : IRespawning
         if (resetHealth)
         {
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+
+            NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
+
+
         }
         NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);

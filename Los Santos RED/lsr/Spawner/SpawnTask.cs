@@ -96,6 +96,12 @@ public class SpawnTask
     {
         try
         {
+            if(Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && ExtensionsMethods.Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position))
+            {
+                EntryPoint.WriteToConsole($"SpawnTask: Too Close and in front to spawn", 5);
+                return;
+            }
+
             EntryPoint.WriteToConsole($"SPAWNTASK AttemptSpawn FIRST! PersonType {PersonType?.ModelName}", 3);
             if (Agency != null || Gang != null)
             {
@@ -308,11 +314,6 @@ public class SpawnTask
         {
             EntryPoint.WriteToConsole($"SPAWNTASK Attempting to spawn {VehicleType.ModelName}", 3);
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
-            //Model modelToCreate = new Model(Game.GetHashKey(VehicleType.ModelName));
-            //modelToCreate.LoadAndWait();
-            //SpawnedVehicle = NativeFunction.Natives.CREATE_VEHICLE<Vehicle>(Game.GetHashKey(VehicleType.ModelName), Position.X, Position.Y, Position.Z, Heading, false, false);
-            //PoolHandle SpawnedHandle = NativeFunction.Natives.CREATE_VEHICLE<PoolHandle>(Game.GetHashKey(VehicleType.ModelName), Position.X, Position.Y, Position.Z, Heading, false, false);
-           // EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE?????? {SpawnedHandle}", 2);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
@@ -353,27 +354,6 @@ public class SpawnTask
                 SpawnedVehicle.Delete();
             }
             GameFiber.Yield();
-            //SpawnedVehicle = (Vehicle)Rage.World.GetClosestEntity(Position, 5f, GetEntitiesFlags.ConsiderAllVehicles);
-            //if (SpawnedVehicle.Exists())
-            //{
-            //    EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle}", 2);
-            //    if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
-            //    {
-            //        NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
-            //    }
-            //    VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
-            //    if (SpawnedVehicle.Exists())
-            //    {
-            //        CopVehicle.WasModSpawned = true;
-            //        SpawnedVehicle.IsPersistent = true;
-            //        EntryPoint.PersistentVehiclesCreated++;
-            //        CopVehicle.UpdateLivery(Agency);
-            //        CopVehicle.UpgradePerformance();
-            //        CreatedVehicles.Add(CopVehicle);
-            //        GameFiber.Yield();
-            //        return CopVehicle;
-            //    }
-            //}
             return null;
         }
     }

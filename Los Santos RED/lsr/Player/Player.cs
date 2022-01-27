@@ -1,4 +1,6 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using iFruitAddon2;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
@@ -43,6 +45,7 @@ namespace Mod
         private GameLocation ClosestSimpleTransaction;
         private GameLocation ClosestTeleportEntrance;
         private GameLocation ClosestPurchaseLocation;
+      
 
         private int wantedLevel = 0;
         private bool isActive = true;
@@ -87,8 +90,10 @@ namespace Mod
         private CellPhone CellPhone;
         private uint GameTimeStartedMovingFast;
         private uint GameTimeStartedMoving;
+        private IGangTerritories GangTerritories;
+        private IZones Zones;
 
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions)
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -104,6 +109,8 @@ namespace Mod
             PlacesOfInterest = placesOfInterest;
             ModItems = modItems;
             Intoxicants = intoxicants;
+            GangTerritories = gangTerritories;
+            Zones = zones;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors, this);
@@ -126,7 +133,7 @@ namespace Mod
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
             WeaponSelector = new WeaponSelector(this, Settings);
-            CellPhone = new CellPhone(this, jurisdictions);
+            CellPhone = new CellPhone(this, jurisdictions, Settings, TimeControllable, gangs);
             CellPhone.Setup();
 
         }
@@ -202,7 +209,7 @@ namespace Mod
 
         public List<GangReputation> GangReputations => GangRelationships.GangReputations;
 
-
+        public List<iFruitText> TextList => CellPhone.TextList;
         public bool IsAiming
         {
             get => isAiming;
@@ -1649,8 +1656,10 @@ namespace Mod
 
 
 
-
-            WeaponDropping.Update();
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
+            {
+                WeaponDropping.Update();
+            }
             UpdateTargetedPed();
             GameFiber.Yield();
             UpdateLookedAtPed();
@@ -1658,15 +1667,77 @@ namespace Mod
         }
 
         //Delegate Items
+        public void AddGangText(Gang gang, bool isPositive)
+        {
+            if (gang != null)
+            {
+                List<string> Replies = new List<string>();
+                if (isPositive)
+                {
+                    Replies.AddRange(new List<string>() {
+                    $"Heard some good things about you, come see us sometime.",
+                    $"Call us soon to discuss business.",
+                    $"Might have some business opportunites for you soon, give us a call.",
+                    $"You've been making some impressive moves, call us to discuss.",
+                });
+                }
+                else
+                {
+                    Replies.AddRange(new List<string>() {
+                    $"Watch your back",
+                    $"Dead man walking",
+                    $"ur fucking dead",
+                    $"You just fucked with the wrong people asshole",
+                    $"We're gonna fuck you up buddy",
+                });
+                }
+
+                List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
+                ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
+
+                if (mainTerritory != null)
+                {
+                    Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
+                    if (mainGangZone != null)
+                    {
+                        if (isPositive)
+                        {
+                            Replies.AddRange(new List<string>() {
+                            $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
+                            $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
+                            $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
+                            $"You've been making some impressive moves, call us to discuss.",
+                        });
+                        }
+                        else
+                        {
+                            Replies.AddRange(new List<string>() {
+                            $"Watch your back next to your are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
+                            $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
+                            $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
+                        });
+                        }
+                    }
+                }
+                string MessageToSend;
+                MessageToSend = Replies.PickRandom();
+                CellPhone.AddScheduledText(gang.ContactName, gang.ContactIcon, MessageToSend);
+            }
+        }
+        public void AddScheduledText(string Name, string IconName, string MessageToSend) => CellPhone.AddScheduledText(Name, IconName, MessageToSend);
+        public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd) => CellPhone.AddScheduledText(Name, IconName, MessageToSend, timeToAdd);
+        public void AddContact(string Name, string IconName, string MessageToSend, DateTime timeToAdd) => CellPhone.AddScheduledContact(Name, IconName, MessageToSend, timeToAdd);
         public bool IsContactEnabled(string name) => CellPhone.IsContactEnabled(name);
         public void DisableContact(string name) => CellPhone.DisableContact(name);
-        public void AddContact(string name, string contactIcon) => CellPhone.AddContact(name, contactIcon);
-        public void AddContact(string name, iFruitAddon2.ContactIcon contactIcon) => CellPhone.AddContact(name, contactIcon);
+        public void AddContact(string name, string contactIcon, bool isGang) => CellPhone.AddContact(name, contactIcon, isGang);
+        public void AddContact(string name, iFruitAddon2.ContactIcon contactIcon, bool isGang) => CellPhone.AddContact(name, contactIcon, isGang);
         public void SetSelector(SelectorOptions eSelectorSetting) => WeaponSelector.SetSelectorSetting(eSelectorSetting);
         public void ToggleSelector() => WeaponSelector.ToggleSelector();
         public void SetReputation(Gang gang, int value) => GangRelationships.SetReputation(gang, value);
         public void ChangeReputation(Gang gang, int value) => GangRelationships.ChangeReputation(gang, value);
+        public int GetRepuationLevel(Gang gang) => GangRelationships.GetRepuationLevel(gang);
         public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);
+        public bool IsFriendly(Gang gang) => GangRelationships.IsFriendly(gang);
         public void DefaultGangReputation() => GangRelationships.ResetReputations();
         public void RandomizeGangReputation() => GangRelationships.RandomReputations();
         public void HostileGangReputation() => GangRelationships.HostileReputations();

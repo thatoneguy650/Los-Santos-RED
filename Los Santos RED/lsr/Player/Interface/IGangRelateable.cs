@@ -21,10 +21,13 @@ namespace LosSantosRED.lsr.Interface
        // VehicleExt OwnedVehicle { get; }
         PoliceResponse PoliceResponse { get; }
         List<VehicleExt> OwnedVehicles { get; }
+        List<iFruitText> TextList { get; }
 
         void SetDenStatus(Gang gang, bool v);
-        void AddContact(string contactName, string contactIcon);
+        void AddContact(string contactName, string contactIcon, bool isGang);
         void DisableContact(string contactName);
         bool IsContactEnabled(string contactName);
+        void AddScheduledText(string contactName, string contactIcon, string v);
+        void AddGangText(Gang gang, bool v);
     }
 }

@@ -27,6 +27,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public string MaleFreeModeVoice { get; set; }
     [Description("Ped voice to use as your own when you are playing as the female freemode ped.")]
     public string FemaleFreeModeVoice { get; set; }
+
+
+
     public PlayerOtherSettings()
     {
         SetDefault();

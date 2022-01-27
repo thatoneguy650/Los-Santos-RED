@@ -82,10 +82,9 @@ public class GangReputation
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
-
-
                 Player.SetDenStatus(Gang, false);
                 Player.DisableContact(Gang.ContactName);
+                Player.AddGangText(Gang,false);
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
@@ -93,7 +92,8 @@ public class GangReputation
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
 
                 Player.SetDenStatus(Gang, true);
-                Player.AddContact(Gang.ContactName,Gang.ContactIcon);
+                Player.AddContact(Gang.ContactName,Gang.ContactIcon, true);
+                Player.AddGangText(Gang, true);
             }
             else if (GangRelationship == GangRespect.Neutral)
             {

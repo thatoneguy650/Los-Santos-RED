@@ -118,6 +118,7 @@
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CellPhoneSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\InvestigationSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RecoilSettings.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\CellPhone.cs" />
+    <Compile Include="lsr\Player\Cellphone\NotificationIconTypes.cs" />
     <Compile Include="lsr\Player\eSelectorSetting.cs" />
     <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />
@@ -450,5 +452,6 @@
   <ItemGroup>
     <Content Include="lsr\iFruit\License.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using iFruitAddon2;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using RAGENativeUI.Elements;
@@ -77,10 +78,12 @@ public class ReportingMenu
 
         AddVehicles();
         AddCrimes();
-        AddLocations();
+        //AddLocations();
         //AddGangDens();
         //AddGangReputation();
         AddGangItems();
+
+        AddTextMessages();
 
         tabView.RefreshIndex();
     }
@@ -196,6 +199,7 @@ public class ReportingMenu
         
         
     }
+
     private void AddGangDens()
     {
         List<UIMenuItem> menuItems2 = new List<UIMenuItem>();
@@ -215,6 +219,32 @@ public class ReportingMenu
         TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Gang Dens", menuItems2);
         tabView.AddTab(interactiveListItem2);
     }
+    private void AddTextMessages()
+    {
+        List<TabItem> items = new List<TabItem>();
+
+
+        foreach (iFruitText text in Player.TextList.OrderByDescending(x => x.Index))
+        {
+
+            string TimeReceived = string.Format("{0:D2}h:{1:D2}m",
+                text.HourSent,
+                text.MinuteSent);
+
+            string DescriptionText = "";
+            DescriptionText = "From: " + text.Name;
+            DescriptionText += $"~n~At: {TimeReceived}";  //+ gr.ToStringBare();
+            DescriptionText += $"~n~Message: {text.Message}";
+            string TitleText = $"{text.Name}{(text.IsRead ? " Unread" : "")}";
+            TabItem tItem = new TabTextItem(TitleText, TitleText, text.Message);
+
+            tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
+            items.Add(tItem);
+        }
+        tabView.AddTab(submenuTab = new TabSubmenuItem("Text Messages", items));
+    }
+
+
     private void AddGangReputation()
     {
         List<UIMenuItem> menuItems = new List<UIMenuItem>();

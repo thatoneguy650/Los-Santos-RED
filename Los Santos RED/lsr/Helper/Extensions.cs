@@ -213,6 +213,10 @@ namespace ExtensionsMethods
         }
 
 
+
+        public static bool PointIsInFrontOfPed(this Ped myPed, Vector3 position) => GetDotVectorResult(myPed, position) > 0;
+
+       
         public static bool IsThisPedInFrontOf(this Ped myPed, Ped ToCheck)
         {
             float Result = GetDotVectorResult(ToCheck, myPed);
@@ -234,6 +238,18 @@ namespace ExtensionsMethods
             }
             else return -1.0f;
         }
+
+
+        public static float GetDotVectorResult(Entity source, Vector3 position)
+        {
+            if (source.Exists())
+            {
+                Vector3 dir = (position - source.Position).ToNormalized();
+                return Vector3.Dot(dir, source.ForwardVector);
+            }
+            else return -1.0f;
+        }
+
         public static float GetHeadingDifference(float initial, float final)
         {
             if (initial > 360 || initial < 0 || final > 360 || final < 0)

@@ -138,6 +138,42 @@ public class GangRelationships
             return newRep.GangRelationship == GangRespect.Hostile;
         }
     }
+    public bool IsFriendly(Gang gang)
+    {
+        if (gang == null)
+        {
+            return false;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr != null)
+        {
+            return gr.GangRelationship == GangRespect.Friendly;
+        }
+        else
+        {
+            GangReputation newRep = new GangReputation(gang, Player);
+            GangReputations.Add(newRep);
+            return newRep.GangRelationship == GangRespect.Friendly;
+        }
+    }
+    public int GetRepuationLevel(Gang gang)
+    {
+        if (gang == null)
+        {
+            return 0;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr != null)
+        {
+            return gr.ReputationLevel;
+        }
+        else
+        {
+            GangReputation newRep = new GangReputation(gang, Player);
+            GangReputations.Add(newRep);
+            return newRep.ReputationLevel;
+        }
+    }
     public void FriendlyReputations()
     {
         foreach (GangReputation rg in GangReputations)

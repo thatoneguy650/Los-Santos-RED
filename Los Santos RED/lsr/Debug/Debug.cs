@@ -837,7 +837,19 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        PauseMenuExample.Main();
+
+
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.SetReputation(myGang, -2000);
+
+
+        //string Name, string IconName, string MessageToSend, DateTime timeToAd
+        //Gang myGang = Gangs.GetGang("AMBIENT_GANG_LOST");
+
+
+        //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
+        //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
+        //PauseMenuExample.Main();
         //StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;
         //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
@@ -854,7 +866,12 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
+        EntryPoint.WriteToConsole($"ADDED Text", 5);
+
+        //CreatePointChecker();
+        //Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
         //contacttest();
         //Array values = Enum.GetValues(typeof(SelectorOptions));
         //Random random = new Random();
@@ -939,11 +956,15 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.SetReputation(myGang, 2000);
+
+
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
-        Dispatcher.DebugSpawnCop();
+        //Dispatcher.DebugSpawnCop();
 
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
@@ -1032,8 +1053,8 @@ public class Debug
 
     private void contacttest()
     {
-        Player.AddContact("Vagos Boss",ContactIcon.MP_MexBoss);
-        Player.AddContact("LOST MC Boss", ContactIcon.MP_BikerBoss);
+        //Player.AddContact("Vagos Boss",ContactIcon.MP_MexBoss);
+        //Player.AddContact("LOST MC Boss", ContactIcon.MP_BikerBoss);
         //try
         //{
         //    GameFiber.StartNew(delegate
@@ -1101,6 +1122,32 @@ public class Debug
     //    _iFruit.Close(5000);
     //}
 
+    private void CreatePointChecker()
+    {
+
+        Vector3 CoolPos = Game.LocalPlayer.Character.Position.Around2D(10f);
+        Color coolColor = Color.Yellow;
+        GameFiber.StartNew(delegate
+        {
+            while (!Game.IsKeyDown(Keys.O))
+            {
+                if(Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character,CoolPos))
+                {
+                    coolColor = Color.Red;
+                }
+                else
+                {
+                    coolColor = Color.Yellow;
+                }
+                float Result = Extensions.GetDotVectorResult(Game.LocalPlayer.Character, CoolPos);
+                Game.DisplayHelp($"Press O to Stop GetDotVectorResult {Result}");
+                Rage.Debug.DrawArrowDebug(CoolPos, Vector3.Zero, Rotator.Zero, 1f, coolColor);
+
+                GameFiber.Yield();
+            }
+
+        }, "Run Debug Logic");
+    }
     private void BrowseTimecycles()
     {
         try

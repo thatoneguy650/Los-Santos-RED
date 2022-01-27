@@ -88,6 +88,13 @@ namespace LosSantosRED.lsr.Helper
                 default: return input.First().ToString().ToUpper() + input.Substring(1);
             }
         }
+        public static void DisplayNotificationCustom(string textureDictionaryName, string textureName, string title, string subtitle, string text, NotificationIconTypes iconID, bool flash)
+        {
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+            NativeFunction.Natives.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(textureDictionaryName, textureName, flash, (int)iconID, title, subtitle);
+        }
+
         public static string GetSimpleCompassHeading(float Heading)
         {
             //float Heading = Game.LocalPlayer.Character.Heading;

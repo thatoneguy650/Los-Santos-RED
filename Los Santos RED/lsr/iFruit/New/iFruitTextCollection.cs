@@ -2,6 +2,7 @@
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace iFruitAddon2
@@ -64,15 +65,8 @@ namespace iFruitAddon2
 
             int i = 0;
             // Browsing every added contacts
-            foreach (iFruitText text in this)
+            foreach (iFruitText text in this.ToList().OrderByDescending(x => x.Index))
             {
-                //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "activate");
-                //NativeFunction.Natives.xC3D0841A0CC546A6(i);//2
-                //NativeFunction.Natives.xC58424BA936EB458(_selectedIndex == text.Index);
-                //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-
-                text.Update(); // Update sounds or Answer call when _callTimer has ended.
 
                 if (_shouldDraw)
                     text.Draw(handle);

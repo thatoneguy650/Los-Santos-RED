@@ -42,6 +42,11 @@ public class SettingsManager
     public KeySettings KeySettings { get; set; } = new KeySettings();
     [Category("Player")]
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
+
+
+    [Category("Player")]
+    public CellphoneSettings CellphoneSettings { get; set; } = new CellphoneSettings();
+
     [Category("World")]
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
     [Category("World")]

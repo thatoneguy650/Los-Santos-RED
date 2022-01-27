@@ -107,7 +107,7 @@ public class GameSaves : IGameSaves
             new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 9500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) });
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) });
         AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
         AlexisGameSave.PlayerHeading = 45f;
 

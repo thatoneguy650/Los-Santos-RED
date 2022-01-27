@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNight { get; }
         bool IsFastForwarding { get; }
         int CurrentHour { get; }
+        int CurrentMinute { get; }
         string CurrentTime { get; }
         int CurrentDay { get; }
         DateTime CurrentDateTime { get; }
