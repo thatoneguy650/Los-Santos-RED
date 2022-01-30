@@ -837,10 +837,20 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        foreach(VehicleExt car in World.CivilianVehicleList)
+        {
+            if(car.Vehicle.Exists())
+            {
+                Blip coolBlip = car.Vehicle.GetAttachedBlip();
+                if(coolBlip.Exists())
+                {
+                    EntryPoint.WriteToConsole($"{car.Vehicle.Handle} {car.Vehicle.Model.Name} {coolBlip.Name} {coolBlip.Sprite}");
+                }
+            }
+        }
 
-
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.SetReputation(myGang, -2000);
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.SetReputation(myGang, -2000, true);
 
 
         //string Name, string IconName, string MessageToSend, DateTime timeToAd
@@ -866,9 +876,11 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
-        EntryPoint.WriteToConsole($"ADDED Text", 5);
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.CurrentCellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(1));
+        //EntryPoint.WriteToConsole($"ADDED Text", 5);
+
+     //  AddGPSRoute();
 
         //CreatePointChecker();
         //Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
@@ -957,7 +969,7 @@ public class Debug
     private void DebugNumpad9()
     {
         Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.SetReputation(myGang, 2000);
+        Player.GangRelationships.SetReputation(myGang, 2000, true);
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
@@ -973,6 +985,36 @@ public class Debug
         //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         //}
     }
+
+    //private void AddGPSRoute()
+    //{
+    //    if(Player.CurrentGPSBlip.Exists())
+    //    {
+    //        Player.CurrentGPSBlip.Delete();
+    //    }
+    //    GameLocation coolPlace = PlacesOfInterest.GetAllPlaces().PickRandom();
+    //    if(coolPlace != null)
+    //    {
+    //        Game.DisplayHelp($"Adding GPS To {coolPlace.Name}");
+    //        Blip MyLocationBlip = new Blip(coolPlace.EntrancePosition)
+    //        {
+    //            Name = coolPlace.Name
+    //        };
+    //        if (MyLocationBlip.Exists())
+    //        {
+    //            MyLocationBlip.Color = Color.Yellow;
+    //            NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE(MyLocationBlip, false);
+    //            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+    //            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(coolPlace.Name);
+    //            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+    //            NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
+    //            Player.CurrentGPSBlip = MyLocationBlip;
+    //            World.AddEntity(MyLocationBlip);
+    //        }
+    //    }
+    //}
+
+
 
     private void SpawnBus()
     {

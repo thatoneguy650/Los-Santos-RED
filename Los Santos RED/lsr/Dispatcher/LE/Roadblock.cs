@@ -379,8 +379,12 @@ public class Roadblock
             position = new Vector3(position.X, position.Y, GroundZ);
         }
         Rage.Object Cone = new Rage.Object(ConeTypes.PickRandom(), position, heading);
-        Cone.IsPersistent = true;
-        CreatedProps.Add(Cone);
+
+        if (Cone.Exists())
+        {
+            Cone.IsPersistent = true;
+            CreatedProps.Add(Cone);
+        }
         return Cone.Exists();
     }
     private bool CreateBarrier(Vector3 position, float heading)

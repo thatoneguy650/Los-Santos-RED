@@ -52,6 +52,10 @@ public class Gangs : IGangs
     {
         return GangsList.Where(x => x.ID.ToLower() == GangInitials.ToLower()).FirstOrDefault();
     }
+    public Gang GetGangByContact(string contactName)
+    {
+        return GangsList.Where(x => x.ContactName.ToLower() == contactName.ToLower()).FirstOrDefault();
+    }
     public List<Gang> GetGangs(Ped ped)
     {
         return GangsList.Where(x => x.Personnel != null && x.Personnel.Any(b => b.ModelName.ToLower() == ped.Model.Name.ToLower())).ToList();
@@ -261,102 +265,80 @@ public class Gangs : IGangs
         List<DispatchableVehicle> VarriosVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("buccaneer", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
             new DispatchableVehicle("buccaneer2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("manana", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("chino", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("chino2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("voodoo", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
-            new DispatchableVehicle("voodoo2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("manana", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("chino", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("chino2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("voodoo", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
+            //new DispatchableVehicle("voodoo2", 15, 15){RequiredColor = Color.Yellow, HasSetColor = true },
         };
 
         List<DispatchableVehicle> BallasVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("buccaneer2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            new DispatchableVehicle("baller", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            new DispatchableVehicle("baller2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
             new DispatchableVehicle("manana", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("chino", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("chino2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("voodoo", 15, 15) {RequiredColor = Color.Purple, HasSetColor = true },
-            new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Purple, HasSetColor = true },};
+            //new DispatchableVehicle("chino", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("chino2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("voodoo", 15, 15) {RequiredColor = Color.Purple, HasSetColor = true },
+            //new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Purple, HasSetColor = true },
+        };
 
         List<DispatchableVehicle> VagosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("buccaneer2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("manana", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("buccaneer", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("buccaneer2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("manana", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
             new DispatchableVehicle("chino", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
             new DispatchableVehicle("chino2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("voodoo", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
-            new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("faction", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("faction2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("primo", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("primo2", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("voodoo", 15, 15){RequiredColor = Color.Orange, HasSetColor = true },
+            //new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Orange, HasSetColor = true },
         };
 
         List<DispatchableVehicle> MarabuntaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            //new DispatchableVehicle("buccaneer", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("buccaneer2", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("manana", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("chino", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("chino2", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            new DispatchableVehicle("faction", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            new DispatchableVehicle("faction2", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("primo", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("primo2", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("voodoo", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
+            //new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Blue, HasSetColor = true },
         };
 
         List<DispatchableVehicle> KoreanVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            new DispatchableVehicle("feltzer2", 15, 15),
+            new DispatchableVehicle("comet2", 15, 15),
+            new DispatchableVehicle("dubsta2", 15, 15),
         };
 
         List<DispatchableVehicle> TriadVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            new DispatchableVehicle("fugitive", 15, 15),
+            new DispatchableVehicle("oracle", 15, 15),
+            new DispatchableVehicle("cavalcade", 15, 15),
+            new DispatchableVehicle("cavalcade2", 15, 15),
         };
 
         List<DispatchableVehicle> YardieVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            new DispatchableVehicle("virgo", 15, 15) {RequiredColor = Color.Green, HasSetColor = true },
+            new DispatchableVehicle("voodoo", 15, 15) {RequiredColor = Color.Green, HasSetColor = true },
+            new DispatchableVehicle("voodoo2", 15, 15) {RequiredColor = Color.Green, HasSetColor = true },
         };
 
         List<DispatchableVehicle> DiablosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("stalion", 100, 100),
+            new DispatchableVehicle("stalion", 100, 100) {RequiredColor = Color.Red, HasSetColor = true },
         };
 
         List<DispatchableVehicle> MafiaVehicles = new List<DispatchableVehicle>() {
@@ -366,53 +348,40 @@ public class Gangs : IGangs
 
         List<DispatchableVehicle> ArmeniaVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("schafter2", 10, 10),
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
             new DispatchableVehicle("tornado", 15, 15),
             new DispatchableVehicle("tornado2", 15, 15),
             new DispatchableVehicle("peyote", 15, 15),
         };
 
         List<DispatchableVehicle> CartelVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            new DispatchableVehicle("baller", 15, 15),
+            new DispatchableVehicle("cavalcade2", 15, 15),
+            new DispatchableVehicle("cavalcade", 15, 15),
+            new DispatchableVehicle("baller2", 15, 15),
+            new DispatchableVehicle("buccaneer2", 15, 15) {RequiredColor = Color.Red, HasSetColor = true },
+
         };
 
         List<DispatchableVehicle> RedneckVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buccaneer", 15, 15),
-            new DispatchableVehicle("buccaneer2", 15, 15),
-            new DispatchableVehicle("manana", 15, 15),
-            new DispatchableVehicle("chino", 15, 15),
-            new DispatchableVehicle("chino2", 15, 15),
-            new DispatchableVehicle("faction", 15, 15),
-            new DispatchableVehicle("faction2", 15, 15),
-            new DispatchableVehicle("primo", 15, 15),
-            new DispatchableVehicle("primo2", 15, 15),
-            new DispatchableVehicle("voodoo", 15, 15),
-            new DispatchableVehicle("voodoo2", 15, 15),
+            new DispatchableVehicle("rumpo", 15, 15),
+            new DispatchableVehicle("granger", 15, 15),
+            new DispatchableVehicle("bison", 15, 15),
+            new DispatchableVehicle("sanchez2",10,10) {MaxOccupants = 1 },
         };
 
         List<DispatchableVehicle> FamiliesVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("emperor ",10,10) {RequiredColor = Color.Green, HasSetColor = true },
             new DispatchableVehicle("peyote ",10,10) {RequiredColor = Color.Green, HasSetColor = true },
-            new DispatchableVehicle("cavalcade",10,10) {RequiredColor = Color.Green, HasSetColor = true },
-            new DispatchableVehicle("cavalcade2",10,10) {RequiredColor = Color.Green, HasSetColor = true },
-            new DispatchableVehicle("baller",10,10) {RequiredColor = Color.Green, HasSetColor = true },
-            new DispatchableVehicle("baller2",10,10) {RequiredColor = Color.Green, HasSetColor = true },
+            //new DispatchableVehicle("cavalcade",10,10) {RequiredColor = Color.Green, HasSetColor = true },
+            //new DispatchableVehicle("cavalcade2",10,10) {RequiredColor = Color.Green, HasSetColor = true },
+            //new DispatchableVehicle("baller",10,10) {RequiredColor = Color.Green, HasSetColor = true },
+            //new DispatchableVehicle("baller2",10,10) {RequiredColor = Color.Green, HasSetColor = true },
             new DispatchableVehicle("bmx",10,10),
             new DispatchableVehicle("nemesis",10,10) {MaxOccupants = 1 },
             new DispatchableVehicle("buccaneer",10,10) {RequiredColor = Color.Green, HasSetColor = true },
             new DispatchableVehicle("manana",10,10) {RequiredColor = Color.Green, HasSetColor = true },
-            new DispatchableVehicle("tornado",10,10) {RequiredColor = Color.Green, HasSetColor = true },};
+            new DispatchableVehicle("tornado",10,10) {RequiredColor = Color.Green, HasSetColor = true },
+        };
         //Weapon
         List<IssuableWeapon> FamiliesSidearms = new List<IssuableWeapon>()
         {
@@ -629,33 +598,33 @@ public class Gangs : IGangs
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang","Unk", "White", null, null, "", null, null) { MaxWantedLevelSpawn = 0 };
         GangsList = new List<Gang>
         {
-            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",LostSidearms,LostLongGuns, "LOST MC President","CHAR_MP_BIKER_BOSS"),
-            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",VagosSidearms,VagosLongGuns,"Vagos Boss", "CHAR_MP_MEX_BOSS"),
-            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Families Boss","CHAR_MP_FAM_BOSS"),
-            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",BallasSidearms,BallasLongGuns,"Ballas Boss","CHAR_MP_JULIO"),
-            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MarabuntaSidearms,MarabuntaLongGuns,"Marabunta Boss","CHAR_MP_MEX_LT"),
-            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","DIA_ACULT"),
-            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",VarriosSidearms,VarriosLongGuns,"Varrios Boss","CHAR_ORTEGA"),
-            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR"),
-            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL"),
-            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",KkangpaeSidearms,KkangpaeLongGuns,"Kkangpae Leader","CHAR_CHENG"),
-            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Gambetti Boss","CHAR_TOM"),
+            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",LostSidearms,LostLongGuns, "LOST MC President","CHAR_MP_BIKER_BOSS") { DenName = "Clubhouse" } ,
+            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",VagosSidearms,VagosLongGuns,"Vagos O.G.", "CHAR_MP_MEX_BOSS") { DenName = "Hangout" } ,
+            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Families O.G.","CHAR_MP_FAM_BOSS") { DenName = "Hangout" } ,
+            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",BallasSidearms,BallasLongGuns,"Ballas O.G.","CHAR_MP_JULIO") { DenName = "Hangout" } ,
+            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MarabuntaSidearms,MarabuntaLongGuns,"Marabunta O.G.","CHAR_MP_MEX_LT") { DenName = "Hangout" } ,
+            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","DIA_ACULT") { DenName = "Gathering Location" } ,
+            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",VarriosSidearms,VarriosLongGuns,"Varrios O.G.","CHAR_ORTEGA") { DenName = "Hangout" } ,
+            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR") { DenName = "Meeting Spot" } ,
+            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL") { DenName = "Clubhouse" } ,
+            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",KkangpaeSidearms,KkangpaeLongGuns,"Kkangpae Leader","CHAR_CHENG") { DenName = "Hangout" } ,
+            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Gambetti Boss","CHAR_TOM") { DenName = "Social Club" } ,
 
 
 
-            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Pavano Boss","CHAR_DOM"),
-            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Lupisella Boss","CHAR_AGENT14"),
-            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_BARRY"),
-            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DREYFUSS"),
+            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Pavano Boss","CHAR_DOM") { DenName = "Social Club" } ,
+            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Lupisella Boss","CHAR_AGENT14") { DenName = "Social Club" } ,
+            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_BARRY") { DenName = "Social Club" } ,
+            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DREYFUSS") { DenName = "Social Club" } ,
 
 
-            
 
 
-            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Madrazo Boss","CHAR_MANUEL"),
-            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Armenian Boss","CHAR_MP_PROF_BOSS"),
-            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Yardie Boss","CHAR_MP_GERALD"),
-            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Diablo Boss","CHAR_TW"),
+
+            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Madrazo","CHAR_MANUEL") { DenName = "Den" } ,
+            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Armenian Leader","CHAR_MP_PROF_BOSS") { DenName = "Hangout" } ,
+            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Yardie O.G.","CHAR_MP_GERALD") { DenName = "Chill Spot" } ,
+            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Diablo Leader","CHAR_TW") { DenName = "Hangout" } ,
 
             //DefaultGang
         };

@@ -1,4 +1,5 @@
-﻿using iFruitAddon2;
+﻿using ExtensionsMethods;
+using iFruitAddon2;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -27,23 +28,27 @@ public class CellPhone
     private UIMenuItem RequestEMS;
     private IJurisdictions Jurisdictions;
     private List<iFruitContact> AddedContacts = new List<iFruitContact>();
-    private uint GameTimeLastRandomizedAnswerTimes;
     private List<ContactLookup> ContactLookups;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
     private List<iFruitText> AddedTexts = new List<iFruitText>();
     private Gang GangLastCalled;
-
+    private IPlacesOfInterest PlacesOfInterest;
+    private IZones Zones;
+    private IStreets Streets;
     private List<ScheduledContact> ScheduledContacts = new List<ScheduledContact>();
     private List<ScheduledText> ScheduledTexts = new List<ScheduledText>();
     private UIMenuItem RequestGangWork;
     private UIMenuItem RequestGangDen;
     private UIMenuItem PayoffGangFriendly;
+    private IGangTerritories GangTerritories;
+    private int TextSound;
 
     public CustomiFruit CustomiFruit { get; private set; }
     public List<iFruitText> TextList => AddedTexts;
-    public CellPhone (ICellPhoneable player, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs)
+    public List<iFruitContact> ContactList => AddedContacts;
+    public CellPhone (ICellPhoneable player, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories)
     {
         Player = player;
         CustomiFruit = new CustomiFruit();
@@ -52,7 +57,11 @@ public class CellPhone
         Settings = settings;
         Time = time;
         Gangs = gangs;
+        Zones = zones;
+        Streets = streets;
         ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
+        PlacesOfInterest = placesOfInterest;
+        GangTerritories = gangTerritories;
     }
     public void Setup()
     {
@@ -60,23 +69,6 @@ public class CellPhone
         {
             AddEmergencyServicesCustomContact();
         }
-
-
-
-
-
-        //AddContact("Vagos Boss", ContactIcon.MP_MexBoss);
-        //AddContact("LOST MC Boss", ContactIcon.MP_BikerBoss);
-//#if DEBUG
-//        AddText("LOST MC President", ContactIcon.Abigail,"Heard some good things about you, hit us up out in ~p~Sandy Shores~s~ sometime soon", 9,35);
-//        AddText("Vagos Boss", ContactIcon.Abigail, "If we ever see you again...",8,55);
-//        AddText("Diablo Boss", ContactIcon.Abigail, "Why are you hanging around the hood?", 6, 22);
-//        AddText("Yardie Boss", ContactIcon.Abigail, "Haven't heard from you in a while.", 5, 34);
-//        AddText("Gambetti Boss", ContactIcon.Abigail, "Wheres the vig?", 5, 23);
-//        AddText("Kkangpae Leader", ContactIcon.Abigail, "Watch your back", 4, 12);
-//        AddText("Ballas Boss", ContactIcon.Abigail, "We need to discuss 'business'", 4, 1);
-//        AddText("Families Boss", ContactIcon.Abigail, "Is that you driving through the hood with heat?", 3, 2);
-//#endif
         ContactLookups = new List<ContactLookup>()
         {
              new ContactLookup(ContactIcon.Generic,"CHAR_DEFAULT"),
@@ -247,53 +239,78 @@ public class CellPhone
              new ContactLookup(ContactIcon.Wade,"CHAR_WADE"),
              new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
         };
-
     }
     public void Update()
     {
-        if(Game.GameTime - GameTimeLastRandomizedAnswerTimes >= 5000)
-        {
-            foreach(iFruitContact ifc in AddedContacts)
-            {
-                if(ifc.Active)
-                {
-                    ifc.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
-                }
-            }
-            GameTimeLastRandomizedAnswerTimes = Game.GameTime;
-        }
+        CheckScheduledItems();
+        CustomiFruit.Update();
+        MenuPool.ProcessMenus();
+    }
 
+    private void CheckScheduledItems()
+    {
+        CheckScheduledTexts();
+        CheckScheduledContacts();
+    }
+    private void CheckScheduledTexts()
+    {
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
             ScheduledText sc = ScheduledTexts[i];
             if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0)
             {
-                AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute);
-                NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
-                if (!AddedContacts.Any(x => x.Name == sc.ContactName))
+                if (!AddedTexts.Any(x => x.Name == sc.ContactName && x.Message == sc.Message))
                 {
-                    AddContact(sc.ContactName, sc.IconName, true);
+                    AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
+                    NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
+                    TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+
+
+                    if (!AddedContacts.Any(x => x.Name == sc.ContactName))
+                    {
+                        Gang relatedGang = Gangs.GetGangByContact(sc.ContactName);
+                        if (relatedGang != null)
+                        {
+                            AddContact(relatedGang);
+                        }
+                        else
+                        {
+                            AddContact(sc.ContactName, sc.IconName);
+                        }
+
+                    }
                 }
                 ScheduledTexts.RemoveAt(i);
             }
         }
+    }
+    private void CheckScheduledContacts()
+    {
         for (int i = ScheduledContacts.Count - 1; i >= 0; i--)
         {
             ScheduledContact sc = ScheduledContacts[i];
             if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0)
             {
-                AddContact(sc.ContactName, sc.IconName, true);
-                NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Contact Added~s~", sc.Message, NotificationIconTypes.RightJumpingArrow, false);
+                if (!AddedContacts.Any(x => x.Name == sc.ContactName))
+                {
+                    Gang relatedGang = Gangs.GetGangByContact(sc.ContactName);
+                    if (relatedGang != null)
+                    {
+                        AddContact(relatedGang);
+                    }
+                    else
+                    {
+                        AddContact(sc.ContactName, sc.IconName);
+                    }
+                    TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                    NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Contact Added~s~", sc.Message, NotificationIconTypes.RightJumpingArrow, false);
+                }
                 ScheduledContacts.RemoveAt(i);
             }
         }
-
-
-        CustomiFruit.Update();
-        MenuPool.ProcessMenus();
     }
-
-
     public void AddScheduledContact(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
     {
         if(!AddedContacts.Any(x=> x.Name == Name))
@@ -301,36 +318,98 @@ public class CellPhone
             ScheduledContacts.Add(new ScheduledContact(timeToAdd, Name, MessageToSend, IconName));
         }
     }
-    public void AddContact(string Name, string IconName, bool isGang)
+    public void AddContact(string Name, string IconName)
     {
-        AddContact(Name, GetIconFromString(IconName), isGang);
-    }
-    public void AddContact(string Name, ContactIcon contactIcon, bool isGang)
-    {
-        iFruitContact contactA = new iFruitContact(Name, ContactIndex);
-
-        if(isGang)
+        if (!AddedContacts.Any(x => x.Name == Name))
         {
-            contactA.Answered += GangAnswered;   // Linking the Answered event with our function
-            contactA.Active = true;
-        }
-        else
-        {
-            contactA.Answered += CivAnswered;   // Linking the Answered event with our function
+            iFruitContact contactA = new iFruitContact(Name, ContactIndex);
+            contactA.Answered += CivAnswered;
             contactA.Active = false;
+            contactA.DialTimeout = 4000;
+            contactA.RandomizeDialTimeout = true;
+            contactA.Icon = GetIconFromString(IconName);
+            contactA.IconName = IconName;
+            CustomiFruit.Contacts.Add(contactA);
+            ContactIndex++;
+            AddedContacts.Add(contactA);
         }
-        contactA.DialTimeout = 4000;            // Delay before answering
-        //contactA.Active = true;                 // true = the contact is available and will answer the phone
-        contactA.Icon = contactIcon;      // Contact's icon
-        CustomiFruit.Contacts.Add(contactA);         // Add the contact to the phone
-        ContactIndex++;
-        AddedContacts.Add(contactA);
     }
+    public void AddContact(Gang gang)
+    {
+        if (!AddedContacts.Any(x=> x.Name == gang.ContactName))
+        {
+            iFruitContact contactA = new iFruitContact(gang.ContactName, ContactIndex);
+            contactA.Answered += GangAnswered;
+            contactA.Active = true;
+            contactA.DialTimeout = 4000;
+            contactA.RandomizeDialTimeout = true;
+            contactA.Icon = GetIconFromString(gang.ContactIcon);
+            contactA.IconName = gang.ContactIcon;
+            CustomiFruit.Contacts.Add(contactA);
+            ContactIndex++;
+            AddedContacts.Add(contactA);
+        }
+    }
+    public void AddGangText(Gang gang, bool isPositive)
+    {
+        if (gang != null)
+        {
+            List<string> Replies = new List<string>();
+            if (isPositive)
+            {
+                Replies.AddRange(new List<string>() {
+                    $"Heard some good things about you, come see us sometime.",
+                    $"Call us soon to discuss business.",
+                    $"Might have some business opportunites for you soon, give us a call.",
+                    $"You've been making some impressive moves, call us to discuss.",
+                });
+            }
+            else
+            {
+                Replies.AddRange(new List<string>() {
+                    $"Watch your back",
+                    $"Dead man walking",
+                    $"ur fucking dead",
+                    $"You just fucked with the wrong people asshole",
+                    $"We're gonna fuck you up buddy",
+                });
+            }
 
+            List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
+            ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
 
+            if (mainTerritory != null)
+            {
+                Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
+                if (mainGangZone != null)
+                {
+                    if (isPositive)
+                    {
+                        Replies.AddRange(new List<string>() {
+                            $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
+                            $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
+                            $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
+                            $"You've been making some impressive moves, call us to discuss.",
+                        });
+                    }
+                    else
+                    {
+                        Replies.AddRange(new List<string>() {
+                            $"Watch your back next to your are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
+                            $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
+                            $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
+                        });
+                    }
+                }
+            }
+            string MessageToSend;
+            MessageToSend = Replies.PickRandom();
+            AddScheduledText(gang.ContactName, gang.ContactIcon, MessageToSend);
+        }
+    }
     public void AddScheduledText(string Name, string IconName, string MessageToSend)
     {
-        AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(5));
+        AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(3));
     }
     public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
     {
@@ -339,18 +418,20 @@ public class CellPhone
             ScheduledTexts.Add(new ScheduledText(timeToAdd, Name, MessageToSend, IconName));
         }
     }
-    public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent)
+    public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead)
     {
-        AddText(Name, GetIconFromString(IconName), message, hourSent, minuteSent);
+        if (!AddedTexts.Any(x => x.Name == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
+        {
+            iFruitText textA = new iFruitText(Name, TextIndex, message, hourSent, minuteSent);
+            textA.Icon = GetIconFromString(IconName);      // Contact's icon
+            textA.IconName = IconName;
+            textA.IsRead = isRead;
+            CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
+            TextIndex++;
+            AddedTexts.Add(textA);
+        }
     }
-    public void AddText(string Name, ContactIcon contactIcon, string message, int hourSent, int minuteSent)
-    {
-        iFruitText textA = new iFruitText(Name, TextIndex, message, hourSent, minuteSent);
-        textA.Icon = contactIcon;      // Contact's icon
-        CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
-        TextIndex++;
-        AddedTexts.Add(textA);
-    }
+
     public void DisableContact(string Name)
     {
         iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
@@ -359,7 +440,6 @@ public class CellPhone
             myContact.Active = false;
         }
     }
-
     public bool IsContactEnabled(string contactName)
     {
         iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == contactName);
@@ -369,36 +449,20 @@ public class CellPhone
         }
         return false;
     }
-
-
-
-
-    private void CivAnswered(iFruitContact contact)
+    public void GangAnswered(Gang gang)
     {
-        CustomiFruit.Close(5000);
-    }
-    private void GangAnswered(iFruitContact contact)
-    {
-        Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
-        if(myGang == null)
-        {
-            CustomiFruit.Close(2000);
-            return;
-        }
-        GangLastCalled = myGang;
-
-
-        int repLevel = Player.GetRepuationLevel(GangLastCalled);
+        GangLastCalled = gang;
+        int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
 
         GangMenu = new UIMenu("", "Select an Option");
         GangMenu.RemoveBanner();
         MenuPool.Add(GangMenu);
         GangMenu.OnItemSelect += OnGangItemSelect;
 
-        if(repLevel < 0)
+        if (repLevel < 0)
         {
             int CostToBuy = (0 - repLevel) * 5;
-            PayoffGangNeutral = new UIMenuItem("Payoff","Payoff the gang to return to a neutral relationship") { RightLabel = CostToBuy.ToString("C0") };
+            PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = CostToBuy.ToString("C0") };
             ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
             GangMenu.AddItem(PayoffGangNeutral);
             GangMenu.AddItem(ApoligizeToGang);
@@ -427,19 +491,72 @@ public class CellPhone
         }, "CellPhone");
     }
 
+    private void CivAnswered(iFruitContact contact)
+    {
+        CustomiFruit.Close(5000);
+    }
 
+    private void GangAnswered(iFruitContact contact)
+    {
+        Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
+        if(myGang == null)
+        {
+            CustomiFruit.Close(2000);
+            return;
+        }
+        GangLastCalled = myGang;
+
+
+        int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
+
+        GangMenu = new UIMenu("", "Select an Option");
+        GangMenu.RemoveBanner();
+        MenuPool.Add(GangMenu);
+        GangMenu.OnItemSelect += OnGangItemSelect;
+
+        if(repLevel < 0)
+        {
+            int CostToBuy = (0 - repLevel) * 5;
+            PayoffGangNeutral = new UIMenuItem("Payoff","Payoff the gang to return to a neutral relationship") { RightLabel = CostToBuy.ToString("C0") };
+            ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
+            GangMenu.AddItem(PayoffGangNeutral);
+            GangMenu.AddItem(ApoligizeToGang);
+        }
+        else if (repLevel >= 500)
+        {
+            RequestGangWork = new UIMenuItem("Request Work", "Ask for some work from the gang");
+            RequestGangDen = new UIMenuItem("Request Invite", $"Request an invite to the {GangLastCalled.DenName}");
+            GangMenu.AddItem(RequestGangWork);
+            GangMenu.AddItem(RequestGangDen);
+        }
+        else
+        {
+            int CostToBuy = (500 - repLevel) * 5;
+            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = CostToBuy.ToString("C0") };
+            GangMenu.AddItem(PayoffGangFriendly);
+        }
+        GangMenu.Visible = true;
+        GameFiber.StartNew(delegate
+        {
+            while (GangMenu.Visible)
+            {
+                GameFiber.Yield();
+            }
+            CustomiFruit.Close(2000);
+        }, "CellPhone");
+    }
     private void OnGangItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == PayoffGangFriendly)
         {
             if(GangLastCalled != null)
             {
-                int repLevel = Player.GetRepuationLevel(GangLastCalled);
+                int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
                 int CostToBuy = (500 - repLevel) * 5;
                 if(Player.Money >= CostToBuy)
                 {
                     Player.GiveMoney(-1 * CostToBuy);
-                    Player.SetReputation(GangLastCalled, 500);
+                    Player.GangRelationships.SetReputation(GangLastCalled, 500, false);
                     Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Nice to get some respect from you finally");
                 }
                 else
@@ -452,12 +569,12 @@ public class CellPhone
         {
             if (GangLastCalled != null)
             {
-                int repLevel = Player.GetRepuationLevel(GangLastCalled);
+                int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
                 int CostToBuy = (0 - repLevel) * 5;
                 if (Player.Money >= CostToBuy)
                 {
                     Player.GiveMoney(-1 * CostToBuy);
-                    Player.SetReputation(GangLastCalled, 0);
+                    Player.GangRelationships.SetReputation(GangLastCalled, 0, false);
                     Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "I guess we can forget about that shit.");
                 }
                 else
@@ -468,8 +585,7 @@ public class CellPhone
         }
         else if (selectedItem == ApoligizeToGang)
         {
-
-
+            CustomiFruit.Close(500);
         }
         else if (selectedItem == RequestGangWork)
         {
@@ -477,28 +593,28 @@ public class CellPhone
         }
         else if (selectedItem == RequestGangDen)
         {
-            Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Our den is located in ~p~Chumash~s~ come see us.");
+            GameLocation den = PlacesOfInterest.GetLocations(LocationType.GangDen).Where(x => x.GangID == GangLastCalled.ID).FirstOrDefault();
+            if(den != null)
+            {
+                Player.AddGPSRoute(den.Name, den.EntrancePosition);
+                Zone gangZome = Zones.GetZone(den.EntrancePosition);
+                string StreetName = Streets.GetStreetNames(den.EntrancePosition);
+                string locationText = $"~s~on {StreetName} {(gangZome.IsSpecificLocation ? "near" : "in")} ~p~{gangZome.FullDisplayName}~s~".Trim();
+                Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", $"Our {GangLastCalled.DenName} is located {locationText} come see us.");
+            }         
         }
         sender.Visible = false;
     }
 
     private void AddEmergencyServicesCustomContact()
     {
-
         iFruitContact contactA = new iFruitContact("Emergency Services ", Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
-        contactA.Answered += PoliceAnswered;   // Linking the Answered event with our function
-        contactA.DialTimeout = 4000;            // Delay before answering
-        contactA.Active = true;                 // true = the contact is available and will answer the phone
-        contactA.Icon = ContactIcon.Emergency;      // Contact's icon
-        CustomiFruit.Contacts.Add(contactA);         // Add the contact to the phone
-       // ContactIndex++;
+        contactA.Answered += PoliceAnswered;
+        contactA.DialTimeout = 8000;
+        contactA.Active = true;
+        contactA.Icon = ContactIcon.Emergency;
+        CustomiFruit.Contacts.Add(contactA);
     }
-
-
-
-
-
-
     private void PoliceAnswered(iFruitContact contact)
     {
         // The contact has answered, we can execute our code
@@ -529,10 +645,6 @@ public class CellPhone
         // We can close it as soon as the contact pick up calling _iFruit.Close().
         // Here, we will close the phone in 5 seconds (5000ms).     
     }
-
-
-
-
     private void OnEmergencyServicesSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
 
@@ -621,6 +733,7 @@ public class CellPhone
         }
         sender.Visible = false;
     }
+
     private ContactIcon GetIconFromString(string StringName)
     {
         ContactLookup cl = ContactLookups.FirstOrDefault(x => x.IconText.ToLower() == StringName.ToLower());

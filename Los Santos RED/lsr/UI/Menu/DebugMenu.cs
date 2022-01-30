@@ -222,19 +222,19 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == RandomGangRep)
         {
-            Player.RandomizeGangReputation();
+            Player.GangRelationships.SetRandomReputations();
         }
         else if (selectedItem == DefaultGangRep)
         {
-            Player.DefaultGangReputation();
+            Player.GangRelationships.ResetReputations();
         }
         else if (selectedItem == HostileGangRep)
         {
-            Player.HostileGangReputation();
+            Player.GangRelationships.SetHostileReputations();
         }
         else if (selectedItem == FriendlyGangRep)
         {
-            Player.FriendlyGangReputation();
+            Player.GangRelationships.SetFriendlyReputations();
         }
 
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))

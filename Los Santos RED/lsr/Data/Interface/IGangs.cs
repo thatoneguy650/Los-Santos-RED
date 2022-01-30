@@ -12,5 +12,6 @@ namespace LosSantosRED.lsr.Interface
         List<Gang> GetGangs(Vehicle CopCar);
         List<Gang> GetSpawnableGangs(int wantedLevel);
         List<Gang> GetAllGangs();
+        Gang GetGangByContact(string contactName);
     }
 }

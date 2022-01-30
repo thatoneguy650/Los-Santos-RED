@@ -41,6 +41,39 @@
             {
                 new MissionInformation("Mission One", new Tuple<string, string>[] { new Tuple<string, string>("This the first info", "Random Info"), new Tuple<string, string>("This the second info", "Random Info #2") }) { Logo = new MissionLogo(Game.CreateTextureFromFile("DefaultSkin.png")) },
                 new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
+                new MissionInformation("Mission Two", "I have description!", new Tuple<string, string>[] { new Tuple<string, string>("Objective", "Mission Two Objective") }),
             };
             tabView.AddTab(missionSelectTab = new TabMissionSelectItem("I'm a Mission Select Tab", missionsInfo));
             missionSelectTab.OnItemSelect += (info) =>
@@ -67,7 +100,7 @@
 
 
             List<TabItem> items = new List<TabItem>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
                 TabItem tItem = i < 5 ? (TabItem)new TabTextItem("Item #" + i, "Title #" + i, "Some random text for #" + i) :
                                         (TabItem)new TabInteractiveListItem("Item #" + i, CreateMenuItems());
@@ -188,12 +221,44 @@
                 new UIMenuCheckboxItem("Checkbox #14", false) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
                 new UIMenuCheckboxItem("Checkbox #15", true) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
                 new UIMenuCheckboxItem("Checkbox #16", true) { Style = UIMenuCheckboxStyle.Cross },
+
+
+                new UIMenuCheckboxItem("Checkbox #4", true) { Enabled = false },
+                new UIMenuCheckboxItem("Checkbox #5", false) { RightBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #6", true) { RightBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #7", false) { LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #8", true) { LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #9", false) { RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #10", true) { RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #11", false) { Enabled = false, RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #12", true) { Enabled = false, RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #13", false) { BackColor = System.Drawing.Color.FromArgb(140, HudColor.RedDark.GetColor()), HighlightedBackColor = System.Drawing.Color.FromArgb(230, HudColor.TechRed.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #14", true) { BackColor = System.Drawing.Color.FromArgb(140, HudColor.RedDark.GetColor()), HighlightedBackColor = System.Drawing.Color.FromArgb(230, HudColor.TechRed.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #14", false) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #15", true) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #16111", true) { Style = UIMenuCheckboxStyle.Cross },
+
+
+                new UIMenuCheckboxItem("Checkbox #4", true) { Enabled = false },
+                new UIMenuCheckboxItem("Checkbox #5", false) { RightBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #6", true) { RightBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #7", false) { LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #8", true) { LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #9", false) { RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #10", true) { RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #11", false) { Enabled = false, RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #12", true) { Enabled = false, RightBadge = UIMenuItem.BadgeStyle.Armour, LeftBadge = UIMenuItem.BadgeStyle.Armour },
+                new UIMenuCheckboxItem("Checkbox #13", false) { BackColor = System.Drawing.Color.FromArgb(140, HudColor.RedDark.GetColor()), HighlightedBackColor = System.Drawing.Color.FromArgb(230, HudColor.TechRed.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #14", true) { BackColor = System.Drawing.Color.FromArgb(140, HudColor.RedDark.GetColor()), HighlightedBackColor = System.Drawing.Color.FromArgb(230, HudColor.TechRed.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #14", false) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #15", true) { RightBadgeInfo = new UIMenuItem.BadgeInfo("commonmenu", "mp_alerttriangle", HudColor.Red.GetColor()) },
+                new UIMenuCheckboxItem("Checkbox #1622", true) { Style = UIMenuCheckboxStyle.Cross },
                 Util.NewTriStateCheckbox("Checkbox #17", "")
             };
         }
 
         // a command that simulates loading the plugin
-        [ConsoleCommand]
-        private static void RunPauseMenuExample() => GameFiber.StartNew(Main);
+        //[ConsoleCommand]
+        //private static void RunPauseMenuExample() => GameFiber.StartNew(Main);
     }
 }

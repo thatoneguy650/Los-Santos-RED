@@ -42,6 +42,7 @@ namespace LosSantosRED.lsr.Interface
         int TotalSpawnedZombies { get; }
       //  List<PedExt> TaskableCiviliansList { get; }
         int TotalWantedLevel { get; set; }
+        List<InteractableLocation> ActiveInteractableLocations { get; }
 
         void AddEntity(Blip blip);
         void AddEntity(PedExt pedExt);

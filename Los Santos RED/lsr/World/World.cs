@@ -49,6 +49,9 @@ namespace Mod
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
+
+        public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
+
         public bool AnyWantedCiviliansNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
@@ -205,6 +208,10 @@ namespace Mod
             {
                 loc.Dispose();
             }
+            foreach (InteractableLocation loc in ActiveInteractableLocations)
+            {
+                loc.Dispose();
+            }
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
@@ -292,12 +299,55 @@ namespace Mod
                     GameFiber.Yield();
                 }
             }
+
+
+
+
+            LocationsCalculated = 0;
+            foreach (InteractableLocation gl in PlacesOfInterest.GetAllInteractableLocations())
+            {
+                if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                {
+                    if (!ActiveInteractableLocations.Contains(gl))
+                    {
+                        ActiveInteractableLocations.Add(gl);
+                        gl.Setup(Interiors, Settings, Crimes, Weapons);
+                        AddEntity(gl.Blip);
+                        GameFiber.Yield();
+                    }
+                }
+                else
+                {
+                    if (ActiveInteractableLocations.Contains(gl))
+                    {
+                        ActiveInteractableLocations.Remove(gl);
+                        gl.Dispose();
+                        GameFiber.Yield();
+                    }
+                }
+                LocationsCalculated++;
+                if (LocationsCalculated >= 20)//50//20//5
+                {
+                    LocationsCalculated = 0;
+                    GameFiber.Yield();
+                }
+            }
+
+
+
+
+
             GameFiber.Yield();
             UpdateVendingMachines();
         }
         public void UpdateNearLocations()
         {
             foreach (GameLocation gl in ActiveLocations)
+            {
+                gl.Update();
+                GameFiber.Yield();
+            }
+            foreach (InteractableLocation gl in ActiveInteractableLocations)
             {
                 gl.Update();
                 GameFiber.Yield();
@@ -311,7 +361,10 @@ namespace Mod
                 if (obj.Exists())
                 {
                     string modelName = obj.Model.Name.ToLower();
-                    if (VendingMachines.Contains(modelName) || VendingMachinesHash.Contains(obj.Model.Hash))
+                    Vector3 position = obj.Position;
+                    float heading = obj.Heading;
+                    uint hash = obj.Model.Hash;
+                    if (VendingMachines.Contains(modelName) || VendingMachinesHash.Contains(hash))
                     {
                         float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
                         if(distanceTo <= 50f)
@@ -319,7 +372,7 @@ namespace Mod
                             if(!ActiveLocations.Any(x=> x.Type == LocationType.VendingMachine && x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
                             {
                                ShopMenu toBuy = ShopMenus.GetVendingMenu(modelName);
-                                GameLocation newVend = new GameLocation(obj.Position, obj.Heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
+                                GameLocation newVend = new GameLocation(position, heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
                                 newVend.Setup(Interiors, Settings, Crimes, Weapons);
                                 AddEntity(newVend.Blip);
                                 ActiveLocations.Add(newVend);

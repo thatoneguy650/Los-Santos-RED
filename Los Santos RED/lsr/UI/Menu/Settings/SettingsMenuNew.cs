@@ -223,8 +223,16 @@ public class SettingsMenuNew : Menu//needs lots of cleanup still
         }
         else if (MySetting.PropertyType == typeof(Keys))
         {
-            MySetting.SetValue(ToSet, Value);
-            selectedItem.Text = $"{MySettingName}: {Value}";
+            if (Keys.TryParse(Value, out Keys myInt))
+            {
+                MySetting.SetValue(ToSet, myInt);
+                selectedItem.Text = $"{MySettingName}: {Value}";
+            }
+
+
+
+            //MySetting.SetValue(ToSet, Value);
+            //selectedItem.Text = $"{MySettingName}: {Value}";
         }
         MenuPool.ProcessMenus();
     }

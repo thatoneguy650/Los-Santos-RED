@@ -10,6 +10,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -45,7 +46,9 @@ namespace Mod
         private GameLocation ClosestSimpleTransaction;
         private GameLocation ClosestTeleportEntrance;
         private GameLocation ClosestPurchaseLocation;
-      
+        private InteractableLocation ClosestInteractableLocation;
+
+
 
         private int wantedLevel = 0;
         private bool isActive = true;
@@ -81,17 +84,20 @@ namespace Mod
         private IIntoxicants Intoxicants;
         private GameLocation CurrentInteriorLocation;
         private bool DriverDoorOpen;
-        private GangRelationships GangRelationships;
+        
         private WeaponSway WeaponSway;
         private WeaponRecoil WeaponRecoil;
         private WeaponSelector WeaponSelector;
         private string debugLine4;
         private bool FirstAiming;
-        private CellPhone CellPhone;
+        public CellPhone CellPhone { get; private set; }
         private uint GameTimeStartedMovingFast;
         private uint GameTimeStartedMoving;
         private IGangTerritories GangTerritories;
         private IZones Zones;
+        private bool HasThrownGotOnFreeway;
+        private bool HasThrownGotOffFreeway;
+        private uint GameTimeLastCheckedRouteBlip;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
@@ -113,7 +119,7 @@ namespace Mod
             Zones = zones;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors, this);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, EntityProvider);
             Violations = new Violations(this, TimeControllable, Crimes, Settings);
@@ -133,7 +139,7 @@ namespace Mod
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
             WeaponSelector = new WeaponSelector(this, Settings);
-            CellPhone = new CellPhone(this, jurisdictions, Settings, TimeControllable, gangs);
+            CellPhone = new CellPhone(this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
             CellPhone.Setup();
 
         }
@@ -161,6 +167,7 @@ namespace Mod
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
         public int GroupID { get; set; }
+        public GangRelationships GangRelationships { get; private set; }
         public Scenario ClosestScenario { get; private set; }
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
@@ -168,6 +175,7 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public PedExt CurrentTargetedPed { get; private set; }
+        public Blip CurrentGPSBlip { get; set; }
         public GameLocation CurrentShop { get; set; }
         public VehicleExt PreviousVehicle { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
@@ -209,7 +217,8 @@ namespace Mod
 
         public List<GangReputation> GangReputations => GangRelationships.GangReputations;
 
-        public List<iFruitText> TextList => CellPhone.TextList;
+        //public List<iFruitText> TextList => CellPhone.TextList;
+        //public List<iFruitContact> ContactList => CellPhone.ContactList;
         public bool IsAiming
         {
             get => isAiming;
@@ -335,6 +344,7 @@ namespace Mod
 
         public List<VehicleExt> OwnedVehicles { get; set; } = new List<VehicleExt>();
 
+      //  public CellPhone CurrentCellPhone { get; private set; } 
 
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public string PlayerName { get; set; }
@@ -907,6 +917,7 @@ namespace Mod
             if (!IsInteracting && CanConverseWithLookedAtPed)
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+                ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
 
                 if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
@@ -930,10 +941,31 @@ namespace Mod
                         ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
                         ButtonPrompts.Add(new ButtonPrompt($"Purchase from {ClosestSimpleTransaction.Name}", "StartSimpleTransaction", $"Purchase {ClosestSimpleTransaction.Name}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
                     }
+                    ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
                 }
                 else
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+
+
+                    if (ClosestInteractableLocation != null)
+                    {
+                        if (!ButtonPrompts.Any(x => x.Identifier == $"{ClosestInteractableLocation.ButtonPromptText}"))
+                        {
+                            ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
+                            ButtonPrompts.Add(new ButtonPrompt($"{ClosestInteractableLocation.ButtonPromptText}", "InteractableLocation", $"{ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                        }
+                    }
+                    else
+                    {
+                        ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
+                    }
+
+
+
+
+
+
                 }
             }
 
@@ -990,18 +1022,7 @@ namespace Mod
                 }
             }
 
-            if (ClosestPurchaseLocation != null && !ClosestPurchaseLocation.IsPurchased)
-            {
-                if (!ButtonPrompts.Any(x => x.Identifier == $"Purchase {ClosestPurchaseLocation.Name}"))
-                {
-                    ButtonPrompts.RemoveAll(x => x.Group == "PurchaseLocation");
-                    ButtonPrompts.Add(new ButtonPrompt($"Purchase {ClosestPurchaseLocation.Name}", "PurchaseLocation", $"Purchase {ClosestPurchaseLocation.Name}", Settings.SettingsManager.KeySettings.ScenarioStart, 1));
-                }
-            }
-            else
-            {
-                ButtonPrompts.RemoveAll(x => x.Group == "PurchaseLocation");
-            }
+
 
 
 
@@ -1068,7 +1089,23 @@ namespace Mod
 
         }
         public void ArrestWarrantUpdate() => CriminalHistory.Update();
-        public void LocationUpdate() => CurrentLocation.Update(Character);
+        public void LocationUpdate()
+        {
+            CurrentLocation.Update(Character);
+            if (CurrentLocation.HasBeenOnHighway && !HasThrownGotOnFreeway)
+            {
+                OnGotOnFreeway();
+                HasThrownGotOnFreeway = true;
+                HasThrownGotOffFreeway = false;
+            }
+            else if (CurrentLocation.HasBeenOffHighway && !HasThrownGotOffFreeway && HasThrownGotOnFreeway)
+            {
+                OnGotOffFreeway();
+                HasThrownGotOnFreeway = false;
+                HasThrownGotOffFreeway = true;
+            }
+        }
+
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
         public void ScannerUpdate() => Scanner.Tick();
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
@@ -1142,9 +1179,9 @@ namespace Mod
                 GameFiber.Yield();
                 OnWantedLevelChanged();
             }
-            if (CurrentLocation.CharacterToLocate.Exists() && CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
+            if (CurrentLocation.EntityToLocate.Exists() && CurrentLocation.EntityToLocate.Handle != Game.LocalPlayer.Character.Handle)
             {
-                CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
+                CurrentLocation.EntityToLocate = Game.LocalPlayer.Character;
             }
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
@@ -1212,6 +1249,18 @@ namespace Mod
                         }
                     }
                 }
+
+                ClosestInteractableLocation = null;
+                ClosestDistance = 999f;
+                foreach (InteractableLocation gl in EntityProvider.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
+                {
+                    if (gl.DistanceToPlayer <= 3.0f)
+                    {
+                        ClosestInteractableLocation = gl;
+                    }
+                }
+
+
             }
 
             if (CurrentInteriorLocation != null)
@@ -1261,6 +1310,25 @@ namespace Mod
                 CurrentLookedAtPed.InsultedByPlayer();
                 //CurrentLookedAtPed.TimesInsultedByPlayer++;
             }
+
+
+            if(CurrentGPSBlip.Exists())
+            {
+                if (CurrentGPSBlip.DistanceTo2D(Position) <= 10f)
+                {
+                    NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+                    CurrentGPSBlip.Delete();
+                }
+                else
+                {
+                    if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 3000)
+                    {
+                        NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, true);
+                        GameTimeLastCheckedRouteBlip = Game.GameTime;
+                    }
+                }
+            }
+            
 
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }
@@ -1486,14 +1554,14 @@ namespace Mod
                 isJacking = Character.IsJacking;
 
             }
-            foreach(VehicleExt car in OwnedVehicles)
-            {
-                if(car.Vehicle.Exists() && car.Vehicle.IsPersistent && car.Vehicle.DistanceTo2D(Position) >= 800f)
-                {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE MOVED AWAY {car.Vehicle.Handle}", 5);
-                    car.Vehicle.IsPersistent = false;
-                }
-            }
+            //foreach(VehicleExt car in OwnedVehicles)
+            //{
+            //    if(car.Vehicle.Exists() && car.Vehicle.IsPersistent && car.Vehicle.DistanceTo2D(Position) >= 800f)
+            //    {
+            //        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE MOVED AWAY {car.Vehicle.Handle}", 5);
+            //        car.Vehicle.IsPersistent = false;
+            //    }
+            //}
 
 
             //if (OwnedVehicle != null && OwnedVehicle.Vehicle.Exists())
@@ -1504,7 +1572,7 @@ namespace Mod
             //        OwnedVehicle.Vehicle.IsPersistent = false;
             //    }
             //}
-            OwnedVehicles.RemoveAll(x => !x.Vehicle.Exists());
+            //OwnedVehicles.RemoveAll(x => !x.Vehicle.Exists());
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());
             bool isDuckingInVehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character, 359, 1);
             if (IsDuckingInVehicle != isDuckingInVehicle)
@@ -1667,81 +1735,17 @@ namespace Mod
         }
 
         //Delegate Items
-        public void AddGangText(Gang gang, bool isPositive)
-        {
-            if (gang != null)
-            {
-                List<string> Replies = new List<string>();
-                if (isPositive)
-                {
-                    Replies.AddRange(new List<string>() {
-                    $"Heard some good things about you, come see us sometime.",
-                    $"Call us soon to discuss business.",
-                    $"Might have some business opportunites for you soon, give us a call.",
-                    $"You've been making some impressive moves, call us to discuss.",
-                });
-                }
-                else
-                {
-                    Replies.AddRange(new List<string>() {
-                    $"Watch your back",
-                    $"Dead man walking",
-                    $"ur fucking dead",
-                    $"You just fucked with the wrong people asshole",
-                    $"We're gonna fuck you up buddy",
-                });
-                }
-
-                List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
-                ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
-
-                if (mainTerritory != null)
-                {
-                    Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
-                    if (mainGangZone != null)
-                    {
-                        if (isPositive)
-                        {
-                            Replies.AddRange(new List<string>() {
-                            $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
-                            $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
-                            $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
-                            $"You've been making some impressive moves, call us to discuss.",
-                        });
-                        }
-                        else
-                        {
-                            Replies.AddRange(new List<string>() {
-                            $"Watch your back next to your are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
-                            $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
-                            $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
-                        });
-                        }
-                    }
-                }
-                string MessageToSend;
-                MessageToSend = Replies.PickRandom();
-                CellPhone.AddScheduledText(gang.ContactName, gang.ContactIcon, MessageToSend);
-            }
-        }
-        public void AddScheduledText(string Name, string IconName, string MessageToSend) => CellPhone.AddScheduledText(Name, IconName, MessageToSend);
-        public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd) => CellPhone.AddScheduledText(Name, IconName, MessageToSend, timeToAdd);
-        public void AddContact(string Name, string IconName, string MessageToSend, DateTime timeToAdd) => CellPhone.AddScheduledContact(Name, IconName, MessageToSend, timeToAdd);
-        public bool IsContactEnabled(string name) => CellPhone.IsContactEnabled(name);
-        public void DisableContact(string name) => CellPhone.DisableContact(name);
-        public void AddContact(string name, string contactIcon, bool isGang) => CellPhone.AddContact(name, contactIcon, isGang);
-        public void AddContact(string name, iFruitAddon2.ContactIcon contactIcon, bool isGang) => CellPhone.AddContact(name, contactIcon, isGang);
         public void SetSelector(SelectorOptions eSelectorSetting) => WeaponSelector.SetSelectorSetting(eSelectorSetting);
         public void ToggleSelector() => WeaponSelector.ToggleSelector();
-        public void SetReputation(Gang gang, int value) => GangRelationships.SetReputation(gang, value);
-        public void ChangeReputation(Gang gang, int value) => GangRelationships.ChangeReputation(gang, value);
-        public int GetRepuationLevel(Gang gang) => GangRelationships.GetRepuationLevel(gang);
-        public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);
-        public bool IsFriendly(Gang gang) => GangRelationships.IsFriendly(gang);
-        public void DefaultGangReputation() => GangRelationships.ResetReputations();
-        public void RandomizeGangReputation() => GangRelationships.RandomReputations();
-        public void HostileGangReputation() => GangRelationships.HostileReputations();
-        public void FriendlyGangReputation() => GangRelationships.FriendlyReputations();
+        //public void SetReputation(Gang gang, int value, bool sendNotification) => GangRelationships.SetReputation(gang, value, sendNotification);
+        //public void ChangeReputation(Gang gang, int value, bool sendNotification) => GangRelationships.ChangeReputation(gang, value, sendNotification);
+        //public int GetRepuationLevel(Gang gang) => GangRelationships.GetRepuationLevel(gang);
+        //public bool IsHostile(Gang gang) => GangRelationships.IsHostile(gang);
+        //public bool IsFriendly(Gang gang) => GangRelationships.IsFriendly(gang);
+        //public void DefaultGangReputation() => GangRelationships.ResetReputations();
+        //public void RandomizeGangReputation() => GangRelationships.RandomReputations();
+        //public void HostileGangReputation() => GangRelationships.HostileReputations();
+        //public void FriendlyGangReputation() => GangRelationships.FriendlyReputations();
         public void RaiseHands() => Surrendering.RaiseHands();
         public void LowerHands() => Surrendering.LowerHands();
         public void DropWeapon() => WeaponDropping.DropWeapon();
@@ -1858,6 +1862,23 @@ namespace Mod
                 IsPerformingActivity = true;
                 UpperBodyActivity = new ScenarioActivity(this);
                 UpperBodyActivity.Start();
+            }
+        }
+        public void StartLocationInteraction()
+        {
+            if (!IsInteracting)
+            {
+                if (Interaction != null)
+                {
+                    Interaction.Dispose();
+                }
+                //IsConversing = true;
+                ClosestInteractableLocation.OnInteract();
+
+
+
+                //Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
+                //Interaction.Start();
             }
         }
 
@@ -2333,8 +2354,14 @@ namespace Mod
                 //GameFiber.Yield();//TR Yield RemovedTest 2
                 if (CurrentVehicle != null)
                 {
+                    Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
                     VehicleGettingInto = CurrentVehicle;
                     if (OwnedVehicles.Any(x=> x.Handle == CurrentVehicle.Handle) && CurrentVehicle.Vehicle.Exists())//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
+                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && CurrentVehicle.Vehicle.GetAttachedBlip()?.Sprite == BlipSprite.GangVehicle)//vanilla owned vehicles?
                     {
                         CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                         CurrentVehicle.Vehicle.MustBeHotwired = false;
@@ -2610,6 +2637,42 @@ namespace Mod
         }
 
         //Vehicle 
+        public void AddGPSRoute(string Name, Vector3 position)
+        {
+            if (CurrentGPSBlip.Exists())
+            {
+                NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+                CurrentGPSBlip.Delete();
+            }
+            if (position != Vector3.Zero)
+            {
+                Blip MyLocationBlip = new Blip(position)
+                {
+                    Name = Name
+                };
+                if (MyLocationBlip.Exists())
+                {
+                    MyLocationBlip.Color = Color.LightYellow;
+                    NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE(MyLocationBlip, false);
+                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+                    NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
+                    CurrentGPSBlip = MyLocationBlip;
+                    EntityProvider.AddEntity(MyLocationBlip);
+                    Game.DisplaySubtitle($"Adding GPS To {Name}");
+                    GameTimeLastCheckedRouteBlip = Game.GameTime;
+                }
+            }
+        }
+        public void RemoveGPSRoute()
+        {
+            if (CurrentGPSBlip.Exists())
+            {
+                NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+                CurrentGPSBlip.Delete();
+            }
+        }
         public void TakeOwnershipOfNearestCar()
         {
             VehicleExt toTakeOwnershipOf = null;

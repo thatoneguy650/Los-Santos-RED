@@ -15,42 +15,48 @@ using System.Threading.Tasks;
 public class PlacesOfInterest : IPlacesOfInterest
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
-    private List<GameLocation> LocationsList;
+    //private List<GameLocation> LocationsList;
     private IShopMenus ShopMenus;
+    public PossibleLocations PossibleLocations { get; private set; }
     public PlacesOfInterest(IShopMenus shopMenus)
     {
         ShopMenus = shopMenus;
+        PossibleLocations = new PossibleLocations();
     }
 
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
-            LocationsList = Serialization.DeserializeParams<GameLocation>(ConfigFileName);
+            PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(LocationsList, ConfigFileName);
+            Serialization.SerializeParam(PossibleLocations, ConfigFileName);
         }
+    }
+    //public List<DeadDrop> DeadDrops { get; private set; } = new List<DeadDrop>();
+    //public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
+    public List<InteractableLocation> GetAllInteractableLocations()
+    {
+        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        AllLocations.AddRange(PossibleLocations.DeadDrops);
+        AllLocations.AddRange(PossibleLocations.ScrapYards);
+        return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
     {
-        return LocationsList;
+        return PossibleLocations.LocationsList;
     }
-    public List<GameLocation> GetAllStores()
+    public GameLocation GetClosestLocation(Vector3 Position, LocationType Type)
     {
-        return LocationsList.Where(x => x.CanTransact || x.IsStore).ToList();
-    }
-    public GameLocation GetClosestLocation(Vector3 Position,LocationType Type)
-    {
-        return LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.EntrancePosition)).FirstOrDefault();
+        return PossibleLocations.LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.EntrancePosition)).FirstOrDefault();
     }
     public List<GameLocation> GetLocations(LocationType Type)
     {
-        return LocationsList.Where(x => x.Type == Type).ToList();
-    }
-   
+        return PossibleLocations.LocationsList.Where(x => x.Type == Type).ToList();
+    }  
     private void DefaultConfig()
     {
         List<MenuItem> ToolMenu = ShopMenus.GetMenu("ToolMenu")?.Items;
@@ -103,13 +109,48 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> LarrysRVMenu = ShopMenus.GetMenu("LarrysRVMenu")?.Items;
         List<MenuItem> BeanMachineMenu = ShopMenus.GetMenu("BeanMachineMenu")?.Items;
         List<MenuItem> AmmunationMenu = ShopMenus.GetMenu("AmmunationMenu")?.Items;
-        List<MenuItem> WeaponsMenu = ShopMenus.GetMenu("WeaponsMenu")?.Items;
-        List<MenuItem> FamiliesGangDenMenu = ShopMenus.GetMenu("FamiliesGangDenMenu")?.Items;
-        List<MenuItem> GenericGangDenMenu = ShopMenus.GetMenu("GenericGangDenMenu")?.Items;
+        //List<MenuItem> WeaponsMenu = ShopMenus.GetMenu("WeaponsMenu")?.Items;
+      //  List<MenuItem> FamiliesGangDenMenu = ShopMenus.GetMenu("FamiliesGangDenMenu")?.Items;
+       // List<MenuItem> GenericGangDenMenu = ShopMenus.GetMenu("GenericGangDenMenu")?.Items;
+
+        List<MenuItem> LostDenMenu = ShopMenus.GetMenu("LostDenMenu")?.Items;
+        List<MenuItem> FamiliesDenMenu = ShopMenus.GetMenu("FamiliesDenMenu")?.Items;
+        List<MenuItem> VagosDenMenu = ShopMenus.GetMenu("VagosDenMenu")?.Items;
+        List<MenuItem> BallasDenMenu = ShopMenus.GetMenu("BallasDenMenu")?.Items;
+        List<MenuItem> VarriosDenMenu = ShopMenus.GetMenu("VarriosDenMenu")?.Items;
+        List<MenuItem> MarabunteDenMenu = ShopMenus.GetMenu("MarabunteDenMenu")?.Items;
+        List<MenuItem> TriadsDenMenu = ShopMenus.GetMenu("TriadsDenMenu")?.Items;
+        List<MenuItem> KkangpaeDenMenu = ShopMenus.GetMenu("KkangpaeDenMenu")?.Items;
+        List<MenuItem> GambettiDenMenu = ShopMenus.GetMenu("GambettiDenMenu")?.Items;
+
+
+
+
+        List<MenuItem> GunShop1 = ShopMenus.GetMenu("GunShop1")?.Items;
+        List<MenuItem> GunShop2 = ShopMenus.GetMenu("GunShop2")?.Items;
+        List<MenuItem> GunShop3 = ShopMenus.GetMenu("GunShop3")?.Items;
+        List<MenuItem> GunShop4 = ShopMenus.GetMenu("GunShop4")?.Items;
+        List<MenuItem> GunShop5 = ShopMenus.GetMenu("GunShop5")?.Items;
+
 
         List<MenuItem> ScrapMenu = ShopMenus.GetMenu("ScrapMenu")?.Items;
 
-        LocationsList = new List<GameLocation>
+        PossibleLocations.DeadDrops.AddRange(new List<DeadDrop>() {
+            //new DeadDrop(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, "Dead Drop 1", "Literally") { OpenTime = 0, CloseTime = 24 }, 
+        });
+
+
+
+        PossibleLocations.ScrapYards.AddRange(new List<ScrapYard>() {
+            //new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
+            //new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
+            //new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 }, 
+        
+        
+        });
+
+
+        PossibleLocations.LocationsList.AddRange(new List<GameLocation>
         {
             //Hospital
             new GameLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, LocationType.Hospital, "Pill Box Hill Hospital","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
@@ -153,13 +194,15 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, LocationType.ScrapYard, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
             new GameLocation(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, LocationType.ScrapYard, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
             new GameLocation(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, LocationType.ScrapYard, "Red's Machine Supplies", "Parts Bought and Sold!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
+            
+            
             //Gun
             //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
-            new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
-            new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
-            new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
-            new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
-            new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = WeaponsMenu },
+            new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop1 },
+            new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop2 },
+            new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop3 },
+            new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop4 },
+            new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop5 },
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = 50178 },
@@ -559,17 +602,17 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ItemDeliveryPosition = new Vector3(1236.887f, 2709.858f, 38.00579f), ItemDeliveryHeading = 201.5402f},
 
             //Gang Dens
-            new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesGangDenMenu, GangID = "AMBIENT_GANG_FAMILY", IsEnabled = false },
-            new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_BALLAS", IsEnabled = false  },
-            new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_MEXICAN", IsEnabled = false  },
-            new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_SALVA", IsEnabled = false  },
-            new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_MARABUNTE", IsEnabled = false  },
-            new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_CULT", IsEnabled = false  },
-            new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
-            new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
-            new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
-            new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
-            new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = GenericGangDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
+            new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesDenMenu, GangID = "AMBIENT_GANG_FAMILY", IsEnabled = false },
+            new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = BallasDenMenu, GangID = "AMBIENT_GANG_BALLAS", IsEnabled = false  },
+            new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_MEXICAN", IsEnabled = false  },
+            new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_SALVA", IsEnabled = false  },
+            new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = MarabunteDenMenu, GangID = "AMBIENT_GANG_MARABUNTE", IsEnabled = false  },
+            new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_CULT", IsEnabled = false  },
+            new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = KkangpaeDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
+            new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
+            new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = LostDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
+            new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GambettiDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
+            new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = TriadsDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
 
 
 
@@ -593,7 +636,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         #endif
 
 
-        };
+        });
 
 
                 /*prop_vend_snak_01.yft candy vending machine
@@ -630,10 +673,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                                                                                                                                                         //  new Vector3(-1792.259f,804.6542f,138.5133f),new Vector3(-1796.816f,810.0197f,138.5144f),
                                                                                                                                                        //   new Vector3(-1794.411f,813.2302f,138.5146f),new Vector3(-1789.586f,808.2133f,138.5163f)}),*/
     }
-
-
-
-
 }
 
 

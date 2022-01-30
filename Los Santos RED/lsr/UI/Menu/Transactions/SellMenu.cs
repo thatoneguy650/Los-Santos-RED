@@ -26,10 +26,11 @@ public class SellMenu : Menu
     private Transaction Transaction;
     private VehicleExt ToSellVehicle;
     private IEntityProvideable World;
+    private ISettingsProvideable Settings;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction, IEntityProvideable world)
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction, IEntityProvideable world, ISettingsProvideable settings)
     {
         Ped = ped;
         ModItems = modItems;
@@ -39,6 +40,7 @@ public class SellMenu : Menu
         ShouldPreviewItem = shouldPreviewItem;
         Transaction = transaction;
         World = world;
+        Settings = settings;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
         if (Transaction.HasBannerImage)
         {
@@ -54,7 +56,10 @@ public class SellMenu : Menu
     }
     public void Setup()
     {
-        PreloadModels();
+        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        {
+            PreloadModels();
+        }
         Transaction.ClearPreviews();
         if (Ped != null)
         {
@@ -219,7 +224,7 @@ public class SellMenu : Menu
     private void CreatePreview(UIMenuItem myItem)
     {
         ClearPreviews();
-        if (myItem != null)
+        if (myItem != null && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
             ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
@@ -277,8 +282,10 @@ public class SellMenu : Menu
             ModelToSpawn = itemToShow.ModelItem.ModelName;
             useClose = !itemToShow.ModelItem.IsLarge;
         }
-        if (ModelToSpawn != "")
+        if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
         {
+
+
             if (useClose)
             {
                 SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);

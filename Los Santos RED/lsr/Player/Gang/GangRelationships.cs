@@ -37,7 +37,7 @@ public class GangRelationships
             {
                 if (rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
                 {
-                    ChangeReputation(rg.Gang, -1 * WantedRep);
+                    ChangeReputation(rg.Gang, -1 * WantedRep, false);
                 }
             }
             else
@@ -46,7 +46,7 @@ public class GangRelationships
             }
         }
     }
-    public void ChangeReputation(Gang gang, int amount)
+    public void ChangeReputation(Gang gang, int amount, bool sendNotification)
     {
         if (gang == null)
         {
@@ -58,13 +58,13 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
-        gr.ReputationLevel += amount;
+        gr.SetRepuation(gr.ReputationLevel + amount, sendNotification);
         if (amount > 1)
         {
             EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} amount {amount} current {gr.ReputationLevel}", 5);
         }
     }
-    public void SetReputation(Gang gang, int value)
+    public void SetReputation(Gang gang, int value, bool sendNotification)
     {
         if(gang == null)
         {
@@ -76,21 +76,21 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
-        gr.ReputationLevel = value;
+        gr.SetRepuation(value, sendNotification);
         EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} value {value} current {gr.ReputationLevel}", 5);
     }
     public void ResetReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.ReputationLevel = rg.DefaultRepAmount;
+            rg.SetRepuation(rg.DefaultRepAmount,false);
         }
     }
-    public void RandomReputations()
+    public void SetRandomReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.ReputationLevel = RandomItems.GetRandomNumberInt(-200, 600);
+            rg.SetRepuation(RandomItems.GetRandomNumberInt(-200, 600),false);
         }
     }
     public string PrintRelationships()
@@ -174,18 +174,18 @@ public class GangRelationships
             return newRep.ReputationLevel;
         }
     }
-    public void FriendlyReputations()
+    public void SetFriendlyReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.ReputationLevel = rg.RepMaximum;
+            rg.SetRepuation(rg.RepMaximum,false);
         }
     }
-    public void HostileReputations()
+    public void SetHostileReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.ReputationLevel = rg.RepMinimum;
+            rg.SetRepuation(rg.RepMinimum,false);
         }
     }
 }

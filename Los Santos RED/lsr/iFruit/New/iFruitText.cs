@@ -9,46 +9,21 @@ namespace iFruitAddon2
 {
     public class iFruitText
     {
-
-        /// <summary>
-        /// The name of the contact.
-        /// </summary>
         public string Name { get; set; } = "";
-        /// <summary>
-        /// The message sent
-        /// </summary>
         public string Message { get; set; } = "";
-        /// <summary>
-        /// The hour the message was sent
-        /// </summary>
-        /// 
         public int HourSent { get; set; } = 1;
-        /// <summary>
-        /// The minute the message was sent
-        /// </summary>
         public int MinuteSent { get; set; } = 0;
-        /// <summary>
-        /// The minute the message was sent
-        /// </summary>
         public bool IsRead { get; set; } = false;
-        /// <summary>
-        /// The index where we should draw the item.
-        /// </summary>
         public int Index { get; private set; } = 0;
-
-        /// <summary>
-        /// The icon to associate with this contact.
-        /// </summary>
         public ContactIcon Icon { get; set; } = ContactIcon.Generic;
-
-        /// <summary>
-        /// Set the contact text in bold.
-        /// </summary>
+        public string IconName { get; set; } = "";
         public bool Bold { get; set; } = false;
+        public iFruitText()
+        {
 
+        }
         public iFruitText(string name, int index, string message, int hourSent, int minuteSent)
         {
-            //UpdateContactIndex();
             Name = name;
             Index = index;
             Message = message;

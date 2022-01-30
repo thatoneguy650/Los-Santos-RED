@@ -28,15 +28,16 @@ public class MainMenu : Menu
     private ITaskerable Tasker;
     private UI UI;
     private UIMenuItem RemoveVehicleOwnership;
+    private UIMenuItem AboutMenu;
 
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs)
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time)
     {
         Player = player;
         Settings = settings;
         Tasker = tasker;
         UI = ui;
         Main = new UIMenu("Los Santos RED", "Select an Option");
-        Main.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        Main.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Main);
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
@@ -46,7 +47,7 @@ public class MainMenu : Menu
 
 
 
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
         InventoryMenu = new InventoryMenu(menuPool, Main, Player, modItems);
@@ -106,17 +107,22 @@ public class MainMenu : Menu
     {
         //ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         //ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-        ShowReportingMenu = new UIMenuItem("Status Menu", "Show the player status menu");
+        AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
+        AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
+
+
+        ShowReportingMenu = new UIMenuItem("Player Information", "Show the player information menu. This pause menu has info about owned vehicles, gang relationships, locations, text messages, and contacts.");
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
-        TakeVehicleOwnership = new UIMenuItem("Set as Owned", "Set closest vehicle as owned");
+        TakeVehicleOwnership = new UIMenuItem("Set Vehicle as Owned", "Set closest vehicle as owned by the mode. This will let you enter it freely and police/civilians will not react as if it is stolen when you enter.");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
 
-        RemoveVehicleOwnership = new UIMenuItem("Remove Onwership", "Set closest vehicle as not owned");
+        RemoveVehicleOwnership = new UIMenuItem("Remove Vehicle Onwership", "Set closest vehicle as not owned");
         RemoveVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
 
-        UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla (Load Game Required)");
-        UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star; 
-       // Main.AddItem(ShowStatus);
+        UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
+        UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
+        // Main.AddItem(ShowStatus);
+        Main.AddItem(AboutMenu);
         Main.AddItem(ShowReportingMenu);
         Main.AddItem(TakeVehicleOwnership);
         Main.AddItem(RemoveVehicleOwnership);
@@ -144,6 +150,10 @@ public class MainMenu : Menu
         else if (selectedItem == RemoveVehicleOwnership)
         {
             Player.RemoveOwnershipOfNearestCar();
+        }
+        else if (selectedItem == AboutMenu)
+        {
+            UI.ToggleAboutMenu();
         }
         Main.Visible = false;
     }

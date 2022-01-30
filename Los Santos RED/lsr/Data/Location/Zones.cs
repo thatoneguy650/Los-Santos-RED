@@ -26,6 +26,25 @@ public class Zones : IZones
             Serialization.SerializeParams(ZoneList, ConfigFileName);
         }
     }
+    public string GetZoneName(Vector3 ZonePosition)
+    {
+        Zone ListResult = null;
+        string zoneName = "UNK";
+        //ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
+        if (ListResult == null)
+        {
+            zoneName = GetInternalZoneString(ZonePosition);
+            ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
+        }
+        if (ListResult == null)
+        {
+            return "";
+        }
+        else
+        {
+            return ListResult.FullDisplayName;
+        }
+    }
     public Zone GetZone(Vector3 ZonePosition)
     {
         Zone ListResult = null;

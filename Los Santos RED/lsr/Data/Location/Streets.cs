@@ -28,6 +28,32 @@ public class Streets : IStreets
             Serialization.SerializeParams(StreetsList, ConfigFileName);
         }
     }
+    public string GetStreetNames(Vector3 Position)
+    {
+        string StreetName = GetStreetName(Position);
+        Street street = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+        string CrossStreetName = GetCrossStreetName(Position);
+        Street crossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
+        if(street != null)
+        {
+            if(crossStreet != null)
+            {
+                return $"~y~{street?.Name}~s~ at ~y~{crossStreet?.Name}~s~".Trim();
+            }
+            else
+            {
+                return $"~y~{street?.Name}~s~".Trim();
+            }
+        }
+        return $"";
+    }
+    public void GetStreets(Vector3 Position, out Street Street, out Street CrossStreet)
+    {
+        string StreetName = GetStreetName(Position);
+        Street = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+        string CrossStreetName = GetCrossStreetName(Position);
+        CrossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
+    }
     public Street GetStreet(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
@@ -47,6 +73,20 @@ public class Streets : IStreets
         if (StreetHash != 0)
         {
             IntPtr ptr = NativeFunction.Natives.GET_STREET_NAME_FROM_HASH_KEY<IntPtr>(StreetHash);
+            StreetName = Marshal.PtrToStringAnsi(ptr);
+        }
+        return StreetName;
+    }
+    private string GetCrossStreetName(Vector3 Position)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        NativeFunction.Natives.GET_STREET_NAME_AT_COORD<uint>(Position.X, Position.Y, Position.Z, out StreetHash, out CrossingHash);
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        if (CrossingHash != 0)
+        {
+            IntPtr ptr = NativeFunction.Natives.GET_STREET_NAME_FROM_HASH_KEY<IntPtr>(CrossingHash);
             StreetName = Marshal.PtrToStringAnsi(ptr);
         }
         return StreetName;

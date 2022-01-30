@@ -60,11 +60,12 @@ namespace LosSantosRED.lsr.Interface
         void StartLayingDown(bool v);
         void StartHotwiring();
         //void DisplayPlayerGangNotification();
-        void SetReputation(Gang gang, int randomnum);
-        void DefaultGangReputation();
-        void RandomizeGangReputation();
-        void HostileGangReputation();
-        void FriendlyGangReputation();
+        GangRelationships GangRelationships { get; }
+        //void SetReputation(Gang gang, int randomnum, bool sendNotification);
+        //void DefaultGangReputation();
+        //void RandomizeGangReputation();
+        //void HostileGangReputation();
+        //void FriendlyGangReputation();
         void RemoveOwnershipOfNearestCar();
     }
 }

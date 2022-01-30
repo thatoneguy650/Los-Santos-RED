@@ -26,5 +26,6 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         Ped Character { get; }
         List<VehicleExt> OwnedVehicles { get; }
+        CellPhone CellPhone { get; }
     }
 }

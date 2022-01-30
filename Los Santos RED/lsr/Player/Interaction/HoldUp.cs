@@ -46,7 +46,7 @@ public class HoldUp : Interaction
         if (Target.GetType() == typeof(GangMember))
         {
             GangMember gm = (GangMember)Target;
-            Player.ChangeReputation(gm.Gang, -500);
+            Player.GangRelationships.ChangeReputation(gm.Gang, -500, true);
         }
 
 

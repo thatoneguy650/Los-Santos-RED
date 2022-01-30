@@ -247,7 +247,7 @@ public class Transaction : Interaction
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World);//was IsUsingCustomCam before
+            SellMenu = new SellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World, Settings);//was IsUsingCustomCam before
             SellMenu.Setup();
             hasSellMenu = true;
         }

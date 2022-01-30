@@ -82,9 +82,6 @@ namespace LosSantosRED.lsr
         public bool DebugUIRunning { get; set; } = true;
         public bool DebugNonPriorityRunning { get; set; } = true;
 
-
-
-
         public bool IsRunning { get; private set; }
 
 
@@ -148,7 +145,7 @@ namespace LosSantosRED.lsr
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             Tasker.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories,Zones);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings, UI, PedSwap);
@@ -171,7 +168,7 @@ namespace LosSantosRED.lsr
             GameSave CurrentSave = GameSaves.GetSave(Player);
             if (CurrentSave != null)
             {
-                CurrentSave.Load(Weapons, PedSwap, Player, Settings, World, Gangs);
+                CurrentSave.Load(Weapons, PedSwap, Player, Settings, World, Gangs, Time);
                 GameFiber.Yield();
             }
 
@@ -201,7 +198,13 @@ namespace LosSantosRED.lsr
 #endif
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
+
+
+            if(EntryPoint.NotificationID != 0)
+            {
+                Game.RemoveNotification(EntryPoint.NotificationID);
+            }
+            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully.~n~~n~Press {Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~~n~~n~Select ~r~About~s~ for mod information.");
         }
         private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
         {

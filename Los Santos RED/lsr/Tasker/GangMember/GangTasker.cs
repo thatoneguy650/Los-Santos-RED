@@ -75,7 +75,7 @@ public class GangTasker
 
     private void UpdateCurrentTask(GangMember GangMember, bool anyCopsNearFocusPoint)//this should be moved out?
     {
-        bool isHostile = Player.IsHostile(GangMember.Gang);
+        bool isHostile = Player.GangRelationships.IsHostile(GangMember.Gang);
         if (GangMember.IsBusted)
         {
             if (GangMember.DistanceToPlayer <= 75f)

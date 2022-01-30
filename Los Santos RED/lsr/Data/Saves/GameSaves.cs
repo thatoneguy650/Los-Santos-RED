@@ -25,7 +25,7 @@ public class GameSaves : IGameSaves
             Serialization.SerializeParams(GameSaveList, ConfigFileName);
         }
     }
-    public void Save(ISaveable player, IWeapons weapons)
+    public void Save(ISaveable player, IWeapons weapons, ITimeReportable time)
     {
         GameSave mySave = GetSave(player);
         if(mySave == null)
@@ -33,12 +33,12 @@ public class GameSaves : IGameSaves
             mySave = new GameSave();
             GameSaveList.Add(mySave);
         }
-        mySave.Save(player, weapons);    
+        mySave.Save(player, weapons, time);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time)
     {       
-        gameSave.Load(weapons, pedSwap, player, settings, world, gangs);
+        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time);
     }
     public GameSave GetSave(ISaveable player)
     {
@@ -107,9 +107,11 @@ public class GameSaves : IGameSaves
             new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("stalion", 30, 30, new LSR.Vehicles.LicensePlate("67GH44R4", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) });
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("coquette2", 4, 4, new LSR.Vehicles.LicensePlate("AZZ KIKR", 3, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f)
+                                                                                                                                                                ,new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), new Vector3(-382.2991f, -301.4909f, 32.56747f), 287.2352f)});
         AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
         AlexisGameSave.PlayerHeading = 45f;
+        AlexisGameSave.CurrentDateTime = System.DateTime.Now;
 
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
@@ -216,8 +218,8 @@ public class GameSaves : IGameSaves
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,
-            SawyerGameSave,
-            JenniferGameSave,
+            //SawyerGameSave,
+           // JenniferGameSave,
         };
     }
 }

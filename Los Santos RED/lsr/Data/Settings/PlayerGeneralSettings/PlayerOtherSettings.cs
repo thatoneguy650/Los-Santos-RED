@@ -27,8 +27,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public string MaleFreeModeVoice { get; set; }
     [Description("Ped voice to use as your own when you are playing as the female freemode ped.")]
     public string FemaleFreeModeVoice { get; set; }
-
-
+    [Description("If enabled the stores will give you a preview of the item you are about to buy.")]
+    public bool GenerateStoreItemPreviews { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -49,6 +49,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowWeaponDropping = true;
         MaleFreeModeVoice = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
         FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
+        GenerateStoreItemPreviews = true;
     }
 
 }

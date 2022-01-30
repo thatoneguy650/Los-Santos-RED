@@ -14,27 +14,26 @@ public class GangReputation
     public int ReputationLevel
     {
         get => reputationLevel;
-        set
-        {
-            if (reputationLevel != value)
-            {
-                if(value > RepMaximum)
-                {
-                    reputationLevel = RepMaximum;
-                }
-                else if (value < RepMinimum)
-                {
-                    reputationLevel = RepMinimum;
-                }
-                else
-                {
-                    reputationLevel = value;
-                }
-                OnReputationChanged();
-            }
-        }
-    }
-    
+        //set
+        //{
+        //    if (reputationLevel != value)
+        //    {
+        //        if(value > RepMaximum)
+        //        {
+        //            reputationLevel = RepMaximum;
+        //        }
+        //        else if (value < RepMinimum)
+        //        {
+        //            reputationLevel = RepMinimum;
+        //        }
+        //        else
+        //        {
+        //            reputationLevel = value;
+        //        }
+        //        OnReputationChanged();
+        //    }
+        //}
+    } 
     public GangReputation()
     {
 
@@ -63,17 +62,35 @@ public class GangReputation
             }
         }
     }
-
+    public void SetRepuation(int value, bool sendText)
+    {
+        if(reputationLevel != value)
+        {
+            if (value > RepMaximum)
+            {
+                reputationLevel = RepMaximum;
+            }
+            else if (value < RepMinimum)
+            {
+                reputationLevel = RepMinimum;
+            }
+            else
+            {
+                reputationLevel = value;
+            }
+            OnReputationChanged(sendText);
+        }
+    }
     public void AddembientRep()
     {
         if (ReputationLevel < DefaultRepAmount && Game.GameTime - GameTimeLastAddedAmbientRep >= Gang.GameTimeToRecoverAmbientRep)
         {
-            ReputationLevel += 1;
+            SetRepuation(ReputationLevel + 1, true);
             GameTimeLastAddedAmbientRep = Game.GameTime;
         }
     }
     public uint GameTimeLastAddedAmbientRep { get; internal set; }
-    private void OnReputationChanged()
+    private void OnReputationChanged(bool sendText)
     {
         if(PreviousGangRelationship != GangRelationship)
         {
@@ -83,25 +100,34 @@ public class GangReputation
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
                 Player.SetDenStatus(Gang, false);
-                Player.DisableContact(Gang.ContactName);
-                Player.AddGangText(Gang,false);
+                if (sendText)
+                {
+                    Player.CellPhone.AddGangText(Gang, false);
+                }
+                else
+                {
+                    Player.CellPhone.AddContact(Gang);
+                }
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Respect);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
-
                 Player.SetDenStatus(Gang, true);
-                Player.AddContact(Gang.ContactName,Gang.ContactIcon, true);
-                Player.AddGangText(Gang, true);
+                if (sendText)
+                {
+                    Player.CellPhone.AddGangText(Gang, true);
+                }
+                else
+                {
+                    Player.CellPhone.AddContact(Gang);
+                }
             }
             else if (GangRelationship == GangRespect.Neutral)
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
-
                 Player.SetDenStatus(Gang, false);
-                Player.DisableContact(Gang.ContactName);
             }
             EntryPoint.WriteToConsole($"GangReputation {Gang.FullName} changed from {PreviousGangRelationship} to {GangRelationship}", 5);
             PreviousGangRelationship = GangRelationship;

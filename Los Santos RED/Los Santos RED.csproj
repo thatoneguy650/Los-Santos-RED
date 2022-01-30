@@ -113,9 +113,12 @@
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
+    <Compile Include="lsr\Data\Location\PossibleLocations.cs" />
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
+    <Compile Include="lsr\Data\Saves\SavedContact.cs" />
+    <Compile Include="lsr\Data\Saves\SavedTextMessage.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CellPhoneSettings.cs" />
@@ -146,6 +149,10 @@
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
+    <Compile Include="lsr\Locations\Places\BasicLocation.cs" />
+    <Compile Include="lsr\Locations\Places\DeadDrop.cs" />
+    <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ScrapYard.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
@@ -286,7 +293,8 @@
     <Compile Include="lsr\Ped\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
-    <Compile Include="lsr\UI\Pause Menu\ReportingMenu.cs" />
+    <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
+    <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />

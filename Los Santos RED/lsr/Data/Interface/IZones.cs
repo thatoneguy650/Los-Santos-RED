@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
 
         Zone GetZone(Vector3 ZonePosition);
         Zone GetZone(string InternalGameName);
+        string GetZoneName(Vector3 entrancePosition);
     }
 }

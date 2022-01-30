@@ -95,6 +95,10 @@ namespace LosSantosRED.lsr
             {
                 Player.StartSimpleTransaction();
             }
+            else if (Player.ButtonPrompts.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
+            {
+                Player.StartLocationInteraction();
+            }
         }
         private void ScenarioCheck()
         {

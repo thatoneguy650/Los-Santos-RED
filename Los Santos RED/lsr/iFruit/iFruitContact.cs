@@ -41,11 +41,20 @@ namespace iFruitAddon2
         /// Set this to 0 if you want the contact to answer instantly.
         /// </summary>
         public int DialTimeout { get; set; } = 0;
+        /// <summary>
+        /// Min Milliseconds timeout before the contact picks up. 
+        /// Set this to 0 if you want the contact to answer instantly.
+        /// </summary>
+        public bool RandomizeDialTimeout { get; set; } = false;
 
         /// <summary>
         /// The icon to associate with this contact.
         /// </summary>
         public ContactIcon Icon { get; set; } = ContactIcon.Generic;
+        /// <summary>
+        /// The icon name to associate with this contact.
+        /// </summary>
+        public string IconName { get; set; } = "";
 
         /// <summary>
         /// Set the contact text in bold.
@@ -57,6 +66,10 @@ namespace iFruitAddon2
             //UpdateContactIndex();
             Name = name;
             Index = index;
+        }
+        public iFruitContact()
+        {
+
         }
         internal void Draw(int handle)
         {
@@ -122,12 +135,12 @@ namespace iFruitAddon2
         {
             // Cannot call if already on call or contact is busy (Active == false)
             if (_dialActive || _busyActive)
+            {
                 return;
-
+            }
 
             //Game.LocalPlayer.Character.tas.UseMobilePhone();
             NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
-
 
             // Do we have to wait before the contact pickup the phone?
             if (DialTimeout > 0)
@@ -167,56 +180,5 @@ namespace iFruitAddon2
                 _busyActive = false;
             }
         }
-
-        private void UpdateContactIndex()
-        {
-            // Warning: new iFruitContact(...) can be called before iFruitAddon2 is initialized.
-            // That's why it is important not to rely on static variables inside the iFruitAddon2 class.
-            string tempFile = "";// iFruitAddon2.GetTempFilePath();
-
-            //if (File.Exists(tempFile))
-            //{
-            //    // Not the first launch
-            //    bool written = false;
-            //    while (!written)
-            //    {
-            //        try
-            //        {
-            //            // We need to check if the file is unlocked and then get the value and write the new one.
-            //            int index;
-
-            //            StreamReader sr = new StreamReader(tempFile);
-            //            if (int.TryParse(sr.ReadLine().Trim(new char[] { '\r', '\n', ' ' }), out index))
-            //                iFruitAddon2.ContactIndex = index;
-            //            sr.Close();
-
-            //            StreamWriter file = new StreamWriter(tempFile);
-            //            file.WriteLine(iFruitAddon2.ContactIndex + 1);
-            //            file.Close();
-            //            written = true;
-            //        }
-            //        catch (IOException)
-            //        {
-            //            // The file is locked when StreamReader or StreamWriter has opend it.
-            //            // The current instance of iFruitAddon2 must wait until the file is released.
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            // Unknown error occured
-            //            //Logger.Log(ex.Message);
-            //            Game.Console.Print(ex.Message);
-            //            written = true;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // First launch. We create the file
-            //    StreamWriter file = new StreamWriter(tempFile);
-            //    file.Write(iFruitAddon2.ContactIndex + 1);
-            //    file.Close();
-            //}
-        }
-
     }
 }

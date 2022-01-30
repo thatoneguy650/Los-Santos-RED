@@ -1,6 +1,7 @@
 ﻿using iFruitAddon2;
 using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,19 @@ namespace LosSantosRED.lsr.Interface
        // VehicleExt OwnedVehicle { get; }
         PoliceResponse PoliceResponse { get; }
         List<VehicleExt> OwnedVehicles { get; }
-        List<iFruitText> TextList { get; }
+       // List<iFruitText> TextList { get; }
+        //List<iFruitContact> ContactList { get; }
+        CellPhone CellPhone { get; }
+        Blip CurrentGPSBlip { get; set; }
 
         void SetDenStatus(Gang gang, bool v);
-        void AddContact(string contactName, string contactIcon, bool isGang);
-        void DisableContact(string contactName);
-        bool IsContactEnabled(string contactName);
-        void AddScheduledText(string contactName, string contactIcon, string v);
-        void AddGangText(Gang gang, bool v);
+        void AddGPSRoute(string name, Vector3 entrancePosition);
+        void RemoveGPSRoute();
+        //void AddContact(Gang gang);
+        //void AddContact(string contactName, string contactIcon);
+        //void DisableContact(string contactName);
+        //bool IsContactEnabled(string contactName);
+        //void AddScheduledText(string contactName, string contactIcon, string v);
+        //void AddGangText(Gang gang, bool v);
     }
 }

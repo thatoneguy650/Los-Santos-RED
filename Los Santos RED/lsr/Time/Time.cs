@@ -85,6 +85,12 @@ namespace Mod
         public void SetDateToToday()
         {
             NativeFunction.Natives.SET_CLOCK_DATE(DateTime.Now.Day, DateTime.Now.Month-1, DateTime.Now.Year);
+            NativeFunction.Natives.SET_CLOCK_TIME(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+        }
+        public void SetDateTime(DateTime toSet)
+        {
+            NativeFunction.Natives.SET_CLOCK_DATE(toSet.Day, toSet.Month - 1, toSet.Year);
+            NativeFunction.Natives.SET_CLOCK_TIME(toSet.Hour, toSet.Minute, toSet.Second);
         }
         public void FastForward(DateTime untilTime)
         {

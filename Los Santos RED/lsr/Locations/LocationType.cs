@@ -41,4 +41,5 @@ public enum LocationType : int
     House = 32,
     GangDen = 33,
     ScrapYard = 34,
+    Other = 35,
 }

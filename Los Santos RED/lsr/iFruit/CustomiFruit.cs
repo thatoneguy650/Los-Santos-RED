@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace iFruitAddon2
 {
-    //public delegate void ContactSelectedEvent(iFruitContactCollection sender, iFruitContact selectedItem);
     public delegate void ContactAnsweredEvent(iFruitContact contact);
 
     public class CustomiFruit
@@ -14,16 +13,10 @@ namespace iFruitAddon2
         private bool _shouldDraw = true;
         private PhoneImage _wallpaper;
         private iFruitContactCollection _contacts;
-
-
-        private bool IsScriptHashRunning = false;
-
-
         private iFruitTextCollection _texts;
-
+        private bool IsScriptHashRunning = false;
         private int _mScriptHash;
         private int _timerClose = -1;
-
 
         public string DebugString { get; set; } = "";
 
@@ -72,7 +65,9 @@ namespace iFruitAddon2
         }
 
         public CustomiFruit() : this(new iFruitContactCollection(), new iFruitTextCollection())
-        { }
+        { 
+        
+        }
 
         /// <summary>
         /// Initialize the class.
@@ -192,46 +187,44 @@ namespace iFruitAddon2
         public void Update()
         {
 
-
-
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
                 IsScriptHashRunning = true;
                 if (_shouldDraw)
                 {
-                    //Script.Wait(0);
-
                     if (LeftButtonColor != Color.Empty)
+                    {
                         SetSoftKeyColor(1, LeftButtonColor);
+                    }
                     if (CenterButtonColor != Color.Empty)
+                    {
                         SetSoftKeyColor(2, CenterButtonColor);
+                    }
                     if (RightButtonColor != Color.Empty)
+                    {
                         SetSoftKeyColor(3, RightButtonColor);
-
-                    //Script.Wait(0);
+                    }
 
                     if (LeftButtonIcon != SoftKeyIcon.Blank)
+                    {
                         SetSoftKeyIcon(1, LeftButtonIcon);
+                    }
                     if (CenterButtonIcon != SoftKeyIcon.Blank)
+                    {
                         SetSoftKeyIcon(2, CenterButtonIcon);
+                    }
                     if (RightButtonIcon != SoftKeyIcon.Blank)
+                    {
                         SetSoftKeyIcon(3, RightButtonIcon);
+                    }
 
                     if (_wallpaper != null)
+                    {
                         SetWallpaperTXD(_wallpaper.Name);
-
-                    
-
+                    }
                 //    SetUnread();
-
-
-
                     _shouldDraw = !_shouldDraw;
                 }
-
-
-
-
             }
             else
             {
@@ -249,9 +242,7 @@ namespace iFruitAddon2
                 }
             }
 
-
             _contacts.Update(Handle);
-
 #if DEBUG
             if (IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
             {
@@ -259,29 +250,7 @@ namespace iFruitAddon2
             }
             _texts.Update(Handle);
 #endif
-
-            //if(_texts.IsDrawing)
-            //{
-            //    LeftButtonIcon = SoftKeyIcon.Back;
-            //    RightButtonIcon = SoftKeyIcon.Delete;
-            //    RightButtonColor = Color.Red;
-            //    LeftButtonColor = Color.White;
-            //}
-            //else
-            //{
-            //    LeftButtonIcon = SoftKeyIcon.Blank;
-            //    RightButtonIcon = SoftKeyIcon.Blank;
-            //    RightButtonColor = Color.Empty;
-            //    LeftButtonColor = Color.Empty;
-            //}
-
-
-            //int selectedindexmain = GetSelectedIndex();
-            //EntryPoint.WriteToConsole($"OVERALL selectedindexmain {selectedindexmain}", 5);
-
             DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning}";
-
-
         }
         private void SetUnread()
         {
@@ -294,7 +263,6 @@ namespace iFruitAddon2
 
             NativeFunction.Natives.xC3D0841A0CC546A6(2);//iconid?
             NativeFunction.Natives.xC3D0841A0CC546A6(TotalNotifcations);//notifications
-            //NativeFunction.Natives.xC3D0841A0CC546A6(99);
 
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Text");//appname
@@ -305,20 +273,26 @@ namespace iFruitAddon2
             NativeFunction.Natives.xC3D0841A0CC546A6(100);
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         }
-
-
-        internal int GetSelectedIndex()
+        /// <summary>
+        /// Force closes the phone.
+        /// </summary>
+        /// <param name="timer">Thread safe timer waiting before closing the phone. Time in ms.</param>
+        public void ForceClose()
         {
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "GET_CURRENT_SELECTION");
-            int num = NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE<int>();
-            while (!NativeFunction.Natives.x768FF8961BA904D6<bool>(num))         //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_BOOL
-                GameFiber.Wait(0);
-            int data = NativeFunction.Natives.x2DE7EFA66B906036<int>(num);       //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_INT
-            return data;
+            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SHUTDOWN_MOVIE");
+            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+            GameFiber.Yield();
+
+            Tools.Scripts.DestroyPhone(Handle);
+            Tools.Scripts.TerminateScript("cellphone_flashhand");
+            Tools.Scripts.TerminateScript("cellphone_controller");
+
+            GameFiber.Yield();
+
+            Tools.Scripts.StartScript("cellphone_flashhand", 1424);
+            Tools.Scripts.StartScript("cellphone_controller", 1424);
         }
-
-
-
         /// <summary>
         /// Closes the phone.
         /// </summary>
@@ -326,9 +300,13 @@ namespace iFruitAddon2
         public void Close(int timer = 0)
         {
             if (timer == 0)
+            {
                 Close();
+            }
             else
+            {
                 _timerClose = (int)(Game.GameTime + timer);
+            }
         }
         private void Close()
         {
@@ -339,7 +317,6 @@ namespace iFruitAddon2
 
                 GameFiber.Yield();
 
-                //Function.Call(Hash.SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED, CustomiFruit.GetCurrentInstance().Handle);
                 Tools.Scripts.DestroyPhone(Handle);
                 Tools.Scripts.TerminateScript("cellphone_flashhand");
                 Tools.Scripts.TerminateScript("cellphone_controller");
@@ -350,11 +327,7 @@ namespace iFruitAddon2
                 Tools.Scripts.StartScript("cellphone_controller", 1424);
             }
         }
-
-
-
     }
-
 
     public enum SoftKeyIcon
     {

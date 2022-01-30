@@ -22,7 +22,10 @@ namespace LosSantosRED.lsr.Interface
       //  void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar);
         void DisplayPlayerNotification();
-        void SetReputation(Gang myGang, int item2);
+        //void SetReputation(Gang myGang, int item2, bool sendNotification);
+        GangRelationships GangRelationships { get; }
+        CellPhone CellPhone { get; }
+
         void ClearVehicleOwnership();
     }
 }

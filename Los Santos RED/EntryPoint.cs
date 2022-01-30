@@ -28,6 +28,7 @@ public static class EntryPoint
     public static ModController ModController { get; set; }
     public static List<Entity> SpawnedEntities = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
+    public static uint NotificationID { get; set; }
     public static void Main()
     {
         #if DEBUG
@@ -45,25 +46,36 @@ public static class EntryPoint
         fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
         if (File.Exists("menyoo.asi"))
         {
-            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~r~Menyoo is not compatible with LSR, please remove it and restart the game");
+            NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
         }
         else
         {
-            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
+            NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
         }
         while (true)
         {
             if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
             {
-                if(File.Exists("menyoo.asi"))
+                if (NotificationID != 0)
+                {
+                    Game.RemoveNotification(NotificationID);
+                }
+                if (File.Exists("menyoo.asi"))
                 {
                     MenyooRunning = true;
-                    Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~r~Menyoo is not compatible with LSR, please remove it and restart the game");
+                    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk~s~~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
                 }
                 ModController = new ModController();
                 ModController.Start();
             }
             GameFiber.Yield();
+        }
+    }
+    public static void WriteToConsole(string Message)
+    {
+        if (5 <= LogLevel)
+        {
+            Game.Console.Print($"m{(MenyooRunning ? 4556 : 0)} v{fvi.FileVersion} - {Message}");
         }
     }
     public static void WriteToConsole(string Message, int level)

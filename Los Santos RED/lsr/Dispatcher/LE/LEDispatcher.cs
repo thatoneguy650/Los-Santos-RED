@@ -10,8 +10,8 @@ public class LEDispatcher
 {
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
-    private readonly int LikelyHoodOfAnySpawn = 5;
-    private readonly int LikelyHoodOfCountySpawn = 10;
+    private readonly int LikelyHoodOfAnySpawn = 10;
+    private readonly int LikelyHoodOfCountySpawn = 15;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
@@ -50,7 +50,7 @@ public class LEDispatcher
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks;
+    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= TimeBetweenRoadblocks;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private float MaxDistanceToSpawn
     {
@@ -150,11 +150,11 @@ public class LEDispatcher
         {
             if (World.TotalWantedLevel == 6)
             {
-                return 1;
+                return 2;
             }
             if (World.TotalWantedLevel == 5)
             {
-                return 1;
+                return 2;
             }
             else if (World.TotalWantedLevel == 4)
             {
@@ -486,7 +486,7 @@ public class LEDispatcher
         {
             ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, responseType));
         }
-        if (ZoneAgency == null || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
         {
             Agency CountyAgency = Jurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel, ResponseType.LawEnforcement);
             if (CountyAgency != null)//randomly spawn the county agency

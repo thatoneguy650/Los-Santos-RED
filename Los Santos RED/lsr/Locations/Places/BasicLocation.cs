@@ -1,0 +1,200 @@
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Util.Locations;
+using Rage;
+using Rage.Native;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+[Serializable()]
+public class BasicLocation
+{
+    private Blip createdBlip;
+    private Interior interior;
+    private float distanceToPlayer = 999f;
+    private int CellsAway = 99;
+    private bool isNearby = false;
+    private uint GameTimeLastCheckedDistance;
+    private uint GameTimeLastCheckedNearby;
+    private uint DistanceUpdateIntervalTime
+    {
+        get
+        {
+            if (DistanceToPlayer >= 999f)
+            {
+                return 10000;
+            }
+            else if (DistanceToPlayer >= 500)
+            {
+                return 5000;
+            }
+            else if (DistanceToPlayer >= 200)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
+    }
+    private uint NearbyUpdateIntervalTime
+    {
+        get
+        {
+            if (CellsAway >= 20)
+            {
+                return 8000;
+            }
+            else if (CellsAway >= 10)
+            {
+                return 4000;
+            }
+            else if (CellsAway >= 6)
+            {
+                return 2000;
+            }
+            else
+            {
+                return 1000;
+            }
+        }
+    }
+    public string BannerImage { get; set; } = "";
+    public bool IsEnabled { get; set; } = true;
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public int CellX { get; set; }
+    public int CellY { get; set; }
+    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
+    public float EntranceHeading { get; set; }
+    public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
+    public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
+    public float TeleportEnterHeading { get; set; } = 0f;
+    public Blip Blip => createdBlip;
+    public bool ShouldAlwaysHaveBlip => false;
+    public bool IsBlipEnabled { get; set; } = true;
+    public bool Is247 => CloseTime >= 24;
+    public int OpenTime { get; set; } = 6;
+    public int CloseTime { get; set; } = 20;
+    public bool HasInterior => InteriorID != -1;
+    public int InteriorID { get; set; } = -1;
+    public Interior Interior => interior;
+    public virtual BlipSprite MapIcon { get; set; } = BlipSprite.PointOfInterest;
+    public virtual Color MapIconColor { get; set; } = Color.White;
+    public virtual string ButtonPromptText { get; set; }
+
+    public BasicLocation()
+    {
+
+    }
+    public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description)
+    {
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
+        Name = _Name;
+        Description = _Description;
+        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
+    }
+    public float DistanceToPlayer => distanceToPlayer;
+    public bool IsWalkup { get; set; } = false;
+    public bool IsPurchaseable { get; set; } = false;
+    public bool IsPurchased { get; set; } = false;
+    public override string ToString()
+    {
+        return Name.ToString();
+    }
+    public bool IsOpen(int currentHour)
+    {
+        return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
+    }
+    public void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    {
+        if (HasInterior)
+        {
+            interior = interiors.GetInterior(InteriorID);
+            if (interior != null)
+            {
+                interior.Load();
+            }
+        }
+        if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
+        {
+            createdBlip = AddIconToMap();
+            GameFiber.Yield();
+        }
+        SetNearby();
+        Update();
+    }
+    public void Update()
+    {
+        if (isNearby)
+        {
+            if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
+            {
+                distanceToPlayer = EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+                GameTimeLastCheckedDistance = Game.GameTime;
+            }
+        }
+        else
+        {
+            distanceToPlayer = 999f;
+            GameTimeLastCheckedDistance = Game.GameTime;
+        }
+    }
+    public void Dispose()
+    {
+        if (createdBlip.Exists())
+        {
+            createdBlip.Delete();
+        }
+        if (interior != null)
+        {
+            interior.Unload();
+        }
+    }
+    private Blip AddIconToMap()
+    {
+        Blip MyLocationBlip = new Blip(EntrancePosition)
+        {
+            Name = Name
+        };
+        MyLocationBlip.Sprite = MapIcon;
+        MyLocationBlip.Color = MapIconColor;
+        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+        return MyLocationBlip;
+    }
+    public bool IsNearby(int cellX, int cellY, int Distance)
+    {
+        if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)
+        {
+            CellsAway = NativeHelper.MaxCellsAway(cellX, cellY, CellX, CellY);
+            if (CellsAway <= Distance)
+            {
+                isNearby = true;
+            }
+            else
+            {
+                isNearby = false;
+            }
+            GameTimeLastCheckedNearby = Game.GameTime;
+        }
+        return isNearby;
+    }
+    public void SetNearby()
+    {
+        isNearby = true;
+    }
+
+}
+

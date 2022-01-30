@@ -42,7 +42,8 @@ namespace LosSantosRED.lsr.Interface
         bool RemoveFromInventory(ModItem toAdd, int amountPerPackage);
         bool HasItemInInventory(string modItemName);
         void ConsumeItem(ModItem toAdd);
-        void ChangeReputation(Gang gang, int v);
+        GangRelationships GangRelationships { get; }
+        // void ChangeReputation(Gang gang, int v, bool sendNotification);
         void SetUnarmed();
     }
 }

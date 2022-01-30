@@ -20,7 +20,8 @@ public class SaveMenu : Menu
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
     private IGangs Gangs;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs)
+    private ITimeControllable Time;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time)
     {
         PlayerSave = playersave;
         GameSaves = gameSaves;
@@ -30,6 +31,7 @@ public class SaveMenu : Menu
         Settings = settings;
         World = world;
         Gangs = gangs;
+        Time = time;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         Saves.SetBannerType(EntryPoint.LSRedColor);
         Saves.OnItemSelect += OnActionItemSelect;
@@ -73,11 +75,11 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time);
         }
         else if (selectedItem == SaveGameItem)
         {
-            GameSaves.Save(PlayerSave, Weapons);
+            GameSaves.Save(PlayerSave, Weapons, Time);
         }
         Saves.Visible = false;
         GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....

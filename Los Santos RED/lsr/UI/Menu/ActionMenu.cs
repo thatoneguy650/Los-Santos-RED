@@ -134,6 +134,7 @@ public class ActionMenu : Menu
         {
             CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
             CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
+            Actions.AddItem(CallPolice);
         }
         else
         {
@@ -166,7 +167,7 @@ public class ActionMenu : Menu
 #if DEBUG
         Actions.AddItem(LayDown);
 #endif
-        Actions.AddItem(CallPolice);
+        //Actions.AddItem(CallPolice);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);

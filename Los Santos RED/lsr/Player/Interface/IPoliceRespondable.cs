@@ -67,6 +67,7 @@ namespace LosSantosRED.lsr.Interface
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
         void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
-        void ChangeReputation(Gang gang, int v);
+        GangRelationships GangRelationships { get; }
+        //void ChangeReputation(Gang gang, int v, bool sendNotification);
     }
 }

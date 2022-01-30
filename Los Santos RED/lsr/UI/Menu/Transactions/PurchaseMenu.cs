@@ -44,6 +44,8 @@ public class PurchaseMenu : Menu
     private WeaponInformation CurrentWeapon;
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
     private ITimeControllable Time;
+    private int CurrentTotalPrice;
+
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons, ITimeControllable time)
     {
@@ -73,7 +75,10 @@ public class PurchaseMenu : Menu
     }
     public void Setup()
     {
-        PreloadModels();
+        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        {
+            PreloadModels();
+        }
         Transaction.ClearPreviews();
         if (Ped != null)
         {
@@ -465,7 +470,7 @@ public class PurchaseMenu : Menu
     {
         ClearPreviews();
         // GameFiber.Yield();
-        if (myItem != null)
+        if (myItem != null && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
             ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
@@ -1335,7 +1340,7 @@ public class PurchaseMenu : Menu
 
 
 
-            if (ModelToSpawn != "")
+            if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
             {
                 SellingProp = new Rage.Object(ModelToSpawn, Position);
 
@@ -1374,6 +1379,7 @@ public class PurchaseMenu : Menu
     private bool PurchaseItem(ModItem modItem, MenuItem menuItem, int TotalItems)
     {
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
+        CurrentTotalPrice = TotalPrice;
         if (Player.Money >= TotalPrice)
         {
             bool subtractCash = true;
@@ -1516,7 +1522,14 @@ public class PurchaseMenu : Menu
         if (Ped.GetType() == typeof(GangMember))
         {
             GangMember gm = (GangMember)Ped;
-            Player.ChangeReputation(gm.Gang, 200);
+            if(CurrentTotalPrice == 0)
+            {
+                Player.GangRelationships.ChangeReputation(gm.Gang, 20, true);
+            }
+            else
+            {
+                Player.GangRelationships.ChangeReputation(gm.Gang, CurrentTotalPrice, true);
+            }
         }
         //Show();   
         Show();

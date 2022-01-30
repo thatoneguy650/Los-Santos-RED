@@ -72,8 +72,11 @@ public class Gang
     public int SpawnLimit { get; set; } = 5;
     public bool SpawnsOnHighway { get; set; } = false;
 
-    public string ContactName { get; set; }
-    public string ContactIcon { get; set; } 
+    public string ContactName { get; set; } = "Unknown";
+    public string ContactIcon { get; set; }
+
+
+    public string DenName { get; set; } = "Den";
 
     // public float PlayerReputationLevel { get; set; }
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;

@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Locations;
 using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,15 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
 
         void CallPolice();
-        bool IsHostile(Gang myGang);
-        bool IsFriendly(Gang myGang);
-        int GetRepuationLevel(Gang gangLastCalled);
+
+        GangRelationships GangRelationships { get; }
+
         void GiveMoney(int v);
-        void SetReputation(Gang gangLastCalled, int v);
+        void AddGPSRoute(string name, Vector3 entrancePosition);
+        //bool IsHostile(Gang myGang);
+        //bool IsFriendly(Gang myGang);
+        //int GetRepuationLevel(Gang gangLastCalled);
+        //void GiveMoney(int v);
+        //void SetReputation(Gang gangLastCalled, int v, bool sendNotification);
     }
 }

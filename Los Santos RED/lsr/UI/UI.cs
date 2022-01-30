@@ -91,13 +91,15 @@ public class UI : IMenuProvideable
     private uint GameTimeLastDrawnUI;
     private IEntityProvideable World;
     private string overrideTimeDisplay = "";
-    private ReportingMenu ReportingMenu;
+    private PlayerInfoMenu ReportingMenu;
+    private AboutMenu AboutMenu;
+
     //private Texture WeaponSelectorToDraw;
 
     //private bool StreetFadeIsInverse = false;
     //private bool ZoneFadeIsInverse;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -109,7 +111,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest,Settings, policeRespondable);
-        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs);
+        MainMenu = new MainMenu(menuPool, actionablePlayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
@@ -117,7 +119,8 @@ public class UI : IMenuProvideable
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
         WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
-        ReportingMenu = new ReportingMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones);
+        ReportingMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+        AboutMenu = new AboutMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
     }
     private enum GTAHudComponent
     {
@@ -178,6 +181,7 @@ public class UI : IMenuProvideable
         //selectorthree = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectorthree.png");
         //selectortwo = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\selectortwo.png");
         ReportingMenu.Setup();
+        AboutMenu.Setup();
     }
     public void Dispose()
     {
@@ -489,6 +493,13 @@ public class UI : IMenuProvideable
         //{
             ReportingMenu.Toggle();
       //  }
+    }
+    public void ToggleAboutMenu()
+    {
+        //if (!menuPool.IsAnyMenuOpen())
+        //{
+        AboutMenu.Toggle();
+        //  }
     }
     public void ToggleMenu()
     {
@@ -1121,6 +1132,7 @@ public class UI : IMenuProvideable
     {
         menuPool.ProcessMenus();
         ReportingMenu.Update();
+        AboutMenu.Update();
     }
     private void RadarUpdate()
     {
