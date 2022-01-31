@@ -10,16 +10,11 @@ public class MainMenu : Menu
     private ActionMenu ActionMenu;
     private PedSwapMenu PedSwapMenu;
     private SaveMenu SaveMenu;
-    //private SettingsMenu SettingsMenu;
-
     private SettingsMenuNew SettingsMenuNew;
-
     private UIMenu Main;
     private IActionable Player;
     private UIMenuItem CallPolice;
-
     private UIMenuItem GenerateCrime;
-
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
     private UIMenuItem ShowReportingMenu;
@@ -41,12 +36,7 @@ public class MainMenu : Menu
         menuPool.Add(Main);
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
-        //SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
-
         SettingsMenuNew = new SettingsMenuNew(menuPool, Main, Player, world, Settings);
-
-
-
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
@@ -69,7 +59,6 @@ public class MainMenu : Menu
             Main.Visible = true;
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            //SettingsMenu.Hide();
             SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -81,12 +70,9 @@ public class MainMenu : Menu
         {
             ActionMenu.Update();
             InventoryMenu.Update();
-
             Main.Visible = true;
-
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            //SettingsMenu.Hide();
             SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -97,7 +83,6 @@ public class MainMenu : Menu
 
             ActionMenu.Hide();
             InventoryMenu.Hide();
-            //SettingsMenu.Hide();
             SettingsMenuNew.Hide();
             SaveMenu.Hide();
             PedSwapMenu.Hide();
@@ -105,23 +90,16 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
-        //ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
-        //ShowStatus.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
-
-
         ShowReportingMenu = new UIMenuItem("Player Information", "Show the player information menu. This pause menu has info about owned vehicles, gang relationships, locations, text messages, and contacts.");
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
         TakeVehicleOwnership = new UIMenuItem("Set Vehicle as Owned", "Set closest vehicle as owned by the mode. This will let you enter it freely and police/civilians will not react as if it is stolen when you enter.");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
-
         RemoveVehicleOwnership = new UIMenuItem("Remove Vehicle Onwership", "Set closest vehicle as not owned");
         RemoveVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
-
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
-        // Main.AddItem(ShowStatus);
         Main.AddItem(AboutMenu);
         Main.AddItem(ShowReportingMenu);
         Main.AddItem(TakeVehicleOwnership);
@@ -130,14 +108,9 @@ public class MainMenu : Menu
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == ShowStatus)
-        {
-            Player.DisplayPlayerNotification();
-        }
-        else if (selectedItem == ShowReportingMenu)
+        if (selectedItem == ShowReportingMenu)
         {
             UI.ToggleReportingMenu();
-            //Player.DisplayPlayerGangNotification();
         }
         else if (selectedItem == UnloadMod)
         {

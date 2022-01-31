@@ -363,7 +363,7 @@ namespace Mod
         public Vector3 RootPosition { get; set; }
         public int CellX { get; private set; }
         public int CellY { get; private set; }
-        public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop;
+        public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public uint TargettingHandle
@@ -670,7 +670,7 @@ namespace Mod
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles)
         {
             IsDead = false;
             IsBusted = false;
@@ -678,8 +678,8 @@ namespace Mod
             BeingArrested = false;
             HealthState.Reset();
             IsPerformingActivity = false;
-
-           // IsIntoxicated = false;
+            CurrentVehicle = null;
+            // IsIntoxicated = false;
 
             if (resetWanted)
             {
@@ -721,6 +721,10 @@ namespace Mod
             if(resetGangRelationships)
             {
                 GangRelationships.ResetReputations();
+            }
+            if(clearOwnedVehicles)
+            {
+                ClearVehicleOwnership();
             }
         }
         public void SetDemographics(string modelName, bool isMale, string playerName, int money)
@@ -2842,33 +2846,41 @@ namespace Mod
                 {
                     VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
                     GameFiber.Yield();
-                    if (existingVehicleExt == null)
+                    if (vehicle.Exists())
                     {
-                        VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
-                        EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
-                        TrackedVehicles.Add(createdVehicleExt);
-                        existingVehicleExt = createdVehicleExt;
-                    }
-                    if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-                    {
-                        TrackedVehicles.Add(existingVehicleExt);
-                    }
-                    if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
-                    {
-                        existingVehicleExt.SetAsEntered();
-                    }
-                    existingVehicleExt.Update(this);
-                    GameFiber.Yield();//TR removed 4
-                    if (!existingVehicleExt.IsStolen)
-                    {
-                        if (IsDriver && !OwnedVehicles.Any(x=> x.Handle == existingVehicleExt.Handle))// == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
+
+
+                        if (existingVehicleExt == null)
                         {
-                            existingVehicleExt.IsStolen = true;
+                            VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
+                            EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
+                            TrackedVehicles.Add(createdVehicleExt);
+                            existingVehicleExt = createdVehicleExt;
+                        }
+                        if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                        {
+                            TrackedVehicles.Add(existingVehicleExt);
+                        }
+                        if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
+                        {
+                            existingVehicleExt.SetAsEntered();
+                        }
+                        existingVehicleExt.Update(this);
+                        GameFiber.Yield();//TR removed 4
+                        if (vehicle.Exists())
+                        {
+                            if (!existingVehicleExt.IsStolen)
+                            {
+                                if (IsDriver && !OwnedVehicles.Any(x => x.Handle == existingVehicleExt.Handle))// == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
+                                {
+                                    existingVehicleExt.IsStolen = true;
+                                }
+                            }
+                            CurrentVehicle = existingVehicleExt;
+
+                            EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
                         }
                     }
-                    CurrentVehicle = existingVehicleExt;
-
-                    EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
                 }
             }
             else

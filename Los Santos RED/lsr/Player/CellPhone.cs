@@ -362,6 +362,12 @@ public class CellPhone
                     $"Call us soon to discuss business.",
                     $"Might have some business opportunites for you soon, give us a call.",
                     $"You've been making some impressive moves, call us to discuss.",
+                    $"Give us a call soon.",
+                    $"We may have some opportunites for you.",
+                    $"My guys tell me you are legit, hit us up sometime.",
+                    $"Looking for people I can trust, if so give us a call.",
+                    $"Word has gotten around about you, mostly positive, give us a call soon.",
+                    $"Always looking for help with some 'items'. Call us if you think you can handle it.",
                 });
             }
             else
@@ -372,6 +378,13 @@ public class CellPhone
                     $"ur fucking dead",
                     $"You just fucked with the wrong people asshole",
                     $"We're gonna fuck you up buddy",
+                    $"My boys are gonna skin you alive prick.",
+                    $"You will die slowly.",
+                    $"I'll take pleasure in guttin you boy.",
+                    $"Better leave LS while you can...",
+                    $"We'll be waiting for you asshole.",
+                    $"You're gonna wish you were dead motherfucker.",
+                    $"Got some 'associates' out looking for you prick. Where you at?",
                 });
             }
 
@@ -395,7 +408,7 @@ public class CellPhone
                     else
                     {
                         Replies.AddRange(new List<string>() {
-                            $"Watch your back next to your are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
+                            $"Watch your back next time you are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
                             $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
                             $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
                         });
@@ -557,11 +570,32 @@ public class CellPhone
                 {
                     Player.GiveMoney(-1 * CostToBuy);
                     Player.GangRelationships.SetReputation(GangLastCalled, 500, false);
-                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Nice to get some respect from you finally");
+
+                    List<string> Replies = new List<string>() {
+                    "Nice to get some respect from you finally",
+                    "I knew you were one of the good ones",
+                    "Well this certainly smooths things over",
+                    "I always liked you",
+                    "Thanks for that, I'll remember it",
+                    "Ah you got me my favorite thing!",
+
+                    };
+
+
+                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
                 }
                 else
                 {
-                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Call me when you're a little, hmmm, richer?");
+                    List<string> Replies = new List<string>() {
+                    "Call me when you're a little, hmmm, richer?",
+                    "What are you trying to pull",
+                    "Call me back when you aren't so poor",
+                    "Why are you bothering me with this bullshit",
+                    "Am i supposed to wait for a chargeback or something?",
+                    "I don't see any cash",
+
+                    };
+                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
                 }
             }
         }
@@ -575,21 +609,60 @@ public class CellPhone
                 {
                     Player.GiveMoney(-1 * CostToBuy);
                     Player.GangRelationships.SetReputation(GangLastCalled, 0, false);
-                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "I guess we can forget about that shit.");
+
+                    List<string> Replies = new List<string>() {
+                    "I guess we can forget about that shit.",
+                    "No problem man, all is forgiven",
+                    "That shit before? Forget about it.",
+                    "We are square",
+                    "You are off the hit list",
+                    "This doesn't make us friends prick, just associates",
+
+                    };
+
+                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
                 }
                 else
                 {
-                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Call me when you're a little, hmmm, richer?");
+                    List<string> Replies = new List<string>() {
+                    "The fuck are you trying to pull dickhead?",
+                    "Fuck off prick.",
+                    "Poor motherfucker",
+                    "You are really starting to piss me off",
+                    "You really are a dumb motherfucker arent you?",
+                    "Can you even read the numbers in your bank account?",
+
+                    };
+                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
                 }
             }
         }
         else if (selectedItem == ApoligizeToGang)
         {
+            List<string> Replies = new List<string>() {
+                    "You think I give a shit?",
+                    "Fuck off prick.",
+                    "Go fuck yourself prick.",
+                    "You are really starting to piss me off",
+                    "(click)",
+                    "I'm not even going to respond to this shit.",
+
+                    };
+            Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom()); ;
             CustomiFruit.Close(500);
         }
         else if (selectedItem == RequestGangWork)
         {
-            Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", "Stop by and we will see what we can do.");
+            List<string> Replies = new List<string>() {
+                    "Nothing yet, I'll let you know",
+                    "I've got nothing for you yet",
+                    "Give me a few days",
+                    "Not a lot to be done right now",
+                    "We will let you know when you can do something for us",
+                    "Check back later.",
+
+                    };
+            Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
         }
         else if (selectedItem == RequestGangDen)
         {
@@ -600,7 +673,19 @@ public class CellPhone
                 Zone gangZome = Zones.GetZone(den.EntrancePosition);
                 string StreetName = Streets.GetStreetNames(den.EntrancePosition);
                 string locationText = $"~s~on {StreetName} {(gangZome.IsSpecificLocation ? "near" : "in")} ~p~{gangZome.FullDisplayName}~s~".Trim();
-                Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", $"Our {GangLastCalled.DenName} is located {locationText} come see us.");
+
+                List<string> Replies = new List<string>() {
+                    $"Our {GangLastCalled.DenName} is located {locationText} come see us.",
+                    $"Come check out our {GangLastCalled.DenName} {locationText}.",
+                    $"You can find out {GangLastCalled.DenName} {locationText}.",
+                    $"{locationText}.",
+                    $"It's {locationText} come see us.",
+                    $"The {GangLastCalled.DenName}? It's {locationText}.",
+
+                    };
+
+
+                Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
             }         
         }
         sender.Visible = false;
@@ -707,6 +792,9 @@ public class CellPhone
             fullText += " is en route to ";
             fullText += streetName;
             fullText += zoneName;
+
+            fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
+
             Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~r~Fire Service", fullText);
             Player.CallPolice();
         }
@@ -728,6 +816,9 @@ public class CellPhone
             fullText += " is en route to ";
             fullText += streetName;
             fullText += zoneName;
+
+            fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
+
             Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~h~Medical Service", fullText);
             Player.CallPolice();
         }

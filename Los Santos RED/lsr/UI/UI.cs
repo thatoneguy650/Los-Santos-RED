@@ -120,7 +120,7 @@ public class UI : IMenuProvideable
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
         WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
         ReportingMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
-        AboutMenu = new AboutMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+        AboutMenu = new AboutMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
     }
     private enum GTAHudComponent
     {
@@ -946,22 +946,50 @@ public class UI : IMenuProvideable
                     {
                         if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
                         {
-                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)}) {CurrentDefaultTextColor}MPH)";
+                            if(Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            {
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH)";
+                            }
+                            else
+                            {
+                                CurrentSpeedDisplay = $"({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH)";
+                            }
                         }
                         else
                         {
-                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH";
+                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            {
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH";
+                            }
+                            else
+                            {
+                                CurrentSpeedDisplay = "";
+                            }
                         }
                     }
                     else if(Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
                     {
                         if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
                         {
-                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)}) {CurrentDefaultTextColor}KM/H)";
+                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            {
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H)";
+                            }
+                            else
+                            {
+                                CurrentSpeedDisplay = $"({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H)";
+                            }
                         }
                         else
                         {
-                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H";
+                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            {
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H";
+                            }
+                            else
+                            {
+                                CurrentSpeedDisplay = "";
+                            }
                         }
                     }
                 }

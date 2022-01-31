@@ -255,7 +255,7 @@ namespace LSR.Vehicles
         }
         public void Update(IDriveable driver)
         {
-            if (IsCar)
+            if (Vehicle.Exists() && IsCar)
             {
                 Engine.Update(driver);
                 //GameFiber.Yield();//TR Removed 5

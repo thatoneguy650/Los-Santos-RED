@@ -302,11 +302,11 @@ public class CustomizePedMenu : Menu
             }
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
-                PedComponent existingComponent = null;
-                if (Player.CurrentModelVariation != null)
-                {
-                    existingComponent = Player.CurrentModelVariation.Components.FirstOrDefault(x => x.ComponentID == ComponentNumber);
-                }
+                //PedComponent existingComponent = null;
+                //if (Player.CurrentModelVariation != null)
+                //{
+                //    existingComponent = Player.CurrentModelVariation.Components.FirstOrDefault(x => x.ComponentID == ComponentNumber);
+                //}
                 int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(ModelPed, ComponentNumber);
                 string description = $"Component: {ComponentNumber}";
                 FashionComponent fashionComponent =  ComponentLookup.FirstOrDefault(x => x.ComponentID == ComponentNumber);
@@ -320,10 +320,10 @@ public class CustomizePedMenu : Menu
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(ModelPed, ComponentNumber, DrawableNumber) - 1;
                     UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "Arrow to change texture, select to reset texture", 0, NumberOfTextureVariations, 1);
-                    if(existingComponent != null && existingComponent.DrawableID == DrawableNumber)
-                    {
-                        Test.Value = existingComponent.TextureID;
-                    }
+                    //if(existingComponent != null && existingComponent.DrawableID == DrawableNumber)
+                    //{
+                    //    Test.Value = existingComponent.TextureID;
+                    //}
                     Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     ComponentSubMenu.AddItem(Test);
                 }
@@ -338,11 +338,11 @@ public class CustomizePedMenu : Menu
             }
             for (int PropsNumber = 0; PropsNumber < 3; PropsNumber++)
             {
-                PedPropComponent existingComponent = null;
-                if (Player.CurrentModelVariation != null)
-                {
-                    existingComponent = Player.CurrentModelVariation.Props.FirstOrDefault(x => x.PropID == PropsNumber);
-                }
+                //PedPropComponent existingComponent = null;
+                //if (Player.CurrentModelVariation != null)
+                //{
+                //    existingComponent = Player.CurrentModelVariation.Props.FirstOrDefault(x => x.PropID == PropsNumber);
+                //}
                 int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS<int>(Game.LocalPlayer.Character, PropsNumber);
                 string description = $"Prop: {PropsNumber}";
                 FashionProp fashionProp = PropLookup.FirstOrDefault(x => x.PropID == PropsNumber);
@@ -355,10 +355,10 @@ public class CustomizePedMenu : Menu
                 {
                     int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(ModelPed, PropsNumber, DrawableNumber);
                     UIMenuNumericScrollerItem<int> Test = new UIMenuNumericScrollerItem<int>($"Drawable: {DrawableNumber}", "", 0, NumberOfTextureVariations, 1);
-                    if (existingComponent != null && existingComponent.DrawableID == DrawableNumber)
-                    {
-                        Test.Value = existingComponent.TextureID;
-                    }
+                    //if (existingComponent != null && existingComponent.DrawableID == DrawableNumber)
+                    //{
+                    //    Test.Value = existingComponent.TextureID;
+                    //}
                     Test.Formatter = v => v == 0 ? "Default" : "Texture ID " + v.ToString() + $" of {NumberOfTextureVariations}";
                     PropSubMenu.AddItem(Test);
                 }

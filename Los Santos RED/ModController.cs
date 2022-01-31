@@ -102,12 +102,13 @@ namespace LosSantosRED.lsr
         }
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
-            Player.Reset(true, true, true, true, true, true, true);
+            
+            Player.Reset(true, true, true, true, true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax));
         }
         public void NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
         {
-            Player.Reset(true, true, true, true, true, true, true);
+            Player.Reset(true, true, true, true, true, true, true, true);
             Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
         }
         public void ReloadSettingsFromFile()
@@ -129,6 +130,7 @@ namespace LosSantosRED.lsr
             WavAudio = new WavAudio();
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
+            Time.Setup();
             GameFiber.Yield();
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories);
             World.Setup();

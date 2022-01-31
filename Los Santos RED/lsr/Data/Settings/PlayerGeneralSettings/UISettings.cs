@@ -30,6 +30,7 @@ public class UISettings : ISettingsDefaultable
     public int VehicleStatusJustificationID { get; set; }
     public GTAFont VehicleStatusFont { get; set; }
     public bool VehicleStatusIncludeTextSpeedLimit { get; set; }
+    public bool VehicleStatusIncludeCurrentSpeed { get; set; }
     public bool ShowPlayerDisplay { get; set; }
     public bool FadePlayerDisplay { get; set; }
     public bool FadePlayerDisplayDuringWantedAndInvestigation { get; set; }
@@ -104,6 +105,7 @@ public class UISettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
 
+
     public UISettings()
     {
         SetDefault();
@@ -136,6 +138,7 @@ public class UISettings : ISettingsDefaultable
         VehicleStatusJustificationID = 2;
         VehicleStatusFont = GTAFont.FontHouseScript;
         VehicleStatusIncludeTextSpeedLimit = false;
+        VehicleStatusIncludeCurrentSpeed = true;
         ShowPlayerDisplay = true;
         FadePlayerDisplay = false;
         FadePlayerDisplayDuringWantedAndInvestigation = false;

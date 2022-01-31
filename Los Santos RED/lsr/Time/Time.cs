@@ -27,10 +27,15 @@ namespace Mod
         private int FastForwardMultiplier = 300;
         private int FastForwardInterval = 10;
         private DateTime TimeToStopFastForwarding;
+        private bool isClockPaused = false;
         public Time(ISettingsProvideable settings)
         {
             Settings = settings;
-            NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
+            if (Settings.SettingsManager.TimeSettings.ScaleTime)
+            {
+                NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
+                isClockPaused = true;
+            }
         }
         public string CurrentTime => Settings.SettingsManager.UISettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
@@ -46,6 +51,7 @@ namespace Mod
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
+            isClockPaused = false;
         }
         public void PauseTime()
         {
@@ -76,8 +82,21 @@ namespace Mod
             {
                 if (Settings.SettingsManager.TimeSettings.ScaleTime)
                 {
+                    if(!isClockPaused)
+                    {
+                        NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
+                        isClockPaused = true;
+                    }
                     GetIntervalAndMultiplier();
                     GameFiber.Yield();//TR this is new, shouldnt do much harm
+                }
+                else 
+                {
+                    if(isClockPaused)
+                    {
+                        NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
+                        isClockPaused = false;
+                    }
                 }
                 CheckTimeInterval();
             }
@@ -171,6 +190,26 @@ namespace Mod
                 GameTimeLastSetClock = Game.GameTime;
             }
         }
+
+        public void Setup()
+        {
+            try
+            {
+                CurrentHour = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                CurrentMinute = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+                CurrentSecond = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+                CurrentDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
+                CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
+                CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
+                CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
+            }
+            catch(ArgumentOutOfRangeException ex)
+            {
+                Game.DisplayNotification($"Error Starting Mod, Time Set Incorrect, Setting to Current {ex.Message}");
+                SetDateToToday();
+            }
+        }
+
         private void GetIntervalAndMultiplier()
         {
             if (!IsFastForwarding)
