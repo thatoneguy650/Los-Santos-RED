@@ -14,5 +14,10 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         bool IsMale { get; }
         bool CanPerformActivities { get; }
+        GangRelationships GangRelationships { get; }
+        int Money { get; }
+
+        void GiveMoney(int moneyToReceive);
+        CellPhone CellPhone { get; }
     }
 }

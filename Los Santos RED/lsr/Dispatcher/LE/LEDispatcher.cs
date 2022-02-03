@@ -525,7 +525,7 @@ public class LEDispatcher
         }
         if (agency == null)
         {
-            //EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
+            EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }
@@ -668,6 +668,7 @@ public class LEDispatcher
                         try
                         {
                             SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true);
+                            spawnTask.AllowAnySpawn = true;
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));

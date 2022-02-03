@@ -420,6 +420,10 @@ public class CellPhone
             AddScheduledText(gang.ContactName, gang.ContactIcon, MessageToSend);
         }
     }
+    public void AddScheduledText(string Name, string IconName, string MessageToSend, int minutesToWait)
+    {
+        AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait));
+    }
     public void AddScheduledText(string Name, string IconName, string MessageToSend)
     {
         AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(3));
@@ -605,36 +609,51 @@ public class CellPhone
             {
                 int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
                 int CostToBuy = (0 - repLevel) * 5;
-                if (Player.Money >= CostToBuy)
+
+                DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.PickRandom();
+                if (myDrop != null)
                 {
-                    Player.GiveMoney(-1 * CostToBuy);
-                    Player.GangRelationships.SetReputation(GangLastCalled, 0, false);
-
+                    myDrop.SetGang(GangLastCalled, -1 * CostToBuy);
                     List<string> Replies = new List<string>() {
-                    "I guess we can forget about that shit.",
-                    "No problem man, all is forgiven",
-                    "That shit before? Forget about it.",
-                    "We are square",
-                    "You are off the hit list",
-                    "This doesn't make us friends prick, just associates",
-
+                    $"Drop ${CostToBuy} on {myDrop.StreetAddress}, its the {myDrop.Description}",
+                    $"Place ${CostToBuy} in the {myDrop.Description}, address is {myDrop.StreetAddress}",
+                    $"Drop off ${CostToBuy} to the {myDrop.Description} on {myDrop.StreetAddress}",
                     };
-
                     Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
+                    AddText(GangLastCalled.ContactName, GangLastCalled.ContactIcon, Replies.PickRandom(), Time.CurrentHour, Time.CurrentMinute, true);
                 }
                 else
                 {
-                    List<string> Replies = new List<string>() {
-                    "The fuck are you trying to pull dickhead?",
-                    "Fuck off prick.",
-                    "Poor motherfucker",
-                    "You are really starting to piss me off",
-                    "You really are a dumb motherfucker arent you?",
-                    "Can you even read the numbers in your bank account?",
-
-                    };
-                    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
+                    CustomiFruit.Close(500);
                 }
+
+
+                //if (Player.Money >= CostToBuy)
+                //{
+                //    Player.GiveMoney(-1 * CostToBuy);
+                //    Player.GangRelationships.SetReputation(GangLastCalled, 0, false);
+                //    List<string> Replies = new List<string>() {
+                //    "I guess we can forget about that shit.",
+                //    "No problem man, all is forgiven",
+                //    "That shit before? Forget about it.",
+                //    "We are square",
+                //    "You are off the hit list",
+                //    "This doesn't make us friends prick, just associates",
+                //    };
+                //    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
+                //}
+                //else
+                //{
+                //    List<string> Replies = new List<string>() {
+                //    "The fuck are you trying to pull dickhead?",
+                //    "Fuck off prick.",
+                //    "Poor motherfucker",
+                //    "You are really starting to piss me off",
+                //    "You really are a dumb motherfucker arent you?",
+                //    "Can you even read the numbers in your bank account?",
+                //    };
+                //    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
+                //}
             }
         }
         else if (selectedItem == ApoligizeToGang)

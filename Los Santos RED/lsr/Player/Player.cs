@@ -98,6 +98,7 @@ namespace Mod
         private bool HasThrownGotOnFreeway;
         private bool HasThrownGotOffFreeway;
         private uint GameTimeLastCheckedRouteBlip;
+        private uint GameTimeLastSetMeleeModifier;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
@@ -930,8 +931,23 @@ namespace Mod
                 }
                 if (((CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition) || CurrentLookedAtPed.HasMenu) && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
+                    bool toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
+                    bool toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
                     ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
-                    ButtonPrompts.Add(new ButtonPrompt($"Purchase from {CurrentLookedAtPed.FormattedName}", "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                    string promptText = $"Purchase from {CurrentLookedAtPed.FormattedName}";
+                    if (toSell && toBuy)
+                    {
+                        promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
+                    }
+                    else if (toBuy)
+                    {
+                        promptText = $"Buy from {CurrentLookedAtPed.FormattedName}";
+                    }
+                    else
+                    {
+                        promptText = $"Sell to {CurrentLookedAtPed.FormattedName}";
+                    }
+                    ButtonPrompts.Add(new ButtonPrompt(promptText, "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2));
                 }
             }
             else
@@ -1725,7 +1741,11 @@ namespace Mod
             }
 
 
-
+            if(Settings.SettingsManager.PlayerOtherSettings.MeleeDamageModifier != 1.0f && (GameTimeLastSetMeleeModifier == 0 || Game.GameTime - GameTimeLastSetMeleeModifier >= 5000))
+            {
+                NativeFunction.Natives.SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(Game.LocalPlayer, Settings.SettingsManager.PlayerOtherSettings.MeleeDamageModifier, true);
+                GameTimeLastSetMeleeModifier = Game.GameTime;
+            }
 
 
             if (Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
@@ -1877,7 +1897,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 //IsConversing = true;
-                ClosestInteractableLocation.OnInteract();
+                ClosestInteractableLocation.OnInteract(this);
 
 
 

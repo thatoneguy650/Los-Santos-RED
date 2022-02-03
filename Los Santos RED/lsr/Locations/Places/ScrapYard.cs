@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -29,11 +30,11 @@ public class ScrapYard : InteractableLocation
     {
         ButtonPromptText = $"Scrap Vehicle at {_Name}";
     }
-    public override void OnInteract()
+    public override void OnInteract(IActivityPerformable player)
     {
         SetupMenu();
         SetupCamera();
-        base.OnInteract();
+        base.OnInteract(player);
         GameFiber.StartNew(delegate
         {
             ScrapMenu.Visible = true;

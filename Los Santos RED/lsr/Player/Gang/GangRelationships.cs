@@ -90,7 +90,7 @@ public class GangRelationships
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(RandomItems.GetRandomNumberInt(-200, 600),false);
+            rg.SetRepuation(RandomItems.GetRandomNumberInt(-2000, 2000),false);
         }
     }
     public string PrintRelationships()

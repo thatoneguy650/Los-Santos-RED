@@ -132,7 +132,7 @@ namespace LosSantosRED.lsr
             Time = new Mod.Time(Settings);
             Time.Setup();
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories, Streets);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories);
@@ -167,12 +167,12 @@ namespace LosSantosRED.lsr
             PedSwap.Setup();
             GameFiber.Yield();
 
-            GameSave CurrentSave = GameSaves.GetSave(Player);
-            if (CurrentSave != null)
-            {
-                CurrentSave.Load(Weapons, PedSwap, Player, Settings, World, Gangs, Time);
-                GameFiber.Yield();
-            }
+            //GameSave CurrentSave = GameSaves.GetSave(Player);
+            //if (CurrentSave != null)
+            //{
+            //    CurrentSave.Load(Weapons, PedSwap, Player, Settings, World, Gangs, Time);
+            //    GameFiber.Yield();
+            //}
 
             GameFiber.Yield();
             SetupModTasks();

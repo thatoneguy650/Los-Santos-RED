@@ -66,6 +66,8 @@ public class SpawnTask
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
+    public bool AllowAnySpawn { get; set; } = false;
+
     private Vector3 Position
     {
         get
@@ -96,7 +98,7 @@ public class SpawnTask
     {
         try
         {
-            if(Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && ExtensionsMethods.Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position))
+            if(Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && ExtensionsMethods.Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position) && !AllowAnySpawn)
             {
                 EntryPoint.WriteToConsole($"SpawnTask: Too Close and in front to spawn", 5);
                 return;

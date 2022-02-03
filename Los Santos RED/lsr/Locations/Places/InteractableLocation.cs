@@ -18,7 +18,7 @@ public class InteractableLocation : BasicLocation
     public InteractableLocation() : base()
     {
     }
-    public virtual void OnInteract()
+    public virtual void OnInteract(IActivityPerformable player)
     {
         EntryPoint.WriteToConsole("InteractableLocation OnInteract");
     }

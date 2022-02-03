@@ -136,8 +136,23 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> ScrapMenu = ShopMenus.GetMenu("ScrapMenu")?.Items;
 
         PossibleLocations.DeadDrops.AddRange(new List<DeadDrop>() {
-            //new DeadDrop(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, "Dead Drop 1", "Literally") { OpenTime = 0, CloseTime = 24 }, 
-        });
+
+            //new DeadDrop(new Vector3(215.459f,-50.29481f,68.0571f), 299.5774f, "Dead Drop 1", "Literally") { OpenTime = 0, CloseTime = 24, IsEnabled = false },
+            //new DeadDrop(new Vector3(188.6864f,-40.46929f,67.43929f), 299.5774f, "Dead Drop 2", "Literally") { OpenTime = 0, CloseTime = 24, IsEnabled = false },
+            //new DeadDrop(new Vector3(168.7156f,-29.74037f,67.00125f), 299.5774f, "Dead Drop 3", "Literally") { OpenTime = 0, CloseTime = 24, IsEnabled = false },
+            //new DeadDrop(new Vector3(169.7109f,-30.07912f,67.01324f), 299.5774f, "Dead Drop 4", "Literally") { OpenTime = 0, CloseTime = 24, IsEnabled = false },
+
+
+            new DeadDrop(new Vector3(76.75016f,-605.3666f,43.22205f), 69.01669f, "Dead Drop", "trash can by the IIA" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "newspaper stand by the IIA" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "newspaper stand by the IIA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "newspaper stand by the IIA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+
+
+        }); ;
 
 
 

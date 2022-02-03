@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class BasicLocation
@@ -19,7 +20,7 @@ public class BasicLocation
     private Interior interior;
     private float distanceToPlayer = 999f;
     private int CellsAway = 99;
-    private bool isNearby = false;
+   /// private bool isNearby = false;
     private uint GameTimeLastCheckedDistance;
     private uint GameTimeLastCheckedNearby;
     private uint DistanceUpdateIntervalTime
@@ -90,6 +91,11 @@ public class BasicLocation
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual string ButtonPromptText { get; set; }
 
+    [XmlIgnore]
+    public string StreetAddress { get; set; }
+    [XmlIgnore]
+
+    public bool IsNearby { get; private set; } = false;
     public BasicLocation()
     {
 
@@ -135,7 +141,7 @@ public class BasicLocation
     }
     public void Update()
     {
-        if (isNearby)
+        if (IsNearby)
         {
             if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
             {
@@ -174,26 +180,26 @@ public class BasicLocation
         NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
         return MyLocationBlip;
     }
-    public bool IsNearby(int cellX, int cellY, int Distance)
+    public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {
         if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)
         {
             CellsAway = NativeHelper.MaxCellsAway(cellX, cellY, CellX, CellY);
             if (CellsAway <= Distance)
             {
-                isNearby = true;
+                IsNearby = true;
             }
             else
             {
-                isNearby = false;
+                IsNearby = false;
             }
             GameTimeLastCheckedNearby = Game.GameTime;
         }
-        return isNearby;
+        return IsNearby;
     }
     public void SetNearby()
     {
-        isNearby = true;
+        IsNearby = true;
     }
 
 }

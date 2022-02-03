@@ -30,6 +30,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     [Description("If enabled the stores will give you a preview of the item you are about to buy.")]
     public bool GenerateStoreItemPreviews { get; set; }
 
+    [Description("Modifier to melee damage on the player. If set Less than 1 the melee damage the player do will be reduced by that percent (0.1 = 10% damage). If set higher than 1 the melee damage will be scaled by that about (2.5 = 250% damage). Set at 1 for default.")]
+    public float MeleeDamageModifier { get; set; }
+
     public PlayerOtherSettings()
     {
         SetDefault();
@@ -50,6 +53,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MaleFreeModeVoice = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
         FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GenerateStoreItemPreviews = true;
+
+        MeleeDamageModifier = 1.0f;
     }
 
 }

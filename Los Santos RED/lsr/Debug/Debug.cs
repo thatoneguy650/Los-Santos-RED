@@ -440,7 +440,7 @@ public class Debug
 
         SpawnGunAttackers();
 
-      //  NativeFunction.Natives.x759E13EBC1C15C5A(50f);
+        //  NativeFunction.Natives.x759E13EBC1C15C5A(50f);
 
         //ModController.DebugQuaternaryRunning = !ModController.DebugQuaternaryRunning;
         //Game.DisplayNotification($"ModController.DebugQuaternaryRunning {ModController.DebugQuaternaryRunning}");
@@ -525,45 +525,45 @@ public class Debug
         //Weather.DebugPlayReport();
 
 
-        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        //if (ClosestEntity.Exists())
-        //{
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        if (ClosestEntity.Exists())
+        {
 
 
-        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-        //    float ObjectHeading = ClosestEntity.Heading;
-        //    if (ClosestEntity.Heading >= 180f)
-        //    {
-        //        DesiredHeading = ClosestEntity.Heading - 180f;
-        //    }
-        //    else
-        //    {
-        //        DesiredHeading = ClosestEntity.Heading + 180f;
-        //    }
+            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+            float ObjectHeading = ClosestEntity.Heading;
+            if (ClosestEntity.Heading >= 180f)
+            {
+                DesiredHeading = ClosestEntity.Heading - 180f;
+            }
+            else
+            {
+                DesiredHeading = ClosestEntity.Heading + 180f;
+            }
 
 
 
 
-        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
-        //    {
+            if (ClosestEntity.Model.Dimensions.X >= 2f)
+            {
 
-        //    }
+            }
 
-        //    uint GameTimeStartedDisplaying = Game.GameTime;
-        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
-        //    {
+            uint GameTimeStartedDisplaying = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+            {
 
-        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-        //        GameFiber.Yield();
-        //    }
+                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                GameFiber.Yield();
+            }
 
-        //}
+        }
         //// Player.ScannerPlayDebug();
 
         //SetInRandomInterior();
@@ -837,17 +837,17 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        foreach(VehicleExt car in World.CivilianVehicleList)
-        {
-            if(car.Vehicle.Exists())
-            {
-                Blip coolBlip = car.Vehicle.GetAttachedBlip();
-                if(coolBlip.Exists())
-                {
-                    EntryPoint.WriteToConsole($"{car.Vehicle.Handle} {car.Vehicle.Model.Name} {coolBlip.Name} {coolBlip.Sprite}");
-                }
-            }
-        }
+        //foreach(VehicleExt car in World.CivilianVehicleList)
+        //{
+        //    if(car.Vehicle.Exists())
+        //    {
+        //        Blip coolBlip = car.Vehicle.GetAttachedBlip();
+        //        if(coolBlip.Exists())
+        //        {
+        //            EntryPoint.WriteToConsole($"{car.Vehicle.Handle} {car.Vehicle.Model.Name} {coolBlip.Name} {coolBlip.Sprite}");
+        //        }
+        //    }
+        //}
 
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.SetReputation(myGang, -2000, true);
@@ -860,7 +860,7 @@ public class Debug
         //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
         //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
         //PauseMenuExample.Main();
-        //StuffTwo();
+        StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;
         //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
         //GameFiber.Sleep(500);
@@ -880,7 +880,7 @@ public class Debug
         //Player.CurrentCellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(1));
         //EntryPoint.WriteToConsole($"ADDED Text", 5);
 
-     //  AddGPSRoute();
+        //  AddGPSRoute();
 
         //CreatePointChecker();
         //Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
@@ -931,7 +931,8 @@ public class Debug
         //}
 
 
-
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.GangRelationships.SetReputation(myGang, 2000, true);
 
 
 
@@ -968,15 +969,14 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.GangRelationships.SetReputation(myGang, 2000, true);
+
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
-        //Dispatcher.DebugSpawnCop();
+        Dispatcher.DebugSpawnCop();
 
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
@@ -1069,18 +1069,39 @@ public class Debug
 
                 while (!Game.IsKeyDownRightNow(Keys.P))
                 {
-                    Game.DisplayHelp($"Press P to Stop J To Store");
+                    Game.DisplayHelp($"Press P to Stop~n~Press J to Show~n~Press K To Store");
 
 
                     if (Game.IsKeyDownRightNow(Keys.J))
                     {
-                        Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
+                        Entity Target = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+                        // Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
                         if(Target.Exists())
                         {
-                            string Text = $"Object {Target.Model.Name} : new InteriorDoor({Target.Model.Hash}, new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f)),";
+                            string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f";
                             Game.DisplayNotification(Text);
-                            EntryPoint.WriteToConsole(Text, 5);
                         }
+                    }
+                    else if (Game.IsKeyDownRightNow(Keys.K))
+                    {
+                        Entity Target = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+                        //Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
+                        if (Target.Exists())
+                        {
+                            string text1 = NativeHelper.GetKeyboardInput("Description");
+                            string name = "Dead Drop";
+                            string description = "Literally";
+                            string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, ";
+
+
+
+                            string Text2 = $"new DeadDrop(new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, \"{name}\", \"{text1}\" )";// { OpenTime = 0, CloseTime = 24, IsEnabled = false },";
+                            Text2 += " { OpenTime = 0,CloseTime = 24, IsEnabled = false },";
+
+
+                            WriteToPropLocations(Text2);
+                        }
+                        GameFiber.Sleep(500);
                     }
                     GameFiber.Yield();
                 }
@@ -1092,7 +1113,13 @@ public class Debug
             Game.DisplayNotification("Shit CRASHES!!!");
         }
     }
-
+    private void WriteToPropLocations(String TextToLog)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(TextToLog + System.Environment.NewLine);
+        File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredPropLocations.txt", sb.ToString());
+        sb.Clear();
+    }
     private void contacttest()
     {
         //Player.AddContact("Vagos Boss",ContactIcon.MP_MexBoss);
@@ -1987,7 +2014,7 @@ public class Debug
             }
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P) && ModController.IsRunning)
             {
-                // Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
 
 
                 if (Game.IsKeyDownRightNow(Keys.O))

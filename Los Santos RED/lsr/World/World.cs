@@ -32,7 +32,8 @@ namespace Mod
         private IShopMenus ShopMenus;
         private IGangTerritories GangTerritories;
         private IGangs Gangs;
-        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories)
+        private IStreets Streets;
+        public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
@@ -45,6 +46,7 @@ namespace Mod
             ShopMenus = shopMenus;
             Gangs = gangs;
             GangTerritories = gangTerritories;
+            Streets = streets;
             Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
@@ -125,6 +127,33 @@ namespace Mod
             {0x3b21c5e7,0x426a547c,0x418f055a};
 
             Pedestrians.Setup();
+
+
+            foreach(BasicLocation basicLocation in PlacesOfInterest.GetAllInteractableLocations())
+            {
+                Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
+                string betweener = "";
+                string zoneString = "";
+                if (placeZone != null)
+                {
+                    if (placeZone.IsSpecificLocation)
+                    {
+                        betweener = $"near";
+                    }
+                    else
+                    {
+                        betweener = $"in";
+                    }
+                    zoneString = $"~p~{placeZone.DisplayName}~s~";
+                }
+                string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
+                if (streetName == "")
+                {
+                    betweener = "";
+                }
+                string LocationName = $"{streetName} {betweener} {zoneString}".Trim();
+                basicLocation.StreetAddress = LocationName;
+            }
 
         }
         public void AddBlipsToMap()
@@ -306,7 +335,7 @@ namespace Mod
             LocationsCalculated = 0;
             foreach (InteractableLocation gl in PlacesOfInterest.GetAllInteractableLocations())
             {
-                if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+                if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
                 {
                     if (!ActiveInteractableLocations.Contains(gl))
                     {
