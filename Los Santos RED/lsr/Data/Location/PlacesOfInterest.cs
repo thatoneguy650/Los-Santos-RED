@@ -17,10 +17,12 @@ public class PlacesOfInterest : IPlacesOfInterest
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
     //private List<GameLocation> LocationsList;
     private IShopMenus ShopMenus;
+    private IGangs Gangs;
     public PossibleLocations PossibleLocations { get; private set; }
-    public PlacesOfInterest(IShopMenus shopMenus)
+    public PlacesOfInterest(IShopMenus shopMenus, IGangs gangs)
     {
         ShopMenus = shopMenus;
+        Gangs = gangs;
         PossibleLocations = new PossibleLocations();
     }
 
@@ -43,6 +45,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<InteractableLocation> AllLocations = new List<InteractableLocation>();
         AllLocations.AddRange(PossibleLocations.DeadDrops);
         AllLocations.AddRange(PossibleLocations.ScrapYards);
+        AllLocations.AddRange(PossibleLocations.GangDens);
         return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
@@ -143,12 +146,33 @@ public class PlacesOfInterest : IPlacesOfInterest
             //new DeadDrop(new Vector3(169.7109f,-30.07912f,67.01324f), 299.5774f, "Dead Drop 4", "Literally") { OpenTime = 0, CloseTime = 24, IsEnabled = false },
 
 
-            new DeadDrop(new Vector3(76.75016f,-605.3666f,43.22205f), 69.01669f, "Dead Drop", "trash can by the IIA" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "newspaper stand by the IIA" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "newspaper stand by the IIA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "newspaper stand by the IIA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "the Daily Rag newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "the Las Mietras newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(76.75777f,-605.3703f,43.22094f), 68.89698f, "Dead Drop", "the trash can by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+            new DeadDrop(new Vector3(-174.7691f,-674.9272f,33.27862f), 249.5148f, "Dead Drop", "the phone booth by the Arcadius Center" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-223.6883f,-703.9772f,32.59268f), 70.00474f, "Dead Drop", "the mailbox by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-251.0725f,-739.3169f,31.99848f), 187.8322f, "Dead Drop", "the Daily Rag newspaper stand by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-263.7065f,-850.4099f,30.48533f), 160.0125f, "Dead Drop", "the Daily Rag newspaper stand by Go Postal" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-1460.144f,-627.849f,29.69636f), 209.8004f, "Dead Drop", "the dumpster by Swallow" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-1438.361f,-722.1968f,22.61556f), 171.4681f, "Dead Drop", "the daily rag newspaper stand by Pescado Rojo" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-1364.685f,-795.9746f,18.32434f), 140.7789f, "Dead Drop", "the trash can in front of the Hedera Hotel" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-1183.647f,-1257.851f,5.911644f), 260.6368f, "Dead Drop", "the trash can by Taco Libre" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(-1205.34f,-1377.286f,3.174809f), 76.95641f, "Dead Drop", "the trash can by Steamboat Beers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(803.5943f,-2052.02f,28.30254f), 275.8022f, "Dead Drop", "the trash can by the PiBwasser Plant" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(1047.76f,-2464.003f,27.51101f), 44.61864f, "Dead Drop", "the dumpster by the gun dealers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(1382.768f,-2042.507f,51.00203f), 30.00222f, "Dead Drop", "the dumpster by Covington Engineering" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(1316.705f,-1657.766f,50.23988f), 309.4677f, "Dead Drop", "the dumpster behind Los Santos Tattoos" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+
+
+
+
+
+
+            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
@@ -163,6 +187,21 @@ public class PlacesOfInterest : IPlacesOfInterest
         
         
         });
+
+
+
+
+        PossibleLocations.GangDens.AddRange(new List<GangDen>()
+        {
+
+            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_GAMBETTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = true },
+
+            //new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
+            //new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
+            //new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 }, 
+
+
+        }) ;
 
 
         PossibleLocations.LocationsList.AddRange(new List<GameLocation>
@@ -626,7 +665,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = KkangpaeDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
             new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
             new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = LostDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
-            new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GambettiDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
+            //new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GambettiDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
             new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = TriadsDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
 
 

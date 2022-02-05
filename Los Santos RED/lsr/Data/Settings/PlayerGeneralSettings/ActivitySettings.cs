@@ -11,6 +11,8 @@ public class ActivitySettings : ISettingsDefaultable
     public bool TeleportWhenSitting { get; set; }
     [Description("Attempt to set any blocking object as no collision with the player when sitting down. Used to stop from tipping over tables.")]
     public bool SetNoTableCollisionWhenSitting { get; set; }
+    [Description("If disabled, the gesture menu will stay open for you to continually use gestures.")]
+    public bool CloseMenuOnGesture { get; set; }
 
     public ActivitySettings()
     {
@@ -20,5 +22,6 @@ public class ActivitySettings : ISettingsDefaultable
     {
         TeleportWhenSitting = false;
         SetNoTableCollisionWhenSitting = true;
+        CloseMenuOnGesture = false;
     }
 }

@@ -279,8 +279,8 @@ namespace iFruitAddon2
         /// <param name="timer">Thread safe timer waiting before closing the phone. Time in ms.</param>
         public void ForceClose()
         {
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SHUTDOWN_MOVIE");
-            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+            //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SHUTDOWN_MOVIE");
+            //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
             GameFiber.Yield();
 

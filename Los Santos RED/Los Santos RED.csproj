@@ -151,8 +151,14 @@
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Locations\Places\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\DeadDrop.cs" />
+    <Compile Include="lsr\Locations\Places\GangDen.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
+    <Compile Include="lsr\Locations\Places\StoreCamera.cs" />
+    <Compile Include="lsr\Locations\Places\StorePurchaseMenu.cs" />
+    <Compile Include="lsr\Locations\Places\StoreSellMenu.cs" />
+    <Compile Include="lsr\Locations\Places\StoreTransaction.cs" />
     <Compile Include="lsr\Locations\Places\ScrapYard.cs" />
+    <Compile Include="lsr\Locations\Places\TransactableLocation.cs" />
     <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
@@ -170,6 +176,7 @@
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\CellPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\NotificationIconTypes.cs" />
+    <Compile Include="lsr\Player\Cellphone\PhoneResponse.cs" />
     <Compile Include="lsr\Player\eSelectorSetting.cs" />
     <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />

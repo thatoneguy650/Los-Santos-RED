@@ -30,11 +30,11 @@ public class ScrapYard : InteractableLocation
     {
         ButtonPromptText = $"Scrap Vehicle at {_Name}";
     }
-    public override void OnInteract(IActivityPerformable player)
+    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         SetupMenu();
         SetupCamera();
-        base.OnInteract(player);
+       // base.OnInteract(player);
         GameFiber.StartNew(delegate
         {
             ScrapMenu.Visible = true;

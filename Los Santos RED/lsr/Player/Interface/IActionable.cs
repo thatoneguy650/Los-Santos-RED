@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         bool HasCurrentActivity { get; }
         bool CharacterModelIsFreeMode { get; }
+        GestureData LastGesture { get; set; }
         bool IsMakingInsultingGesture { get; set; }
 
         // void StartSmokingPot();

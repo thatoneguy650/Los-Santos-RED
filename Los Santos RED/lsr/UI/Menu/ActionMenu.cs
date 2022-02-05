@@ -255,6 +255,10 @@ public class ActionMenu : Menu
         else if (selectedItem == GestureMenu)
         {
             Player.Gesture(GestureMenu.SelectedItem);
+            if(!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
+            {
+                return;
+            }
         }
         else if (selectedItem == CallPolice)
         {
@@ -280,6 +284,7 @@ public class ActionMenu : Menu
     }
     private void Setup()
     {
+        Player.LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
         GestureLookups = new List<GestureData>()
         {
             //new GestureLookup("The Finger","mp_player_intfinger","mp_player_intfinger"),

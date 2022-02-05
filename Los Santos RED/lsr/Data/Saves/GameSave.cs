@@ -172,7 +172,7 @@ namespace LosSantosRED.lsr.Data
             }
             foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
             {
-                player.CellPhone.AddContact(ifc.Name,ifc.IconName);
+                player.CellPhone.AddContact(ifc.Name,ifc.IconName, false);
             }
 
             foreach (SavedTextMessage ifc in TextMessages)

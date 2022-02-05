@@ -13,17 +13,17 @@ namespace LosSantosRED.lsr.Helper
     {
         public static uint CashHash(string PlayerName)
         {
-            switch (PlayerName)
+            switch (PlayerName.ToLower())
             {
-                case "Michael":
+                case "michael":
                     return Game.GetHashKey("SP0_TOTAL_CASH");
                 case "player_zero":
                     return Game.GetHashKey("SP0_TOTAL_CASH");
-                case "Franklin":
+                case "franklin":
                     return Game.GetHashKey("SP1_TOTAL_CASH");
                 case "player_one":
                     return Game.GetHashKey("SP1_TOTAL_CASH");
-                case "Trevor":
+                case "trevor":
                     return Game.GetHashKey("SP2_TOTAL_CASH");
                 case "player_two":
                     return Game.GetHashKey("SP2_TOTAL_CASH");
@@ -92,6 +92,11 @@ namespace LosSantosRED.lsr.Helper
         {
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+            NativeFunction.Natives.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(textureDictionaryName, textureName, flash, (int)iconID, title, subtitle);
+        }
+        public static void DisplayNotificationCustom(string textureDictionaryName, string textureName, string title, string subtitle, NotificationIconTypes iconID, bool flash)
+        {
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
             NativeFunction.Natives.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(textureDictionaryName, textureName, flash, (int)iconID, title, subtitle);
         }
 

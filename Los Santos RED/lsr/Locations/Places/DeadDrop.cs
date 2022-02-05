@@ -1,6 +1,8 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +13,9 @@ using System.Threading.Tasks;
 
 public class DeadDrop : InteractableLocation
 {
-    public bool HasDroppedMoney { get; set; } = false;
+    private bool IsCancelled;
+
+    public bool HasInteractedWithDrop { get; set; } = false;
     public DeadDrop() : base()
     {
         
@@ -19,36 +23,175 @@ public class DeadDrop : InteractableLocation
     public override BlipSprite MapIcon { get; set; } = BlipSprite.Dead;
     public override Color MapIconColor { get; set; } = Color.White;
     public override string ButtonPromptText { get; set; }
-    public int MoneyToReceive { get; set; } = 500;
+    public bool IsDropOff { get; set; } = true;
+    public int MoneyAmount { get; set; } = 500;
     public Gang AssociatedGang { get; set; }
+    public int RepSetAmount { get; set; } = 0;
     public DeadDrop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
     }
-    public override void OnInteract(IActivityPerformable Player)
+    public override void OnInteract(IActivityPerformable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
-        if (!HasDroppedMoney)
+        if (!HasInteractedWithDrop && IsEnabled)
         {
-            if (MoneyToReceive < 0)
+            GameFiber.StartNew(delegate
             {
-                if (Player.Money >= Math.Abs(MoneyToReceive))
+                if (IsDropOff)
                 {
-                    Game.DisplayNotification("You have dropped off the cash");
-                    Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon,"Now leave the area.", 0);
-                    Player.GiveMoney(MoneyToReceive);
-                    HasDroppedMoney = true;
-                    WaitToLeave(Player);
-                    ButtonPromptText = "";
+                    if (Player.Money >= Math.Abs(MoneyAmount))
+                    {
+                        Player.IsInteractingWithLocation = true;
+                        CanInteract = false;
+                        if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
+                        {
+                            Player.IsInteractingWithLocation = false;
+                            CanInteract = true;
+                            return;
+                        }
+                        Game.DisplayHelp("You have dropped off the cash, leave the area");
+                        Player.GiveMoney(-1 * MoneyAmount);
+                        HasInteractedWithDrop = true;
+                        IncreaseRepOnLeaveArea(Player);
+                        //IsEnabled = false;
+                        CanInteract = false;
+                        ButtonPromptText = "";
+                        ClearActiveGangTasks(Player);
+                    }
+                    else
+                    {
+                        Game.DisplayHelp("You do not have enought cash to make the drop");
+                    }
                 }
                 else
                 {
-                    Game.DisplayNotification("You do not have enought cash to make the drop");
+                    CanInteract = false;
+                    Player.IsInteractingWithLocation = true;
+                    if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
+                    {
+                        Player.IsInteractingWithLocation = false;
+                        CanInteract = true;
+                        return;
+                    }
+                    Game.DisplayHelp("You have picked up the cash, don't hang around");
+                    Player.GiveMoney(MoneyAmount);
+                    HasInteractedWithDrop = true;
+                    SendMessageOnLeaveArea(Player);
+                    ButtonPromptText = "";
+                    ClearActiveGangTasks(Player);
                 }
-            }
+                Player.IsInteractingWithLocation = false;
+            }, "DeadDropLoop");
         }
         //base.OnInteract(player);
     }
-    private void WaitToLeave(IActivityPerformable Player)
+    private void ClearActiveGangTasks(IActivityPerformable Player)
+    {
+        GangReputation gangReputation = Player.GangRelationships.GetReputation(AssociatedGang);
+        if (gangReputation != null)
+        {
+            gangReputation.HasActiveTask = false;
+        }
+    }
+    private bool PlayMoneyAnimation(IActivityPerformable Player)
+    {
+        Player.StopDynamicActivity();
+        AnimationDictionary.RequestAnimationDictionay("mp_car_bomb");
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+        IsCancelled = false;
+        uint GameTimeStartedAnimation = Game.GameTime;
+        while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 5000)
+        {
+            Player.SetUnarmed();
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_car_bomb", "car_bomb_mechanic");
+            if (AnimationTime >= 1.0f)
+            {
+                break;
+            }
+            if (Player.IsMoveControlPressed || !Player.Character.IsAlive)
+            {
+                IsCancelled = true;
+                break;
+            }
+            GameFiber.Yield();
+        }
+        EntryPoint.WriteToConsole($"Dead Drop PlayMoneyAnimation IsCancelled: {IsCancelled}");
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        if (IsCancelled)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }    
+    }
+
+    private bool MoveToDrop(IActivityPerformable Player)
+    {
+        Vector3 MovePosition = NativeHelper.GetOffsetPosition(EntrancePosition, EntranceHeading, 1f);//  Store.PropObject.GetOffsetPositionFront(-1f);
+        MovePosition = new Vector3(MovePosition.X, MovePosition.Y, Game.LocalPlayer.Character.Position.Z);
+        float ObjectHeading = EntranceHeading - 180f;
+        if (ObjectHeading >= 180f)
+        {
+            ObjectHeading -= 180f;
+        }
+        else
+        {
+            ObjectHeading += 180f;
+        }
+
+        NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, MovePosition.X, MovePosition.Y, MovePosition.Z, 1.0f, -1, ObjectHeading, 0.2f);
+        uint GameTimeStartedSitting = Game.GameTime;
+        float heading = Game.LocalPlayer.Character.Heading;
+        bool IsFacingDirection = false;
+        bool IsCloseEnough = false;
+        IsCancelled = false;
+        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsCloseEnough && !IsCancelled)
+        {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(MovePosition) < 1.0f;
+            GameFiber.Yield();
+        }
+        GameFiber.Sleep(250);
+        GameTimeStartedSitting = Game.GameTime;
+        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+        {
+            if (Player.IsMoveControlPressed)
+            {
+                IsCancelled = true;
+            }
+
+            if(Extensions.PointIsDirectlyInFrontOfPed(Game.LocalPlayer.Character, MovePosition))
+            {
+                IsFacingDirection = true;
+            }
+
+
+            //heading = Game.LocalPlayer.Character.Heading;
+            //if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, ObjectHeading)) <= 0.5f)//0.5f)
+            //{
+            //    IsFacingDirection = true;
+            //    EntryPoint.WriteToConsole($"Moving to drop FACING TRUE {Game.LocalPlayer.Character.DistanceTo(MovePosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, ObjectHeading)} {heading} {ObjectHeading}", 5);
+            //}
+            GameFiber.Yield();
+        }
+        GameFiber.Sleep(250);
+        if (IsCloseEnough && IsFacingDirection && !IsCancelled)
+        {
+            EntryPoint.WriteToConsole($"Moving to drop IN POSITION {Game.LocalPlayer.Character.DistanceTo(MovePosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, ObjectHeading)} {heading} {ObjectHeading}", 5);
+            return true;
+        }
+        else
+        {
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            return false;
+        }
+    }
+    private void SendMessageOnLeaveArea(IActivityPerformable Player)
     {
         GameFiber.StartNew(delegate
         {
@@ -56,9 +199,32 @@ public class DeadDrop : InteractableLocation
             {
                 GameFiber.Yield();
             }
-
-            Player.GangRelationships.SetReputation(AssociatedGang, 0, false);
             List<string> Replies = new List<string>() {
+                    "Take the money to the designated place.",
+                    "Now bring me the money, don't get lost",
+                    "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
+                    "Drop the money off at the designated place",
+                    "Take the money where it needs to go",
+                    "Bring the stuff back to us. Don't take long.",
+
+                    };
+
+            Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
+        }, "LeaveChecker");
+    }
+    private void IncreaseRepOnLeaveArea(IActivityPerformable Player)
+    {
+        GameFiber.StartNew(delegate
+        {
+            while (IsNearby)
+            {
+                GameFiber.Yield();
+            }
+            Player.GangRelationships.SetReputation(AssociatedGang, RepSetAmount, false);
+            List<string> Replies;
+            if (RepSetAmount <= 0)
+            {
+                Replies = new List<string>() {
                     "I guess we can forget about that shit.",
                     "No problem man, all is forgiven",
                     "That shit before? Forget about it.",
@@ -67,21 +233,36 @@ public class DeadDrop : InteractableLocation
                     "This doesn't make us friends prick, just associates",
 
                     };
-
+            }
+            else
+            {
+                Replies = new List<string>() {
+                    "Nice to get some respect from you finally, give us a call soon",
+                    "Well this certainly smooths things over, come by to discuss things",
+                    "I always liked you",
+                    "Thanks for that, I'll remember it",
+                    "Ah you got me my favorite thing! I owe you a thing or two",
+                    };
+            }
             Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
-
-            //Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~o~Response", Replies.PickRandom());
-
-
         }, "LeaveChecker");
     }
-    public void SetGang(Gang gang, int MoneyToDrop)
+    public void SetGang(Gang gang, int moneyToReceive, int repSetAmount, bool isDropOff)
     {
         IsEnabled = true;
+        IsDropOff = isDropOff;
         AssociatedGang = gang;
-        MoneyToReceive = MoneyToDrop;
-        ButtonPromptText = $"Drop ${Math.Abs(MoneyToReceive)}";
-        HasDroppedMoney = false;
+        MoneyAmount = moneyToReceive;
+        RepSetAmount = repSetAmount;
+        if (IsDropOff)
+        {
+            ButtonPromptText = $"Drop ${Math.Abs(MoneyAmount)}";
+        }
+        else
+        {
+            ButtonPromptText = $"Pickup ${Math.Abs(MoneyAmount)}";
+        }
+        HasInteractedWithDrop = false;
     }
 }
 

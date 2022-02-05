@@ -16,5 +16,6 @@ public class PossibleLocations
     public List<GameLocation> LocationsList { get; private set; } = new List<GameLocation>();
     public List<DeadDrop> DeadDrops { get; private set; } = new List<DeadDrop>();
     public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
+    public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
 }
 

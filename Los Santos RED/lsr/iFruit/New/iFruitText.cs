@@ -14,10 +14,11 @@ namespace iFruitAddon2
         public int HourSent { get; set; } = 1;
         public int MinuteSent { get; set; } = 0;
         public bool IsRead { get; set; } = false;
-        public int Index { get; private set; } = 0;
+        public int Index { get; set; } = 0;
         public ContactIcon Icon { get; set; } = ContactIcon.Generic;
         public string IconName { get; set; } = "";
         public bool Bold { get; set; } = false;
+        public DateTime TimeReceived { get; set; }
         public iFruitText()
         {
 

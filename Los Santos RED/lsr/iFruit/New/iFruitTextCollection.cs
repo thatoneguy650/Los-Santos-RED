@@ -9,10 +9,8 @@ namespace iFruitAddon2
 {
     public class iFruitTextCollection : List<iFruitText>
     {
-        //public static int _currentIndex = 40;
         private bool _shouldDraw = true;
         private int _mScriptHash;
-        private bool shownOnce;
         private int timesShow;
         private int CurrentTextIndex;
         private bool HasLetGoOfSelect = false;
@@ -26,28 +24,21 @@ namespace iFruitAddon2
         internal void Update(int handle)
         {
             int _selectedIndex = -1;
-
-            // If we are in the Contacts menu
+            // If we are in the Text menu
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
                 IsScriptRunning = true;
                 _shouldDraw = true;
-                //GameFiber.Wait(50);
 
                 if(!HasLetGoOfSelect && !Game.IsControlPressed(2, GameControl.CellphoneSelect))
                 {
                     HasLetGoOfSelect = true;
                 }
 
-
                 if (Game.IsControlPressed(2, GameControl.CellphoneSelect) && HasLetGoOfSelect)
+                {
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
-
-
-                //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
-                //NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-                //NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
-                //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+                }
             }
             else
             {
@@ -57,70 +48,41 @@ namespace iFruitAddon2
                 _selectedIndex = -1;
             }
 
-
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "SET_DATA_SLOT_EMPTY");
             NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-
             int i = 0;
-            // Browsing every added contacts
-            foreach (iFruitText text in this.ToList().OrderByDescending(x => x.Index))
+            // Browsing every added text
+            foreach (iFruitText text in this.ToList().OrderByDescending(x=> x.TimeReceived))
             {
-
                 if (_shouldDraw)
+                {
                     text.Draw(handle);
-
+                }
                 if (_selectedIndex != -1 && _selectedIndex == text.Index)
                 {
-                    // Prevent original contact to be called
-                     //Tools.Scripts.TerminateScript("appTextMessage");
-
+                    //Prevent original Text to be called
+                    Tools.Scripts.TerminateScript("appTextMessage");
                     text.IsRead = true;
-
-                    //text.Call();
                     DisplayTextUI(handle, text, "CELL_211", text.Icon.Name.SetBold(text.Bold));
-
-                     GameFiber.Wait(50);
-
-                    // RemoveActiveNotification();
-
+                    GameFiber.Wait(50);
                 }
                 i++;
-
-
-
-
             }
-
-
-
             if (IsScriptRunning && timesShow <= 5)
             {
                 NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
-                NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-                NativeFunction.Natives.xC3D0841A0CC546A6(0);//2
+                NativeFunction.Natives.xC3D0841A0CC546A6(6);
+                NativeFunction.Natives.xC3D0841A0CC546A6(0);
                 NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-                //EntryPoint.WriteToConsole($"Text Message Selected Index {_selectedIndex} _shouldDraw {_shouldDraw}", 5);
                 timesShow++;
-
-
-                //shownOnce = true;
-                //Tools.Scripts.TerminateScript("appTextMessage");
             }
-
             _shouldDraw = false;
         }
         public void DisplayTextUI(int handle, iFruitText text, string statusText = "CELL_211", string picName = "CELL_300")
         {
             IsScriptRunning = false;
-            string dialText;// = Game.GetGXTEntry(statusText); // "DIALING..." translated in current game's language
-            unsafe
-            {
-                IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, statusText);
-                dialText = Marshal.PtrToStringAnsi(ptr2);
-            }
-            CurrentTextIndex = text.Index;
 
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "SET_DATA_SLOT");
             NativeFunction.Natives.xC3D0841A0CC546A6(7);
@@ -140,142 +102,11 @@ namespace iFruitAddon2
 
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-
-
-
-
-
-
-
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
             NativeFunction.Natives.xC3D0841A0CC546A6(7);
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-
-            GameFiber.StartNew(delegate
-            {
-               // GameFiber.Sleep(5000);
-               //
-               // NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
-                //NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-               // NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
-               // NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-                //   // NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-
-
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
-                //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
-
-
-
-
-                //    while(!NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneCancel))
-                //    {
-                //        if (Game.IsKeyDown(System.Windows.Forms.Keys.F8))
-                //        {
-                //            break;
-                //        }
-                //        GameFiber.Yield();
-                //    }
-
-
-
-                //    //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneScrollBackward) || !NativeFunction.Natives.IS_CONTROL_JUST_PRESSED<bool>(0, (int)GameControl.CellphoneLeft)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneLeft)) //while (!NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneCancel) || !NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.CellphoneScrollBackward))
-                //    //{
-
-                //    //    if(Game.IsKeyDown(System.Windows.Forms.Keys.F8))
-                //    //    {
-                //    //        break;
-                //    //    }
-
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 177, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-
-
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 172, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 178, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 179, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 180, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 181, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 182, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 183, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 184, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 185, true);
-                //    //    //NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 186, true);
-
-                //    //    GameFiber.Yield();
-                //    //}
-                //    timesShow = 0;
-                //    if (timesShow <= 5)
-                //    {
-                //        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
-                //        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-                //        NativeFunction.Natives.xC3D0841A0CC546A6(CurrentTextIndex);//2
-                //        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-                //        timesShow++;
-                //    }
-                //    EntryPoint.WriteToConsole("TEXT MESSAGE WENT BACK!", 5);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 177, true);
-                //   // GameFiber.Sleep(500);
-
-
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
-
-
-
-
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 172, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 173, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 175, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 176, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 178, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 179, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 180, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 181, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 182, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 183, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 184, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 185, true);
-                //    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 186, true);
-
-
-            }, "Run Debug Logic");
-
-
-
         }
-        /// <summary>
-        /// Get the index of the current highlighted contact.
-        /// </summary>
-        /// <param name="handle"></param>
-        /// <returns></returns>
         internal int GetSelectedIndex(int handle)
         {
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "GET_CURRENT_SELECTION");
@@ -290,11 +121,6 @@ namespace iFruitAddon2
 
             return data;
         }
-
-        /// <summary>
-        /// Remove the current notification.
-        /// Useful to remove "The selected contact is no longer available" when you try to call a contact that shouldn't exist (ie: contacts added by iFruitAddon).
-        /// </summary>
         internal void RemoveActiveNotification()
         {
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");

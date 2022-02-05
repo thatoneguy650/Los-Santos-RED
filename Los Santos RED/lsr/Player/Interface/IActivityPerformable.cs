@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,17 @@ namespace LosSantosRED.lsr.Interface
 
         void GiveMoney(int moneyToReceive);
         CellPhone CellPhone { get; }
+        bool IsMoveControlPressed { get; }
+        string FreeModeVoice { get; }
+        bool CharacterModelIsFreeMode { get; }
+        bool CanConverse { get; }
+        bool IsInteractingWithLocation { get; set; }
+        List<ButtonPrompt> ButtonPrompts { get; }
+
+        void SetUnarmed();
+        void StopDynamicActivity();
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
+        void ConsumeItem(ModItem modItem);
+        void AddToInventory(ModItem modItem, int v);
     }
 }

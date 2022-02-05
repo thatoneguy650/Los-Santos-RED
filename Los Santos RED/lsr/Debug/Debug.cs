@@ -616,7 +616,10 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnNoGunAttackers();
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.CellPhone.AddContact(myGang, true);
+
+        //SpawnNoGunAttackers();
         //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
         //foreach (Gang gang in Gangs.AllGangs)
         //{
@@ -929,12 +932,17 @@ public class Debug
         //    }
 
         //}
+        if (RandomItems.RandomPercent(20))
+        {
 
-
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.GangRelationships.SetReputation(myGang, 2000, true);
-
-
+            Gang myGang = Gangs.AllGangs.PickRandom();
+            Player.GangRelationships.SetReputation(myGang, 2000, true);
+        }
+        else
+        {
+            Gang myGang = Gangs.AllGangs.PickRandom();
+            Player.GangRelationships.SetReputation(myGang, -2000, true);
+        }
 
         //ModController.DebugInputRunning = !ModController.DebugInputRunning;
         //Game.DisplayNotification($"ModController.DebugInputRunning {ModController.DebugInputRunning}");
@@ -1066,7 +1074,7 @@ public class Debug
         {
             GameFiber.StartNew(delegate
             {
-
+                bool isShowing = false;
                 while (!Game.IsKeyDownRightNow(Keys.P))
                 {
                     Game.DisplayHelp($"Press P to Stop~n~Press J to Show~n~Press K To Store");
@@ -1080,6 +1088,23 @@ public class Debug
                         {
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f";
                             Game.DisplayNotification(Text);
+
+
+                            GameFiber.StartNew(delegate
+                            {
+                                uint GameTimeStarted = Game.GameTime;
+                                while(Target.Exists() && Game.GameTime - GameTimeStarted <= 5000 && !isShowing)
+                                {
+                                    Rage.Debug.DrawArrowDebug(Target.Position + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                                    GameFiber.Yield();
+                                }
+                               
+                            }, "Run Debug Logic");
+
+
+
+
+
                         }
                     }
                     else if (Game.IsKeyDownRightNow(Keys.K))

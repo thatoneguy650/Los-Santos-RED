@@ -215,8 +215,8 @@ namespace ExtensionsMethods
 
 
         public static bool PointIsInFrontOfPed(this Ped myPed, Vector3 position) => GetDotVectorResult(myPed, position) > 0;
+        public static bool PointIsDirectlyInFrontOfPed(this Ped myPed, Vector3 position) => GetDotVectorResult(myPed, position) > 0.7f;
 
-       
         public static bool IsThisPedInFrontOf(this Ped myPed, Ped ToCheck)
         {
             float Result = GetDotVectorResult(ToCheck, myPed);

@@ -50,7 +50,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);// Game.IsControlKeyDownRightNow;
         private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
         private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
-
+        private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
 
         private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier);
 
@@ -80,6 +80,13 @@ namespace LosSantosRED.lsr
 
             //GameFiber.Yield();
             MenuCheck();
+        }
+        private void KeyBindCheck()
+        {
+            if(IsPressingGesture)
+            {
+                Player.Gesture();
+            }
         }
         private void ConversationCheck()
         {
@@ -289,7 +296,6 @@ namespace LosSantosRED.lsr
             {
                 return Game.IsKeyDownRightNow(key);
             }
-            return false;
         }
 
 

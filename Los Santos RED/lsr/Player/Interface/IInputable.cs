@@ -51,5 +51,6 @@ namespace LosSantosRED.lsr.Interface
         void PurchaseLocation();
         void ToggleSelector();
         void StartLocationInteraction();
+        void Gesture();
     }
 }

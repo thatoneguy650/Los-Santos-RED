@@ -167,6 +167,7 @@ namespace Mod
         public Ped Character => Game.LocalPlayer.Character;
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";// || Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
+        public bool CharacterModelIsPrimaryCharacter =>Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public int GroupID { get; set; }
         public GangRelationships GangRelationships { get; private set; }
         public Scenario ClosestScenario { get; private set; }
@@ -191,7 +192,7 @@ namespace Mod
         public List<InventoryItem> InventoryItems => Inventory.Items;
         public List<InventoryItem> ConsumableItems => Inventory.Items.Where(x => x.ModItem.CanConsume).ToList();
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
-        public string DebugLine1 => $"Speed: {Game.LocalPlayer.Character.Speed} isSprinting: {Sprinting.IsSprinting} SprintAmount: {Sprinting.Stamina}";//$"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
+        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4  {get;set;}
@@ -307,7 +308,7 @@ namespace Mod
 
         public bool HasBeenMoving => GameTimeStartedMoving != 0 && Game.GameTime - GameTimeStartedMoving >= 5000;
         public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 5000;
-
+        public bool IsInteractingWithLocation { get; set; } = false;
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
         public bool IsNotWanted => wantedLevel == 0;
@@ -341,7 +342,7 @@ namespace Mod
             }
         }
        // public VehicleExt OwnedVehicle { get; set; }
-
+       public GestureData LastGesture { get; set; }
 
         public List<VehicleExt> OwnedVehicles { get; set; } = new List<VehicleExt>();
 
@@ -626,6 +627,7 @@ namespace Mod
             Interaction?.Dispose();
             SearchMode.Dispose();
             GangRelationships.Dispose();
+            CellPhone.Dispose();
             isActive = false;
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -657,7 +659,19 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
+            uint PlayerCashHash;
+            if (CharacterModelIsPrimaryCharacter)
+            {
+                PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
+            }
+            else
+            {
+                PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
+            }
+
+            EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
+
+            //uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -671,7 +685,7 @@ namespace Mod
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone)
         {
             IsDead = false;
             IsBusted = false;
@@ -727,6 +741,12 @@ namespace Mod
             {
                 ClearVehicleOwnership();
             }
+
+            if(clearCellphone)
+            {
+                CellPhone.Reset();
+            }
+
         }
         public void SetDemographics(string modelName, bool isMale, string playerName, int money)
         {
@@ -738,7 +758,17 @@ namespace Mod
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias), Amount, 1);
+            uint PlayerCashHash;
+            if (CharacterModelIsPrimaryCharacter)
+            {
+                PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
+            }
+            else
+            {
+                PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
+            }
+            EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
+            NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, Amount, 1);
         }
         public void SetAngeredCop()
         {
@@ -968,7 +998,7 @@ namespace Mod
                     ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
 
 
-                    if (ClosestInteractableLocation != null)
+                    if (ClosestInteractableLocation != null && !IsInteractingWithLocation)
                     {
                         if (!ButtonPrompts.Any(x => x.Identifier == $"{ClosestInteractableLocation.ButtonPromptText}"))
                         {
@@ -1274,7 +1304,7 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (InteractableLocation gl in EntityProvider.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.DistanceToPlayer <= 3.0f)
+                    if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
                     {
                         ClosestInteractableLocation = gl;
                     }
@@ -1890,14 +1920,14 @@ namespace Mod
         }
         public void StartLocationInteraction()
         {
-            if (!IsInteracting)
+            if (!IsInteracting && !IsInteractingWithLocation)
             {
                 if (Interaction != null)
                 {
                     Interaction.Dispose();
                 }
                 //IsConversing = true;
-                ClosestInteractableLocation.OnInteract(this);
+                ClosestInteractableLocation.OnInteract(this, ModItems,EntityProvider, Settings,Weapons,TimeControllable);
 
 
 
@@ -2015,6 +2045,10 @@ namespace Mod
                 UpperBodyActivity = new GestureActivity(this, gestureData);
                 UpperBodyActivity.Start();
             }
+        }
+        public void Gesture()
+        {
+            Gesture(LastGesture);
         }
         public void StartSittingDown(bool findSittingProp, bool enterForward)
         {

@@ -62,6 +62,7 @@ public class GangReputation
             }
         }
     }
+    public bool HasActiveTask { get; set; }
     public void SetRepuation(int value, bool sendText)
     {
         if(reputationLevel != value)
@@ -106,7 +107,7 @@ public class GangReputation
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(Gang);
+                    Player.CellPhone.AddContact(Gang, false);
                 }
             }
             else if (GangRelationship == GangRespect.Friendly)
@@ -120,7 +121,7 @@ public class GangReputation
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(Gang);
+                    Player.CellPhone.AddContact(Gang, false);
                 }
             }
             else if (GangRelationship == GangRespect.Neutral)

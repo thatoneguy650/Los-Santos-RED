@@ -91,6 +91,7 @@ public class PlayerInfoMenu
         AddCrimes();
         AddGangItems();
         AddContacts();
+        AddPhoneRepliesMessages();
         AddTextMessages();
         AddLocations();
         tabView.RefreshIndex();
@@ -189,7 +190,7 @@ public class PlayerInfoMenu
     private void AddTextMessages()
     {
         List<TabItem> items = new List<TabItem>();
-        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.Index))
+        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived))
         {
             string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
 
@@ -208,6 +209,9 @@ public class PlayerInfoMenu
                 {
                     myText.IsRead = true;
                     EntryPoint.WriteToConsole($"Text Message Marked Read {myText.Name} {myText.Message}");
+
+                    Game.DisplaySubtitle($"Text Message Marked Read {myText.Name} {myText.Message}", 5000);
+
                 }
                 };//Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
             items.Add(tItem);
@@ -301,31 +305,8 @@ public class PlayerInfoMenu
     }
     private void AddContacts()
     {
-        //List<TabItem> items = new List<TabItem>();
-        //foreach (iFruitContact contact in Player.CellPhone.ContactList)
-        //{
-        //    List<UIMenuItem> subplaces = new List<UIMenuItem>();
-        //    subplaces.Add(new UIMenuItem("Call", "Call the selected contact"));
-        //    TabItem tItem = new TabInteractiveListItem(contact.Name, subplaces);
-        //    //tItem.Activated += (s, e) =>
-        //    //{
-        //    //    Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index + " " + tItem.Title, 5000);
-        //    //    EntryPoint.WriteToConsole($"AddContacts activated {tItem.Title}");
-        //    //    tabView.Visible = false;
-        //    //    Game.TimeScale = 1.0f;
-        //    //    Player.CellPhone.GangAnswered(Gangs.GetGangByContact(tItem.Title));
-        //    //};
-        //    items.Add(tItem);
-        //    tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + ContactsSubMenu.Index, 5000);
-        //}
-
-        //tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Contacts", items) { });
-
-
-
-
         List<TabItem> items = new List<TabItem>();
-        foreach (iFruitContact contact in Player.CellPhone.ContactList.OrderBy(x=> x.Index))
+        foreach (iFruitContact contact in Player.CellPhone.ContactList.OrderBy(x=> x.Name))
         {
             string DescriptionText = "Select to ~o~Call~s~ the contact";
             string Title = contact.Name;
@@ -352,9 +333,22 @@ public class PlayerInfoMenu
             items.Add(tabItem);
         }
         tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Contacts", items));
-
-
-
+    }
+    private void AddPhoneRepliesMessages()
+    {
+        List<TabItem> items = new List<TabItem>();
+        foreach (PhoneResponse text in Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(15))
+        {
+            string TimeReceived = text.TimeReceived.ToString("HH:mm");// text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
+            string DescriptionText = "";
+            DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
+            DescriptionText += $"~n~{text.Message}";
+            string ListEntryItem = $"{text.ContactName} {TimeReceived}";
+            string DescriptionHeaderText = $"{text.ContactName}";
+            TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
+            items.Add(tItem);
+        }
+        tabView.AddTab(TextMessagesSubMenu = new TabSubmenuItem("Replies", items));
     }
     private void AddLocations()
     {
