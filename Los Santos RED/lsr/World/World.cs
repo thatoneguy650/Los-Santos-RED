@@ -444,10 +444,15 @@ namespace Mod
             }
         }
 
-        public void SetLocationsActive(string iD, bool v)
+        public void SetGangLocationActive(string iD, bool v)
         {
             foreach (GameLocation gl in PlacesOfInterest.GetAllPlaces().Where(x=> x.GangID == iD))
             {
+                gl.IsEnabled = v;
+            }
+            foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
+            {
+                EntryPoint.WriteToConsole($"Enabled Den {gl.Name}");
                 gl.IsEnabled = v;
             }
         }

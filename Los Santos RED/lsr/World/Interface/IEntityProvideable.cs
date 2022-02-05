@@ -53,6 +53,6 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt GetClosestVehicleExt(Vector3 position, bool includePolice, float maxDistance);
         void ActivateLocation(GameLocation toSet);
         bool AnyCopsNearCop(Cop cop, int v);
-        void SetLocationsActive(string iD, bool v);
+        void SetGangLocationActive(string iD, bool v);
     }
 }

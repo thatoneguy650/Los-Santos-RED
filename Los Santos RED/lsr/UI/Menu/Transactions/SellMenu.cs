@@ -138,7 +138,7 @@ public class SellMenu : Menu
                             description = $"{cii.ModItemName} {formattedSalesPrice}";
                         }
 
-                        bool enabled = Player.HasItemInInventory(cii.ModItemName);
+                        bool enabled = Player.Inventory.HasItem(cii.ModItemName);
                         description += "~n~~s~";
                         if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
                         {
@@ -187,7 +187,7 @@ public class SellMenu : Menu
             {
                 if (ToAdd.CanConsume)
                 {
-                    if (Player.RemoveFromInventory(ToAdd, 1))
+                    if (Player.Inventory.Remove(ToAdd, 1))
                     {
                         Player.GiveMoney(menuItem.SalesPrice);
                         ItemsSold++;

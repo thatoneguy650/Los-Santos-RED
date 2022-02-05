@@ -619,6 +619,12 @@ public class Debug
         Gang myGang = Gangs.AllGangs.PickRandom();
         Player.CellPhone.AddContact(myGang, true);
 
+
+
+
+        Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
+
+
         //SpawnNoGunAttackers();
         //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
         //foreach (Gang gang in Gangs.AllGangs)
@@ -717,12 +723,12 @@ public class Debug
 
 
 
-        Player.AddToInventory(ModItems.Get("Hot Dog"), 4);
-        Player.AddToInventory(ModItems.Get("Can of eCola"), 4);
-        Player.AddToInventory(ModItems.Get("Redwood Regular"), 4);
-        Player.AddToInventory(ModItems.Get("Alco Patch"), 4);
+        Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
+        Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
+        Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
+        Player.Inventory.Add(ModItems.Get("Alco Patch"), 4);
 
-        Player.AddToInventory(ModItems.Get("Equanox"), 4);
+        Player.Inventory.Add(ModItems.Get("Equanox"), 4);
 
         //SetInRandomInterior();
 
@@ -932,7 +938,7 @@ public class Debug
         //    }
 
         //}
-        if (RandomItems.RandomPercent(20))
+        if (RandomItems.RandomPercent(50))
         {
 
             Gang myGang = Gangs.AllGangs.PickRandom();

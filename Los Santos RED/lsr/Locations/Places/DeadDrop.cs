@@ -15,14 +15,16 @@ public class DeadDrop : InteractableLocation
 {
     private bool IsCancelled;
 
-    public bool HasInteractedWithDrop { get; set; } = false;
     public DeadDrop() : base()
     {
         
     }
-    public override BlipSprite MapIcon { get; set; } = BlipSprite.Dead;
-    public override Color MapIconColor { get; set; } = Color.White;
+    public override BlipSprite MapIcon { get; set; } = BlipSprite.Destination;
+    public override Color MapIconColor { get; set; } = Color.Blue;
     public override string ButtonPromptText { get; set; }
+    public override float MapIconScale { get; set; } = 1.0f;
+    public override float MapIconRadius { get; set; } = 55.0f;
+    public override float MapIconAlpha { get; set; } = 0.35f;
     public bool IsDropOff { get; set; } = true;
     public int MoneyAmount { get; set; } = 500;
     public Gang AssociatedGang { get; set; }
@@ -33,65 +35,67 @@ public class DeadDrop : InteractableLocation
     }
     public override void OnInteract(IActivityPerformable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
-        if (!HasInteractedWithDrop && IsEnabled)
+        if (IsEnabled)
         {
             GameFiber.StartNew(delegate
             {
                 if (IsDropOff)
                 {
-                    if (Player.Money >= Math.Abs(MoneyAmount))
-                    {
-                        Player.IsInteractingWithLocation = true;
-                        CanInteract = false;
-                        if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
-                        {
-                            Player.IsInteractingWithLocation = false;
-                            CanInteract = true;
-                            return;
-                        }
-                        Game.DisplayHelp("You have dropped off the cash, leave the area");
-                        Player.GiveMoney(-1 * MoneyAmount);
-                        HasInteractedWithDrop = true;
-                        IncreaseRepOnLeaveArea(Player);
-                        //IsEnabled = false;
-                        CanInteract = false;
-                        ButtonPromptText = "";
-                        ClearActiveGangTasks(Player);
-                    }
-                    else
-                    {
-                        Game.DisplayHelp("You do not have enought cash to make the drop");
-                    }
+                    DoDropOff(Player);
                 }
                 else
                 {
-                    CanInteract = false;
-                    Player.IsInteractingWithLocation = true;
-                    if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
-                    {
-                        Player.IsInteractingWithLocation = false;
-                        CanInteract = true;
-                        return;
-                    }
-                    Game.DisplayHelp("You have picked up the cash, don't hang around");
-                    Player.GiveMoney(MoneyAmount);
-                    HasInteractedWithDrop = true;
-                    SendMessageOnLeaveArea(Player);
-                    ButtonPromptText = "";
-                    ClearActiveGangTasks(Player);
+                    DoPickup(Player);
                 }
-                Player.IsInteractingWithLocation = false;
+                
             }, "DeadDropLoop");
         }
         //base.OnInteract(player);
     }
-    private void ClearActiveGangTasks(IActivityPerformable Player)
+    private void DoDropOff(IActivityPerformable Player)
     {
-        GangReputation gangReputation = Player.GangRelationships.GetReputation(AssociatedGang);
-        if (gangReputation != null)
+        if (Player.Money >= Math.Abs(MoneyAmount))
         {
-            gangReputation.HasActiveTask = false;
+            Player.IsInteractingWithLocation = true;
+            CanInteract = false;
+            if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
+            {
+                Player.IsInteractingWithLocation = false;
+                CanInteract = true;
+                return;
+            }
+            Game.DisplayHelp("You have dropped off the cash, leave the area");
+            Player.GiveMoney(-1 * MoneyAmount);
+            CompleteOnLeaveArea(Player);
+            //IsEnabled = false;
+            CanInteract = false;
+            Dispose();
+            ButtonPromptText = "";
+            //ClearActiveGangTasks(Player);
+            Player.IsInteractingWithLocation = false;
         }
+        else
+        {
+            Game.DisplayHelp("You do not have enought cash to make the drop");
+        }
+    }
+    private void DoPickup(IActivityPerformable Player)
+    {
+        CanInteract = false;
+        Player.IsInteractingWithLocation = true;
+        if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
+        {
+            Player.IsInteractingWithLocation = false;
+            CanInteract = true;
+            return;
+        }
+        Game.DisplayHelp("You have picked up the cash, don't hang around");
+        Player.GiveMoney(MoneyAmount);
+        SendMessageOnLeaveArea(Player);
+        ButtonPromptText = "";
+        Dispose();
+        Player.IsInteractingWithLocation = false;
+        //ClearActiveGangTasks(Player);
     }
     private bool PlayMoneyAnimation(IActivityPerformable Player)
     {
@@ -126,7 +130,6 @@ public class DeadDrop : InteractableLocation
             return true;
         }    
     }
-
     private bool MoveToDrop(IActivityPerformable Player)
     {
         Vector3 MovePosition = NativeHelper.GetOffsetPosition(EntrancePosition, EntranceHeading, 1f);//  Store.PropObject.GetOffsetPositionFront(-1f);
@@ -212,7 +215,7 @@ public class DeadDrop : InteractableLocation
             Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
         }, "LeaveChecker");
     }
-    private void IncreaseRepOnLeaveArea(IActivityPerformable Player)
+    private void CompleteOnLeaveArea(IActivityPerformable Player)
     {
         GameFiber.StartNew(delegate
         {
@@ -221,6 +224,7 @@ public class DeadDrop : InteractableLocation
                 GameFiber.Yield();
             }
             Player.GangRelationships.SetReputation(AssociatedGang, RepSetAmount, false);
+            Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
             List<string> Replies;
             if (RepSetAmount <= 0)
             {
@@ -262,7 +266,6 @@ public class DeadDrop : InteractableLocation
         {
             ButtonPromptText = $"Pickup ${Math.Abs(MoneyAmount)}";
         }
-        HasInteractedWithDrop = false;
     }
 }
 

@@ -62,7 +62,7 @@ public class GangReputation
             }
         }
     }
-    public bool HasActiveTask { get; set; }
+   // public bool HasActiveTask { get; set; }
     public void SetRepuation(int value, bool sendText)
     {
         if(reputationLevel != value)

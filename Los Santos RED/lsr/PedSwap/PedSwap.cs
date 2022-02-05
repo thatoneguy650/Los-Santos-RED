@@ -202,7 +202,7 @@ public class PedSwap : IPedSwap
                 NewVehicle.IsStolen = false;
                 if (NewVehicle.Vehicle.Exists())
                 {
-                    Player.TakeOwnershipOfVehicle(NewVehicle);
+                    Player.TakeOwnershipOfVehicle(NewVehicle, false);
                     NewVehicle.Vehicle.IsStolen = false;
                 }
             }

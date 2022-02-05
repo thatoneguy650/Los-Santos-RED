@@ -67,7 +67,17 @@ public class BasicLocation
             }
         }
     }
-    public string BannerImage { get; set; } = "";
+
+    public bool HasBannerImage => BannerImagePath != "";
+
+    [XmlIgnore]
+    public Texture BannerImage { get; set; }
+
+    public string BannerImagePath { get; set; } = "";
+
+    public bool RemoveBanner { get; set; } = false;
+
+
     public bool IsEnabled { get; set; } = true;
     public string Name { get; set; }
     public string Description { get; set; }
@@ -89,7 +99,11 @@ public class BasicLocation
     public Interior Interior => interior;
     public virtual BlipSprite MapIcon { get; set; } = BlipSprite.PointOfInterest;
     public virtual Color MapIconColor { get; set; } = Color.White;
+    public virtual float MapIconScale { get; set; } = 1.0f;
+    public virtual float MapIconRadius { get; set; } = 1.0f;
+    public virtual float MapIconAlpha { get; set; } = 1.0f;
     public virtual string ButtonPromptText { get; set; }
+
 
     [XmlIgnore]
     public string StreetAddress { get; set; }
@@ -168,17 +182,46 @@ public class BasicLocation
     }
     private Blip AddIconToMap()
     {
-        Blip MyLocationBlip = new Blip(EntrancePosition)
+        if (MapIconRadius != 1.0f)
         {
-            Name = Name
-        };
-        MyLocationBlip.Sprite = MapIcon;
-        MyLocationBlip.Color = MapIconColor;
-        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
-        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
-        return MyLocationBlip;
+            Blip MyLocationBlip = new Blip(EntrancePosition, MapIconRadius)
+            {
+                Name = Name
+            };
+            MyLocationBlip.Color = Color.Blue;
+            MyLocationBlip.Alpha = MapIconAlpha;
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+
+            //EntryPoint.WriteToConsole($"CREATE LOCATION {Name} as a stupid fuck blip");
+
+
+            return MyLocationBlip;
+        }
+        else
+        {
+            Blip MyLocationBlip = new Blip(EntrancePosition)
+            {
+                Name = Name
+            };
+            if (MapIcon != BlipSprite.Destination)
+            {
+                MyLocationBlip.Sprite = MapIcon;
+            }
+
+            MyLocationBlip.Color = MapIconColor;
+            MyLocationBlip.Scale = MapIconScale;
+            MyLocationBlip.Alpha = MapIconAlpha;
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+            return MyLocationBlip;
+        }
+
+
     }
     public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {

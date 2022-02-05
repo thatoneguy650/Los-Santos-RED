@@ -275,7 +275,7 @@ public class CopTasker
         public PedExt Target { get; set; }
         public float DistanceToTarget { get; set; } = 999f;
         public int TotalAssignedCops { get; set; } = 0;
-        public bool IsOverloaded => Target?.WantedLevel > TotalAssignedCops;
+        public bool IsOverloaded => false;// Target?.WantedLevel > TotalAssignedCops;
     }
 
 

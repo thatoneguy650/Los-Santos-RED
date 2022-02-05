@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,12 @@ namespace LosSantosRED.lsr.Interface
         bool CanConverse { get; }
         bool IsInteractingWithLocation { get; set; }
         List<ButtonPrompt> ButtonPrompts { get; }
+        Inventory Inventory { get; }
+        PlayerTasks PlayerTasks { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
         void ConsumeItem(ModItem modItem);
-        void AddToInventory(ModItem modItem, int v);
     }
 }

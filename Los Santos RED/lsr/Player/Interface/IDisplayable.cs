@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsSpeeding { get; }
-        bool IsViolatingAnyTrafficLaws { get; }
+      //  bool IsViolatingAnyTrafficLaws { get; }
         bool IsConversing { get; }
         bool IsPerformingActivity { get; }
         bool CanConverseWithLookedAtPed { get; }
@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedKMH { get; }
         Investigation Investigation { get; }
         bool HasCriminalHistory { get; }
-        string LawsViolating { get; }
+        //string LawsViolating { get; }
         int CriminalHistoryMaxWantedLevel { get; }
         bool HasDeadlyCriminalHistory { get; }
         bool IsWanted { get; }
@@ -57,5 +57,6 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         SelectorOptions CurrentSelectorSetting { get; }
         short CurrentWeaponMagazineSize { get; }
+        Violations Violations { get; }
     }
 }

@@ -14,12 +14,12 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
         bool IsWanted { get; }
-        List<Crime> CivilianReportableCrimesViolating { get; }
         Vector3 Position { get; }
         int CellX { get; }
         int CellY { get; }
         bool AnyGangMemberCanSeePlayer { get; set; }
         bool AnyGangMemberCanHearPlayer { get; set; }
         bool AnyGangMemberRecentlySeenPlayer { get; set; }
+        Violations Violations { get; }
     }
 }

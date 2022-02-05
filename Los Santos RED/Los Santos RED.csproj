@@ -165,6 +165,8 @@
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
+    <Compile Include="lsr\Player\PlayerTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
     <Compile Include="lsr\Player\Activity\Data\GestureData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SittingData.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="lsr\Player\Interface\IGangRelateable.cs" />
     <Compile Include="lsr\Player\Interface\ILocateable.cs" />
     <Compile Include="lsr\Player\Interface\ISprintable.cs" />
+    <Compile Include="lsr\Player\Interface\ITaskAssignable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponRecoilable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponSelectable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponSwayable.cs" />

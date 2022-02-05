@@ -194,7 +194,18 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GangDens.AddRange(new List<GangDen>()
         {
 
-            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_GAMBETTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = true },
+            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_GAMBETTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_FAMILY")) { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "",ShopMenus.GetMenu("BallasDenMenu"), Gangs.GetGang("AMBIENT_GANG_BALLAS")) { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "",ShopMenus.GetMenu("VagosDenMenu"), Gangs.GetGang("AMBIENT_GANG_MEXICAN")) { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "",ShopMenus.GetMenu("VagosDenMenu"), Gangs.GetGang("AMBIENT_GANG_SALVA")) { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "",ShopMenus.GetMenu("MarabunteDenMenu"), Gangs.GetGang("AMBIENT_GANG_MARABUNTE")) { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "",null, Gangs.GetGang("AMBIENT_GANG_CULT")) { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "",ShopMenus.GetMenu("KkangpaeDenMenu"), Gangs.GetGang("AMBIENT_GANG_KKANGPAE")) {  OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "",null, Gangs.GetGang("AMBIENT_GANG_HILLBILLY")) { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "",ShopMenus.GetMenu("LostDenMenu"), Gangs.GetGang("AMBIENT_GANG_LOST")) { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "",ShopMenus.GetMenu("TriadsDenMenu"), Gangs.GetGang("AMBIENT_GANG_WEICHENG")) { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false },
+
 
             //new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
             //new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
@@ -656,17 +667,17 @@ public class PlacesOfInterest : IPlacesOfInterest
                 ItemDeliveryPosition = new Vector3(1236.887f, 2709.858f, 38.00579f), ItemDeliveryHeading = 201.5402f},
 
             //Gang Dens
-            new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesDenMenu, GangID = "AMBIENT_GANG_FAMILY", IsEnabled = false },
-            new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = BallasDenMenu, GangID = "AMBIENT_GANG_BALLAS", IsEnabled = false  },
-            new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_MEXICAN", IsEnabled = false  },
-            new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_SALVA", IsEnabled = false  },
-            new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = MarabunteDenMenu, GangID = "AMBIENT_GANG_MARABUNTE", IsEnabled = false  },
-            new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_CULT", IsEnabled = false  },
-            new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = KkangpaeDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
-            new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
-            new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = LostDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
-            //new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GambettiDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
-            new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = TriadsDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
+            //new GameLocation(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, LocationType.GangDen, "The Families Den", "The OGs") { BannerImage = "families.png",OpenTime = 0,CloseTime = 24, Menu = FamiliesDenMenu, GangID = "AMBIENT_GANG_FAMILY", IsEnabled = false },
+            //new GameLocation(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, LocationType.GangDen, "Ballas Den", "") { BannerImage = "ballas.png",OpenTime = 0,CloseTime = 24, Menu = BallasDenMenu, GangID = "AMBIENT_GANG_BALLAS", IsEnabled = false  },
+            //new GameLocation(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, LocationType.GangDen, "Vagos Den", "") { BannerImage = "",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_MEXICAN", IsEnabled = false  },
+            //new GameLocation(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, LocationType.GangDen, "Varrios Los Aztecas Den", "") { BannerImage = "varrios.png",OpenTime = 0,CloseTime = 24, Menu = VagosDenMenu, GangID = "AMBIENT_GANG_SALVA", IsEnabled = false  },
+            //new GameLocation(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, LocationType.GangDen, "Marabute Grande Den", "") { OpenTime = 0,CloseTime = 24, Menu = MarabunteDenMenu, GangID = "AMBIENT_GANG_MARABUNTE", IsEnabled = false  },
+            //new GameLocation(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, LocationType.GangDen, "Altruist Cult Den", "") { BannerImage = "altruist.png",OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_CULT", IsEnabled = false  },
+            //new GameLocation(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, LocationType.GangDen, "Kkangpae Den", "") {  OpenTime = 0,CloseTime = 24, Menu = KkangpaeDenMenu, GangID = "AMBIENT_GANG_KKANGPAE", IsEnabled = false  },
+            //new GameLocation(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, LocationType.GangDen, "Reckneck Den", "") { OpenTime = 0,CloseTime = 24, GangID = "AMBIENT_GANG_HILLBILLY", IsEnabled = false  },
+            //new GameLocation(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, LocationType.GangDen, "Lost M.C. Clubhouse", "") { BannerImage = "lostmc.png", OpenTime = 0,CloseTime = 24, Menu = LostDenMenu, GangID = "AMBIENT_GANG_LOST", IsEnabled = false },
+            ////new GameLocation(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, LocationType.GangDen, "Gambetti Safehouse", "") { OpenTime = 0,CloseTime = 24, Menu = GambettiDenMenu, GangID = "AMBIENT_GANG_GAMBETTI", IsEnabled = false },
+            //new GameLocation(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, LocationType.GangDen, "Triad Den", "") { BannerImage = "triad.png", OpenTime = 0,CloseTime = 24, Menu = TriadsDenMenu, GangID = "AMBIENT_GANG_WEICHENG", IsEnabled = false },
 
 
 

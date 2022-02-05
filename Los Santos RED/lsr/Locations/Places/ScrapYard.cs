@@ -46,7 +46,7 @@ public class ScrapYard : InteractableLocation
     {
         MenuPool = new MenuPool();
         ScrapMenu = new UIMenu(Name, Description);
-        if (BannerImage != "")
+        if (HasBannerImage)
         {
             HasBannerImage = true;
             bannerTexture = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImage}");

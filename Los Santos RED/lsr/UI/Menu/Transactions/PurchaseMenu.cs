@@ -772,7 +772,7 @@ public class PurchaseMenu : Menu
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
                 World.AddEntity(MyNewCar, ResponseType.None);
-                Player.TakeOwnershipOfVehicle(MyNewCar);
+                Player.TakeOwnershipOfVehicle(MyNewCar, false);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
                 return true;
             }
@@ -1409,7 +1409,7 @@ public class PurchaseMenu : Menu
                 }
                 else
                 {
-                    Player.AddToInventory(modItem, TotalItems * modItem.AmountPerPackage);
+                    Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
                 }
             }
             if (subtractCash)

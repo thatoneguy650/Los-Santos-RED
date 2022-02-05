@@ -6,24 +6,19 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IViolateable
     {
-        bool AnyHumansNear { get; }/// <summary>
-        /// test456
-        /// </summary>
+        bool AnyHumansNear { get; }
         bool AnyPoliceCanHearPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
         Ped Character { get; }
         PoliceResponse PoliceResponse { get; }
         Vector3 Position { get; }
-
         LocationData CurrentLocation { get; set; }
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
-        //Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
-      //  Zone CurrentZone { get; }
         bool HandsAreUp { get; }
         float IntoxicatedIntensity { get; }
         Investigation Investigation { get; }
@@ -45,7 +40,6 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyBribedPolice { get; }
         bool RecentlyPaidFine { get; }
         bool ShouldCheckViolations { get; }
-      //  bool TreatAsCop { get; }
         bool RecentlyFedUpCop { get; }
         int GroupID { get; }
         PedExt CurrentTargetedPed { get; }
@@ -55,10 +49,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDriver { get; }
         bool HasBeenMoving { get; }
         bool HasBeenMovingFast { get; }
-
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
         void OnVehicleCrashed();
         GangRelationships GangRelationships { get; }
-        //void ChangeReputation(Gang gang, int v, bool sendNotification);
     }
 }

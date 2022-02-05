@@ -31,7 +31,7 @@ public class StorePurchaseMenu : Menu
     private int SecondaryColor = 0;
 
     private string PlateString = "";
-    private StoreTransaction Transaction;
+  //  private StoreTransaction Transaction;
     private bool IsCancelled;
     private string PlayingDict;
     private string PlayingAnim;
@@ -45,11 +45,11 @@ public class StorePurchaseMenu : Menu
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
     private ITimeControllable Time;
     private int CurrentTotalPrice;
-    private ShopMenu ShopMenu;
+    //private ShopMenu ShopMenu;
     private TransactableLocation Store;
     private Camera StoreCam;
     private bool CanContinueConversation => Player.CanConverse;
-    public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
+    public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
         Player = player;
@@ -59,12 +59,13 @@ public class StorePurchaseMenu : Menu
         Weapons = weapons;
         Time = time;
         Store = store;
-        StoreCam = storeCam;
-        Transaction = storeTransaction;
+        StoreCam = Camera.RenderingCamera;
+        //StoreCam = storeCam;
+        //Transaction = storeTransaction;
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
-        if (Transaction.HasBannerImage)
+        if (Store.HasBannerImage)
         {
-            purchaseMenu.SetBannerType(Transaction.BannerImage);
+            purchaseMenu.SetBannerType(Store.BannerImage);
         }
         purchaseMenu.OnIndexChange += OnIndexChange;
         purchaseMenu.OnItemSelect += OnItemSelect;
@@ -75,7 +76,7 @@ public class StorePurchaseMenu : Menu
         {
             PreloadModels();
         }
-        Transaction.ClearPreviews();
+        Store.ClearPreviews();
         ColorList = new List<ColorLookup>()
         {
         new ColorLookup(0,"Metallic Black"),
@@ -247,7 +248,7 @@ public class StorePurchaseMenu : Menu
         EntryPoint.WriteToConsole($"CreatePurchaseMenu RAN!", 5);
         purchaseMenu.Clear();
         bool shouldCreateCategories = false;
-        if (ShopMenu.Items.Where(x => x.Purchaseable).Count() >= 7)
+        if (Store.Menu.Items.Where(x => x.Purchaseable).Count() >= 7)
         {
             shouldCreateCategories = true;
         }
@@ -255,7 +256,7 @@ public class StorePurchaseMenu : Menu
         {
             CreateCategories();
         }
-        foreach (MenuItem cii in ShopMenu.Items)
+        foreach (MenuItem cii in Store.Menu.Items)
         {
             if (cii != null && cii.Purchaseable)
             {
@@ -305,11 +306,11 @@ public class StorePurchaseMenu : Menu
                             {
                                 WeaponCategories.Add(myWeapon.Category);
                                 UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, myWeapon.Category.ToString());
-                                if (Transaction.HasBannerImage)
+                                if (Store.HasBannerImage)
                                 {
-                                    WeaponMenu.SetBannerType(Transaction.BannerImage);
+                                    WeaponMenu.SetBannerType(Store.BannerImage);
                                 }
-                                else if (Transaction.RemoveBanner)
+                                else if (Store.RemoveBanner)
                                 {
                                     WeaponMenu.RemoveBanner();
                                 }
@@ -332,11 +333,11 @@ public class StorePurchaseMenu : Menu
                             {
                                 VehicleClasses.Add(ClassName);
                                 UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, ClassName);
-                                if (Transaction.HasBannerImage)
+                                if (Store.HasBannerImage)
                                 {
-                                    VehicleMenu.SetBannerType(Transaction.BannerImage);
+                                    VehicleMenu.SetBannerType(Store.BannerImage);
                                 }
-                                else if (Transaction.RemoveBanner)
+                                else if (Store.RemoveBanner)
                                 {
                                     VehicleMenu.RemoveBanner();
                                 }
@@ -644,11 +645,11 @@ public class StorePurchaseMenu : Menu
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
-        if (Transaction.HasBannerImage)
+        if (Store.HasBannerImage)
         {
-            VehicleMenu.SetBannerType(Transaction.BannerImage);
+            VehicleMenu.SetBannerType(Store.BannerImage);
         }
-        else if (Transaction.RemoveBanner)
+        else if (Store.RemoveBanner)
         {
             VehicleMenu.RemoveBanner();
         }
@@ -758,7 +759,7 @@ public class StorePurchaseMenu : Menu
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
                 World.AddEntity(MyNewCar, ResponseType.None);
-                Player.TakeOwnershipOfVehicle(MyNewCar);
+                Player.TakeOwnershipOfVehicle(MyNewCar, false);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
                 return true;
             }
@@ -819,11 +820,11 @@ public class StorePurchaseMenu : Menu
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
         WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
-        if (Transaction.HasBannerImage)
+        if (Store.HasBannerImage)
         {
-            WeaponMenu.SetBannerType(Transaction.BannerImage);
+            WeaponMenu.SetBannerType(Store.BannerImage);
         }
-        else if (Transaction.RemoveBanner)
+        else if (Store.RemoveBanner)
         {
             WeaponMenu.RemoveBanner();
         }
@@ -1368,7 +1369,7 @@ public class StorePurchaseMenu : Menu
                 }
                 else
                 {
-                    Player.AddToInventory(modItem, TotalItems * modItem.AmountPerPackage);
+                    Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
                 }
            // }
             if (subtractCash)

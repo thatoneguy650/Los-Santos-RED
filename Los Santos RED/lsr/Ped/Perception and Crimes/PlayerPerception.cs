@@ -457,7 +457,7 @@ public class PlayerPerception
     {
         if (Originator.Pedestrian.Exists())
         {
-            foreach (Crime committing in Target.CivilianReportableCrimesViolating)
+            foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
             {
                 if (CanRecognizeTarget && !committing.CanReportBySound)
                 {

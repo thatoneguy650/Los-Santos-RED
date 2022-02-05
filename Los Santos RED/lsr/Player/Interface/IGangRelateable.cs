@@ -15,7 +15,7 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; }
         bool IsWanted { get; }
         int WantedLevel { get; }
-        List<GangReputation> GangReputations { get; }
+        //List<GangReputation> GangReputations { get; }
         int Money { get; }
         string PlayerName { get; }
         List<Crime> WantedCrimes { get; }
@@ -26,6 +26,8 @@ namespace LosSantosRED.lsr.Interface
         //List<iFruitContact> ContactList { get; }
         CellPhone CellPhone { get; }
         Blip CurrentGPSBlip { get; set; }
+        GangRelationships GangRelationships { get; }
+        PlayerTasks PlayerTasks { get; }
 
         void SetDenStatus(Gang gang, bool v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

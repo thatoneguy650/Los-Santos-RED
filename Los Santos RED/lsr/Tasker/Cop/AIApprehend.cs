@@ -441,7 +441,7 @@ public class AIApprehend : ComplexTask
                     NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
                 }
                 Ped.Pedestrian.BlockPermanentEvents = true;
-                Ped.Pedestrian.KeepTasks = false;
+                Ped.Pedestrian.KeepTasks = true;
                 float LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
 
                 if (IsArresting)

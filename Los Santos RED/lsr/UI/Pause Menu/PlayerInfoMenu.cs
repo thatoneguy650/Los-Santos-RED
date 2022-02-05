@@ -223,24 +223,37 @@ public class PlayerInfoMenu
         List<TabItem> items = new List<TabItem>();
 
 
-        foreach (GangReputation gr in Player.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
+        foreach (GangReputation gr in Player.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
         {
             string DescriptionText = "";
 
             DescriptionText = "Relationship: " + gr.ToStringBare();
-            GameLocation gangDen = PlacesOfInterest.GetLocations(LocationType.GangDen).Where(x => x.GangID == gr.Gang.ID).FirstOrDefault();
-            //string DenText = "~y~Unknown~s~";
-            if (gangDen != null && gangDen.IsEnabled)
-            {
-                string StreetNames = Streets.GetStreetNames(gangDen.EntrancePosition);
-                Zone Zone = Zones.GetZone(gangDen.EntrancePosition);
+            //GameLocation gangDen = PlacesOfInterest.GetLocations(LocationType.GangDen).Where(x => x.GangID == gr.Gang.ID).FirstOrDefault();
+            ////string DenText = "~y~Unknown~s~";
+            //if (gangDen != null && gangDen.IsEnabled)
+            //{
+            //    string StreetNames = Streets.GetStreetNames(gangDen.EntrancePosition);
+            //    Zone Zone = Zones.GetZone(gangDen.EntrancePosition);
 
-                //DenText = gangDen.IsEnabled ? "~g~Available~s~" : "~o~Unavailable~s~";
-                //DescriptionText += $"~n~{gr.Gang.DenName}: {DenText}"; //+ gr.ToStringBare();
-                string locationText = $"{StreetNames} {(Zone.IsSpecificLocation ? "near" : "in")} ~p~{Zone.FullDisplayName}~s~".Trim();
+            //    //DenText = gangDen.IsEnabled ? "~g~Available~s~" : "~o~Unavailable~s~";
+            //    //DescriptionText += $"~n~{gr.Gang.DenName}: {DenText}"; //+ gr.ToStringBare();
+            //    string locationText = $"{StreetNames} {(Zone.IsSpecificLocation ? "near" : "in")} ~p~{Zone.FullDisplayName}~s~".Trim();
 
-                DescriptionText += $"~n~{gr.Gang.DenName}: {locationText}"; //+ gr.ToStringBare();
+            //    DescriptionText += $"~n~{gr.Gang.DenName}: {locationText}"; //+ gr.ToStringBare();
                 
+            //}
+
+
+
+
+
+
+
+
+            GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
+            if(myDen != null)
+            {
+                DescriptionText += $"~n~{gr.Gang.DenName}: {myDen.StreetAddress}"; //+ gr.ToStringBare();
             }
 
             string TerritoryText = "None";
@@ -267,6 +280,12 @@ public class PlayerInfoMenu
                 string ContactText = gr.Gang.ContactName;
                 DescriptionText += $"~n~Contacts: {ContactText}";
             }
+
+            if(Player.PlayerTasks.HasTask(gr.Gang.ContactName))
+            {
+                DescriptionText += $"~n~~g~Has Task~s~";
+            }
+
             TabItem tabItem = new TabTextItem($"{gr.Gang.ShortName} {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
 
             //tabItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + GangsSubMenu.Index, 5000);
@@ -314,7 +333,7 @@ public class PlayerInfoMenu
             Gang myGang = Gangs.GetGangByContact(contact.Name);
             if(myGang != null)
             {
-               GangReputation gr = Player.GangReputations.FirstOrDefault(x => x.Gang.ID == myGang.ID);
+               GangReputation gr = Player.GangRelationships.GangReputations.FirstOrDefault(x => x.Gang.ID == myGang.ID);
                 if(gr != null)
                 {
                     Title = $"{contact.Name} {gr.ToBlip()}~s~";

@@ -117,9 +117,9 @@ public class StoreTransaction
         bool hasSellMenu = false;
         if (Store.Menu.Items.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new StorePurchaseMenu(MenuPool, ModItemMenu, Store,StoreCam,  ModItems, Player, World, Settings, this, Weapons, Time);
-            PurchaseMenu.Setup();
-            hasPurchaseMenu = true;
+            //PurchaseMenu = new StorePurchaseMenu(MenuPool, ModItemMenu, Store,StoreCam, ModItems, Player, World, Settings, Weapons, Time);
+            //PurchaseMenu.Setup();
+            //hasPurchaseMenu = true;
         }
         if (Store.Menu.Items.Any(x => x.Sellable))
         {

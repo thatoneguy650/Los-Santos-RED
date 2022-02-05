@@ -113,6 +113,10 @@ namespace LosSantosRED.lsr.Player
         {
             return ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName);
         }
+        public bool HasItem(string itemName)
+        {
+            return ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName)?.Amount > 0;
+        }
         public void Clear()
         {
             ItemsList.Clear();

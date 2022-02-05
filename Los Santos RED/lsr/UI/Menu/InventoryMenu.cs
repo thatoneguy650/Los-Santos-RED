@@ -50,7 +50,7 @@ public class InventoryMenu : Menu
     private void CreateInventoryMenu()
     {
         inventoryMenu.Clear();
-        foreach(InventoryItem cii in Player.InventoryItems)
+        foreach(InventoryItem cii in Player.Inventory.Items)
         {
             if(cii.ModItem != null)
             {

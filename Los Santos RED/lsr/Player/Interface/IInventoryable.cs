@@ -15,17 +15,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         int Money { get; }
         Ped Character { get; }
-
-        bool RemoveFromInventory(ModItem toAdd, int v);
         void GiveMoney(int salesPrice);
-        void AddToInventory(ModItem toAdd, int amountPerPackage);
-      //  void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
         void DisplayPlayerNotification();
-        //void SetReputation(Gang myGang, int item2, bool sendNotification);
         GangRelationships GangRelationships { get; }
         CellPhone CellPhone { get; }
-
         void ClearVehicleOwnership();
     }
 }

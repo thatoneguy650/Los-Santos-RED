@@ -22,10 +22,11 @@ namespace LosSantosRED.lsr.Interface
         //int CurrentPrimaryHairColor { get; }
         //int CurrentSecondaryColor { get; }
        // VehicleExt OwnedVehicle { get; }
-        List<GangReputation> GangReputations { get; }
+       // List<GangReputation> GangReputations { get; }
         Vector3 Position { get; }
         Ped Character { get; }
         List<VehicleExt> OwnedVehicles { get; }
         CellPhone CellPhone { get; }
+        GangRelationships GangRelationships { get; }
     }
 }

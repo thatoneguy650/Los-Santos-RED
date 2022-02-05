@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -18,10 +19,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; set; }
         bool CanPerformActivities { get; }
         List<LicensePlate> SpareLicensePlates { get; }
-        List<InventoryItem> ConsumableItems { get; }
         bool IsCop { get; }
         LocationData CurrentLocation { get; }
-        List<InventoryItem> InventoryItems { get; }
         Ped Character { get; }
         bool IsMale { get; }
         bool IsSitting { get; set; }
@@ -32,11 +31,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
         GestureData LastGesture { get; set; }
         bool IsMakingInsultingGesture { get; set; }
-
-        // void StartSmokingPot();
         void StartSittingDown(bool FindSittingProp, bool EnterForward);
-        //void StartSmoking();
-        //void StartDrinkingActivity();
         void CommitSuicide();
         void DisplayPlayerNotification();
         void GiveMoney(int v);
@@ -46,8 +41,6 @@ namespace LosSantosRED.lsr.Interface
         void ChangePlate(LicensePlate selectedItem);
         void TakeOwnershipOfNearestCar();
         void CallPolice();
-        //void StartEatingActivity(ConsumableSubstance selectedStuff);
-        bool RemoveFromInventory(ModItem selectedStuff, int v);
         void SetUnarmed();
         void StartConsumingActivity(ModItem selectedStuff);
         void PauseDynamicActivity();
@@ -60,13 +53,8 @@ namespace LosSantosRED.lsr.Interface
         void SetBodyArmor(int value);
         void StartLayingDown(bool v);
         void StartHotwiring();
-        //void DisplayPlayerGangNotification();
         GangRelationships GangRelationships { get; }
-        //void SetReputation(Gang gang, int randomnum, bool sendNotification);
-        //void DefaultGangReputation();
-        //void RandomizeGangReputation();
-        //void HostileGangReputation();
-        //void FriendlyGangReputation();
+        Inventory Inventory { get; }
         void RemoveOwnershipOfNearestCar();
     }
 }

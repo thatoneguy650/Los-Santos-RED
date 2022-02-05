@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -34,16 +35,11 @@ namespace LosSantosRED.lsr.Interface
 
         void SetAngeredCop();
         void GiveMoney(int v);
-       // void StartSmoking();
-       // void StartDrinkingActivity();
-        void AddToInventory(ModItem offering, int v);
-      //  void StartServiceActivity(ModItem toAdd, GameLocation store, int itemsBought);
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar);
-        bool RemoveFromInventory(ModItem toAdd, int amountPerPackage);
-        bool HasItemInInventory(string modItemName);
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
         void ConsumeItem(ModItem toAdd);
         GangRelationships GangRelationships { get; }
-        // void ChangeReputation(Gang gang, int v, bool sendNotification);
+        Inventory Inventory { get; }
+
         void SetUnarmed();
     }
 }

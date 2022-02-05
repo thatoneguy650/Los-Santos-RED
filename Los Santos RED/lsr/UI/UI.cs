@@ -917,9 +917,9 @@ public class UI : IMenuProvideable
     private string GetViolatingDisplay()
     {
         string CrimeDisplay = "";
-        if (DisplayablePlayer.LawsViolating != "")
+        if (DisplayablePlayer.Violations.LawsViolatingDisplay != "")
         {
-            CrimeDisplay += "Violating: " + DisplayablePlayer.LawsViolating;
+            CrimeDisplay += "Violating: " + DisplayablePlayer.Violations.LawsViolatingDisplay;
         }
         return CrimeDisplay;
     }
@@ -994,7 +994,7 @@ public class UI : IMenuProvideable
                     }
                 }
             }
-            if (DisplayablePlayer.IsViolatingAnyTrafficLaws)
+            if (DisplayablePlayer.Violations.IsViolatingAnyTrafficLaws)
             {
                 CurrentSpeedDisplay += " ~r~!";
             }

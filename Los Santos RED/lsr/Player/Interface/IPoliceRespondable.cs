@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         Ped Character { get; }
         float SearchModePercentage { get; }
-        uint HasBeenWantedFor { get; }
+        //uint HasBeenWantedFor { get; }
         Vector3 RootPosition { get; }
         bool IsAttemptingToSurrender { get; }
         bool IsCop { get; }

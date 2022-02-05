@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Player;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,13 @@ namespace LosSantosRED.lsr.Interface
         int TimesDied { get;  }
         string PlayerName { get; }
         string ModelName { get; }
+        Inventory Inventory { get; }
+        CellPhone CellPhone { get; }
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation();
-        void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone);
+        void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks);
         void RaiseHands();
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);
-        void ClearInventory();
     }
 }

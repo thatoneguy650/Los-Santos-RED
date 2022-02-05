@@ -70,7 +70,7 @@ namespace LosSantosRED.lsr.Data
             //    OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted), player.OwnedVehicle.Vehicle.Position, player.OwnedVehicle.Vehicle.Heading);
             //}
             GangReputations = new List<GangRepSave>();
-            foreach(GangReputation gr in player.GangReputations)
+            foreach(GangReputation gr in player.GangRelationships.GangReputations)
             {
                 GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel));
             }
@@ -152,7 +152,7 @@ namespace LosSantosRED.lsr.Data
                             World.AddEntity(MyVeh, ResponseType.None);
                         }
                         //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
-                        player.TakeOwnershipOfVehicle(MyVeh);
+                        player.TakeOwnershipOfVehicle(MyVeh,false);
                         if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
                         {
                             NewVehicle.Position = OwnedVehicleVariation.LastPosition;
