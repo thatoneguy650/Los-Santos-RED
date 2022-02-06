@@ -869,7 +869,9 @@ public class Debug
         //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
         //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
         //PauseMenuExample.Main();
-        StuffTwo();
+
+        NodeChekcer();
+        //StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;
         //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
         //GameFiber.Sleep(500);
@@ -936,7 +938,7 @@ public class Debug
         //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
         //        GameFiber.Yield();
         //    }
-
+        Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
         //}
         if (RandomItems.RandomPercent(50))
         {
@@ -1073,6 +1075,39 @@ public class Debug
                 //NativeFunction.Natives.SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1);
             }
         }, "Run Debug Logic");
+    }
+    private void NodeChekcer()
+    {
+        
+
+        try
+        {
+            GameFiber.StartNew(delegate
+            {
+                bool isShowing = false;
+                while (!Game.IsKeyDownRightNow(Keys.P))
+                {
+                    Vector3 position = Game.LocalPlayer.Character.Position;
+                    int NodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(position.X, position.Y, position.Z, 1, 1, 30f, 30f);
+                    Vector3 newPos;
+                    NativeFunction.Natives.GET_VEHICLE_NODE_POSITION(NodeID, out newPos);
+
+
+                    Rage.Debug.DrawArrowDebug(newPos + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+
+                    Game.DisplayHelp($"Press P to Stop");
+                    GameFiber.Yield();
+                }
+                NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+            }, "Run Debug Logic");
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification("Shit CRASHES!!!");
+        }
+
+
+
     }
     private void StuffTwo()
     {

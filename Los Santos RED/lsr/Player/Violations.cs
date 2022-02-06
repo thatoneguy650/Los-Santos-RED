@@ -74,6 +74,8 @@ namespace LosSantosRED.lsr
                 {
                     GangMember gm = (GangMember)myPed;
                     Player.GangRelationships.ChangeReputation(gm.Gang, -500, true);
+                    Player.GangRelationships.GetReputation(gm.Gang).MembersHurt++;
+                    EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemebr Added", 5);
                 }
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
@@ -97,6 +99,8 @@ namespace LosSantosRED.lsr
                     {
                         GangMember gm = (GangMember)myPed;
                         Player.GangRelationships.ChangeReputation(gm.Gang, -1000, true);
+                        Player.GangRelationships.GetReputation(gm.Gang).MembersKilled++;
+                        EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemebr Added", 5);
                     }
                 }
                 PlayerKilledCivilians.Add(myPed);
@@ -122,7 +126,7 @@ namespace LosSantosRED.lsr
         }
         public void Setup()
         {
-            AnimationDictionary.RequestAnimationDictionay("switch@franklin@002110_04_magd_3_weed_exchange");
+            
         }
         public void UpdateTraffic()
         {
@@ -286,6 +290,10 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
             }
+            if(Player.IsDoingSuspiciousActivity)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
+            }
             if (Player.IsWanted && !Player.HandsAreUp) //&& Player.AnyPoliceRecentlySeenPlayer)// && ((!Player.IsInVehicle && Player.Character.Speed >= 1.5f) || (Player.IsInVehicle && Player.VehicleSpeedMPH > 40f)) && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
             {
                 if(Player.IsInVehicle)
@@ -387,6 +395,13 @@ namespace LosSantosRED.lsr
                 {
                     isDrivingSuspiciously = true;
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true; 
+
+                    EntryPoint.WriteToConsole("Violations HitPedWithCar");
+
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole("Violations HitPedWithCar BAD!!!!");
                 }
                 GameFiber.Yield();
             }

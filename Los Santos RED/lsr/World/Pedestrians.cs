@@ -384,8 +384,8 @@ public class Pedestrians
             else
             {
                 SetCivilianStats(Pedestrian);
-                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.FightPercentage);
-                WillCallPolice = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.CallPolicePercentage);
+                WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
+                WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
             }
             if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
@@ -452,6 +452,58 @@ public class Pedestrians
             }
         }
         return null;
+    }
+    private float CivilianCallPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+        }
+    }
+    private float CivilianFightPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+        }
     }
     private void AddGangMember(Ped Pedestrian)
     {

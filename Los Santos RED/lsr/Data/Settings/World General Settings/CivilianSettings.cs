@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 public class CivilianSettings : ISettingsDefaultable
 {
     public bool ManageCivilianTasking { get; set; }
-    public float FightPercentage { get; set; }
-    public float CallPolicePercentage { get; set; }
+  //  public float FightPercentage { get; set; }
+   // public float CallPolicePercentage { get; set; }
     public float SecurityFightPercentage { get; set; }
     public bool OverrideHealth { get; set; }
     public int MinHealth { get; set; }
@@ -36,6 +36,14 @@ public class CivilianSettings : ISettingsDefaultable
     public float DrugCustomerPercentageMiddleZones { get; set; }
     public float DrugCustomerPercentagePoorZones { get; set; }
 
+    public float CallPolicePercentageRichZones { get; set; }
+    public float CallPolicePercentageMiddleZones { get; set; }
+    public float CallPolicePercentagePoorZones { get; set; }
+
+    public float FightPercentageRichZones { get; set; }
+    public float FightPercentageMiddleZones { get; set; }
+    public float FightPercentagePoorZones { get; set; }
+
 
     public CivilianSettings()
     {
@@ -49,8 +57,8 @@ public class CivilianSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ManageCivilianTasking = true;
-        FightPercentage = 2f;//7f//5f//let
-        CallPolicePercentage = 25f;//65f;//55f
+        //FightPercentage = 2f;//7f//5f//let
+        //CallPolicePercentage = 25f;//65f;//55f
         SecurityFightPercentage = 30f;//70f
         OverrideHealth = true;
         MinHealth = 70;
@@ -65,7 +73,7 @@ public class CivilianSettings : ISettingsDefaultable
         MinimumTimeBetweenRandomCrimes = 300000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
-        ShowRandomCriminalBlips = true;
+        ShowRandomCriminalBlips = false;
        // DrugDealerPercentage = 5f;
         DrugDealerPercentageRichZones = 1f;
         DrugDealerPercentageMiddleZones = 2f;
@@ -74,6 +82,18 @@ public class CivilianSettings : ISettingsDefaultable
         DrugCustomerPercentageRichZones = 5f;
         DrugCustomerPercentageMiddleZones = 7f;
         DrugCustomerPercentagePoorZones = 10f;
+
+
+
+
+        CallPolicePercentageRichZones = 55f;
+        CallPolicePercentageMiddleZones = 25f;
+        CallPolicePercentagePoorZones = 10f;
+
+        FightPercentageRichZones = 0f;
+        FightPercentageMiddleZones = 1f;
+        FightPercentagePoorZones = 2f;
+
     }
 
 }

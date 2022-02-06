@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 
@@ -68,6 +69,7 @@ namespace LosSantosRED.lsr.Interface
         void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         GangRelationships GangRelationships { get; }
+        BigMessageHandler BigMessage { get; }
         //void ChangeReputation(Gang gang, int v, bool sendNotification);
     }
 }

@@ -281,11 +281,12 @@ public class Vehicles
     {
         if (vehicle.Exists())
         {
-            VehicleExt Car = new VehicleExt(vehicle, Settings);
+            
             if (vehicle.IsPoliceVehicle)
             {
                 if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
+                    VehicleExt Car = new VehicleExt(vehicle, Settings);
                     PoliceVehicles.Add(Car);
                     return true;
                 }
@@ -310,6 +311,7 @@ public class Vehicles
             {
                 if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
+                    VehicleExt Car = new VehicleExt(vehicle, Settings);
                     CivilianVehicles.Add(Car);
                     return true;
                 }

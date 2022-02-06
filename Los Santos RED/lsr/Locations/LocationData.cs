@@ -13,6 +13,7 @@ namespace LosSantosRED.lsr.Locations
     public class LocationData
     {
         private Vector3 ClosestNode;
+        
         private IStreets Streets;
         private IZones Zones;
         private Zone PreviousZone;
@@ -32,6 +33,7 @@ namespace LosSantosRED.lsr.Locations
             Interiors = interiors;
             EntityToLocate = characterToLocate;
         }
+        public int ClosestNodeID { get; private set; }
         public Interior CurrentInterior { get; private set; }
         public Entity EntityToLocate { get; set; }
         public Street CurrentStreet { get; private set; }
@@ -96,6 +98,10 @@ namespace LosSantosRED.lsr.Locations
                 Vector3 outPos;
                 NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);//can still get the freeway offramp when you are driving near it, not sure what to do about it!
                 ClosestNode = outPos;
+
+
+                ClosestNodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(position.X, position.Y, position.Z, 1 , 1, 30f, 30f);
+
 
                 //ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);//seems to not get the z coordinate and puts me way down on whatever is lowest
                 if (ClosestNode == Vector3.Zero ||  ClosestNode.DistanceTo2D(EntityToLocate) >= 15f)//was 15f

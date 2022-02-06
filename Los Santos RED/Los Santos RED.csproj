@@ -308,6 +308,7 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
+    <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
     <Compile Include="lsr\Weapon\ComponentSlot.cs" />

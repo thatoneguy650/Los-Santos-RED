@@ -37,6 +37,8 @@ public class GangDen : TransactableLocation
     [XmlIgnore]
     public int RepOnDropOff { get; set; }
     [XmlIgnore]
+    public int MoneyOnDropOff { get; set; }
+    [XmlIgnore]
     public ModItem ExpectedItem { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
@@ -109,13 +111,18 @@ public class GangDen : TransactableLocation
             if(Player.Money >= ExpectedMoney)
             {
                 Player.GiveMoney(-1*ExpectedMoney);
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash.");
+                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
                 if(RepOnDropOff > 0)
                 {
                     Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff,false);
                 }
+                if (MoneyOnDropOff > 0)
+                {
+                    Player.GiveMoney(MoneyOnDropOff);
+                }
                 RepOnDropOff = 0;
                 ExpectedMoney = 0;
+                MoneyOnDropOff = 0;
                 Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;
             }
@@ -129,12 +136,17 @@ public class GangDen : TransactableLocation
             if(Player.Inventory.HasItem(ExpectedItem.Name))
             {
                 Player.Inventory.Remove(ExpectedItem,1);
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItem.Name}.");
+                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItem.Name}. Have something for your time.");
                 if (RepOnDropOff > 0)
                 {
                     Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff, false);
                 }
+                if(MoneyOnDropOff > 0)
+                {
+                    Player.GiveMoney(MoneyOnDropOff);
+                }
                 RepOnDropOff = 0;
+                MoneyOnDropOff = 0;
                 ExpectedItem = null;
                 Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;

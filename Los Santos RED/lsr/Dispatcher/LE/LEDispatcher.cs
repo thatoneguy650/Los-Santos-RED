@@ -50,7 +50,7 @@ public class LEDispatcher
     private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= TimeBetweenRoadblocks;
+    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private float MaxDistanceToSpawn
     {

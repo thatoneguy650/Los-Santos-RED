@@ -286,6 +286,16 @@ public class PlayerInfoMenu
                 DescriptionText += $"~n~~g~Has Task~s~";
             }
 
+
+            if (gr.MembersKilled > 0)
+            {
+                DescriptionText += $"~n~~r~Members Killed: {gr.MembersKilled}~s~";
+            }
+            if (gr.MembersHurt > 0)
+            {
+                DescriptionText += $"~n~~o~Members Hurt: {gr.MembersHurt}~s~";
+            }
+
             TabItem tabItem = new TabTextItem($"{gr.Gang.ShortName} {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
 
             //tabItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + GangsSubMenu.Index, 5000);

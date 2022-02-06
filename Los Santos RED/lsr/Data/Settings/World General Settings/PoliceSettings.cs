@@ -85,6 +85,8 @@ public class PoliceSettings : ISettingsDefaultable
     public int MaxWantedLevel { get; set; }
     public float AddOptionalPassengerPercentage { get; set; }
     public bool KnowsShootingSourceLocation { get; set; }
+    public bool UseFakeWantedLevelSystem { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -134,26 +136,26 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideArmor = true;
         MinArmor = 0;
         MaxArmor = 50;
-        PedSpawnLimit_Default = 5;
-        PedSpawnLimit_Investigation = 6;
-        PedSpawnLimit_Wanted1 = 7;//7;
-        PedSpawnLimit_Wanted2 = 9;//9;
-        PedSpawnLimit_Wanted3 = 14;//13;
-        PedSpawnLimit_Wanted4 = 18;
-        PedSpawnLimit_Wanted5 = 22;
-        PedSpawnLimit_Wanted6 = 24;
-        VehicleSpawnLimit_Default = 5;
-        VehicleSpawnLimit_Investigation = 6;
-        VehicleSpawnLimit_Wanted1 = 6;
-        VehicleSpawnLimit_Wanted2 = 8;
-        VehicleSpawnLimit_Wanted3 = 12;
-        VehicleSpawnLimit_Wanted4 = 14;
+        PedSpawnLimit_Default = 7;
+        PedSpawnLimit_Investigation = 8;
+        PedSpawnLimit_Wanted1 = 9;//7;
+        PedSpawnLimit_Wanted2 = 10;//9;
+        PedSpawnLimit_Wanted3 = 16;//13;
+        PedSpawnLimit_Wanted4 = 20;
+        PedSpawnLimit_Wanted5 = 24;
+        PedSpawnLimit_Wanted6 = 26;
+        VehicleSpawnLimit_Default = 6;
+        VehicleSpawnLimit_Investigation = 7;
+        VehicleSpawnLimit_Wanted1 = 8;
+        VehicleSpawnLimit_Wanted2 = 9;
+        VehicleSpawnLimit_Wanted3 = 13;
+        VehicleSpawnLimit_Wanted4 = 15;
         VehicleSpawnLimit_Wanted5 = 16;
         VehicleSpawnLimit_Wanted6 = 18;
         WantedLevelIncreasesByKillingPolice = true;
-        KillLimit_Wanted4 = 4;
-        KillLimit_Wanted5 = 12;
-        KillLimit_Wanted6 = 20;
+        KillLimit_Wanted4 = 2;
+        KillLimit_Wanted5 = 8;
+        KillLimit_Wanted6 = 12;
         WantedLevelIncreasesOverTime = true;
         WantedLevelIncreaseTime = 240000;
         SightDistance = 90f;//70f;
@@ -176,5 +178,6 @@ public class PoliceSettings : ISettingsDefaultable
         MaxWantedLevel = 6;
         AddOptionalPassengerPercentage = 75f;
         KnowsShootingSourceLocation = true;
+        UseFakeWantedLevelSystem = true;
     }
 }

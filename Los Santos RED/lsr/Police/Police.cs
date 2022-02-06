@@ -33,6 +33,11 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 Player.Arrest();
             }
+            if (Player.IsBustable && Player.IsAttemptingToSurrender && World.PoliceList.Any(x => x.DistanceToPlayer <= 10f))
+            {
+                GameFiber.Yield();
+                Player.Arrest();
+            }
             if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
             {
                 EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);

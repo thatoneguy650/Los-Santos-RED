@@ -437,7 +437,7 @@ public class Agencies : IAgencies
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 0, 75) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 2,MaxOccupants = 4 }};
+            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 4,MaxOccupants = 4 }};
         List<DispatchableVehicle> HighwayPatrolVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1 },
             new DispatchableVehicle("police4", 30, 30) };
@@ -482,8 +482,8 @@ public class Agencies : IAgencies
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 } };
         List<DispatchableVehicle> SheriffHeliVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("buzzard2", 0,25) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 2,MaxOccupants = 4 },
-            new DispatchableVehicle("polmav", 0,75) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 } };
+            new DispatchableVehicle("buzzard2", 0,25) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 },
+            new DispatchableVehicle("polmav", 0,75) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         List<DispatchableVehicle> ArmyVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("crusader", 85,90) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6 },
             new DispatchableVehicle("barracks", 15,10) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6 },

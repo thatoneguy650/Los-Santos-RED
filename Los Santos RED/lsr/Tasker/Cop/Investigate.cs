@@ -94,7 +94,7 @@ public class Investigate : ComplexTask
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
                 //4 | 16 | 32 | 262144
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)VehicleDrivingFlags.Emergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.FastEmergency, 10f);
             }
             else
             {
@@ -154,11 +154,11 @@ public class Investigate : ComplexTask
                     Ped.Pedestrian.KeepTasks = true;
                     if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) >= 50f)
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 20f, (int)VehicleDrivingFlags.Emergency, 20f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 20f, (int)eCustomDrivingStyles.FastEmergency, 20f);
                     }
                     else
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)VehicleDrivingFlags.Emergency, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)eCustomDrivingStyles.FastEmergency, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
                     }
                     EntryPoint.WriteToConsole(string.Format("TASKER: Investigation UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
                     //4 | 16 | 32 | 262144

@@ -8,6 +8,8 @@ using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,7 +28,6 @@ namespace Mod
         private CriminalHistory CriminalHistory;
         private string CurrentVehicleDebugString;
         private uint GangNotificationID = 0;
-
 
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
@@ -98,9 +99,8 @@ namespace Mod
         private bool HasThrownGotOffFreeway;
         private uint GameTimeLastCheckedRouteBlip;
         private uint GameTimeLastSetMeleeModifier;
-
-
-
+        private BigMessageThread BigMessageThread;
+        public BigMessageHandler BigMessage { get; private set; }
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
@@ -243,11 +243,12 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1);//took out vehicle in here, might need at one star vehicle is ok
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);//took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsDealingDrugs { get; set; } = false;
         public bool IsDealingIllegalGuns { get; set; } = false;
+        public bool IsDoingSuspiciousActivity { get; set; } = false;
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
@@ -326,9 +327,18 @@ namespace Mod
             get
             {
                 int CurrentCash;
+                uint PlayerCashHash;
+                if (CharacterModelIsPrimaryCharacter)
+                {
+                    PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
+                }
+                else
+                {
+                    PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
+                }
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -824,6 +834,12 @@ namespace Mod
                     GameFiber.Yield();
                 }
             }, "CellPhone");
+
+
+            BigMessageThread = new BigMessageThread(true);
+            BigMessage = BigMessageThread.MessageInstance;
+
+
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
@@ -836,11 +852,17 @@ namespace Mod
                 if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
                 {
 
-                    //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
-                    //Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                    if(Settings.SettingsManager.PoliceSettings.UseFakeWantedLevelSystem)
+                    {
+                        NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+                        NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
+                    }
+                    else
+                    {
+                        NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                        Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                    }
 
-                    NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-                    NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
                     wantedLevel = desiredWantedLevel;
 
                     if (desiredWantedLevel > 0)
@@ -1348,14 +1370,14 @@ namespace Mod
 
             if(CurrentGPSBlip.Exists())
             {
-                if (CurrentGPSBlip.DistanceTo2D(Position) <= 10f)
+                if (CurrentGPSBlip.DistanceTo2D(Position) <= 30f)
                 {
                     NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
                     CurrentGPSBlip.Delete();
                 }
                 else
                 {
-                    if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 3000)
+                    if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 10000)
                     {
                         NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, true);
                         GameTimeLastCheckedRouteBlip = Game.GameTime;
@@ -1697,7 +1719,30 @@ namespace Mod
                 || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x34A67B97//weapon_petrolcan
                 || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0xBA536372//weapon_hazardcan
                 || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x8BB05FD7//weapon_flashlight
-                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x23C9F95C)//weapon_ball
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x23C9F95C//weapon_ball
+
+
+
+
+
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2508868239//bat
+
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)4192643659//bottle
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2227010557//crowbar
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)1141786504//golf club
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)1317494643//hammer
+
+
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x94117305//pool cue
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x19044EE0//wrench
+
+                )//weapon_ball
+
+
+
+
+
+
             {
                 IsVisiblyArmed = false;
             }
@@ -1808,6 +1853,11 @@ namespace Mod
                 Scanner.OnBribedPolice();
             }
             return toReturn;
+        }
+        public void PayoffPolice()
+        {
+            Respawning.PayoffPolice();
+            Scanner.OnBribedPolice();
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public void RespawnAtGrave() => Respawning.RespawnAtGrave();
@@ -2155,7 +2205,7 @@ namespace Mod
                     {
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_COORS_TARGET", 0, CurrentVehicle.Vehicle, 358.9726f, -1582.881f, 29.29195f, 8, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_COORS_TARGET", 0, CurrentVehicle.Vehicle, 358.9726f, -1582.881f, 29.29195f, 8, 50f, (int)eCustomDrivingStyles.FastEmergency, 0f, 2f, true);//8f
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
@@ -2172,7 +2222,7 @@ namespace Mod
 
 
 
-                    //    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, CurrentVehicle.Vehicle, 25f, (int)VehicleDrivingFlags.Emergency, 25f);
+                    //    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, CurrentVehicle.Vehicle, 25f, (int)eCustomDrivingStyles.FastEmergency, 25f);
                     //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
@@ -2374,6 +2424,11 @@ namespace Mod
                         CurrentVehicle.Vehicle.MustBeHotwired = false;
                     }
                     else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && CurrentVehicle.Vehicle.GetAttachedBlip()?.Sprite == BlipSprite.GangVehicle)//vanilla owned vehicles?
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
+                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
                     {
                         CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                         CurrentVehicle.Vehicle.MustBeHotwired = false;
@@ -2587,6 +2642,7 @@ namespace Mod
                     GameFiber.Yield();
                     EntityProvider.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+                    
                 }
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
@@ -2606,12 +2662,17 @@ namespace Mod
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
+
+                    BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
+
+
                 }
             }
             else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
             {
                 PoliceResponse.OnWantedLevelIncreased();
                 EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
+                //BigMessage.ShowColoredShard("WANTED", $"{wantedLevel} stars", HudColor.Gold, HudColor.InGameBackground);
             }
             else if (IsWanted && PreviousWantedLevel > WantedLevel)
             {
@@ -2868,6 +2929,7 @@ namespace Mod
                             EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;
+                            EntryPoint.WriteToConsole("New Vehicle Created in UpdateCurrentVehicle");
                         }
                         if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
                         {

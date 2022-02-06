@@ -100,14 +100,19 @@ public class DeadDrop : InteractableLocation
     private bool PlayMoneyAnimation(IActivityPerformable Player)
     {
         Player.StopDynamicActivity();
-        AnimationDictionary.RequestAnimationDictionay("mp_car_bomb");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+        AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
+
+        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Player.Character, "mp_safehousevagos@", "package_dropoff", 4.0f, -4.0f, 2000, 0, 0, false, false, false);
+        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
         IsCancelled = false;
         uint GameTimeStartedAnimation = Game.GameTime;
-        while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 5000)
+
+        Player.IsDoingSuspiciousActivity = true;
+
+        while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
         {
             Player.SetUnarmed();
-            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_car_bomb", "car_bomb_mechanic");
+            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_safehousevagos@", "package_dropoff");
             if (AnimationTime >= 1.0f)
             {
                 break;
@@ -121,6 +126,9 @@ public class DeadDrop : InteractableLocation
         }
         EntryPoint.WriteToConsole($"Dead Drop PlayMoneyAnimation IsCancelled: {IsCancelled}");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+        Player.IsDoingSuspiciousActivity = false;
+
         if (IsCancelled)
         {
             return false;
@@ -132,7 +140,7 @@ public class DeadDrop : InteractableLocation
     }
     private bool MoveToDrop(IActivityPerformable Player)
     {
-        Vector3 MovePosition = NativeHelper.GetOffsetPosition(EntrancePosition, EntranceHeading, 1f);//  Store.PropObject.GetOffsetPositionFront(-1f);
+        Vector3 MovePosition = NativeHelper.GetOffsetPosition(EntrancePosition, EntranceHeading, 2f);//  Store.PropObject.GetOffsetPositionFront(-1f);
         MovePosition = new Vector3(MovePosition.X, MovePosition.Y, Game.LocalPlayer.Character.Position.Z);
         float ObjectHeading = EntranceHeading - 180f;
         if (ObjectHeading >= 180f)
@@ -156,12 +164,12 @@ public class DeadDrop : InteractableLocation
             {
                 IsCancelled = true;
             }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(MovePosition) < 1.0f;
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(MovePosition) < 1.5f;
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
         GameTimeStartedSitting = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedSitting <= 5000 && !IsFacingDirection && !IsCancelled)
+        while (Game.GameTime - GameTimeStartedSitting <= 2000 && !IsFacingDirection && !IsCancelled)
         {
             if (Player.IsMoveControlPressed)
             {

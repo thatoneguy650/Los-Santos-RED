@@ -147,11 +147,31 @@ namespace Mod
                     zoneString = $"~p~{placeZone.DisplayName}~s~";
                 }
                 string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
+
+
+
+                string StreetNumber = "";
+
                 if (streetName == "")
                 {
                     betweener = "";
                 }
-                string LocationName = $"{streetName} {betweener} {zoneString}".Trim();
+                else
+                {
+                    int NodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(basicLocation.EntrancePosition.X, basicLocation.EntrancePosition.Y, basicLocation.EntrancePosition.Z, 1, 1, 30f, 30f);
+
+
+                    if(NodeID.ToString().Length>= 4)
+                    {
+                        StreetNumber = NodeID.ToString().Substring(0,4);
+                    }
+                    else
+                    {
+                        StreetNumber = NodeID.ToString();
+                    }
+                    
+                }
+                string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
                 basicLocation.StreetAddress = LocationName;
             }
 

@@ -23,7 +23,7 @@ public class VehicleSettings : ISettingsDefaultable
     public string AutoTuneRadioStation { get; set; }
     [Description("Disable the character automatically turning over the engine on entry. Used with the ignition hot key (Shift + Z Default)")]
     public bool DisableAutoEngineStart { get; set; }
-    [Description("Set a randomn amount of fuel on each vehicle and calculates consumption rates on use.")]
+    [Description("Set a random amount of fuel on each vehicle and calculates consumption rates on use.")]
     public bool UseCustomFuelSystem { get; set; }
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems")]
     public bool AllowSetEngineState { get; set; }
@@ -43,6 +43,9 @@ public class VehicleSettings : ISettingsDefaultable
     public bool RequireScrewdriverForLockPickEntry { get; set; }
     [Description("Require the screwdriver item to be in your inventory before you can hotwire any vehicles.")]
     public bool RequireScrewdriverForHotwire { get; set; }
+    [Description("Allows mission (persistent) vehicles to be locked by the game automatically. If disabled, only ambient vehicles will be locked by the mod.")]
+    public bool AllowLockMissionVehicles { get;  set; }
+
     public VehicleSettings()
     {
         SetDefault();
@@ -71,5 +74,6 @@ public class VehicleSettings : ISettingsDefaultable
         InjureOnWindowBreak = true;
         RequireScrewdriverForLockPickEntry = false;
         RequireScrewdriverForHotwire = false;
+        AllowLockMissionVehicles = false;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Player;
 using Rage;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
+        BigMessageHandler BigMessage { get; }
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation();

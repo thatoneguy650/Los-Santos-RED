@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,10 @@ public class Respawning// : IRespawning
             return true;
         }
     }
+    public void PayoffPolice()
+    {
+        GameTimeLastBribedPolice = Game.GameTime;
+    }
     public bool PayFine()
     {
         int FineAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
@@ -133,6 +138,7 @@ public class Respawning// : IRespawning
             CurrentPlayer.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
             if (withInvicibility & Settings.SettingsManager.RespawnSettings.InvincibilityOnRespawn)
             {
+                CurrentPlayer.BigMessage.ShowMissionPassedMessage("Invincible", Settings.SettingsManager.RespawnSettings.RespawnInvincibilityTime);
                 Game.LocalPlayer.Character.IsInvincible = true;
                 GameFiber.StartNew(delegate
                 {

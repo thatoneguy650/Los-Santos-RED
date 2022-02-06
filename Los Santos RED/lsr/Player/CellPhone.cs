@@ -52,6 +52,28 @@ public class CellPhone
     private iFruitContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
     private UIMenuItem RequestCopWork;
+    private int CostToClearWanted
+    {
+        get
+        {
+            return Player.WantedLevel * 10000;
+        }
+    }
+    private int CostToPayoffGang(int repLevel)
+    {
+        if (repLevel < 0)
+        {
+            return (0 - repLevel) * 5.Round(100);
+        }
+        else if (repLevel >= 500)
+        {
+            return 0;
+        }
+        else
+        {
+            return (500 - repLevel) * 5.Round(100);
+        }      
+    }
 
     public CustomiFruit CustomiFruit { get; private set; }
     public List<iFruitText> TextList => AddedTexts;
@@ -572,8 +594,7 @@ public class CellPhone
 
         if (repLevel < 0)
         {
-            int CostToBuy = (0 - repLevel) * 5;
-            PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = CostToBuy.ToString("C0") };
+            PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = CostToPayoffGang(repLevel).ToString("C0") };
             ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
             GangMenu.AddItem(PayoffGangNeutral);
             GangMenu.AddItem(ApoligizeToGang);
@@ -587,8 +608,7 @@ public class CellPhone
         }
         else
         {
-            int CostToBuy = (500 - repLevel) * 5;
-            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = CostToBuy.ToString("C0") };
+            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = CostToPayoffGang(repLevel).ToString("C0") };
             GangMenu.AddItem(PayoffGangFriendly);
         }
         GangMenu.Visible = true;
@@ -601,58 +621,7 @@ public class CellPhone
             CustomiFruit.Close(2000);
         }, "CellPhone");
     }
-    private void CivAnswered(iFruitContact contact)
-    {
-        CustomiFruit.Close();
-    }
-    private void CopAnswered(iFruitContact contact)
-    {
-        CopMenu = new UIMenu("", "Select an Option");
-        CopMenu.RemoveBanner();
-        MenuPool.Add(CopMenu);
-        int CostToBuy = Player.WantedLevel * 5000;
-        CopMenu.OnItemSelect += OnCopItemSelect;
-        LastAnsweredContact = contact;
-        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = CostToBuy.ToString("C0") };
-        RequestCopWork = new UIMenuItem("Request Work", "Ask for some work from the cops");
 
-        if (Player.IsWanted && Player.WantedLevel <= 3)
-        {
-            CopMenu.AddItem(PayoffCops);
-        }
-        else if(Player.IsNotWanted)
-        {
-            CopMenu.AddItem(RequestCopWork);
-        }
-        else
-        {
-            CustomiFruit.Close();
-            return;
-        }
-        CopMenu.Visible = true;
-        GameFiber.StartNew(delegate
-        {
-            while (CopMenu.Visible)
-            {
-                GameFiber.Yield();
-            }
-            CustomiFruit.Close();
-        }, "CellPhone");
-    }
-
-    private void OnCopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem == PayoffCops)
-        {
-            PayoffCop(LastAnsweredContact);
-            CopMenu.Visible = false;
-        }
-        else if (selectedItem == RequestCopWork)
-        {
-            RequestWorkFromCop(LastAnsweredContact);
-            CopMenu.Visible = false;
-        }
-    }
 
     private void GangAnswered(iFruitContact contact)
     {
@@ -663,45 +632,7 @@ public class CellPhone
             return;
         }
         ActiveGang = myGang;
-
-
-        int repLevel = Player.GangRelationships.GetRepuationLevel(ActiveGang);
-
-        GangMenu = new UIMenu("", "Select an Option");
-        GangMenu.RemoveBanner();
-        MenuPool.Add(GangMenu);
-        GangMenu.OnItemSelect += OnGangItemSelect;
-
-        if(repLevel < 0)
-        {
-            int CostToBuy = (0 - repLevel) * 5;
-            PayoffGangNeutral = new UIMenuItem("Payoff","Payoff the gang to return to a neutral relationship") { RightLabel = CostToBuy.ToString("C0") };
-            ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
-            GangMenu.AddItem(PayoffGangNeutral);
-            GangMenu.AddItem(ApoligizeToGang);
-        }
-        else if (repLevel >= 500)
-        {
-            RequestGangWork = new UIMenuItem("Request Work", "Ask for some work from the gang");
-            RequestGangDen = new UIMenuItem("Request Invite", $"Request an invite to the {ActiveGang.DenName}");
-            GangMenu.AddItem(RequestGangWork);
-            GangMenu.AddItem(RequestGangDen);
-        }
-        else
-        {
-            int CostToBuy = (500 - repLevel) * 5;
-            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = CostToBuy.ToString("C0") };
-            GangMenu.AddItem(PayoffGangFriendly);
-        }
-        GangMenu.Visible = true;
-        GameFiber.StartNew(delegate
-        {
-            while (GangMenu.Visible)
-            {
-                GameFiber.Yield();
-            }
-            CustomiFruit.Close(2000);
-        }, "CellPhone");
+        GangAnswered(ActiveGang);
     }
     private void OnGangItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -739,7 +670,7 @@ public class CellPhone
     private void PayoffGangToFriendly()
     {
         int repLevel = Player.GangRelationships.GetRepuationLevel(ActiveGang);
-        int CostToBuy = Math.Abs((500 - repLevel) * 5);
+        int CostToBuy = CostToPayoffGang(repLevel);
         if(CostToBuy <= 500)
         {
             Player.GangRelationships.SetReputation(ActiveGang, 500, false);
@@ -757,7 +688,7 @@ public class CellPhone
     private void PayoffGangToNeutral()
     {
         int repLevel = Player.GangRelationships.GetRepuationLevel(ActiveGang);
-        int CostToBuy = Math.Abs((0 - repLevel) * 5);
+        int CostToBuy = CostToPayoffGang(repLevel);
         CreateDeadDrop(CostToBuy, 0, true);
        
     }
@@ -803,14 +734,24 @@ public class CellPhone
         if (myDrop != null && myDen != null)
         {
             Player.PlayerTasks.AddTask(ActiveGang.ContactName);
-            int MoneyToPickup = RandomItems.GetRandomNumberInt(2000, 10000);
+            int MoneyToPickup = RandomItems.GetRandomNumberInt(2000, 10000).Round(500);
+            float TenPercent = (float)MoneyToPickup / 10;
+
+            int MoneyToRecieve = (int)TenPercent;
+
+            if(MoneyToRecieve >= 0)
+            {
+                MoneyToRecieve = 500;
+            }
+            MoneyToRecieve = MoneyToRecieve.Round(10);
             myDrop.SetGang(ActiveGang, MoneyToPickup, 0, false);
             myDen.ExpectedMoney = MoneyToPickup;
             myDen.RepOnDropOff = 500;
+            myDen.MoneyOnDropOff = MoneyToRecieve;
             List<string> Replies = new List<string>() {
-                    $"Pickup ${MoneyToPickup} from {myDrop.StreetAddress}, its {myDrop.Description}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}.",
-                    $"Go get ${MoneyToPickup} from {myDrop.Description}, address is {myDrop.StreetAddress}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}.",
-                    $"Make a pickup of ${MoneyToPickup} from {myDrop.Description} on {myDrop.StreetAddress}. Take it to the {ActiveGang.DenName} on {myDen.StreetAddress}.",
+                    $"Pickup ${MoneyToPickup} from {myDrop.StreetAddress}, its {myDrop.Description}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}. You get 10% on completion",
+                    $"Go get ${MoneyToPickup} from {myDrop.Description}, address is {myDrop.StreetAddress}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}. 10% to you when you drop it off",
+                    $"Make a pickup of ${MoneyToPickup} from {myDrop.Description} on {myDrop.StreetAddress}. Take it to the {ActiveGang.DenName} on {myDen.StreetAddress}. You'll get 10% when I get my money.",
                     };
             AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
             CustomiFruit.Close();
@@ -966,7 +907,57 @@ public class CellPhone
         }
     }
 
+    private void CivAnswered(iFruitContact contact)
+    {
+        CustomiFruit.Close();
+    }
 
+    private void CopAnswered(iFruitContact contact)
+    {
+        CopMenu = new UIMenu("", "Select an Option");
+        CopMenu.RemoveBanner();
+        MenuPool.Add(CopMenu);
+        CopMenu.OnItemSelect += OnCopItemSelect;
+        LastAnsweredContact = contact;
+        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = CostToClearWanted.ToString("C0") };
+        RequestCopWork = new UIMenuItem("Request Work", "Ask for some work from the cops");
+
+        if (Player.IsWanted)
+        {
+            CopMenu.AddItem(PayoffCops);
+        }
+        else if (Player.IsNotWanted)
+        {
+            CopMenu.AddItem(RequestCopWork);
+        }
+        else
+        {
+            CustomiFruit.Close();
+            return;
+        }
+        CopMenu.Visible = true;
+        GameFiber.StartNew(delegate
+        {
+            while (CopMenu.Visible)
+            {
+                GameFiber.Yield();
+            }
+            CustomiFruit.Close();
+        }, "CellPhone");
+    }
+    private void OnCopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == PayoffCops)
+        {
+            PayoffCop(LastAnsweredContact);
+            CopMenu.Visible = false;
+        }
+        else if (selectedItem == RequestCopWork)
+        {
+            RequestWorkFromCop(LastAnsweredContact);
+            CopMenu.Visible = false;
+        }
+    }
     private void RequestWorkFromCop(iFruitContact contact)
     {
         List<string> Replies = new List<string>() {
@@ -982,18 +973,62 @@ public class CellPhone
     }
     private void PayoffCop(iFruitContact contact)
     {
-        int CostToBuy = Player.WantedLevel * 5000;
-        if(Player.Money >= CostToBuy)
+
+        EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearWanted {CostToClearWanted}");
+        if(Player.WantedLevel > 4)
         {
-            Player.GiveMoney(-1 * CostToBuy);
-            Player.SetWantedLevel(0, "Cop Payoff", true);
             List<string> Replies = new List<string>() {
-                $"Don't worry about the cops",
-                $"I don't think you have to worry about that anymore",
+                $"Nothing I can do, you really fucked up.",
+                $"Should have called me earlier",
+                $"Too late now, you are on your own",
+                $"Too many eyes on this one, should have let me known earlier",
+                };
+            AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+
+        }
+        else if (Player.WantedLevel >= 3 && Player.PoliceResponse.HasHurtPolice)
+        {
+            List<string> Replies = new List<string>() {
+                $"Shouldn't have messed with the cops so much, they really want you. It's outta my hands",
+                $"They are out to get you since you fucked with the cops, nothing I can do.",
+                $"Next time don't send so many cops to the hospital and maybe I can help",
                 };
             AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
-        else
+        else if(Player.WantedLevel == 1)
+        {
+            List<string> Replies = new List<string>() {
+                $"Why not just pay the fine?",
+                $"Just stop and pay the fine",
+                $"The fine is a lot cheaper than me",
+                $"Why not pay the small fine instead of bothering me?",
+                };
+            AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
+        else if(Player.Money >= CostToClearWanted)
+        {
+            Player.GiveMoney(-1 * CostToClearWanted);
+
+            GameFiber PayoffFiber = GameFiber.StartNew(delegate
+            {
+                int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
+                GameFiber.Sleep(SleepTime);
+                Player.PayoffPolice();
+                Player.SetWantedLevel(0, "Cop Payoff", true);
+
+            }, "PayoffFiber");
+
+
+
+            List<string> Replies = new List<string>() {
+                $"Let me work my magic, hang on.",
+                $"They should forget about you soon.",
+                $"Let me make up some bullshit to distract them, wait a few.",
+                $"Sending out an officer down across town, should get them off your tail for a while",
+                };
+            AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
+        else if(Player.Money < CostToClearWanted)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",
@@ -1001,7 +1036,13 @@ public class CellPhone
                 };
             AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
-
+        else
+        {
+            List<string> Replies = new List<string>() {
+                $"Don't bother me",
+                };
+            AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
     }
 
     private void RequestPoliceAssistance()

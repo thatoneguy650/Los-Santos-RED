@@ -22,10 +22,12 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         bool IsWanted { get; }
         bool IsNotWanted { get; }
+        PoliceResponse PoliceResponse { get; }
 
         void GiveMoney(int v);
         void AddGPSRoute(string name, Vector3 entrancePosition);
         void SetWantedLevel(int v1, string v2, bool v3);
+        void PayoffPolice();
         //bool IsHostile(Gang myGang);
         //bool IsFriendly(Gang myGang);
         //int GetRepuationLevel(Gang gangLastCalled);

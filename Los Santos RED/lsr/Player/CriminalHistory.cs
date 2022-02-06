@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -42,7 +43,16 @@ namespace LosSantosRED.lsr
         }
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
+            bool isDeadly = CrimesAssociated.Any(x => x.ResultsInLethalForce);
             CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x=> x.ResultingWantedLevel));
+            if(isDeadly)
+            {
+                Player.BigMessage.ShowColoredShard("APB Issued", "", HudColor.Gold, HudColor.InGameBackground, 2500);
+            }
+            else
+            {
+                Player.BigMessage.ShowColoredShard("BOLO Issued", "", HudColor.Red, HudColor.InGameBackground, 2500);
+            }
         }
         public void OnLostWanted()
         {

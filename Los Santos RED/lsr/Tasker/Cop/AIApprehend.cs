@@ -268,7 +268,7 @@ public class AIApprehend : ComplexTask
                 if (Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
                 {
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
-                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)VehicleDrivingFlags.Emergency);
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.FastEmergency);
                     SetSiren();
                     if (Ped.Pedestrian.CurrentVehicle.Exists())
                     {
@@ -724,7 +724,7 @@ public class AIApprehend : ComplexTask
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian.CurrentVehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian.CurrentVehicle, (int)eVehicleMissionType.Ram, 50f, (int)eCustomDrivingStyles.FastEmergency, 0f, 2f, true);//8f
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -765,7 +765,7 @@ public class AIApprehend : ComplexTask
                             {
                                 int lol = 0;
                                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian.CurrentVehicle, (int)eVehicleMissionType.Ram, 50f, (int)VehicleDrivingFlags.Emergency, 0f, 2f, true);//8f
+                                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian.CurrentVehicle, (int)eVehicleMissionType.Ram, 50f, (int)eCustomDrivingStyles.FastEmergency, 0f, 2f, true);//8f
                                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -833,7 +833,7 @@ public class AIApprehend : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian, 7, Speed, (int)VehicleDrivingFlags.Emergency, 4f, 2f, true);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", 0, Ped.Pedestrian.CurrentVehicle, OtherTarget.Pedestrian, 7, Speed, (int)eCustomDrivingStyles.FastEmergency, 4f, 2f, true);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

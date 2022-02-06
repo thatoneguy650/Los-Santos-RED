@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr.Interface
         List<ButtonPrompt> ButtonPrompts { get; }
         Inventory Inventory { get; }
         PlayerTasks PlayerTasks { get; }
+        bool IsDoingSuspiciousActivity { get; set; }
 
         void SetUnarmed();
         void StopDynamicActivity();

@@ -804,7 +804,7 @@ public class UI : IMenuProvideable
     }
     private string GetSelectorDisplay()
     {
-        if (DisplayablePlayer.CurrentWeapon != null)
+        if (DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable)
         {
             if (Settings.SettingsManager.UISettings.WeaponDisplaySimpleSelector)
             {
@@ -1104,6 +1104,20 @@ public class UI : IMenuProvideable
         {
             if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
             {
+
+#if DEBUG
+                string StreetNumber = "";
+                if (DisplayablePlayer.CurrentLocation.ClosestNodeID.ToString().Length >= 4)
+                {
+                    StreetNumber = DisplayablePlayer.CurrentLocation.ClosestNodeID.ToString().Substring(0, 4);
+                }
+                else
+                {
+                    StreetNumber = DisplayablePlayer.CurrentLocation.ClosestNodeID.ToString();
+                }
+                StreetDisplay += $"{StreetNumber} ";
+#endif
+
                 StreetDisplay += $" {CurrentDefaultTextColor}";
                 if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
                 {
