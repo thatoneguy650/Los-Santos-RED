@@ -37,13 +37,17 @@ namespace LosSantosRED.lsr
         private readonly List<Crime> CrimesViolating = new List<Crime>();
         private ISettingsProvideable Settings;
         private bool SentRecentCrash = false;
-        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings)
+        private IZones Zones;
+        private IGangTerritories GangTerritories;
+        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes, ISettingsProvideable settings, IZones zones, IGangTerritories gangTerritories)
         {
             TimeReporter = timeReporter;
             Player = currentPlayer;
             Crimes = crimes;
             CrimeList = Crimes.CrimeList;
             Settings = settings;
+            Zones = zones;
+            GangTerritories = gangTerritories;
         }
         public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();//CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
@@ -59,6 +63,19 @@ namespace LosSantosRED.lsr
         private bool RecentlyHitPed => TimeSincePlayerHitPed > 0 && TimeSincePlayerHitPed <= Settings.SettingsManager.ViolationSettings.RecentlyHitPedTime;
         private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > 0 && TimeSincePlayerHitVehicle <= Settings.SettingsManager.ViolationSettings.RecentlyHitVehicleTime;
         private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;
+
+        public void AddCarJacked(PedExt myPed)
+        {
+            if (myPed.IsGangMember)
+            {
+                if (myPed.GetType() == typeof(GangMember))
+                {
+                    GangMember gm = (GangMember)myPed;
+                    AddCarjackedGang(gm);
+                    //AddAttackedGang(gm, true);
+                }
+            }
+        }
         public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {
             if (myPed.IsCop)
@@ -66,19 +83,18 @@ namespace LosSantosRED.lsr
                 GameTimeLastHurtCop = Game.GameTime;
                 //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
                 Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
-                EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added", 5);
+                EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
             }
             else
             {
                 if (myPed.GetType() == typeof(GangMember))
                 {
                     GangMember gm = (GangMember)myPed;
-                    Player.GangRelationships.ChangeReputation(gm.Gang, -500, true);
-                    Player.GangRelationships.GetReputation(gm.Gang).MembersHurt++;
-                    EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemebr Added", 5);
+                    AddAttackedGang(gm, false);
                 }
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
+            EntryPoint.WriteToConsole($"VIOLATIONS: Hurting WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {
@@ -88,8 +104,7 @@ namespace LosSantosRED.lsr
                 GameTimeLastKilledCop = Game.GameTime;
                 GameTimeLastHurtCop = Game.GameTime;
                 Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
-                //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));
-                EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added", 5);
+                EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
             }
             else
             {
@@ -98,15 +113,92 @@ namespace LosSantosRED.lsr
                     if(myPed.GetType() == typeof(GangMember))
                     {
                         GangMember gm = (GangMember)myPed;
-                        Player.GangRelationships.ChangeReputation(gm.Gang, -1000, true);
-                        Player.GangRelationships.GetReputation(gm.Gang).MembersKilled++;
-                        EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemebr Added", 5);
+                        AddAttackedGang(gm, true);
                     }
                 }
                 PlayerKilledCivilians.Add(myPed);
                 GameTimeLastKilledCivilian = Game.GameTime;
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
+            EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+        }
+        private void AddAttackedGang(GangMember gm, bool isKilled)
+        {
+            int RepToRemove = -500;
+            if(isKilled)
+            {
+                RepToRemove = -1000;
+            }      
+            GangReputation gr = Player.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
+            if (gr != null)
+            {
+                if (isKilled)
+                {
+                    gr.MembersKilled++;
+                    EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} {gr.MembersKilled}", 5);
+                }
+                else
+                {
+                    gr.MembersHurt++;
+                    EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} {gr.MembersHurt}", 5);
+                }
+                if (gm.Pedestrian.Exists())
+                {
+                    Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
+                    if (KillingZone != null)
+                    {
+                        EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
+                        List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
+                        if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+                        {
+                            EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
+                            if (isKilled)
+                            {
+                                RepToRemove -= 1000;
+                                gr.MembersKilledInTerritory++;
+                                EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
+                            }
+                            else
+                            {
+                                RepToRemove -= 500;
+                                gr.MembersHurtInTerritory++;
+                                EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
+                    }
+                }
+            }
+            Player.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
+        }
+        private void AddCarjackedGang(GangMember gm)
+        {
+            int RepToRemove = -500;      
+            GangReputation gr = Player.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
+            if (gr != null)
+            {
+                gr.MembersCarJacked++;
+                EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);       
+                if (gm.Pedestrian.Exists())
+                {
+                    Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
+                    if (KillingZone != null)
+                    {
+                        List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
+                        if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
+                        {
+                            RepToRemove -= 500;
+                            gr.MembersCarJackedInTerritory++;
+                            EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
+                        }
+                    }
+                }
+            }
+            Player.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
         }
         public void Reset()
         {

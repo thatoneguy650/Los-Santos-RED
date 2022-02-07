@@ -47,7 +47,7 @@ namespace Mod
             Gangs = gangs;
             GangTerritories = gangTerritories;
             Streets = streets;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
         }
         public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
@@ -158,18 +158,22 @@ namespace Mod
                 }
                 else
                 {
-                    int NodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(basicLocation.EntrancePosition.X, basicLocation.EntrancePosition.Y, basicLocation.EntrancePosition.Z, 1, 1, 30f, 30f);
-
-
-                    if(NodeID.ToString().Length>= 4)
+                    if (basicLocation.CellY < 0)
                     {
-                        StreetNumber = NodeID.ToString().Substring(0,4);
+                        StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "S";
                     }
                     else
                     {
-                        StreetNumber = NodeID.ToString();
+                        StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "N";
                     }
-                    
+                    if (basicLocation.CellX < 0)
+                    {
+                        StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "W";
+                    }
+                    else
+                    {
+                        StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "E";
+                    }
                 }
                 string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
                 basicLocation.StreetAddress = LocationName;

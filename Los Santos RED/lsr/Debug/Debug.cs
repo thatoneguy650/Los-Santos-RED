@@ -616,14 +616,16 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.CellPhone.AddContact(myGang, true);
+
+
+
+
+        //Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
+
         Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.CellPhone.AddContact(myGang, true);
-
-
-
-
-        Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
-
+        Player.GangRelationships.SetReputation(myGang, 2000, true);
 
         //SpawnNoGunAttackers();
         //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
@@ -992,8 +994,8 @@ public class Debug
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
-        Dispatcher.DebugSpawnCop();
-
+        //Dispatcher.DebugSpawnCop();
+        Dispatcher.DebugSpawnGang();
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
         //{
@@ -2099,12 +2101,12 @@ public class Debug
     }
     private void WriteCivilianAndCopState()
     {
-        //EntryPoint.WriteToConsole($"============================================ TRACKED VEHICLES START", 5);
-        //foreach (VehicleExt veh in World.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x=> x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
-        //{
-        //    EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)}", 5);
-        //}
-        //EntryPoint.WriteToConsole($"============================================ TRACKED VEHICLES END", 5);
+        EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
+        foreach (VehicleExt veh in World.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        {
+            EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)} Gang? {veh.AssociatedGang?.ShortName} WasModSpawned {veh.WasModSpawned}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ VEHICLES END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVIES START", 5);
         foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
         {

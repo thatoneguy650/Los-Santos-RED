@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Locations;
 using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,5 +59,8 @@ namespace LosSantosRED.lsr.Interface
         SelectorOptions CurrentSelectorSetting { get; }
         short CurrentWeaponMagazineSize { get; }
         Violations Violations { get; }
+        int CellX { get; }
+        int CellY { get; }
+        Ped Character { get; }
     }
 }

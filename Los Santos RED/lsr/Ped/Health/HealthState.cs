@@ -150,7 +150,7 @@ public class HealthState
             MyPed.LogSourceOfDeath();
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
-                CurrentPlayer.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+                CurrentPlayer.Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Killed By Player", 5);
             }
         }
@@ -161,7 +161,7 @@ public class HealthState
                 if (Health - CurrentHealth + Armor - CurrentArmor > 5)
                 {
                     MyPed.HasBeenHurtByPlayer = true;
-                    CurrentPlayer.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+                    CurrentPlayer.Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                    // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
                 }
                 else
@@ -237,6 +237,9 @@ public class HealthState
         {
             return;
         }
+        WasHitByVehicle = false;
+        WasShot = false;
+        WasMeleeAttacked = false;
 
         HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", MyPed.Pedestrian);
         HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian);

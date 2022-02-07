@@ -31,6 +31,7 @@ public class UISettings : ISettingsDefaultable
     public GTAFont VehicleStatusFont { get; set; }
     public bool VehicleStatusIncludeTextSpeedLimit { get; set; }
     public bool VehicleStatusIncludeCurrentSpeed { get; set; }
+    public bool VehicleStatusIncludeCompass { get; set; }
     public bool ShowPlayerDisplay { get; set; }
     public bool FadePlayerDisplay { get; set; }
     public bool FadePlayerDisplayDuringWantedAndInvestigation { get; set; }
@@ -104,6 +105,7 @@ public class UISettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToShow { get; set; }
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
+    public bool ShowWantedMessageOnStart { get; set; }
 
 
     public UISettings()
@@ -139,6 +141,7 @@ public class UISettings : ISettingsDefaultable
         VehicleStatusFont = GTAFont.FontHouseScript;
         VehicleStatusIncludeTextSpeedLimit = false;
         VehicleStatusIncludeCurrentSpeed = true;
+        VehicleStatusIncludeCompass = true;
         ShowPlayerDisplay = true;
         FadePlayerDisplay = false;
         FadePlayerDisplayDuringWantedAndInvestigation = false;
@@ -212,5 +215,6 @@ public class UISettings : ISettingsDefaultable
         WeaponDisplayJustificationID = 2;
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
+        ShowWantedMessageOnStart = true;
     }
 }

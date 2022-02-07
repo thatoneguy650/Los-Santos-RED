@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsNotWanted { get; }
         PoliceResponse PoliceResponse { get; }
+        VehicleExt CurrentVehicle { get; }
 
         void GiveMoney(int v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

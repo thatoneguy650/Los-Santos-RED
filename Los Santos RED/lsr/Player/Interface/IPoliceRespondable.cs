@@ -66,8 +66,8 @@ namespace LosSantosRED.lsr.Interface
         void OnPoliceNoticeVehicleChange();
         void OnSuspectEluded();
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
-        void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
-        void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
+        //void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
+        //void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         GangRelationships GangRelationships { get; }
         BigMessageHandler BigMessage { get; }
         //void ChangeReputation(Gang gang, int v, bool sendNotification);

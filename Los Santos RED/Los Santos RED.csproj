@@ -207,6 +207,7 @@
     <Compile Include="lsr\Tasker\GangMember\GangFight.cs" />
     <Compile Include="lsr\Tasker\GangMember\GangFlee.cs" />
     <Compile Include="lsr\Tasker\GangMember\GangTasker.cs" />
+    <Compile Include="lsr\UI\BarDisplay.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
     <Compile Include="lsr\UI\Menu\Settings\SettingsMenuNew.cs" />

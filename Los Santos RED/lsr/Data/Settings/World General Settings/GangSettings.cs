@@ -15,6 +15,11 @@ public class GangSettings : ISettingsDefaultable
     public bool RemoveVanillaSpawnedPeds { get; set; }
     public int PercentSpawnOutsideTerritory { get; set; }
     public bool ManageDispatching { get; set; }
+    public bool RemoveVanillaSpawnedPedsOutsideTerritory { get; set; }
+    public int TimeBetweenSpawn { get; set; }
+    public float MaxDistanceToSpawn { get; set; }
+    public float MinDistanceToSpawn { get; set; }
+    public int TotalSpawnedMembersLimit { get; set; }
 
     public GangSettings()
     {
@@ -22,6 +27,7 @@ public class GangSettings : ISettingsDefaultable
 #if DEBUG
         ShowSpawnedBlip = true;
         //RemoveVanillaGangs = true;
+        RemoveVanillaSpawnedPedsOutsideTerritory = true;
 #else
                // ShowSpawnedBlips = false;
 #endif
@@ -36,6 +42,11 @@ public class GangSettings : ISettingsDefaultable
         RemoveVanillaSpawnedPeds = false;
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
+        RemoveVanillaSpawnedPedsOutsideTerritory = false;
+        TimeBetweenSpawn = 10000;
+        MinDistanceToSpawn = 50f;
+        MaxDistanceToSpawn = 150f;
+        TotalSpawnedMembersLimit = 5;
     }
 
 }

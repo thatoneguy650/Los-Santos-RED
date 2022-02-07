@@ -320,6 +320,7 @@ public class SpawnTask
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
             {
+                
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle} {VehicleType.RequiredColor}", 2);
                 //if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
                 //{
@@ -342,6 +343,7 @@ public class SpawnTask
                         CopVehicle.UpgradePerformance();
                     }
                     CreatedVehicles.Add(CopVehicle);
+                    CopVehicle.AssociatedGang = Gang;
                     GameFiber.Yield();
                     return CopVehicle;
                 }

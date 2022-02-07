@@ -29,7 +29,8 @@ public class Pedestrians
     private IShopMenus ShopMenus;
     private IGangs Gangs;
     private uint GameTimeLastCreatedPeds = 0;
-    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs)
+    private IGangTerritories GangTerritories;
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories)
     {
         Agencies = agencies;
         Zones = zones;
@@ -41,6 +42,7 @@ public class Pedestrians
         Crimes = crimes;
         ShopMenus = shopMenus;
         Gangs = gangs;
+        GangTerritories = gangTerritories;
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
@@ -513,6 +515,24 @@ public class Pedestrians
         {
             MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName);
         }
+
+        if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOutsideTerritory)
+        {
+            Zone CurrentZone = Zones.GetZone(Pedestrian.Position);
+            if (CurrentZone != null)
+            {
+                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
+                if (!totalTerritories.Any(x => x.ZoneInternalGameName == CurrentZone.InternalGameName))
+                {
+                    Pedestrian.Delete();
+                    return;
+                }
+            }
+        }
+
+
+
+
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage);
         bool canBeAmbientTasked = true;

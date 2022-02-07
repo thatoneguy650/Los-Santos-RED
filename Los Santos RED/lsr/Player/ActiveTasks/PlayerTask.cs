@@ -15,6 +15,8 @@ public class PlayerTask
 
     public string ContactName { get; set; }
     public bool IsActive { get; set; } = false;
+    public bool CanExpire { get; set; } = false;
     public DateTime ExpireTime { get; set; }
+    public bool IsReadyForPayment { get; set; } = false;
 }
 

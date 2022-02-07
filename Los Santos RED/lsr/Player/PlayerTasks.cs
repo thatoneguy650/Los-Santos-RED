@@ -27,8 +27,10 @@ public class PlayerTasks
         PlayerTaskList.RemoveAll(x => !x.IsActive);
         foreach(PlayerTask pt in PlayerTaskList)
         {
-            if(pt.ExpireTime != null && DateTime.Compare(pt.ExpireTime, Time.CurrentDateTime) < 0)
+            if(pt.CanExpire && DateTime.Compare(pt.ExpireTime, Time.CurrentDateTime) < 0)
             {
+                pt.IsActive = false;
+                pt.IsReadyForPayment = false;
                 //expired?
             }
         }
@@ -47,6 +49,7 @@ public class PlayerTasks
         if(myTask != null)
         {
             myTask.IsActive = false;
+            myTask.IsReadyForPayment = false;
         }
     }
     public bool HasTask(string contactName)
@@ -70,6 +73,11 @@ public class PlayerTasks
     public void RemoveTask(string contactName)
     {
         PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
+    }
+
+    public PlayerTask GetTask(string contactName)
+    {
+        return PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName);
     }
 }
 

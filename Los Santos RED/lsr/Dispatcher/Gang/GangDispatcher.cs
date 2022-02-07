@@ -48,12 +48,12 @@ public class GangDispatcher
     private List<GangMember> DeleteableGangMembers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
-    private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= 5;
+    private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 25000;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
-    private float MaxDistanceToSpawn => 150f;
-    private float MinDistanceToSpawn => 50f;
-    private int TimeBetweenSpawn => 10000;//15000;
+    private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;
+    private float MinDistanceToSpawn => Settings.SettingsManager.GangSettings.MinDistanceToSpawn;//50f;
+    private int TimeBetweenSpawn => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -99,7 +99,7 @@ public class GangDispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes,PedGroups,ShopMenus);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 foreach(PedExt created in spawnTask.CreatedPeople)
                                 {
@@ -210,7 +210,9 @@ public class GangDispatcher
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
+            ToReturn.Clear();
             ToReturn.AddRange(Gangs.GetSpawnableGangs(WantedLevel));
+            EntryPoint.WriteToConsole("Gang Dispatcher, set to random gang spawn");
         }
         foreach (Gang ag in ToReturn)
         {
@@ -235,8 +237,8 @@ public class GangDispatcher
     private Gang GetRandomGang(SpawnLocation spawnLocation)
     {
         Gang Gang;
-        List<Gang> PossibleAgencies = GetGangs(spawnLocation.StreetPosition, Player.WantedLevel);
-        Gang = PossibleAgencies.PickRandom();
+        List<Gang> PossibleGangs = GetGangs(spawnLocation.StreetPosition, Player.WantedLevel);
+        Gang = PossibleGangs.PickRandom();
         if (Gang == null)
         {
             Gang = GetGangs(spawnLocation.InitialPosition, Player.WantedLevel).PickRandom();
@@ -274,4 +276,74 @@ public class GangDispatcher
         }
         return true;
     }
+
+    public bool ForceDispatch()
+    {
+        HasDispatchedThisTick = false;
+        if (1==1)//Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
+        {
+            HasDispatchedThisTick = true;//up here for now, might be better down low
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn", 3);
+            int timesTried = 0;
+            bool isValidSpawn = false;
+            SpawnLocation spawnLocation = new SpawnLocation();
+            do
+            {
+                spawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);//GetPositionAroundPlayer();
+                spawnLocation.StreetPosition = spawnLocation.InitialPosition;
+               //spawnLocation.GetClosestStreet();
+               // spawnLocation.GetClosestSidewalk();
+                isValidSpawn = true;// IsValidSpawn(spawnLocation);
+                timesTried++;
+            }
+            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+            if (spawnLocation.HasSpawns && isValidSpawn)
+            {
+                Gang gang = GetRandomGang(spawnLocation);
+                if (gang != null)
+                {
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
+                    DispatchableVehicle VehicleType = null;
+                    //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                    if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
+                    {
+                        VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                    }
+                    if (VehicleType != null || spawnLocation.HasSidewalk)
+                    {
+                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
+                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, VehicleType?.RequiredPassengerModels);
+                        if (PersonType != null)
+                        {
+                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
+                            try
+                            {
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus) { AllowAnySpawn = true };// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                spawnTask.AttemptSpawn();
+                                foreach (PedExt created in spawnTask.CreatedPeople)
+                                {
+                                    World.AddEntity(created);
+
+                                }
+                                //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.None));
+                                HasDispatchedThisTick = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Gang Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+            }
+            GameTimeAttemptedDispatch = Game.GameTime;
+        }
+        return HasDispatchedThisTick;
+    }
+    
 }

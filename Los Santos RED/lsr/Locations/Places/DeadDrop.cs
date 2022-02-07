@@ -91,6 +91,7 @@ public class DeadDrop : InteractableLocation
         }
         Game.DisplayHelp("You have picked up the cash, don't hang around");
         Player.GiveMoney(MoneyAmount);
+        Player.PlayerTasks.GetTask(AssociatedGang.ContactName).IsReadyForPayment = true;
         SendMessageOnLeaveArea(Player);
         ButtonPromptText = "";
         Dispose();

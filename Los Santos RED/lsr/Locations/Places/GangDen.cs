@@ -21,7 +21,7 @@ public class GangDen : TransactableLocation
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private ITimeControllable Time;
-
+    private UIMenuItem completeTask;
 
     public GangDen() : base()
     {
@@ -70,15 +70,23 @@ public class GangDen : TransactableLocation
 
                 CreateInteractionMenu();
                 CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-                if (ExpectedMoney > 0)
+
+                PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
+
+                if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                 {
                     dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") {RightLabel = $"${ExpectedMoney}" };
                     InteractionMenu.AddItem(dropoffCash);
                 }
-                if (ExpectedItem != null)
+                else if (ExpectedItem != null && pt.IsReadyForPayment)
                 {
                     dropoffItem = new UIMenuItem($"Drop off item", $"Drop off the {ExpectedItem.Name}.") { RightLabel = $"{ExpectedItem.Name}" };
                     InteractionMenu.AddItem(dropoffItem);
+                }
+                else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
+                {
+                    completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${MoneyOnDropOff}" };
+                    InteractionMenu.AddItem(completeTask);
                 }
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
@@ -156,6 +164,23 @@ public class GangDen : TransactableLocation
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", $"Come back when you actually have the {ExpectedItem.Name}.");
             }
 
+        }
+        else if (selectedItem == completeTask)
+        {
+            Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for taking care of that thing. Here's your share.");
+            if (RepOnDropOff > 0)
+            {
+                Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff, false);
+            }
+            if (MoneyOnDropOff > 0)
+            {
+                Player.GiveMoney(MoneyOnDropOff);
+            }
+            RepOnDropOff = 0;
+            ExpectedMoney = 0;
+            MoneyOnDropOff = 0;
+            Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
+            InteractionMenu.Visible = false;
         }
     }
 

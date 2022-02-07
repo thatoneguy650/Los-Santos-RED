@@ -125,7 +125,7 @@ namespace Mod
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, EntityProvider);
-            Violations = new Violations(this, TimeControllable, Crimes, Settings);
+            Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
             Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
@@ -168,7 +168,7 @@ namespace Mod
         public Ped Character => Game.LocalPlayer.Character;
         public int GroupID { get; set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
-        public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
+        public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.GangMemberList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.MerchantList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
         public bool AnyPoliceCanHearPlayer { get; set; } //all this perception stuff gets moved out?
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
@@ -450,8 +450,8 @@ namespace Mod
                 Investigation.Start(Location, PoliceResponse.PoliceHaveDescription);
             }
         }
-        public void AddInjured(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
-        public void AddKilled(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+        //public void AddInjured(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+        //public void AddKilled(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
         public void Arrest()
         {
             BeingArrested = true;
@@ -2428,13 +2428,13 @@ namespace Mod
                         CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                         CurrentVehicle.Vehicle.MustBeHotwired = false;
                     }
-                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
                     else
                     {
+                        if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
+                        {
+                            CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                            CurrentVehicle.Vehicle.MustBeHotwired = false;
+                        }
                         if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
                         {
                             CurrentVehicle.AttemptToLock();
@@ -2464,7 +2464,9 @@ namespace Mod
                         else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                            CarJack MyJack = new CarJack(this, CurrentVehicle, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
+                            PedExt jackedPed = EntityProvider.GetPedExt(VehicleTryingToEnter.Driver.Handle);
+                            Violations.AddCarJacked(jackedPed);
+                            CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, CurrentWeapon);
                             MyJack.Start();
                         }
                         else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
@@ -2663,8 +2665,10 @@ namespace Mod
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
 
-                    BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
-
+                    if (Settings.SettingsManager.UISettings.ShowWantedMessageOnStart)
+                    {
+                        BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
+                    }
 
                 }
             }

@@ -251,7 +251,7 @@ public class PlayerInfoMenu
 
 
             GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
-            if(myDen != null)
+            if(myDen != null && myDen.IsEnabled)
             {
                 DescriptionText += $"~n~{gr.Gang.DenName}: {myDen.StreetAddress}"; //+ gr.ToStringBare();
             }
@@ -289,11 +289,15 @@ public class PlayerInfoMenu
 
             if (gr.MembersKilled > 0)
             {
-                DescriptionText += $"~n~~r~Members Killed: {gr.MembersKilled}~s~";
+                DescriptionText += $"~n~~r~Members Killed~s~: {gr.MembersKilled}~s~ ({gr.MembersKilledInTerritory})";
             }
             if (gr.MembersHurt > 0)
             {
-                DescriptionText += $"~n~~o~Members Hurt: {gr.MembersHurt}~s~";
+                DescriptionText += $"~n~~o~Members Hurt~s~: {gr.MembersHurt}~s~ ({gr.MembersHurtInTerritory})";
+            }
+            if (gr.MembersCarJacked > 0)
+            {
+                DescriptionText += $"~n~~o~Members CarJacked~s~: {gr.MembersCarJacked}~s~ ({gr.MembersCarJackedInTerritory})";
             }
 
             TabItem tabItem = new TabTextItem($"{gr.Gang.ShortName} {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
@@ -407,11 +411,32 @@ public class PlayerInfoMenu
                         zoneString = $"~p~{placeZone.DisplayName}~s~";
                     }
                     string streetName = Streets.GetStreetNames(gl.EntrancePosition);
+                    string streetNumber = "";
                     if (streetName == "")
                     {
                         betweener = "";
                     }
-                    string LocationName = $"{gl.Name} - {(gl.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - {streetName} {betweener} {zoneString}".Trim();
+                    else
+                    {
+                        if (gl.CellY < 0)
+                        {
+                            streetNumber = Math.Abs(gl.CellY * 100).ToString() + "S";
+                        }
+                        else
+                        {
+                            streetNumber = Math.Abs(gl.CellY * 100).ToString() + "N";
+                        }
+                        if (gl.CellX < 0)
+                        {
+                            streetNumber += Math.Abs(gl.CellX * 100).ToString() + "W";
+                        }
+                        else
+                        {
+                            streetNumber += Math.Abs(gl.CellX * 100).ToString() + "E";
+                        }
+                    }
+
+                    string LocationName = $"{gl.Name} - {(gl.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{streetNumber} {streetName} {betweener} {zoneString}".Trim();
                     LocationNames.Add(LocationName);
                     gl.FullAddressText = LocationName;
                     LocationPlaces.Add(gl);

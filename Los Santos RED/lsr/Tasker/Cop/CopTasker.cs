@@ -151,7 +151,7 @@ public class CopTasker
                     if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
                     {
                         EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest);
+                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
                         Cop.ResetWeaponsState();
                         GameFiber.Yield();//TR Added back 4
                         Cop.CurrentTask.Start();
@@ -164,7 +164,7 @@ public class CopTasker
             if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
             {
                 EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest);
+                Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
                 Cop.ResetWeaponsState();
                 GameFiber.Yield();//TR Added back 4
                 Cop.CurrentTask.Start();

@@ -52,6 +52,12 @@ public class CellPhone
     private iFruitContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
     private UIMenuItem RequestCopWork;
+    private UIMenu GangWorkMenu;
+    private UIMenuItem GangHit;
+    private UIMenuItem DeadDropPickup;
+    private UIMenuItem GangTheft;
+    private UIMenuItem GangTaskCancel;
+
     private int CostToClearWanted
     {
         get
@@ -601,10 +607,29 @@ public class CellPhone
         }
         else if (repLevel >= 500)
         {
-            RequestGangWork = new UIMenuItem("Request Work", "Ask for some work from the gang");
-            RequestGangDen = new UIMenuItem("Request Invite", "Request an invite to the gang den");
-            GangMenu.AddItem(RequestGangWork);
+            //RequestGangWork = new UIMenuItem("Request Work", "Ask for some work from the gang");
+            if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
+            {
+                GangTaskCancel = new UIMenuItem("Cancel Task", "Tell the gang you can't complete the task.") { RightLabel = "$?" };
+                GangMenu.AddItem(GangTaskCancel);
+            }
+            else
+            {
+                GangWorkMenu = MenuPool.AddSubMenu(GangMenu, "Request Work");
+                GangMenu.MenuItems[GangMenu.MenuItems.Count() - 1].Description = "Ask for some work from the gang";
+                GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival") { RightLabel = "$10,000+" };
+                DeadDropPickup = new UIMenuItem("Pickup", "Pickup an item for the gang and bring it back") { RightLabel = "$200-$1,000" };
+                GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = "$1,000+" };
+                GangWorkMenu.AddItem(GangHit);
+                GangWorkMenu.AddItem(DeadDropPickup);
+                GangWorkMenu.AddItem(GangTheft);
+            }
+            RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
+            //GangMenu.AddItem(RequestGangWork);
             GangMenu.AddItem(RequestGangDen);
+            GangWorkMenu.RemoveBanner();
+            GangWorkMenu.OnItemSelect += OnGangWorkItemSelect;
+
         }
         else
         {
@@ -614,7 +639,7 @@ public class CellPhone
         GangMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
-            while (GangMenu.Visible)
+            while (GangMenu.Visible || GangWorkMenu.Visible)
             {
                 GameFiber.Yield();
             }
@@ -638,7 +663,7 @@ public class CellPhone
     {
         if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
         {
-            if(selectedItem == PayoffGangNeutral || selectedItem == RequestGangWork || selectedItem == PayoffGangFriendly)//cant do more than one of these.....
+            if(selectedItem == PayoffGangNeutral || selectedItem == GangHit || selectedItem == PayoffGangFriendly || selectedItem == DeadDropPickup || selectedItem == GangTheft)//cant do more than one of these.....
             {
                 AlreadyWorkingForGang();
                 sender.Visible = false;
@@ -648,23 +673,54 @@ public class CellPhone
         if (selectedItem == PayoffGangFriendly)
         {
             PayoffGangToFriendly();
+            sender.Visible = false;
         }
         else if (selectedItem == PayoffGangNeutral)
         {
             PayoffGangToNeutral();
+            sender.Visible = false;
         }
         else if (selectedItem == ApoligizeToGang)
         {
             ApologizeToGang();
-        }
-        else if (selectedItem == RequestGangWork)
-        {
-            RequestWorkFromGang();
+            sender.Visible = false;
         }
         else if (selectedItem == RequestGangDen)
         {
             RequestDenAddress();
+            sender.Visible = false;
         }
+        else if (selectedItem == GangTaskCancel)
+        {
+            GangCancel();
+            sender.Visible = false;
+        }
+
+    }
+    private void OnGangWorkItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
+        {
+            if (selectedItem == PayoffGangNeutral || selectedItem == GangHit || selectedItem == PayoffGangFriendly || selectedItem == DeadDropPickup || selectedItem == GangTheft)//cant do more than one of these.....
+            {
+                AlreadyWorkingForGang();
+                sender.Visible = false;
+                return;
+            }
+        }
+       if (selectedItem == DeadDropPickup)
+        {
+            GangPickupWork();
+        }
+        else if (selectedItem == GangTheft)
+        {
+            GangTheftWork();
+        }
+        else if (selectedItem == GangHit)
+        {
+            GangHitWork();
+        }
+
         sender.Visible = false;
     }
     private void PayoffGangToFriendly()
@@ -706,11 +762,11 @@ public class CellPhone
                     };
 
             AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
         }
         else
         {
-            CustomiFruit.Close(500);
+            //CustomiFruit.Close(500);
         }
     }
     private void ApologizeToGang()
@@ -725,9 +781,9 @@ public class CellPhone
 
                     };
         AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-        CustomiFruit.Close();
+        //CustomiFruit.Close();
     }
-    private void RequestWorkFromGang()
+    private void GangPickupWork()
     {
         DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
         GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
@@ -739,7 +795,7 @@ public class CellPhone
 
             int MoneyToRecieve = (int)TenPercent;
 
-            if(MoneyToRecieve >= 0)
+            if(MoneyToRecieve <= 0)
             {
                 MoneyToRecieve = 500;
             }
@@ -754,7 +810,7 @@ public class CellPhone
                     $"Make a pickup of ${MoneyToPickup} from {myDrop.Description} on {myDrop.StreetAddress}. Take it to the {ActiveGang.DenName} on {myDen.StreetAddress}. You'll get 10% when I get my money.",
                     };
             AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
         }
         else
         {
@@ -767,9 +823,180 @@ public class CellPhone
                     "Check back later.",
                     };
             AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
         }
        
+    }
+    private void GangTheftWork()
+    {
+        //DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
+        bool IsCancelled = false;
+        GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
+        Gang TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+        if (myDen != null && TargetGang != null)
+        {
+            Player.PlayerTasks.AddTask(ActiveGang.ContactName);
+            int MoneyToRecieve = RandomItems.GetRandomNumberInt(1000, 10000).Round(500);
+
+            if (MoneyToRecieve <= 0)
+            {
+                MoneyToRecieve = 500;
+            }
+
+            DispatchableVehicle toget = TargetGang.GetRandomVehicle(0, false, false, true);
+            if (toget != null)
+            {
+                string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(toget.ModelName));
+                string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(toget.ModelName));
+
+
+                List<string> Replies = new List<string>() {
+                    $"Go steal a ~p~{MakeName} {ModelName}~s~ from {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Once you are done come back to {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} on completion",
+
+
+
+                   // $"Go get ${MoneyToPickup} from {myDrop.Description}, address is {myDrop.StreetAddress}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} to get it done",
+                   // $"Make a pickup of ${MoneyToPickup} from {myDrop.Description} on {myDrop.StreetAddress}. Take it to the {ActiveGang.DenName} on {myDen.StreetAddress}. You'll get ${MoneyToRecieve} once its done.",
+                    };
+                AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+                //CustomiFruit.Close();
+
+
+                Gang toWatchGang = ActiveGang;
+                GameFiber PayoffFiber = GameFiber.StartNew(delegate
+                {
+                    while(true)
+                    {
+                        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == toget.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == toWatchGang.ID)
+                        {
+                            EntryPoint.WriteToConsole($"You got in a {toget.ModelName.ToLower()} so the den is now ACTIVE!");
+                            break;
+                        }
+                        GameFiber.Yield();
+                    }
+                    myDen.RepOnDropOff = 1000;
+                    myDen.MoneyOnDropOff = MoneyToRecieve;
+                    Player.PlayerTasks.GetTask(toWatchGang.ContactName).IsReadyForPayment = true;
+
+                }, "PayoffFiber");
+
+            }
+            else
+            {
+                IsCancelled = true;
+            }
+        }
+        else
+        {
+            IsCancelled = true;
+        }
+
+        if(IsCancelled)
+        {
+            List<string> Replies = new List<string>() {
+                    "Nothing yet, I'll let you know",
+                    "I've got nothing for you yet",
+                    "Give me a few days",
+                    "Not a lot to be done right now",
+                    "We will let you know when you can do something for us",
+                    "Check back later.",
+                    };
+            AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+            //CustomiFruit.Close(2000);
+        }
+
+    }
+    private void GangHitWork()
+    {
+        bool IsCancelled = false;
+        GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
+        Gang TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+        if (myDen != null && TargetGang != null)
+        {
+            Player.PlayerTasks.AddTask(ActiveGang.ContactName);
+            int MoneyToRecieve = RandomItems.GetRandomNumberInt(10000, 30000).Round(500);
+
+            if (MoneyToRecieve <= 0)
+            {
+                MoneyToRecieve = 500;
+            }
+
+            DispatchableVehicle toget = TargetGang.GetRandomVehicle(0, false, false, true);
+            if (toget != null)
+            {
+                string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(toget.ModelName));
+                string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(toget.ModelName));
+                List<string> Replies = new List<string>() {
+                    $"{TargetGang.ShortName} thinks they can fuck with me? Go give one of those pricks a dirt nap. Once you are done come back to {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} to you",
+                   $"The {TargetGang.ShortName} decided to make some moves against us. Let them know we don't approve with some gentle encouragement on a member. When you are finished, get back to the {ActiveGang.DenName} on {myDen.StreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
+                   $"Go find one of those pricks from {TargetGang.ShortName}. Make sure he won't ever talk to anyone again. Come back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                    };
+                AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+                //CustomiFruit.Close();
+
+                GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+
+                int CurrentKilledMembers = gr.MembersKilled;
+
+
+                GameFiber PayoffFiber = GameFiber.StartNew(delegate
+                {
+                    while (true)
+                    {
+                        if (gr.MembersKilled > CurrentKilledMembers)
+                        {
+                            EntryPoint.WriteToConsole($"You killed a member so the den is now ACTIVE!");
+                            break;
+                        }
+                        GameFiber.Yield();
+                    }
+                    myDen.RepOnDropOff = 2000;
+                    myDen.MoneyOnDropOff = MoneyToRecieve;
+                    Player.PlayerTasks.GetTask(ActiveGang.ContactName).IsReadyForPayment = true;
+
+
+                }, "PayoffFiber");
+
+            }
+            else
+            {
+                IsCancelled = true;
+            }
+        }
+        else
+        {
+            IsCancelled = true;
+        }
+
+        if (IsCancelled)
+        {
+            List<string> Replies = new List<string>() {
+                    "Nothing yet, I'll let you know",
+                    "I've got nothing for you yet",
+                    "Give me a few days",
+                    "Not a lot to be done right now",
+                    "We will let you know when you can do something for us",
+                    "Check back later.",
+                    };
+            AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+            //CustomiFruit.Close();
+        }
+
+    }
+    private void GangCancel()
+    {
+        Player.PlayerTasks.RemoveTask(ActiveGang.ContactName);
+        Player.GangRelationships.ChangeReputation(ActiveGang, -200, false);
+        List<string> Replies = new List<string>() {
+                    "I knew you were reliable",
+                    "You really fucked me on this one",
+                    "You are very helpful",
+                    "This is a great time to fuck me like this prick",
+                    "Whatever prick",
+                    "Sorry I stuck my neck out for you",
+                    };
+        AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+        //CustomiFruit.Close();
     }
     private void RequestDenAddress()
     {
@@ -788,7 +1015,7 @@ public class CellPhone
 
                     };
             AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
         }
 
 
@@ -827,7 +1054,7 @@ public class CellPhone
 
                     };
         AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-        CustomiFruit.Close();
+        //CustomiFruit.Close();
     }
 
     private void AddEmergencyServicesCustomContact()
@@ -909,7 +1136,7 @@ public class CellPhone
 
     private void CivAnswered(iFruitContact contact)
     {
-        CustomiFruit.Close();
+       // CustomiFruit.Close();
     }
 
     private void CopAnswered(iFruitContact contact)
@@ -932,7 +1159,7 @@ public class CellPhone
         }
         else
         {
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
             return;
         }
         CopMenu.Visible = true;
@@ -942,7 +1169,7 @@ public class CellPhone
             {
                 GameFiber.Yield();
             }
-            CustomiFruit.Close();
+            //CustomiFruit.Close();
         }, "CellPhone");
     }
     private void OnCopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -969,7 +1196,7 @@ public class CellPhone
                 "Check back later.",
                 };
         AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
-        CustomiFruit.Close();
+        //CustomiFruit.Close(2000);
     }
     private void PayoffCop(iFruitContact contact)
     {
@@ -1067,7 +1294,7 @@ public class CellPhone
         AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
 
 
-        Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~o~Response", fullText);
+        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~o~Response", fullText);
         Player.CallPolice();
     }
     private void RequestFireAssistance()
@@ -1091,8 +1318,8 @@ public class CellPhone
         fullText += playerCurrentFormattedZoneName;
 
         fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
-
-        Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~r~Fire Service", fullText);
+        AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
+        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~r~Fire Service", fullText);
         //Player.CallPolice();
     }
     private void RequestEMSAssistance()
@@ -1116,8 +1343,8 @@ public class CellPhone
         fullText += playerCurrentFormattedZoneName;
 
         fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
-
-        Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~h~Medical Service", fullText);
+        AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
+        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~h~Medical Service", fullText);
         //Player.CallPolice();
     }
 

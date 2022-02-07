@@ -737,7 +737,7 @@ namespace LosSantosRED.lsr
                     {
                         if(DebugUIRunning)
                         {
-                            UI.Tick();
+                            UI.PrimaryTick();
                         }
                         
                         GameFiber.Yield();
@@ -759,7 +759,7 @@ namespace LosSantosRED.lsr
                     {
                         if (DebugUIRunning)
                         {
-                            UI.Tick2();
+                            UI.SecondaryTick();
                         }
                         GameFiber.Yield();
                     }
@@ -780,7 +780,7 @@ namespace LosSantosRED.lsr
                     {
                         if (DebugUIRunning)
                         {
-                            UI.Tick3();
+                            UI.TertiaryTick();
                             GameFiber.Yield();
                             Time.Tick();//this was below before, but shouldnt be any different
                         }

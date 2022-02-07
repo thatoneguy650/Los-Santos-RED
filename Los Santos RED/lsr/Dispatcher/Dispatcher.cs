@@ -87,5 +87,9 @@ public class Dispatcher
     {
         LEDispatcher.DebugSpawnCop();
     }
+    public void DebugSpawnGang()
+    {
+        GangDispatcher.ForceDispatch();
+    }
 }
 
