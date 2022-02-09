@@ -46,6 +46,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.DeadDrops);
         AllLocations.AddRange(PossibleLocations.ScrapYards);
         AllLocations.AddRange(PossibleLocations.GangDens);
+        AllLocations.AddRange(PossibleLocations.GunStores);
         return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
@@ -215,6 +216,19 @@ public class PlacesOfInterest : IPlacesOfInterest
         }) ;
 
 
+        PossibleLocations.GunStores.AddRange(new List<GunStore>()
+
+        {
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General Specialty",ShopMenus.GetMenu("GunShop1")) { IsEnabled = true, IsIllegalShop = true },
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Pistol Specialty",ShopMenus.GetMenu("GunShop5")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 5000 },       
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "SMG Specialty",ShopMenus.GetMenu("GunShop3")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 10000 },
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "AR Specialty",ShopMenus.GetMenu("GunShop4")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 15000 },
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Heavy Specialty",ShopMenus.GetMenu("GunShop2")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
+
+        });
+
+
+
         PossibleLocations.LocationsList.AddRange(new List<GameLocation>
         {
             //Hospital
@@ -263,11 +277,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             
             //Gun
             //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
-            new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop1 },
-            new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop2 },
-            new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop3 },
-            new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop4 },
-            new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop5 },
+            //new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop1 },
+            //new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop2 },
+            //new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop3 },
+            //new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop4 },
+            //new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop5 },
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = 50178 },

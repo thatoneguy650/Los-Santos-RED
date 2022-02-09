@@ -57,6 +57,7 @@ public class PedExt : IComplexTaskable
         IsGangMember = _IsGangMember;
         PedGroup = gameGroup;
         IsMerchant = isMerchant;
+        Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
     }
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
 
@@ -97,6 +98,7 @@ public class PedExt : IComplexTaskable
     public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
     public int CurrentlyViolatingWantedLevel => PedCrimes.CurrentlyViolatingWantedLevel;
     public ComplexTask CurrentTask { get; set; }
+    public int Money { get; set; } = 10;
     public bool IsMerchant { get; set; } = false;
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {PlayerPerception.DistanceToTarget} See {PlayerPerception.CanSeeTarget} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
     public float DistanceToPlayer => PlayerPerception.DistanceToTarget;

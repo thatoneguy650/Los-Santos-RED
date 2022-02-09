@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,22 @@ public class GangRelationships
     {
         Gangs = gangs;
         Player = player;
+    }
+    public int CostToPayoffGang(Gang gang)//int repLevel)
+    {
+        int CurrentRep = GetRepuationLevel(gang);
+        if (CurrentRep < 0)
+        {
+            return ((0 - CurrentRep) * 5).Round(100);
+        }
+        else if (CurrentRep >= 500)
+        {
+            return 0;
+        }
+        else
+        {
+            return ((500 - CurrentRep) * 5).Round(100);
+        }
     }
     public void Dispose()
     {

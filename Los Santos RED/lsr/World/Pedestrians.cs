@@ -329,7 +329,8 @@ public class Pedestrians
             string modelName = Pedestrian.Model.Name.ToLower();
             if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
-                Pedestrian.Delete();
+                Delete(Pedestrian);
+                //Pedestrian.Delete();
                 continue;
             }
             uint localHandle = Pedestrian.Handle;
@@ -351,7 +352,7 @@ public class Pedestrians
                     }
                     if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
                     {
-                        Pedestrian.Delete();
+                        Delete(Pedestrian);
                         continue;
                     }
                     AddGangMember(Pedestrian);
@@ -524,7 +525,7 @@ public class Pedestrians
                 List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
                 if (!totalTerritories.Any(x => x.ZoneInternalGameName == CurrentZone.InternalGameName))
                 {
-                    Pedestrian.Delete();
+                    Delete(Pedestrian);
                     return;
                 }
             }
@@ -694,5 +695,59 @@ public class Pedestrians
             zoneName = Marshal.PtrToStringAnsi(ptr);
         }
         return zoneName;
+    }
+    private void Delete(PedExt ped)
+    {
+        if (ped != null && ped.Pedestrian.Exists())
+        {
+            if (ped.Pedestrian.IsInAnyVehicle(false))
+            {
+                if (ped.Pedestrian.CurrentVehicle.HasPassengers)
+                {
+                    foreach (Ped Passenger in ped.Pedestrian.CurrentVehicle.Passengers)
+                    {
+                        Passenger.Delete();
+                        GameFiber.Yield();
+                    }
+                }
+                if (ped.Pedestrian.Exists() && ped.Pedestrian.CurrentVehicle.Exists() && ped.Pedestrian.CurrentVehicle != null)
+                {
+                    ped.Pedestrian.CurrentVehicle.Delete();
+                    GameFiber.Yield();
+                }
+            }
+            if (ped.Pedestrian.Exists())
+            {
+                ped.Pedestrian.Delete();
+                GameFiber.Yield();
+            }
+        }
+    }
+    private void Delete(Ped ped)
+    {
+        if (ped != null && ped.Exists())
+        {
+            if (ped.IsInAnyVehicle(false))
+            {
+                if (ped.CurrentVehicle.HasPassengers)
+                {
+                    foreach (Ped Passenger in ped.CurrentVehicle.Passengers)
+                    {
+                        Passenger.Delete();
+                        GameFiber.Yield();
+                    }
+                }
+                if (ped.Exists() && ped.CurrentVehicle.Exists() && ped.CurrentVehicle != null)
+                {
+                    ped.CurrentVehicle.Delete();
+                    GameFiber.Yield();
+                }
+            }
+            if (ped.Exists())
+            {
+                ped.Delete();
+                GameFiber.Yield();
+            }
+        }
     }
 }

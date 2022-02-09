@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; }
         PlayerTasks PlayerTasks { get; }
         bool IsDoingSuspiciousActivity { get; set; }
+        GunDealerRelationship GunDealerRelationship { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();

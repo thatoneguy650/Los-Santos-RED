@@ -603,7 +603,7 @@ public class Gangs : IGangs
             new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Families O.G.","CHAR_MP_FAM_BOSS") { DenName = "Hangout" } ,
             new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",BallasSidearms,BallasLongGuns,"Ballas O.G.","CHAR_MP_JULIO") { DenName = "Hangout" } ,
             new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MarabuntaSidearms,MarabuntaLongGuns,"Marabunta O.G.","CHAR_MP_MEX_LT") { DenName = "Hangout" } ,
-            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","DIA_ACULT") { DenName = "Gathering Location" } ,
+            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","CHAR_PA_MALE") { DenName = "Gathering Location" } ,
             new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",VarriosSidearms,VarriosLongGuns,"Varrios O.G.","CHAR_ORTEGA") { DenName = "Hangout" } ,
             new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR") { DenName = "Meeting Spot" } ,
             new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL") { DenName = "Clubhouse" } ,

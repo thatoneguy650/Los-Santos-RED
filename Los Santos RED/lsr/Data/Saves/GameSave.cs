@@ -88,6 +88,8 @@ namespace LosSantosRED.lsr.Data
             CurrentDateTime = time.CurrentDateTime;
 
 
+            MoneySpentAtGunDealers = player.GunDealerRelationship.TotalMoneySpent;
+
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
         }
@@ -97,7 +99,7 @@ namespace LosSantosRED.lsr.Data
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-
+        public int MoneySpentAtGunDealers { get; set; }
         public DateTime CurrentDateTime { get; set; }
 
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
@@ -172,7 +174,20 @@ namespace LosSantosRED.lsr.Data
             }
             foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
             {
-                player.CellPhone.AddContact(ifc.Name,ifc.IconName, false);
+                Gang gang = gangs.GetGangByContact(ifc.Name);
+                if (ifc.Name == "Underground Guns")
+                {
+                    player.CellPhone.AddGunDealerContact(false);
+                }
+                else if (gang != null)
+                {
+                    player.CellPhone.AddContact(gang, false);
+                }
+                else
+                {
+                    player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
+                }
+                
             }
 
             foreach (SavedTextMessage ifc in TextMessages)
@@ -186,7 +201,7 @@ namespace LosSantosRED.lsr.Data
                 player.Character.Heading = PlayerHeading;
             }
 
-            
+            player.GunDealerRelationship.SetMoneySpent(MoneySpentAtGunDealers,false);
 
             Game.FadeScreenIn(2500, true);
             player.DisplayPlayerNotification();

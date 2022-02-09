@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Interface
         void ConsumeItem(ModItem toAdd);
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
+        CellPhone CellPhone { get; }
 
         void SetUnarmed();
     }

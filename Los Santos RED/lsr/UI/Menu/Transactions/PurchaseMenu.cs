@@ -45,6 +45,7 @@ public class PurchaseMenu : Menu
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
     private ITimeControllable Time;
     private int CurrentTotalPrice;
+    private int TotalSpendAtUndergroundGuns = 0;
 
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons, ITimeControllable time)
@@ -603,7 +604,6 @@ public class PurchaseMenu : Menu
         }
 
     }
-
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
         string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
@@ -788,7 +788,6 @@ public class PurchaseMenu : Menu
             return false;
         }
     }
-
     private void AddWeaponEntry(MenuItem cii, ModItem myItem)
     {
         EntryPoint.WriteToConsole($"Purchase Menu Add Weapon Entry ItemName: {myItem.Name}", 5);
@@ -884,7 +883,6 @@ public class PurchaseMenu : Menu
 
         //WeaponMenu.OnMenuOpen += WeaponMenuOnMenuOpen;
     }
-
     private void OnWeaponMenuOpen(UIMenu sender)
     {
         EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN!", 5);
@@ -943,8 +941,6 @@ public class PurchaseMenu : Menu
             EntryPoint.WriteToConsole($"Full Below Level: {uimen.Text}", 5);
         }
     }
-
-
     private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Purchase" && CurrentModItem != null)
@@ -972,6 +968,21 @@ public class PurchaseMenu : Menu
                 }
                 Player.GiveMoney(-1 * TotalPrice);
                 OnWeaponMenuOpen(sender);
+
+                if(Store != null && Store.Name == "Underground Guns")
+                {
+                    TotalSpendAtUndergroundGuns += TotalPrice;
+
+                    if(TotalSpendAtUndergroundGuns >= 2000)
+                    {
+                        Player.CellPhone.AddGunDealerContact(true);
+                    }
+                }
+
+                
+
+
+
                 //if (CurrentWeapon.Category != WeaponCategory.Melee && CurrentWeapon.Category != WeaponCategory.Throwable)
                 //{
                 //    selectedItem.Enabled = false;
@@ -1221,6 +1232,8 @@ public class PurchaseMenu : Menu
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{CurrentMenuItem.ModItemName}~s~");
                 }
                 Player.SetUnarmed();
+
+
                 return true;
             }
         }

@@ -20,6 +20,8 @@ namespace LosSantosRED.lsr.Interface
         void DisplayPlayerNotification();
         GangRelationships GangRelationships { get; }
         CellPhone CellPhone { get; }
+        GunDealerRelationship GunDealerRelationship { get; }
+
         void ClearVehicleOwnership();
     }
 }

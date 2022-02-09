@@ -178,6 +178,55 @@ namespace Mod
                 string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
                 basicLocation.StreetAddress = LocationName;
             }
+            foreach (GameLocation basicLocation in PlacesOfInterest.GetAllPlaces())
+            {
+                Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
+                string betweener = "";
+                string zoneString = "";
+                if (placeZone != null)
+                {
+                    if (placeZone.IsSpecificLocation)
+                    {
+                        betweener = $"near";
+                    }
+                    else
+                    {
+                        betweener = $"in";
+                    }
+                    zoneString = $"~p~{placeZone.DisplayName}~s~";
+                }
+                string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
+
+
+
+                string StreetNumber = "";
+
+                if (streetName == "")
+                {
+                    betweener = "";
+                }
+                else
+                {
+                    if (basicLocation.CellY < 0)
+                    {
+                        StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "S";
+                    }
+                    else
+                    {
+                        StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "N";
+                    }
+                    if (basicLocation.CellX < 0)
+                    {
+                        StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "W";
+                    }
+                    else
+                    {
+                        StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "E";
+                    }
+                }
+                string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
+                basicLocation.StreetAddress = LocationName;
+            }
 
         }
         public void AddBlipsToMap()

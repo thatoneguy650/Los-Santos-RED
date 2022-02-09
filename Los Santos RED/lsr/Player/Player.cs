@@ -21,7 +21,7 @@ namespace Mod
 {
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, 
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable, 
-                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable
+                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable
     {
         public int UpdateState = 0;
         private ICrimes Crimes;
@@ -142,17 +142,22 @@ namespace Mod
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
             WeaponSelector = new WeaponSelector(this, Settings);
-            CellPhone = new CellPhone(this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
+            CellPhone = new CellPhone(this,this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
             CellPhone.Setup();
 
 
-            PlayerTasks = new PlayerTasks(this, TimeControllable);
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest);
             PlayerTasks.Setup();
+
+
+            GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
 
         }
 
         public CellPhone CellPhone { get; private set; }
         public GangRelationships GangRelationships { get; private set; }
+
+        public GunDealerRelationship GunDealerRelationship { get; private set; }
         public Inventory Inventory { get; set; }
         public Interaction Interaction { get; private set; }
         public Investigation Investigation { get; private set; }
@@ -968,8 +973,13 @@ namespace Mod
                 }
                 if (((CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition) || CurrentLookedAtPed.HasMenu) && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
                 {
-                    bool toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
-                    bool toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
+                    bool toSell = false;
+                    bool toBuy = false;
+                    if (CurrentLookedAtPed.HasMenu)
+                    {
+                        toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
+                        toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
+                    }
                     ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
                     string promptText = $"Purchase from {CurrentLookedAtPed.FormattedName}";
                     if (toSell && toBuy)
@@ -980,9 +990,13 @@ namespace Mod
                     {
                         promptText = $"Buy from {CurrentLookedAtPed.FormattedName}";
                     }
-                    else
+                    else if(toSell)
                     {
                         promptText = $"Sell to {CurrentLookedAtPed.FormattedName}";
+                    }
+                    else
+                    {
+                        promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
                     }
                     ButtonPrompts.Add(new ButtonPrompt(promptText, "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2));
                 }

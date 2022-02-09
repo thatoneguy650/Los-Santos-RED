@@ -21,6 +21,9 @@ public class GangSettings : ISettingsDefaultable
     public float MinDistanceToSpawn { get; set; }
     public int TotalSpawnedMembersLimit { get; set; }
 
+    public int MoneyMin { get; set; }
+    public int MoneyMax { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -47,6 +50,8 @@ public class GangSettings : ISettingsDefaultable
         MinDistanceToSpawn = 50f;
         MaxDistanceToSpawn = 150f;
         TotalSpawnedMembersLimit = 5;
+        MoneyMin = 500;
+        MoneyMax = 5000;
     }
 
 }

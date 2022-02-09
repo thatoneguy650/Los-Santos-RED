@@ -49,6 +49,9 @@ public class StorePurchaseMenu : Menu
     private TransactableLocation Store;
     private Camera StoreCam;
     private bool CanContinueConversation => Player.CanConverse;
+
+
+    public int MoneySpent { get; private set; } = 0;
     public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
@@ -688,6 +691,7 @@ public class StorePurchaseMenu : Menu
                     return;
                 }
                 Player.GiveMoney(-1 * menuItem.PurchasePrice);
+                MoneySpent += menuItem.PurchasePrice;
             }
             sender.Visible = false;
             Dispose();
@@ -968,6 +972,7 @@ public class StorePurchaseMenu : Menu
                     return;
                 }
                 Player.GiveMoney(-1 * TotalPrice);
+                MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
                 //if (CurrentWeapon.Category != WeaponCategory.Melee && CurrentWeapon.Category != WeaponCategory.Throwable)
                 //{
@@ -997,6 +1002,7 @@ public class StorePurchaseMenu : Menu
                     return;
                 }
                 Player.GiveMoney(-1 * TotalPrice);
+                MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
             }
         }
@@ -1040,6 +1046,7 @@ public class StorePurchaseMenu : Menu
                     return;
                 }
                 Player.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice);
+                MoneySpent += myItem.SelectedItem.PurchasePrice;
                 OnWeaponMenuOpen(sender);
             }
         }
@@ -1383,6 +1390,7 @@ public class StorePurchaseMenu : Menu
             if (subtractCash)
             {
                 Player.GiveMoney(-1 * TotalPrice);
+                MoneySpent += TotalPrice;
             }
             while (Player.IsPerformingActivity)
             {

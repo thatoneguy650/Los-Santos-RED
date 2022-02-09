@@ -152,6 +152,7 @@
     <Compile Include="lsr\Locations\Places\BasicLocation.cs" />
     <Compile Include="lsr\Locations\Places\DeadDrop.cs" />
     <Compile Include="lsr\Locations\Places\GangDen.cs" />
+    <Compile Include="lsr\Locations\Places\GunStore.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
     <Compile Include="lsr\Locations\Places\StoreCamera.cs" />
     <Compile Include="lsr\Locations\Places\StorePurchaseMenu.cs" />
@@ -165,6 +166,13 @@
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
+    <Compile Include="lsr\Player\Cellphone\CorruptCopInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\EmergencyServicesInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
+    <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
+    <Compile Include="lsr\Player\GunDealerRelationship.cs" />
+    <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
+    <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />

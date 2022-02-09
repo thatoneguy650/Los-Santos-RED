@@ -137,7 +137,7 @@ public class HoldUp : Interaction
         GameFiber.Sleep(2000);
         NativeFunction.CallByName<bool>("SET_PED_MONEY", Target.Pedestrian, 0);
         Vector3 MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
-        NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
+        NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true);
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
         IsActivelyOrdering = false;
     }

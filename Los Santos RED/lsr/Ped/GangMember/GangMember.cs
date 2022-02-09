@@ -17,6 +17,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
+        Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.GangSettings.MoneyMin, settings.SettingsManager.GangSettings.MoneyMax);
     }
     public int ShootRate { get; set; } = 600;
     public int Accuracy { get; set; } = 10;

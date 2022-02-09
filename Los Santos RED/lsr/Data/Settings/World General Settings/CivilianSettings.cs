@@ -43,7 +43,10 @@ public class CivilianSettings : ISettingsDefaultable
     public float FightPercentageRichZones { get; set; }
     public float FightPercentageMiddleZones { get; set; }
     public float FightPercentagePoorZones { get; set; }
-
+    public int MerchantMoneyMin { get; set; }
+    public int MerchantMoneyMax { get; set; }
+    public int MoneyMin { get; set; }
+    public int MoneyMax { get; set; }
 
     public CivilianSettings()
     {
@@ -93,6 +96,13 @@ public class CivilianSettings : ISettingsDefaultable
         FightPercentageRichZones = 0f;
         FightPercentageMiddleZones = 1f;
         FightPercentagePoorZones = 2f;
+
+        MerchantMoneyMin = 500;
+        MerchantMoneyMax = 2000;
+
+        MoneyMin = 15;
+        MoneyMax = 100;
+
 
     }
 

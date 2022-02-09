@@ -28,5 +28,6 @@ namespace LosSantosRED.lsr.Interface
         List<VehicleExt> OwnedVehicles { get; }
         CellPhone CellPhone { get; }
         GangRelationships GangRelationships { get; }
+        GunDealerRelationship GunDealerRelationship { get; }
     }
 }

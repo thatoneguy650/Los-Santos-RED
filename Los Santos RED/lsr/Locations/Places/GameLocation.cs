@@ -243,6 +243,8 @@ public class GameLocation
 
     [XmlIgnore]
     public string FullAddressText { get; set; }
+    [XmlIgnore]
+    public string StreetAddress { get; set; }
 
     public string Name { get; set; }
     public string Description { get; set; }

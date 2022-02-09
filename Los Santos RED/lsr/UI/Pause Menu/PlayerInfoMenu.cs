@@ -360,7 +360,7 @@ public class PlayerInfoMenu
                 //Game.DisplaySubtitle("Activated Submenu Item #" + ContactsSubMenu.Index + " "+ contact.Name, 5000);
                 tabView.Visible = false;
                 Game.IsPaused = false;
-                Player.CellPhone.GangAnswered(Gangs.GetGangByContact(contact.Name));
+                Player.CellPhone.ContactAnswered(contact);
 
             };
             items.Add(tabItem);
