@@ -771,7 +771,7 @@ public class PurchaseMenu : Menu
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = new VehicleExt(NewVehicle, Settings);
-                World.AddEntity(MyNewCar, ResponseType.None);
+                World.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 Player.TakeOwnershipOfVehicle(MyNewCar, false);
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
                 return true;

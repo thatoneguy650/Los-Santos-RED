@@ -44,10 +44,10 @@ public class LEDispatcher
     }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
-    private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
+    private List<Cop> DeletableCops => World.Pedestrians.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
     private float DistanceToDelete => TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 1000f;
-    private bool HasNeedToDispatch => World.TotalSpawnedPolice < SpawnedCopLimit && World.SpawnedPoliceVehicleCount < SpawnedCopVehicleLimit;
+    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedPolice < SpawnedCopLimit && World.Vehicles.SpawnedPoliceVehiclesCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
@@ -354,7 +354,7 @@ public class LEDispatcher
                 if (agency != null)
                 {
                     LastAgencySpawned = agency;
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit && Player.WantedLevel >= 3, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit && Player.WantedLevel >= 3, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                     GameFiber.Yield();
                     if (VehicleType != null)
                     {
@@ -367,8 +367,8 @@ public class LEDispatcher
                                 SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage));
                                 spawnTask.AttemptSpawn();
                                 GameFiber.Yield();
-                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
+                                spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
                                 HasDispatchedThisTick = true;
                                 Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
                             }
@@ -546,11 +546,11 @@ public class LEDispatcher
     }
     private bool IsValidSpawn(SpawnLocation spawnLocation)
     {
-        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
+        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
             return false;
         }
-        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
+        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
             return false;
         }
@@ -579,7 +579,7 @@ public class LEDispatcher
             return true;
         }
 
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.Pedestrians.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: World.AnyCopsNearCop IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}", 5);
             return true;
@@ -657,7 +657,7 @@ public class LEDispatcher
             if (agency != null)
             {
                 LastAgencySpawned = agency;
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.PoliceHelicoptersCount < SpawnedHeliLimit, World.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                 GameFiber.Yield();
                 if (VehicleType != null)
                 {
@@ -671,8 +671,8 @@ public class LEDispatcher
                             spawnTask.AllowAnySpawn = true;
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
-                            spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.LawEnforcement));
+                            spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+                            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
                             HasDispatchedThisTick = true;
                             Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
                         }

@@ -219,7 +219,7 @@ namespace LosSantosRED.lsr
         }
         public void OnArmyDeployed()
         {
-            if (Player.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+            if (Player.IsWanted && !RequestMilitaryUnits.HasBeenPlayedThisWanted && World.Pedestrians.AnyArmyUnitsSpawned)
             {
                 AddToQueue(RequestMilitaryUnits);
             }
@@ -268,9 +268,9 @@ namespace LosSantosRED.lsr
         }
         public void OnHelicoptersDeployed()
         {
-            if (Player.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && !RequestSwatAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+            if (Player.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && !RequestSwatAirSupport.HasBeenPlayedThisWanted && World.Pedestrians.AnyHelicopterUnitsSpawned)
             {
-                if(World.AnyNooseUnitsSpawned)
+                if(World.Pedestrians.AnyNooseUnitsSpawned)
                 {
                     AddToQueue(RequestSwatAirSupport);
                 }
@@ -305,7 +305,7 @@ namespace LosSantosRED.lsr
         }
         public void OnNooseDeployed()
         {
-            if (Player.IsWanted && !RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+            if (Player.IsWanted && !RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.Pedestrians.AnyNooseUnitsSpawned)
             {
                 if(RandomItems.RandomPercent(50))
                 {
@@ -381,7 +381,7 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedSearchMode()
         {
-            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any() && !World.AnyCopsNearPosition(Player.Position,100f))
+            if (!SuspectEvaded.HasRecentlyBeenPlayed && !DispatchQueue.Any() && !World.Pedestrians.AnyCopsNearPosition(Player.Position,100f))
             {
                 AddToQueue(SuspectEvaded, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
@@ -1111,7 +1111,7 @@ namespace LosSantosRED.lsr
             {
                 AddWeaponsFree(EventToPlay);
             }
-            if (DispatchToPlay.CanAddExtras && Player.IsWanted && !Player.IsDead && World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            if (DispatchToPlay.CanAddExtras && Player.IsWanted && !Player.IsDead && World.Pedestrians.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
             {
                 AddRequestAirSupport(EventToPlay);
             }

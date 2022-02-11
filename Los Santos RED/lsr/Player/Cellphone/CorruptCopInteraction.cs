@@ -62,7 +62,7 @@ public class CorruptCopInteraction
         CopMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
-            while (CopMenu.Visible)
+            while (MenuPool.IsAnyMenuOpen())
             {
                 GameFiber.Yield();
             }

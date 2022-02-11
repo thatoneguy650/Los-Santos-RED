@@ -135,7 +135,7 @@ public class Idle : ComplexTask
                 {
                     foreach (Ped ped in Ped.Pedestrian.CurrentVehicle.Passengers)
                     {
-                        PedExt pedExt = World.GetPedExt(ped.Handle);
+                        PedExt pedExt = World.Pedestrians.GetPedExt(ped.Handle);
                         if (pedExt != null && pedExt.IsArrested)
                         {
                             IsReturningToStation = true;
@@ -304,7 +304,7 @@ public class Idle : ComplexTask
             }
             else if (Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
             {
-                VehicleExt myCopCar = World.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+                VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
                 if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
                 {
                     OpenSeatInClosestAvailablePoliceVehicle = Ped.LastSeatIndex;
@@ -321,7 +321,7 @@ public class Idle : ComplexTask
             }
             else
             {
-                foreach (VehicleExt copCar in World.PoliceVehicleList)
+                foreach (VehicleExt copCar in World.Vehicles.PoliceVehicleList)
                 {
                     if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
                     {

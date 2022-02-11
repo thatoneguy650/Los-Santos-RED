@@ -364,7 +364,7 @@ public class Respawning// : IRespawning
 
         if (ToSet.HasInterior)
         {
-            World.ActivateLocation(ToSet);
+            World.Places.ActivateLocation(ToSet);
         }
 
         if (ToSet.Type == LocationType.Grave)

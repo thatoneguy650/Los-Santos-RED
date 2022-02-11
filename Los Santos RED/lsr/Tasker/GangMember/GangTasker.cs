@@ -37,26 +37,26 @@ public class GangTasker
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
             Tasker.ExpireSeatAssignments();
-            bool anyCopsNearPosition = PedProvider.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
-            foreach (GangMember gangMember in PedProvider.GangMemberList.Where(x => x.Pedestrian.Exists()))
+           //bool anyCopsNearPosition = PedProvider.Pedestrians.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
+            foreach (GangMember gangMember in PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
                 try
                 {
                     if (gangMember.DistanceToPlayer >= 230f)
                     {
-                        gangMember.CurrentTask = null;
+                        //gangMember.CurrentTask = null;
                         continue;
                     }
                     if (gangMember.NeedsTaskAssignmentCheck)
                     {
                         if (gangMember.DistanceToPlayer <= 200f)
                         {
-                            UpdateCurrentTask(gangMember, anyCopsNearPosition);//has yields if it does anything
+                            UpdateCurrentTask(gangMember);//has yields if it does anything
                         }
-                        else if (gangMember.CurrentTask != null)
-                        {
-                            gangMember.CurrentTask = null;
-                        }
+                        //else if (gangMember.CurrentTask != null)
+                        //{
+                        //    gangMember.CurrentTask = null;
+                        //}
                     }
                     if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
                     {
@@ -72,20 +72,14 @@ public class GangTasker
             }
         }
     }
-
-    private void UpdateCurrentTask(GangMember GangMember, bool anyCopsNearFocusPoint)//this should be moved out?
+    private void UpdateCurrentTask(GangMember GangMember)//this should be moved out?
     {
         bool isHostile = Player.GangRelationships.IsHostile(GangMember.Gang);
         if (GangMember.IsBusted)
         {
             if (GangMember.DistanceToPlayer <= 75f)
             {
-                if (GangMember.CurrentTask?.Name != "GetArrested")
-                {
-                    GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider, Tasker);
-                    GameFiber.Yield();//TR Added back 7
-                    GangMember.CurrentTask.Start();
-                }
+                SetArrested(GangMember);
             }
         }
         else if (GangMember.DistanceToPlayer <= 175f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
@@ -94,43 +88,67 @@ public class GangTasker
             bool SeenReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
             if (SeenReactiveCrime)
             {
-                if (GangMember.WillFight && (Player.IsNotWanted || isHostile))
+                if (GangMember.WillFight && (Player.IsNotWanted || isHostile || GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer))
                 {
-                    if (GangMember.CurrentTask?.Name != "GangFight")
-                    {
-                        GangMember.CurrentTask = new GangFight(GangMember, Player, null) { OtherTarget = HighestPriority?.Perpetrator };
-                        GameFiber.Yield();//TR Added back 7
-                        GangMember.CurrentTask.Start();
-                    }
+                    SetFight(GangMember, HighestPriority);
                 }
                 else
                 {
-                    if (GangMember.CurrentTask?.Name != "GangFlee")
-                    {
-                        GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
-                        GameFiber.Yield();//TR Added back 7
-                        GangMember.CurrentTask.Start();
-                    }
+                    SetFlee(GangMember, HighestPriority);
                 }
             }
-            else if (Player.IsWanted && (GangMember.CurrentlyViolatingWantedLevel > 0 || GangMember.DistanceToPlayer <= 60f) && !isHostile)
+            else
             {
-                if (GangMember.CurrentTask?.Name != "GangFlee")
+                //if (Player.IsWanted && (GangMember.CurrentlyViolatingWantedLevel > 0 || GangMember.DistanceToPlayer <= 60f) && !isHostile)
+                //{
+                //    SetFlee(GangMember, HighestPriority);
+                //}
+                //else 
+                
+                if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
                 {
-                    GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
-                    GameFiber.Yield();//TR Added back 7
-                    GangMember.CurrentTask.Start();
+                    SetIdle(GangMember);
                 }
-            }
-            else if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
-            {
-                EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
-                GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, Tasker, PlacesOfInterest);
-                GameFiber.Yield();//TR Added back 4
-                GangMember.CurrentTask.Start();
             }
         }
         GangMember.GameTimeLastUpdatedTask = Game.GameTime;
+    }
+    private void SetFlee(GangMember GangMember, WitnessedCrime HighestPriority)
+    {
+        if (GangMember.CurrentTask?.Name != "GangFlee")
+        {
+            GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
+            GameFiber.Yield();//TR Added back 7
+            GangMember.CurrentTask.Start();
+        }
+    }
+    private void SetFight(GangMember GangMember, WitnessedCrime HighestPriority)
+    {
+        if (GangMember.CurrentTask?.Name != "GangFight")
+        {
+            GangMember.CurrentTask = new GangFight(GangMember, Player, null) { OtherTarget = HighestPriority?.Perpetrator };
+            GameFiber.Yield();//TR Added back 7
+            GangMember.CurrentTask.Start();
+        }
+    }
+    private void SetIdle(GangMember GangMember)
+    {
+        if (GangMember.CurrentTask?.Name != "GangIdle")
+        {
+            EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
+            GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, Tasker, PlacesOfInterest);
+            GameFiber.Yield();//TR Added back 4
+            GangMember.CurrentTask.Start();
+        }
+    }
+    private void SetArrested(GangMember GangMember)
+    {
+        if (GangMember.CurrentTask?.Name != "GetArrested")
+        {
+            GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider, Tasker);
+            GameFiber.Yield();//TR Added back 7
+            GangMember.CurrentTask.Start();
+        }
     }
 }
 

@@ -264,7 +264,7 @@ public class PlateTheft : DynamicActivity
     }
     private void Setup()
     {
-        TargetVehicle = World.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
+        TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
         if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
         {
             CarPosition = TargetVehicle.Vehicle.Position;

@@ -299,7 +299,7 @@ public class CommitCrime : ComplexTask
             float closestDistance = 999f;
             PedExt closestTarget = null;
             Target = null;
-            foreach(PedExt possibletarget in World.CivilianList)
+            foreach(PedExt possibletarget in World.Pedestrians.CivilianList)
             {
                 if(possibletarget.Pedestrian.Exists() && possibletarget.Pedestrian.Handle != Ped.Pedestrian.Handle && PreviousTargetHandle != possibletarget.Pedestrian.Handle && possibletarget.DistanceToPlayer <= 85 && possibletarget.CanBeAmbientTasked && possibletarget.Pedestrian.Speed <= 2.0f && !possibletarget.IsGangMember && possibletarget.Pedestrian.IsAlive)
                 {

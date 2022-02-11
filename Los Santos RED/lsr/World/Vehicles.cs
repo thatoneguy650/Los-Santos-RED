@@ -50,6 +50,14 @@ public class Vehicles
             return PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
         }
     }
+    public void Setup()
+    {
+
+    }
+    public void Dispose()
+    {
+        ClearSpawned();
+    }
     public void Prune()
     {
         CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
@@ -57,12 +65,6 @@ public class Vehicles
         EMSVehicles.RemoveAll(x => !x.Vehicle.Exists());
         FireVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
-    //public void Scan()
-    //{
-    //   // RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
-    //   // DebugString = $"CopCar#: {PoliceVehiclesCount} CivCar:#: {CivilianVehiclesCount} PH: {SpawnedPoliceVehiclesCount}";
-    //    // RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
-    //}
     public void CreateNew()
     {
         RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
@@ -70,7 +72,7 @@ public class Vehicles
         //int VehiclesCreated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
-            if (AddToList(vehicle))
+            if (AddEntity(vehicle))
             {   //{
                 //    VehiclesCreated++;
                 //}
@@ -90,31 +92,37 @@ public class Vehicles
     }
     public void CleanUp()
     {
-        RemoveAbandonedPoliceVehicles();
-        FixDamagedPoliceVehicles();
+        if (Settings.SettingsManager.WorldSettings.CleanupVehicles)
+        {
+            RemoveAbandonedPoliceVehicles();
+            FixDamagedPoliceVehicles();
+        }
     }
     public void UpdatePlates()
     {
-        try
+        if (Settings.SettingsManager.WorldSettings.UpdateVehiclePlates)
         {
-            int VehiclesUpdated = 0;
-            foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
+            try
             {
-                if (MyCar.Vehicle.Exists())
+                int VehiclesUpdated = 0;
+                foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
                 {
-                    UpdatePlate(MyCar);
-                }
-                VehiclesUpdated++;
-                if (VehiclesUpdated > 4)
-                {
-                    VehiclesUpdated = 0;
-                    GameFiber.Yield();
+                    if (MyCar.Vehicle.Exists())
+                    {
+                        UpdatePlate(MyCar);
+                    }
+                    VehiclesUpdated++;
+                    if (VehiclesUpdated > 4)
+                    {
+                        VehiclesUpdated = 0;
+                        GameFiber.Yield();
+                    }
                 }
             }
-        }
-        catch(Exception ex)
-        {
-            EntryPoint.WriteToConsole($"UpdatePlates ERROR {ex.Message} {ex.StackTrace}", 0);
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"UpdatePlates ERROR {ex.Message} {ex.StackTrace}", 0);
+            }
         }
     }
     private void RemoveAbandonedPoliceVehicles()
@@ -277,7 +285,7 @@ public class Vehicles
         }
         return ToReturn;
     }
-    public bool AddToList(Vehicle vehicle)
+    public bool AddEntity(Vehicle vehicle)
     {
         if (vehicle.Exists())
         {
@@ -319,7 +327,7 @@ public class Vehicles
         }
         return false;
      }
-    public void AddToList(VehicleExt vehicleExt, ResponseType responseType)
+    public void AddEntity(VehicleExt vehicleExt, ResponseType responseType)
     {
         if (vehicleExt != null && vehicleExt.Vehicle.Exists())
         {

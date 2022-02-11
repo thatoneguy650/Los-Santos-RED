@@ -32,7 +32,7 @@ namespace Mod
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
 
-        private IEntityProvideable EntityProvider;
+        private IEntityProvideable World;
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastMoved;
@@ -101,14 +101,13 @@ namespace Mod
         private uint GameTimeLastSetMeleeModifier;
         private BigMessageThread BigMessageThread;
         public BigMessageHandler BigMessage { get; private set; }
-
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
             ModelName = modelName;
             IsMale = isMale;
             PlayerName = suspectsName;
             Crimes = crimes;
-            EntityProvider = provider;
+            World = provider;
             TimeControllable = timeControllable;
             Settings = settings;
             Weapons = weapons;
@@ -124,7 +123,7 @@ namespace Mod
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
-            Surrendering = new SurrenderActivity(this, EntityProvider);
+            Surrendering = new SurrenderActivity(this, World);
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
             Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
@@ -135,7 +134,7 @@ namespace Mod
             Sprinting = new Sprinting(this, Settings);
 
             Intoxication = new Intoxication(this);
-            Respawning = new Respawning(TimeControllable, EntityProvider, this, Weapons, PlacesOfInterest, Settings);
+            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
             Respawning.Setup();
             GangRelationships = new GangRelationships(gangs, this);
             GangRelationships.Setup();
@@ -153,17 +152,13 @@ namespace Mod
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
 
         }
-
         public CellPhone CellPhone { get; private set; }
         public GangRelationships GangRelationships { get; private set; }
-
         public GunDealerRelationship GunDealerRelationship { get; private set; }
         public Inventory Inventory { get; set; }
         public Interaction Interaction { get; private set; }
         public Investigation Investigation { get; private set; }
-
         public PlayerTasks PlayerTasks { get; private set; }
-
         public PoliceResponse PoliceResponse { get; private set; }
         public Violations Violations { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -173,7 +168,7 @@ namespace Mod
         public Ped Character => Game.LocalPlayer.Character;
         public int GroupID { get; set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
-        public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.GangMemberList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.MerchantList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
+        public bool AnyHumansNear => World.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || World.Pedestrians.CivilianList.Any(x => x.DistanceToPlayer <= 10f) || World.Pedestrians.GangMemberList.Any(x => x.DistanceToPlayer <= 10f) || World.Pedestrians.MerchantList.Any(x => x.DistanceToPlayer <= 10f); //move or delete?
         public bool AnyPoliceCanHearPlayer { get; set; } //all this perception stuff gets moved out?
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
@@ -443,6 +438,10 @@ namespace Mod
             {
                 return;
             }
+            else if (RecentlyStartedPlaying)
+            {
+                return;
+            }
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
@@ -455,8 +454,6 @@ namespace Mod
                 Investigation.Start(Location, PoliceResponse.PoliceHaveDescription);
             }
         }
-        //public void AddInjured(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
-        //public void AddKilled(PedExt MyPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle) => Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
         public void Arrest()
         {
             BeingArrested = true;
@@ -468,7 +465,7 @@ namespace Mod
         public void CallPolice()
         {
             Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
-            PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            PedExt violatingCiv = World.Pedestrians.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
             CrimeSceneDescription description;
             if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
             {
@@ -939,7 +936,7 @@ namespace Mod
         }
         public void SetDenStatus(Gang gang, bool v)
         {
-            EntityProvider.SetGangLocationActive(gang.ID, v);
+            World.Places.SetGangLocationActive(gang.ID, v);
         }
 
         //Updates
@@ -1280,7 +1277,7 @@ namespace Mod
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
                 float ClosestDistance = 999f;
-                foreach (GameLocation gl in EntityProvider.ActiveLocations)// PlacesOfInterest.GetAllStores())
+                foreach (GameLocation gl in World.Places.ActiveLocations)// PlacesOfInterest.GetAllStores())
                 {
                     if (gl.DistanceToPlayer <= 3.0f)
                     {
@@ -1322,7 +1319,7 @@ namespace Mod
 
                 ClosestInteractableLocation = null;
                 ClosestDistance = 999f;
-                foreach (InteractableLocation gl in EntityProvider.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
+                foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
                     if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
                     {
@@ -1683,7 +1680,7 @@ namespace Mod
                 if (result.Hit && result.HitEntity is Ped)
                 {
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
-                    CurrentLookedAtPed = EntityProvider.GetPedExt(result.HitEntity.Handle);
+                    CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
                 }
                 else
                 {
@@ -1920,13 +1917,13 @@ namespace Mod
                 {
                     EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
                     Merchant myPed = (Merchant)CurrentLookedAtPed;
-                    Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
+                    Interaction = new Transaction(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, World, Weapons);
                     Interaction.Start();
                 }
                 else
                 {
                     EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
-                    Interaction = new Transaction(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
+                    Interaction = new Transaction(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, World, Weapons);
                     Interaction.Start();
                 }
             }
@@ -1940,7 +1937,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 IsConversing = true;
-                Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, EntityProvider, Weapons);
+                Interaction = new Transaction(this, null, ClosestSimpleTransaction, Settings, ModItems, TimeControllable, World, Weapons);
                 Interaction.Start();
             }
         }
@@ -1966,7 +1963,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 //IsConversing = true;
-                ClosestInteractableLocation.OnInteract(this, ModItems,EntityProvider, Settings,Weapons,TimeControllable);
+                ClosestInteractableLocation.OnInteract(this, ModItems,World, Settings,Weapons,TimeControllable);
 
 
 
@@ -2109,7 +2106,7 @@ namespace Mod
                     UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, EntityProvider);
+                UpperBodyActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, World);
                 UpperBodyActivity.Start();
             }
         }
@@ -2122,7 +2119,7 @@ namespace Mod
                     UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, toChange, Settings, EntityProvider);
+                UpperBodyActivity = new PlateTheft(this, toChange, Settings, World);
                 UpperBodyActivity.Start();
             }
         }
@@ -2135,7 +2132,7 @@ namespace Mod
                     UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, Settings, EntityProvider);
+                UpperBodyActivity = new PlateTheft(this, Settings, World);
                 UpperBodyActivity.Start();
             }
         }
@@ -2177,7 +2174,7 @@ namespace Mod
         }
         public void EnterVehicleAsPassenger()
         {
-            VehicleExt toEnter = EntityProvider.GetClosestVehicleExt(Character.Position, false, 10f);
+            VehicleExt toEnter = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
             if (toEnter != null && toEnter.Vehicle.Exists())
             {
                 int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
@@ -2201,7 +2198,7 @@ namespace Mod
                 Ped Driver = CurrentVehicle.Vehicle.Driver;
                 if (Driver.Exists() && Driver.Handle != Character.Handle)
                 {
-                    PedExt DriverExt = EntityProvider.GetPedExt(Driver.Handle);
+                    PedExt DriverExt = World.Pedestrians.GetPedExt(Driver.Handle);
                     Driver.BlockPermanentEvents = true;
                     Driver.KeepTasks = true;
                     if (DriverExt != null)
@@ -2478,7 +2475,7 @@ namespace Mod
                         else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                            PedExt jackedPed = EntityProvider.GetPedExt(VehicleTryingToEnter.Driver.Handle);
+                            PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
                             Violations.AddCarJacked(jackedPed);
                             CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, CurrentWeapon);
                             MyJack.Start();
@@ -2494,7 +2491,7 @@ namespace Mod
                             if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
                             {
                                 EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                                BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, EntityProvider);
+                                BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World);
                                 MyBusRide.Start();
                             }
                             else
@@ -2624,7 +2621,7 @@ namespace Mod
         {
             if (TargettingHandle != 0)
             {
-                CurrentTargetedPed = EntityProvider.GetPedExt(TargettingHandle);
+                CurrentTargetedPed = World.Pedestrians.GetPedExt(TargettingHandle);
                 GameFiber.Yield();
                 if (!IsInteracting && CanHoldUpTargettedPed && CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged)
                 {
@@ -2656,7 +2653,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnLostWanted();
                     GameFiber.Yield();
-                    EntityProvider.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
+                    World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
                     
                 }
@@ -2750,7 +2747,7 @@ namespace Mod
                     NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
                     NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
                     CurrentGPSBlip = MyLocationBlip;
-                    EntityProvider.AddEntity(MyLocationBlip);
+                    World.AddBlip(MyLocationBlip);
                     Game.DisplaySubtitle($"Adding GPS To {Name}");
                     GameTimeLastCheckedRouteBlip = Game.GameTime;
                 }
@@ -2773,7 +2770,7 @@ namespace Mod
             }
             else
             {
-                toTakeOwnershipOf = EntityProvider.GetClosestVehicleExt(Character.Position, false, 10f);
+                toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
             }
             if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
             {
@@ -2794,7 +2791,7 @@ namespace Mod
             }
             else
             {
-                toTakeOwnershipOf = EntityProvider.GetClosestVehicleExt(Character.Position, false, 10f);
+                toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
             }
             if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
             {
@@ -2935,7 +2932,7 @@ namespace Mod
                 }
                 else
                 {
-                    VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
+                    VehicleExt existingVehicleExt = World.Vehicles.GetVehicleExt(vehicle);
                     GameFiber.Yield();
                     if (vehicle.Exists())
                     {
@@ -2944,7 +2941,7 @@ namespace Mod
                         if (existingVehicleExt == null)
                         {
                             VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
-                            EntityProvider.AddEntity(createdVehicleExt, ResponseType.None);
+                            World.Vehicles.AddEntity(createdVehicleExt, ResponseType.None);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;
                             EntryPoint.WriteToConsole("New Vehicle Created in UpdateCurrentVehicle");

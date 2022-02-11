@@ -75,6 +75,7 @@ namespace LosSantosRED.lsr
                     //AddAttackedGang(gm, true);
                 }
             }
+            myPed.HasBeenCarJackedByPlayer = true;
         }
         public void AddInjured(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
         {

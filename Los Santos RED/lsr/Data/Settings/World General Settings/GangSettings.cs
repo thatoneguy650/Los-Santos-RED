@@ -30,7 +30,7 @@ public class GangSettings : ISettingsDefaultable
 #if DEBUG
         ShowSpawnedBlip = true;
         //RemoveVanillaGangs = true;
-        RemoveVanillaSpawnedPedsOutsideTerritory = true;
+        RemoveVanillaSpawnedPedsOutsideTerritory = false;
 #else
                // ShowSpawnedBlips = false;
 #endif

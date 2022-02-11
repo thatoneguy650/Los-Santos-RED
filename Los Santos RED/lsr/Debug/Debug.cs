@@ -129,7 +129,7 @@ public class Debug
 
         if (Settings.SettingsManager.DebugSettings.ShowPoliceTaskArrows)
         {
-            foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
             {
                 DrawColoredArrowTaskStatus(cop);
                 DrawColoredArrowAlertness(cop);
@@ -137,7 +137,7 @@ public class Debug
         }
         if (Settings.SettingsManager.DebugSettings.ShowCivilianTaskArrows)
         {
-            foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
+            foreach (PedExt ped in World.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
             {
                 Color Color = Color.Yellow;
                 if (!ped.CanBeTasked)
@@ -169,9 +169,9 @@ public class Debug
         }
         if (Settings.SettingsManager.DebugSettings.ShowCivilianPerceptionArrows)
         {
-            List<PedExt> AllPeds = World.CivilianList;
-            AllPeds.AddRange(World.GangMemberList);
-            AllPeds.AddRange(World.MerchantList);
+            List<PedExt> AllPeds = World.Pedestrians.CivilianList;
+            AllPeds.AddRange(World.Pedestrians.GangMemberList);
+            AllPeds.AddRange(World.Pedestrians.MerchantList);
             foreach (PedExt ped in AllPeds.Where(x => x.Pedestrian.Exists()))/// && x.DistanceToPlayer <= 250f))// && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
             {
                 Color Color3 = Color.Yellow;
@@ -199,7 +199,7 @@ public class Debug
                 Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
             }
 
-            foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
             {
                 Color Color4 = Color.Yellow;
                 if (cop.CanRecognizePlayer)
@@ -426,16 +426,16 @@ public class Debug
     {
 
         // NativeFunction.Natives.x48608C3464F58AB4(0f, 50f, 0f);
-        RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
-        foreach (Gang gang in Gangs.AllGangs)
-        {
-            RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
-            int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(myRG.Hash, gangRG.Hash);
-            int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(gangRG.Hash, myRG.Hash);
-            EntryPoint.WriteToConsole($"Gang {gang.FullName} Rel1 {Rel1} Rel2 {Rel2}", 5);
+        //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
+        //foreach (Gang gang in Gangs.AllGangs)
+        //{
+        //    RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
+        //    int Rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(myRG.Hash, gangRG.Hash);
+        //    int Rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_GROUPS<int>(gangRG.Hash, myRG.Hash);
+        //    EntryPoint.WriteToConsole($"Gang {gang.FullName} Rel1 {Rel1} Rel2 {Rel2}", 5);
 
-        }
-        Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
+        //}
+        //Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
 
 
         SpawnGunAttackers();
@@ -525,45 +525,45 @@ public class Debug
         //Weather.DebugPlayReport();
 
 
-        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
-        if (ClosestEntity.Exists())
-        {
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
 
 
-            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
-            DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
-            float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
-            float ObjectHeading = ClosestEntity.Heading;
-            if (ClosestEntity.Heading >= 180f)
-            {
-                DesiredHeading = ClosestEntity.Heading - 180f;
-            }
-            else
-            {
-                DesiredHeading = ClosestEntity.Heading + 180f;
-            }
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
 
 
 
 
-            EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
-            EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
 
 
-            if (ClosestEntity.Model.Dimensions.X >= 2f)
-            {
+        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
 
-            }
+        //    }
 
-            uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
-            {
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+        //    {
 
-                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                GameFiber.Yield();
-            }
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
 
-        }
+      //  }
         //// Player.ScannerPlayDebug();
 
         //SetInRandomInterior();
@@ -871,8 +871,8 @@ public class Debug
         //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
         //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
         //PauseMenuExample.Main();
-
-        NodeChekcer();
+        SpawnNoGunAttackers();
+        //NodeChekcer();
         //StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;
         //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
@@ -942,17 +942,20 @@ public class Debug
         //    }
         Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
         //}
-        if (RandomItems.RandomPercent(50))
-        {
+        //if (RandomItems.RandomPercent(50))
+        //{
 
-            Gang myGang = Gangs.AllGangs.PickRandom();
-            Player.GangRelationships.SetReputation(myGang, 2000, true);
-        }
-        else
-        {
-            Gang myGang = Gangs.AllGangs.PickRandom();
-            Player.GangRelationships.SetReputation(myGang, -2000, true);
-        }
+        //    Gang myGang = Gangs.AllGangs.PickRandom();
+        //    Player.GangRelationships.SetReputation(myGang, 2000, true);
+        //}
+        //else
+        //{
+        //    Gang myGang = Gangs.AllGangs.PickRandom();
+        //    Player.GangRelationships.SetReputation(myGang, -2000, true);
+        //}
+
+        Dispatcher.DebugSpawnGang();
+
 
         //ModController.DebugInputRunning = !ModController.DebugInputRunning;
         //Game.DisplayNotification($"ModController.DebugInputRunning {ModController.DebugInputRunning}");
@@ -994,8 +997,8 @@ public class Debug
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
-        //Dispatcher.DebugSpawnCop();
-        Dispatcher.DebugSpawnGang();
+        Dispatcher.DebugSpawnCop();
+       // Dispatcher.DebugSpawnGang();
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
         //{
@@ -2101,14 +2104,15 @@ public class Debug
     }
     private void WriteCivilianAndCopState()
     {
+        EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle}", 5);
         EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
-        foreach (VehicleExt veh in World.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
         {
             EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)} Gang? {veh.AssociatedGang?.ShortName} WasModSpawned {veh.WasModSpawned}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ VEHICLES END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVIES START", 5);
-        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
+        foreach (PedExt ped in World.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -2117,7 +2121,7 @@ public class Debug
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
         EntryPoint.WriteToConsole($"============================================ GANGS START", 5);
-        foreach (GangMember ped in World.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
@@ -2135,7 +2139,7 @@ public class Debug
         //}
         //EntryPoint.WriteToConsole($"============================================ ZOMBIES END", 5);
         EntryPoint.WriteToConsole($"============================================ COPS START", 5);
-        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
             string VehString = "";
             string combat = "";
@@ -2172,13 +2176,13 @@ public class Debug
     private void WriteCopState()
     {
         EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES START", 2);
-        foreach (VehicleExt veh in World.PoliceVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        foreach (VehicleExt veh in World.Vehicles.PoliceVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
         {
             EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsPersistent {veh.Vehicle.IsPersistent} Position: {veh.Vehicle.Position}", 2);
         }
         EntryPoint.WriteToConsole($"============================================ POLICE VEHICLES END", 2);
         EntryPoint.WriteToConsole($"============================================ COPS START", 2);
-        foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
             string VehString = "";
             string combat = "";

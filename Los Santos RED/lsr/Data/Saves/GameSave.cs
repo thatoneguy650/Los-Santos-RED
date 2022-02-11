@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr.Data
             GangReputations = new List<GangRepSave>();
             foreach(GangReputation gr in player.GangRelationships.GangReputations)
             {
-                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel));
+                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt,gr.MembersKilled,gr.MembersCarJacked,gr.MembersHurtInTerritory,gr.MembersKilledInTerritory,gr.MembersCarJackedInTerritory));
             }
 
             Contacts = new List<SavedContact>();
@@ -146,12 +146,12 @@ namespace LosSantosRED.lsr.Data
                         NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
                         NewVehicle.Wash();
-                        VehicleExt MyVeh = World.GetVehicleExt(NewVehicle.Handle);
+                        VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
                         if (MyVeh == null)
                         {
                             MyVeh = new VehicleExt(NewVehicle, settings);
                             MyVeh.HasUpdatedPlateType = true;
-                            World.AddEntity(MyVeh, ResponseType.None);
+                            World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                         }
                         //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
                         player.TakeOwnershipOfVehicle(MyVeh,false);
@@ -170,6 +170,7 @@ namespace LosSantosRED.lsr.Data
                 if (myGang != null)
                 {
                     player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
+                    player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory);
                 }
             }
             foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))

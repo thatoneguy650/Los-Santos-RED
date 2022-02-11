@@ -162,7 +162,7 @@ namespace LosSantosRED.lsr
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs);
             Debug.Setup();
             GameFiber.Yield();
-            World.AddBlipsToMap();
+            World.Setup();// AddBlipsToMap();
             GameFiber.Yield();
             PedSwap.Setup();
             GameFiber.Yield();
@@ -354,12 +354,12 @@ namespace LosSantosRED.lsr
             TertiaryTasks = new List<ModTask>()
             {
               
-                new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
-                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
-                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 2),//500
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 3), //very bad performance
-                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 4),
-                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 5),
+                new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
+                new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
+                new ModTask(1000, "World.PruneVehicles", World.Vehicles.Prune, 2),//500
+                new ModTask(1000, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3), //very bad performance
+                new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.UpdatePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
                 new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 7),//1000
 
@@ -392,9 +392,9 @@ namespace LosSantosRED.lsr
 
             NonPriorityTasks = new List<ModTask>()
             {
-                new ModTask(2000, "World.ActiveNearLocations", World.ActiveNearLocations, 0),//1000
+                new ModTask(2000, "World.ActiveNearLocations", World.Places.ActiveNearLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
-                new ModTask(500, "World.UpdateNear", World.UpdateNearLocations, 2),//1000
+                new ModTask(500, "World.UpdateNear", World.Places.UpdateNearLocations, 2),//1000
 
 
                 new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationshipsUpdate, 3),//might become a priority...

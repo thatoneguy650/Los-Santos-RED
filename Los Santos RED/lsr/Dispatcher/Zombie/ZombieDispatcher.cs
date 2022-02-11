@@ -41,10 +41,10 @@ public class ZombieDispatcher
 
     }
     private float ClosestZombieSpawnToPlayerAllowed => 25f;
-    private List<Zombie> DeletableZombies => World.ZombieList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
+    private List<Zombie> DeletableZombies => World.Pedestrians.ZombieList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
     private float DistanceToDelete => 175f;
     private float DistanceToDeleteOnFoot => 175f;
-    private bool HasNeedToDispatch => World.TotalSpawnedZombies <= 4;
+    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedZombies <= 4;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 5000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => 75f;
@@ -74,7 +74,7 @@ public class ZombieDispatcher
                 {
                     SetZombieStats(zombie);
                     Zombie myZombie = new Zombie(zombie, Settings, zombie.Health, true, Crimes, Weapons, "Unknown");
-                    World.AddEntity(myZombie);
+                    World.Pedestrians.AddEntity(myZombie);
                 }
             }
             else

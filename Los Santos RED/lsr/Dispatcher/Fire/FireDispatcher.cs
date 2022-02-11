@@ -38,10 +38,10 @@ public class FireDispatcher
         Names = names;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
-    private List<Firefighter> DeletableOfficers => World.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
-    private bool HasNeedToDispatch => World.TotalSpawnedFirefighters == 0;
+    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedFirefighters == 0;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 60000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => 900f;
@@ -80,8 +80,8 @@ public class FireDispatcher
                             {
                                 SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true);
                                 spawnTask.AttemptSpawn();
-                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.Fire));
+                                spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
                                 HasDispatchedThisTick = true;
                             }
                             catch (Exception ex)

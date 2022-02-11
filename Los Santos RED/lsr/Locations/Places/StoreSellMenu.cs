@@ -142,7 +142,7 @@ public class StoreSellMenu : Menu
                         description += "~n~~s~";
                         if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
                         {
-                            ToSellVehicle = World.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
+                            ToSellVehicle = World.Vehicles.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
                             if (ToSellVehicle != null)
                             {
                                 enabled = true;

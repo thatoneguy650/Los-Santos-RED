@@ -88,7 +88,7 @@ public class Investigation
         IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
-            if ((IsTimedOut && !World.AnyWantedCiviliansNearPlayer) || IsOutsideInvestigationRange) //remove after 3 minutes
+            if ((IsTimedOut && !World.Pedestrians.AnyWantedPeopleNearPlayer) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
             }

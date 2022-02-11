@@ -35,7 +35,7 @@ public class CivilianTasker
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             Tasker.ExpireSeatAssignments();
-            foreach (PedExt civilian in PedProvider.CivilianList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
+            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
             {
                 try
                 {
@@ -67,7 +67,7 @@ public class CivilianTasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
-            foreach (Merchant merchant in PedProvider.MerchantList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
+            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
             {
                 try
                 {

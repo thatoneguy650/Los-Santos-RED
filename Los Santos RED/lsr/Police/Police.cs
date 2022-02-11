@@ -28,12 +28,12 @@ namespace LosSantosRED.lsr
         {
             UpdateCops();
             UpdateRecognition();
-            if (Player.IsBustable && World.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
                 GameFiber.Yield();
                 Player.Arrest();
             }
-            if (Player.IsBustable && Player.IsAttemptingToSurrender && World.PoliceList.Any(x => x.DistanceToPlayer <= 10f))
+            if (Player.IsBustable && Player.IsAttemptingToSurrender && World.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 10f))
             {
                 GameFiber.Yield();
                 Player.Arrest();
@@ -50,7 +50,7 @@ namespace LosSantosRED.lsr
             TotalRan = 0;
             TotalChecked = 0;
             int localRan = 0;
-            foreach (Cop Cop in World.PoliceList)
+            foreach (Cop Cop in World.Pedestrians.PoliceList)
             {
                 try
                 {
@@ -108,7 +108,7 @@ namespace LosSantosRED.lsr
             bool anyPoliceCanHearPlayer = false;
             bool anyPoliceCanRecognizePlayer = false;
             bool anyPoliceRecentlySeenPlayer = false;
-            foreach (Cop cop in World.PoliceList)
+            foreach (Cop cop in World.Pedestrians.PoliceList)
             {
                 if(cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
                 {

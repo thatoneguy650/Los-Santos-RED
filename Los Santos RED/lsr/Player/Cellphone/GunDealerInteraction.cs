@@ -58,7 +58,7 @@ public class GunDealerInteraction
         GunDealerMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
-            while (GunDealerMenu?.Visible == true || LocationSubMenu?.Visible == true)
+            while (MenuPool.IsAnyMenuOpen())
             {
                 GameFiber.Yield();
             }

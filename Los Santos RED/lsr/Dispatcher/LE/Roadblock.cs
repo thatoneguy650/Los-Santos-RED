@@ -310,11 +310,11 @@ public class Roadblock
             pedSpawn.AttemptSpawn();
             foreach(PedExt person in pedSpawn.CreatedPeople)
             {
-                World.AddEntity(person);
+                World.Pedestrians.AddEntity(person);
                 CreatedRoadblockPeds.Add(person);
             }
         }
-        spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+        spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
         foreach(VehicleExt created in spawnTask.CreatedVehicles)
         {
             if(created.Vehicle.Exists())
@@ -327,7 +327,7 @@ public class Roadblock
             }
             if (created.Vehicle.Exists())
             {
-                World.AddEntity(created, ResponseType.LawEnforcement);
+                World.Vehicles.AddEntity(created, ResponseType.LawEnforcement);
                 CreatedRoadblockVehicles.Add(created.Vehicle);
                 created.Vehicle.IsCollisionEnabled = true;
                 created.Vehicle.IsGravityDisabled = false;

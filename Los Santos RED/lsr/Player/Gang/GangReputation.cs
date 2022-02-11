@@ -89,6 +89,16 @@ public class GangReputation
             OnReputationChanged(sendText);
         }
     }
+    public void Reset(bool sendText)
+    {
+        SetRepuation(DefaultRepAmount, sendText);
+        MembersHurt = 0;
+        MembersKilled = 0;
+        MembersCarJacked = 0;
+        MembersHurtInTerritory = 0;
+        MembersKilledInTerritory = 0;
+        MembersCarJackedInTerritory = 0;
+    }
     public void AddembientRep()
     {
         if (ReputationLevel < DefaultRepAmount && Game.GameTime - GameTimeLastAddedAmbientRep >= Gang.GameTimeToRecoverAmbientRep)

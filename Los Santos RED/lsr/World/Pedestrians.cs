@@ -51,6 +51,28 @@ public class Pedestrians
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
     public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
     public List<GangMember> GangMembers { get; private set; } = new List<GangMember>();
+    public List<PedExt> CivilianList => Civilians.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<GangMember> GangMemberList => GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<Zombie> ZombieList => Zombies.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<Cop> PoliceList => Police.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
+    public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
+
+
+    public List<PedExt> Citizens
+    {
+        get
+        {
+            List<PedExt> myList = new List<PedExt>();
+            myList.AddRange(CivilianList);
+            myList.AddRange(GangMemberList);
+            myList.AddRange(MerchantList);
+            return myList;
+        }
+    }
+
+    public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned
     {
@@ -96,7 +118,6 @@ public class Pedestrians
     }
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-    public bool AnyOtherTargetsTasked => Police.Any(x => x.CurrentTask?.OtherTarget != null);
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
@@ -320,6 +341,44 @@ public class Pedestrians
             policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
         }
     }
+    public void Dispose()
+    {
+        ClearSpawned();
+    }
+    public void AddEntity(PedExt pedExt)
+    {
+        if (pedExt != null)
+        {
+            if (pedExt.GetType() == typeof(Cop))
+            {
+                Police.Add((Cop)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(EMT))
+            {
+                EMTs.Add((EMT)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(Firefighter))
+            {
+                Firefighters.Add((Firefighter)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(Merchant))
+            {
+                Merchants.Add((Merchant)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(Zombie))
+            {
+                Zombies.Add((Zombie)pedExt);
+            }
+            else if (pedExt.GetType() == typeof(GangMember))
+            {
+                GangMembers.Add((GangMember)pedExt);
+            }
+            else
+            {
+                Civilians.Add(pedExt);
+            }
+        }
+    }
     public void CreateNew()
     {
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
@@ -338,7 +397,7 @@ public class Pedestrians
             {
                 if (!Police.Any(x => x.Handle == localHandle))
                 {
-                    AddCop(Pedestrian);
+                    AddAmbientCop(Pedestrian);
                     GameFiber.Yield();
                 }
             }
@@ -355,12 +414,12 @@ public class Pedestrians
                         Delete(Pedestrian);
                         continue;
                     }
-                    AddGangMember(Pedestrian);
+                    AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
                 else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle))
                 {
-                    AddCivilian(Pedestrian);
+                    AddAmbientCivilian(Pedestrian);
                     GameFiber.Yield();
                 }
             }
@@ -371,45 +430,11 @@ public class Pedestrians
         }
         GameTimeLastCreatedPeds = Game.GameTime;
     }
-    private void AddCivilian(Ped Pedestrian)
-    {  
-        bool WillFight = false;
-        bool WillCallPolice = false;
-        bool IsGangMember = false;
-        bool canBeAmbientTasked = true;
-        if (Pedestrian.Exists())
-        {
-            if (Pedestrian.IsSecurity())
-            {
-                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage);
-                WillCallPolice = false;
-            }
-            else
-            {
-                SetCivilianStats(Pedestrian);
-                WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
-                WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
-            }
-            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
-            {
-                WillFight = false;
-                WillCallPolice = false;
-                canBeAmbientTasked = false;
-            }
-        }
-        PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
-        if(myGroup == null)
-        {
-            myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
-        }
-        ShopMenu toAdd = GetIllicitMenu();
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
-    }
     private ShopMenu GetIllicitMenu()
     {
         if (EntryPoint.FocusZone != null)
         {
-            if(EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
             {
                 if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageRichZones))
                 {
@@ -508,7 +533,41 @@ public class Pedestrians
             return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
         }
     }
-    private void AddGangMember(Ped Pedestrian)
+    private void AddAmbientCivilian(Ped Pedestrian)
+    {  
+        bool WillFight = false;
+        bool WillCallPolice = false;
+        bool IsGangMember = false;
+        bool canBeAmbientTasked = true;
+        if (Pedestrian.Exists())
+        {
+            if (Pedestrian.IsSecurity())
+            {
+                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage);
+                WillCallPolice = false;
+            }
+            else
+            {
+                SetCivilianStats(Pedestrian);
+                WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
+                WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
+            }
+            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
+            {
+                WillFight = false;
+                WillCallPolice = false;
+                canBeAmbientTasked = false;
+            }
+        }
+        PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
+        if(myGroup == null)
+        {
+            myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
+        }
+        ShopMenu toAdd = GetIllicitMenu();
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+    }
+    private void AddAmbientGangMember(Ped Pedestrian)
     {
         string relationshipGroupName = Pedestrian.RelationshipGroup.Name;
         Gang MyGang = Gangs.GetGang(relationshipGroupName);
@@ -571,7 +630,7 @@ public class Pedestrians
         NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
         GangMembers.Add(gm);
     }
-    private void AddCop(Ped Pedestrian)
+    private void AddAmbientCop(Ped Pedestrian)
     {
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())

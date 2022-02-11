@@ -108,6 +108,9 @@ public class PedExt : IComplexTaskable
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
     public bool HasBeenHurtByPlayer { get; set; } = false;
+
+    public bool HasBeenCarJackedByPlayer { get; set; } = false;
+
     public bool HasBeenMugged { get; set; } = false;
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasSpokenWithPlayer { get; set; }

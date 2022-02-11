@@ -87,7 +87,7 @@ public class GangInteraction
         GangMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
-            while (GangMenu?.Visible == true || GangWorkMenu.Visible == true)
+            while (MenuPool.IsAnyMenuOpen())
             {
                 GameFiber.Yield();
             }

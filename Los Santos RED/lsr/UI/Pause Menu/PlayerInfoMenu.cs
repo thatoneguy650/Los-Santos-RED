@@ -331,7 +331,7 @@ public class PlayerInfoMenu
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
                 NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
                 Player.CurrentGPSBlip = MyLocationBlip;
-                World.AddEntity(MyLocationBlip);
+                World.AddBlip(MyLocationBlip);
                 Game.DisplaySubtitle($"Adding GPS To {coolPlace.Name}");
             }
         }

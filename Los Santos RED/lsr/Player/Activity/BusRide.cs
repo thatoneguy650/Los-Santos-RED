@@ -60,7 +60,7 @@ public class BusRide
                         Player.IsRidingBus = true;
                         if(Bus.Driver.Exists())
                         {
-                            PedExt BusDriver = World.GetPedExt(Bus.Driver.Handle);
+                            PedExt BusDriver = World.Pedestrians.GetPedExt(Bus.Driver.Handle);
                             Bus.Driver.BlockPermanentEvents = true;
                             Bus.Driver.KeepTasks = true;
                             BusDriver.CanBeAmbientTasked = false;

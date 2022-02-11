@@ -173,7 +173,7 @@ public class PedSwap : IPedSwap
         //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer");
-        Entities.AddEntity(Player.AliasedCop);
+        Entities.Pedestrians.AddEntity(Player.AliasedCop);
         Player.AliasedCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun, true, true);
     }
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
@@ -196,7 +196,7 @@ public class PedSwap : IPedSwap
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
                 NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
             }
-            VehicleExt NewVehicle = Entities.GetVehicleExt(TargetPedVehicle);
+            VehicleExt NewVehicle = Entities.Vehicles.GetVehicleExt(TargetPedVehicle);
             if (NewVehicle != null)
             {
                 NewVehicle.IsStolen = false;
@@ -416,7 +416,7 @@ public class PedSwap : IPedSwap
             }
             toCreate.SetWantedLevel(WantedToSet);
             toCreate.IsBusted = CurrentPedIsBusted;
-            Entities.AddEntity(toCreate);
+            Entities.Pedestrians.AddEntity(toCreate);
             //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
             TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
         }
@@ -474,11 +474,11 @@ public class PedSwap : IPedSwap
         Ped PedToReturn = null;
         if (Nearest)
         {
-            PedToReturn = Entities.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
         }
         else
         {
-            PedToReturn = Entities.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian) && x.DistanceToPlayer <= Radius).PickRandom()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian) && x.DistanceToPlayer <= Radius).PickRandom()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         }
         if (PedToReturn == null && !PedToReturn.Exists())
         {
@@ -508,11 +508,11 @@ public class PedSwap : IPedSwap
         Cop PedToReturn = null;
         if (Nearest)
         {
-            PedToReturn = Entities.PoliceList.Where(x => x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.PoliceList.Where(x => x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
         }
         else
         {
-            PedToReturn = Entities.PoliceList.Where(x => x.DistanceToPlayer <= Radius && x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).PickRandom();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.PoliceList.Where(x => x.DistanceToPlayer <= Radius && x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).PickRandom();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         }
         return PedToReturn;
     }
@@ -612,7 +612,7 @@ public class PedSwap : IPedSwap
         {
             if (isWanted)
             {
-                Cop toAttack = Entities.PoliceList.Where(x=> x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(FormerPlayer)).FirstOrDefault();
+                Cop toAttack = Entities.Pedestrians.PoliceList.Where(x=> x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(FormerPlayer)).FirstOrDefault();
                 if(toAttack != null)
                 {
                     unsafe

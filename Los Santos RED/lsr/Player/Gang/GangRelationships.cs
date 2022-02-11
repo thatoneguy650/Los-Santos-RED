@@ -96,11 +96,31 @@ public class GangRelationships
         gr.SetRepuation(value, sendNotification);
         EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} value {value} current {gr.ReputationLevel}", 5);
     }
+    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.MembersHurt = hurt;
+        gr.MembersHurtInTerritory = hurtInTerritory;
+        gr.MembersKilled = killed;
+        gr.MembersKilledInTerritory = killedInTerritory;
+        gr.MembersCarJacked = carjacked;
+        gr.MembersCarJackedInTerritory = carjackedInTerritory;
+    }
     public void ResetReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(rg.DefaultRepAmount,false);
+            rg.Reset(false);
+            //rg.SetRepuation(rg.DefaultRepAmount,false);
         }
     }
     public void SetRandomReputations()

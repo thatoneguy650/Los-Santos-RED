@@ -59,7 +59,7 @@ public class EmergencyServicesInteraction
 
         GameFiber.StartNew(delegate
         {
-            while (EmergencyServicesMenu.Visible)
+            while (MenuPool.IsAnyMenuOpen())
             {
                 GameFiber.Yield();
             }

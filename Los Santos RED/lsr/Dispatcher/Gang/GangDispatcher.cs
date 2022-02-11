@@ -45,10 +45,10 @@ public class GangDispatcher
         LikelyHoodOfAnySpawn = Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => 45f;
-    private List<GangMember> DeleteableGangMembers => World.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
+    private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
-    private bool HasNeedToDispatch => World.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit;
+    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= 25000;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;
@@ -78,7 +78,7 @@ public class GangDispatcher
                 Gang gang = GetRandomGang(spawnLocation);
                 if (gang != null)
                 {
-                    int TotalGangMembers = World.GangMemberList.Count(x => x.Gang?.ID == gang.ID);
+                    int TotalGangMembers = World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == gang.ID);
                     if(TotalGangMembers >= gang.SpawnLimit)
                     {
                         return true;
@@ -103,11 +103,11 @@ public class GangDispatcher
                                 spawnTask.AttemptSpawn();
                                 foreach(PedExt created in spawnTask.CreatedPeople)
                                 {
-                                    World.AddEntity(created);
+                                    World.Pedestrians.AddEntity(created);
 
                                 }
                                 //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.None));
+                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
                                 HasDispatchedThisTick = true;
                             }
                             catch (Exception ex)
@@ -322,11 +322,11 @@ public class GangDispatcher
                                 spawnTask.AttemptSpawn();
                                 foreach (PedExt created in spawnTask.CreatedPeople)
                                 {
-                                    World.AddEntity(created);
+                                    World.Pedestrians.AddEntity(created);
 
                                 }
                                 //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x, ResponseType.None));
+                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
                                 HasDispatchedThisTick = true;
                             }
                             catch (Exception ex)

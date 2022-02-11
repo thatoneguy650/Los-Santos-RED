@@ -172,7 +172,7 @@ public class PedCrimes
     {
         if (PedExt.Pedestrian.Exists())
         {
-            foreach (Cop cop in world.PoliceList)
+            foreach (Cop cop in world.Pedestrians.PoliceList)
             {
                 if (cop.Pedestrian.Exists())
                 {
@@ -259,18 +259,18 @@ public class PedCrimes
         {
             OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
             List<PedExt> TotalList = new List<PedExt>();
-            TotalList.AddRange(world.CivilianList);
-            TotalList.AddRange(world.ZombieList);
+            TotalList.AddRange(world.Pedestrians.CivilianList);
+            TotalList.AddRange(world.Pedestrians.ZombieList);
             //TotalList.AddRange(world.GangMemberList);
 
             if (PedExt.GetType() == typeof(GangMember))
             {
                 GangMember gangMember = (GangMember)PedExt;
-                TotalList.AddRange(world.GangMemberList.Where(x => x.Gang?.ID != gangMember.Gang?.ID));
+                TotalList.AddRange(world.Pedestrians.GangMemberList.Where(x => x.Gang?.ID != gangMember.Gang?.ID));
             }
             else
             {
-                TotalList.AddRange(world.GangMemberList);
+                TotalList.AddRange(world.Pedestrians.GangMemberList);
             }
 
 
@@ -315,7 +315,7 @@ public class PedCrimes
                             {
                                 WeaponWitnessed = currentWeapon;
                             }
-                            fullVehicle = world.GetVehicleExt(VehicleWitnessed);
+                            fullVehicle = world.Vehicles.GetVehicleExt(VehicleWitnessed);
                             fullWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
                             GameFiber.Yield();//this is new, before it jusdt yielded forever
                         }
@@ -489,7 +489,7 @@ public class PedCrimes
                 if (IsShooting)
                 {
                     AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));
-                    if (world.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
+                    if (world.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));
                         //AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//add TerroristActivity just for 4 stars on some peds
@@ -510,7 +510,7 @@ public class PedCrimes
             }
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
             {
-                foreach (Cop cop in world.PoliceList)
+                foreach (Cop cop in world.Pedestrians.PoliceList)
                 {
                     if (cop.Pedestrian.Exists() && cop.Pedestrian.IsDead)
                     {
@@ -533,7 +533,7 @@ public class PedCrimes
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
                     }
-                    foreach (Cop cop in world.PoliceList)
+                    foreach (Cop cop in world.Pedestrians.PoliceList)
                     {
                         if (cop.Pedestrian.Exists())
                         {

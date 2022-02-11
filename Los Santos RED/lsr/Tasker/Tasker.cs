@@ -105,10 +105,10 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.GangMemberList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+        PedExt Criminal = PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         if (Criminal == null)
         {
-            Criminal = PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+            Criminal = PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         }
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
@@ -120,7 +120,7 @@ public class Tasker : ITaskerable, ITaskerReportable
                 NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
                 NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Criminal");
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-                PedProvider.AddEntity(myBlip);
+                PedProvider.AddBlip(myBlip);
             }
             Criminal.CanBeAmbientTasked = false;
             Criminal.WasSetCriminal = true;

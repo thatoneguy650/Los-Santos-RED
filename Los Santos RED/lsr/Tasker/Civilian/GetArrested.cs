@@ -217,7 +217,7 @@ public class GetArrested : ComplexTask
         VehicleExt ClosestAvailablePoliceVehicle = null;
         int OpenSeatInClosestAvailablePoliceVehicle = 9;
         float ClosestAvailablePoliceVehicleDistance = 999f;
-        foreach (VehicleExt copCar in World.PoliceVehicleList)
+        foreach (VehicleExt copCar in World.Vehicles.PoliceVehicleList)
         {
             if(copCar.Vehicle.Exists() && copCar.Vehicle.Model.NumberOfSeats >= 4 && copCar.Vehicle.Speed == 0f)//stopped 4 door car with at least one seat free in back
             {
