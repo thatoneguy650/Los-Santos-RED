@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SellMenu : Menu
+public class SellMenuOld : Menu
 {
     private UIMenu sellMenu;
     private IModItems ModItems;
@@ -23,14 +23,14 @@ public class SellMenu : Menu
     private bool ShouldPreviewItem;
     private PedExt Ped;
     private bool IsActivelyConversing;
-    private Transaction Transaction;
+    private TransactionOld Transaction;
     private VehicleExt ToSellVehicle;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction, IEntityProvideable world, ISettingsProvideable settings)
+    public SellMenuOld(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, TransactionOld transaction, IEntityProvideable world, ISettingsProvideable settings)
     {
         Ped = ped;
         ModItems = modItems;

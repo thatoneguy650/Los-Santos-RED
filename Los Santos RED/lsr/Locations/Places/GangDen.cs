@@ -27,7 +27,7 @@ public class GangDen : TransactableLocation
     {
 
     }
-    public override BlipSprite MapIcon { get; set; } = BlipSprite.Shrink;
+    public override int MapIcon { get; set; } = (int)BlipSprite.Shrink;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }

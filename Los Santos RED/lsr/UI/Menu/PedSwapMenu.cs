@@ -5,6 +5,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PedSwapMenu : Menu
 {
@@ -25,6 +26,8 @@ public class PedSwapMenu : Menu
     {
         PedSwap = pedSwap;
         PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Change your character by taking over an existing ped or creating a ped from scratch.";
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PedSwapUIMenu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
         PedSwapUIMenu.OnItemSelect += OnItemSelect;
         PedSwapUIMenu.OnListChange += OnListChange;

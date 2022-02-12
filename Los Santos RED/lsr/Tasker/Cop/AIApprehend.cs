@@ -73,15 +73,12 @@ public class AIApprehend : ComplexTask
     }
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
-    private bool ShouldChasePedInVehicle => DistanceToTarget >= 55f;
+    private bool ShouldChasePedInVehicle => DistanceToTarget >= 30f;//55f
     private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && CopsVehicle.Exists() && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool ShouldCarJackTarget => OtherTarget.Pedestrian.CurrentVehicle.Exists() && !OtherTarget.IsMovingFast;
     public bool ShouldStopCar => DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat /* NEW */&& Ped.Pedestrian.CurrentVehicle.Speed < 20f;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
-
-
-
     private bool ShouldShoot => !OtherTarget.IsBusted && OtherTarget.WantedLevel > 1;
     private bool ShouldAim => OtherTarget.WantedLevel > 1;
 
@@ -421,7 +418,7 @@ public class AIApprehend : ComplexTask
         NeedsUpdates = false;
         hasOwnFiber = true;
         Ped.IsRunningOwnFiber = true;
-        float MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
+        float MoveRate = 1.25f;//(float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
         float RunSpeed = 500f;
         bool prevIsChasingSlowly = IsChasingSlowly;
         CurrentSubTask = SubTask.None;

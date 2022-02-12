@@ -1,52 +1,43 @@
 ﻿using LosSantosRED.lsr.Interface;
-using LSR.Vehicles;
-using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class ActionMenu : Menu
 {
     private UIMenu Actions;
+    private UIMenuItem CallPolice;
     private UIMenuListScrollerItem<LSR.Vehicles.LicensePlate> ChangePlate;
-    private IActionable Player;
-    private UIMenuItem RemovePlate;
-    private UIMenuListScrollerItem<string> SitDown;
-    private UIMenuListScrollerItem<string> LayDown;
-    private UIMenuItem PauseConsuming;
-    private UIMenuItem StopConsuming;
-    private UIMenuItem Suicide;
-    private ISettingsProvideable Settings;
     private UIMenuListScrollerItem<string> CurrentActivityMenu;
     private UIMenuItem EnterAsPassenger;
-    private UIMenuItem ShuffleSeat;
-    private UIMenuItem IntimidateDriver;
-    private UIMenuItem HotwireVehicle;
-    private UIMenuItem ContinueConsuming;
-    private MenuPool MenuPool;
-    private UIMenuListScrollerItem<GestureData> GestureMenu;
     private List<GestureData> GestureLookups;
-    private UIMenuItem CallPolice;
+    private UIMenuListScrollerItem<GestureData> GestureMenu;
+    private UIMenuItem HotwireVehicle;
+    private UIMenuItem IntimidateDriver;
+    private UIMenuListScrollerItem<string> LayDown;
+    private MenuPool MenuPool;
+    private IActionable Player;
+    private UIMenuItem RemovePlate;
+    private ISettingsProvideable Settings;
+    private UIMenuItem ShuffleSeat;
+    private UIMenuListScrollerItem<string> SitDown;
+    private UIMenuItem Suicide;
     private UIMenuNumericScrollerItem<int> ToggleBodyArmor;
-
     public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings)
     {
         Player = player;
         Settings = settings;
         MenuPool = menuPool;
         Actions = MenuPool.AddSubMenu(parentMenu, "Actions");
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Start, Pause, or Stop actions with your character.";
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Tick;
         Actions.SetBannerType(EntryPoint.LSRedColor);
         Actions.OnItemSelect += OnActionItemSelect;
         Actions.OnScrollerChange += OnScrollerChange;
 
         CreateActionsMenu();
     }
-
-
-
-    public int SelectedPlateIndex { get; set; }
     public override void Hide()
     {
         Actions.Visible = false;
@@ -58,7 +49,6 @@ public class ActionMenu : Menu
     }
     public override void Toggle()
     {
-        
         if (!Actions.Visible)
         {
             Actions.Visible = true;
@@ -70,8 +60,7 @@ public class ActionMenu : Menu
     }
     public void Update()
     {
-
-        if(Player.HasCurrentActivity)
+        if (Player.HasCurrentActivity)
         {
             CurrentActivityMenu.Enabled = true;
         }
@@ -80,7 +69,7 @@ public class ActionMenu : Menu
             CurrentActivityMenu.Enabled = false;
         }
 
-        if(Player.CharacterModelIsFreeMode)
+        if (Player.CharacterModelIsFreeMode)
         {
             ToggleBodyArmor.Enabled = true;
         }
@@ -142,15 +131,13 @@ public class ActionMenu : Menu
             CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
         }
 
-
-
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
-        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
+        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
         LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
         GestureMenu = new UIMenuListScrollerItem<GestureData>("Gesture", "Perform the selected gesture", GestureLookups);
-        CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue","Pause","Stop" });
+        CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue", "Pause", "Stop" });
 
         EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
         ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
@@ -167,7 +154,6 @@ public class ActionMenu : Menu
 #if DEBUG
         Actions.AddItem(LayDown);
 #endif
-        //Actions.AddItem(CallPolice);
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
@@ -179,8 +165,6 @@ public class ActionMenu : Menu
         Actions.AddItem(IntimidateDriver);
         Actions.AddItem(HotwireVehicle);
 #endif
-
-
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -204,7 +188,7 @@ public class ActionMenu : Menu
             }
             else
             {
-                if(SitDown.SelectedItem == "Here Backwards")
+                if (SitDown.SelectedItem == "Here Backwards")
                 {
                     Player.StartSittingDown(false, false);
                 }
@@ -239,7 +223,7 @@ public class ActionMenu : Menu
         }
         else if (selectedItem == CurrentActivityMenu)
         {
-            if(CurrentActivityMenu.SelectedItem == "Continue")
+            if (CurrentActivityMenu.SelectedItem == "Continue")
             {
                 Player.ContinueDynamicActivity();
             }
@@ -255,7 +239,7 @@ public class ActionMenu : Menu
         else if (selectedItem == GestureMenu)
         {
             Player.Gesture(GestureMenu.SelectedItem);
-            if(!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
+            if (!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
             {
                 return;
             }
@@ -277,7 +261,7 @@ public class ActionMenu : Menu
     }
     private void OnScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
-        if(item == ToggleBodyArmor)
+        if (item == ToggleBodyArmor)
         {
             Player.SetBodyArmor(ToggleBodyArmor.Value);
         }
@@ -287,20 +271,17 @@ public class ActionMenu : Menu
         Player.LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
         GestureLookups = new List<GestureData>()
         {
-            //new GestureLookup("The Finger","mp_player_intfinger","mp_player_intfinger"),
-           // new GestureData("The Bird","anim@mp_player_intselfiethe_bird","idle_a"),//left hand middle finger close
             new GestureData("The Finger Quick","anim@mp_player_intselfiethe_bird","enter") {IsInsulting = true },//left hand middle finger close
-            new GestureData("The Finger Alt Quick","mp_player_int_upperfinger","mp_player_int_finger_02_enter") {IsInsulting = true },//Both HAnds middle finger 
-            new GestureData("Double Finger Quick","mp_player_int_upperfinger","mp_player_int_finger_01_enter") {IsInsulting = true },//Both HAnds middle finger 
+            new GestureData("The Finger Alt Quick","mp_player_int_upperfinger","mp_player_int_finger_02_enter") {IsInsulting = true },//Both HAnds middle finger
+            new GestureData("Double Finger Quick","mp_player_int_upperfinger","mp_player_int_finger_01_enter") {IsInsulting = true },//Both HAnds middle finger
             new GestureData("Thumbs Up Quick","anim@mp_player_intselfiethumbs_up","enter"),
             new GestureData("Wank Quick","anim@mp_player_intselfiewank","enter"),
-            //new GestureData("Chin Brush Quick","anim@mp_player_intupperchin_brush","enter"),
 # if DEBUG
             new GestureData("Wank Full","anim@mp_player_intselfiewank","idle_a","enter","exit"),
             new GestureData("Blow Kiss Full","anim@mp_player_intselfieblow_kiss","idle_a","enter","exit"),//looks weird
             new GestureData("Chicken Full","anim@mp_player_intupperchicken_taunt","idle_a","enter","exit"),
             new GestureData("Chin Brush Full","anim@mp_player_intupperchin_brush","idle_a","enter","exit"),
-            new GestureData("Gang Signs Full","mp_player_int_uppergang_sign_a","mp_player_int_gang_sign_a","mp_player_int_gang_sign_a_enter","mp_player_int_gang_sign_a_exit"),//Both HAnds middle finger       
+            new GestureData("Gang Signs Full","mp_player_int_uppergang_sign_a","mp_player_int_gang_sign_a","mp_player_int_gang_sign_a_enter","mp_player_int_gang_sign_a_exit"),//Both HAnds middle finger
 #endif
             new GestureData("Bring It On","gesture_bring_it_on") {IsInsulting = true },
             new GestureData("Bye (Hard)","gesture_bye_hard"),
@@ -335,22 +316,5 @@ public class ActionMenu : Menu
             new GestureData("You (Soft)","gesture_you_soft"),
             new GestureData("Its Mine","getsure_its_mine"),
         };
-
-
-
-        // new GestureData("Upper Finger","mp_player_int_upperfinger","mp_player_int_finger_01","mp_player_int_finger_01_enter","mp_player_int_finger_01_exit"),//Both HAnds middle finger 
-        //  new GestureData("Upper Finger Enter Exit","mp_player_int_upperfinger","","mp_player_int_finger_01_enter","mp_player_int_finger_01_exit"),//Both HAnds middle finger 
-        // new GestureData("Upper Finger Base","mp_player_int_upperfinger","mp_player_int_finger_01"),//Both HAnds middle finger 
-        //  new GestureData("Upper Finger 2","mp_player_int_upperfinger","mp_player_int_finger_02","mp_player_int_finger_02_enter","mp_player_int_finger_02_exit"),//Both HAnds middle finger 
-        //  new GestureData("Upper Finger 2 Enter Exit","mp_player_int_upperfinger","","mp_player_int_finger_02_enter","mp_player_int_finger_02_exit"),//Both HAnds middle finger 
-        //
-        //  new GestureData("Upper Finger 2 Base","mp_player_int_upperfinger","mp_player_int_finger_02"),//Both HAnds middle finger 
-        //     new GestureData("Gang Signs","mp_player_int_uppergang_sign_a","mp_player_int_gang_sign_a","mp_player_int_gang_sign_a_enter","mp_player_int_gang_sign_a_exit"),//Both HAnds middle finger 
-        //     new GestureData("Gang Signs Bare","mp_player_int_uppergang_sign_a","mp_player_int_gang_sign_a"),//Both HAnds middle finger 
-        //new GestureLookup("Rock","mp_player_int_rock","mp_player_int_rock"),
-        //new GestureLookup("Salute","mp_player_int_salute","mp_player_int_salute"),
-
     }
-
-
 }

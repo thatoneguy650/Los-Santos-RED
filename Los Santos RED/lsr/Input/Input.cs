@@ -72,6 +72,7 @@ namespace LosSantosRED.lsr
             ConversationCheck();
             ScenarioCheck();
             ControlCheck();
+            KeyBindCheck();
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
             Player.IsPressingFireWeapon = IsPressingFireWeapon;
@@ -85,6 +86,7 @@ namespace LosSantosRED.lsr
         {
             if(IsPressingGesture)
             {
+                EntryPoint.WriteToConsole("Gesture Start Hotkey");
                 Player.Gesture();
             }
         }

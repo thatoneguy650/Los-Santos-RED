@@ -97,7 +97,7 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public int InteriorID { get; set; } = -1;
     public Interior Interior => interior;
-    public virtual BlipSprite MapIcon { get; set; } = BlipSprite.PointOfInterest;
+    public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
@@ -206,9 +206,9 @@ public class BasicLocation
             {
                 Name = Name
             };
-            if (MapIcon != BlipSprite.Destination)
+            if ((BlipSprite)MapIcon != BlipSprite.Destination)
             {
-                MyLocationBlip.Sprite = MapIcon;
+                MyLocationBlip.Sprite = (BlipSprite)MapIcon;
             }
 
             MyLocationBlip.Color = MapIconColor;

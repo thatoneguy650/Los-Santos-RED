@@ -167,9 +167,12 @@ public class GangDispatcher
                 {
                     foreach (Ped Passenger in emt.Pedestrian.CurrentVehicle.Passengers)
                     {
-                        RemoveBlip(Passenger);
-                        Passenger.Delete();
-                        EntryPoint.PersistentPedsDeleted++;
+                        if (Passenger.Handle != Game.LocalPlayer.Character.Handle)
+                        {
+                            RemoveBlip(Passenger);
+                            Passenger.Delete();
+                            EntryPoint.PersistentPedsDeleted++;
+                        }
                     }
                 }
                 if (emt.Pedestrian.Exists() && emt.Pedestrian.CurrentVehicle.Exists() && emt.Pedestrian.CurrentVehicle != null)

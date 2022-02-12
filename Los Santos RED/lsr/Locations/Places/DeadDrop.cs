@@ -19,7 +19,7 @@ public class DeadDrop : InteractableLocation
     {
         
     }
-    public override BlipSprite MapIcon { get; set; } = BlipSprite.Destination;
+    public override int MapIcon { get; set; } = (int)BlipSprite.Destination;
     public override Color MapIconColor { get; set; } = Color.Blue;
     public override string ButtonPromptText { get; set; }
     public override float MapIconScale { get; set; } = 1.0f;

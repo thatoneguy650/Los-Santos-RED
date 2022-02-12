@@ -1,49 +1,21 @@
-﻿using ExtensionsMethods;
-using iFruitAddon2;
+﻿
 using LosSantosRED.lsr.Interface;
-using LosSantosRED.lsr.Locations;
-using LSR.Vehicles;
 using Rage;
-using Rage.Native;
-using RAGENativeUI.Elements;
 using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public class AboutMenu
 {
-    private TabView tabView;
-
-    private TabItemSimpleList simpleListTab;
-    private TabMissionSelectItem missionSelectTab;
-    private TabTextItem textTab;
-    private TabSubmenuItem submenuTab;
     private IGangRelateable Player;
-    private ITimeReportable Time;
-    private IPlacesOfInterest PlacesOfInterest;
-    private IGangs Gangs;
-    private IGangTerritories GangTerritories;
-    private IZones Zones;
-    private IStreets Streets;
-    private IInteriors Interiors;
-    private IEntityProvideable World;
     private ISettingsProvideable Settings;
-    public AboutMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, ISettingsProvideable settings)
+    private TabView tabView;
+    private ITimeReportable Time;
+    public AboutMenu(IGangRelateable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
         Time = time;
-        PlacesOfInterest = placesOfInterest;
-        Gangs = gangs;
-        GangTerritories = gangTerritories;
-        Zones = zones;
-        Streets = streets;
-        Interiors = interiors;
-        World = world;
         Settings = settings;
     }
     public void Setup()
@@ -53,20 +25,6 @@ public class AboutMenu
         tabView.OnMenuClose += TabView_OnMenuClose;
     }
 
-    private void TabView_OnMenuClose(object sender, EventArgs e)
-    {
-
-        Game.IsPaused = false;
-    }
-
-    public void Update()
-    {
-        tabView.Update();
-        if (tabView.Visible)
-        {
-            tabView.Money = Time.CurrentTime;
-        }
-    }
     public void Toggle()
     {
         if (!TabView.IsAnyPauseMenuVisible)
@@ -79,23 +37,14 @@ public class AboutMenu
             tabView.Visible = !tabView.Visible;
         }
     }
-    private void UpdateMenu()
+    public void Update()
     {
-        tabView.MoneySubtitle = Player.Money.ToString("C0");
-        tabView.Name = Player.PlayerName;
-        tabView.Money = Time.CurrentTime;
-        tabView.Tabs.Clear();
-
-        AddActions();
-        AddPedSwap();
-        AddGangs();
-        AddRespawn();
-        AddPolice();
-        AddCivilians();
-        AddStores();
-        tabView.RefreshIndex();
+        tabView.Update();
+        if (tabView.Visible)
+        {
+            tabView.Money = Time.CurrentTime;
+        }
     }
-
     private void AddActions()
     {
         List<TabItem> items = new List<TabItem>();
@@ -103,61 +52,35 @@ public class AboutMenu
         TabItem Suicide = new TabTextItem($"Suicide", $"Suicide", "You now have the ability to commit suicide to quickly end a chase. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Suicide~s~ to commit suicide. If you have a pistol out, you will use the pistol, otherwise you will take a suicide pill.");
         TabItem Sitting = new TabTextItem($"Sitting", $"Sitting", "You now have the ability to sit in chairs/benches. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Sit Down~s~ when near a chair or bench. To sit anywhere use ~o~Here Backwards~s~ when you are not facing the place to sit or ~o~Here Forwards~s~ when you are.");
         TabItem Smoking = new TabTextItem($"Consuming Items", $"Consuming Items", "You now have the ability to smoke/eat/drink purchased items. Open the ~r~Main Menu~s~ -> ~r~Inventory~s~ and select a smokable/edible/drinkable item. The character will start consuming the item. Certain items will cause intoxication, others will regain health. Intoxication is displayed in the added ~b~blue bar~s~ under the armor.");
-        // TabItem Eating = new TabTextItem($"Eating", $"Eating", "");
-        // TabItem Drinking = new TabTextItem($"Drinking", $"Drinking", "");
-
         items.Add(Sitting);
         items.Add(Smoking);
         TabItem Carjack = new TabTextItem($"Car Jacking", $"Car Jacking", "You can carjack vehicles with a weapon by tapping ~o~Vehicle Entry~s~ while holding a weapon instead of holding ~o~Vehicle Entry~s~. Can do regular entry by not having a weapon out or holding ~o~Vehicle Entry~s~.");
         TabItem CarLockPick = new TabTextItem($"Car Lock Picking", $"Car Lock Picking", "You can pick a vehicles lock instead of smashing the window by tapping ~o~Vehicle Entry~s~ instead of holding ~o~Vehicle Entry~s~. This will keep the vehicle from looking suspicious to law enforcement with the downside of taking longer. Optional setting to require you to purchase a screwdriver before allowing. Can do the regular smash enter by holding ~o~Vehicle Entry~s~.");
         TabItem PlateStealing = new TabTextItem($"Plate Swapping", $"Plate Swapping", "You now have the ability to change or remove a license plate from a vehicle. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Change Plate~s~/~r~Remove Plate~s~ when near a vehicle. Can be used to place clean plates on wanted vehicles.");
         items.Add(new TabTextItem($"Sprinting", $"Sprinting", $"The player can get an extra speed boost while jogging by pressing {FormatControls(Settings.SettingsManager.KeySettings.SprintKeyModifier, Settings.SettingsManager.KeySettings.SprintKey)}. The added ~r~red bar~s~ under the health shows the current sprint stamina level."));
-        items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier,Settings.SettingsManager.KeySettings.SurrenderKey)}"));
-        items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier,Settings.SettingsManager.KeySettings.EngineToggle)}." +
-            $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier,Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
-            $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer,Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
-            $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer,Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
-            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer,Settings.SettingsManager.KeySettings.HazardKey)}"));
-        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier,Settings.SettingsManager.KeySettings.SelectorKey)}"));
-
-        //items.Add(Eating);
-        //items.Add(Drinking);
+        items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey)}"));
+        items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier, Settings.SettingsManager.KeySettings.EngineToggle)}." +
+            $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
+            $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
+            $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
+            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}"));
+        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}"));
         items.Add(PlateStealing);
-
-
         items.Add(Carjack);
         items.Add(CarLockPick);
         items.Add(Suicide);
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Actions", items));
+        tabView.AddTab(new TabSubmenuItem("Actions", items));
     }
-    private string FormatControls(Keys modifier, Keys key)
-    {
-        if(modifier != Keys.None && key != Keys.None)
-        {
-            return $"~o~{modifier}~s~ + ~o~{key}~s~";
-        }
-        else if (modifier != Keys.None && key == Keys.None)
-        {
-            return $"~o~{modifier}~s~";
-        }
-        else if (modifier == Keys.None && key != Keys.None)
-        {
-            return $"~o~{key}~s~";
-        }
-        return "";
-    }
-    private void AddPedSwap()
+    private void AddCivilians()
     {
         List<TabItem> items = new List<TabItem>();
-        items.Add(new TabTextItem($"About", $"About", $"You can now choose to play as any ped in the game including the freemode chracters. The mod uses model aliasing to allow you to spend money and have the game treat random peds the same as the main characters and spend money, get random encounters, etc. The chracter you create or take over can have a customized name, weapons, vehicles, criminal records, and more."));
-        TabItem CustomPed = new TabTextItem($"Customize Ped", $"Customize Ped", "You can choose any model in the game and customize the variation from props and componenets to headblend data and overlays. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Become Custom Pedestrian~s~.");
-        TabItem RandomPed = new TabTextItem($"Become Any/Random Ped", $"Random Ped", "You can become any civilian ped you see in the streets (or can exist) and get a generated name, vehicle, bank balance, weapons, criminal history, and more. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Takeover Random Pedestrian~s~/~r~Become Random Pedestrian~s~.");
-        TabItem RandomCop = new TabTextItem($"Become Cop", $"Become Cop", "Become a random cop around the world. Very basic, might be expanded. Might cause other issues. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Become Random Cop~s~.");
-        items.Add(CustomPed);
-        items.Add(RandomPed);
-        items.Add(RandomCop);
-
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Ped Swap", items));
+        TabItem One = new TabTextItem($"Interactions", $"Interactions", "You can interact with almost any ped you come across on the street. You will see a prompt to talk with a ped when you are close enough and looking at them. Be careful insulting certain peds as they can react violently.");
+        TabItem Three = new TabTextItem($"Reactions", $"Reactions", "Civlians will now react to more crimes committed by both you and other civilians around the world. They can either react by fleeing, fighting, calling the police, or any combination. Use the ~o~Crimes.xml~s~ file to make changes to which crimes civilians will react to and how they will react.");
+        TabItem Four = new TabTextItem($"Transactions", $"Transactions", "You can buy or sell from peds that have or want items. You will see a prompt to transact with a ped when you are close enough and looking at them. Be careful buying illicit items as other civilians can call the police and report what they have seen.");
+        items.Add(One);
+        items.Add(Three);
+        items.Add(Four);
+        tabView.AddTab(new TabSubmenuItem("Civilians", items));
     }
     private void AddGangs()
     {
@@ -175,7 +98,37 @@ public class AboutMenu
         items.Add(Four);
         items.Add(Five);
         items.Add(Six);
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Gangs", items));
+        tabView.AddTab(new TabSubmenuItem("Gangs", items));
+    }
+    private void AddPedSwap()
+    {
+        List<TabItem> items = new List<TabItem>();
+        items.Add(new TabTextItem($"About", $"About", $"You can now choose to play as any ped in the game including the freemode chracters. The mod uses model aliasing to allow you to spend money and have the game treat random peds the same as the main characters and spend money, get random encounters, etc. The chracter you create or take over can have a customized name, weapons, vehicles, criminal records, and more."));
+        TabItem CustomPed = new TabTextItem($"Customize Ped", $"Customize Ped", "You can choose any model in the game and customize the variation from props and componenets to headblend data and overlays. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Become Custom Pedestrian~s~.");
+        TabItem RandomPed = new TabTextItem($"Become Any/Random Ped", $"Random Ped", "You can become any civilian ped you see in the streets (or can exist) and get a generated name, vehicle, bank balance, weapons, criminal history, and more. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Takeover Random Pedestrian~s~/~r~Become Random Pedestrian~s~.");
+        TabItem RandomCop = new TabTextItem($"Become Cop", $"Become Cop", "Become a random cop around the world. Very basic, might be expanded. Might cause other issues. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Become Random Cop~s~.");
+        items.Add(CustomPed);
+        items.Add(RandomPed);
+        items.Add(RandomCop);
+
+        tabView.AddTab(new TabSubmenuItem("Ped Swap", items));
+    }
+    private void AddPolice()
+    {
+        List<TabItem> items = new List<TabItem>();
+        items.Add(new TabTextItem($"About", $"About", $"Police are now customizeable by the player including jurisdiction, peds, vehicles, and more. The player can customize the police in the ~o~Agencies.xml~s~ file."));
+        TabItem One = new TabTextItem($"Dispatch/Jurisdiction", $"Dispatch/Jurisdiction", "The existing dispatch system has been completely replaced with a script based system. You can customize who responds in any location by making changes to the ~o~CountyJurisdictions.xml~s~, or ~o~ZoneJurisdictions.xml~s~ files.");
+        TabItem Two = new TabTextItem($"Investigation", $"Investigation", "When civilians call in a crime, the police will first need to respond and determine if any crimes are taking place before you get a wanted level. The speed of the response is based on the severity of the crime reported. If your description has been issued, the police will arrest you if you are in the general vicinity of the area. Otherwise you can avoid arrest by acting normal until they pass.");
+        TabItem Three = new TabTextItem($"Criminal History", $"Criminal History", "Police will now remember you and your vehicle after a chase for a period of time. This is called a BOLO (be on the look out) in the mod and means that if you are seen near the last area or are recognized by the police for a period of time, the chase will pickup right where it left off. Use Hotels to quickly expire BOLOs from the safety of a hotel room.");
+        TabItem Four = new TabTextItem($"Bribes/Fines", $"Bribes/Fines", "You can now pay fines for petty crimes and bribe police to let you go for more serious offences. The amount they expect is based on the severity of the crime. If you are too cheap, they will take the bribe AND still arrest you.");
+        TabItem Five = new TabTextItem($"Response", $"Response", "Police will now chase you more realistically and will only escalate to deadly force when they are threatened or attacked. Tasers are used properly when being chased on foot." +
+            "");
+        items.Add(One);
+        items.Add(Two);
+        items.Add(Three);
+        items.Add(Four);
+        items.Add(Five);
+        tabView.AddTab(new TabSubmenuItem("Police", items));
     }
     private void AddRespawn()
     {
@@ -188,57 +141,7 @@ public class AboutMenu
         items.Add(new TabTextItem($"Takeover Random Pedestrian", $"Takeover Rnd Ped", "Instead of facing the music, you can swap from your current persona to another ped on the street and forget all about your past life. If you are curious you might be able to see you being carted away or killed."));
         items.Add(new TabTextItem($"Un-Die", $"Un-Die", "Will call a mulligan on the chase and allow you to respawn instantly as your existing chracter in the exact same position. Useful to keep an interesting chase going until YOU decide it is over."));
         items.Add(new TabTextItem($"Give Up", $"Give Up", "The medics will take you back to the hospital where you will be billed and discharged. Similar to vanilla behavior however you can choose which hospital you get treated at (the closest hospital is selected by default)."));
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Respawn", items));
-    }
-    private void AddDefault()
-    {
-        List<TabItem> items = new List<TabItem>();
-        items.Add(new TabTextItem($"About", $"About", $""));
-        items.Add(new TabTextItem($"Resist", $"Resist", ""));
-        items.Add(new TabTextItem($"Bribe", $"Bribe", ""));
-        items.Add(new TabTextItem($"Pay", $"Pay", ""));
-        items.Add(new TabTextItem($"Surrender", $"Surrender", ""));
-        items.Add(new TabTextItem($"Takeover", $"Takeover", ""));
-        items.Add(new TabTextItem($"Un", $"Un", ""));
-        items.Add(new TabTextItem($"Give", $"Give", ""));
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Respawn", items));
-    }
-
-    private void AddPolice()
-    {
-        List<TabItem> items = new List<TabItem>();
-        items.Add(new TabTextItem($"About", $"About", $"Police are now customizeable by the player including jurisdiction, peds, vehicles, and more. The player can customize the police in the ~o~Agencies.xml~s~ file."));
-        TabItem One = new TabTextItem($"Dispatch/Jurisdiction", $"Dispatch/Jurisdiction", "The existing dispatch system has been completely replaced with a script based system. You can customize who responds in any location by making changes to the ~o~CountyJurisdictions.xml~s~, or ~o~ZoneJurisdictions.xml~s~ files.");
-        TabItem Two = new TabTextItem($"Investigation", $"Investigation", "When civilians call in a crime, the police will first need to respond and determine if any crimes are taking place before you get a wanted level. The speed of the response is based on the severity of the crime reported. If your description has been issued, the police will arrest you if you are in the general vicinity of the area. Otherwise you can avoid arrest by acting normal until they pass.");
-        TabItem Three = new TabTextItem($"Criminal History", $"Criminal History", "Police will now remember you and your vehicle after a chase for a period of time. This is called a BOLO (be on the look out) in the mod and means that if you are seen near the last area or are recognized by the police for a period of time, the chase will pickup right where it left off. Use Hotels to quickly expire BOLOs from the safety of a hotel room.");
-        TabItem Four = new TabTextItem($"Bribes/Fines", $"Bribes/Fines", "You can now pay fines for petty crimes and bribe police to let you go for more serious offences. The amount they expect is based on the severity of the crime. If you are too cheap, they will take the bribe AND still arrest you.");
-        TabItem Five = new TabTextItem($"Response", $"Response", "Police will now chase you more realistically and will only escalate to deadly force when they are threatened or attacked. Tasers are used properly when being chased on foot." +
-            "");
-        //TabItem Six = new TabTextItem($"Jurisdiction", $"Jurisdiction", "");
-        items.Add(One);
-        items.Add(Two);
-        items.Add(Three);
-        items.Add(Four);
-        items.Add(Five);
-        //items.Add(Six);
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Police", items));
-    }
-    private void AddCivilians()
-    {
-        List<TabItem> items = new List<TabItem>();
-        TabItem One = new TabTextItem($"Interactions", $"Interactions", "You can interact with almost any ped you come across on the street. You will see a prompt to talk with a ped when you are close enough and looking at them. Be careful insulting certain peds as they can react violently.");
-        //TabItem Two = new TabTextItem($"AI", $"AI", "");
-        TabItem Three = new TabTextItem($"Reactions", $"Reactions", "Civlians will now react to more crimes committed by both you and other civilians around the world. They can either react by fleeing, fighting, calling the police, or any combination. Use the ~o~Crimes.xml~s~ file to make changes to which crimes civilians will react to and how they will react.");
-        TabItem Four = new TabTextItem($"Transactions", $"Transactions", "You can buy or sell from peds that have or want items. You will see a prompt to transact with a ped when you are close enough and looking at them. Be careful buying illicit items as other civilians can call the police and report what they have seen.");
-        //TabItem Five = new TabTextItem($"Response", $"Response", "");
-        //TabItem Six = new TabTextItem($"Territory", $"Safehouses/Dens", "");
-        items.Add(One);
-       // items.Add(Two);
-        items.Add(Three);
-        items.Add(Four);
-        //items.Add(Five);
-        //items.Add(Six);
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Civilians", items));
+        tabView.AddTab(new TabSubmenuItem("Respawn", items));
     }
     private void AddStores()
     {
@@ -258,7 +161,43 @@ public class AboutMenu
         items.Add(Four);
         items.Add(Five);
         items.Add(Six);
-        tabView.AddTab(submenuTab = new TabSubmenuItem("Locations", items));
+        tabView.AddTab(new TabSubmenuItem("Locations", items));
+    }
+    private string FormatControls(Keys modifier, Keys key)
+    {
+        if (modifier != Keys.None && key != Keys.None)
+        {
+            return $"~o~{modifier}~s~ + ~o~{key}~s~";
+        }
+        else if (modifier != Keys.None && key == Keys.None)
+        {
+            return $"~o~{modifier}~s~";
+        }
+        else if (modifier == Keys.None && key != Keys.None)
+        {
+            return $"~o~{key}~s~";
+        }
+        return "";
+    }
+    private void TabView_OnMenuClose(object sender, EventArgs e)
+    {
+        Game.IsPaused = false;
+    }
+    private void UpdateMenu()
+    {
+        tabView.MoneySubtitle = Player.Money.ToString("C0");
+        tabView.Name = Player.PlayerName;
+        tabView.Money = Time.CurrentTime;
+        tabView.Tabs.Clear();
+
+        AddActions();
+        AddPedSwap();
+        AddGangs();
+        AddRespawn();
+        AddPolice();
+        AddCivilians();
+        AddStores();
+        tabView.RefreshIndex();
     }
 }
 

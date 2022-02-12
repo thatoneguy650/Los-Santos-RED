@@ -35,25 +35,7 @@ public class GangIdle : ComplexTask
     {
         get
         {
-            //if (!Ped.Pedestrian.IsInAnyVehicle(false))
-            //{
-            //    if (Ped.DistanceToPlayer <= 75f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0 && VehicleTryingToEnter.Vehicle.Speed < 1.0f) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
-            //    {
-            //        return Task.GetInCar;
-            //    }
-            //    else if (CurrentTask == Task.GetInCar)
-            //    {
-            //        return Task.GetInCar;
-            //    }
-            //    else
-            //    {
-            //        return Task.Wander;
-            //    }
-            //}
-            //else
-            //{
-                return Task.Wander;
-           // }
+            return Task.Wander;
         }
     }
     public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
@@ -124,9 +106,6 @@ public class GangIdle : ComplexTask
                 //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
                 NeedsUpdates = true;
                 ClearTasks(true);
-
-
-
                 WanderTask(IsFirstRun);
             }
             else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 
-public class Transaction : Interaction
+public class TransactionOld : Interaction
 {
     private bool IsUsingHintCamera = false;
     private bool IsUsingCustomCamera = false;
@@ -34,8 +34,8 @@ public class Transaction : Interaction
     private IModItems ModItems;
     private ITimeControllable Time;
     private IEntityProvideable World;
-    private PurchaseMenu PurchaseMenu;
-    private SellMenu SellMenu;
+    private PurchaseMenuOld PurchaseMenu;
+    private SellMenuOld SellMenu;
     private PedExt Ped;
     private bool IsTasked;
     private Vector3 EgressCamPosition;
@@ -60,7 +60,7 @@ public class Transaction : Interaction
         SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
         SPC_ALLOW_PAD_SHAKE = (1 << 12)
     };
-    public Transaction(IInteractionable player, PedExt ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeControllable time, IEntityProvideable world, IWeapons weapons)
+    public TransactionOld(IInteractionable player, PedExt ped, GameLocation store, ISettingsProvideable settings, IModItems modItems, ITimeControllable time, IEntityProvideable world, IWeapons weapons)
     {
         Ped = ped;
         Player = player;
@@ -241,13 +241,13 @@ public class Transaction : Interaction
         bool hasSellMenu = false;
         if (Store.Menu.Any(x => x.Purchaseable))
         {
-            PurchaseMenu = new PurchaseMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons, Time);
+            PurchaseMenu = new PurchaseMenuOld(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, World, Settings, this, Weapons, Time);
             PurchaseMenu.Setup();
             hasPurchaseMenu = true;
         }
         if (Store.Menu.Any(x => x.Sellable))
         {
-            SellMenu = new SellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World, Settings);//was IsUsingCustomCam before
+            SellMenu = new SellMenuOld(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World, Settings);//was IsUsingCustomCam before
             SellMenu.Setup();
             hasSellMenu = true;
         }

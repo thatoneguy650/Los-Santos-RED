@@ -14,16 +14,20 @@ public class StoreCamera
     //private Camera StoreCam;
     private Camera EntranceCam;
     private Vector3 _direction;
-    private Camera InterpolationCamera;
+    private Camera CameraTo;
     private bool IsDisposed = false;
     private Vector3 EgressCamPosition;
+    private Vector3 EntityCamPosition;
     private float EgressCamFOV = 55f;
+    private float EntityCamFOV = 55f;
     private bool IsCancelled;
     private InteractableLocation Store;
+    
 
 
     private IActivityPerformable Player;
     public Camera StoreCam { get; private set; }
+    public Camera CurrentCamera { get; private set; }
     public StoreCamera(InteractableLocation store, IActivityPerformable player)
     {
         Store = store;
@@ -62,15 +66,72 @@ public class StoreCamera
         {
             StoreCam.Delete();
         }
-        if (InterpolationCamera.Exists())
+        if (CameraTo.Exists())
         {
-            InterpolationCamera.Delete();
+            CameraTo.Delete();
         }
         if (EntranceCam.Exists())
         {
             EntranceCam.Delete();
         }
         Game.LocalPlayer.Character.Tasks.Clear();
+    }
+    public void HighlightEntity(Entity toHighlight)
+    {
+        if (toHighlight.Exists() && 1==0)//will freeze on the second camera movement
+        {
+
+            Camera CameraFrom;
+            if (Camera.RenderingCamera.Exists())
+            {
+                CameraFrom = Camera.RenderingCamera;
+            }
+            else
+            {
+                CameraFrom = StoreCam;
+            }
+
+            if (!CameraTo.Exists())
+            {
+                CameraTo = new Camera(false);
+            }
+
+            Vector3 ToLookAtPos = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
+            EntityCamPosition = toHighlight.GetOffsetPosition(new Vector3(7f, 7f, 2f));
+            _direction = (ToLookAtPos - EntityCamPosition).ToNormalized();
+            CameraTo.FOV = EntityCamFOV;
+            CameraTo.Position = EntityCamPosition;
+            CameraTo.Rotation = Store.CameraRotation;
+            CameraTo.Direction = _direction;
+
+            CameraTo.Active = true;
+            NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, CameraFrom, 1500, true, true);
+            GameFiber.Sleep(1500);
+            CurrentCamera = CameraTo;
+            //InterpolationCamera.Active = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //StoreCam.Active = true;
+            //Camera CamTo = new Camera(false);
+            //CamTo.Position = toHighlight.GetOffsetPosition(new Vector3(0f, 5f, 5f));
+            //Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 2f);
+            //_direction = (ToLookAt - CamTo.Position).ToNormalized();
+            //CamTo.Direction = _direction;
+            //CamTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            //NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CamTo, StoreCam, 1500, true, true);
+            //GameFiber.Sleep(1500);
+        }
     }
 
     private void DisableControl()
@@ -211,11 +272,6 @@ public class StoreCamera
         {
             float distanceAway = 10f;
             float distanceAbove = 7f;
-            //if (Store.Type == LocationType.Hotel)
-            //{
-            //    distanceAway = 30f;
-            //    distanceAbove = 20f;
-            //}
             Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, distanceAway);
             InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
             StoreCam.Position = InitialCameraPosition;
@@ -224,57 +280,41 @@ public class StoreCamera
             StoreCam.Direction = _direction;
         }
         StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-        if (!InterpolationCamera.Exists())
+        if (!CameraTo.Exists())
         {
-            InterpolationCamera = new Camera(false);
+            CameraTo = new Camera(false);
         }
-        InterpolationCamera.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-        InterpolationCamera.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CameraTo.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
         Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-        InterpolationCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
-        InterpolationCamera.Active = true;
-        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, InterpolationCamera, 1500, true, true);
+        CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
+        CameraTo.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
         GameFiber.Sleep(1500);
     }
     private void ReturnToGameplay()
     {
-        //if (Store.HasCustomItemPostion)
-        //{
-        //    Game.FadeScreenOut(1500, true);
-        //    StoreCam.Active = false;
-        //    NativeFunction.Natives.CLEAR_FOCUS();
-        //    //GameFiber.Sleep(500);
-        //    Game.FadeScreenIn(1500, false);//was true   
-        //}
-        //else
-        //{
-            if (!InterpolationCamera.Exists())
-            {
-                InterpolationCamera = new Camera(false);
-            }
-
-
-
-            Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 2f);
-            EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, Store.EntranceHeading, 1f);
-            EgressCamPosition += new Vector3(0f, 0f, 0.4f);
-            ToLookAtPos += new Vector3(0f, 0f, 0.4f);
-            _direction = (ToLookAtPos - EgressCamPosition).ToNormalized();
-
-
-
-            InterpolationCamera.FOV = EgressCamFOV; //NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-            InterpolationCamera.Position = EgressCamPosition;// NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-            InterpolationCamera.Rotation = Store.CameraRotation;
-            InterpolationCamera.Direction = _direction;
-
-
-
-            InterpolationCamera.Active = true;
-            NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(InterpolationCamera, StoreCam, 1500, true, true);
-            GameFiber.Sleep(1500);
-            InterpolationCamera.Active = false;
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
         }
+
+        Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 2f);
+        EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, Store.EntranceHeading, 1f);
+        EgressCamPosition += new Vector3(0f, 0f, 0.4f);
+        ToLookAtPos += new Vector3(0f, 0f, 0.4f);
+        _direction = (ToLookAtPos - EgressCamPosition).ToNormalized();
+
+        CameraTo.FOV = EgressCamFOV; //NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CameraTo.Position = EgressCamPosition;// NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+        CameraTo.Rotation = Store.CameraRotation;
+        CameraTo.Direction = _direction;
+
+        CameraTo.Active = true;
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
+        GameFiber.Sleep(1500);
+        CameraTo.Active = false;
+    }
     private bool CanSay(Ped ToSpeak, string Speech)
     {
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);

@@ -70,7 +70,7 @@ public class KeySettings : ISettingsDefaultable
 
 
         GestureKey = Keys.X;
-        GestureKeyModifier = Keys.LControlKey;
+        GestureKeyModifier = Keys.Z;
 
     }
 }

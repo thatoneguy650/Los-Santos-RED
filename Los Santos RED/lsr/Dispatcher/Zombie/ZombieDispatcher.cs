@@ -11,7 +11,7 @@ using System.Linq;
 public class ZombieDispatcher
 {
     private readonly IDispatchable Player;
-    private readonly int LikelyHoodOfAnySpawn = 5;
+   // private readonly int LikelyHoodOfAnySpawn = 5;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;

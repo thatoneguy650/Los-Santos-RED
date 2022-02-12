@@ -6,6 +6,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 public class SaveMenu : Menu
 {
@@ -33,6 +34,8 @@ public class SaveMenu : Menu
         Gangs = gangs;
         Time = time;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
         Saves.SetBannerType(EntryPoint.LSRedColor);
         Saves.OnItemSelect += OnActionItemSelect;
         CreateSavesMenu();

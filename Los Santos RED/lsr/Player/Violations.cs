@@ -17,7 +17,6 @@ namespace LosSantosRED.lsr
     {
         private readonly List<Crime> CrimeList = new List<Crime>();
         private IViolateable Player;
-        private float CurrentSpeed;
         private uint GameTimeLastHurtCivilian;
         private uint GameTimeLastHurtCop;
         private uint GameTimeLastKilledCivilian;

@@ -8,11 +8,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ITimeControllable : ITimeReportable
     {
-        bool IsNight { get; }
-        bool IsFastForwarding { get; }
         int CurrentMonth { get; }
         int CurrentYear { get; }
-        int CurrentDay { get; }
         void UnPauseTime();
         void PauseTime();
         void FastForward(int hoursTo);

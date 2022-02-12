@@ -19,7 +19,6 @@ public class TransactableLocation : InteractableLocation
     public float ItemPreviewHeading { get; set; } = 0f;
     public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
     public float ItemDeliveryHeading { get; set; } = 0f;
-
     public TransactableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, ShopMenu shopMenu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         Menu = shopMenu;
@@ -42,7 +41,6 @@ public class TransactableLocation : InteractableLocation
             DisposeTransactionMenu();
             DisposeInteractionMenu();
 
-
             CanInteract = true;
         }
     }
@@ -55,9 +53,8 @@ public class TransactableLocation : InteractableLocation
         }
         if (Menu.Items.Any(x => x.Sellable))
         {
-            // SellMenu = new StoreSellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World, Settings);//was IsUsingCustomCam before
-            // SellMenu.Setup();
-            // hasSellMenu = true;
+            SellMenu = new StoreSellMenu(MenuPool, InteractionMenu, this,modItems,player,world,settings,weapons,time);//was IsUsingCustomCam before
+            SellMenu.Setup();
         }
     }
     private void StartTransaction(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -73,9 +70,9 @@ public class TransactableLocation : InteractableLocation
         }
         if (Menu.Items.Any(x => x.Sellable))
         {
-            // SellMenu = new StoreSellMenu(MenuPool, ModItemMenu, Ped, Store, ModItems, Player, StoreCam, IsUsingCustomCam, this, World, Settings);//was IsUsingCustomCam before
-            // SellMenu.Setup();
-            // hasSellMenu = true;
+            SellMenu = new StoreSellMenu(MenuPool, InteractionMenu, this, modItems, player, world, settings, weapons, time);//was IsUsingCustomCam before
+            SellMenu.Setup();
+            hasSellMenu = true;
         }
         if (hasSellMenu && hasPurchaseMenu)
         {

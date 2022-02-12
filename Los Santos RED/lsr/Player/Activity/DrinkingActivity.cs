@@ -14,12 +14,10 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private DrinkingData Data;
-        private IntoxicatingEffect IntoxicatingEffect;
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private IIntoxicatable Player;
         private ISettingsProvideable Settings;
-       // private ModItem ModItem;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         private bool hasGainedHP = false;
@@ -75,10 +73,6 @@ namespace LosSantosRED.lsr.Player
             {
                 try 
                 {
-                    //Vector3 position = Player.Character.GetOffsetPositionUp(50f);
-                    //Model modelToCreate = new Model(Game.GetHashKey(Data.PropModelName));
-                    //modelToCreate.LoadAndWait();
-                    //Bottle = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey(Data.PropModelName), position.X, position.Y, position.Z, 0f);
                     Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
                 catch (Exception e)
@@ -111,8 +105,6 @@ namespace LosSantosRED.lsr.Player
             {
                 Bottle.Detach();
             }
-            //Player.Character.Tasks.Clear();
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);

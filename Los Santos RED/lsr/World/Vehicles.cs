@@ -9,7 +9,6 @@ using System.Linq;
 
 public class Vehicles
 {
-    private readonly float DistanceToScan = 200f;//450f
     private readonly List<VehicleExt> PoliceVehicles = new List<VehicleExt>();
     private readonly List<VehicleExt> EMSVehicles = new List<VehicleExt>();
     private readonly List<VehicleExt> FireVehicles = new List<VehicleExt>();
@@ -367,7 +366,7 @@ public class Vehicles
         {
             vehicleExt.HasUpdatedPlateType = true;
             PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
-            string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
+            //string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
             Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
 
 

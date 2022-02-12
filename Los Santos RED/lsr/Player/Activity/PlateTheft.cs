@@ -4,23 +4,19 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
-using System.Linq;
 
 public class PlateTheft : DynamicActivity
 {
+    private Vector3 CarPosition;
+    private Vector3 ChangeSpot;
     private float DistanceToCheckCars = 10f;
-    private bool IsCancelled;
     private Rage.Object LicensePlateModel;
     private LicensePlate PlateToAdd;
     private IPlateChangeable Player;
     private Rage.Object ScrewdriverModel;
-    private VehicleExt TargetVehicle;
-    private Vehicle VehicleWithPlate;
-    private Vector3 CarPosition;
-    private Vector3 ChangeSpot;
     private ISettingsProvideable Settings;
+    private VehicleExt TargetVehicle;
     private IEntityProvideable World;
-    private bool IsChangingPlate => PlateToAdd != null;
     public PlateTheft(IPlateChangeable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
@@ -31,8 +27,9 @@ public class PlateTheft : DynamicActivity
     {
         PlateToAdd = plateToChange;
     }
-    public override ModItem ModItem { get; set; }
     public override string DebugString => "";
+    public override ModItem ModItem { get; set; }
+    private bool IsChangingPlate => PlateToAdd != null;
     private bool TargetVehicleHasPlate
     {
         get
@@ -49,16 +46,14 @@ public class PlateTheft : DynamicActivity
     }
     public override void Cancel()
     {
-        IsCancelled = true;
         Player.IsPerformingActivity = false;
-    }
-    public override void Pause()
-    {
-
     }
     public override void Continue()
     {
         //no no
+    }
+    public override void Pause()
+    {
     }
     public override void Start()
     {
@@ -90,6 +85,69 @@ public class PlateTheft : DynamicActivity
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
+    }
+    private void Enter()
+    {
+        try
+        {
+            Player.SetUnarmed();
+            if (!MovePedToCarPosition(TargetVehicle.Vehicle, Player.Character, TargetVehicle.Vehicle.Heading, ChangeSpot, true))
+            {
+                Player.IsPerformingActivity = false;
+                return;
+            }
+            Player.IsChangingLicensePlates = true;
+            ScrewdriverModel = AttachScrewdriverToPed(Player.Character);
+            if (IsChangingPlate)
+            {
+                LicensePlateModel = AttachLicensePlateToPed(Player.Character);
+            }
+            AnimationDictionary.RequestAnimationDictionay("mp_car_bomb");
+            uint GameTimeStartedAnimation = Game.GameTime;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+            while (Player.Character.IsAlive && Game.GameTime - GameTimeStartedAnimation < 2000 && !Player.IsMoveControlPressed)
+            {
+                GameFiber.Yield();
+            }
+
+            if (!Player.IsMoveControlPressed && CarPosition.DistanceTo2D(TargetVehicle.Vehicle.Position) <= 1f && Player.Character.DistanceTo2D(ChangeSpot) <= 2f && Player.Character.IsAlive)
+            {
+                UpdateModelPlates(IsChangingPlate);
+            }
+            else
+            {
+                //Player.Character.Tasks.Clear();
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            }
+
+            if (LicensePlateModel != null && LicensePlateModel.Exists())
+            {
+                LicensePlateModel.Delete();
+            }
+            GameFiber.Sleep(750);
+            if (ScrewdriverModel != null && ScrewdriverModel.Exists())
+            {
+                ScrewdriverModel.Delete();
+            }
+
+            LicensePlateModel = null;
+            ScrewdriverModel = null;
+            Player.IsChangingLicensePlates = false;
+            Player.IsPerformingActivity = false;
+        }
+        catch (Exception e)
+        {
+            if (LicensePlateModel != null && LicensePlateModel.Exists())
+                LicensePlateModel.Delete();
+            if (ScrewdriverModel != null && ScrewdriverModel.Exists())
+                ScrewdriverModel.Delete();
+
+            LicensePlateModel = null;
+            ScrewdriverModel = null;
+            Player.IsChangingLicensePlates = false;
+            Player.IsPerformingActivity = false;
+            //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
+        }
     }
     private bool FloatIsWithin(float value, float minimum, float maximum)
     {
@@ -128,21 +186,6 @@ public class PlateTheft : DynamicActivity
         else
             return Vector3.Zero;
     }
-    //private VehicleExt GetTargetVehicle()
-    //{
-    //    VehicleWithPlate = (Vehicle)Rage.World.GetClosestEntity(Player.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
-    //    if (VehicleWithPlate != null)// && VehicleWithPlate.LicensePlate != "        ")
-    //    {
-    //        TargetVehicle = Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
-    //        if (TargetVehicle == null)
-    //        {
-    //            TargetVehicle = new VehicleExt(VehicleWithPlate, Settings);
-    //            Player.TrackedVehicles.Add(TargetVehicle);
-    //        }
-    //        return TargetVehicle;
-    //    }
-    //    return null;
-    //}
     private bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
         bool Continue = true;
@@ -171,71 +214,14 @@ public class PlateTheft : DynamicActivity
         }
         return true;
     }
-    private void Enter()
+    private void Setup()
     {
-        try
+        TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
         {
-
-            Player.SetUnarmed();
-            if (!MovePedToCarPosition(TargetVehicle.Vehicle, Player.Character, TargetVehicle.Vehicle.Heading, ChangeSpot, true))
-            {
-                Player.IsPerformingActivity = false;
-                return;
-            }
-            Player.IsChangingLicensePlates = true;
-            ScrewdriverModel = AttachScrewdriverToPed(Player.Character);
-            if (IsChangingPlate)
-            {
-                LicensePlateModel = AttachLicensePlateToPed(Player.Character);
-            }
-            AnimationDictionary.RequestAnimationDictionay("mp_car_bomb");
-            uint GameTimeStartedAnimation = Game.GameTime;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
-            while (Player.Character.IsAlive && Game.GameTime - GameTimeStartedAnimation < 2000 && !Player.IsMoveControlPressed)
-            {
-                GameFiber.Yield();
-            }
-
-            if (!Player.IsMoveControlPressed && CarPosition.DistanceTo2D(TargetVehicle.Vehicle.Position) <= 1f && Player.Character.DistanceTo2D(ChangeSpot) <= 2f && Player.Character.IsAlive)
-            {
-                UpdateModelPlates(IsChangingPlate);
-            }
-            else
-            {
-                //Player.Character.Tasks.Clear();
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            }
-
-
-            if (LicensePlateModel != null && LicensePlateModel.Exists())
-            {
-                LicensePlateModel.Delete();
-            }
-            GameFiber.Sleep(750);
-            if (ScrewdriverModel != null && ScrewdriverModel.Exists())
-            {
-                ScrewdriverModel.Delete();
-            }
-
-            LicensePlateModel = null;
-            ScrewdriverModel = null;
-            Player.IsChangingLicensePlates = false;
-            Player.IsPerformingActivity = false;
+            CarPosition = TargetVehicle.Vehicle.Position;
+            ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
         }
-        catch (Exception e)
-        {
-            if (LicensePlateModel != null && LicensePlateModel.Exists())
-                LicensePlateModel.Delete();
-            if (ScrewdriverModel != null && ScrewdriverModel.Exists())
-                ScrewdriverModel.Delete();
-
-            LicensePlateModel = null;
-            ScrewdriverModel = null;
-            Player.IsChangingLicensePlates = false;
-            Player.IsPerformingActivity = false;
-            //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
-        }
-
     }
     private void UpdateModelPlates(bool IsChanging)
     {
@@ -260,15 +246,6 @@ public class PlateTheft : DynamicActivity
             TargetVehicle.CarPlate = null;
             TargetVehicle.Vehicle.LicensePlate = "        ";
             TargetVehicle.CarPlate = null;
-        }
-    }
-    private void Setup()
-    {
-        TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
-        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
-        {
-            CarPosition = TargetVehicle.Vehicle.Position;
-            ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
         }
     }
 }

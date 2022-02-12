@@ -18,6 +18,6 @@ public class PossibleLocations
     public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
     public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
     public List<GunStore> GunStores { get; private set; } = new List<GunStore>();
- 
+    public List<Hotel> Hotels { get; private set; } = new List<Hotel>();
 }
 

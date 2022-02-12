@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PurchaseMenu : Menu
+public class PurchaseMenuOld : Menu
 {
     private UIMenu purchaseMenu;
     private IModItems ModItems;
@@ -31,7 +31,7 @@ public class PurchaseMenu : Menu
     private int SecondaryColor = 0;
     
     private string PlateString = "";
-    private Transaction Transaction;
+    private TransactionOld Transaction;
     private bool IsCancelled;
     private string PlayingDict;
     private string PlayingAnim;
@@ -48,7 +48,7 @@ public class PurchaseMenu : Menu
     private int TotalSpendAtUndergroundGuns = 0;
 
     private bool CanContinueConversation => Ped != null &&Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, Transaction parentTransaction, IWeapons weapons, ITimeControllable time)
+    public PurchaseMenuOld(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, IEntityProvideable world, ISettingsProvideable settings, TransactionOld parentTransaction, IWeapons weapons, ITimeControllable time)
     {
         Ped = ped;
         ModItems = modItems;

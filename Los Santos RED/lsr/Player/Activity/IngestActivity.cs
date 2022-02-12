@@ -5,26 +5,22 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
     public class IngestActivity : DynamicActivity
     {
-        private Rage.Object Item;
-        private string PlayingAnim;
-        private string PlayingDict;
+        private Intoxicant CurrentIntoxicant;
         private EatingData Data;
-        private IntoxicatingEffect IntoxicatingEffect;
+        private bool hasGainedHP = false;
+        private IIntoxicants Intoxicants;
         private bool IsAttachedToHand;
         private bool IsCancelled;
+        private Rage.Object Item;
         private IIntoxicatable Player;
+        private string PlayingAnim;
+        private string PlayingDict;
         private ISettingsProvideable Settings;
-        //private ModItem ModItem;
-        private IIntoxicants Intoxicants;
-        private Intoxicant CurrentIntoxicant;
-        private bool hasGainedHP = false;
-
         public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -32,21 +28,20 @@ namespace LosSantosRED.lsr.Player
             ModItem = modItem;
             Intoxicants = intoxicants;
         }
-        public override ModItem ModItem { get; set; }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
+        public override ModItem ModItem { get; set; }
         public override void Cancel()
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
             Player.StopIngesting(CurrentIntoxicant);
         }
+        public override void Continue()
+        {
+        }
         public override void Pause()
         {
             Cancel();//for now it just cancels
-        }
-        public override void Continue()
-        {
-
         }
         public override void Start()
         {
@@ -107,7 +102,7 @@ namespace LosSantosRED.lsr.Player
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
-            if(!CurrentIntoxicant.ContinuesWithoutCurrentUse)
+            if (!CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
                 EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion", 5);
                 Player.StopIngesting(CurrentIntoxicant);
@@ -177,21 +172,17 @@ namespace LosSantosRED.lsr.Player
                 PropModel = ModItem.ModelItem.ModelName;
             }
 
-
             AnimIdleDictionary = "mp_suicide";
             AnimIdle = new List<string>() { "pill" };
 
-
-
-            if(ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.StartIngesting(CurrentIntoxicant);
             }
 
-
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
-            Data = new EatingData("","",AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
+            Data = new EatingData("", "", AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }
     }
 }

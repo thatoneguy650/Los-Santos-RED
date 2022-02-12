@@ -420,15 +420,15 @@ public class ModItems : IModItems
 
 
             //Viceroy
-            new ModItem("City View King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("City View Deluxe King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Partial Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("City View Two Bedded Room",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Grande King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Grande Ocean View King",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Empire Suite",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
-            new ModItem("Monarch Suite",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("City View King","Standard room with a view of the city",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("City View Deluxe King","Deluxe room with view of the city.",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            //new ModItem("Partial Ocean View King","Standard room with a partial view of the ocean.",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("Ocean View King","Standard room a full view of the ocean. ",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+           // new ModItem("City View Two Bedded Room","Standard room with a view of the city",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("Grande King","XL Deluxe room with plenty of space and amenities.",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("Grande Ocean View King","XL Deluxe room with with plenty of space and amenities and a view of the ocean",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+           // new ModItem("Empire Suite","",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
+            new ModItem("Monarch Suite","Penthouse suite, reserved for the most discerning tastes",eConsumableType.Service) {ConsumeOnPurchase = true, MeasurementName = "Night" },
 
             //Generic
             //FancyDeli

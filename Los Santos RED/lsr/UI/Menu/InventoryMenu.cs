@@ -3,6 +3,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class InventoryMenu : Menu
 {
@@ -15,6 +16,8 @@ public class InventoryMenu : Menu
         Player = player;
         ModItems = modItems;
         inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Access purchased items.";
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
         inventoryMenu.SetBannerType(EntryPoint.LSRedColor);
         inventoryMenu.OnItemSelect += OnActionItemSelect;
         CreateInventoryMenu();

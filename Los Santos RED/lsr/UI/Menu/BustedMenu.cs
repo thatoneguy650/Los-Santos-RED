@@ -1,35 +1,27 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
-using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 public class BustedMenu : Menu
 {
-    private UIMenu Menu;
-    private GameLocation CurrentSelectedSurrenderLocation;
     private UIMenuItem Bribe;
+    private GameLocation CurrentSelectedSurrenderLocation;
+    private List<DistanceSelect> Distances;
+    private UIMenu Menu;
     private UIMenuItem PayFine;
-    private UIMenuItem ResistArrest;
-    private UIMenuItem SurrenderLong;
-    private UIMenuListItem Surrender;
-    private UIMenuListItem TakeoverRandomPed;
-    private UIMenuItem menuBustedTalk;
     private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
+    private IPoliceRespondable Player;
+    private List<GameLocation> PoliceStations;
+    private UIMenuItem ResistArrest;
     private IRespawning Respawning;
     private float SelectedTakeoverRadius;
-    private List<GameLocation> PoliceStations;
-    private List<DistanceSelect> Distances;
     private ISettingsProvideable Settings;
-    private IPoliceRespondable Player;
+    private UIMenuListItem Surrender;
+    private UIMenuListItem TakeoverRandomPed;
     public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable)
     {
         PedSwap = pedSwap;
@@ -50,7 +42,7 @@ public class BustedMenu : Menu
     }
     public override void Show()
     {
-        if(!Menu.Visible)
+        if (!Menu.Visible)
         {
             UpdateClosestPoliceStationIndex();
 
@@ -64,7 +56,6 @@ public class BustedMenu : Menu
                 PayFine.Enabled = false;
                 Bribe.Enabled = true;
             }
-
 
             Menu.Visible = true;
         }
@@ -88,16 +79,12 @@ public class BustedMenu : Menu
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         PayFine = new UIMenuItem("Pay Citation", $"Pay a citation of ${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}.");
         Surrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PoliceStations);
-        SurrenderLong = new UIMenuItem("Get Booked", "Take a ride and get booked before you get out on bail. (TBD)");
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
-        SurrenderLong.Enabled = false;
         Menu.AddItem(ResistArrest);
         Menu.AddItem(Bribe);
         Menu.AddItem(PayFine);
         Menu.AddItem(Surrender);
-        //Menu.AddItem(SurrenderLong);
         Menu.AddItem(TakeoverRandomPed);
-
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -119,14 +106,9 @@ public class BustedMenu : Menu
         {
             Respawning.PayFine();
         }
-        if (selectedItem == Surrender)
+        else if (selectedItem == Surrender)
         {
             Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
-            //EntryPoint.WriteToConsole($"SurrenderToPolice {CurrentSelectedSurrenderLocation.Name} {CurrentSelectedSurrenderLocation.EntrancePosition}", 5);
-        }
-        if (selectedItem == SurrenderLong)
-        {
-            //Respawning.SetInPoliceCar();
         }
         else if (selectedItem == TakeoverRandomPed)
         {
@@ -146,7 +128,7 @@ public class BustedMenu : Menu
         if (list == Surrender)
         {
             CurrentSelectedSurrenderLocation = PoliceStations[index];
-        }   
+        }
         else if (list == TakeoverRandomPed)
         {
             SelectedTakeoverRadius = Distances[index].Distance;

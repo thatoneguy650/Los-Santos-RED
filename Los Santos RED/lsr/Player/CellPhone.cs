@@ -17,11 +17,7 @@ public class CellPhone
     private ICellPhoneable Player;
     private int ContactIndex = 40;
     private int TextIndex = 0;
-    private UIMenu EmergencyServicesMenu;
     private MenuPool MenuPool;
-    private UIMenuItem RequestPolice;
-    private UIMenuItem RequestFire;
-    private UIMenuItem RequestEMS;
     private IJurisdictions Jurisdictions;
     private List<iFruitContact> AddedContacts = new List<iFruitContact>();
     private List<ContactLookup> ContactLookups;
@@ -37,10 +33,7 @@ public class CellPhone
     private List<ScheduledText> ScheduledTexts = new List<ScheduledText>();
     private IGangTerritories GangTerritories;
     private int TextSound;
-    private string playerCurrentFormattedStreetName;
-    private string playerCurrentFormattedZoneName;
     private List<PhoneResponse> PhoneResponses = new List<PhoneResponse>();
-    private iFruitContact LastAnsweredContact;
     private GunDealerInteraction GunDealerInteraction;
     private GangInteraction GangInteraction;
     private IContactInteractable ContactInteractable;

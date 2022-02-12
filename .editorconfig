@@ -1,0 +1,7 @@
+﻿[*.{cs,vb}]
+
+# IDE0044: Add readonly modifier
+dotnet_diagnostic.IDE0044.severity = silent
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = silent

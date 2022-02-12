@@ -12,35 +12,30 @@ public class StoreSellMenu : Menu
 {
     private UIMenu sellMenu;
     private IModItems ModItems;
-    private GameLocation Store;
     private MenuPool MenuPool;
-    private IInteractionable Player;
+    private IActivityPerformable Player;
     private int ItemsSold;
     private Vehicle SellingVehicle;
     private Rage.Object SellingProp;
     private Ped SellingPed;
     private Camera StoreCam;
     private bool ShouldPreviewItem;
-    private PedExt Ped;
-    private bool IsActivelyConversing;
-    private Transaction Transaction;
+    private TransactionOld Transaction;
     private VehicleExt ToSellVehicle;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
+    private TransactableLocation Store;
     public bool Visible => sellMenu.Visible;
     public bool SoldItem => ItemsSold > 0;
-    private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
-    public StoreSellMenu(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, Transaction transaction, IEntityProvideable world, ISettingsProvideable settings)
+    public StoreSellMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
-        Ped = ped;
         ModItems = modItems;
-        Store = store;
         Player = player;
-        StoreCam = storeCamera;
-        ShouldPreviewItem = shouldPreviewItem;
-        Transaction = transaction;
         World = world;
         Settings = settings;
+        MenuPool = menuPool;
+        Store = store;
+        StoreCam = Camera.RenderingCamera;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
         if (Transaction.HasBannerImage)
         {
@@ -61,11 +56,11 @@ public class StoreSellMenu : Menu
             PreloadModels();
         }
         Transaction.ClearPreviews();
-        if (Ped != null)
-        {
-            AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
-            AnimationDictionary.RequestAnimationDictionay("mp_common");
-        }
+        //if (Ped != null)
+        //{
+        //    AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
+        //    AnimationDictionary.RequestAnimationDictionay("mp_common");
+        //}
     }
     public void Dispose()
     {
@@ -118,7 +113,7 @@ public class StoreSellMenu : Menu
     {
         sellMenu.Clear();
         ToSellVehicle = null;
-        foreach (MenuItem cii in Store.Menu)
+        foreach (MenuItem cii in Store.Menu.Items)
         {
             if (cii != null && cii.Sellable)
             {
@@ -140,16 +135,6 @@ public class StoreSellMenu : Menu
 
                         bool enabled = Player.Inventory.HasItem(cii.ModItemName);
                         description += "~n~~s~";
-                        if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-                        {
-                            ToSellVehicle = World.Vehicles.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
-                            if (ToSellVehicle != null)
-                            {
-                                enabled = true;
-                                description += $"~n~Selected Vehicle: ~p~{ToSellVehicle.MakeName()} ~p~{ToSellVehicle.ModelName()}~s~";
-                            }
-                        }
-
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
                         sellMenu.AddItem(myMenuItem);
@@ -162,39 +147,21 @@ public class StoreSellMenu : Menu
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
-        MenuItem menuItem = Store.Menu.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
+        MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         bool ExitAfterPurchase = false;
         if (ToAdd != null && menuItem != null)
         {
-            if (Ped != null && Ped.Pedestrian.Exists())
+            Hide();
+            if (ToAdd.CanConsume)
             {
-                StartSellAnimation(ToAdd, menuItem.IsIllicilt);
-            }
-            else
-            {
-                Hide();
-            }
-            if (ToAdd.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-            {
-                ExitAfterPurchase = true;
-                Player.GiveMoney(menuItem.SalesPrice);
-                ItemsSold++;
-
-                ScrapVehicle();
-
-            }
-            else
-            {
-                if (ToAdd.CanConsume)
+                if (Player.Inventory.Remove(ToAdd, 1))
                 {
-                    if (Player.Inventory.Remove(ToAdd, 1))
-                    {
-                        Player.GiveMoney(menuItem.SalesPrice);
-                        ItemsSold++;
-                        EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
-                    }
+                    Player.GiveMoney(menuItem.SalesPrice);
+                    ItemsSold++;
+                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
                 }
             }
+            
         }
         GameFiber.Sleep(500);
         while (Player.IsPerformingActivity)
@@ -262,9 +229,6 @@ public class StoreSellMenu : Menu
         GameFiber.Yield();
         if (SellingVehicle.Exists())
         {
-
-            //SellingVehicle.PrimaryColor = CurrentSelectedColor;
-            //CurrentDisplayColor = CurrentSelectedColor;
             NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SellingVehicle, 5.0f);
         }
     }
@@ -284,8 +248,6 @@ public class StoreSellMenu : Menu
         }
         if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
         {
-
-
             if (useClose)
             {
                 SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
@@ -312,10 +274,6 @@ public class StoreSellMenu : Menu
             }
         }
     }
-
-
-
-
     public void ClearPreviews()
     {
         if (SellingProp.Exists())
@@ -333,7 +291,7 @@ public class StoreSellMenu : Menu
     }
     private void PreloadModels()
     {
-        foreach (MenuItem menuItem in Store.Menu)//preload all item models so it doesnt bog the menu down
+        foreach (MenuItem menuItem in Store.Menu.Items)//preload all item models so it doesnt bog the menu down
         {
             try
             {
@@ -367,144 +325,4 @@ public class StoreSellMenu : Menu
             }
         }
     }
-    private void StartSellAnimation(ModItem item, bool isIllicit)
-    {
-        Hide();
-        string modelName = "";
-        bool HasProp = false;
-        bool isWeapon = false;
-        if (item.PackageItem != null && item.PackageItem.ModelName != "")
-        {
-            modelName = item.PackageItem.ModelName;
-            HasProp = true;
-            if (item.PackageItem.Type == ePhysicalItemType.Weapon)
-            {
-                isWeapon = true;
-            }
-        }
-        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
-        {
-            modelName = item.ModelItem.ModelName;
-            HasProp = true;
-            if (item.ModelItem.Type == ePhysicalItemType.Weapon)
-            {
-                isWeapon = true;
-            }
-        }
-        IsActivelyConversing = true;
-        if (isIllicit)
-        {
-            if (isWeapon)
-            {
-                Player.IsDealingIllegalGuns = true;
-                Ped.IsDealingIllegalGuns = true;
-            }
-            else
-            {
-                Player.IsDealingDrugs = true;
-                Ped.IsDealingDrugs = true;
-            }
-        }
-        Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
-        if (Ped.Pedestrian.Exists())
-        {
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
-        }
-        GameFiber.Sleep(500);
-
-        if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
-        {
-            SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-            GameFiber.Yield();
-            if (SellingProp.Exists())
-            {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
-            }
-        }
-        GameFiber.Sleep(500);
-        if (Ped.Pedestrian.Exists())
-        {
-            if (SellingProp.Exists())
-            {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
-            }
-        }
-        GameFiber.Sleep(1000);
-        if (Ped.Pedestrian.Exists())
-        {
-            if (SellingProp.Exists())
-            {
-                SellingProp.Delete();
-            }
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
-            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
-        }
-        IsActivelyConversing = false;
-        if (isIllicit)
-        {
-            if (isWeapon)
-            {
-                Player.IsDealingIllegalGuns = false;
-                Ped.IsDealingIllegalGuns = false;
-            }
-            else
-            {
-                Player.IsDealingDrugs = false;
-                Ped.IsDealingDrugs = false;
-            }
-        }
-        //Show();     
-    }
-    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
-    {
-        bool Spoke = false;
-        if (CanContinueConversation)
-        {
-            foreach (string AmbientSpeech in Possibilities)
-            {
-                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
-                {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
-                }
-                else
-                {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                }
-                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
-                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
-                {
-                    Spoke = true;
-                }
-                //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
-                if (Spoke)
-                {
-                    break;
-                }
-            }
-            GameFiber.Sleep(100);
-            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
-            {
-                Spoke = true;
-                GameFiber.Yield();
-            }
-            if (!Spoke)
-            {
-                // Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
-            }
-        }
-        return Spoke;
-    }
-
-
-    private void ScrapVehicle()
-    {
-        if (ToSellVehicle != null && ToSellVehicle.Vehicle.Exists())
-        {
-            ToSellVehicle.Vehicle.Delete();
-        }
-    }
-
 }

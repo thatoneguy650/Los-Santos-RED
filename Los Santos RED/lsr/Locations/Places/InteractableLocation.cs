@@ -62,5 +62,13 @@ public class InteractableLocation : BasicLocation
         }
         CanInteract = true;
     }
+    public void ProcessInteractionMenu()
+    {
+        while (IsAnyMenuVisible)
+        {
+            MenuPool.ProcessMenus();
+            GameFiber.Yield();
+        }
+    }
 }
 

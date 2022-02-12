@@ -1,30 +1,25 @@
 ﻿using LosSantosRED.lsr.Interface;
-using Rage;
-using Sound;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Media;
-//using Microsoft.DirectX.AudioVideoPlayback;
-
 
 public class WavAudio : IAudioPlayable
 {
+    private SoundPlayer AudioDevice = new SoundPlayer();
+    public bool IsAudioPlaying { get; private set; }
+    public bool IsPlayingLowPriority { get; set; } = false;
     [DllImport("winmm.dll")]
     public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
 
     [DllImport("winmm.dll")]
     public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
-    private SoundPlayer AudioDevice = new SoundPlayer();
-    private bool CancelAudio;
-    public bool IsAudioPlaying { get; private set; }
-    public bool IsPlayingLowPriority { get; set; } = false;
+    public void Abort()
+    {
+        if (IsAudioPlaying)
+        {
+            System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); IsPlayingLowPriority = false; });//seems to take 500 ms or so to do it? will lock the game thread
+        }
+    }
     public void Play(string FileName, int volume, bool isLowPriority)
     {
         if (FileName == "")
@@ -69,14 +64,6 @@ public class WavAudio : IAudioPlayable
         IsAudioPlaying = true;
         System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsPlayingLowPriority = false; });
     }
-    public void Abort()
-    {
-        if (IsAudioPlaying)
-        {
-            CancelAudio = true;
-            System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); IsPlayingLowPriority = false; });//seems to take 500 ms or so to do it? will lock the game thread 
-        }
-    }
     private int GetVolume()
     {
         uint CurrVol;
@@ -92,5 +79,3 @@ public class WavAudio : IAudioPlayable
         GetVolume();
     }
 }
-
-

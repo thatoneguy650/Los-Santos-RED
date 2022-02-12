@@ -1,38 +1,29 @@
-﻿
-using ExtensionsMethods;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 public class PedExt : IComplexTaskable
-{ 
+{
     private HealthState CurrentHealthState;
+    private uint GameTimeCreated = 0;
+    private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastExitedVehicle;
-    private Vector3 SpawnPosition;
-
-    private uint KillerHandle;
+    private uint GameTimeLastInsultedByPlayer;
+    private uint GameTimeLastMovedFast;
+    private bool hasCheckedWeapon = false;
     private Entity Killer;
+    private uint KillerHandle;
     private Entity LastHurtBy;
     private PedCrimes PedCrimes;
     private PlayerPerception PlayerPerception;
     private IPoliceRespondable PlayerToCheck;
-    private ISettingsProvideable Settings;
-    private uint GameTimeLastEnteredVehicle;
-    private uint GameTimeLastMovedFast;
-    private bool hasCheckedWeapon = false;
     private Vector3 position;
-    private uint GameTimeCreated = 0;
-   // private int TimesInsultedByPlayer = 0;
-    private uint GameTimeLastInsultedByPlayer;
-
+    private ISettingsProvideable Settings;
+    private Vector3 SpawnPosition;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
@@ -59,20 +50,16 @@ public class PedExt : IComplexTaskable
         IsMerchant = isMerchant;
         Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
     }
-    public uint HasExistedFor => Game.GameTime - GameTimeCreated;
-
-
-    public List<Cop> AssignedCops { get; set; } = new List<Cop>();
-
-
     public uint ArrestingPedHandle { get; set; } = 0;
+    public List<Cop> AssignedCops { get; set; } = new List<Cop>();
+    public int AssignedSeat { get; set; }
+    public VehicleExt AssignedVehicle { get; set; }
+    public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract);
     public bool CanBeTasked { get; set; } = true;
     public bool CanConverse => Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
-    public int RelationShipToPlayer { get; set; } = 255;
-    public int RelationShipFromPlayer { get; set; } = 255;
     public bool CanRemove
     {
         get
@@ -88,18 +75,13 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
+    public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
-    public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
-    public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
     public List<Crime> CrimesCurrentlyViolating => PedCrimes.CrimesCurrentlyViolating;
-    public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
-    public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
     public int CurrentlyViolatingWantedLevel => PedCrimes.CurrentlyViolatingWantedLevel;
     public ComplexTask CurrentTask { get; set; }
-    public int Money { get; set; } = 10;
-    public bool IsMerchant { get; set; } = false;
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {PlayerPerception.DistanceToTarget} See {PlayerPerception.CanSeeTarget} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
     public float DistanceToPlayer => PlayerPerception.DistanceToTarget;
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
@@ -107,38 +89,44 @@ public class PedExt : IComplexTaskable
     public uint GameTimeLastUpdated { get; private set; }
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
-    public bool HasBeenHurtByPlayer { get; set; } = false;
-
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
-
+    public bool HasBeenHurtByPlayer { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
+    public uint HasExistedFor => Game.GameTime - GameTimeCreated;
+    public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
+    public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasSpokenWithPlayer { get; set; }
+    public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 2 : 3;
+    public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
-    public bool IsZombie { get; set; } = false;
-    public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
+    public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
+    public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
+    public bool IsDealingDrugs { get; set; } = false;
+    public bool IsDealingIllegalGuns { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsDrunk { get; set; } = false;
-    public bool IsSuicidal { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
-    public bool HatesPlayer { get; set; } = false;
-    public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool IsGangMember { get; set; } = false;
-    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
-    public bool WasSetCriminal { get; set; } = false;
+    public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
+    public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-    public bool IsWanted => PedCrimes.IsWanted;
+    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
+    public bool IsSuicidal { get; set; } = false;
+    public bool IsWanted => PedCrimes.IsWanted;
+    public bool IsZombie { get; set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
+    public int Money { get; set; } = 10;
     public string Name { get; set; }
     public bool NeedsFullUpdate
     {
@@ -159,22 +147,27 @@ public class PedExt : IComplexTaskable
         }
     }
     public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= (IsCop ? 500 : 700);
+    public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
     public Ped Pedestrian { get; set; }
     public PedGroup PedGroup { get; private set; }
+    public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
-    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 1000;//3000
-    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 1000;//3000
+    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 1000;
+    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 1000;
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
+    public int RelationShipFromPlayer { get; set; } = 255;
+    public int RelationShipToPlayer { get; set; } = 255;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
+    public List<MenuItem> TransactionMenu { get; set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;
-    public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
+    public bool WasEverSetPersistent { get; private set; }
+    public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
-    public bool WasEverSetPersistent { get; private set; }
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     private int FullUpdateInterval//dont forget distance and LOS in here
     {
@@ -232,30 +225,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool IsArrested { get; set; }
-    public bool IsInAPC { get; private set; }
-    public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
-    public List<MenuItem> TransactionMenu { get; set; }
-    public VehicleExt AssignedVehicle { get; set; }
-    public int AssignedSeat { get; set; }
-   // public bool IsConductingIllicitTransaction { get; set; } = false;
-
-    public bool IsDealingDrugs { get; set; } = false;
-    public bool IsDealingIllegalGuns { get; set; } = false;
-
-    public void InsultedByPlayer()
-    {
-        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
-        {
-            TimesInsultedByPlayer += 1;
-            GameTimeLastInsultedByPlayer = Game.GameTime;
-            if (this.GetType() == typeof(GangMember))
-            {
-                GangMember gm = (GangMember)this;
-                PlayerToCheck.GangRelationships.ChangeReputation(gm.Gang, -100, true);
-            }
-        }
-    }
+    public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
     {
         if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
@@ -293,19 +263,6 @@ public class PedExt : IComplexTaskable
         }
         return false;
     }
-    public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
-    public void SetWantedLevel(int toSet)
-    {
-        if(PedCrimes.WantedLevel < toSet)
-        {
-            PedCrimes.WantedLevel = toSet;
-        }
-        //if (toSet == 0)
-        //{
-        //    IsArrested = true;
-        //    PedCrimes.Reset();
-        //}
-    }
     public bool CheckKilledBy(Ped ToCheck)
     {
         try
@@ -330,10 +287,22 @@ public class PedExt : IComplexTaskable
         {
             //EntryPoint.WriteToConsole($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
             EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} ERROR Killer is 0 Last Hurt By {ToCheck.Handle}", 5);
-            return CheckHurtBy(ToCheck,true);//turned back on for now.......
+            return CheckHurtBy(ToCheck, true);//turned back on for now.......
             //return false;
         }
-
+    }
+    public void InsultedByPlayer()
+    {
+        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
+        {
+            TimesInsultedByPlayer += 1;
+            GameTimeLastInsultedByPlayer = Game.GameTime;
+            if (this.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)this;
+                PlayerToCheck.GangRelationships.ChangeReputation(gm.Gang, -100, true);
+            }
+        }
     }
     public void LogSourceOfDeath()
     {
@@ -360,11 +329,23 @@ public class PedExt : IComplexTaskable
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}",5);
+                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}", 5);
             }
         }
     }
     public bool SeenPlayerWithin(int msSince) => PlayerPerception.SeenTargetWithin(msSince);
+    public void SetWantedLevel(int toSet)
+    {
+        if (PedCrimes.WantedLevel < toSet)
+        {
+            PedCrimes.WantedLevel = toSet;
+        }
+        //if (toSet == 0)
+        //{
+        //    IsArrested = true;
+        //    PedCrimes.Reset();
+        //}
+    }
     public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -385,10 +366,10 @@ public class PedExt : IComplexTaskable
                         }
                         if (Pedestrian.Exists() && policeRespondable.IsCop)
                         {
-                            CheckPlayerBusted();   
+                            CheckPlayerBusted();
                         }
                     }
-                    if(!IsCop && !IsMerchant && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
+                    if (!IsCop && !IsMerchant && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
                     {
                         if (this.GetType() == typeof(GangMember))//gang members are no longer persistent entities for now
                         {
@@ -422,12 +403,6 @@ public class PedExt : IComplexTaskable
             CurrentTask.Update();
         }
     }
-    private void UpdatePositionData()
-    {
-        position = Pedestrian.Position;//See which cell it is in now
-        CellX = (int)(position.X / EntryPoint.CellSize);
-        CellY = (int)(position.Y / EntryPoint.CellSize);
-    }
     private void CheckPlayerBusted()
     {
         if (PlayerPerception.DistanceToTarget <= 5f)
@@ -438,6 +413,12 @@ public class PedExt : IComplexTaskable
                 EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
             }
         }
+    }
+    private void UpdatePositionData()
+    {
+        position = Pedestrian.Position;//See which cell it is in now
+        CellX = (int)(position.X / EntryPoint.CellSize);
+        CellY = (int)(position.Y / EntryPoint.CellSize);
     }
     private void UpdateVehicleState()
     {
@@ -462,7 +443,7 @@ public class PedExt : IComplexTaskable
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
             IsInBoat = Pedestrian.IsInBoat;
-            if(Pedestrian.CurrentVehicle.Model.Name.ToLower() == "rhino")
+            if (Pedestrian.CurrentVehicle.Model.Name.ToLower() == "rhino")
             {
                 IsInAPC = true;
             }
@@ -498,7 +479,6 @@ public class PedExt : IComplexTaskable
             {
                 GameTimeLastMovedFast = 0;
             }
-        }  
+        }
     }
 }
-

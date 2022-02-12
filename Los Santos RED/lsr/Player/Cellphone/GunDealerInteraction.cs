@@ -50,7 +50,7 @@ public class GunDealerInteraction
         {
             if (gl.IsIllegalShop && gl.IsEnabled)
             {
-                LocationSubMenu.AddItem(new UIMenuItem(gl.StreetAddress, "Get GPS Coordinates to this Store") { RightLabel = gl.Description });
+                LocationSubMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.StreetAddress));
             }
         }
 

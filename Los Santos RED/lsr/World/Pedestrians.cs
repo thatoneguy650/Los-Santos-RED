@@ -11,12 +11,6 @@ using System.Runtime.InteropServices;
 
 public class Pedestrians
 {
-    //private int MaxCivilianHealth = 100;
-    //private int MaxCopArmor = 50;
-    //private int MaxCopHealth = 125;
-    //private int MinCivilianHealth = 70;
-    //private int MinCopArmor = 0;
-    //private int MinCopHealth = 85;
     private IAgencies Agencies;
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
@@ -58,8 +52,6 @@ public class Pedestrians
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
-
-
     public List<PedExt> Citizens
     {
         get
@@ -71,7 +63,6 @@ public class Pedestrians
             return myList;
         }
     }
-
     public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned
@@ -589,10 +580,6 @@ public class Pedestrians
                 }
             }
         }
-
-
-
-
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage);
         bool canBeAmbientTasked = true;

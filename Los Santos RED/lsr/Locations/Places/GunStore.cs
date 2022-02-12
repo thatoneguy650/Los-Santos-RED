@@ -12,8 +12,6 @@ using System.Xml.Serialization;
 public class GunStore : TransactableLocation
 {
     private StoreCamera StoreCamera;
-
-
     private IActivityPerformable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
@@ -26,15 +24,12 @@ public class GunStore : TransactableLocation
     {
 
     }
-    public override BlipSprite MapIcon { get; set; } = BlipSprite.AmmuNation;
+    public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-
-
     public bool IsIllegalShop { get; set; } = false;
     public int MoneyToUnlock { get; set; } = 0;
-
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, ShopMenu shopMenu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, shopMenu)
     {
         ButtonPromptText = $"Shop at {Name}";

@@ -164,9 +164,20 @@ public class GetArrestedSimple : ComplexTask
             if (PedToArrest.Exists())
             {
                 PedToArrest.KeepTasks = true;
+                unsafe
+                {
+                    uint lol = PedToArrest.Handle;
+                    NativeFunction.CallByName<bool>("SET_ENTITY_AS_NO_LONGER_NEEDED", &lol);
+                }
             }
             GameTimeFinishedArrestedAnimation = Game.GameTime;
             PlayedArrestAnimation = true;
+
+
+
+
+
+
             //EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);
         }, "SetArrestedAnimation");
     }

@@ -153,6 +153,7 @@
     <Compile Include="lsr\Locations\Places\DeadDrop.cs" />
     <Compile Include="lsr\Locations\Places\GangDen.cs" />
     <Compile Include="lsr\Locations\Places\GunStore.cs" />
+    <Compile Include="lsr\Locations\Places\Hotel.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
     <Compile Include="lsr\Locations\Places\StoreCamera.cs" />
     <Compile Include="lsr\Locations\Places\StorePurchaseMenu.cs" />
@@ -160,7 +161,6 @@
     <Compile Include="lsr\Locations\Places\StoreTransaction.cs" />
     <Compile Include="lsr\Locations\Places\ScrapYard.cs" />
     <Compile Include="lsr\Locations\Places\TransactableLocation.cs" />
-    <Compile Include="lsr\Old\IPLInterior.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
@@ -191,7 +191,7 @@
     <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />
     <Compile Include="lsr\Player\Interface\ICellPhoneable.cs" />
-    <Compile Include="lsr\Player\Interaction\Transaction.cs" />
+    <Compile Include="lsr\Player\Interaction\TransactionOld.cs" />
     <Compile Include="lsr\Player\Interface\IBusRideable.cs" />
     <Compile Include="lsr\Player\Interface\IDriveable.cs" />
     <Compile Include="lsr\Player\Interface\IGangRelateable.cs" />
@@ -218,9 +218,9 @@
     <Compile Include="lsr\UI\BarDisplay.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Settings\SettingsMenuNew.cs" />
-    <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Transactions\SellMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Transactions\PurchaseMenuOld.cs" />
+    <Compile Include="lsr\UI\Menu\Transactions\SellMenuOld.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />
     <Compile Include="lsr\Inventory\ePhysicalItemType.cs" />
     <Compile Include="lsr\Inventory\Intoxicant.cs" />
@@ -302,7 +302,6 @@
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
     <Compile Include="lsr\Inventory\InventoryItem.cs" />
     <Compile Include="lsr\Inventory\MenuItem.cs" />
     <Compile Include="lsr\Inventory\ModItem.cs" />
@@ -359,7 +358,6 @@
     <Compile Include="lsr\Player\Activity\DrinkingActivity.cs" />
     <Compile Include="lsr\Player\Activity\LoopedParticle.cs" />
     <Compile Include="lsr\Player\Activity\SmokingActivity.cs" />
-    <Compile Include="lsr\Old\IntoxicatingEffect.cs" />
     <Compile Include="lsr\Player\Interface\IActionable.cs" />
     <Compile Include="lsr\Player\Interface\ICarStealable.cs" />
     <Compile Include="lsr\Player\Interface\IDisplayable.cs" />
@@ -384,7 +382,6 @@
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
     <Compile Include="lsr\Vehicle\RadioStation.cs" />
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
-    <Compile Include="lsr\Old\Alex106ScenarioGroups.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
     <Compile Include="lsr\Time\ITimeControllable.cs" />
     <Compile Include="lsr\World\Interface\IEntityLoggable.cs" />
@@ -477,11 +474,16 @@
     <Compile Include="lsr\Vehicle\Indicators.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lsr\iFruit\License.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="lsr\Old\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

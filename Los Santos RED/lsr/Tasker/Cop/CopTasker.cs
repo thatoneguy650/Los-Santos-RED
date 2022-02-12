@@ -184,8 +184,6 @@ public class CopTasker
             foreach (PedExt possibleTarget in PossibleTargets)
             {
                 int TotalOtherAssignedCops = PedProvider.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && x.CurrentTask.OtherTarget != null && x.CurrentTask.OtherTarget.Handle == possibleTarget.Handle);
-
-
                 //EntryPoint.WriteToConsole($"TASKER: {possibleTarget.Handle} TotalOtherAssignedCops {TotalOtherAssignedCops} WantedLevel {possibleTarget.WantedLevel}", 3);
                 if (possibleTarget.Pedestrian.Exists() && possibleTarget.IsWanted && !possibleTarget.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, possibleTarget.CellX, possibleTarget.CellY, 3))
                 {
@@ -196,28 +194,44 @@ public class CopTasker
                     copsPossibleTargets.Add(new CopTarget(possibleTarget, possibleTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian)) { TotalAssignedCops = TotalOtherAssignedCops});
                 }
             }
-
             int PlayerCops = PedProvider.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && (x.CurrentTask.Name == "Kill" || x.CurrentTask.Name == "Chase"));
-
-
 
             if (Player.IsBusted)
             {
                 if (anyDeadlyChase)
                 {
-                    MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.IsOverloaded).ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
+                    MainTarget = copsPossibleTargets
+                        .OrderByDescending(x => x.Target.IsDeadlyChase)
+                        .ThenBy(x => x.IsOverloaded)
+                        .ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted)
+                        .ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
+                        .ThenBy(x => x.Target.IsBusted)
+                        .ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
                 }
                 else
                 {
                     if (ClosestCopToPlayer == null || Cop.Handle != ClosestCopToPlayer.Handle)
                     {
-                        MainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.IsOverloaded).ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/ !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
+                        MainTarget = copsPossibleTargets
+                            .OrderByDescending(x => x.Target.IsDeadlyChase)
+                            .ThenBy(x => x.IsOverloaded)
+                            .ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/ !x.Target.IsBusted)
+                            .ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
+                            .ThenBy(x => x.Target.IsBusted)
+                            .ThenBy(x => x.DistanceToTarget).FirstOrDefault()?.Target;
                     }
                 }
             }
             else if (Player.PoliceResponse.IsDeadlyChase)
             {
-                CopTarget MaybeMainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.IsOverloaded).ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault();
+                CopTarget MaybeMainTarget = copsPossibleTargets
+                    .OrderByDescending(x => x.Target.IsDeadlyChase)
+                    .ThenBy(x => x.IsOverloaded)
+                    .ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted)
+                    .ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
+                    .ThenBy(x => x.Target.IsBusted)
+                    .ThenBy(x => x.DistanceToTarget).FirstOrDefault();
+
                 MainTarget = MaybeMainTarget?.Target;
                 if (MaybeMainTarget != null && MaybeMainTarget.Target != null && PlayerCops < Player.WantedLevel)// && MaybeMainTarget.DistanceToTarget <= Cop.DistanceToPlayer + 20f)
                 {
@@ -228,18 +242,27 @@ public class CopTasker
             }
             else
             {
-                CopTarget MaybeMainTarget = copsPossibleTargets.OrderByDescending(x => x.Target.IsDeadlyChase).ThenByDescending(x => x.IsOverloaded).ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted).ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle).ThenBy(x => x.Target.IsBusted).ThenBy(x => x.DistanceToTarget).FirstOrDefault();
+                CopTarget MaybeMainTarget = copsPossibleTargets
+                    .OrderByDescending(x => x.Target.IsDeadlyChase)
+                    .ThenBy(x => x.IsOverloaded)
+                    .ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted)
+                    .ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
+                    .ThenBy(x => x.Target.IsBusted)
+                    .ThenBy(x => x.DistanceToTarget).FirstOrDefault();
                 MainTarget = MaybeMainTarget?.Target;
                 if (Player.IsWanted && MaybeMainTarget != null && MaybeMainTarget.Target != null && !MaybeMainTarget.Target.IsDeadlyChase && PlayerCops < Player.WantedLevel)// && MaybeMainTarget.DistanceToTarget <= Cop.DistanceToPlayer + 20f)
                 {
                     EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Player is Closer Than Closest Target (Non Deadly)", 3);
                     MainTarget = null;
                 }
+
+                if (MaybeMainTarget != null && MaybeMainTarget.Target != null && !MaybeMainTarget.Target.IsDeadlyChase && MaybeMainTarget.IsOverloaded)
+                {
+                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Non Overloaded (Non Deadly) {MaybeMainTarget.Target.Pedestrian?.Handle} TotalAssignedCops {MaybeMainTarget.TotalAssignedCops} MaybeMainTarget.IsOverloaded {MaybeMainTarget.IsOverloaded} WantedLevel {MaybeMainTarget.Target?.WantedLevel}", 3);
+                    MainTarget = null;
+                }
+
             }
-
-
-
-
 
 
             if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && PedProvider.Pedestrians.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
@@ -284,7 +307,7 @@ public class CopTasker
         public PedExt Target { get; set; }
         public float DistanceToTarget { get; set; } = 999f;
         public int TotalAssignedCops { get; set; } = 0;
-        public bool IsOverloaded => Target?.WantedLevel > TotalAssignedCops;
+        public bool IsOverloaded => TotalAssignedCops > Target?.WantedLevel;
     }
 }
 
