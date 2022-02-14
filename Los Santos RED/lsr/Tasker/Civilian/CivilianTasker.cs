@@ -35,30 +35,37 @@ public class CivilianTasker
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             Tasker.ExpireSeatAssignments();
-            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
+            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists()))
             {
                 try
                 {
-                    if (civilian.DistanceToPlayer >= 230f)
+                    if (civilian.CanBeTasked && civilian.CanBeAmbientTasked)
                     {
-                        civilian.CurrentTask = null;
-                        continue;
-                    }
-                    if (civilian.NeedsTaskAssignmentCheck)
-                    {
-                        if (civilian.DistanceToPlayer <= 200f)
-                        {
-                            UpdateCurrentTask(civilian);//has yields if it does anything
-                        }
-                        else if (civilian.CurrentTask != null)
+                        if (civilian.DistanceToPlayer >= 230f)
                         {
                             civilian.CurrentTask = null;
+                            continue;
+                        }
+                        if (civilian.NeedsTaskAssignmentCheck)
+                        {
+                            if (civilian.DistanceToPlayer <= 200f)
+                            {
+                                UpdateCurrentTask(civilian);//has yields if it does anything
+                            }
+                            else if (civilian.CurrentTask != null)
+                            {
+                                civilian.CurrentTask = null;
+                            }
+                        }
+                        if (civilian.CurrentTask != null && civilian.CurrentTask.ShouldUpdate)
+                        {
+                            civilian.UpdateTask(null);
+                            GameFiber.Yield();
                         }
                     }
-                    if (civilian.CurrentTask != null && civilian.CurrentTask.ShouldUpdate)
+                    else if (civilian.IsBusted)
                     {
-                        civilian.UpdateTask(null);
-                        GameFiber.Yield();
+                        UpdateCurrentTask(civilian);
                     }
                 }
                 catch (Exception e)
@@ -67,30 +74,37 @@ public class CivilianTasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
-            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.CanBeTasked && x.CanBeAmbientTasked && x.Pedestrian.Exists()))
+            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists()))
             {
                 try
                 {
-                    if(merchant.DistanceToPlayer >= 230f)
+                    if (merchant.CanBeTasked && merchant.CanBeAmbientTasked)
                     {
-                        merchant.CurrentTask = null;
-                        continue;
-                    }
-                    if (merchant.NeedsTaskAssignmentCheck)
-                    {
-                        if (merchant.DistanceToPlayer <= 200f)
-                        {
-                            UpdateCurrentTask(merchant);
-                        }
-                        else if (merchant.CurrentTask != null)
+                        if (merchant.DistanceToPlayer >= 230f)
                         {
                             merchant.CurrentTask = null;
+                            continue;
+                        }
+                        if (merchant.NeedsTaskAssignmentCheck)
+                        {
+                            if (merchant.DistanceToPlayer <= 200f)
+                            {
+                                UpdateCurrentTask(merchant);
+                            }
+                            else if (merchant.CurrentTask != null)
+                            {
+                                merchant.CurrentTask = null;
+                            }
+                        }
+                        if (merchant.CurrentTask != null && merchant.CurrentTask.ShouldUpdate)
+                        {
+                            merchant.UpdateTask(null);
+                            GameFiber.Yield();
                         }
                     }
-                    if (merchant.CurrentTask != null && merchant.CurrentTask.ShouldUpdate)
+                    else if (merchant.IsBusted)
                     {
-                        merchant.UpdateTask(null);
-                        GameFiber.Yield();
+                        UpdateCurrentTask(merchant);
                     }
                 }
                 catch (Exception e)

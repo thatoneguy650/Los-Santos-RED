@@ -29,22 +29,19 @@ public class Voice
     private bool isFreeMode = false;
     private string freeModeVoice = "";
 
-    public Voice(Cop cop)
+    public Voice(Cop cop, string modelName)
     {
         Cop = cop;
-        //if (Cop.Pedestrian.Exists())
-        //{
-        //    if (Cop.Pedestrian.Model.Name.ToLower() == "mp_m_freemode_01")
-        //    {
-        //        isFreeMode = true;
-        //        freeModeVoice = "s_m_y_cop_01";
-        //    }
-        //    else if (Cop.Pedestrian.Model.Name.ToLower() == "mp_f_freemode_01")
-        //    {
-        //        isFreeMode = true;
-        //        freeModeVoice = "s_f_y_cop_01";
-        //    }
-        //}
+        if (modelName.ToLower() == "mp_m_freemode_01")
+        {
+            isFreeMode = true;
+            freeModeVoice = "S_M_Y_COP_01";
+        }
+        else if (modelName.ToLower() == "mp_f_freemode_01")
+        {
+            isFreeMode = true;
+            freeModeVoice = "S_F_Y_COP_01";
+        }
     }
     public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
     public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
@@ -197,7 +194,7 @@ public class Voice
         {
             List<int> PossibleYells = new List<int>() { 6,7,8 };
             NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, PossibleYells.PickRandom(), 0, 0);
-            TimeBetweenSpeaking = 5000;
+            TimeBetweenSpeaking = 2000;
             GameTimeLastSpoke = Game.GameTime;
         }
     }

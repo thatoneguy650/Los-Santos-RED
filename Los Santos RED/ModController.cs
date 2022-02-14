@@ -146,6 +146,7 @@ namespace LosSantosRED.lsr
             Input = new Input(Player, Settings, UI, PedSwap);
             GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus);
+            Dispatcher.Setup();
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();

@@ -44,7 +44,6 @@ public class GangTasker
                 {
                     if (gangMember.DistanceToPlayer >= 230f)
                     {
-                        //gangMember.CurrentTask = null;
                         continue;
                     }
                     if (gangMember.NeedsTaskAssignmentCheck)
@@ -53,10 +52,6 @@ public class GangTasker
                         {
                             UpdateCurrentTask(gangMember);//has yields if it does anything
                         }
-                        //else if (gangMember.CurrentTask != null)
-                        //{
-                        //    gangMember.CurrentTask = null;
-                        //}
                     }
                     if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
                     {

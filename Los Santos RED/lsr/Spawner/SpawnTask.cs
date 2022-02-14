@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
 using System.Drawing;
+using ExtensionsMethods;
 
 public class SpawnTask
 {
@@ -30,8 +31,9 @@ public class SpawnTask
     private IShopMenus ShopMenus;
 
     private SpawnLocation SpawnLocation;
+    private List<RandomHeadData> RandomHeadList;
 
-    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers)
+    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, List<RandomHeadData> randomHeadList)
     {
         Agency = agency;
         PersonType = personType;
@@ -45,8 +47,9 @@ public class SpawnTask
         Weapons = weapons;
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
+        RandomHeadList = randomHeadList;
     }
-    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus)
+    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, List<RandomHeadData> randomHeadList)
     {
         Gang = gang;
         PersonType = personType;
@@ -63,6 +66,7 @@ public class SpawnTask
         RelationshipGroups = pedGroups;
         AddOptionalPassengers = addOptionalPassengers;
         ShopMenus = shopMenus;
+        RandomHeadList = randomHeadList;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -217,6 +221,10 @@ public class SpawnTask
                 if (PersonType.RequiredVariation != null)
                 {
                     PersonType.RequiredVariation.ApplyToPed(ped);
+                    if(PersonType.RequiredVariation.SetRandomRegularHeadVariation)
+                    {
+                        PersonType.RequiredVariation.RandomizeHead(ped, RandomHeadList.Where(x=> x.IsMale == PersonType.RequiredVariation.IsMaleRandomRegularHeadVariation).FirstOrDefault());
+                    }
                 }
                 GameFiber.Yield();
                 if(!ped.Exists())
@@ -240,7 +248,7 @@ public class SpawnTask
                         RelationshipGroup rg = new RelationshipGroup("COP");
                         ped.RelationshipGroup = rg;
                         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-                        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale), PersonType.ModelName);
                         PrimaryCop.IssueWeapons(Weapons,(uint)WeaponHash.StunGun,true,true);
                         PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(Agency.AccuracyMin, Agency.AccuracyMax);
                         PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(Agency.ShootRateMin, Agency.ShootRateMax);

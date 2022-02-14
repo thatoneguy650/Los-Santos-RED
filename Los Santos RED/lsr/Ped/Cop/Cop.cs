@@ -12,12 +12,13 @@ public class Cop : PedExt, IWeaponIssuable
     private Voice Voice;
     private WeaponInventory WeaponInventory;
     private bool WasAlreadySetPersistent = false;
-    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name) : base(pedestrian, settings, crimes, weapons, name)
+    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName) : base(pedestrian, settings, crimes, weapons, name)
     {
         IsCop = true;
         Health = health;
         AssignedAgency = agency;
         WasModSpawned = wasModSpawned;
+        ModelName = modelName;
         if (WasModSpawned)
         {
             GameTimeSpawned = Game.GameTime;
@@ -30,7 +31,7 @@ public class Cop : PedExt, IWeaponIssuable
             WasAlreadySetPersistent = true;
         }
         WeaponInventory = new WeaponInventory(this, Settings);
-        Voice = new Voice(this);
+        Voice = new Voice(this, ModelName);
         AssistManager = new AssistManager(this); 
     }
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
@@ -43,7 +44,7 @@ public class Cop : PedExt, IWeaponIssuable
     public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, meleeHash, issueSidearm, issueLongGun);
     public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
     public IssuableWeapon LongGun => WeaponInventory.LongGun;
-
+    public string ModelName { get; set; }
 
     public int ShootRate { get; set; }
     public int Accuracy { get; set; }

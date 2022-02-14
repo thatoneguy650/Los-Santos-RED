@@ -52,7 +52,7 @@ public class CivilianSettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-
+        ShowRandomCriminalBlips = true;
 #else
 
 #endif

@@ -18,6 +18,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDriver { get; }
         bool IsStill { get; }
         Ped Pedestrian { get; }
+        bool IsSuspicious { get; set; }
         int LastSeatIndex { get; }
         List<Crime> PlayerCrimesWitnessed { get; }
         List<WitnessedCrime> OtherCrimesWitnessed { get; }
@@ -40,6 +41,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt AssignedVehicle { get; }
         int AssignedSeat { get; }
         bool IsGangMember { get; }
+        bool IsDealingDrugs { get; set; }
 
         void SetWantedLevel(int v);
     }

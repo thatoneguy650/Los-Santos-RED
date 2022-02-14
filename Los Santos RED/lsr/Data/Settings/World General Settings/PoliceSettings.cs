@@ -86,6 +86,7 @@ public class PoliceSettings : ISettingsDefaultable
     public float AddOptionalPassengerPercentage { get; set; }
     public bool KnowsShootingSourceLocation { get; set; }
     public bool UseFakeWantedLevelSystem { get; set; }
+    public float PedestrianSpawnPercentage { get; set; }
 
     public PoliceSettings()
     {
@@ -167,7 +168,7 @@ public class PoliceSettings : ISettingsDefaultable
         MaxDistanceToSpawn_NotWanted = 900f;
         MinDistanceToSpawn_WantedUnseen = 250f;
         MinDistanceToSpawn_WantedSeen = 400f;
-        MinDistanceToSpawn_NotWanted = 350f;
+        MinDistanceToSpawn_NotWanted = 150f;//350f;
         TimeBetweenCopSpawn_Unseen = 3000;
         TimeBetweenCopSpawn_Seen_Min = 2000;
         TimeBetweenCopSpawn_Seen_AdditionalTimeScaler = 2000;
@@ -179,5 +180,6 @@ public class PoliceSettings : ISettingsDefaultable
         AddOptionalPassengerPercentage = 75f;
         KnowsShootingSourceLocation = true;
         UseFakeWantedLevelSystem = true;
+        PedestrianSpawnPercentage = 50f;
     }
 }

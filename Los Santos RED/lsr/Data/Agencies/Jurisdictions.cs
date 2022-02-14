@@ -159,6 +159,10 @@ public class Jurisdictions : IJurisdictions
             return null;
         }
     }
+    public bool CanSpawnPedestrianAtZone(string zoneName, string agencyInitials)
+    {
+        return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower() && x.AgencyInitials == agencyInitials).FirstOrDefault()?.CanSpawnPedestrianOfficers == true;
+    }
     private void DefaultZoneConfig()
     {
         ZoneJurisdictionsList = new List<ZoneJurisdiction>()
@@ -367,8 +371,8 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","LEGSQU", 0, 100, 100),
             new ZoneJurisdiction("MRH","LEGSQU", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD-ELS","LMESA", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","LMESA", 1, 15, 10),
+            new ZoneJurisdiction("LSPD-ELS","LMESA", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","LMESA", 1, 15, 10) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSFD","LMESA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","LMESA", 0, 100, 100),
 
@@ -454,7 +458,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","PBLUFF", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100),
+            new ZoneJurisdiction("LSPD","PBOX", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSFD","PBOX", 0, 100, 100),
             new ZoneJurisdiction("LSMC","PBOX", 0, 100, 100),
 

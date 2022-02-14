@@ -26,7 +26,8 @@ public class ZombieDispatcher
     private INameProvideable Names;
     private RelationshipGroup ZombiesRG;
     private ICrimes Crimes;
-    public ZombieDispatcher(IEntityProvideable world, IDispatchable player, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes)
+    private List<RandomHeadData> RandomHeadList;
+    public ZombieDispatcher(IEntityProvideable world, IDispatchable player, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes, List<RandomHeadData> randomHeadList)
     {
         Player = player;
         World = world;
@@ -38,7 +39,7 @@ public class ZombieDispatcher
         Names = names;
         Crimes = crimes;
         ZombiesRG = new RelationshipGroup("ZOMBIES");
-
+        RandomHeadList = randomHeadList;
     }
     private float ClosestZombieSpawnToPlayerAllowed => 25f;
     private List<Zombie> DeletableZombies => World.Pedestrians.ZombieList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();

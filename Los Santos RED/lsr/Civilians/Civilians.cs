@@ -77,6 +77,13 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                {
+                    ped.CanBeAmbientTasked = false;
+                    ped.WillCallPolice = false;
+                    ped.WillFight = false;
+                    ped.WasEverSetPersistent = true;
+                }
                 if (yield && localRan == 5)
                 {
                     GameFiber.Yield();
@@ -135,6 +142,13 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                {
+                    ped.CanBeAmbientTasked = false;
+                    ped.WillCallPolice = false;
+                    ped.WillFight = true;
+                    ped.WasEverSetPersistent = true;
+                }
                 if (yield && localRan == 1)
                 {
                     GameFiber.Yield();

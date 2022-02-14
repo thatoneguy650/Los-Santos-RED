@@ -25,7 +25,8 @@ public class FireDispatcher
     private uint GameTimeAttemptedRecall;
     private IWeapons Weapons;
     private INameProvideable Names;
-    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    private List<RandomHeadData> RandomHeadList;
+    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, List<RandomHeadData> randomHeadList)
     {
         Player = player;
         World = world;
@@ -36,6 +37,7 @@ public class FireDispatcher
         Jurisdictions = jurisdictions;
         Weapons = weapons;
         Names = names;
+        RandomHeadList = randomHeadList;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -78,7 +80,7 @@ public class FireDispatcher
                         {
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList);
                                 spawnTask.AttemptSpawn();
                                 spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
                                 spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));

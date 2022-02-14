@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation);
         void RemoveOffset();
         void AddOffset();
-
+        void TreatAsCivilian();
+        void TreatAsCop();
     }
 }

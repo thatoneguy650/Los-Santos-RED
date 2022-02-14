@@ -28,6 +28,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     private CopTasker CopTasker;
     private GangTasker GangTasker;
     private CivilianTasker CivilianTasker;
+    private PedExt CurrentCriminal;
 
 
 
@@ -92,6 +93,12 @@ public class Tasker : ITaskerable, ITaskerReportable
         {
             EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);
         }
+
+        if(CurrentCriminal != null && CurrentCriminal.CurrentTask?.Name == "CommitCrime")
+        {
+            CurrentCriminal.CurrentTask?.Update();
+        }
+
         GameTimeLastTaskedCivilians = Game.GameTime;
     }
     public void UpdatePolice()
@@ -116,7 +123,8 @@ public class Tasker : ITaskerable, ITaskerReportable
             {
                 Blip myBlip = Criminal.Pedestrian.AttachBlip();
                 myBlip.Color = Color.Red;
-                myBlip.Scale = 0.6f;
+                myBlip.Sprite = BlipSprite.CriminalWanted;
+                myBlip.Scale = 1.0f;
                 NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
                 NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Criminal");
                 NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);

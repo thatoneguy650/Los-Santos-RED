@@ -961,15 +961,15 @@ namespace Mod
             GameFiber.Yield();
             if (IsWanted)
             {
-                if (agency.ID == "ARMY")
+                if (agency?.ID == "ARMY")
                 {
                     Scanner.OnArmyDeployed();
                 }
-                else if (agency.ID == "NOOSE")
+                else if (agency?.ID == "NOOSE")
                 {
                     Scanner.OnNooseDeployed();
                 }
-                else if (vehicleType.IsHelicopter)
+                else if (vehicleType?.IsHelicopter == true)
                 {
                     Scanner.OnHelicoptersDeployed();
                 }

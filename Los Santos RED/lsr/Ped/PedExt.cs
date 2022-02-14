@@ -100,6 +100,7 @@ public class PedExt : IComplexTaskable
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 2 : 3;
+
     public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
@@ -123,6 +124,7 @@ public class PedExt : IComplexTaskable
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
     public bool IsSuicidal { get; set; } = false;
+    public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedCrimes.IsWanted;
     public bool IsZombie { get; set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
@@ -163,7 +165,7 @@ public class PedExt : IComplexTaskable
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;
-    public bool WasEverSetPersistent { get; private set; }
+    public bool WasEverSetPersistent { get; set; }
     public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = false;//true;
@@ -368,26 +370,6 @@ public class PedExt : IComplexTaskable
                         {
                             CheckPlayerBusted();
                         }
-                    }
-                    if (!IsCop && !IsMerchant && !WasEverSetPersistent && Pedestrian.Exists() && Pedestrian.IsPersistent)
-                    {
-                        if (this.GetType() == typeof(GangMember))//gang members are no longer persistent entities for now
-                        {
-                            GangMember gm = (GangMember)this;
-                            if (!gm.WasModSpawned)
-                            {
-                                CanBeAmbientTasked = false;
-                                WillCallPolice = false;
-                                WillFight = true;
-                            }
-                        }
-                        else
-                        {
-                            CanBeAmbientTasked = false;
-                            WillCallPolice = false;
-                            WillFight = false;
-                        }
-                        WasEverSetPersistent = true;
                     }
                     GameTimeLastUpdated = Game.GameTime;
                 }

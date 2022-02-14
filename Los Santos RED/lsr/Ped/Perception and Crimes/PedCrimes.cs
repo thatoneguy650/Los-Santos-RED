@@ -475,6 +475,10 @@ public class PedCrimes
             {
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AttemptingSuicide"));
             }
+            if(PedExt.IsSuspicious)
+            {
+                AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
+            }
             bool isVisiblyArmed = IsVisiblyArmed();
             if (isVisiblyArmed)
             {

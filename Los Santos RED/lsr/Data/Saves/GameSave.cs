@@ -144,7 +144,10 @@ namespace LosSantosRED.lsr.Data
                     {
                         NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
                         NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
-                        NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+                        if (OwnedVehicleVariation.PrimaryColor != -1)
+                        {
+                            NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+                        }
                         NewVehicle.Wash();
                         VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
                         if (MyVeh == null)

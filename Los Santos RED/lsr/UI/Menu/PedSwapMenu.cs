@@ -19,6 +19,8 @@ public class PedSwapMenu : Menu
     private UIMenuItem BecomeRandomCop;
     private UIMenuItem AddOffset;
     private UIMenuItem RemoveOffset;
+    private UIMenuItem SetAsCop;
+    private UIMenuItem SetAsCivilian;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
    // private PedSwapCustomMenu PedSwapCustomMenu;
@@ -76,12 +78,20 @@ public class PedSwapMenu : Menu
         AddOffset = new UIMenuItem("Alias Current Ped as Main Character", "Alias the current model name as a main character. The game will see your current model as either player_zero, player_one, or player_two depending on your settings.");
         RemoveOffset = new UIMenuItem("Remove Current Ped Alias", "Remove any aliasing for the current model name. The game will see your current model as it originally is.");
 
+
+        SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
+        SetAsCivilian = new UIMenuItem("Set as Civilian", "Treat the current player model as a civilian without any changes.");
+
+
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
         PedSwapUIMenu.AddItem(BecomeCustomPed);
         PedSwapUIMenu.AddItem(BecomeRandomCop);
         PedSwapUIMenu.AddItem(AddOffset);
         PedSwapUIMenu.AddItem(RemoveOffset);
+
+        PedSwapUIMenu.AddItem(SetAsCop);
+        PedSwapUIMenu.AddItem(SetAsCivilian);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -115,6 +125,14 @@ public class PedSwapMenu : Menu
         else if (selectedItem == RemoveOffset)
         {
             PedSwap.RemoveOffset();
+        }
+        else if (selectedItem == SetAsCop)
+        {
+            PedSwap.TreatAsCop();
+        }
+        else if (selectedItem == SetAsCivilian)
+        {
+            PedSwap.TreatAsCivilian();
         }
         PedSwapUIMenu.Visible = false;
     }

@@ -14,12 +14,16 @@ public class CommitCrime : ComplexTask
     private WeaponInformation ToIssue;
     private IWeapons Weapons;
     private IEntityProvideable World;
+    private uint GameTimeTimeStartedDealingDrugs;
+    private uint GameTimeTimeStartedHarassing;
+
     public CommitCrime(IComplexTaskable ped, ITargetable player, IWeapons weapons, IEntityProvideable world) : base(player, ped, 2000)
     {
         Name = "CommitCrime";
         SubTaskName = "";
         Weapons = weapons;
         World = world;
+
     }
     private bool IsPlayerTarget => Target.Exists() && Player.Character.Exists() && Target.Handle == Player.Character.Handle;
     public override void Start()
@@ -36,6 +40,16 @@ public class CommitCrime : ComplexTask
         if (NeedsVictim && (!Target.Exists() || (Target.Exists() && Target.IsDead)) && NewTargets < 3)
         {
             StartCrimeTask();
+        }
+        if(GameTimeTimeStartedDealingDrugs != 0 && Game.GameTime - GameTimeTimeStartedDealingDrugs >= 5000)
+        {
+            Ped.IsDealingDrugs = false;
+            GameTimeTimeStartedDealingDrugs = 0;
+        }
+        if (GameTimeTimeStartedHarassing != 0 && Game.GameTime - GameTimeTimeStartedHarassing >= 5000)
+        {
+            Ped.IsSuspicious = false;
+            GameTimeTimeStartedHarassing = 0;
         }
     }
     private void AttackTarget()
@@ -83,6 +97,8 @@ public class CommitCrime : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && Target.Exists())
         {
+            GameTimeTimeStartedDealingDrugs = Game.GameTime;
+            Ped.IsDealingDrugs = true;
             unsafe
             {
                 int lol = 0;
@@ -178,6 +194,8 @@ public class CommitCrime : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && Target.Exists())
         {
+            GameTimeTimeStartedHarassing = Game.GameTime;
+            Ped.IsSuspicious = true;
             unsafe
             {
                 int lol = 0;

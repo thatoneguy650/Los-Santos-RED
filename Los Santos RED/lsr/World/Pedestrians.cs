@@ -623,7 +623,7 @@ public class Pedestrians
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             SetCopStats(Pedestrian, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor));
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale));
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name);
             myCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun,true,true);
             myCop.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
             myCop.ShootRate = Settings.SettingsManager.PoliceSettings.GeneralShootRate;

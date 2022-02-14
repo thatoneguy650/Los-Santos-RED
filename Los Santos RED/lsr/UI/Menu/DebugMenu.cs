@@ -19,6 +19,7 @@ public class DebugMenu : Menu
     private UIMenuListItem AutoSetRadioStation;
     private UIMenuItem GiveMoney;
     private UIMenuItem FillHealthAndArmor;
+    private UIMenuItem StartRandomCrime;
     private UIMenuItem KillPlayer;
     private UIMenuItem LogCameraPositionMenu;
     private UIMenuItem LogInteriorMenu;
@@ -47,8 +48,9 @@ public class DebugMenu : Menu
     private UIMenuItem HostileGangRep;
     private UIMenuItem FriendlyGangRep;
     private UIMenuItem RandomSingleGangRep;
+    private ITaskerable Tasker;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world)
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker)
     {    
         Player = player;
         Weapons = weapons;
@@ -57,6 +59,7 @@ public class DebugMenu : Menu
         Settings = settings;
         Time = time;
         World = world;
+        Tasker = tasker;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);
@@ -90,7 +93,7 @@ public class DebugMenu : Menu
     }
     private void CreateDebugMenu()
     {
-
+        StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
@@ -128,6 +131,7 @@ public class DebugMenu : Menu
         Debug.AddItem(GiveMoney);
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(AutoSetRadioStation);
+        Debug.AddItem(StartRandomCrime);
         Debug.AddItem(TeleportToPOI);
         Debug.AddItem(DefaultGangRep);
         Debug.AddItem(RandomGangRep);
@@ -185,7 +189,10 @@ public class DebugMenu : Menu
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             Game.LocalPlayer.Character.Armor = 100;
         }
-
+        else if (selectedItem == StartRandomCrime)
+        {
+            Tasker.CreateCrime();
+        }
         else if (selectedItem == LogLocationMenu)
         {
             LogGameLocation();
