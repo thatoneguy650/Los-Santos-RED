@@ -657,11 +657,11 @@ public class LEDispatcher
             if (agency != null)
             {
                 LastAgencySpawned = agency;
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                DispatchableVehicle VehicleType = null;// agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                 GameFiber.Yield();
-                if (VehicleType != null)
+                if (VehicleType != null || 1==1)
                 {
-                    DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, VehicleType.RequiredPassengerModels);
+                    DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, VehicleType?.RequiredPassengerModels);
                     GameFiber.Yield();
                     if (OfficerType != null)
                     {

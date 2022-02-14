@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedEngineToggle;
         private uint GameTimeLastPressedDoorClose;
         private uint GameTimeLastPressedSelectorToggle;
+        private bool isCellPhoneControlDisabled;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
@@ -62,6 +63,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
+        public bool DisableCellPhoneControl { get; set; }
 
         public void Update()
         {
@@ -81,7 +83,85 @@ namespace LosSantosRED.lsr
 
             //GameFiber.Yield();
             MenuCheck();
+
+            CellPhoneCheck();
+
         }
+
+        private void CellPhoneCheck()
+        {
+            if (DisableCellPhoneControl)
+            {
+                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 27, true);//up
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 172, true);//up
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);//down
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);//left
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);//right
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);//select
+                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);//cencel
+                isCellPhoneControlDisabled = true;
+            }
+            else
+            {
+                if (isCellPhoneControlDisabled)
+                 {
+                    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 27, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 172, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 173, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 175, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 176, true);
+                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
+                    isCellPhoneControlDisabled = false;
+                }
+            }
+
+
+
+
+            //if(DisableCellPhoneControl)
+            //{
+            //    Game.DisableControlAction(0, GameControl.CellphoneCameraDOF, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneCameraExpression, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneCameraFocusLock, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneCameraGrid, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneCameraSelfie, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneCancel, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneUp, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneExtraOption, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneLeft, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneOption, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneRight, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneScrollBackward, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneScrollForward, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneSelect, true);
+            //    Game.DisableControlAction(0, GameControl.CellphoneDown, true);
+            //    isCellPhoneControlDisabled = true;
+            //}
+            //else
+            //{
+            //    if(isCellPhoneControlDisabled)
+            //    {
+            //        Game.DisableControlAction(0, GameControl.CellphoneCameraDOF, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneCameraExpression, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneCameraFocusLock, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneCameraGrid, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneCameraSelfie, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneCancel, false);
+             //      Game.DisableControlAction(0, GameControl.CellphoneDown, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneExtraOption, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneLeft, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneOption, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneRight, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneScrollBackward, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneScrollForward, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneSelect, false);
+            //        Game.DisableControlAction(0, GameControl.CellphoneUp, false);
+            //        isCellPhoneControlDisabled = false;
+            //    }
+            //}
+        }
+
         private void KeyBindCheck()
         {
             if(IsPressingGesture)

@@ -31,6 +31,27 @@ namespace LosSantosRED.lsr.Helper
                     return Game.GetHashKey("SP0_TOTAL_CASH");
             }
         }
+        public static string CellToStreetNumber(int CellX, int CellY)
+        {
+            string StreetNumber;
+            if (CellY < 0)
+            {
+                StreetNumber = Math.Abs(CellY * 10).ToString() + "S";
+            }
+            else
+            {
+                StreetNumber = Math.Abs(CellY * 10).ToString() + "N";
+            }
+            if (CellX < 0)
+            {
+                StreetNumber += Math.Abs(CellX * 10).ToString() + "W";
+            }
+            else
+            {
+                StreetNumber += Math.Abs(CellX * 10).ToString() + "E";
+            }
+            return StreetNumber;
+        }
         public static Vector3 GetGameplayCameraDirection()
         {
             //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....

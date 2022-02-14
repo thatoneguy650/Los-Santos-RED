@@ -225,5 +225,10 @@ public class GangRelationships
             rg.SetRepuation(rg.RepMinimum,false);
         }
     }
+
+    public void SetSingleRandomReputation()
+    {
+        GangReputations.PickRandom()?.SetRepuation(RandomItems.GetRandomNumberInt(-2000, 2000), false);
+    }
 }
 

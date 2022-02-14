@@ -46,6 +46,7 @@ public class DebugMenu : Menu
     private IEntityProvideable World;
     private UIMenuItem HostileGangRep;
     private UIMenuItem FriendlyGangRep;
+    private UIMenuItem RandomSingleGangRep;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world)
     {    
@@ -108,11 +109,10 @@ public class DebugMenu : Menu
         TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
 
-
-
-
         DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
         RandomGangRep = new UIMenuItem("Set Gang Rep Random", "Sets the player reputation to each gang to a randomized number");
+        RandomSingleGangRep = new UIMenuItem("Set Single Gang Rep Random", "Sets the player reputation to random gang to a randomized number");
+
         HostileGangRep = new UIMenuItem("Set Gang Rep Hostile", "Sets the player reputation to each gang to hostile");
         FriendlyGangRep = new UIMenuItem("Set Gang Rep Friendly", "Sets the player reputation to each gang to friendly");
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
@@ -131,6 +131,8 @@ public class DebugMenu : Menu
         Debug.AddItem(TeleportToPOI);
         Debug.AddItem(DefaultGangRep);
         Debug.AddItem(RandomGangRep);
+        Debug.AddItem(RandomSingleGangRep);
+
         Debug.AddItem(HostileGangRep);
         Debug.AddItem(FriendlyGangRep);
 
@@ -223,6 +225,10 @@ public class DebugMenu : Menu
         else if (selectedItem == RandomGangRep)
         {
             Player.GangRelationships.SetRandomReputations();
+        }
+        else if (selectedItem == RandomSingleGangRep)
+        {
+            Player.GangRelationships.SetSingleRandomReputation();
         }
         else if (selectedItem == DefaultGangRep)
         {

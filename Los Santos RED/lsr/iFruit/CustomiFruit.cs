@@ -243,13 +243,13 @@ namespace iFruitAddon2
             }
 
             _contacts.Update(Handle);
-#if DEBUG
+//#if DEBUG
             if (IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
             {
                 SetUnread();
             }
             _texts.Update(Handle);
-#endif
+//#endif
             DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning}";
         }
         private void SetUnread()

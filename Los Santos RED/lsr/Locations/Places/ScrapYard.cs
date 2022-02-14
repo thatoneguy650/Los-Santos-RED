@@ -24,6 +24,7 @@ public class ScrapYard : InteractableLocation
     private IWeapons Weapons;
     private ITimeControllable Time;
     private UIMenu ScrapSubMenu;
+    private readonly float VehiclePickupDistance = 25f;
 
     public ScrapYard() : base()
     {
@@ -59,8 +60,6 @@ public class ScrapYard : InteractableLocation
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
-
-
                 GenerateScrapYardMenu();
 
                 ProcessInteractionMenu();
@@ -73,9 +72,9 @@ public class ScrapYard : InteractableLocation
     }
     private void GenerateScrapYardMenu()
     {
-        ScrapSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Select Vehicle To Scrap");
+        ScrapSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Scrap a Vehicle");
 
-        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to scrap for money.";
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Select a vehicle to scrap for money. The bigger the better";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
 
         if (HasBannerImage)
@@ -85,30 +84,43 @@ public class ScrapYard : InteractableLocation
         }
         ScrapSubMenu.OnItemSelect += InteractionMenu_OnItemSelect;
         ScrapSubMenu.OnIndexChange += ScrapSubMenu_OnIndexChange;
+        ScrapSubMenu.OnMenuOpen += ScrapSubMenu_OnMenuOpen;
+        ScrapSubMenu.OnMenuClose += ScrapSubMenu_OnMenuClose;
         bool Added = false;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x=> x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 25f))
+        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
         {
-            string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-            string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-            string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
-            string CarName = (MakeName + " " + ModelName).Trim();
-            string CarDescription = "";
-            if (MakeName != "")
+            if (IsValidForScrapping(veh))
             {
-                CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
+                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
+                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
+                string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
+                string CarName = (MakeName + " " + ModelName).Trim();
+                string CarDescription = "";
+                float volume = GetVolume(veh);
+                int ScrapPrice = GetScrapPrice(veh);
+                if (volume != 0f)
+                {
+                    CarDescription += $"~n~Metal Volume: ~y~{Math.Round(volume, 2)}~s~ meters cubed~s~";
+                }
+                if (ScrapPrice != 0)
+                {
+                    CarDescription += $"~n~Metal Value: ~g~${ScrapPrice}~s~";
+                }
+                if (MakeName != "")
+                {
+                    CarDescription += $"~n~Manufacturer: ~b~{MakeName}~s~";
+                }
+                if (ModelName != "")
+                {
+                    CarDescription += $"~n~Model: ~g~{ModelName}~s~";
+                }
+                if (ClassName != "")
+                {
+                    CarDescription += $"~n~Class: ~p~{ClassName}~s~";
+                }
+                ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) { RightLabel = ScrapPrice.ToString("C0") });
+                Added = true;
             }
-            if (ModelName != "")
-            {
-                CarDescription += $"~n~Model: ~g~{ModelName}~s~";
-            }
-            if (ClassName != "")
-            {
-                CarDescription += $"~n~Class: ~p~{ClassName}~s~";
-            }
-            float Length = veh.Vehicle.Model.Dimensions.Y;
-            int ScrapPrice = ((int)(Length * 500)).Round(100);
-            ScrapSubMenu.AddItem(new UIMenuItem(CarName, CarDescription) { RightLabel = ScrapPrice.ToString("C0") });
-            Added = true;
         }
         if(!Added)
         {
@@ -117,65 +129,120 @@ public class ScrapYard : InteractableLocation
         }
     }
 
+    private void ScrapSubMenu_OnMenuClose(UIMenu sender)
+    {
+        StoreCamera.ReHighlightStoreWithCamera();
+    }
+
+    private void ScrapSubMenu_OnMenuOpen(UIMenu sender)
+    {
+        ScrapSubMenu_OnIndexChange(sender, sender.CurrentSelection);
+    }
+
     private void ScrapSubMenu_OnIndexChange(UIMenu sender, int newIndex)
     {
-        VehicleExt carToScrap = null;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 25f))
-        {
-            string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-            string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-            string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
-            string CarName = (MakeName + " " + ModelName).Trim();
-            if (sender.MenuItems[newIndex].Text == CarName)
-            {
-                carToScrap = veh;
-            }
-        }
+        VehicleExt carToScrap = GetVehicle(sender.MenuItems[newIndex].Text);
         if (carToScrap != null && carToScrap.Vehicle.Exists())
         {
             StoreCamera.HighlightEntity(carToScrap.Vehicle);
-            //float Length = carToScrap.Vehicle.Model.Dimensions.Y;
-            //int ScrapPrice = ((int)(Length * 250)).Round(100);
-            //ScrapVehicle(carToScrap, ScrapPrice);
         }
     }
-
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        VehicleExt carToScrap = null;
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(EntrancePosition) <= 25f))
-        {
-            string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
-            string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
-            string ClassName = NativeHelper.VehicleClassName(veh.Vehicle.Model.Hash);
-            string CarName = (MakeName + " " + ModelName).Trim();
-            if(selectedItem.Text == CarName)
-            {
-                carToScrap = veh;
-            }
-        }
+        VehicleExt carToScrap = GetVehicle(selectedItem.Text);
         if(carToScrap != null && carToScrap.Vehicle.Exists())
         {
-            float Length = carToScrap.Vehicle.Model.Dimensions.Y;
-            int ScrapPrice = ((int)(Length * 250)).Round(100);
-            ScrapVehicle(carToScrap, ScrapPrice);
+            ScrapVehicle(carToScrap, GetScrapPrice(carToScrap));
         }
     }
     private void ScrapVehicle(VehicleExt carToScrap, int Price)
     {
         if(carToScrap != null && carToScrap.Vehicle.Exists())
         {
-            Game.FadeScreenOut(1000, true);
-            Player.GiveMoney(Price);
+            
+
+
+
+
+
+
+
+            Game.FadeScreenOut(1500, true);     
+            string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
+            string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
+            string CarName = (MakeName + " " + ModelName).Trim();
             carToScrap.Vehicle.Delete();
-            Game.FadeScreenIn(1000, true);
-            InteractionMenu.Visible = false;
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Scrapped", $"Thank you for scrapping your vehicle at {Name}");
+            ScrapSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
+            ScrapSubMenu.RefreshIndex();
+            ScrapSubMenu.Close(true);
+
+
+            Game.FadeScreenIn(1500, true);
+
+            //InteractionMenu.Visible = false;
+            Player.GiveMoney(Price);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Scrapped", $"Thank you for scrapping your ~p~{CarName}~s~ at ~y~{Name}~s~");
         }
         else
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Scrapping Failed", "We are unable to complete this scrapping.");
         }        
+    }
+    private int GetScrapPrice(VehicleExt toScrap)
+    {
+        if(toScrap == null)
+        {
+            return 0;
+        }
+        if(toScrap.Vehicle.Exists())
+        {
+            return ((int)(GetVolume(toScrap) * 100)).Round(100);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    private float GetVolume(VehicleExt toScrap)
+    {
+        if (toScrap == null)
+        {
+            return 0;
+        }
+        if (toScrap.Vehicle.Exists())
+        {
+            return toScrap.Vehicle.Model.Dimensions.X * toScrap.Vehicle.Model.Dimensions.Y * toScrap.Vehicle.Model.Dimensions.Z;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    private VehicleExt GetVehicle(string menuEntry)
+    {
+        VehicleExt carToScrap = null;
+        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList)
+        {
+            if (IsValidForScrapping(veh))
+            {
+                string MakeName = NativeHelper.VehicleMakeName(veh.Vehicle.Model.Hash);
+                string ModelName = NativeHelper.VehicleModelName(veh.Vehicle.Model.Hash);
+                string CarName = (MakeName + " " + ModelName).Trim();
+                if (menuEntry == CarName)
+                {
+                    carToScrap = veh;
+                }
+            }
+        }
+        return carToScrap;
+    }
+    private bool IsValidForScrapping(VehicleExt toScrap)
+    {
+        if(toScrap.Vehicle.Exists() && toScrap.Vehicle.DistanceTo2D(EntrancePosition) <= VehiclePickupDistance && !toScrap.Vehicle.HasOccupants)
+        {
+            return true;
+        }
+        return false;
     }
 }
 

@@ -71,12 +71,13 @@ public class GangInteraction
                 GangWorkMenu.AddItem(GangHit);
                 GangWorkMenu.AddItem(DeadDropPickup);
                 GangWorkMenu.AddItem(GangTheft);
+                GangWorkMenu.RemoveBanner();
+                GangWorkMenu.OnItemSelect += OnGangWorkItemSelect;
             }
             RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
             //GangMenu.AddItem(RequestGangWork);
             GangMenu.AddItem(RequestGangDen);
-            GangWorkMenu.RemoveBanner();
-            GangWorkMenu.OnItemSelect += OnGangWorkItemSelect;
+
 
         }
         else

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Util.Locations;
 using Rage;
 using Rage.Native;
@@ -98,9 +99,6 @@ public class Places
                 zoneString = $"~p~{placeZone.DisplayName}~s~";
             }
             string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
-
-
-
             string StreetNumber = "";
 
             if (streetName == "")
@@ -109,22 +107,7 @@ public class Places
             }
             else
             {
-                if (basicLocation.CellY < 0)
-                {
-                    StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "S";
-                }
-                else
-                {
-                    StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "N";
-                }
-                if (basicLocation.CellX < 0)
-                {
-                    StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "W";
-                }
-                else
-                {
-                    StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "E";
-                }
+                StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
             }
             string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
             basicLocation.StreetAddress = LocationName;
@@ -147,33 +130,14 @@ public class Places
                 zoneString = $"~p~{placeZone.DisplayName}~s~";
             }
             string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
-
-
-
             string StreetNumber = "";
-
             if (streetName == "")
             {
                 betweener = "";
             }
             else
             {
-                if (basicLocation.CellY < 0)
-                {
-                    StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "S";
-                }
-                else
-                {
-                    StreetNumber = Math.Abs(basicLocation.CellY * 100).ToString() + "N";
-                }
-                if (basicLocation.CellX < 0)
-                {
-                    StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "W";
-                }
-                else
-                {
-                    StreetNumber += Math.Abs(basicLocation.CellX * 100).ToString() + "E";
-                }
+                StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
             }
             string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
             basicLocation.StreetAddress = LocationName;
@@ -190,9 +154,6 @@ public class Places
             loc.Dispose();
         }
     }
-
-
-
     public void ActiveNearLocations()
     {
         int LocationsCalculated = 0;

@@ -56,7 +56,8 @@ public class Debug
     private Gangs Gangs;
     private CustomiFruit _iFruit;
     private bool Started1 = false;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs)
+    private Input Input;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -76,6 +77,7 @@ public class Debug
         PlacesOfInterest = placesOfInterest;
         Interiors = interiors;
         Gangs = gangs;
+        Input = input;
     }
     public void Dispose()
     {
@@ -848,6 +850,12 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+
+        Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
+        GameFiber.Sleep(500);
+        Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");
+
+
         //foreach(VehicleExt car in World.CivilianVehicleList)
         //{
         //    if(car.Vehicle.Exists())
@@ -871,7 +879,7 @@ public class Debug
         //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
         //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
         //PauseMenuExample.Main();
-        SpawnNoGunAttackers();
+        // SpawnNoGunAttackers();
         //NodeChekcer();
         //StuffTwo();
         //ModController.DebugUIRunning = !ModController.DebugUIRunning;

@@ -237,7 +237,6 @@ public class CellPhone
              new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
         };
     }
-
     public void ContactAnswered(iFruitContact contact)
     {
         Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
@@ -268,7 +267,6 @@ public class CellPhone
         }
 
     }
-
     public void Update()
     {
         CheckScheduledItems();
@@ -410,11 +408,6 @@ public class CellPhone
             }
         }
     }
-
-
-
-
-
     public void AddContact(Gang gang, bool displayNotification)
     {
         if (!AddedContacts.Any(x => x.Name == gang.ContactName))
@@ -624,38 +617,6 @@ public class CellPhone
         }
         return false;
     }
-    //private void EmergencyServicesAnswered(iFruitContact contact)
-    //{
-    //    EmergencyServicesInteraction = new EmergencyServicesInteraction(ContactInteractable, Gangs, PlacesOfInterest, Jurisdictions);
-    //    EmergencyServicesInteraction.Start(contact);
-    //}
-    //private void GunDealerAnswered(iFruitContact contact)
-    //{
-    //    GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest);
-    //    GunDealerInteraction.Start(contact);
-    //}
-    //public void GangAnswered(iFruitContact contact)
-    //{
-    //    Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
-    //    if (myGang == null)
-    //    {
-    //        CustomiFruit.Close(2000);
-    //        return;
-    //    }
-    //    ActiveGang = myGang;
-    //    GangInteraction = new GangInteraction(ContactInteractable, Gangs, PlacesOfInterest);
-    //    GangInteraction.Start(myGang);
-    //}
-    //private void CivAnswered(iFruitContact contact)
-    //{
-    //    CustomiFruit.Close();
-    //    // CustomiFruit.Close();
-    //}
-    //private void CorruptCopAnswered(iFruitContact contact)
-    //{
-    //    CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest);
-    //    CorruptCopInteraction.Start(contact);
-    //}
     private ContactIcon GetIconFromString(string StringName)
     {
         ContactLookup cl = ContactLookups.FirstOrDefault(x => x.IconText.ToLower() == StringName.ToLower());
@@ -712,94 +673,3 @@ public class CellPhone
     }
 
 }
-
-
-
-/*
- * 
- * 
- * if (Player.Money >= CostToBuy)
-            {
-                Player.GiveMoney(-1 * CostToBuy);
-                Player.GangRelationships.SetReputation(GangLastCalled, 500, false);
-
-                List<string> Replies = new List<string>() {
-                    "Nice to get some respect from you finally",
-                    "I knew you were one of the good ones",
-                    "Well this certainly smooths things over",
-                    "I always liked you",
-                    "Thanks for that, I'll remember it",
-                    "Ah you got me my favorite thing!",
-                    };
-                AddPhoneResponse(GangLastCalled.ContactName, GangLastCalled.ContactIcon, Replies.PickRandom());
-                CustomiFruit.Close();
-            }
-            else
-            {
-                List<string> Replies = new List<string>() {
-                    "Call me when you're a little, hmmm, richer?",
-                    "What are you trying to pull",
-                    "Call me back when you aren't so poor",
-                    "Why are you bothering me with this bullshit",
-                    "Am i supposed to wait for a chargeback or something?",
-                    "I don't see any cash",
-
-                    };
-                AddPhoneResponse(GangLastCalled.ContactName, GangLastCalled.ContactIcon, Replies.PickRandom());
-                CustomiFruit.Close();
-            }
- * 
- *     private void PayoffGangToNeutral()
-    {
-        if (GangLastCalled != null)
-        {
-            int repLevel = Player.GangRelationships.GetRepuationLevel(GangLastCalled);
-            int CostToBuy = (0 - repLevel) * 5;
-
-            DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.PickRandom();
-            if (myDrop != null)
-            {
-                myDrop.SetGang(GangLastCalled, -1 * CostToBuy);
-                List<string> Replies = new List<string>() {
-                    $"Drop ${CostToBuy} on {myDrop.StreetAddress}, its the {myDrop.Description}",
-                    $"Place ${CostToBuy} in the {myDrop.Description}, address is {myDrop.StreetAddress}",
-                    $"Drop off ${CostToBuy} to the {myDrop.Description} on {myDrop.StreetAddress}",
-                    };
-                AddPhoneResponse(GangLastCalled.ContactName, GangLastCalled.ContactIcon, Replies.PickRandom());
-                //Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
-                AddText(GangLastCalled.ContactName, GangLastCalled.ContactIcon, Replies.PickRandom(), Time.CurrentHour, Time.CurrentMinute, true);
-            }
-            else
-            {
-                CustomiFruit.Close(500);
-            }
-
-
-            //if (Player.Money >= CostToBuy)
-            //{
-            //    Player.GiveMoney(-1 * CostToBuy);
-            //    Player.GangRelationships.SetReputation(GangLastCalled, 0, false);
-            //    List<string> Replies = new List<string>() {
-            //    "I guess we can forget about that shit.",
-            //    "No problem man, all is forgiven",
-            //    "That shit before? Forget about it.",
-            //    "We are square",
-            //    "You are off the hit list",
-            //    "This doesn't make us friends prick, just associates",
-            //    };
-            //    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
-            //}
-            //else
-            //{
-            //    List<string> Replies = new List<string>() {
-            //    "The fuck are you trying to pull dickhead?",
-            //    "Fuck off prick.",
-            //    "Poor motherfucker",
-            //    "You are really starting to piss me off",
-            //    "You really are a dumb motherfucker arent you?",
-            //    "Can you even read the numbers in your bank account?",
-            //    };
-            //    Game.DisplayNotification(GangLastCalled.ContactIcon, GangLastCalled.ContactIcon, GangLastCalled.ContactName, "~o~Response", Replies.PickRandom());
-            //}
-        }
-    }*/

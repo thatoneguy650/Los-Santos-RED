@@ -150,7 +150,7 @@ namespace Mod
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
-        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f && !CurrentTargetedPed.IsInVehicle;
+        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f && !CurrentTargetedPed.IsInVehicle;
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
        public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => Respawning.CanUndie;
@@ -875,6 +875,7 @@ namespace Mod
                     UpperBodyActivity.Cancel();
                 }
                 IsPerformingActivity = true;
+                LastGesture = gestureData;
                 UpperBodyActivity = new GestureActivity(this, gestureData);
                 UpperBodyActivity.Start();
             }

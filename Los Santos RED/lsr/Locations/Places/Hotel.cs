@@ -79,14 +79,17 @@ public class Hotel : TransactableLocation
     }
     private void AddRoomEntry(MenuItem cii, ModItem myItem)
     {
-        string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
-        string description = myItem.Description;
-        if (description == "")
+        if (cii != null && myItem != null)
         {
-            description = $"{cii.ModItemName} {formattedPurchasePrice}";
+            string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
+            string description = myItem.Description;
+            if (description == "")
+            {
+                description = $"{cii.ModItemName} {formattedPurchasePrice}";
+            }
+            description += "~n~~s~";
+            InteractionMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, 7, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 });
         }
-        description += "~n~~s~";
-        InteractionMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, 7, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 });
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {

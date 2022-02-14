@@ -760,24 +760,8 @@ public class UI : IMenuProvideable
         {
             if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
             {
-                string StreetNumber;
-                if (DisplayablePlayer.CellY < 0)
-                {
-                    StreetNumber = Math.Abs(DisplayablePlayer.CellY * 100).ToString() + "S";
-                }
-                else
-                {
-                    StreetNumber = Math.Abs(DisplayablePlayer.CellY * 100).ToString() + "N";
-                }
-                if (DisplayablePlayer.CellX < 0)
-                {
-                    StreetNumber += Math.Abs(DisplayablePlayer.CellX * 100).ToString() + "W";
-                }
-                else
-                {
-                    StreetNumber += Math.Abs(DisplayablePlayer.CellX * 100).ToString() + "E";
-                }
 
+                string StreetNumber = NativeHelper.CellToStreetNumber(DisplayablePlayer.CellX, DisplayablePlayer.CellY);
                 StreetDisplay = $"{CurrentDefaultTextColor}";
                 StreetDisplay += $"{StreetNumber}";
                 if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)

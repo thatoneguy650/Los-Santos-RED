@@ -1,4 +1,5 @@
 ﻿using iFruitAddon2;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
@@ -27,6 +28,8 @@ public class PlayerInfoMenu
     private TabSubmenuItem VehiclesSubMenu;
     private IEntityProvideable World;
     private IZones Zones;
+    private TabSubmenuItem PhoneRepliesSubMenu;
+
     public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
     {
         Player = player;
@@ -218,6 +221,28 @@ public class PlayerInfoMenu
     {
         List<UIMenuItem> menuItems = new List<UIMenuItem>();
         menuItems.Add(new UIMenuItem("Remove GPR Route", "Remove any enabled GPS Blip"));
+
+
+        List<BasicLocation> Hotels = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Hotels.Any())
+        {
+            foreach (Hotel hotel in PlacesOfInterest.PossibleLocations.Hotels.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Hotels.Add(hotel);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hotels", $"List of all Hotels", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> ScrapYards = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
+        {
+            foreach (ScrapYard sy in PlacesOfInterest.PossibleLocations.ScrapYards.OrderBy(x=> x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                ScrapYards.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Scrap Yards", $"List of all Scrap Yards", ScrapYards) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
             if (IsValidLocationType(lt))
@@ -249,22 +274,7 @@ public class PlayerInfoMenu
                     }
                     else
                     {
-                        if (gl.CellY < 0)
-                        {
-                            streetNumber = Math.Abs(gl.CellY * 100).ToString() + "S";
-                        }
-                        else
-                        {
-                            streetNumber = Math.Abs(gl.CellY * 100).ToString() + "N";
-                        }
-                        if (gl.CellX < 0)
-                        {
-                            streetNumber += Math.Abs(gl.CellX * 100).ToString() + "W";
-                        }
-                        else
-                        {
-                            streetNumber += Math.Abs(gl.CellX * 100).ToString() + "E";
-                        }
+                        streetNumber = NativeHelper.CellToStreetNumber(gl.CellX, gl.CellY);
                     }
 
                     string LocationName = $"{gl.Name} - {(gl.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{streetNumber} {streetName} {betweener} {zoneString}".Trim();
@@ -279,6 +289,7 @@ public class PlayerInfoMenu
                 }
             }
         }
+
         TabInteractiveListItem interactiveListItem = new TabInteractiveListItem("Locations", menuItems);
         interactiveListItem.BackingMenu.OnItemSelect += BackingMenu_OnItemSelect;
         tabView.AddTab(interactiveListItem);
@@ -297,7 +308,8 @@ public class PlayerInfoMenu
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
             items.Add(tItem);
         }
-        tabView.AddTab(TextMessagesSubMenu = new TabSubmenuItem("Replies", items));
+        PhoneRepliesSubMenu = new TabSubmenuItem("Replies", items);
+        tabView.AddTab(PhoneRepliesSubMenu);
     }
     private void AddTextMessages()
     {
@@ -317,19 +329,23 @@ public class PlayerInfoMenu
 
             tItem.Activated += (s, e) =>
             {
-                iFruitText myText = Player.CellPhone.TextList.Where(x => x.Index == VehiclesSubMenu.Index).FirstOrDefault();
-                if (myText != null)
+                //iFruitText myText = Player.CellPhone.TextList.Where(x => x.Index == ).FirstOrDefault();
+                if (text != null)
                 {
-                    myText.IsRead = true;
-                    EntryPoint.WriteToConsole($"Text Message Marked Read {myText.Name} {myText.Message}");
+                    text.IsRead = true;
+                    EntryPoint.WriteToConsole($"Text Message Marked Read {text.Name} {text.Message}");
 
-                    Game.DisplaySubtitle($"Text Message Marked Read {myText.Name} {myText.Message}", 5000);
+                    Game.DisplaySubtitle($"Text Message Marked Read {text.Name} {text.Message}", 5000);
                 }
             };//Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
             items.Add(tItem);
         }
-        tabView.AddTab(TextMessagesSubMenu = new TabSubmenuItem("Text Messages", items));
+        TextMessagesSubMenu = new TabSubmenuItem("Text Messages", items);
+        tabView.AddTab(TextMessagesSubMenu);
     }
+
+
+
     private void AddVehicles()
     {
         List<TabItem> items = new List<TabItem>();
@@ -396,6 +412,14 @@ public class PlayerInfoMenu
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
         {
             UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;
+            if (myItem.SelectedItem != null)
+            {
+                Player.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);
+            }
+        }
+        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
+        {
+            UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;
             if (myItem.SelectedItem != null)
             {
                 Player.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);

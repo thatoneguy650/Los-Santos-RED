@@ -38,7 +38,7 @@ public class GangSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ManageTasking = true;
-        FightPercentage = 55f;
+        FightPercentage = 70f;
         CheckCrimes = true;
         DrugDealerPercentage = 40f;
         ShowSpawnedBlip = false;

@@ -28,6 +28,7 @@ namespace LosSantosRED.lsr.Interface
         Blip CurrentGPSBlip { get; set; }
         GangRelationships GangRelationships { get; }
         PlayerTasks PlayerTasks { get; }
+        Ped Character { get; }
 
         void SetDenStatus(Gang gang, bool v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

@@ -13,7 +13,7 @@ using System.Xml.Serialization;
 
 public class InteractableLocation : BasicLocation
 {
-
+    public virtual string ContactIcon { get; set; } = "CHAR_BLANK_ENTRY";
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool IsDisposed { get; set; }
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;

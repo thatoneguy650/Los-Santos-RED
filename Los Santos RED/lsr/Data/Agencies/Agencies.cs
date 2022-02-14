@@ -351,13 +351,134 @@ public class Agencies : IAgencies
     private void DefaultConfig()
     {
         //Peds
+        //List<DispatchablePerson> StandardCops = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("s_m_y_cop_01",85,85),
+        //    new DispatchablePerson("s_f_y_cop_01",15,15) };
+        //List<DispatchablePerson> ExtendedStandardCops = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("s_m_y_cop_01",85,85),
+        //    new DispatchablePerson("s_f_y_cop_01",10,10),
+        //    new DispatchablePerson("ig_trafficwarden",5,5) };
+
+
+
         List<DispatchablePerson> StandardCops = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_cop_01",85,85),
-            new DispatchablePerson("s_f_y_cop_01",15,15) };
-        List<DispatchablePerson> ExtendedStandardCops = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_cop_01",85,85),
+            new DispatchablePerson("s_m_y_cop_01",20,20),
             new DispatchablePerson("s_f_y_cop_01",10,10),
-            new DispatchablePerson("ig_trafficwarden",5,5) };
+            new DispatchablePerson("mp_m_freemode_01",85,85) { RequiredVariation = new PedVariation(new List<PedComponent>()
+                {
+                    new PedComponent(0, 0, 0, 0),
+                    new PedComponent(1, 0, 0, 0),
+                    new PedComponent(2, 0, 0, 0) ,
+                    new PedComponent(3, 0, 0, 0) ,
+                    new PedComponent(4, 35, 0, 0) ,
+                    new PedComponent(5, 0, 0, 0) ,
+                    new PedComponent(6, 25, 0, 0) ,
+                    new PedComponent(7, 0, 0, 0) ,
+                    new PedComponent(8, 58, 0, 0) ,
+                    new PedComponent(9, 0, 0, 0) ,
+                    new PedComponent(10, 0, 0, 0) ,
+                    new PedComponent(11, 55, 0, 0)
+                },
+                new List<PedPropComponent>()
+                {
+                    new PedPropComponent(0, -1, -1),
+                    new PedPropComponent(1, -1, -1),
+                    new PedPropComponent(2, -1, -1),
+                    new PedPropComponent(3, -1, -1),
+                    new PedPropComponent(4, -1, -1),
+                    new PedPropComponent(5, -1, -1),
+                    new PedPropComponent(6, -1, -1),
+                    new PedPropComponent(7, -1, -1),
+                }) { SetRandomRegularHeadVariation  = true,IsMaleRandomRegularHeadVariation = true } },
+
+            new DispatchablePerson("mp_f_freemode_01",15,15) { RequiredVariation = new PedVariation(new List<PedComponent>()
+                {
+                    new PedComponent(0, 0, 0, 0),
+                    new PedComponent(1, 0, 0, 0),
+                    new PedComponent(2, 0, 0, 0) ,
+                    new PedComponent(3, 14, 0, 0) ,
+                    new PedComponent(4, 34, 0, 0) ,
+                    new PedComponent(5, 0, 0, 0) ,
+                    new PedComponent(6, 55, 0, 0) ,
+                    new PedComponent(7, 0, 0, 0) ,
+                    new PedComponent(8, 35, 0, 0) ,
+                    new PedComponent(9, 0, 0, 0) ,
+                    new PedComponent(10, 0, 0, 0) ,
+                    new PedComponent(11, 48, 0, 0)
+                },
+                new List<PedPropComponent>()
+                {
+                    new PedPropComponent(0, -1, -1),
+                    new PedPropComponent(1, -1, -1),
+                    new PedPropComponent(2, -1, -1),
+                    new PedPropComponent(3, -1, -1),
+                    new PedPropComponent(4, -1, -1),
+                    new PedPropComponent(5, -1, -1),
+                    new PedPropComponent(6, -1, -1),
+                    new PedPropComponent(7, -1, -1),
+                }) { SetRandomRegularHeadVariation  = true,IsMaleRandomRegularHeadVariation = false } },
+        };
+
+        List<DispatchablePerson> ExtendedStandardCops = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_cop_01",20,20),
+            new DispatchablePerson("s_f_y_cop_01",10,10),
+            new DispatchablePerson("mp_m_freemode_01",75,75) { RequiredVariation = new PedVariation(new List<PedComponent>()
+                {
+                    new PedComponent(0, 0, 0, 0),
+                    new PedComponent(1, 0, 0, 0),
+                    new PedComponent(2, 0, 0, 0) ,
+                    new PedComponent(3, 0, 0, 0) ,
+                    new PedComponent(4, 35, 0, 0) ,
+                    new PedComponent(5, 0, 0, 0) ,
+                    new PedComponent(6, 25, 0, 0) ,
+                    new PedComponent(7, 0, 0, 0) ,
+                    new PedComponent(8, 58, 0, 0) ,
+                    new PedComponent(9, 0, 0, 0) ,
+                    new PedComponent(10, 0, 0, 0) ,
+                    new PedComponent(11, 55, 0, 0)
+                },
+                new List<PedPropComponent>()
+                {
+                    new PedPropComponent(0, -1, -1),
+                    new PedPropComponent(1, -1, -1),
+                    new PedPropComponent(2, -1, -1),
+                    new PedPropComponent(3, -1, -1),
+                    new PedPropComponent(4, -1, -1),
+                    new PedPropComponent(5, -1, -1),
+                    new PedPropComponent(6, -1, -1),
+                    new PedPropComponent(7, -1, -1),
+                }) { SetRandomRegularHeadVariation  = true,IsMaleRandomRegularHeadVariation = true } },
+
+            new DispatchablePerson("mp_f_freemode_01",20,20) { RequiredVariation = new PedVariation(new List<PedComponent>()
+                {
+                    new PedComponent(0, 0, 0, 0),
+                    new PedComponent(1, 0, 0, 0),
+                    new PedComponent(2, 0, 0, 0) ,
+                    new PedComponent(3, 14, 0, 0) ,
+                    new PedComponent(4, 34, 0, 0) ,
+                    new PedComponent(5, 0, 0, 0) ,
+                    new PedComponent(6, 55, 0, 0) ,
+                    new PedComponent(7, 0, 0, 0) ,
+                    new PedComponent(8, 35, 0, 0) ,
+                    new PedComponent(9, 0, 0, 0) ,
+                    new PedComponent(10, 0, 0, 0) ,
+                    new PedComponent(11, 48, 0, 0)
+                },
+                new List<PedPropComponent>()
+                {
+                    new PedPropComponent(0, -1, -1),
+                    new PedPropComponent(1, -1, -1),
+                    new PedPropComponent(2, -1, -1),
+                    new PedPropComponent(3, -1, -1),
+                    new PedPropComponent(4, -1, -1),
+                    new PedPropComponent(5, -1, -1),
+                    new PedPropComponent(6, -1, -1),
+                    new PedPropComponent(7, -1, -1),
+                }) { SetRandomRegularHeadVariation  = true,IsMaleRandomRegularHeadVariation = false } },
+            new DispatchablePerson("ig_trafficwarden",5,5),
+        };
+
+
         List<DispatchablePerson> ParkRangers = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_ranger_01",75,75),
             new DispatchablePerson("s_f_y_ranger_01",25,25) };
@@ -431,6 +552,9 @@ public class Agencies : IAgencies
             new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 4 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
+
+
         };
         List<DispatchableVehicle> NOOSEVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
