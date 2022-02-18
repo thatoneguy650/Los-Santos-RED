@@ -208,7 +208,10 @@ public class SpawnTask
                 ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
 
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
-                ped.RandomizeVariation();
+                if(PersonType.RequiredVariation == null)
+                {
+                    ped.RandomizeVariation();
+                }
                 if (VehicleType != null && VehicleType.IsMotorcycle && Agency != null)
                 {
                     ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
@@ -220,10 +223,19 @@ public class SpawnTask
                 }
                 if (PersonType.RequiredVariation != null)
                 {
-                    PersonType.RequiredVariation.ApplyToPed(ped);
-                    if(PersonType.RequiredVariation.SetRandomRegularHeadVariation)
+                    PersonType.RequiredVariation.ApplyToPedSlow(ped);
+                    if (PersonType.RandomizeHead)
                     {
-                        PersonType.RequiredVariation.RandomizeHead(ped, RandomHeadList.Where(x=> x.IsMale == PersonType.RequiredVariation.IsMaleRandomRegularHeadVariation).FirstOrDefault());
+                        bool isMale = false;
+                        if (PersonType.ModelName.ToLower() == "mp_m_freemode_01")
+                        {
+                            isMale= true;
+                        }
+                        else if (PersonType.ModelName.ToLower() == "mp_f_freemode_01")
+                        {
+                            isMale= false;
+                        }
+                        RandomizeHead(ped, RandomHeadList.Where(x => x.IsMale == isMale).PickRandom());
                     }
                 }
                 GameFiber.Yield();
@@ -318,6 +330,41 @@ public class SpawnTask
             return null;
         }
     }
+    public void RandomizeHead(Ped ped, RandomHeadData myHead)
+    {
+        GameFiber.Yield();
+        if (ped.Exists())
+        {
+            int HairColor = myHead.HairColors.PickRandom();
+            int HairID = myHead.HairComponents.PickRandom();
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, 2, HairID, 0, 0);
+                GameFiber.Yield();
+            }
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+                GameFiber.Yield();
+            }
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.x4CFFC65454C93A49(ped, HairColor, HairColor);
+                GameFiber.Yield();
+            }
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, 2, RandomItems.GetRandomNumberInt(0, 5), 1.0f);
+                GameFiber.Yield();
+            }
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
+                GameFiber.Yield();
+            }
+            EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID}");
+        }
+    }
     private VehicleExt CreateVehicle()
     {
         try
@@ -329,15 +376,22 @@ public class SpawnTask
             if (SpawnedVehicle.Exists())
             {
                 
-                EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle} {VehicleType.RequiredColor}", 2);
+                //EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle} {VehicleType.RequiredColor}", 2);
                 //if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
                 //{
                 //    NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(SpawnedVehicle, 5.0f);
                 //}
-                if (VehicleType.HasSetColor && VehicleType.RequiredColor != Color.Transparent)
+                //if (VehicleType.HasSetColor && VehicleType.RequiredColor != Color.Transparent)
+                //{
+                //    SpawnedVehicle.PrimaryColor = VehicleType.RequiredColor;
+                //}
+
+                if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
                 {
-                    SpawnedVehicle.PrimaryColor = VehicleType.RequiredColor;
+                    NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
                 }
+
+
                 VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 if (SpawnedVehicle.Exists())
                 {

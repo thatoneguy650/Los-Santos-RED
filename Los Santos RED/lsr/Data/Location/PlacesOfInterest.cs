@@ -197,6 +197,26 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
 
             new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_GAMBETTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+
+
+            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_PAVANO")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_LUPISELLA")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_MESSINA")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_ANCELOTTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+
+
+            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_MADRAZO")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_ARMENIAN")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_YARDIES")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_DIABLOS")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+
+
+
+
+
+
             new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_FAMILY")) { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false },
             new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "",ShopMenus.GetMenu("BallasDenMenu"), Gangs.GetGang("AMBIENT_GANG_BALLAS")) { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
             new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "",ShopMenus.GetMenu("VagosDenMenu"), Gangs.GetGang("AMBIENT_GANG_MEXICAN")) { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false  },

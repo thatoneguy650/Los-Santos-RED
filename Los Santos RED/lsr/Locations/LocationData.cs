@@ -78,6 +78,29 @@ namespace LosSantosRED.lsr.Locations
                 }
             }
         }
+        public string GetStreetAndZoneString()
+        {
+            string streetName = "";
+            string zoneName = "";
+
+            if (CurrentStreet != null)
+            {
+                streetName = $"~HUD_COLOUR_YELLOWLIGHT~{CurrentStreet.Name}~s~";
+                if (CurrentCrossStreet != null)
+                {
+                    streetName += " at ~HUD_COLOUR_YELLOWLIGHT~" + CurrentCrossStreet.Name + "~s~ ";
+                }
+                else
+                {
+                    streetName += " ";
+                }
+            }
+            if (CurrentZone != null)
+            {
+                zoneName = CurrentZone.IsSpecificLocation ? "near ~p~" : "in ~p~" + CurrentZone.DisplayName + "~s~";
+            }
+            return streetName + zoneName;
+        }
         private void GetZone()
         {
             if (EntityToLocate.Exists())

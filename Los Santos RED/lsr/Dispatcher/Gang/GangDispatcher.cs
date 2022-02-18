@@ -88,7 +88,7 @@ public class GangDispatcher
                     EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
                     DispatchableVehicle VehicleType = null;
                     //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                    if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
+                    if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.VehicleSpawnPercentage))
                     {
                          VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
                     }

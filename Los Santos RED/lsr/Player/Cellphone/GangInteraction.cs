@@ -84,7 +84,7 @@ public class GangInteraction
             {
                 GameFiber.Yield();
             }
-            Player.CellPhone.Close(2000);
+            Player.CellPhone.Close(250);
         }, "CellPhone");
     }
     public void Update()
@@ -174,7 +174,6 @@ public class GangInteraction
 
                     };
             Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            //CustomiFruit.Close();
         }
     }
     private void AlreadyWorkingForGang()
@@ -189,7 +188,6 @@ public class GangInteraction
 
                     };
         Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-        //CustomiFruit.Close();
     }
 }
 

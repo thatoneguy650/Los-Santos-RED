@@ -254,7 +254,7 @@ public class GangTerritories : IGangTerritories
 
             new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","MURRI", 0, 100, 100),//Murrieta Heights
 
-            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","NCHU", 0, 100, 100),//north chumash
+            //new ZoneJurisdiction("AMBIENT_GANG_MESSINA","NCHU", 0, 100, 100),//north chumash
 
             //new ZoneJurisdiction("LSMC","NOOSE", 0, 100, 100),
 
@@ -281,7 +281,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
 
-            //new ZoneJurisdiction("LSMC","RICHM", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","RICHM", 0, 100, 100),//Richman
 
             //new ZoneJurisdiction("AMBIENT_GANG_MESSINA","ROCKF", 0, 100, 100),//Rockford Hills
 

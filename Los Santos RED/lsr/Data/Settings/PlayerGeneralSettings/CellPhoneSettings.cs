@@ -21,20 +21,14 @@ public class CellphoneSettings : ISettingsDefaultable
     public CellphoneSettings()
     {
         SetDefault();
-#if DEBUG
-        OverwriteVanillaTextMessages = true;
-#endif
-
-
-        OverwriteVanillaTextMessages = true;
     }
     public void SetDefault()
     {
         OverwriteVanillaEmergencyServicesContact = true;
-        EmergencyServicesContactID = 10;
+        EmergencyServicesContactID = 29;
         CustomContactStartingID = 30;
 
-        OverwriteVanillaTextMessages = false;
+        OverwriteVanillaTextMessages = true;
         OverwriteVanillaContacts = true;
     }
 }

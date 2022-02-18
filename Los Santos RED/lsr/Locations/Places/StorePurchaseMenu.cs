@@ -58,6 +58,10 @@ public class StorePurchaseMenu : Menu
         {
             purchaseMenu.SetBannerType(Store.BannerImage);
         }
+        else if (Store.RemoveBanner)
+        {
+            purchaseMenu.RemoveBanner();
+        }
         purchaseMenu.OnIndexChange += OnIndexChange;
         purchaseMenu.OnItemSelect += OnItemSelect;
     }

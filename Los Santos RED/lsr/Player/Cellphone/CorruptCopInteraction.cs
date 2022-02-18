@@ -66,7 +66,7 @@ public class CorruptCopInteraction
             {
                 GameFiber.Yield();
             }
-            //CustomiFruit.Close();
+            Player.CellPhone.Close(250);
         }, "CellPhone");
     }
     public void Update()
@@ -97,7 +97,6 @@ public class CorruptCopInteraction
                 "Check back later.",
                 };
         Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
-        //CustomiFruit.Close(2000);
     }
     private void PayoffCop(iFruitContact contact)
     {
@@ -145,9 +144,6 @@ public class CorruptCopInteraction
                 Player.SetWantedLevel(0, "Cop Payoff", true);
 
             }, "PayoffFiber");
-
-
-
             List<string> Replies = new List<string>() {
                 $"Let me work my magic, hang on.",
                 $"They should forget about you soon.",

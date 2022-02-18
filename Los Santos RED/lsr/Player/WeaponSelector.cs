@@ -1,6 +1,8 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class WeaponSelector
 {
@@ -10,6 +12,7 @@ public class WeaponSelector
     private WeaponInformation prevCurrentWeapon;
     private int roundsFired;
     private ISettingsProvideable Settings;
+    private List<SelectorHistory> LastWeaponSelections = new List<SelectorHistory>();
     public WeaponSelector(IWeaponSelectable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -51,6 +54,19 @@ public class WeaponSelector
         if (CurrentSelectorSetting == SelectorOptions.Safe && eSelectorSetting != SelectorOptions.Safe)
         {
             canShoot = true;
+        }
+        if (Player.CurrentWeapon != null)
+        {
+            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.CurrentWeapon.Hash);
+            if (LastSetting == null)
+            {
+                LastSetting = new SelectorHistory(Player.CurrentWeapon.Hash, eSelectorSetting);
+                LastWeaponSelections.Add(LastSetting);
+            }
+            else
+            {
+                LastSetting.SelectorSetting = eSelectorSetting;
+            }
         }
         CurrentSelectorSetting = eSelectorSetting;
         roundsFired = 0;
@@ -106,7 +122,12 @@ public class WeaponSelector
 
         if (Player.CurrentWeapon != null)
         {
-            if (Player.CurrentWeapon.SelectorOptions.HasFlag(SelectorOptions.FullAuto))
+            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.CurrentWeapon.Hash);
+            if(LastSetting != null)
+            {
+                CurrentSelectorSetting = LastSetting.SelectorSetting;
+            }
+            else if (Player.CurrentWeapon.SelectorOptions.HasFlag(SelectorOptions.FullAuto))
             {
                 CurrentSelectorSetting = SelectorOptions.FullAuto;
             }
@@ -193,5 +214,22 @@ public class WeaponSelector
             roundsFired = 0;
         }
         SetShootingEnabled(canShoot);
+    }
+    private void UpdateSelectorHistory()
+    {
+
+    }
+
+
+    private class SelectorHistory
+    {
+        public SelectorHistory(uint hash, SelectorOptions eSelectorSetting)
+        {
+            WeaponHash = hash;
+            SelectorSetting = eSelectorSetting;
+        }
+
+        public uint WeaponHash { get; set; }
+        public SelectorOptions SelectorSetting { get; set; }
     }
 }

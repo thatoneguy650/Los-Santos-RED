@@ -45,7 +45,7 @@ public class EmergencyServicesInteraction
     }
     public void Start(iFruitContact contact)
     {
-        EmergencyServicesMenu = new UIMenu("Emergency Services", "Select an Option");
+        EmergencyServicesMenu = new UIMenu("911 - Emergency Services", "Select an Option");
         EmergencyServicesMenu.RemoveBanner();
         MenuPool.Add(EmergencyServicesMenu);
         EmergencyServicesMenu.OnItemSelect += OnEmergencyServicesSelect;
@@ -63,7 +63,7 @@ public class EmergencyServicesInteraction
             {
                 GameFiber.Yield();
             }
-            Player.CellPhone.Close(2000);
+            Player.CellPhone.Close(250);
         }, "CellPhone");
     }
     public void Update()
@@ -102,13 +102,8 @@ public class EmergencyServicesInteraction
             fullText = $"An officer";
         }
         fullText += " is en route to ";
-        fullText += playerCurrentFormattedStreetName;
-        fullText += playerCurrentFormattedZoneName;
-
-        Player.CellPhone.AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
-
-
-        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~o~Response", fullText);
+        fullText += Player.CurrentLocation?.GetStreetAndZoneString();
+        Player.CellPhone.AddPhoneResponse("911 - Emergency Services", "CHAR_CALL911", fullText);
         Player.CallPolice();
     }
     private void RequestFireAssistance()
@@ -120,7 +115,6 @@ public class EmergencyServicesInteraction
             if (main != null)
             {
                 fullText = $"The {main.ColorPrefix}{main.FullName}~s~";
-                //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~b~Police Service", $"An officer from {main.FullName} is now en route to .");
             }
         }
         if (fullText == "")
@@ -128,13 +122,10 @@ public class EmergencyServicesInteraction
             fullText = $"The fire department";
         }
         fullText += " is en route to ";
-        fullText += playerCurrentFormattedStreetName;
-        fullText += playerCurrentFormattedZoneName;
+        fullText += Player.CurrentLocation?.GetStreetAndZoneString();
 
         fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
-        Player.CellPhone.AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
-        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~r~Fire Service", fullText);
-        //Player.CallPolice();
+        Player.CellPhone.AddPhoneResponse("911 - Emergency Services", "CHAR_CALL911", fullText);
     }
     private void RequestEMSAssistance()
     {
@@ -145,7 +136,6 @@ public class EmergencyServicesInteraction
             if (main != null)
             {
                 fullText = $"The {main.ColorPrefix}{main.FullName}~s~";
-                //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~b~Police Service", $"An officer from {main.FullName} is now en route to .");
             }
         }
         if (fullText == "")
@@ -153,13 +143,10 @@ public class EmergencyServicesInteraction
             fullText = $"Emergency medical services";
         }
         fullText += " is en route to ";
-        fullText += playerCurrentFormattedStreetName;
-        fullText += playerCurrentFormattedZoneName;
-
+        fullText += Player.CurrentLocation?.GetStreetAndZoneString();
         fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
-        Player.CellPhone.AddPhoneResponse("Emergency Services", "CHAR_CALL911", fullText);
-        //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Emergency Services", "~h~Medical Service", fullText);
-        //Player.CallPolice();
+        Player.CellPhone.AddPhoneResponse("911 - Emergency Services", "CHAR_CALL911", fullText);
     }
+
 }
 

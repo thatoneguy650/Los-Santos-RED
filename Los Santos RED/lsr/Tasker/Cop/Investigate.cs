@@ -48,6 +48,8 @@ public class Investigate : ComplexTask
 
             //Ped.Pedestrian.BlockPermanentEvents = true;
             //Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+
             Update();
         }
     }

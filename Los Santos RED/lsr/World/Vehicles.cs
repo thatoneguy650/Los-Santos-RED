@@ -144,7 +144,9 @@ public class Vehicles
                             PoliceCar.Vehicle.Delete();
                             GameFiber.Yield();
                         }
+                        GameFiber.Yield();
                     }
+                    
                 }
 
             }
@@ -164,7 +166,9 @@ public class Vehicles
                             PoliceCar.Vehicle.Delete();
                             GameFiber.Yield();
                         }
+                        GameFiber.Yield();
                     }
+                    
                 }
             }
         }
@@ -182,6 +186,7 @@ public class Vehicles
                 if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth- 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
                 {
                     PoliceCar.Vehicle.Repair();
+                    GameFiber.Yield();
                     EntryPoint.WriteToConsole($"FixDamagedPoliceVehicles Repaird {PoliceCar.Vehicle.Handle}", 5);
                 }
             }

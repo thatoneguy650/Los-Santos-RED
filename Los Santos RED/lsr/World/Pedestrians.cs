@@ -312,6 +312,9 @@ public class Pedestrians
         Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
         Zombies.RemoveAll(x => x.CanRemove);
+
+        Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
+
     }
     public void Setup()
     {
@@ -408,7 +411,7 @@ public class Pedestrians
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
-                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle))
+                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle) && !Police.Any(x => x.Handle == localHandle))
                 {
                     AddAmbientCivilian(Pedestrian);
                     GameFiber.Yield();

@@ -256,7 +256,7 @@ public class CellPhone
             GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest);
             GunDealerInteraction.Start(contact);
         }
-        else if (contact.Name == "Emergency Services")
+        else if (contact.Name == "911 - Emergency Services")
         {
             EmergencyServicesInteraction = new EmergencyServicesInteraction(ContactInteractable, Gangs, PlacesOfInterest, Jurisdictions);
             EmergencyServicesInteraction.Start(contact);
@@ -478,11 +478,11 @@ public class CellPhone
     }
     public void AddEmergencyServicesCustomContact()
     {
-        if (!AddedContacts.Any(x => x.Name == "Emergency Services"))
+        if (!AddedContacts.Any(x => x.Name == "911 - Emergency Services"))
         {
-            iFruitContact contactA = new iFruitContact("Emergency Services", Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
+            iFruitContact contactA = new iFruitContact("911 - Emergency Services", Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
             contactA.Answered += ContactAnswered;
-            contactA.DialTimeout = 8000;
+            contactA.DialTimeout = 3000;
             contactA.Active = true;
             contactA.Icon = ContactIcon.Emergency;
             CustomiFruit.Contacts.Add(contactA);

@@ -127,7 +127,7 @@ namespace Mod
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
             CellPhone.Setup();
 
-            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest);
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings);
             PlayerTasks.Setup();
 
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
@@ -159,7 +159,7 @@ namespace Mod
         public int CellY { get; private set; }
         public Ped Character => Game.LocalPlayer.Character;
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
-        public bool CharacterModelIsPrimaryCharacter => Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
+        public bool CharacterModelIsPrimaryCharacter => ModelName.ToLower() == "player_zero" || ModelName.ToLower() == "player_one" || ModelName.ToLower() == "player_two";//Character.Model.Name.ToLower() == "player_zero" || Character.Model.Name.ToLower() == "player_one" || Character.Model.Name.ToLower() == "player_two";
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;

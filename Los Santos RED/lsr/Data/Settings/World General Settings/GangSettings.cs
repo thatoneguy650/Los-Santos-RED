@@ -23,6 +23,7 @@ public class GangSettings : ISettingsDefaultable
 
     public int MoneyMin { get; set; }
     public int MoneyMax { get; set; }
+    public float VehicleSpawnPercentage { get; set; }
 
     public GangSettings()
     {
@@ -49,9 +50,10 @@ public class GangSettings : ISettingsDefaultable
         TimeBetweenSpawn = 10000;
         MinDistanceToSpawn = 50f;
         MaxDistanceToSpawn = 150f;
-        TotalSpawnedMembersLimit = 5;
+        TotalSpawnedMembersLimit = 8;//5
         MoneyMin = 500;
         MoneyMax = 5000;
+        VehicleSpawnPercentage = 40;
     }
 
 }

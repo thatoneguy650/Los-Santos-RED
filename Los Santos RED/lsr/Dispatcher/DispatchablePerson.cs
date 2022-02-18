@@ -10,6 +10,7 @@
     public int ArmorMin { get; set; } = 0;
     public int ArmorMax { get; set; } = 50;
     public PedVariation RequiredVariation { get; set; }
+    public bool RandomizeHead { get; set; }
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -52,6 +53,7 @@
     }
     public DispatchablePerson()
     {
+
     }
     public DispatchablePerson(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
     {

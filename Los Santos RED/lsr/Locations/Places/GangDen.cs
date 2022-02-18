@@ -35,10 +35,6 @@ public class GangDen : TransactableLocation
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
-    public int RepOnDropOff { get; set; }
-    [XmlIgnore]
-    public int MoneyOnDropOff { get; set; }
-    [XmlIgnore]
     public ModItem ExpectedItem { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
@@ -73,6 +69,8 @@ public class GangDen : TransactableLocation
 
                 PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
 
+
+
                 if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                 {
                     dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") {RightLabel = $"${ExpectedMoney}" };
@@ -85,7 +83,7 @@ public class GangDen : TransactableLocation
                 }
                 else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
                 {
-                    completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${MoneyOnDropOff}" };
+                    completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
                     InteractionMenu.AddItem(completeTask);
                 }
                 InteractionMenu.Visible = true;
@@ -120,17 +118,7 @@ public class GangDen : TransactableLocation
             {
                 Player.GiveMoney(-1*ExpectedMoney);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
-                if(RepOnDropOff > 0)
-                {
-                    Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff,false);
-                }
-                if (MoneyOnDropOff > 0)
-                {
-                    Player.GiveMoney(MoneyOnDropOff);
-                }
-                RepOnDropOff = 0;
                 ExpectedMoney = 0;
-                MoneyOnDropOff = 0;
                 Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;
             }
@@ -145,16 +133,6 @@ public class GangDen : TransactableLocation
             {
                 Player.Inventory.Remove(ExpectedItem,1);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItem.Name}. Have something for your time.");
-                if (RepOnDropOff > 0)
-                {
-                    Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff, false);
-                }
-                if(MoneyOnDropOff > 0)
-                {
-                    Player.GiveMoney(MoneyOnDropOff);
-                }
-                RepOnDropOff = 0;
-                MoneyOnDropOff = 0;
                 ExpectedItem = null;
                 Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;
@@ -168,17 +146,7 @@ public class GangDen : TransactableLocation
         else if (selectedItem == completeTask)
         {
             Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for taking care of that thing. Here's your share.");
-            if (RepOnDropOff > 0)
-            {
-                Player.GangRelationships.ChangeReputation(AssociatedGang, RepOnDropOff, false);
-            }
-            if (MoneyOnDropOff > 0)
-            {
-                Player.GiveMoney(MoneyOnDropOff);
-            }
-            RepOnDropOff = 0;
             ExpectedMoney = 0;
-            MoneyOnDropOff = 0;
             Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
             InteractionMenu.Visible = false;
         }

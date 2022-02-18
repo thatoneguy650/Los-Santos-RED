@@ -73,6 +73,7 @@ public class Idle : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             //EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}", 5);
+            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
             ClearTasks(true);
             GetClosesetPoliceVehicle();
             Update();

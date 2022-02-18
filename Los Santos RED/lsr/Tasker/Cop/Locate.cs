@@ -43,6 +43,7 @@ public class Locate : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
             //EntryPoint.WriteToConsole($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
             //Ped.Pedestrian.BlockPermanentEvents = false;
 
@@ -127,7 +128,7 @@ public class Locate : ComplexTask
                         }
                         else
                         {
-                            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 30f, (int)eCustomDrivingStyles.FastEmergency, 10f); 
+                            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 70f, (int)eCustomDrivingStyles.FastEmergency, 10f); //30f speed
                         }
                     }
                 }

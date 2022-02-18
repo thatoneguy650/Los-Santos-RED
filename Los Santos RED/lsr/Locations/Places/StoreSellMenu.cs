@@ -20,7 +20,7 @@ public class StoreSellMenu : Menu
     private Ped SellingPed;
     private Camera StoreCam;
     private bool ShouldPreviewItem;
-    private TransactionOld Transaction;
+    //private TransactionOld Transaction;
     private VehicleExt ToSellVehicle;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -37,11 +37,11 @@ public class StoreSellMenu : Menu
         Store = store;
         StoreCam = Camera.RenderingCamera;
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
-        if (Transaction.HasBannerImage)
+        if (Store.HasBannerImage)
         {
-            sellMenu.SetBannerType(Transaction.BannerImage);
+            sellMenu.SetBannerType(Store.BannerImage);
         }
-        else if (Transaction.RemoveBanner)
+        else if (Store.RemoveBanner)
         {
             sellMenu.RemoveBanner();
         }
@@ -55,7 +55,8 @@ public class StoreSellMenu : Menu
         {
             PreloadModels();
         }
-        Transaction.ClearPreviews();
+        Store.ClearPreviews();
+        //Transaction.ClearPreviews();
         //if (Ped != null)
         //{
         //    AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");

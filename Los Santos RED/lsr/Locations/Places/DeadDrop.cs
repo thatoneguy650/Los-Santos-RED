@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
 
 public class DeadDrop : InteractableLocation
 {
@@ -25,10 +25,13 @@ public class DeadDrop : InteractableLocation
     public override float MapIconScale { get; set; } = 1.0f;
     public override float MapIconRadius { get; set; } = 55.0f;
     public override float MapIconAlpha { get; set; } = 0.35f;
+
+    [XmlIgnore]
+    public bool InteractionComplete { get; set; } = false;
+
     public bool IsDropOff { get; set; } = true;
     public int MoneyAmount { get; set; } = 500;
     public Gang AssociatedGang { get; set; }
-    public int RepSetAmount { get; set; } = 0;
     public DeadDrop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -66,9 +69,13 @@ public class DeadDrop : InteractableLocation
             }
             Game.DisplayHelp("You have dropped off the cash, leave the area");
             Player.GiveMoney(-1 * MoneyAmount);
-            CompleteOnLeaveArea(Player);
+            //CompleteOnLeaveArea(Player);
             //IsEnabled = false;
             CanInteract = false;
+            IsEnabled = false;
+            InteractionComplete = true;
+
+
             Dispose();
             ButtonPromptText = "";
             //ClearActiveGangTasks(Player);
@@ -91,8 +98,19 @@ public class DeadDrop : InteractableLocation
         }
         Game.DisplayHelp("You have picked up the cash, don't hang around");
         Player.GiveMoney(MoneyAmount);
-        Player.PlayerTasks.GetTask(AssociatedGang.ContactName).IsReadyForPayment = true;
-        SendMessageOnLeaveArea(Player);
+
+        IsEnabled = false;
+
+        InteractionComplete = true;
+       // Player.PlayerTasks.GetTask(AssociatedGang.ContactName).IsReadyForPayment = true;
+
+
+
+
+
+
+
+       // SendMessageOnLeaveArea(Player);
         ButtonPromptText = "";
         Dispose();
         Player.IsInteractingWithLocation = false;
@@ -203,70 +221,70 @@ public class DeadDrop : InteractableLocation
             return false;
         }
     }
-    private void SendMessageOnLeaveArea(IActivityPerformable Player)
-    {
-        GameFiber.StartNew(delegate
-        {
-            while (IsNearby)
-            {
-                GameFiber.Yield();
-            }
-            List<string> Replies = new List<string>() {
-                    "Take the money to the designated place.",
-                    "Now bring me the money, don't get lost",
-                    "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
-                    "Drop the money off at the designated place",
-                    "Take the money where it needs to go",
-                    "Bring the stuff back to us. Don't take long.",
+    //private void SendMessageOnLeaveArea(IActivityPerformable Player)
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        while (IsNearby)
+    //        {
+    //            GameFiber.Yield();
+    //        }
+    //        List<string> Replies = new List<string>() {
+    //                "Take the money to the designated place.",
+    //                "Now bring me the money, don't get lost",
+    //                "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
+    //                "Drop the money off at the designated place",
+    //                "Take the money where it needs to go",
+    //                "Bring the stuff back to us. Don't take long.",
 
-                    };
+    //                };
 
-            Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
-        }, "LeaveChecker");
-    }
-    private void CompleteOnLeaveArea(IActivityPerformable Player)
-    {
-        GameFiber.StartNew(delegate
-        {
-            while (IsNearby)
-            {
-                GameFiber.Yield();
-            }
-            Player.GangRelationships.SetReputation(AssociatedGang, RepSetAmount, false);
-            Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
-            List<string> Replies;
-            if (RepSetAmount <= 0)
-            {
-                Replies = new List<string>() {
-                    "I guess we can forget about that shit.",
-                    "No problem man, all is forgiven",
-                    "That shit before? Forget about it.",
-                    "We are square",
-                    "You are off the hit list",
-                    "This doesn't make us friends prick, just associates",
+    //        Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
+    //    }, "LeaveChecker");
+    //}
+    //private void CompleteOnLeaveArea(IActivityPerformable Player)
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        while (IsNearby)
+    //        {
+    //            GameFiber.Yield();
+    //        }
+    //        Player.GangRelationships.SetReputation(AssociatedGang, RepSetAmount, false);
+    //        Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
+    //        List<string> Replies;
+    //        if (RepSetAmount <= 0)
+    //        {
+    //            Replies = new List<string>() {
+    //                "I guess we can forget about that shit.",
+    //                "No problem man, all is forgiven",
+    //                "That shit before? Forget about it.",
+    //                "We are square",
+    //                "You are off the hit list",
+    //                "This doesn't make us friends prick, just associates",
 
-                    };
-            }
-            else
-            {
-                Replies = new List<string>() {
-                    "Nice to get some respect from you finally, give us a call soon",
-                    "Well this certainly smooths things over, come by to discuss things",
-                    "I always liked you",
-                    "Thanks for that, I'll remember it",
-                    "Ah you got me my favorite thing! I owe you a thing or two",
-                    };
-            }
-            Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
-        }, "LeaveChecker");
-    }
-    public void SetGang(Gang gang, int moneyToReceive, int repSetAmount, bool isDropOff)
+    //                };
+    //        }
+    //        else
+    //        {
+    //            Replies = new List<string>() {
+    //                "Nice to get some respect from you finally, give us a call soon",
+    //                "Well this certainly smooths things over, come by to discuss things",
+    //                "I always liked you",
+    //                "Thanks for that, I'll remember it",
+    //                "Ah you got me my favorite thing! I owe you a thing or two",
+    //                };
+    //        }
+    //        Player.CellPhone.AddScheduledText(AssociatedGang.ContactName, AssociatedGang.ContactIcon, Replies.PickRandom(), 0);
+    //    }, "LeaveChecker");
+    //}
+    public void SetGang(Gang gang, int moneyToReceive, bool isDropOff)
     {
         IsEnabled = true;
         IsDropOff = isDropOff;
         AssociatedGang = gang;
         MoneyAmount = moneyToReceive;
-        RepSetAmount = repSetAmount;
+        InteractionComplete = false;
         if (IsDropOff)
         {
             ButtonPromptText = $"Drop ${Math.Abs(MoneyAmount)}";

@@ -11,8 +11,8 @@ public enum eCustomDrivingStyles
     RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | (int)VehicleDrivingFlags.RespectIntersections | 8,
     FakeEmergency = (int)eCustomDrivingStyles.FastEmergency,
     FastEmergency = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
-    FastEmergencyClose = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight,
+    FastEmergencyClose = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,// | (int)VehicleDrivingFlags.DriveBySight,
     CrazyEmergency = 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
-    CrazyEmergencyClose = 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight,
+    CrazyEmergencyClose = 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,// | (int)VehicleDrivingFlags.DriveBySight,
     //8 = avoid empty vehicles
 }

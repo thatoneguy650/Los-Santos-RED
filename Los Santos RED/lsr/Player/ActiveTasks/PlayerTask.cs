@@ -18,5 +18,8 @@ public class PlayerTask
     public bool CanExpire { get; set; } = false;
     public DateTime ExpireTime { get; set; }
     public bool IsReadyForPayment { get; set; } = false;
+    public int PaymentAmountOnCompletion { get; set; } = 0;
+    public int RepAmountOnCompletion { get; set; } = 0;
+
 }
 

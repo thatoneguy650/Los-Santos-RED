@@ -157,7 +157,7 @@ public class CarLockPick
                 break;
             }
         }
-
+        Player.IsLockPicking = false;
         if (!Continue)
         {
             //Game.LocalPlayer.Character.Tasks.Clear();

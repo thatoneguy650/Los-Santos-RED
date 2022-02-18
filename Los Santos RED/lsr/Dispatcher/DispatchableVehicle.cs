@@ -24,8 +24,10 @@ public class DispatchableVehicle
     public int MinOccupants { get; set; } = 1;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public string ModelName { get; set; }
-    public bool HasSetColor { get; set; } = false;
-    public Color RequiredColor { get; set; } = Color.Transparent;
+   // public bool HasSetColor { get; set; } = false;
+   // public Color RequiredColor { get; set; } = Color.Transparent;
+    public int RequiredPrimaryColorID { get; set; } = -1;
+    public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<string> RequiredPassengerModels { get; set; } = new List<string>();
     public int WantedSpawnChance { get; set; } = 0;
