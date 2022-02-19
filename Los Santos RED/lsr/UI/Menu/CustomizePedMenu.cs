@@ -56,6 +56,7 @@ public class CustomizePedMenu : Menu
     private int WorkingMoney = 5000;
     private string WorkingName = "John Doe";
     private PedVariation WorkingVariation = new PedVariation();
+    private uint GameTimeLastPrinted;
 
     public CustomizePedMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player)
     {
@@ -177,6 +178,14 @@ public class CustomizePedMenu : Menu
             EntryPoint.WriteToConsole("ZoomCameraOut", 5);
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y - 0.05f, CharCam.Position.Z);
         }
+
+
+        if(Game.IsKeyDownRightNow(System.Windows.Forms.Keys.N) && Game.GameTime - GameTimeLastPrinted >= 1000)
+        {
+            EntryPoint.WriteToConsole(WorkingVariation.ToString());
+            GameTimeLastPrinted = Game.GameTime;
+        }
+
         MenuPool.ProcessMenus();
     }
     private void ActivateDefaultCamera()

@@ -37,7 +37,8 @@ namespace LSR.Vehicles
         public LicensePlate OriginalLicensePlate { get; set; }
 
         public Gang AssociatedGang { get; set; }
-
+        public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
+        public uint GameTimeSpawned { get; set; }
         public bool WasModSpawned { get; set; } = false;
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
@@ -157,6 +158,7 @@ namespace LSR.Vehicles
                 }
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
+                GameTimeSpawned = Game.GameTime;
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);

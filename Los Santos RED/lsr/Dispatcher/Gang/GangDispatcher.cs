@@ -101,7 +101,7 @@ public class GangDispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, RandomHeadList);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, RandomHeadList, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 foreach(PedExt created in spawnTask.CreatedPeople)
                                 {
@@ -323,7 +323,7 @@ public class GangDispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, RandomHeadList) { AllowAnySpawn = true };// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, RandomHeadList, World) { AllowAnySpawn = true };// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 foreach (PedExt created in spawnTask.CreatedPeople)
                                 {

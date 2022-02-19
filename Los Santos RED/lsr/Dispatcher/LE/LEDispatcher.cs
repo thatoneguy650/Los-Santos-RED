@@ -343,13 +343,14 @@ public class LEDispatcher
                 GameFiber.Yield();
                 if (agency != null)
                 {
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn {agency.FullName}", 3);
                     LastAgencySpawned = agency;
                     DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                     GameFiber.Yield();
                     bool ShouldSpawnPedestrian = false;
                     if(spawnLocation.HasSidewalk)
                     {
-                       bool CanSpawnPedestrian = Jurisdictions.CanSpawnPedestrianAtZone(Zones.GetZoneName(spawnLocation.SidewalkPosition), agency.ID);
+                       bool CanSpawnPedestrian = Jurisdictions.CanSpawnPedestrianAtZone(Zones.GetZoneName(spawnLocation.SidewalkPosition), agency.ID) && World.TotalWantedLevel <= 1;
                         if(CanSpawnPedestrian && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.PedestrianSpawnPercentage))
                         {
                             ShouldSpawnPedestrian = true;
@@ -369,7 +370,7 @@ public class LEDispatcher
                         {
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), RandomHeadList);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), RandomHeadList, World);
                                 spawnTask.AttemptSpawn();
                                 GameFiber.Yield();
                                 spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
@@ -523,10 +524,10 @@ public class LEDispatcher
     {
         Agency agency;
         List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, World.TotalWantedLevel, responseType);
-        agency = PossibleAgencies.PickRandom();
+        agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel,responseType).PickRandom();
+            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel,responseType).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         }
         if (agency == null)
         {
@@ -672,7 +673,7 @@ public class LEDispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList, World);
                             spawnTask.AllowAnySpawn = true;
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();

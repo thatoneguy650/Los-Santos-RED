@@ -361,36 +361,145 @@ public class Agencies : IAgencies
 
 
         List<DispatchablePerson> StandardCops = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_cop_01",20,20),
-            new DispatchablePerson("s_f_y_cop_01",10,10),
-            new DispatchablePerson("mp_m_freemode_01",30,0) { RandomizeHead = true, 
+          //  new DispatchablePerson("s_m_y_cop_01",20,20),
+            //new DispatchablePerson("s_f_y_cop_01",10,10),
+
+
+        //male cop
+            new DispatchablePerson("mp_m_freemode_01",20,20) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0,46,0) }) },
-            new DispatchablePerson("mp_m_freemode_01",20,0) { RandomizeHead = true,
+                    new List<PedPropComponent>() {  }) },//no body armor 
+            new DispatchablePerson("mp_m_freemode_01",2,2) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },
-             new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true, 
+                    new List<PedPropComponent>() { new PedPropComponent(0,46,0) }) },//no body armor with goofy hat
+            new DispatchablePerson("mp_m_freemode_01",20,20) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(11, 55, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//no body armor with glasses
+
+             new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true,MinWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0),new PedComponent(11, 55, 0, 0)}, 
-                    new List<PedPropComponent>()) },
-             new DispatchablePerson("mp_m_freemode_01",0,20) { RandomizeHead = true,
+                    new List<PedPropComponent>()) },//body armor
+             new DispatchablePerson("mp_m_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0),new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },
-            new DispatchablePerson("mp_f_freemode_01",20,20) { RandomizeHead = true, 
+                    new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//body armor with glasses
+             new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true,MinWantedLevelSpawn = 3,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0),new PedComponent(11, 55, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(0,124,15) }) },//body armor with riot hat
+
+        //female cop
+            new DispatchablePerson("mp_f_freemode_01",20,20) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0) ,new PedComponent(11, 48, 0, 0)},
-                    new List<PedPropComponent>())},
+                    new List<PedPropComponent>() {  })},//no body armor
+            new DispatchablePerson("mp_f_freemode_01",2,2) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0) ,new PedComponent(11, 48, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(0,45,0) })},//no body armor with goofy hat
+
+            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 2,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 48, 0, 0)},
+                    new List<PedPropComponent>() {  })},//body armor
+            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 3,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 48, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(0,123,15) })},//body armor with riot hat
+
         };
+
+        List<DispatchablePerson> SheriffPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("mp_m_freemode_01",75,75) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), },
+                    new List<PedPropComponent>() {   }) },//body armor
+            new DispatchablePerson("mp_m_freemode_01",75,75) { RandomizeHead = true, 
+                RequiredVariation = new PedVariation( 
+                    new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), }, 
+                    new List<PedPropComponent>() { new PedPropComponent(0,58,0)  }) },//body armor with hat
+            new DispatchablePerson("mp_m_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 124, 3)  }) },//body armor with hat
+
+            new DispatchablePerson("mp_f_freemode_01",75,75) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
+                    new List<PedPropComponent>() {  }) },//body armor
+            new DispatchablePerson("mp_f_freemode_01",75,75) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 58, 0), }) },//body armor with hat
+             new DispatchablePerson("mp_f_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 123, 3), }) },//body armor with helmet    
+        
+        
+        };
+        
+
+
 
 
         List<DispatchablePerson> NOOSEPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+
+
+
+
+            //new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(1, 56, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+            //        new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9) }) },
+            // new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(1, 56, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+            //        new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
+            // new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(1, 52, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+            //        new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
+            // new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+            //        new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
+            // new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+            //        new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9)  }) },
+
+
+
+
+            //No helmet new school swat
+            new DispatchablePerson("mp_m_freemode_01", 25,25) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 56, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0,124,15),new PedPropComponent(1,23,9) }) } };
+                    new List<PedComponent>() { new PedComponent(2, 46, 0, 0),new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0),new PedComponent(6, 24, 0, 0),new PedComponent(7, 148, 12, 0),new PedComponent(8, 130, 0, 0),new PedComponent(9, 15, 2, 0),new PedComponent(11, 54, 0, 0), },//328 cool too
+                new List<PedPropComponent>() { new PedPropComponent(0, 19, 0),new PedPropComponent(1, 15, 9), }) },
+            new DispatchablePerson("mp_m_freemode_01", 75,75) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(1, 52, 0, 0),new PedComponent(2, 46, 0, 0),new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0),new PedComponent(6, 24, 0, 0),new PedComponent(7, 148, 12, 0),new PedComponent(8, 130, 0, 0),new PedComponent(9, 15, 2, 0),new PedComponent(11, 54, 0, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 117, 0),new PedPropComponent(1, 25, 4), }) },
+            new DispatchablePerson("mp_f_freemode_01", 50,50) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(1, 56, 1, 0),new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(8, 0, 0, 0),new PedComponent(9, 18, 2, 0),new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 116, 0), }) },
+
+
+
+            ////old school SWAT
+            //new DispatchablePerson("mp_m_freemode_01", 100,100) { RandomizeHead = true,
+            //    RequiredVariation = new PedVariation(
+            //        new List<PedComponent>() { new PedComponent(1, 56, 1, 0),new PedComponent(2, 38, 0, 0),new PedComponent(3, 17, 0, 0),new PedComponent(4, 121, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(7, 0, 0, 0),new PedComponent(8, 9, 0, 0),new PedComponent(10, 70, 0, 0),new PedComponent(11, 320, 0, 0), },
+            //        new List<PedPropComponent>() { new PedPropComponent(0, 141, 0),new PedPropComponent(1, 23, 9)}) },
+
+
+        };
 
 
 
@@ -398,9 +507,9 @@ public class Agencies : IAgencies
         List<DispatchablePerson> ParkRangers = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_ranger_01",75,75),
             new DispatchablePerson("s_f_y_ranger_01",25,25) };
-        List<DispatchablePerson> SheriffPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_sheriff_01",75,75),
-            new DispatchablePerson("s_f_y_sheriff_01",25,25) };
+        //List<DispatchablePerson> SheriffPeds = new List<DispatchablePerson>() {
+        //    new DispatchablePerson("s_m_y_sheriff_01",75,75),
+        //    new DispatchablePerson("s_f_y_sheriff_01",25,25) };
         List<DispatchablePerson> SWAT = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_swat_01", 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<DispatchablePerson> PoliceAndSwat = new List<DispatchablePerson>() {
@@ -427,7 +536,7 @@ public class Agencies : IAgencies
             new DispatchablePerson("s_m_m_pilot_02",0,0),
             new DispatchablePerson("s_m_y_pilot_01",0,0) };
         List<DispatchablePerson> FIBPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_fibsec_01",55,70){MaxWantedLevelSpawn = 4 },
+            new DispatchablePerson("s_m_m_fibsec_01",55,70){MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_m_fiboffice_01",15,0){MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("s_m_m_fiboffice_02",15,0){MaxWantedLevelSpawn = 3 },
             new DispatchablePerson("u_m_m_fibarchitect",10,0) {MaxWantedLevelSpawn = 3 },
@@ -465,19 +574,19 @@ public class Agencies : IAgencies
         List<DispatchableVehicle> ParkRangerVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("pranger", 100, 100) };
         List<DispatchableVehicle> FIBVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 4 },
+            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01","mp_m_freemode_01","mp_f_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01","mp_m_freemode_01","mp_f_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
 
 
         };
         List<DispatchableVehicle> NOOSEVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 0, 75) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "mp_m_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "mp_m_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "mp_m_freemode_01" },MinOccupants = 4,MaxOccupants = 4 }};
+            new DispatchableVehicle("fbi2", 0, 75) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01","mp_m_freemode_01","mp_f_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01","mp_m_freemode_01","mp_f_freemode_01" },MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, RequiredPassengerModels = new List<string>() { "s_m_y_swat_01","mp_m_freemode_01","mp_f_freemode_01" },MinOccupants = 4,MaxOccupants = 4 }};
         List<DispatchableVehicle> HighwayPatrolVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1 },
             new DispatchableVehicle("police4", 30, 30) };
@@ -672,32 +781,32 @@ public class Agencies : IAgencies
         DefaultAgency = new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ", AllSidearms, AllLongGuns);
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Classification.Police, StandardCops, VWPDVehicles, "LSV ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, StandardCops, EastLSPDVehicles, "LSE ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Classification.Police, StandardCops, DPPDVehicles, "VP ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Classification.Police, StandardCops, RHPDVehicles, "RH ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "GSPD", "Grapeseed Police Department", "Blue", Classification.Police, StandardCops, UnmarkedVehicles, "GS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "MCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-VN", "Los Santos Sheriff - Ventura County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "VCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4 },
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Classification.Police, StandardCops, VWPDVehicles, "LSV ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, StandardCops, EastLSPDVehicles, "LSE ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Classification.Police, StandardCops, DPPDVehicles, "VP ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Classification.Police, StandardCops, RHPDVehicles, "RH ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "GSPD", "Grapeseed Police Department", "Blue", Classification.Police, StandardCops, UnmarkedVehicles, "GS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "MCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-VN", "Los Santos Sheriff - Ventura County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "VCS ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3 },
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestSidearms,BestLongGuns) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,CanSpawnAnywhere = true},
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestSidearms,BestLongGuns) {MaxWantedLevelSpawn = 5, SpawnLimit = 6,CanSpawnAnywhere = true },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestSidearms,BestLongGuns) { MaxWantedLevelSpawn = 5, SpawnLimit = 6,CanSpawnAnywhere = true },
             new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllSidearms,AllLongGuns)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 4, SpawnsOnHighway = true },
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
             new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
             new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedSidearms,LimitedLongGuns){ MaxWantedLevelSpawn = 4,SpawnLimit = 3 },
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedSidearms,LimitedLongGuns) {MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedSidearms,LimitedLongGuns){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedSidearms,LimitedLongGuns) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
             new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",MilitarySidearms,MilitaryLongGuns) { MinWantedLevelSpawn = 6,CanSpawnAnywhere = true },
             new Agency("~b~", "APD", "Acadia Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "APD ", AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 5 },
-            new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
             new Agency("~b~", "NYSP", "North Yankton State Police", "Blue", Classification.Police, NYSPPeds, OldSnowyVehicles, "NYSP ", LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~g~", "VCPD", "Vice City Police Department", "Green", Classification.Police, StandardCops, AllUnmarkedVehicles, "VCPD ", AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "LC ",AllSidearms, AllLongGuns) { MaxWantedLevelSpawn = 5 },

@@ -402,7 +402,7 @@ public class PedExt : IComplexTaskable
         CellX = (int)(position.X / EntryPoint.CellSize);
         CellY = (int)(position.Y / EntryPoint.CellSize);
     }
-    private void UpdateVehicleState()
+    public void UpdateVehicleState()
     {
         bool wasInVehicle = IsInVehicle;
         IsInVehicle = Pedestrian.IsInAnyVehicle(false);

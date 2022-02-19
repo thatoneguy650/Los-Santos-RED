@@ -32,8 +32,8 @@ public class SpawnTask
 
     private SpawnLocation SpawnLocation;
     private List<RandomHeadData> RandomHeadList;
-
-    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, List<RandomHeadData> randomHeadList)
+    private IEntityProvideable World;
+    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, List<RandomHeadData> randomHeadList, IEntityProvideable world)
     {
         Agency = agency;
         PersonType = personType;
@@ -48,8 +48,9 @@ public class SpawnTask
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
         RandomHeadList = randomHeadList;
+        World = world;
     }
-    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, List<RandomHeadData> randomHeadList)
+    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, List<RandomHeadData> randomHeadList, IEntityProvideable world)
     {
         Gang = gang;
         PersonType = personType;
@@ -67,6 +68,7 @@ public class SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         ShopMenus = shopMenus;
         RandomHeadList = randomHeadList;
+        World = world;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -123,9 +125,13 @@ public class SpawnTask
                             PedExt Person = CreatePerson();
                             if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
+                                EntryPoint.WriteToConsole($"SPAWNTASK 33333 vehicle exists! {PersonType.ModelName}", 3);
                                 Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
                                 Person.AssignedVehicle = Vehicle;
                                 Person.AssignedSeat = -1;
+
+                                Person.UpdateVehicleState();
+
                                 if (VehicleType.MinOccupants > 1 || AddOptionalPassengers)
                                 {
                                     int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
@@ -138,6 +144,7 @@ public class SpawnTask
                                             Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
                                             Passenger.AssignedVehicle = Vehicle;
                                             Passenger.AssignedSeat = SeatToAssign;
+                                            Passenger.UpdateVehicleState();
                                         }
                                         else
                                         {
@@ -148,6 +155,7 @@ public class SpawnTask
                             }
                             else
                             {
+                                EntryPoint.WriteToConsole($"SPAWNTASK 33333 no vehicle! {PersonType.ModelName}", 3);
                                 if (Vehicle != null && Vehicle.Vehicle.Exists())
                                 {
                                     Vehicle.Vehicle.Delete();
@@ -201,44 +209,14 @@ public class SpawnTask
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             if (ped.Exists())
-            {
+            {             
                 int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
                 ped.MaxHealth = DesiredHealth;
                 ped.Health = DesiredHealth;
                 ped.Armor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
 
                 EntryPoint.WriteToConsole($"SPAWN TASK: CREATED PED {ped.Handle}",2);
-                if(PersonType.RequiredVariation == null)
-                {
-                    ped.RandomizeVariation();
-                }
-                if (VehicleType != null && VehicleType.IsMotorcycle && Agency != null)
-                {
-                    ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
-                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
-                }
-                else
-                {
-                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
-                }
-                if (PersonType.RequiredVariation != null)
-                {
-                    PersonType.RequiredVariation.ApplyToPedSlow(ped);
-                    if (PersonType.RandomizeHead)
-                    {
-                        bool isMale = false;
-                        if (PersonType.ModelName.ToLower() == "mp_m_freemode_01")
-                        {
-                            isMale= true;
-                        }
-                        else if (PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-                        {
-                            isMale= false;
-                        }
-                        RandomizeHead(ped, RandomHeadList.Where(x => x.IsMale == isMale).PickRandom());
-                    }
-                }
-                GameFiber.Yield();
+
                 if(!ped.Exists())
                 {
                     return null;
@@ -261,6 +239,7 @@ public class SpawnTask
                         ped.RelationshipGroup = rg;
                         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
                         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale), PersonType.ModelName);
+                        World.Pedestrians.AddEntity(PrimaryCop);
                         PrimaryCop.IssueWeapons(Weapons,(uint)WeaponHash.StunGun,true,true);
                         PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(Agency.AccuracyMin, Agency.AccuracyMax);
                         PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(Agency.ShootRateMin, Agency.ShootRateMax);
@@ -272,6 +251,7 @@ public class SpawnTask
                         RelationshipGroup rg = new RelationshipGroup("MEDIC");
                         ped.RelationshipGroup = rg;
                         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        World.Pedestrians.AddEntity(PrimaryEmt);
                         Person = PrimaryEmt;
                     }
                     else if (Agency.ResponseType == ResponseType.Fire)
@@ -279,6 +259,7 @@ public class SpawnTask
                         RelationshipGroup rg = new RelationshipGroup("FIREMAN");
                         ped.RelationshipGroup = rg;
                         Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+                        World.Pedestrians.AddEntity(PrimaryFirefighter);
                         Person = PrimaryFirefighter;
                     }
                 }
@@ -304,6 +285,7 @@ public class SpawnTask
                         toAdd = ShopMenus.GetRandomDrugDealerMenu();//move this into the gang as well
                     }
                     GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
+                    World.Pedestrians.AddEntity(GangMember);
                     Person = GangMember;
                     WeaponInformation melee =  Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
                     uint meleeHash = 0;
@@ -319,6 +301,42 @@ public class SpawnTask
                     NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
                     NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
                 }
+
+                if (PersonType.RequiredVariation == null)
+                {
+                    ped.RandomizeVariation();
+                }
+                if (VehicleType != null && VehicleType.IsMotorcycle && Agency != null)
+                {
+                    ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
+                    //NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
+                }
+                //else
+                //{
+                //    //NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
+                //}
+
+
+                if (PersonType.RequiredVariation != null)
+                {
+                    PersonType.RequiredVariation.ApplyToPedSlow(ped);
+                    if (PersonType.RandomizeHead)
+                    {
+                        bool isMale = false;
+                        if (PersonType.ModelName.ToLower() == "mp_m_freemode_01")
+                        {
+                            isMale = true;
+                        }
+                        else if (PersonType.ModelName.ToLower() == "mp_f_freemode_01")
+                        {
+                            isMale = false;
+                        }
+                        RandomizeHead(ped, RandomHeadList.Where(x => x.IsMale == isMale).PickRandom());
+                    }
+                }
+                GameFiber.Yield();
+
+
                 CreatedPeople.Add(Person);
                 return Person;
             }
@@ -375,7 +393,16 @@ public class SpawnTask
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
             {
-                
+                VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CopVehicle.WasModSpawned = true;
+                if (Agency != null)
+                {
+                    World.Vehicles.AddEntity(CopVehicle, Agency.ResponseType);
+                }
+                else if (Gang != null)
+                {
+                    World.Vehicles.AddEntity(CopVehicle, ResponseType.None);
+                }
                 //EntryPoint.WriteToConsole($"SPAWN TASK: CREATED VEHICLE {SpawnedVehicle.Handle} {VehicleType.RequiredColor}", 2);
                 //if (!VehicleType.IsHelicopter && !VehicleType.IsBoat)
                 //{
@@ -386,13 +413,10 @@ public class SpawnTask
                 //    SpawnedVehicle.PrimaryColor = VehicleType.RequiredColor;
                 //}
 
-                if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
-                {
-                    NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
-                }
 
 
-                VehicleExt CopVehicle = new VehicleExt(SpawnedVehicle, Settings);
+
+                
                 if (SpawnedVehicle.Exists())
                 {
                     CopVehicle.WasModSpawned = true;
@@ -406,6 +430,13 @@ public class SpawnTask
                     }
                     CreatedVehicles.Add(CopVehicle);
                     CopVehicle.AssociatedGang = Gang;
+
+                    if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
+                    }
+
+                    EntryPoint.WriteToConsole($"SPAWNTASK SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CopVehicle;
                 }

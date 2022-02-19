@@ -128,7 +128,7 @@ public class Vehicles
     {
         try
         {
-            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty))
+            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000))
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -150,7 +150,7 @@ public class Vehicles
                 }
 
             }
-            foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent))
+            foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000))
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -179,11 +179,11 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000))
         {
             if (PoliceCar.Vehicle.Exists())
             {
-                if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth- 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
+                if (PoliceCar.Vehicle.HasOccupants && (PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth- 500 || PoliceCar.Vehicle.EngineHealth < 200f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
                 {
                     PoliceCar.Vehicle.Repair();
                     GameFiber.Yield();

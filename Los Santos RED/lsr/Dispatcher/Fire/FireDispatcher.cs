@@ -80,7 +80,7 @@ public class FireDispatcher
                         {
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList, World);
                                 spawnTask.AttemptSpawn();
                                 spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
                                 spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));

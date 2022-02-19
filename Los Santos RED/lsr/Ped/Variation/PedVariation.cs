@@ -152,5 +152,20 @@ public class PedVariation
             EntryPoint.WriteToConsole($"ReplacePedComponentVariation Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
+    public override string ToString()
+    {
+        string Output = "new PedVariation(new List<PedComponent>() { ";
+        foreach (PedComponent Component in Components)
+        {
+            Output += $"new PedComponent({Component.ComponentID}, {Component.DrawableID}, {Component.TextureID}, {Component.PaletteID}),";
+        }
+        Output += " },new List<PedPropComponent>() { ";
+        foreach (PedPropComponent Prop in Props)
+        {
+            Output += $"new PedPropComponent({Prop.PropID}, {Prop.DrawableID}, {Prop.TextureID}),";
+        }
+        Output += " }) },";
+        return Output.ToString();
+    }
 }
 

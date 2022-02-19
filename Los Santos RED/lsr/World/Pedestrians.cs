@@ -343,33 +343,36 @@ public class Pedestrians
     {
         if (pedExt != null)
         {
-            if (pedExt.GetType() == typeof(Cop))
+            if (pedExt.GetType() == typeof(Cop) && !Police.Any(x=>x.Handle == pedExt.Handle))
             {
                 Police.Add((Cop)pedExt);
             }
-            else if (pedExt.GetType() == typeof(EMT))
+            else if (pedExt.GetType() == typeof(EMT) && !EMTs.Any(x => x.Handle == pedExt.Handle))
             {
                 EMTs.Add((EMT)pedExt);
             }
-            else if (pedExt.GetType() == typeof(Firefighter))
+            else if (pedExt.GetType() == typeof(Firefighter) && !Firefighters.Any(x => x.Handle == pedExt.Handle))
             {
                 Firefighters.Add((Firefighter)pedExt);
             }
-            else if (pedExt.GetType() == typeof(Merchant))
+            else if (pedExt.GetType() == typeof(Merchant) && !Merchants.Any(x => x.Handle == pedExt.Handle))
             {
                 Merchants.Add((Merchant)pedExt);
             }
-            else if (pedExt.GetType() == typeof(Zombie))
+            else if (pedExt.GetType() == typeof(Zombie) && !Zombies.Any(x => x.Handle == pedExt.Handle))
             {
                 Zombies.Add((Zombie)pedExt);
             }
-            else if (pedExt.GetType() == typeof(GangMember))
+            else if (pedExt.GetType() == typeof(GangMember) && !GangMembers.Any(x => x.Handle == pedExt.Handle))
             {
                 GangMembers.Add((GangMember)pedExt);
             }
             else
             {
-                Civilians.Add(pedExt);
+                if (!Civilians.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Civilians.Add(pedExt);
+                }
             }
         }
     }
