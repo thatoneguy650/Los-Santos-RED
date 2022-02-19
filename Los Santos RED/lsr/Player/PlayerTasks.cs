@@ -80,7 +80,7 @@ public class PlayerTasks
     }
     public bool HasTask(string contactName)
     {
-        return PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive);
+        return PlayerTaskList.Any(x => x.ContactName.ToLower() == contactName.ToLower() && x.IsActive);
     }
     public void AddTask(string contactName, DateTime expireTime)
     {
@@ -205,6 +205,16 @@ public class PlayerTasks
                         {
                             EntryPoint.WriteToConsole($"You did the pickup, so the den is now active!");
                             CurrentTask.IsReadyForPayment = true;
+
+                            List<string> Replies2 = new List<string>() {
+                                "Take the money to the designated place.",
+                                "Now bring me the money, don't get lost",
+                                "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
+                                "Drop the money off at the designated place",
+                                "Take the money where it needs to go",
+                                "Bring the stuff back to us. Don't take long.",  };
+                            Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies2.PickRandom(), 2);
+
                             break;
                         }
                         GameFiber.Sleep(1000);
@@ -255,8 +265,8 @@ public class PlayerTasks
 
 
                     List<string> Replies = new List<string>() {
-                    $"Go steal a ~p~{MakeName} {ModelName}~s~ from {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Once you are done come back to {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} on completion",
-
+                    $"Go steal a ~p~{MakeName} {ModelName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} on completion",
+                    $"Go get me a ~p~{MakeName} {ModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {ActiveGang.DenName} on {myDen.StreetAddress}. Payment ${MoneyToRecieve}",
 
 
                    // $"Go get ${MoneyToPickup} from {myDrop.Description}, address is {myDrop.StreetAddress}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} to get it done",
@@ -282,6 +292,16 @@ public class PlayerTasks
                             if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == toget.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == toWatchGang.ID)
                             {
                                 EntryPoint.WriteToConsole($"You got in a {toget.ModelName.ToLower()} so the den is now ACTIVE!");
+                                Replies = new List<string>() {
+                                $"Seems like that thing we discussed is done? Come by the {ActiveGang.DenName} on {myDen.StreetAddress} to collect the ${MoneyToRecieve}",
+                                $"Word got around that you are done with that thing for us, Come back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"Get back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"{myDen.StreetAddress} for ${MoneyToRecieve}",
+                                $"Heard you were done, see you at the {ActiveGang.DenName} on {myDen.StreetAddress}. We owe you ${MoneyToRecieve}",
+                                };
+                                CompletedTask(ActiveGang.ContactName);
+                                Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 2);
+
                                 CurrentTask.IsReadyForPayment = true;
                                 break;
                             }
@@ -366,6 +386,17 @@ public class PlayerTasks
                             {
                                 CurrentTask.IsReadyForPayment = true;
                                 EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
+
+                                Replies = new List<string>() {
+                                $"Seems like that thing we discussed is done? Come by the {ActiveGang.DenName} on {myDen.StreetAddress} to collect the ${MoneyToRecieve}",
+                                $"Word got around that you are done with that thing for us, Come back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"Get back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"{myDen.StreetAddress} for ${MoneyToRecieve}",
+                                $"Heard you were done, see you at the {ActiveGang.DenName} on {myDen.StreetAddress}. We owe you ${MoneyToRecieve}",
+                                };
+                                CompletedTask(ActiveGang.ContactName);
+                                Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 2);
+
                                 break;
                             }
                             GameFiber.Sleep(1000);

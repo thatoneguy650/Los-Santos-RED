@@ -30,7 +30,7 @@ public class GunStore : TransactableLocation
     public override string ButtonPromptText { get; set; }
     public bool IsIllegalShop { get; set; } = false;
     public int MoneyToUnlock { get; set; } = 0;
-    public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, ShopMenu shopMenu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, shopMenu)
+    public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, menuID)
     {
         ButtonPromptText = $"Shop at {Name}";
     }

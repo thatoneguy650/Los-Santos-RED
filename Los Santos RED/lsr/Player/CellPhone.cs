@@ -523,6 +523,14 @@ public class CellPhone
                     $"We'll be waiting for you asshole.",
                     $"You're gonna wish you were dead motherfucker.",
                     $"Got some 'associates' out looking for you prick. Where you at?",
+
+
+                    $"We'll be seeing you soon",
+                    $"{Player.PlayerName}? Better watch out.",
+                    $"You'll never hear us coming",
+                    $"You are a dead man",
+                    $"You're gonna find out what happens when you fuck with us asshole.",
+                    $"When my boys find you...",
                 });
             }
 

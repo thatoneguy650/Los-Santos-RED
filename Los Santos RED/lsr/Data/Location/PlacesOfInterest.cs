@@ -196,37 +196,37 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GangDens.AddRange(new List<GangDen>()
         {
 
-            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_GAMBETTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_PAVANO")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_LUPISELLA")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_MESSINA")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "",ShopMenus.GetMenu("GambettiDenMenu"), Gangs.GetGang("AMBIENT_GANG_ANCELOTTI")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
-            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_MADRAZO")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_ARMENIAN")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_YARDIES")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_DIABLOS")) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","FamiliesDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","FamiliesDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","FamiliesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","FamiliesDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
 
 
 
-            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs",ShopMenus.GetMenu("FamiliesDenMenu"), Gangs.GetGang("AMBIENT_GANG_FAMILY")) { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "",ShopMenus.GetMenu("BallasDenMenu"), Gangs.GetGang("AMBIENT_GANG_BALLAS")) { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "",ShopMenus.GetMenu("VagosDenMenu"), Gangs.GetGang("AMBIENT_GANG_MEXICAN")) { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "",ShopMenus.GetMenu("VagosDenMenu"), Gangs.GetGang("AMBIENT_GANG_SALVA")) { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "",ShopMenus.GetMenu("MarabunteDenMenu"), Gangs.GetGang("AMBIENT_GANG_MARABUNTE")) { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "",null, Gangs.GetGang("AMBIENT_GANG_CULT")) { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "",ShopMenus.GetMenu("KkangpaeDenMenu"), Gangs.GetGang("AMBIENT_GANG_KKANGPAE")) {  OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "",null, Gangs.GetGang("AMBIENT_GANG_HILLBILLY")) { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "",ShopMenus.GetMenu("LostDenMenu"), Gangs.GetGang("AMBIENT_GANG_LOST")) { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "",ShopMenus.GetMenu("TriadsDenMenu"), Gangs.GetGang("AMBIENT_GANG_WEICHENG")) { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false },
+            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VagosDenMenu", "AMBIENT_GANG_SALVA") { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "",null, "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "",null, "AMBIENT_GANG_HILLBILLY") { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false },
 
 
             //new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
@@ -240,11 +240,11 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GunStores.AddRange(new List<GunStore>()
 
         {
-            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General Specialty",ShopMenus.GetMenu("GunShop1")) { IsEnabled = true, IsIllegalShop = true },
-            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Pistol Specialty",ShopMenus.GetMenu("GunShop5")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 5000 },       
-            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "SMG Specialty",ShopMenus.GetMenu("GunShop3")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 10000 },
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "AR Specialty",ShopMenus.GetMenu("GunShop4")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 15000 },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Heavy Specialty",ShopMenus.GetMenu("GunShop2")) { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General Specialty","GunShop1") { IsEnabled = true, IsIllegalShop = true },
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Pistol Specialty","GunShop5") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 5000 },       
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "SMG Specialty","GunShop3") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 10000 },
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "AR Specialty","GunShop4") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 15000 },
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Heavy Specialty","GunShop2") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
 
         });
 
@@ -252,34 +252,34 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         {
 
-            new Hotel(new Vector3(-1183.073f, -1556.673f, 5.036984f), 122.3785f, "Vespucci Hotel", "Vespucci Hotel",ShopMenus.GetMenu("CheapHotelMenu")) {OpenTime = 0, CloseTime = 24 },
-            new Hotel(new Vector3(-1343.127f, -1091.096f, 6.936333f), 299.9456f, "Venetian", "Venetian",ShopMenus.GetMenu("ExpensiveHotelMenu")) {OpenTime = 0, CloseTime = 24 },
-            new Hotel(new Vector3(-1309.048f, -931.2507f, 13.35856f), 23.25741f, "Crown Jewel Hotel", "Crown Jewel Hotel",ShopMenus.GetMenu("CheapHotelMenu")) {OpenTime = 0, CloseTime = 24 },
-            new Hotel(new Vector3(-1660.706f, -533.756f, 36.02398f), 141.6077f, "Banner", "Banner",ShopMenus.GetMenu("ExpensiveHotelMenu")) {OpenTime = 0, CloseTime = 24,CameraPosition = new Vector3(-1660.326f, -566.6978f, 39.62436f), CameraRotation = new Rotator(-11.99999f, 1.091059E-07f, 4.528234f) },//, new Vector3(0f, 0f, 0f), //Camera Position LocationName: bannerhotel
-            new Hotel(new Vector3(-1856.868f, -347.9391f, 49.83775f), 141.5183f, "Von Krastenburg", "Von Krastenburg",ShopMenus.GetMenu("ExpensiveHotelMenu")) {OpenTime = 0, CloseTime = 24 },//needs zoom out
-            new Hotel(new Vector3(-1356.452f, -791.2153f, 20.24218f), 129.4868f, "Hedera", "Hedera",ShopMenus.GetMenu("ExpensiveHotelMenu")) {OpenTime = 0, CloseTime = 24 },//needs zoom out
-            new Hotel(new Vector3(-2007.835f, -314.862f, 32.09708f), 46.05545f, "The Jetty", "The Jetty",ShopMenus.GetMenu("ExpensiveHotelMenu")) {OpenTime = 0, CloseTime = 24 },//needs zoome out
-            new Hotel(new Vector3(-823.0718f, -1223.552f, 7.365416f), 54.09635f, "The Viceroy", "",ShopMenus.GetMenu("ViceroyMenu")){BannerImagePath = "viceroy.png",OpenTime = 0, CloseTime = 24, CameraPosition = new Vector3(-847.939f, -1207.791f, 7.15155f), CameraDirection = new Vector3(0.9588153f, -0.1468293f, 0.2431342f), CameraRotation = new Rotator(14.0716f, 0f, -98.70642f) },//needs zoome out
-            new Hotel(new Vector3(-287.0405f, -1060.003f, 27.20538f), 252.0524f, "Banner", "",ShopMenus.GetMenu("ExpensiveHotelMenu")) {CameraPosition = new Vector3(-233.506f, -1048.275f, 34.58431f), CameraDirection = new Vector3(-0.9516708f, -0.2260422f, -0.2079124f), CameraRotation = new Rotator(-12.00004f, 0f, 103.3614f) },
-            new Hotel(new Vector3(68.509f, -958.8935f, 29.80383f), 161.9325f, "The Emissary", "",ShopMenus.GetMenu("ExpensiveHotelMenu")){CameraPosition = new Vector3(81.53342f, -1010.819f, 63.66661f), CameraDirection = new Vector3(-0.1635272f, 0.9643815f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, 2.182118E-07f, 9.623925f) },
-            new Hotel(new Vector3(313.3858f, -225.0208f, 54.22117f), 160.1122f, "Pink Cage", "",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, "Alesandro Hotel", "",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(-702.4747f, -2274.476f, 13.45538f), 225.7683f, "Opium Nights", "",ShopMenus.GetMenu("ExpensiveHotelMenu")) ,
-            new Hotel(new Vector3(379.4438f, -1781.435f, 29.46008f), 47.01642f, "Motel & Beauty", "",ShopMenus.GetMenu("CheapHotelMenu")) ,
-            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, "Dream View Motel", "Mostly Bug Free!",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(317.7083f, 2623.256f, 44.46722f), 306.9629f, "Eastern Motel", "",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(1142.035f, 2664.177f, 38.16088f), 86.68575f, "The Motor Motel", "",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(-477.0448f, 217.5538f, 83.70456f), 355.1573f, "The Generic Hotel", "",ShopMenus.GetMenu("ExpensiveHotelMenu")),
-            new Hotel(new Vector3(-309.8708f, 221.5867f, 87.92822f), 6.029551f, "Pegasus Hotel", "",ShopMenus.GetMenu("ExpensiveHotelMenu")) { CameraPosition = new Vector3(-347.6738f, 229.8998f, 98.77297f), CameraDirection = new Vector3(0.9052147f, -0.3525268f, -0.2372999f), CameraRotation = new Rotator(-13.72723f, -5.712704E-06f, -111.2779f) },
-            new Hotel(new Vector3(-60.74598f, 360.7194f, 113.0564f), 243.5531f, "Gentry Manor Hotel", "",ShopMenus.GetMenu("ExpensiveHotelMenu")){ CameraPosition = new Vector3(40.25754f, 259.9668f, 126.4436f), CameraDirection = new Vector3(-0.6868073f, 0.7189223f, -0.1069881f), CameraRotation = new Rotator(-6.141719f, -9.445725E-06f, 43.69126f) },
-            new Hotel(new Vector3(-1273.729f, 316.0054f, 65.51177f), 152.4087f, "The Richman Hotel", "",ShopMenus.GetMenu("ExpensiveHotelMenu")),
-            new Hotel(new Vector3(286.5596f, -936.6477f, 29.46787f), 138.6224f, "Elkridge Hotel", "",ShopMenus.GetMenu("ExpensiveHotelMenu")) {CameraPosition = new Vector3(257.891f, -952.2925f, 43.25403f), CameraDirection = new Vector3(0.8390263f, 0.4567426f, -0.2956704f), CameraRotation = new Rotator(-17.19774f, -1.072479E-05f, -61.43736f) },
-            new Hotel(new Vector3(104.8123f, -932.9781f, 29.81516f), 248.7484f, "The Emissary", "",ShopMenus.GetMenu("ExpensiveHotelMenu")),
-            new Hotel(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, "Vinewood Gardens", "",ShopMenus.GetMenu("ExpensiveHotelMenu")),
-            new Hotel(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, "Cheep Motel", "POOL!",ShopMenus.GetMenu("CheapHotelMenu")),
-            new Hotel(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, "Crastenburg", "",ShopMenus.GetMenu("ExpensiveHotelMenu")),
-            new Hotel(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, "Hotel Von Crastenburg","",ShopMenus.GetMenu("ExpensiveHotelMenu")),
+            new Hotel(new Vector3(-1183.073f, -1556.673f, 5.036984f), 122.3785f, "Vespucci Hotel", "Vespucci Hotel","CheapHotelMenu") {OpenTime = 0, CloseTime = 24 },
+            new Hotel(new Vector3(-1343.127f, -1091.096f, 6.936333f), 299.9456f, "Venetian", "Venetian","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },
+            new Hotel(new Vector3(-1309.048f, -931.2507f, 13.35856f), 23.25741f, "Crown Jewel Hotel", "Crown Jewel Hotel","CheapHotelMenu") {OpenTime = 0, CloseTime = 24 },
+            new Hotel(new Vector3(-1660.706f, -533.756f, 36.02398f), 141.6077f, "Banner", "Banner","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24,CameraPosition = new Vector3(-1660.326f, -566.6978f, 39.62436f), CameraRotation = new Rotator(-11.99999f, 1.091059E-07f, 4.528234f) },//, new Vector3(0f, 0f, 0f), //Camera Position LocationName: bannerhotel
+            new Hotel(new Vector3(-1856.868f, -347.9391f, 49.83775f), 141.5183f, "Von Krastenburg", "Von Krastenburg","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },//needs zoom out
+            new Hotel(new Vector3(-1356.452f, -791.2153f, 20.24218f), 129.4868f, "Hedera", "Hedera","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },//needs zoom out
+            new Hotel(new Vector3(-2007.835f, -314.862f, 32.09708f), 46.05545f, "The Jetty", "The Jetty","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },//needs zoome out
+            new Hotel(new Vector3(-823.0718f, -1223.552f, 7.365416f), 54.09635f, "The Viceroy", "","ViceroyMenu"){BannerImagePath = "viceroy.png",OpenTime = 0, CloseTime = 24, CameraPosition = new Vector3(-847.939f, -1207.791f, 7.15155f), CameraDirection = new Vector3(0.9588153f, -0.1468293f, 0.2431342f), CameraRotation = new Rotator(14.0716f, 0f, -98.70642f) },//needs zoome out
+            new Hotel(new Vector3(-287.0405f, -1060.003f, 27.20538f), 252.0524f, "Banner", "","ExpensiveHotelMenu") {CameraPosition = new Vector3(-233.506f, -1048.275f, 34.58431f), CameraDirection = new Vector3(-0.9516708f, -0.2260422f, -0.2079124f), CameraRotation = new Rotator(-12.00004f, 0f, 103.3614f) },
+            new Hotel(new Vector3(68.509f, -958.8935f, 29.80383f), 161.9325f, "The Emissary", "","ExpensiveHotelMenu"){CameraPosition = new Vector3(81.53342f, -1010.819f, 63.66661f), CameraDirection = new Vector3(-0.1635272f, 0.9643815f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, 2.182118E-07f, 9.623925f) },
+            new Hotel(new Vector3(313.3858f, -225.0208f, 54.22117f), 160.1122f, "Pink Cage", "","CheapHotelMenu"),
+            new Hotel(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, "Alesandro Hotel", "","CheapHotelMenu"),
+            new Hotel(new Vector3(-702.4747f, -2274.476f, 13.45538f), 225.7683f, "Opium Nights", "","ExpensiveHotelMenu") ,
+            new Hotel(new Vector3(379.4438f, -1781.435f, 29.46008f), 47.01642f, "Motel & Beauty", "","CheapHotelMenu") ,
+            new Hotel(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, "Billings Gate Motel", "","CheapHotelMenu"),
+            new Hotel(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, "Dream View Motel", "Mostly Bug Free!","CheapHotelMenu"),
+            new Hotel(new Vector3(317.7083f, 2623.256f, 44.46722f), 306.9629f, "Eastern Motel", "","CheapHotelMenu"),
+            new Hotel(new Vector3(1142.035f, 2664.177f, 38.16088f), 86.68575f, "The Motor Motel", "","CheapHotelMenu"),
+            new Hotel(new Vector3(-477.0448f, 217.5538f, 83.70456f), 355.1573f, "The Generic Hotel", "","ExpensiveHotelMenu"),
+            new Hotel(new Vector3(-309.8708f, 221.5867f, 87.92822f), 6.029551f, "Pegasus Hotel", "","ExpensiveHotelMenu") { CameraPosition = new Vector3(-347.6738f, 229.8998f, 98.77297f), CameraDirection = new Vector3(0.9052147f, -0.3525268f, -0.2372999f), CameraRotation = new Rotator(-13.72723f, -5.712704E-06f, -111.2779f) },
+            new Hotel(new Vector3(-60.74598f, 360.7194f, 113.0564f), 243.5531f, "Gentry Manor Hotel", "","ExpensiveHotelMenu"){ CameraPosition = new Vector3(40.25754f, 259.9668f, 126.4436f), CameraDirection = new Vector3(-0.6868073f, 0.7189223f, -0.1069881f), CameraRotation = new Rotator(-6.141719f, -9.445725E-06f, 43.69126f) },
+            new Hotel(new Vector3(-1273.729f, 316.0054f, 65.51177f), 152.4087f, "The Richman Hotel", "","ExpensiveHotelMenu"),
+            new Hotel(new Vector3(286.5596f, -936.6477f, 29.46787f), 138.6224f, "Elkridge Hotel", "","ExpensiveHotelMenu") {CameraPosition = new Vector3(257.891f, -952.2925f, 43.25403f), CameraDirection = new Vector3(0.8390263f, 0.4567426f, -0.2956704f), CameraRotation = new Rotator(-17.19774f, -1.072479E-05f, -61.43736f) },
+            new Hotel(new Vector3(104.8123f, -932.9781f, 29.81516f), 248.7484f, "The Emissary", "","ExpensiveHotelMenu"),
+            new Hotel(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, "Vinewood Gardens", "","ExpensiveHotelMenu"),
+            new Hotel(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, "Cheep Motel", "POOL!","CheapHotelMenu"),
+            new Hotel(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, "Crastenburg", "","ExpensiveHotelMenu"),
+            new Hotel(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, "Hotel Von Crastenburg","","ExpensiveHotelMenu"),
 
 
 

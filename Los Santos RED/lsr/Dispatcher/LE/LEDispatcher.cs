@@ -10,7 +10,7 @@ public class LEDispatcher
 {
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
-    private readonly int LikelyHoodOfAnySpawn = 10;
+    private readonly int LikelyHoodOfAnySpawn = 20;
     private readonly int LikelyHoodOfCountySpawn = 15;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
@@ -657,12 +657,12 @@ public class LEDispatcher
         while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
         if (spawnLocation.HasSpawns && isValidSpawn)
         {
-            Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
+            Agency agency = Agencies.GetAgency("NOOSE");//GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
             GameFiber.Yield();
             if (agency != null)
             {
                 LastAgencySpawned = agency;
-                DispatchableVehicle VehicleType = null;// agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                 GameFiber.Yield();
                 if (VehicleType != null || 1==1)
                 {

@@ -19,6 +19,9 @@ namespace LSR.Vehicles
         private bool HasAttemptedToLock;
         private ISettingsProvideable Settings;
         private int Health = 1000;
+
+        public string VehicleModelName { get; private set; }
+
         private bool IsOnFire;
 
         public Blip AttachedBlip { get; set; }
@@ -153,6 +156,7 @@ namespace LSR.Vehicles
                     Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
                 }
                 Health = Vehicle.Health;
+                VehicleModelName = vehicle.Model.Name;
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);

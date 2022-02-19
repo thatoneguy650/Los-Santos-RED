@@ -13,15 +13,18 @@ public class TransactableLocation : InteractableLocation
     public StorePurchaseMenu PurchaseMenu { get; private set; }
     [XmlIgnore]
     public StoreSellMenu SellMenu { get; private set; }
+
+    [XmlIgnore]
     public ShopMenu Menu { get; set; }
+    public string MenuID { get; set; }
     public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
     public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
     public float ItemDeliveryHeading { get; set; } = 0f;
-    public TransactableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, ShopMenu shopMenu) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public TransactableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-        Menu = shopMenu;
+        MenuID = menuID;
         ButtonPromptText = $"Transact with {_Name}";
     }
     public TransactableLocation() : base()

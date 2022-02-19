@@ -39,11 +39,13 @@ public class GangDen : TransactableLocation
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
 
+    public string GangID { get; set; }
 
-    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, ShopMenu shopMenu, Gang _gang) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, shopMenu)
+
+    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, menuID)
     {
-        AssociatedGang = _gang;
-        ButtonPromptText = $"Enter {AssociatedGang.ShortName} {AssociatedGang.DenName}";
+        GangID = _gangID;
+        ButtonPromptText = $"Enter {Name}";
     }
     public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

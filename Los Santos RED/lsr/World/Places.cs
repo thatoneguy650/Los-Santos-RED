@@ -142,6 +142,24 @@ public class Places
             string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
             basicLocation.StreetAddress = LocationName;
         }
+
+
+
+        foreach(GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
+        {
+            tl.Menu = ShopMenus.GetMenu(tl.MenuID);
+            tl.AssociatedGang = Gangs.GetGang(tl.GangID);
+            tl.ButtonPromptText = $"Enter {tl.AssociatedGang?.ShortName} {tl.AssociatedGang?.DenName}";
+        }
+        foreach (Hotel tl in PlacesOfInterest.PossibleLocations.Hotels)
+        {
+            tl.Menu = ShopMenus.GetMenu(tl.MenuID);
+        }
+        foreach (GunStore tl in PlacesOfInterest.PossibleLocations.GunStores)
+        {
+            tl.Menu = ShopMenus.GetMenu(tl.MenuID);
+        }
+
     }
     public void Dispose()
     {

@@ -93,15 +93,15 @@ public class GangInteraction
     }
     private void OnGangItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
-        {
-            if (selectedItem == PayoffGangNeutral || selectedItem == GangHit || selectedItem == PayoffGangFriendly || selectedItem == DeadDropPickup || selectedItem == GangTheft)//cant do more than one of these.....
-            {
-                AlreadyWorkingForGang();
-                sender.Visible = false;
-                return;
-            }
-        }
+        //if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
+        //{
+        //    if (selectedItem == PayoffGangNeutral || selectedItem == GangHit || selectedItem == PayoffGangFriendly || selectedItem == DeadDropPickup || selectedItem == GangTheft)//cant do more than one of these.....
+        //    {
+        //        AlreadyWorkingForGang();
+        //        sender.Visible = false;
+        //        return;
+        //    }
+        //}
         if (selectedItem == PayoffGangFriendly)
         {
             Player.PlayerTasks.PayoffGangToFriendly(ActiveGang);
@@ -153,7 +153,8 @@ public class GangInteraction
                     "You are really starting to piss me off",
                     "(click)",
                     "I'm not even going to respond to this shit.",
-
+                    "You are a stupid motherfucker aren't you?",
+                    "Good luck dickhead.",
                     };
         Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
         //CustomiFruit.Close();

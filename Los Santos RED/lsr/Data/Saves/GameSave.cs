@@ -50,13 +50,16 @@ namespace LosSantosRED.lsr.Data
             OwnedVehicleVariations.Clear();
             foreach (VehicleExt car in player.OwnedVehicles)
             {
-                int primaryColor;
-                int secondaryColor;
-                unsafe
+                if (car.Vehicle.Exists())
                 {
-                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
+                    int primaryColor;
+                    int secondaryColor;
+                    unsafe
+                    {
+                        NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
+                    }
+                    OwnedVehicleVariations.Add(new VehicleVariation(car.VehicleModelName, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
                 }
-                OwnedVehicleVariations.Add(new VehicleVariation(car.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
             }
 
             //if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())

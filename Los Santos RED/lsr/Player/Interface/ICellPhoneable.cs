@@ -25,6 +25,8 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         VehicleExt CurrentVehicle { get; }
 
+        string PlayerName { get; }
+
         void GiveMoney(int v);
         void AddGPSRoute(string name, Vector3 entrancePosition);
         void SetWantedLevel(int v1, string v2, bool v3);
