@@ -21,5 +21,6 @@ namespace LosSantosRED.lsr.Interface
         int ShootRate { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
+        IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);
     }
 }

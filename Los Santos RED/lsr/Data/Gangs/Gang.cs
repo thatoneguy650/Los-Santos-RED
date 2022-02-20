@@ -21,7 +21,7 @@ public class Gang
         ContactName = _ShortName;
         ContactIcon = "CHAR_DEFAULT";
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
@@ -31,12 +31,13 @@ public class Gang
         ColorString = _AgencyColorString;
         Vehicles = _Vehicles;
         LicensePlatePrefix = _LicensePlatePrefix;
+        MeleeWeapons = meleeWeapons;
         SideArms = sideArms;
         LongGuns = longGuns;
         ContactName = _ShortName;
         ContactIcon = "CHAR_DEFAULT";
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
@@ -46,6 +47,7 @@ public class Gang
         ColorString = _AgencyColorString;
         Vehicles = _Vehicles;
         LicensePlatePrefix = _LicensePlatePrefix;
+        MeleeWeapons = meleeWeapons;
         SideArms = sideArms;
         LongGuns = longGuns;
         ContactName = _ContactName;
@@ -100,20 +102,25 @@ public class Gang
 
     public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
+    public List<IssuableWeapon> MeleeWeapons { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
-    public DispatchablePerson GetRandomPed(int wantedLevel, List<string> RequiredModels)
+    public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {
         if (Personnel == null || !Personnel.Any())
             return null;
 
         List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn).ToList();
-        if (RequiredModels != null && RequiredModels.Any())
+        if (RequiredPedGroup != "")
         {
-            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
         }
+        //if (RequiredModels != null && RequiredModels.Any())
+        //{
+        //    ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+        //}
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
         //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
@@ -125,6 +132,10 @@ public class Gang
                 return Cop;
             }
             RandomPick -= SpawnChance;
+        }
+        if (ToPickFrom.Any())
+        {
+            return ToPickFrom.PickRandom();
         }
         return null;
     }
@@ -177,5 +188,21 @@ public class Gang
         }
         return null;
     }
+    public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons)
+    {
+        IssuableWeapon weaponToIssue = MeleeWeapons.PickRandom();
+        if (weaponToIssue != null)
+        {
+            WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
+            weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
+            return weaponToIssue;
+        }
+        return null;
+    }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
+
+    public override string ToString()
+    {
+        return ShortName.ToString();
+    }
 }

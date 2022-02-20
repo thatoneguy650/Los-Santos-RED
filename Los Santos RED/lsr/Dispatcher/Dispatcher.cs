@@ -179,11 +179,19 @@ public class Dispatcher
     }
     public void DebugSpawnCop()
     {
-        LEDispatcher.DebugSpawnCop();
+        LEDispatcher.DebugSpawnCop("",false);
+    }
+    public void DebugSpawnCop(string agencyID, bool onFoot)
+    {
+        LEDispatcher.DebugSpawnCop(agencyID,onFoot);
     }
     public void DebugSpawnGang()
     {
-        GangDispatcher.ForceDispatch();
+        GangDispatcher.ForceDispatch("",false);
+    }
+    public void DebugSpawnGang(string agencyID, bool onFoot)
+    {
+        GangDispatcher.ForceDispatch(agencyID, onFoot);
     }
 }
 

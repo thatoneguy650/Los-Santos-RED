@@ -95,7 +95,12 @@ public class GangDispatcher
                     if (VehicleType != null || spawnLocation.HasSidewalk)
                     {
                         EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
-                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, VehicleType?.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
                         if (PersonType != null)
                         {
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
@@ -282,7 +287,7 @@ public class GangDispatcher
         return true;
     }
 
-    public bool ForceDispatch()
+    public bool ForceDispatch(string gangID, bool onFoot)
     {
         HasDispatchedThisTick = false;
         if (1==1)//Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
@@ -304,20 +309,39 @@ public class GangDispatcher
             while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
-                Gang gang = GetRandomGang(spawnLocation);
+                Gang gang = null;
+                if (gangID == "")
+                {
+                    gang = GetRandomGang(spawnLocation);
+                }
+                else
+                {
+                    gang = Gangs.GetGang(gangID);
+                }
                 if (gang != null)
                 {
                     EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
                     DispatchableVehicle VehicleType = null;
                     //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                    if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
+
+                    if (!onFoot)
                     {
-                        VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+
+                        if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
+                        {
+                            VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                        }
                     }
-                    if (VehicleType != null || spawnLocation.HasSidewalk)
+
+                    if (VehicleType != null || spawnLocation.HasSidewalk || onFoot)
                     {
                         EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
-                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, VehicleType?.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
                         if (PersonType != null)
                         {
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);

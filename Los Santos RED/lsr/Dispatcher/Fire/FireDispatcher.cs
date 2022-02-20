@@ -75,7 +75,12 @@ public class FireDispatcher
                     DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
                     if (VehicleType != null)
                     {
-                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
                         if (PersonType != null)
                         {
                             try

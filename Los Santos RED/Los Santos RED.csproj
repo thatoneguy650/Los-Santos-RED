@@ -167,6 +167,7 @@
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Variation\RandomHeadData.cs" />
     <Compile Include="lsr\Ped\Variation\RandomRegularHeadData.cs" />
+    <Compile Include="lsr\Ped\Variation\StoreStructs.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
     <Compile Include="lsr\Player\Cellphone\CorruptCopInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\EmergencyServicesInteraction.cs" />

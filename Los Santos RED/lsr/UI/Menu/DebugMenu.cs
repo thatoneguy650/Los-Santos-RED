@@ -14,11 +14,13 @@ using System.Windows.Forms;
 
 public class DebugMenu : Menu
 {
-
+    private UIMenu DispatcherMenu;
     private UIMenu Debug;
     private UIMenuListItem AutoSetRadioStation;
     private UIMenuItem GiveMoney;
     private UIMenuItem FillHealthAndArmor;
+    private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
+    private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
     private UIMenuItem StartRandomCrime;
     private UIMenuItem KillPlayer;
     private UIMenuItem LogCameraPositionMenu;
@@ -49,9 +51,19 @@ public class DebugMenu : Menu
     private UIMenuItem FriendlyGangRep;
     private UIMenuItem RandomSingleGangRep;
     private ITaskerable Tasker;
+    private MenuPool MenuPool;
+    private Dispatcher Dispatcher;
+    private IAgencies Agencies;
+    private UIMenuListScrollerItem<Gang> SpawnGangFoot;
+    private UIMenuListScrollerItem<Gang> SpawnGangVehicle;
+    private IGangs Gangs;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker)
-    {    
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs)
+    {
+        Gangs = gangs;
+        Dispatcher = dispatcher;
+        Agencies = agencies;
+        MenuPool = menuPool;
         Player = player;
         Weapons = weapons;
         RadioStations = radioStations;
@@ -93,6 +105,24 @@ public class DebugMenu : Menu
     }
     private void CreateDebugMenu()
     {
+
+        DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
+        DispatcherMenu.OnItemSelect += DispatcherMenuSelect;
+
+        SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Cop Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
+        SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
+
+        SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
+        SpawnGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Vehicle Spawn", "Spawn a random gang ped with a vehicle", Gangs.GetAllGangs());
+
+
+        DispatcherMenu.AddItem(SpawnAgencyFoot);
+        DispatcherMenu.AddItem(SpawnAgencyVehicle);
+
+
+        DispatcherMenu.AddItem(SpawnGangFoot);
+        DispatcherMenu.AddItem(SpawnGangVehicle);
+
         StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
@@ -157,6 +187,34 @@ public class DebugMenu : Menu
 
 
     }
+
+    private void DispatcherMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if(selectedItem == SpawnAgencyFoot)
+        {
+            EntryPoint.WriteToConsole($"SpawnAgencyFoot SELECTED {SpawnAgencyFoot.SelectedItem.ID}");
+            Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
+        }
+        else if (selectedItem == SpawnAgencyVehicle)
+        {
+            EntryPoint.WriteToConsole($"SpawnAgencyVehicle SELECTED {SpawnAgencyVehicle.SelectedItem.ID}");
+            Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
+        }
+
+
+        else if (selectedItem == SpawnGangFoot)
+        {
+            EntryPoint.WriteToConsole($"SpawnGangFoot SELECTED {SpawnGangFoot.SelectedItem.ID}");
+            Dispatcher.DebugSpawnGang(SpawnGangFoot.SelectedItem.ID, true);
+        }
+        else if (selectedItem == SpawnGangVehicle)
+        {
+            EntryPoint.WriteToConsole($"SpawnGangVehicle SELECTED {SpawnGangVehicle.SelectedItem.ID}");
+            Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
+        }
+        sender.Visible = false;
+    }
+
     private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == KillPlayer)

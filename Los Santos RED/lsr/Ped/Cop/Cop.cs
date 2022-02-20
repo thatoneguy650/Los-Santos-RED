@@ -34,6 +34,7 @@ public class Cop : PedExt, IWeaponIssuable
         Voice = new Voice(this, ModelName);
         AssistManager = new AssistManager(this); 
     }
+    public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
     public string CopDebugString => WeaponInventory.DebugWeaponState;
@@ -41,7 +42,7 @@ public class Cop : PedExt, IWeaponIssuable
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
-    public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, meleeHash, issueSidearm, issueLongGun);
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
     public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
     public IssuableWeapon LongGun => WeaponInventory.LongGun;
     public string ModelName { get; set; }

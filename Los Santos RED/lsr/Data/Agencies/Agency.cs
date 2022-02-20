@@ -43,6 +43,9 @@ public class Agency
             }
         }
     }
+
+
+
     public bool CanSpawnAnywhere { get; set; } = false;
     public string ColorInitials
     {
@@ -82,16 +85,20 @@ public class Agency
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
-    public DispatchablePerson GetRandomPed(int wantedLevel, List<string> RequiredModels)
+    public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {
         if (Personnel == null || !Personnel.Any())
             return null;
 
         List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn).ToList();
-        if (RequiredModels != null && RequiredModels.Any())
+        if (RequiredPedGroup != "")
         {
-            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
         }
+        //if (RequiredModels != null && RequiredModels.Any())
+        //{
+        //    ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+        //}
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
         //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
@@ -103,6 +110,10 @@ public class Agency
                 return Cop;
             }
             RandomPick -= SpawnChance;
+        }
+        if (ToPickFrom.Any())
+        {
+            return ToPickFrom.PickRandom();
         }
         return null;
     }
@@ -152,6 +163,17 @@ public class Agency
         weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
         return weaponToIssue;
     }
+    public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons)
+    {
+        IssuableWeapon weaponToIssue = new IssuableWeapon("weapon_stungun",new WeaponVariation());
+        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
+        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
+        return weaponToIssue;
+    }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
     public bool HasSpawnableHelicopters(int wantedLevel) => Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn(wantedLevel));
+    public override string ToString()
+    {
+        return ID;
+    }
 }

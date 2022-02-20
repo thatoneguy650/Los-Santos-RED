@@ -77,7 +77,12 @@ public class EMSDispatcher
                     if (VehicleType != null)
                     {
                         //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {VehicleType.ModelName}", 3);
-                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
                         if (PersonType != null)
                         {
                             //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);

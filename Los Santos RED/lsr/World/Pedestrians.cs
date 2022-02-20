@@ -343,29 +343,47 @@ public class Pedestrians
     {
         if (pedExt != null)
         {
-            if (pedExt.GetType() == typeof(Cop) && !Police.Any(x=>x.Handle == pedExt.Handle))
+            if (pedExt.GetType() == typeof(Cop))
             {
-                Police.Add((Cop)pedExt);
+                if (!Police.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Police.Add((Cop)pedExt);
+                }
             }
-            else if (pedExt.GetType() == typeof(EMT) && !EMTs.Any(x => x.Handle == pedExt.Handle))
+            else if (pedExt.GetType() == typeof(EMT))
             {
-                EMTs.Add((EMT)pedExt);
+                if (!EMTs.Any(x => x.Handle == pedExt.Handle))
+                {
+                    EMTs.Add((EMT)pedExt);
+                }
             }
-            else if (pedExt.GetType() == typeof(Firefighter) && !Firefighters.Any(x => x.Handle == pedExt.Handle))
+            else if (pedExt.GetType() == typeof(Firefighter))
             {
-                Firefighters.Add((Firefighter)pedExt);
+                if (!Firefighters.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Firefighters.Add((Firefighter)pedExt);
+                }
             }
-            else if (pedExt.GetType() == typeof(Merchant) && !Merchants.Any(x => x.Handle == pedExt.Handle))
+            else if (pedExt.GetType() == typeof(Merchant))
             {
-                Merchants.Add((Merchant)pedExt);
+                if (!Merchants.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Merchants.Add((Merchant)pedExt);
+                }
             }
-            else if (pedExt.GetType() == typeof(Zombie) && !Zombies.Any(x => x.Handle == pedExt.Handle))
+            else if (pedExt.GetType() == typeof(Zombie))
             {
-                Zombies.Add((Zombie)pedExt);
+                if (!Zombies.Any(x => x.Handle == pedExt.Handle))
+                {
+                    Zombies.Add((Zombie)pedExt);
+                }
             }
-            else if (pedExt.GetType() == typeof(GangMember) && !GangMembers.Any(x => x.Handle == pedExt.Handle))
+            else if (pedExt.GetType() == typeof(GangMember))
             {
-                GangMembers.Add((GangMember)pedExt);
+                if (!GangMembers.Any(x => x.Handle == pedExt.Handle))
+                {
+                    GangMembers.Add((GangMember)pedExt);
+                }
             }
             else
             {
@@ -608,13 +626,7 @@ public class Pedestrians
             toAdd = ShopMenus.GetRandomDrugDealerMenu();
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
-        WeaponInformation melee = Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);//move this into the gang soon
-        uint meleeHash = 0;
-        if (melee != null && RandomItems.RandomPercent(MyGang.PercentageWithMelee))
-        {
-            meleeHash = (uint)melee.Hash;
-        }
-        gm.IssueWeapons(Weapons, meleeHash, RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
+        gm.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
         gm.Accuracy = RandomItems.GetRandomNumberInt(MyGang.AccuracyMin, MyGang.AccuracyMax);
         gm.ShootRate = RandomItems.GetRandomNumberInt(MyGang.ShootRateMin, MyGang.ShootRateMax);
         gm.CombatAbility = RandomItems.GetRandomNumberInt(MyGang.CombatAbilityMin, MyGang.CombatAbilityMax);
@@ -630,7 +642,7 @@ public class Pedestrians
         {
             SetCopStats(Pedestrian, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor));
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name);
-            myCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun,true,true);
+            myCop.IssueWeapons(Weapons, true,true,true);
             myCop.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
             myCop.ShootRate = Settings.SettingsManager.PoliceSettings.GeneralShootRate;
             myCop.CombatAbility = Settings.SettingsManager.PoliceSettings.GeneralCombatAbility;

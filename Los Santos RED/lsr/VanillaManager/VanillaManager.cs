@@ -44,7 +44,7 @@ public class VanillaManager
         }
         if(Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
-            TerminateScnariosCops();
+            TerminateScenarioCops();
         }
         if (Settings.SettingsManager.VanillaSettings.TerminateRespawn)
         {
@@ -62,7 +62,7 @@ public class VanillaManager
         IsVanillaDispatchActive = false;
         GameTimeLastTerminatedVanillaDispatch = Game.GameTime;
     }
-    private void TerminateScnariosCops()
+    private void TerminateScenarioCops()
     {
         SetScenarioCops(false);
     }

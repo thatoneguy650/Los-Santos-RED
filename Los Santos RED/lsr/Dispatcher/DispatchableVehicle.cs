@@ -29,7 +29,10 @@ public class DispatchableVehicle
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
-    public List<string> RequiredPassengerModels { get; set; } = new List<string>();
+
+
+    public string RequiredPedGroup { get; set; } = "";
+    //public List<string> RequiredPassengerModels { get; set; } = new List<string>();
     public int WantedSpawnChance { get; set; } = 0;
     public bool CanCurrentlySpawn(int WantedLevel) => CurrentSpawnChance(WantedLevel) > 0;
     public int CurrentSpawnChance(int WantedLevel)

@@ -154,7 +154,7 @@ public class PedSwap : IPedSwap
         IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer", CurrentModelPlayerIs.Name);
         Entities.Pedestrians.AddEntity(Player.AliasedCop);
-        Player.AliasedCop.IssueWeapons(Weapons, (uint)WeaponHash.StunGun, true, true);
+        Player.AliasedCop.IssueWeapons(Weapons, true, true, true);
     }
     public void BecomeRandomPed()
     {

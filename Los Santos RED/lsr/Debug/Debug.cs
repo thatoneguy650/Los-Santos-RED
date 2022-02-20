@@ -851,9 +851,43 @@ public class Debug
     private void DebugNumpad7()
     {
 
-        Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
-        GameFiber.Sleep(500);
-        Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");
+
+        PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
+
+        if(pc != null)
+        {
+            uint hashName = NativeFunction.Natives.GET_HASH_NAME_FOR_COMPONENT<uint>(Game.LocalPlayer.Character, 11, pc.DrawableID, pc.TextureID);
+
+
+
+            //ComponentQueryResult result;
+
+
+            //unsafe
+            //{
+            //    NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+            //    NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+            //    EntryPoint.WriteToConsole($"uniqueNameHash {result.uniqueNameHash} {result.lockHash} {result.eCharacter} textLabel {result.textureIndex}");
+            //}
+
+            ComponentStoreStruct result;
+
+
+            unsafe
+            {
+                NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+                NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+                EntryPoint.WriteToConsole($"uniqueNameHash {result.lockHash} {result.lockHash} {result.hash} textLabel {result.texture}");
+            }
+
+            //NativeFunction.Natives.INIT_SHOP_PED_COMPONENT(out result);
+            //NativeFunction.Natives.GET_SHOP_PED_QUERY_COMPONENT(11, out  result);
+
+
+        }
+        //Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
+        //GameFiber.Sleep(500);
+        //Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");
 
 
         //foreach(VehicleExt car in World.CivilianVehicleList)

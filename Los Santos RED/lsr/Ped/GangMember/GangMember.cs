@@ -22,9 +22,9 @@ public class GangMember : PedExt, IWeaponIssuable
     public int ShootRate { get; set; } = 600;
     public int Accuracy { get; set; } = 10;
     public int CombatAbility { get; set; } = 0;
-
+    public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
-    public void IssueWeapons(IWeapons weapons, uint meleeHash, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, meleeHash, issueSidearm, issueLongGun);
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
     public Gang Gang { get; set; } = new Gang();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool WasModSpawned { get; private set; }

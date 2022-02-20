@@ -364,7 +364,12 @@ public class LEDispatcher
                     }
                     if (VehicleType != null || ShouldSpawnPedestrian)
                     {
-                        DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, VehicleType?.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
                         GameFiber.Yield();
                         if (OfficerType != null)
                         {
@@ -611,11 +616,17 @@ public class LEDispatcher
                 GameFiber.Yield();
                 if (ToSpawn != null)
                 {
+
                     DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false);
                     GameFiber.Yield();
                     if (VehicleToUse != null)
                     {
-                        DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, VehicleToUse.RequiredPassengerModels);
+                        string RequiredGroup = "";
+                        if (VehicleToUse != null)
+                        {
+                            RequiredGroup = VehicleToUse.RequiredPedGroup;
+                        }
+                        DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
                         GameFiber.Yield();
                         if (OfficerType != null)
                         {
@@ -642,8 +653,9 @@ public class LEDispatcher
             Roadblock = null;
         }
     }
-    public void DebugSpawnCop()
+    public void DebugSpawnCop(string agencyID, bool onFoot)
     {
+        EntryPoint.WriteToConsole($"DebugSpawnCop  1 agencyID {agencyID} onFoot {onFoot}");
         int timesTried = 0;
         bool isValidSpawn = false;
         SpawnLocation spawnLocation = new SpawnLocation();
@@ -658,16 +670,39 @@ public class LEDispatcher
         while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
         if (spawnLocation.HasSpawns && isValidSpawn)
         {
-            Agency agency = Agencies.GetAgency("NOOSE");//GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
+            Agency agency = null;
+            if (agencyID == "")
+            {
+                EntryPoint.WriteToConsole($"DebugSpawnCop  1.5 agencyID {agencyID} onFoot {onFoot}");
+                agency = Agencies.GetRandomAgency(ResponseType.LawEnforcement);
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"DebugSpawnCop  1.6 agencyID {agencyID} onFoot {onFoot}");
+                agency = Agencies.GetAgency(agencyID);//
+            }
             GameFiber.Yield();
             if (agency != null)
             {
+                EntryPoint.WriteToConsole($"DebugSpawnCop  2 agency {agency.FullName} onFoot {onFoot}");
                 LastAgencySpawned = agency;
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-                GameFiber.Yield();
-                if (VehicleType != null || 1==1)
+
+                DispatchableVehicle VehicleType = null;
+                if (!onFoot)
                 {
-                    DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, VehicleType?.RequiredPassengerModels);
+                    VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                }
+                GameFiber.Yield();
+                if (VehicleType != null || onFoot)
+                {
+                    EntryPoint.WriteToConsole($"DebugSpawnCop  3 agency {agency.FullName} onFoot {onFoot}");
+
+                    string RequiredGroup = "";
+                    if(VehicleType != null)
+                    {
+                        RequiredGroup = VehicleType.RequiredPedGroup;
+                    }
+                    DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
                     GameFiber.Yield();
                     if (OfficerType != null)
                     {
