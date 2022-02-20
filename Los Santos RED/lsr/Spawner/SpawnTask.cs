@@ -136,18 +136,34 @@ public class SpawnTask
                                     int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
                                     for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                                     {
-                                        PedExt Passenger = CreatePerson();
-                                        if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                        string requiredGroup = "";
+                                        if(VehicleType != null)
                                         {
-                                            int SeatToAssign = OccupantIndex - 1;
-                                            Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
-                                            Passenger.AssignedVehicle = Vehicle;
-                                            Passenger.AssignedSeat = SeatToAssign;
-                                            Passenger.UpdateVehicleState();
+                                            requiredGroup = VehicleType.RequiredPedGroup;
                                         }
-                                        else
+                                        if (Agency != null)
                                         {
-                                            EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+                                        }
+                                        else if (Gang != null)
+                                        {
+                                            PersonType = Gang.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+                                        }
+                                        if (PersonType != null)
+                                        {
+                                            PedExt Passenger = CreatePerson();
+                                            if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                                            {
+                                                int SeatToAssign = OccupantIndex - 1;
+                                                Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, SeatToAssign);
+                                                Passenger.AssignedVehicle = Vehicle;
+                                                Passenger.AssignedSeat = SeatToAssign;
+                                                Passenger.UpdateVehicleState();
+                                            }
+                                            else
+                                            {
+                                                EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
+                                            }
                                         }
                                     }
                                 }
@@ -173,8 +189,12 @@ public class SpawnTask
                         int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
                         for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
                         {
-                            PedExt Buddy = CreatePerson();
-                            EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                            PersonType = Gang.GetRandomPed(World.TotalWantedLevel, "");
+                            if (PersonType != null)
+                            {
+                                PedExt Buddy = CreatePerson();
+                                EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                            }
                         }
                     }
                 }

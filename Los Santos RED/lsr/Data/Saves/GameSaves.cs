@@ -104,7 +104,10 @@ public class GameSaves : IGameSaves
         List<StoredWeapon> AlexisWeapons = new List<StoredWeapon>
         {
             new StoredWeapon(4222310262, Vector3.Zero, new WeaponVariation(), 0),
-            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 60),
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 50),
+
+            new StoredWeapon(324215364, Vector3.Zero, new WeaponVariation(new List<WeaponComponent>() { new WeaponComponent("Extended Clip") } ), 120),
+
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
         GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("coquette2", 4, 4, new LSR.Vehicles.LicensePlate("AZZ KIKR", 3, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f)

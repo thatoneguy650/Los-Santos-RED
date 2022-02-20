@@ -122,11 +122,6 @@ public class Agencies : IAgencies
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//no body armor with glasses
 
-            new DispatchablePerson("mp_m_freemode_01",0,0) { RequiredHelmetType = 1024, GroupName = "MotorcycleCop",RandomizeHead = true,MaxWantedLevelSpawn = 2,
-                RequiredVariation = new PedVariation(
-                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//no body armor with glasses
-
 
              new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,
                 RequiredVariation = new PedVariation(
@@ -150,11 +145,10 @@ public class Agencies : IAgencies
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0) ,new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,45,0) })},//no body armor with goofy hat
-
-            new DispatchablePerson("mp_f_freemode_01",0,0) { RequiredHelmetType = 1024, GroupName = "MotorcycleCop",RandomizeHead = true,MaxWantedLevelSpawn = 2,
+            new DispatchablePerson("mp_f_freemode_01",20,20) { RandomizeHead = true,MaxWantedLevelSpawn = 2,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0) ,new PedComponent(11, 48, 0, 0)},
-                    new List<PedPropComponent>() {  })},//no body armor
+                    new List<PedPropComponent>() { new PedPropComponent(1,25,9) })},//no body armor with glasses
 
             new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,
                 RequiredVariation = new PedVariation(
@@ -164,6 +158,10 @@ public class Agencies : IAgencies
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,123,15) })},//body armor with riot hat
+            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(11, 48, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(0,123,15),new PedPropComponent(1,25,9) })},//body armor with riot hat and glasses
         };
 
         List<DispatchablePerson> SheriffPeds = new List<DispatchablePerson>() {
@@ -182,7 +180,7 @@ public class Agencies : IAgencies
             new DispatchablePerson("mp_m_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), },
-                    new List<PedPropComponent>() { new PedPropComponent(0, 124, 3)  }) },//body armor with hat
+                    new List<PedPropComponent>() { new PedPropComponent(0, 124, 3)  }) },//body armor with helmet
 
             new DispatchablePerson("mp_f_freemode_01",75,75) { RandomizeHead = true,ArmorMin = 50,ArmorMax = 50,
                 RequiredVariation = new PedVariation(
@@ -196,7 +194,10 @@ public class Agencies : IAgencies
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 123, 3), }) },//body armor with helmet    
-            
+            new DispatchablePerson("mp_f_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 123, 3),new PedPropComponent(1,25,9) }) },//body armor with helmet        and glasees    
         };
         
 
@@ -209,25 +210,42 @@ public class Agencies : IAgencies
             //more police style swat stuff
             new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 56, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+                    new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9) }) },
              new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 56, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
-             new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
-                RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 52, 1, 0), new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+                    new List<PedComponent>() {new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
              new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
+                    new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9) }) },
              new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
+                    new List<PedPropComponent>() { new PedPropComponent(0,150,0) }) },
+             new DispatchablePerson("mp_m_freemode_01", 100, 100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(10, 70, 0, 0), new PedComponent(11, 328, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9)  }) },
-
+            
+            
+            new DispatchablePerson("mp_f_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(9, 18, 2, 0), new PedComponent(10, 79, 0, 0), new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 149, 0), }) },
+            new DispatchablePerson("mp_f_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(9, 18, 2, 0), new PedComponent(10, 79, 0, 0), new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 149, 0),new PedPropComponent(1,25,9) }) },
+            new DispatchablePerson("mp_f_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(9, 18, 2, 0), new PedComponent(10, 79, 0, 0), new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 149, 0), }) },
+            new DispatchablePerson("mp_f_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(9, 18, 2, 0), new PedComponent(10, 79, 0, 0), new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 149, 0),new PedPropComponent(1,25,9) }) },
 
             ////No helmet new school swat
             //new DispatchablePerson("mp_m_freemode_01", 25,25) { RandomizeHead = true,
@@ -265,13 +283,18 @@ public class Agencies : IAgencies
                 new List<PedPropComponent>() { new PedPropComponent(0, 19, 0),new PedPropComponent(1, 15, 9), }) },
             new DispatchablePerson("mp_m_freemode_01", 75,75, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { GroupName = "FIBHRT", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RandomizeHead = true,
                 RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 52, 0, 0),new PedComponent(2, 46, 0, 0),new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0),new PedComponent(6, 24, 0, 0),new PedComponent(7, 148, 12, 0),new PedComponent(8, 130, 0, 0),new PedComponent(9, 15, 2, 0),new PedComponent(11, 54, 0, 0), },
+                    new List<PedComponent>() { new PedComponent(2, 46, 0, 0),new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0),new PedComponent(6, 24, 0, 0),new PedComponent(7, 148, 12, 0),new PedComponent(8, 130, 0, 0),new PedComponent(9, 15, 2, 0),new PedComponent(11, 54, 0, 0), },
                 new List<PedPropComponent>() { new PedPropComponent(0, 117, 0),new PedPropComponent(1, 25, 4), }) },
+            
+            
             new DispatchablePerson("mp_f_freemode_01", 50,50, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { GroupName = "FIBHRT", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RandomizeHead = true,
                 RequiredVariation = new PedVariation(
-                    new List<PedComponent>() { new PedComponent(1, 56, 1, 0),new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(8, 0, 0, 0),new PedComponent(9, 18, 2, 0),new PedComponent(11, 54, 3, 0), },
-                new List<PedPropComponent>() { new PedPropComponent(0, 116, 0), }) },
-
+                    new List<PedComponent>() {new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(8, 0, 0, 0),new PedComponent(9, 18, 2, 0),new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 19, 0), }) },
+            new DispatchablePerson("mp_f_freemode_01", 50,50, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { GroupName = "FIBHRT", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5,RandomizeHead = true,
+                RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {new PedComponent(2, 42, 0, 0),new PedComponent(3, 18, 0, 0),new PedComponent(4, 130, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(8, 0, 0, 0),new PedComponent(9, 18, 2, 0),new PedComponent(11, 54, 3, 0), },
+                new List<PedPropComponent>() { new PedPropComponent(0, 116, 0),new PedPropComponent(1, 27, 4), }) },
             //new DispatchablePerson("s_m_y_swat_01", 5,30) { GroupName = "FIBHRT", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) }
             };
 
@@ -353,14 +376,13 @@ public class Agencies : IAgencies
             new DispatchableVehicle("policet", 70, 70),
             new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> LSPDVehiclesVanilla = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policeb", 1000, 1000) { MaxOccupants = 1,MaxWantedLevelSpawn = 2, RequiredPedGroup = "MotorcycleCop" },
-            //new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
-            //new DispatchableVehicle("police2", 25, 20),
-            //new DispatchableVehicle("police3", 25, 20),
-            //new DispatchableVehicle("police4", 1,1),
-            //new DispatchableVehicle("fbi2", 1,1),
-            //new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} 
-        
+            new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police2", 25, 20),
+            new DispatchableVehicle("police3", 25, 20),
+            new DispatchableVehicle("police4", 1,1),
+            new DispatchableVehicle("fbi2", 1,1),
+            new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3}
+
         };
         List<DispatchableVehicle> LSSDVehiclesVanilla = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff", 50, 50),
