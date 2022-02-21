@@ -183,7 +183,7 @@ public class DeadDrop : InteractableLocation
             {
                 IsCancelled = true;
             }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(MovePosition) < 1.5f;
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(MovePosition) < 3f;
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);

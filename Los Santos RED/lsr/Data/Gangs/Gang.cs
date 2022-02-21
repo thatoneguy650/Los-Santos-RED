@@ -100,6 +100,20 @@ public class Gang
     public int CombatAbilityMax { get; set; } = 1;//0 - poor, 1- average, 2 - professional
 
 
+
+
+
+    public int HitPaymentMin { get; set; } = 10000;
+    public int HitPaymentMax { get; set; } = 30000;
+
+
+    public int TheftPaymentMin { get; set; } = 1000;
+    public int TheftPaymentMax { get; set; } = 5000;
+
+
+    public int PickupPaymentMin { get; set; } = 200;
+    public int PickupPaymentMax { get; set; } = 1000;
+
     public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> MeleeWeapons { get; set; } = new List<IssuableWeapon>();

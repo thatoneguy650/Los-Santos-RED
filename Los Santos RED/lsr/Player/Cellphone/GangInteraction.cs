@@ -29,6 +29,8 @@ public class GangInteraction
     private Gang ActiveGang;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
+    private UIMenuItem PayoffDebt;
+
     public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -39,6 +41,7 @@ public class GangInteraction
     public void Start(Gang gang)
     {
         ActiveGang = gang;
+        GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
         int repLevel = Player.GangRelationships.GetRepuationLevel(ActiveGang);
 
         GangMenu = new UIMenu("", "Select an Option");
@@ -46,7 +49,13 @@ public class GangInteraction
         MenuPool.Add(GangMenu);
         GangMenu.OnItemSelect += OnGangItemSelect;
 
-        if (repLevel < 0)
+
+        if(gr != null && gr.PlayerDebt > 0)
+        {
+            PayoffDebt = new UIMenuItem("Payoff Debt", "Payoff your current debt to the gang") { RightLabel = "~r~" + gr.PlayerDebt.ToString("C0") + "~s~" };
+            GangMenu.AddItem(PayoffDebt);
+        }
+        else if (repLevel < 0)
         {
             PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = "~r~" + Player.GangRelationships.CostToPayoffGang(ActiveGang).ToString("C0") + "~s~" };
             ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
@@ -62,9 +71,9 @@ public class GangInteraction
             }
             else
             {
-                GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival") { RightLabel = "~g~$10,000+~s~" };
-                DeadDropPickup = new UIMenuItem("Pickup", "Pickup an item for the gang and bring it back") { RightLabel = "~g~$200-$1,000~s~" };
-                GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = "~g~$1,000+~s~" };
+                GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
+                DeadDropPickup = new UIMenuItem("Pickup", "Pickup an item for the gang and bring it back") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
+                GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
                 GangMenu.AddItem(GangHit);
                 GangMenu.AddItem(DeadDropPickup);
                 GangMenu.AddItem(GangTheft);
@@ -93,26 +102,7 @@ public class GangInteraction
     }
     private void OnGangItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        //if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
-        //{
-        //    if (selectedItem == PayoffGangNeutral || selectedItem == GangHit || selectedItem == PayoffGangFriendly || selectedItem == DeadDropPickup || selectedItem == GangTheft)//cant do more than one of these.....
-        //    {
-        //        AlreadyWorkingForGang();
-        //        sender.Visible = false;
-        //        return;
-        //    }
-        //}
-        if (selectedItem == PayoffGangFriendly)
-        {
-            Player.PlayerTasks.PayoffGangToFriendly(ActiveGang);
-            sender.Visible = false;
-        }
-        else if (selectedItem == PayoffGangNeutral)
-        {
-            Player.PlayerTasks.PayoffGangToNeutral(ActiveGang);
-            sender.Visible = false;
-        }
-        else if (selectedItem == ApoligizeToGang)
+        if (selectedItem == ApoligizeToGang)
         {
             ApologizeToGang();
             sender.Visible = false;
@@ -120,6 +110,21 @@ public class GangInteraction
         else if (selectedItem == RequestGangDen)
         {
             RequestDenAddress();
+            sender.Visible = false;
+        }
+        else if (selectedItem == PayoffDebt)
+        {
+            Player.PlayerTasks.PayoffDebt(ActiveGang);
+            sender.Visible = false;
+        }
+        else if (selectedItem == PayoffGangFriendly)
+        {
+            Player.PlayerTasks.PayoffGangToFriendly(ActiveGang);
+            sender.Visible = false;
+        }
+        else if (selectedItem == PayoffGangNeutral)
+        {
+            Player.PlayerTasks.PayoffGangToNeutral(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTaskCancel)

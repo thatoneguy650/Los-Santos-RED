@@ -20,6 +20,7 @@ public class PlayerTask
     public bool IsReadyForPayment { get; set; } = false;
     public int PaymentAmountOnCompletion { get; set; } = 0;
     public int RepAmountOnCompletion { get; set; } = 0;
-
+    public int DebtAmountOnFail { get; set; } = 0;
+    public int RepAmountOnFail { get; set; } = -200;
 }
 

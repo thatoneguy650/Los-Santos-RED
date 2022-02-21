@@ -248,7 +248,7 @@ public class CellPhone
         }
         else if (contact.Name == "Officer Friendly")
         {
-            CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest);
+            CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
             CorruptCopInteraction.Start(contact);
         }
         else if (contact.Name == "Underground Guns")

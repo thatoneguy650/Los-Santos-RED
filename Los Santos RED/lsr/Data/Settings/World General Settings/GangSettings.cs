@@ -25,6 +25,15 @@ public class GangSettings : ISettingsDefaultable
     public int MoneyMax { get; set; }
     public float VehicleSpawnPercentage { get; set; }
 
+
+
+
+    public int CostToPayoffGangScalar { get; set; }
+    public bool RemoveRepOnWantedInTerritory { get; set; }
+    public int RemoveRepoOnWantedInTerritoryScalar { get; set; }
+    public bool AddAmbientRep { get; set; }
+
+
     public GangSettings()
     {
         SetDefault();
@@ -54,6 +63,10 @@ public class GangSettings : ISettingsDefaultable
         MoneyMin = 500;
         MoneyMax = 5000;
         VehicleSpawnPercentage = 40;
+        CostToPayoffGangScalar = 5;
+        RemoveRepOnWantedInTerritory = true;
+        RemoveRepoOnWantedInTerritoryScalar = 5;
+        AddAmbientRep = true;
     }
 
 }

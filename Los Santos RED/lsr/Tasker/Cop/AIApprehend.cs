@@ -604,12 +604,12 @@ public class AIApprehend : ComplexTask
                     {
                         OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
                     }
-                    if (OtherTarget.CurrentTask?.Name != "GetArrestedSimple")
-                    {
-                        OtherTarget.CurrentTask = new GetArrestedSimple(OtherTarget, Player);
-                        GameFiber.Yield();//TR Added back 7
-                        OtherTarget.CurrentTask.Start();
-                    }
+                    //if (OtherTarget.CurrentTask?.Name != "GetArrestedSimple")
+                    //{
+                    //    OtherTarget.CurrentTask = new GetArrestedSimple(OtherTarget, Player);
+                    //    GameFiber.Yield();//TR Added back 7
+                    //    OtherTarget.CurrentTask.Start();
+                    //}
                     EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
                 }
 
@@ -622,7 +622,7 @@ public class AIApprehend : ComplexTask
             else
             {
                 Ped combatTarget = Ped.Pedestrian.CombatTarget;
-                bool ISSTUPIDSHIT = combatTarget.Exists() && combatTarget.Handle != OtherTarget.Pedestrian.Handle;
+                bool ISSTUPIDSHIT = combatTarget.Exists() && Game.LocalPlayer.Character.Exists() && combatTarget.Handle == Game.LocalPlayer.Character.Handle;//OtherTarget.Pedestrian.Handle;
 
                 if(ISSTUPIDSHIT)
                 {

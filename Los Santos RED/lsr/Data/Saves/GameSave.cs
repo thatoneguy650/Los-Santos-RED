@@ -75,7 +75,7 @@ namespace LosSantosRED.lsr.Data
             GangReputations = new List<GangRepSave>();
             foreach(GangReputation gr in player.GangRelationships.GangReputations)
             {
-                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt,gr.MembersKilled,gr.MembersCarJacked,gr.MembersHurtInTerritory,gr.MembersKilledInTerritory,gr.MembersCarJackedInTerritory));
+                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt,gr.MembersKilled,gr.MembersCarJacked,gr.MembersHurtInTerritory,gr.MembersKilledInTerritory,gr.MembersCarJackedInTerritory,gr.PlayerDebt));
             }
 
             Contacts = new List<SavedContact>();
@@ -176,7 +176,7 @@ namespace LosSantosRED.lsr.Data
                 if (myGang != null)
                 {
                     player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
-                    player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory);
+                    player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt);
                 }
             }
             foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))

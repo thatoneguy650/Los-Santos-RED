@@ -154,9 +154,9 @@ public class PoliceSettings : ISettingsDefaultable
         VehicleSpawnLimit_Wanted5 = 16;
         VehicleSpawnLimit_Wanted6 = 18;
         WantedLevelIncreasesByKillingPolice = true;
-        KillLimit_Wanted4 = 2;
-        KillLimit_Wanted5 = 8;
-        KillLimit_Wanted6 = 12;
+        KillLimit_Wanted4 = 5;
+        KillLimit_Wanted5 = 10;
+        KillLimit_Wanted6 = 20;
         WantedLevelIncreasesOverTime = true;
         WantedLevelIncreaseTime = 240000;
         SightDistance = 90f;//70f;

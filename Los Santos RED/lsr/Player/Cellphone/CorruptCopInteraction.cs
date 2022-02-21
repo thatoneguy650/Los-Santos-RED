@@ -19,21 +19,31 @@ public class CorruptCopInteraction
     private UIMenu CopMenu;
     private iFruitContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
+    private UIMenuItem PayoffCopsInvestigation;
     private UIMenuItem RequestCopWork;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
+    private ISettingsProvideable Settings;
     private int CostToClearWanted
     {
         get
         {
-            return Player.WantedLevel * 10000;
+            return Player.WantedLevel * Settings.SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar;
         }
     }
-    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest)
+    private int CostToClearInvestigation
+    {
+        get
+        {
+            return Settings.SettingsManager.PlayerOtherSettings.CorruptCopInvestigationClearCost;
+        }
+    }
+    public CorruptCopInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
         MenuPool = new MenuPool();
     }
     public void Start(iFruitContact contact)
@@ -43,12 +53,20 @@ public class CorruptCopInteraction
         MenuPool.Add(CopMenu);
         CopMenu.OnItemSelect += OnCopItemSelect;
         LastAnsweredContact = contact;
-        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = CostToClearWanted.ToString("C0") };
+        PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
+
+
+        PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
+
         RequestCopWork = new UIMenuItem("Request Work", "Ask for some work from the cops");
 
         if (Player.IsWanted)
         {
             CopMenu.AddItem(PayoffCops);
+        }
+        else if (Player.Investigation.IsActive)
+        {
+            CopMenu.AddItem(PayoffCopsInvestigation);
         }
         else if (Player.IsNotWanted)
         {
@@ -78,6 +96,11 @@ public class CorruptCopInteraction
         if (selectedItem == PayoffCops)
         {
             PayoffCop(LastAnsweredContact);
+            CopMenu.Visible = false;
+        }
+        if (selectedItem == PayoffCopsInvestigation)
+        {
+            PayoffCopInvestigation(LastAnsweredContact);
             CopMenu.Visible = false;
         }
         else if (selectedItem == RequestCopWork)
@@ -153,6 +176,47 @@ public class CorruptCopInteraction
             Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
         else if (Player.Money < CostToClearWanted)
+        {
+            List<string> Replies = new List<string>() {
+                $"Don't bother me unless you have some money",
+                $"This shit isn't free you know",
+                };
+            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
+        else
+        {
+            List<string> Replies = new List<string>() {
+                $"Don't bother me",
+                };
+            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
+    }
+    private void PayoffCopInvestigation(iFruitContact contact)
+    {
+
+        EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearInvestigation {CostToClearInvestigation}");
+        if (Player.Money >= CostToClearInvestigation)
+        {
+            Player.GiveMoney(-1 * CostToClearInvestigation);
+
+            GameFiber PayoffFiber = GameFiber.StartNew(delegate
+            {
+                int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
+                GameFiber.Sleep(SleepTime);
+                Player.PayoffPolice();
+                Player.SetWantedLevel(0, "Cop Payoff", true);
+                Player.Investigation.Expire();
+
+            }, "PayoffFiber");
+            List<string> Replies = new List<string>() {
+                $"Let me work my magic, hang on.",
+                $"They should forget about you soon.",
+                $"Let me make up some bullshit to distract them, wait a few.",
+                $"Sending out an officer down across town, should get them off your tail for a while",
+                };
+            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        }
+        else if (Player.Money < CostToClearInvestigation)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",

@@ -70,6 +70,9 @@ public class GangReputation
     public int MembersHurtInTerritory { get; set; }
     public int MembersKilledInTerritory { get; set; }
     public int MembersCarJackedInTerritory { get; set; }
+
+    public int PlayerDebt { get; set; } = 0;
+
     public void SetRepuation(int value, bool sendText)
     {
         if(reputationLevel != value)
@@ -98,6 +101,7 @@ public class GangReputation
         MembersHurtInTerritory = 0;
         MembersKilledInTerritory = 0;
         MembersCarJackedInTerritory = 0;
+        PlayerDebt = 0;
     }
     public void AddembientRep()
     {
@@ -129,8 +133,10 @@ public class GangReputation
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
-                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Respect);
-                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
+                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Like);
+                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Like);
+                //rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Respect);
+                //RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {

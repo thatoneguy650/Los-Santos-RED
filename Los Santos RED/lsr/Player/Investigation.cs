@@ -136,7 +136,7 @@ public class Investigation
             }
         }
     }
-    private void Expire()
+    public void Expire()
     {
         IsActive = false;
         HavePlayerDescription = false;

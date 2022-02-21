@@ -21,6 +21,7 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         PoliceResponse PoliceResponse { get; }
         LocationData CurrentLocation { get; }
+        Investigation Investigation { get; }
 
         void AddGPSRoute(string name, Vector3 entrancePosition);
         void GiveMoney(int p);

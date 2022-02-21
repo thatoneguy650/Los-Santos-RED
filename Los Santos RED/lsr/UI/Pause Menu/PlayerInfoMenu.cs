@@ -184,6 +184,13 @@ public class PlayerInfoMenu
             {
                 DescriptionText += $"~n~~o~Members CarJacked~s~: {gr.MembersCarJacked}~s~ ({gr.MembersCarJackedInTerritory})";
             }
+
+            if (gr.PlayerDebt > 0)
+            {
+                string debtstring = gr.PlayerDebt.ToString("C0");
+                DescriptionText += $"~n~~r~Debt~s~: ~r~{debtstring}~s~";
+            }
+
             TabItem tabItem = new TabTextItem($"{gr.Gang.ShortName} {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
             //tabItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + GangsSubMenu.Index, 5000);
             items.Add(tabItem);

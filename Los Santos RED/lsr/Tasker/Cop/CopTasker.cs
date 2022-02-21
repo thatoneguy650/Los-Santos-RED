@@ -196,6 +196,9 @@ public class CopTasker
             }
             int PlayerCops = PedProvider.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && (x.CurrentTask.Name == "Kill" || x.CurrentTask.Name == "Chase"));
 
+
+
+
             if (Player.IsBusted)
             {
                 if (anyDeadlyChase)

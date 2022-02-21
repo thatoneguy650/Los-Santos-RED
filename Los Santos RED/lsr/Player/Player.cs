@@ -119,7 +119,7 @@ namespace Mod
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
             Respawning.Setup();
-            GangRelationships = new GangRelationships(gangs, this);
+            GangRelationships = new GangRelationships(gangs, this, Settings);
             GangRelationships.Setup();
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);

@@ -52,29 +52,50 @@ public class PlayerTasks
     {
         PlayerTaskList.Clear();
     }
-
-
-
     public void CompletedTask(string contactName)
     {
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
         if(myTask != null)
         {
-            if(myTask.RepAmountOnCompletion != 0)
+            Gang myGang = Gangs.GetGangByContact(contactName);
+            if (myGang != null)
             {
-                Gang myGang = Gangs.GetGangByContact(contactName);
-                if (myGang != null)
+                if (myTask.RepAmountOnCompletion != 0)
                 {
-                    Player.GangRelationships.SetReputation(myGang, myTask.RepAmountOnCompletion, false);
+                    Player.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnCompletion, false);
                 }
+                Player.GangRelationships.SetDebt(myGang, 0);
             }
             if(myTask.PaymentAmountOnCompletion != 0)
             {
                 Player.GiveMoney(myTask.PaymentAmountOnCompletion);
             }
             myTask.IsActive = false;
-            myTask.IsReadyForPayment = false;
+            myTask.IsReadyForPayment = false;    
             EntryPoint.WriteToConsole($"Task Completed for {contactName}");
+        }
+        PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
+    }
+    public void FailTask(string contactName)
+    {
+        PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
+        if (myTask != null)
+        {
+            Gang myGang = Gangs.GetGangByContact(contactName);
+            if (myGang != null)
+            {
+                if (myTask.RepAmountOnFail != 0)
+                {
+                    Player.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnFail, false);
+                }
+                if (myTask.DebtAmountOnFail != 0)
+                {
+                    Player.GangRelationships.AddDebt(myGang, myTask.DebtAmountOnFail);
+                }
+            }
+            myTask.IsActive = false;
+            myTask.IsReadyForPayment = false;
+            EntryPoint.WriteToConsole($"Task Failed for {contactName}");
         }
         PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
     }
@@ -82,25 +103,11 @@ public class PlayerTasks
     {
         return PlayerTaskList.Any(x => x.ContactName.ToLower() == contactName.ToLower() && x.IsActive);
     }
-    public void AddTask(string contactName, DateTime expireTime)
+    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { ExpireTime = expireTime });
-        }
-    }
-    public void AddTask(string contactName)
-    {
-        if(!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
-        {
-            PlayerTaskList.Add(new PlayerTask(contactName, true));
-        }
-    }
-    public void AddTask(string contactName, int moneyOnCompletion, int repoOnCompletion)
-    {
-        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
-        {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repoOnCompletion });
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail });
         }
     }
     public void RemoveTask(string contactName)
@@ -111,10 +118,6 @@ public class PlayerTasks
     {
         return PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName);
     }
-
-
-
-
     public void PayoffGangToFriendly(Gang ActiveGang)
     {
         if (HasTask(ActiveGang?.ContactName))
@@ -123,19 +126,24 @@ public class PlayerTasks
         }
         else
         {
-            int CostToBuy = Player.GangRelationships.CostToPayoffGang(ActiveGang);
-            if (CostToBuy <= 500)
+            GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+            if (gr != null)
             {
-                Player.GangRelationships.SetReputation(ActiveGang, 500, false);
-                List<string> Replies = new List<string>() {
+                int CostToBuy = Player.GangRelationships.CostToPayoffGang(ActiveGang);
+                if (CostToBuy <= 500)
+                {
+                    Player.GangRelationships.SetReputation(ActiveGang, 500, false);
+                    List<string> Replies = new List<string>() {
                 $"${Math.Abs(CostToBuy)}? Don't worry about it",
                 $"We can forget about the ${Math.Abs(CostToBuy)}, not worth my time.",
                 };
-                Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
-            }
-            else
-            {
-                CreateDeadDrop(ActiveGang, CostToBuy, 500, true);
+                    Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+                }
+                else
+                {
+                    int RepToFriendly = 500 - gr.ReputationLevel;
+                    CreateDeadDrop(ActiveGang, CostToBuy, RepToFriendly, true);
+                }
             }
         }
     }
@@ -147,10 +155,32 @@ public class PlayerTasks
         }
         else
         {
-            int CostToBuy = Player.GangRelationships.CostToPayoffGang(ActiveGang);
-            CreateDeadDrop(ActiveGang, CostToBuy, 0, true);
+            GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+            if (gr != null)
+            {
+                int CostToBuy = Player.GangRelationships.CostToPayoffGang(ActiveGang);
+                int RepToNeutral = 0 - gr.ReputationLevel;
+                CreateDeadDrop(ActiveGang, CostToBuy, RepToNeutral, true);
+            }
         }
     }
+    public void PayoffDebt(Gang ActiveGang)
+    {
+        if (HasTask(ActiveGang?.ContactName))
+        {
+            AlreadyHasTasks(ActiveGang?.ContactName, ActiveGang?.ContactIcon);
+        }
+        else
+        {
+            GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+            if (gr != null)
+            {
+                CreateDebtDeadDrop(ActiveGang, gr.PlayerDebt);
+            }
+        }
+    }
+
+
     public void GangPickupWork(Gang ActiveGang)
     {
         if (HasTask(ActiveGang?.ContactName))
@@ -163,8 +193,8 @@ public class PlayerTasks
             GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
             if (myDrop != null && myDen != null)
             {
-                
-                int MoneyToPickup = RandomItems.GetRandomNumberInt(2000, 10000).Round(500);
+                int PaymentAmount = RandomItems.GetRandomNumberInt(ActiveGang.PickupPaymentMin, ActiveGang.PickupPaymentMax).Round(100);
+                int MoneyToPickup = PaymentAmount * 10;
                 float TenPercent = (float)MoneyToPickup / 10;
 
                 int MoneyToRecieve = (int)TenPercent;
@@ -178,7 +208,7 @@ public class PlayerTasks
                 ActiveDrops.Add(myDrop);
                 myDen.ExpectedMoney = MoneyToPickup;
 
-                AddTask(ActiveGang.ContactName, MoneyToRecieve,500);
+                AddTask(ActiveGang.ContactName, MoneyToRecieve,500, -1 * MoneyToPickup, -1000);
 
                 List<string> Replies = new List<string>() {
                     $"Pickup ${MoneyToPickup} from {myDrop.StreetAddress}, its {myDrop.Description}. Bring it to the {ActiveGang.DenName} on {myDen.StreetAddress}. You get 10% on completion",
@@ -250,7 +280,7 @@ public class PlayerTasks
             if (myDen != null && TargetGang != null)
             {
                 
-                int MoneyToRecieve = RandomItems.GetRandomNumberInt(1000, 10000).Round(500);
+                int MoneyToRecieve = RandomItems.GetRandomNumberInt(ActiveGang.TheftPaymentMin, ActiveGang.TheftPaymentMax).Round(500);
 
                 if (MoneyToRecieve <= 0)
                 {
@@ -275,12 +305,12 @@ public class PlayerTasks
                     Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
                     //CustomiFruit.Close();
 
-                    AddTask(ActiveGang.ContactName,MoneyToRecieve,1000);
+                    AddTask(ActiveGang.ContactName,MoneyToRecieve,1000,0,-500);
                     Gang toWatchGang = ActiveGang;
                     GameFiber PayoffFiber = GameFiber.StartNew(delegate
                     {
-                        float VehicleSpawnPercentage = Settings.SettingsManager.GangSettings.VehicleSpawnPercentage;
-                        Settings.SettingsManager.GangSettings.VehicleSpawnPercentage = 100f;
+                        //float VehicleSpawnPercentage = Settings.SettingsManager.GangSettings.VehicleSpawnPercentage;
+                        //Settings.SettingsManager.GangSettings.VehicleSpawnPercentage = 100f;
                         while (true)
                         {
                             PlayerTask CurrentTask = GetTask(ActiveGang.ContactName);
@@ -289,7 +319,7 @@ public class PlayerTasks
                                 EntryPoint.WriteToConsole($"Task Inactive for {ActiveGang.ContactName}");
                                 break;
                             }
-                            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == toget.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == toWatchGang.ID)
+                            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Model.Name.ToLower() == toget.ModelName.ToLower() && Player.CurrentVehicle.WasModSpawned && Player.CurrentVehicle.AssociatedGang != null && Player.CurrentVehicle.AssociatedGang.ID == TargetGang.ID)
                             {
                                 EntryPoint.WriteToConsole($"You got in a {toget.ModelName.ToLower()} so the den is now ACTIVE!");
                                 Replies = new List<string>() {
@@ -299,7 +329,7 @@ public class PlayerTasks
                                 $"{myDen.StreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {ActiveGang.DenName} on {myDen.StreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-                                CompletedTask(ActiveGang.ContactName);
+                                //CompletedTask(ActiveGang.ContactName);
                                 Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 2);
 
                                 CurrentTask.IsReadyForPayment = true;
@@ -307,7 +337,7 @@ public class PlayerTasks
                             }
                             GameFiber.Sleep(1000);
                         }
-                        Settings.SettingsManager.GangSettings.VehicleSpawnPercentage = VehicleSpawnPercentage;
+                        //Settings.SettingsManager.GangSettings.VehicleSpawnPercentage = VehicleSpawnPercentage;
                     }, "PayoffFiber");
 
                 }
@@ -349,7 +379,7 @@ public class PlayerTasks
             if (myDen != null && TargetGang != null)
             {
                 
-                int MoneyToRecieve = RandomItems.GetRandomNumberInt(10000, 30000).Round(500);
+                int MoneyToRecieve = RandomItems.GetRandomNumberInt(ActiveGang.HitPaymentMin, ActiveGang.HitPaymentMax).Round(500);
 
                 if (MoneyToRecieve <= 0)
                 {
@@ -362,16 +392,16 @@ public class PlayerTasks
                     string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(toget.ModelName));
                     string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(toget.ModelName));
                     List<string> Replies = new List<string>() {
-                    $"The {TargetGang.ShortName} thinks they can fuck with me? Go give one of those pricks a dirt nap. Once you are done come back to the {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} to you",
-                   $"The {TargetGang.ShortName} decided to make some moves against us. Let them know we don't approve with some gentle encouragement on a member. When you are finished, get back to the {ActiveGang.DenName} on {myDen.StreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
-                   $"Go find one of those pricks from the {TargetGang.ShortName}. Make sure he won't ever talk to anyone again. Come back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                    $"Those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ think they can fuck with me? Go give one of those pricks a dirt nap. Once you are done come back to the {ActiveGang.DenName} on {myDen.StreetAddress}. ${MoneyToRecieve} to you",
+                   $"{TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ decided to make some moves against us. Let them know we don't approve with some gentle encouragement on a member. When you are finished, get back to the {ActiveGang.DenName} on {myDen.StreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
+                   $"Go find one of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ pricks. Make sure he won't ever talk to anyone again. Come back to the {ActiveGang.DenName} on {myDen.StreetAddress} for your payment of ${MoneyToRecieve}",
                     };
                     Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
                     //CustomiFruit.Close();
-                    GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+                    GangReputation gr = Player.GangRelationships.GetReputation(TargetGang);
                     int CurrentKilledMembers = gr.MembersKilled;
-
-                    AddTask(ActiveGang.ContactName, MoneyToRecieve, 2000);
+                    EntryPoint.WriteToConsole($"You are hired to kill starting kill = {CurrentKilledMembers}!");
+                    AddTask(ActiveGang.ContactName, MoneyToRecieve, 2000, 0, -500);
                     GameFiber PayoffFiber = GameFiber.StartNew(delegate
                     {
                         while (true)
@@ -382,7 +412,10 @@ public class PlayerTasks
                                 EntryPoint.WriteToConsole($"Task Inactive for {ActiveGang.ContactName}");
                                 break;
                             }
-                            if (gr.MembersKilled > CurrentKilledMembers)
+
+                            //EntryPoint.WriteToConsole($"GANG HIT WORK - {ActiveGang.ShortName} Killed: {Player.GangRelationships.GetReputation(ActiveGang)?.MembersKilled} Goal Killed: {CurrentKilledMembers}");
+
+                            if (Player.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers)
                             {
                                 CurrentTask.IsReadyForPayment = true;
                                 EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
@@ -394,7 +427,7 @@ public class PlayerTasks
                                 $"{myDen.StreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {ActiveGang.DenName} on {myDen.StreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-                                CompletedTask(ActiveGang.ContactName);
+                                //CompletedTask(ActiveGang.ContactName);
                                 Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 2);
 
                                 break;
@@ -430,9 +463,11 @@ public class PlayerTasks
     }
     public void GangCancel(Gang ActiveGang)
     {
-        RemoveTask(ActiveGang.ContactName);
-        Player.GangRelationships.ChangeReputation(ActiveGang, -200, false);
-        List<string> Replies = new List<string>() {
+        PlayerTask currentAssignment = GetTask(ActiveGang.ContactName);
+        if (currentAssignment != null)
+        {
+            FailTask(ActiveGang.ContactName);
+            List<string> Replies = new List<string>() {
                     "I knew you were reliable",
                     "You really fucked me on this one",
                     "You are very helpful",
@@ -440,14 +475,15 @@ public class PlayerTasks
                     "Whatever prick",
                     "Sorry I stuck my neck out for you",
                     };
-        Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+        }
     }
     private void CreateDeadDrop(Gang ActiveGang, int CostToBuy, int RepToSet, bool isDropOff)
     {
         DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
         if (myDrop != null)
         {
-            AddTask(ActiveGang.ContactName, 0 , RepToSet);
+            AddTask(ActiveGang.ContactName, 0 , RepToSet, -1 * CostToBuy, -200);
             myDrop.SetGang(ActiveGang, CostToBuy, isDropOff);
             ActiveDrops.Add(myDrop);
             List<string> Replies = new List<string>() {
@@ -470,13 +506,13 @@ public class PlayerTasks
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        myDrop.Update();
+                        myDrop.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3);
                     }
                     if (myDrop.InteractionComplete && !myDrop.IsNearby)
                     {
                         if (myDrop.IsDropOff)
                         {
-                            if (CurrentTask.RepAmountOnCompletion <= 0)
+                            if (Player.GangRelationships.IsHostile(ActiveGang))// CurrentTask.RepAmountOnCompletion <= 0)
                             {
                                 Replies = new List<string>() {
                                 "I guess we can forget about that shit.",
@@ -487,31 +523,31 @@ public class PlayerTasks
                                 "This doesn't make us friends prick, just associates",
 
                                 };
-                                        }
-                                        else
-                                        {
-                                            Replies = new List<string>() {
+                            }
+                            else
+                            {
+                                Replies = new List<string>() {
                                 "Nice to get some respect from you finally, give us a call soon",
                                 "Well this certainly smooths things over, come by to discuss things",
                                 "I always liked you",
                                 "Thanks for that, I'll remember it",
                                 "Ah you got me my favorite thing! I owe you a thing or two",
                                 };
-                                        }
+                            }
                             CompletedTask(ActiveGang.ContactName);
                             Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 0);
                             break;
                         }
                         else
                         {
-                                List<string> Replies2 = new List<string>() {
-                                "Take the money to the designated place.",
-                                "Now bring me the money, don't get lost",
-                                "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
-                                "Drop the money off at the designated place",
-                                "Take the money where it needs to go",
-                                "Bring the stuff back to us. Don't take long.",  };
-                                Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies2.PickRandom(), 0);
+                            List<string> Replies2 = new List<string>() {
+                            "Take the money to the designated place.",
+                            "Now bring me the money, don't get lost",
+                            "Remeber that is MY MONEY you are just holding it. Drop it off where we agreed.",
+                            "Drop the money off at the designated place",
+                            "Take the money where it needs to go",
+                            "Bring the stuff back to us. Don't take long.",  };
+                            Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies2.PickRandom(), 0);
                             CurrentTask.IsReadyForPayment = true;
                             break;//need to pick up the cash for this one!
                         }
@@ -524,6 +560,61 @@ public class PlayerTasks
 
         }
     }
+
+    private void CreateDebtDeadDrop(Gang ActiveGang, int CostToBuy)
+    {
+        DeadDrop myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
+        if (myDrop != null)
+        {
+            AddTask(ActiveGang.ContactName, 0, 0, 0, 0);
+            myDrop.SetGang(ActiveGang, CostToBuy, true);
+            ActiveDrops.Add(myDrop);
+            List<string> Replies = new List<string>() {
+                $"Drop ${CostToBuy} on {myDrop.StreetAddress}, its {myDrop.Description}. My guy won't pick it up if you are around.",
+                $"Place ${CostToBuy} in {myDrop.Description}, address is {myDrop.StreetAddress}. Don't hang around either, drop it off and leave.",
+                $"Drop off ${CostToBuy} to {myDrop.Description} on {myDrop.StreetAddress}. Once you drop the cash off, get out of the area.",
+                };
+
+            Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+
+            GameFiber DeadDropFiber = GameFiber.StartNew(delegate
+            {
+                while (true)
+                {
+                    PlayerTask CurrentTask = GetTask(ActiveGang.ContactName);
+                    if (CurrentTask == null || !CurrentTask.IsActive)
+                    {
+                        EntryPoint.WriteToConsole($"Task Inactive for {ActiveGang.ContactName}");
+                        break;
+                    }
+                    if (myDrop.InteractionComplete)
+                    {
+                        myDrop.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3);
+                    }
+                    if (myDrop.InteractionComplete && !myDrop.IsNearby)
+                    {
+                        GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
+                        Replies = new List<string>() {
+                        "I guess we are even now",
+                        "Consider your debt paid",
+                        "Debt wiped",
+                        "You can stop looking over your shoulder now",
+                        "We are square",
+                        };
+                        CompletedTask(ActiveGang.ContactName);
+                        Player.CellPhone.AddScheduledText(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom(), 0);
+                        break;
+                        
+                    }
+                    GameFiber.Sleep(1000);
+                }
+                //GetTask(ActiveGang.ContactName).IsReadyForPayment = true;
+            }, "DeadDropFiber");
+
+
+        }
+    }
+
     private void AlreadyHasTasks(string contactName, string contactIcon)
     {
         List<string> Replies = new List<string>() {

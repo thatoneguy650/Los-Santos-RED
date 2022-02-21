@@ -31,7 +31,15 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool GenerateStoreItemPreviews { get; set; }
 
     [Description("Modifier to melee damage on the player. If set Less than 1 the melee damage the player do will be reduced by that percent (0.1 = 10% damage). If set higher than 1 the melee damage will be scaled by that about (2.5 = 250% damage). Set at 1 for default.")]
+
+
+
+
     public float MeleeDamageModifier { get; set; }
+    [Description("Cost to remove an investigation using the corrupt cop interaction.")]
+    public int CorruptCopInvestigationClearCost { get; set; }
+    [Description("Cost to remove your wanted level using the corrupt cop interaction. Number is multiplied by your current wanted level to get the total cost. Ex. 5000 at 2 starts would cost $10000")]
+    public int CorruptCopWantedClearCostScalar { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -55,6 +63,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
         GenerateStoreItemPreviews = true;
 
         MeleeDamageModifier = 1.0f;
+
+
+        CorruptCopInvestigationClearCost = 2000;
+        CorruptCopWantedClearCostScalar = 5000;
     }
 
 }

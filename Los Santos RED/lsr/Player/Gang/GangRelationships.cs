@@ -11,26 +11,32 @@ public class GangRelationships
 {
     private IGangs Gangs;
     private IGangRelateable Player;
+    private ISettingsProvideable Settings;
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
-    public GangRelationships(IGangs gangs, IGangRelateable player)
+    public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings)
     {
         Gangs = gangs;
         Player = player;
+        Settings = settings;
     }
     public int CostToPayoffGang(Gang gang)//int repLevel)
     {
-        int CurrentRep = GetRepuationLevel(gang);
-        if (CurrentRep < 0)
+        GangReputation Rep = GetReputation(gang);
+        if(Rep == null)
         {
-            return ((0 - CurrentRep) * 5).Round(100);
+            return 0;
         }
-        else if (CurrentRep >= 500)
+        if (Rep.ReputationLevel < 0)
+        {
+            return ((0 - Rep.ReputationLevel) * Settings.SettingsManager.GangSettings.CostToPayoffGangScalar).Round(100);
+        }
+        else if (Rep.ReputationLevel >= 500)
         {
             return 0;
         }
         else
         {
-            return ((500 - CurrentRep) * 5).Round(100);
+            return ((500 - Rep.ReputationLevel) * Settings.SettingsManager.GangSettings.CostToPayoffGangScalar).Round(100);
         }
     }
     public void Dispose()
@@ -47,19 +53,22 @@ public class GangRelationships
     public void Update()
     {
         string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGangInitials;//might need the key here instead of just iniitilas
-        int WantedRep = 5 * Player.WantedLevel;
+        int WantedRep = Settings.SettingsManager.GangSettings.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
         foreach (GangReputation rg in GangReputations)
         {
             if(Player.IsWanted)
             {
-                if (rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
+                if (Settings.SettingsManager.GangSettings.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
                 {
                     ChangeReputation(rg.Gang, -1 * WantedRep, false);
                 }
             }
             else
             {
-                rg.AddembientRep();
+                if (Settings.SettingsManager.GangSettings.AddAmbientRep)
+                {
+                    rg.AddembientRep();
+                }
             }
         }
     }
@@ -75,10 +84,11 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
+        int preValue = gr.ReputationLevel;
         gr.SetRepuation(gr.ReputationLevel + amount, sendNotification);
         if (amount > 1)
         {
-            EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} amount {amount} current {gr.ReputationLevel}", 5);
+            EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} preValue {preValue} amount {amount} current {gr.ReputationLevel}", 5);
         }
     }
     public void SetReputation(Gang gang, int value, bool sendNotification)
@@ -93,10 +103,39 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
+        int preValue = gr.ReputationLevel;
         gr.SetRepuation(value, sendNotification);
-        EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} value {value} current {gr.ReputationLevel}", 5);
+        EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} preValue {preValue} toset {value} current {gr.ReputationLevel}", 5);
     }
-    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory)
+    public void AddDebt(Gang gang, int amount)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.PlayerDebt += Math.Abs(amount);
+    }
+    public void SetDebt(Gang gang, int amount)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.PlayerDebt = Math.Abs(amount);
+    }
+    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt)
     {
         if (gang == null)
         {
@@ -114,6 +153,7 @@ public class GangRelationships
         gr.MembersKilledInTerritory = killedInTerritory;
         gr.MembersCarJacked = carjacked;
         gr.MembersCarJackedInTerritory = carjackedInTerritory;
+        gr.PlayerDebt = playerDebt;
     }
     public void ResetReputations()
     {

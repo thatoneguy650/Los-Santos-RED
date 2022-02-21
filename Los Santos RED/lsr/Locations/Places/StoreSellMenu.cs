@@ -135,10 +135,23 @@ public class StoreSellMenu : Menu
                         }
 
                         bool enabled = Player.Inventory.HasItem(cii.ModItemName);
+                        InventoryItem coolItem = Player.Inventory.Items.Where(x => x.ModItem.Name == cii.ModItemName).FirstOrDefault();
+                        int MaxSell = 1;
+                        if(coolItem != null)
+                        {
+                            MaxSell = coolItem.Amount;
+                        }
                         description += "~n~~s~";
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-                        UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
-                        sellMenu.AddItem(myMenuItem);
+                        //UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
+
+
+
+                        sellMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, MaxSell, 1) { Enabled = enabled,  Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 });
+
+
+
+                        //sellMenu.AddItem(myMenuItem);
                     }
                 }
             }
@@ -152,14 +165,24 @@ public class StoreSellMenu : Menu
         bool ExitAfterPurchase = false;
         if (ToAdd != null && menuItem != null)
         {
+
+
+            int TotalItems = 1;
+            if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
+            {
+                UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                TotalItems = myItem.Value;
+            }
+
+
             Hide();
             if (ToAdd.CanConsume)
             {
-                if (Player.Inventory.Remove(ToAdd, 1))
+                if (Player.Inventory.Remove(ToAdd, TotalItems))
                 {
-                    Player.GiveMoney(menuItem.SalesPrice);
+                    Player.GiveMoney(menuItem.SalesPrice * TotalItems);
                     ItemsSold++;
-                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
+                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {TotalItems}", 5);
                 }
             }
             
