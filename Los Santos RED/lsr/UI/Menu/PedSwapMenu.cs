@@ -75,7 +75,7 @@ public class PedSwapMenu : Menu
         BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian", "Becomes a customized ped from user input.");
         BecomeRandomCop = new UIMenuItem("Become Random Cop", "Becomes a random cop around the player (Alpha)");
 
-        AddOffset = new UIMenuItem("Alias Current Ped as Main Character", "Alias the current model name as a main character. The game will see your current model as either player_zero, player_one, or player_two depending on your settings.");
+        AddOffset = new UIMenuItem("Re-Alias Current Ped as Main Character", "Re-Alias the current model name as a main character. The game will see your current model as either player_zero, player_one, or player_two depending on your settings.");
         RemoveOffset = new UIMenuItem("Remove Current Ped Alias", "Remove any aliasing for the current model name. The game will see your current model as it originally is.");
 
 
@@ -87,11 +87,11 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(BecomeRandomPed);
         PedSwapUIMenu.AddItem(BecomeCustomPed);
         PedSwapUIMenu.AddItem(BecomeRandomCop);
-        PedSwapUIMenu.AddItem(AddOffset);
-        PedSwapUIMenu.AddItem(RemoveOffset);
+        // PedSwapUIMenu.AddItem(AddOffset);
+        // PedSwapUIMenu.AddItem(RemoveOffset);
 
-        PedSwapUIMenu.AddItem(SetAsCop);
-        PedSwapUIMenu.AddItem(SetAsCivilian);
+        //PedSwapUIMenu.AddItem(SetAsCop);
+        //PedSwapUIMenu.AddItem(SetAsCivilian);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

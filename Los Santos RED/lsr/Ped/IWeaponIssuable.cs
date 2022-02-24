@@ -19,6 +19,11 @@ namespace LosSantosRED.lsr.Interface
         int CombatAbility { get; }
         int Accuracy { get; }
         int ShootRate { get; }
+        int TaserShootRate { get; }
+        int TaserAccuracy { get; }
+        int VehicleShootRate { get; }
+        int VehicleAccuracy { get; }
+        bool IsGangMember { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);

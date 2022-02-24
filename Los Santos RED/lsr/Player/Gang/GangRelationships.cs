@@ -28,7 +28,7 @@ public class GangRelationships
         }
         if (Rep.ReputationLevel < 0)
         {
-            return ((0 - Rep.ReputationLevel) * Settings.SettingsManager.GangSettings.CostToPayoffGangScalar).Round(100);
+            return ((0 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
         }
         else if (Rep.ReputationLevel >= 500)
         {
@@ -36,7 +36,7 @@ public class GangRelationships
         }
         else
         {
-            return ((500 - Rep.ReputationLevel) * Settings.SettingsManager.GangSettings.CostToPayoffGangScalar).Round(100);
+            return ((500 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
         }
     }
     public void Dispose()
@@ -53,19 +53,20 @@ public class GangRelationships
     public void Update()
     {
         string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGangInitials;//might need the key here instead of just iniitilas
-        int WantedRep = Settings.SettingsManager.GangSettings.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
+
         foreach (GangReputation rg in GangReputations)
         {
-            if(Player.IsWanted)
+            int WantedRep = rg.Gang.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
+            if (Player.IsWanted)
             {
-                if (Settings.SettingsManager.GangSettings.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
+                if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
                 {
                     ChangeReputation(rg.Gang, -1 * WantedRep, false);
                 }
             }
             else
             {
-                if (Settings.SettingsManager.GangSettings.AddAmbientRep)
+                if (rg.Gang.AddAmbientRep)
                 {
                     rg.AddembientRep();
                 }

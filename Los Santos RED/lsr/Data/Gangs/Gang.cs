@@ -80,28 +80,11 @@ public class Gang
 
     public string DenName { get; set; } = "Den";
 
-    // public float PlayerReputationLevel { get; set; }
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
 
     public float PercentageWithLongGuns { get; set; } = 5f;
     public float PercentageWithSidearms { get; set; } = 40f;
     public float PercentageWithMelee { get; set; } = 50f;
-
-
-    public int AccuracyMin { get; set; } = 5;
-    public int AccuracyMax { get; set; } = 15;
-
-
-    public int ShootRateMin { get; set; } = 500;
-    public int ShootRateMax { get; set; } = 800;
-
-
-    public int CombatAbilityMin { get; set; } = 0;//0 - poor, 1- average, 2 - professional
-    public int CombatAbilityMax { get; set; } = 1;//0 - poor, 1- average, 2 - professional
-
-
-
-
 
     public int HitPaymentMin { get; set; } = 10000;
     public int HitPaymentMax { get; set; } = 30000;
@@ -113,6 +96,22 @@ public class Gang
 
     public int PickupPaymentMin { get; set; } = 200;
     public int PickupPaymentMax { get; set; } = 1000;
+
+
+
+
+    public float FightPercentage { get; set; } = 70f;
+    public float DrugDealerPercentage { get; set; } = 40f;
+    public int AmbientMemberMoneyMin { get; set; } = 500;
+    public int AmbientMemberMoneyMax { get; set; } = 5000;
+    public float VehicleSpawnPercentage { get; set; } = 40f;
+    public int CostToPayoffGangScalar { get; set; } = 5;
+    public bool RemoveRepOnWantedInTerritory { get; set; } = true;
+    public int RemoveRepoOnWantedInTerritoryScalar { get; set; } = 5;
+    public bool AddAmbientRep { get; set; } = true;
+
+
+
 
     public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
@@ -147,6 +146,19 @@ public class Gang
             }
             RandomPick -= SpawnChance;
         }
+        if (ToPickFrom.Any())
+        {
+            return ToPickFrom.PickRandom();
+        }
+        return null;
+    }
+    public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
+    {
+        if (Personnel == null || !Personnel.Any() || !ped.Exists())
+        {
+            return null;
+        }
+        List<DispatchablePerson> ToPickFrom = Personnel.Where(b => b.ModelName.ToLower() == ped.Model.Name.ToLower()).ToList();
         if (ToPickFrom.Any())
         {
             return ToPickFrom.PickRandom();

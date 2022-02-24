@@ -21,7 +21,6 @@ public class WeaponInventory
     public IssuableWeapon Melee { get; private set; }
     private bool HasHeavyWeaponOnPerson;
     private ISettingsProvideable Settings;
-    private int DesiredAccuracy => IsSetLessLethal ? 30 : Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;
@@ -153,7 +152,6 @@ public class WeaponInventory
                                 {
                                     SetLessLethal();
                                 }
-                                //SetDefault();
                             }
                         }
                         else
@@ -164,69 +162,43 @@ public class WeaponInventory
                             }
                             else
                             {
-                                //if(PlayerInVehicle)
-                                //{
-                                //    SetUnarmed();
-                                //}
-                                //else
-                                //{
                                 SetLessLethal();
-                                //}
                             }
                         }
                     }
                 }
-                //if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
-                //{
-                //    if(Cop.CurrentTask?.Name == "AIApprehend")
-                //    {
-                //        Cop.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
-                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 1000);
-                //    }
-                //    else if (Cop.IsInVehicle)
-                //    {
-                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
-                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
-                //    }
-                //    else if (IsSetLessLethal)
-                //    {
-                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.TaserAccuracy;
-                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.TaserShootRate);
-                //    }
-                //    else
-                //    {
-                //        Cop.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-                //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, Settings.SettingsManager.PoliceSettings.GeneralShootRate);
-                //    }
-                //}
                 if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
                 {
-                    if (WeaponOwner.CurrentTask?.Name == "AIApprehend")
-                    {
-                        WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
-                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
-                    }
-                    else if (WeaponOwner.IsInVehicle)
-                    {
-                        WeaponOwner.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.VehicleAccuracy;
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, Settings.SettingsManager.PoliceSettings.VehicleShootRate);
-                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
-                    }
-                    else if (IsSetLessLethal)
-                    {
-                        WeaponOwner.Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.TaserAccuracy;
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, Settings.SettingsManager.PoliceSettings.TaserShootRate);
-                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
-                    }
-                    else
-                    {
-                        WeaponOwner.Pedestrian.Accuracy = WeaponOwner.Accuracy;//Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-                        NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.ShootRate);// Settings.SettingsManager.PoliceSettings.GeneralShootRate);
-                        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
-                    }
+                    UpdateSettings();
                 }
             }
+        }
+    }
+    public void UpdateSettings()
+    {
+        if (WeaponOwner.CurrentTask?.Name == "AIApprehend")
+        {
+            WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
+        }
+        else if (WeaponOwner.IsInVehicle)
+        {
+            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.VehicleAccuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.VehicleShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+        }
+        else if (IsSetLessLethal)
+        {
+            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.TaserAccuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.TaserShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+        }
+        else
+        {
+            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.Accuracy;//Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.ShootRate);// Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
         }
     }
     public void SetDefault()

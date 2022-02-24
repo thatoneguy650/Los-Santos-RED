@@ -46,11 +46,13 @@ public class Cop : PedExt, IWeaponIssuable
     public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
     public IssuableWeapon LongGun => WeaponInventory.LongGun;
     public string ModelName { get; set; }
-
-    public int ShootRate { get; set; }
-    public int Accuracy { get; set; }
-    public int CombatAbility { get; set; }
-
+    public int ShootRate { get; set; } = 500;
+    public int Accuracy { get; set; } = 40;
+    public int CombatAbility { get; set; } = 1;
+    public int TaserAccuracy { get; set; } = 30;
+    public int TaserShootRate { get; set; } = 100;
+    public int VehicleAccuracy { get; set; } = 10;
+    public int VehicleShootRate { get; set; } = 20;
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class IngestActivity : DynamicActivity
+    public class InjectActivity : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private EatingData Data;
@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public InjectActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -115,27 +115,42 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            bool hasStartedIntoxicating = false;
+            uint GameTimeLastGaveHealth = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.25f)
+                //if (AnimationTime >= 0.25f)
+                //{
+                //    if (Item.Exists())
+                //    {
+                //        Item.Delete();
+                //        if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                //        {
+                //            Player.AddHealth(ModItem.HealthGained);
+                //            hasGainedHP = true;
+                //        }
+                //    }
+                //}
+                if (AnimationTime >= 0.35f && !hasStartedIntoxicating)
                 {
-                    if (Item.Exists())
+                    Player.Intoxication.StartIngesting(CurrentIntoxicant);
+                    hasStartedIntoxicating = true;
+                }
+                if(AnimationTime >= 0.35f && ModItem.RestoresHealth)
+                {
+                    if(Player.Character.Health < Player.Character.MaxHealth)
                     {
-                        Item.Delete();
-                        if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                        {
-                            Player.AddHealth(ModItem.HealthGained);
-                            hasGainedHP = true;
-                        }
+                        Player.Character.Health += 1;
                     }
                 }
-                if (AnimationTime >= 0.35f)
+                if (AnimationTime >= 0.7f)
                 {
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }
+                Player.DebugLine4 = $"Injection Activity AnimationTime: {AnimationTime} hasStartedIntoxicating {hasStartedIntoxicating}";
                 GameFiber.Yield();
             }
             //GameFiber.Sleep(5000);//wait for it to take effect!
@@ -172,13 +187,13 @@ namespace LosSantosRED.lsr.Player
                 PropModel = ModItem.ModelItem.ModelName;
             }
 
-            AnimIdleDictionary = "mp_suicide";
-            AnimIdle = new List<string>() { "pill" };
+            AnimIdleDictionary = "rcmpaparazzo1ig_4";
+            AnimIdle = new List<string>() { "miranda_shooting_up" };
 
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
-                Player.Intoxication.StartIngesting(CurrentIntoxicant);
+                //Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
 
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);

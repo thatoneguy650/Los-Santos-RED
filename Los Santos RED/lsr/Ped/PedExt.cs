@@ -112,6 +112,7 @@ public class PedExt : IComplexTaskable
     public bool IsDriver { get; private set; } = false;
     public bool IsDrunk { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
+    public bool IsFreeModePed { get; set; } = false;
     public bool IsGangMember { get; set; } = false;
     public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
@@ -227,6 +228,9 @@ public class PedExt : IComplexTaskable
             }
         }
     }
+
+    public uint GameTimeLastInjured { get; set; }
+    public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
     {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class IngestActivity : DynamicActivity
+    public class SnortActivity : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private EatingData Data;
@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public SnortActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -86,11 +86,17 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.SetUnarmed();
-            AttachItemToHand();
+           // AttachItemToHand();
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+
+
+            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 0.55f);
+
+
+
             Idle();
         }
         private void Exit()
@@ -131,7 +137,7 @@ namespace LosSantosRED.lsr.Player
                         }
                     }
                 }
-                if (AnimationTime >= 0.35f)
+                if (AnimationTime >= 0.85f)
                 {
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
@@ -172,8 +178,8 @@ namespace LosSantosRED.lsr.Player
                 PropModel = ModItem.ModelItem.ModelName;
             }
 
-            AnimIdleDictionary = "mp_suicide";
-            AnimIdle = new List<string>() { "pill" };
+            AnimIdleDictionary = "amb@code_human_in_car_idles@generic@ds@idle_d";
+            AnimIdle = new List<string>() { "idle_j" };
 
             if (ModItem != null && ModItem.IsIntoxicating)
             {

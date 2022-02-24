@@ -50,7 +50,7 @@ namespace Mod
         private bool HasThrownGotOnFreeway;
         private HealthState HealthState;
         private IIntoxicants Intoxicants;
-        private Intoxication Intoxication;
+        
         private bool isActive = true;
         private bool isAiming;
         private bool isAimingInVehicle;
@@ -201,6 +201,7 @@ namespace Mod
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
         public bool HasOnBodyArmor { get; private set; }
         public Interaction Interaction { get; private set; }
+        public Intoxication Intoxication { get; private set; }
         public float IntoxicatedIntensity { get; set; }
         public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
         public Inventory Inventory { get; set; }
@@ -1416,6 +1417,18 @@ namespace Mod
                 {
                     UpperBodyActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
                 }
+                else if (modItem.Type == eConsumableType.AltSmoke)
+                {
+                    UpperBodyActivity = new MethActivity(this, Settings, modItem, Intoxicants);
+                }
+                else if (modItem.Type == eConsumableType.Snort)
+                {
+                    UpperBodyActivity = new SnortActivity(this, Settings, modItem, Intoxicants);
+                }
+                else if (modItem.Type == eConsumableType.Inject)
+                {
+                    UpperBodyActivity = new InjectActivity(this, Settings, modItem, Intoxicants);
+                }
                 UpperBodyActivity?.Start();
             }
         }
@@ -1453,7 +1466,7 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = true;
             }
         }
-        public void StartIngesting(Intoxicant intoxicant) => Intoxication.StartIngesting(intoxicant);
+        //public void StartIngesting(Intoxicant intoxicant) => Intoxication.StartIngesting(intoxicant);
         public void StartLayingDown(bool FindSittingProp)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
@@ -1561,7 +1574,7 @@ namespace Mod
                 IsPerformingActivity = false;
             }
         }
-        public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
+       // public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
         public void StopSprinting() => Sprinting.Stop();
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()

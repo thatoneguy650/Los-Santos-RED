@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
@@ -98,7 +98,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
             if (Food.Exists())
             {
@@ -194,7 +194,7 @@ namespace LosSantosRED.lsr.Player
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
-                Player.StartIngesting(CurrentIntoxicant);
+                Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

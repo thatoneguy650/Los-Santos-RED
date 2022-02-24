@@ -43,9 +43,6 @@ public class Agency
             }
         }
     }
-
-
-
     public bool CanSpawnAnywhere { get; set; } = false;
     public string ColorInitials
     {
@@ -63,28 +60,24 @@ public class Agency
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 99;
     public bool SpawnsOnHighway { get; set; } = false;
-
-
-    public int AccuracyMin { get; set; } = 40;
-    public int AccuracyMax { get; set; } = 40;
-
-
-    public int ShootRateMin { get; set; } = 500;
-    public int ShootRateMax { get; set; } = 500;
-
-
-    public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
-    public int CombatAbilityMax { get; set; } = 2;//0 - poor, 1- average, 2 - professional
-
-
-
-
-
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
+    public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
+    {
+        if (Personnel == null || !Personnel.Any() || !ped.Exists())
+        {
+            return null;
+        }
+        List<DispatchablePerson> ToPickFrom = Personnel.Where(b => b.ModelName.ToLower() == ped.Model.Name.ToLower()).ToList();
+        if (ToPickFrom.Any())
+        {
+            return ToPickFrom.PickRandom();
+        }
+        return null;
+    }
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {
         if (Personnel == null || !Personnel.Any())

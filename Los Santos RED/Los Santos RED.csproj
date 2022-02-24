@@ -169,6 +169,9 @@
     <Compile Include="lsr\Ped\Variation\RandomRegularHeadData.cs" />
     <Compile Include="lsr\Ped\Variation\StoreStructs.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
+    <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
+    <Compile Include="lsr\Player\Activity\MethActivity.cs" />
+    <Compile Include="lsr\Player\Activity\SnortActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\CorruptCopInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\EmergencyServicesInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />

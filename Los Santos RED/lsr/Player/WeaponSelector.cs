@@ -112,7 +112,7 @@ public class WeaponSelector
                 SetShootingEnabled(true);
             }
         }
-        Player.DebugLine4 = $"Selector: {CurrentSelectorSetting} {roundsFired}/{BulletLimt}";
+        //Player.DebugLine4 = $"Selector: {CurrentSelectorSetting} {roundsFired}/{BulletLimt}";
         //GameFiber.Yield();
     }
     private void Reset()

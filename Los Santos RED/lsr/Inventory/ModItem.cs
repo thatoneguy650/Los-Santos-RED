@@ -51,7 +51,7 @@ public class ModItem
 
 
 
-    public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest;
+    public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest || Type == eConsumableType.AltSmoke || Type == eConsumableType.Snort || Type == eConsumableType.Inject;
     public eConsumableType Type { get; set; } = eConsumableType.None;
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
@@ -92,9 +92,17 @@ public class ModItem
             {
                 return "Smokable";
             }
-            else if (Type == eConsumableType.Ingest)
+            else if (Type == eConsumableType.AltSmoke)
+            {
+                return "Smokable";
+            }
+            else if (Type == eConsumableType.Ingest || Type == eConsumableType.Snort)
             {
                 return "Ingestable";
+            }
+            else if (Type == eConsumableType.Inject)
+            {
+                return "Injectable";
             }
             else if (Type == eConsumableType.Service)
             {

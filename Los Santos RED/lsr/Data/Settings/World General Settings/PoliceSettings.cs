@@ -7,7 +7,38 @@ using System.Threading.Tasks;
 
 public class PoliceSettings : ISettingsDefaultable
 {
-    public int GeneralFineAmount { get; set; }
+    public bool ManageDispatching { get; set; }
+    public bool ManageTasking { get; set; }
+
+    public bool ShowSpawnedBlips { get; set; }
+    public bool ShowVanillaBlips { get; set; }
+
+
+    public bool OverrideAccuracy { get; set; }
+    public bool OverrideHealth { get; set; }
+    public bool OverrideArmor { get; set; }
+
+
+    public bool ManageLoadout { get; set; }
+    public bool AllowAmbientSpeech { get; set; }
+    public bool AllowChaseAssists { get; set; }
+    public bool AllowRadioInAnimations { get; set; }
+
+
+
+    public bool UseFakeWantedLevelSystem { get; set; }
+    public bool TakeExclusiveControlOverWantedLevel { get; set; }
+    public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
+
+
+
+
+
+
+
+
+
+
     public bool RoadblockEnabled { get; set; }
     public bool RoadblockSpikeStripsEnabled { get; set; }
     public int RoadblockMinWantedLevel { get; set; }
@@ -15,34 +46,50 @@ public class PoliceSettings : ISettingsDefaultable
     public int TimeBetweenRoadblock_Unseen { get; set; }
     public int TimeBetweenRoadblock_Seen_Min { get; set; }
     public int TimeBetweenRoadblock_Seen_AdditionalTimeScaler { get; set; }
-    public bool ManageDispatching { get; set; }
-    public bool ManageTasking { get; set; }
-    public bool TakeExclusiveControlOverWantedLevel { get; set; }
-    public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
-    public bool ShowSpawnedBlips { get; set; }
-    public bool ShowVanillaBlips { get; set; }
-    public bool OverrideAccuracy { get; set; }
-    public int GeneralCombatAbility { get; set; }
-    public int GeneralAccuracy { get; set; }
-    public int TaserAccuracy { get; set; }
-    public int VehicleAccuracy { get; set; }
-    public int GeneralShootRate { get; set; }
-    public int TaserShootRate { get; set; } 
-    public int VehicleShootRate { get; set; }
+
+
+
+
+
+    public bool WantedLevelIncreasesByKillingPolice { get; set; }
+    public int KillLimit_Wanted4 { get; set; }
+    public int KillLimit_Wanted5 { get; set; }
+    public int KillLimit_Wanted6 { get; set; }
+    public bool WantedLevelIncreasesOverTime { get; set; }
+    public uint WantedLevelIncreaseTime { get; set; }
+    public bool DeadlyChaseRequiresThreeStars { get; set; }
+    public int MaxWantedLevel { get; set; }
+
+
+
+    public float SightDistance { get; set; }
+    public float GunshotHearingDistance { get; set; }
+    public float SightDistance_Helicopter { get; set; }
+    public float SightDistance_Helicopter_AdditionalAtWanted { get; set; }
+    public bool KnowsShootingSourceLocation { get; set; }
     public float AutoRecognizeDistance { get; set; }
     public float AlwaysRecognizeDistance { get; set; }
     public int RecentlySeenTime { get; set; }
-    public bool AllowAmbientSpeech { get; set; }
-    public bool AllowChaseAssists { get; set; }
-    public bool ManageLoadout { get; set; }
     public float BustDistance { get; set; }
-    public bool AllowRadioInAnimations { get; set; }
-    public bool OverrideHealth { get; set; }
-    public int MinHealth { get; set; }
-    public int MaxHealth { get; set; }
-    public bool OverrideArmor { get; set; }
-    public int MinArmor { get; set; }
-    public int MaxArmor { get; set; }
+
+
+
+    public float MaxDistanceToSpawn_WantedSeen { get; set; }
+    public float MaxDistanceToSpawn_WantedUnseen { get; set; }
+    public float MaxDistanceToSpawn_NotWanted { get; set; }
+    public float MinDistanceToSpawn_WantedUnseen { get; set; }
+    public float MinDistanceToSpawn_WantedSeen { get; set; }
+    public float MinDistanceToSpawn_NotWanted { get; set; }
+
+
+    public int TimeBetweenCopSpawn_Unseen { get; set; }
+    public int TimeBetweenCopSpawn_Seen_Min { get; set; }
+    public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; }
+    public int TimeBetweenCopDespawn_Unseen { get; set; }
+    public int TimeBetweenCopDespawn_Seen_Min { get; set; }
+    public int TimeBetweenCopDespawn_Seen_AdditionalTimeScaler { get; set; }
+
+
     public int PedSpawnLimit_Default { get; set; }
     public int PedSpawnLimit_Investigation { get; set; }
     public int PedSpawnLimit_Wanted1 { get; set; }
@@ -59,35 +106,13 @@ public class PoliceSettings : ISettingsDefaultable
     public int VehicleSpawnLimit_Wanted4 { get; set; }
     public int VehicleSpawnLimit_Wanted5 { get; set; }
     public int VehicleSpawnLimit_Wanted6 { get; set; }
-    public bool WantedLevelIncreasesByKillingPolice { get; set; }
-    public int KillLimit_Wanted4 { get; set; }
-    public int KillLimit_Wanted5 { get; set; }
-    public int KillLimit_Wanted6 { get; set; }
-    public bool WantedLevelIncreasesOverTime { get; set; }
-    public uint WantedLevelIncreaseTime { get; set; }
-    public float SightDistance { get; set; }
-    public float GunshotHearingDistance { get; set; }
-    public float SightDistance_Helicopter { get; set; }
-    public float SightDistance_Helicopter_AdditionalAtWanted { get; set; }
-    public float MaxDistanceToSpawn_WantedSeen { get; set; }
-    public float MaxDistanceToSpawn_WantedUnseen { get; set; }
-    public float MaxDistanceToSpawn_NotWanted { get; set; }
-    public float MinDistanceToSpawn_WantedUnseen { get; set; }
-    public float MinDistanceToSpawn_WantedSeen { get; set; }
-    public float MinDistanceToSpawn_NotWanted { get; set; }
-    public int TimeBetweenCopSpawn_Unseen { get; set; }
-    public int TimeBetweenCopSpawn_Seen_Min { get; set; }
-    public int TimeBetweenCopSpawn_Seen_AdditionalTimeScaler { get; set; }
-    public int TimeBetweenCopDespawn_Unseen { get; set; }
-    public int TimeBetweenCopDespawn_Seen_Min { get; set; }
-    public int TimeBetweenCopDespawn_Seen_AdditionalTimeScaler { get; set; }
-    public bool DeadlyChaseRequiresThreeStars { get; set; }
-    public int MaxWantedLevel { get; set; }
-    public float AddOptionalPassengerPercentage { get; set; }
-    public bool KnowsShootingSourceLocation { get; set; }
-    public bool UseFakeWantedLevelSystem { get; set; }
-    public float PedestrianSpawnPercentage { get; set; }
 
+
+
+
+    public float AddOptionalPassengerPercentage { get; set; }
+    public float PedestrianSpawnPercentage { get; set; }
+    public int GeneralFineAmount { get; set; }
     public PoliceSettings()
     {
         SetDefault();
@@ -116,13 +141,23 @@ public class PoliceSettings : ISettingsDefaultable
         ShowSpawnedBlips = false;
         ShowVanillaBlips = false;
         OverrideAccuracy = true;
-        GeneralCombatAbility = 1;
-        GeneralAccuracy = 40;
-        TaserAccuracy = 30;
-        VehicleAccuracy = 10;
-        GeneralShootRate = 500;//even
-        TaserShootRate = 100;
-        VehicleShootRate = 20;
+
+
+
+        //GeneralCombatAbility = 1;
+
+
+
+        //GeneralAccuracy = 40;
+        //TaserAccuracy = 30;
+        //VehicleAccuracy = 10;
+        //GeneralShootRate = 500;//even
+        //TaserShootRate = 100;
+        //VehicleShootRate = 20;
+
+
+
+
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
         RecentlySeenTime = 15000;
@@ -132,11 +167,11 @@ public class PoliceSettings : ISettingsDefaultable
         BustDistance = 4f;//5f;
         AllowRadioInAnimations = false;
         OverrideHealth = true;
-        MinHealth = 85;
-        MaxHealth = 125;
-        OverrideArmor = true;
-        MinArmor = 0;
-        MaxArmor = 50;
+        //MinHealth = 85;
+        //MaxHealth = 125;
+        //OverrideArmor = true;
+        //MinArmor = 0;
+        //MaxArmor = 50;
         PedSpawnLimit_Default = 7;
         PedSpawnLimit_Investigation = 8;
         PedSpawnLimit_Wanted1 = 9;//7;

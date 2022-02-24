@@ -41,8 +41,16 @@ public class Intoxicants : IIntoxicants
 
             new Intoxicant("SPANK", 45000, 40000, 5.0f, "BeastIntro01",true,true) {  EffectIntoxicationLimit = 0.5f, ContinuesWithoutCurrentUse = true },
             new Intoxicant("Cocaine", 20000, 30000, 5.0f, "BikerFormFlash",false,true) {  EffectIntoxicationLimit = 0.5f, ContinuesWithoutCurrentUse = true },
-            new Intoxicant("Meth", 15000, 60000, 5.0f, "BeastIntro02",true,true) { ContinuesWithoutCurrentUse = true },
+            new Intoxicant("Methamphetamine", 30000, 60000, 5.0f, "BeastIntro02",true,true),
             new Intoxicant("Toilet Cleaner", 10000, 60000, 5.0f, "dying",true,true) { ContinuesWithoutCurrentUse = true },
+            new Intoxicant("Heroin", 15000, 60000, 5.0f, "dying",true,true) { ContinuesWithoutCurrentUse = true },
+            new Intoxicant("Crack", 20000, 30000, 5.0f, "BikerFormFlash",false,true) {  EffectIntoxicationLimit = 0.5f },
+
+
+
+
+
+
 
 
             new Intoxicant("Bull Shark Testosterone", 45000, 60000, 2.0f, "drug_wobbly",false,false) { ContinuesWithoutCurrentUse = true },

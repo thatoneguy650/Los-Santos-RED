@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class TimeSettings : ISettingsDefaultable
 {
+    [Description("Scale time with player speed. When stationary game time will progress the same as real time. When moving quickly it will progress more rapidly that vanilla GTA time.")]
     public bool ScaleTime { get; set; }
     public TimeSettings()
     {

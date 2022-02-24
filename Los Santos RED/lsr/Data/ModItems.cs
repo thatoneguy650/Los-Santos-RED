@@ -498,44 +498,60 @@ public class ModItems : IModItems
             new ModItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("prop_weed_bottle",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
 
-            new ModItem("Schwag Weed","Was considered good in the 1970s at least",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            new ModItem("Mid Weed","One step above brick pack",eConsumableType.Smoke) {
-                ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
-            new ModItem("Dank Weed","Little Jacob Tested, Truth Approved",eConsumableType.Smoke) {
+            //new ModItem("Schwag Weed","Was considered good in the 1970s at least",eConsumableType.Smoke) {
+            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            //new ModItem("Mid Weed","One step above brick pack",eConsumableType.Smoke) {
+            //    ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
+            new ModItem("Marijuana","Little Jacob Tested, Truth Approved",eConsumableType.Smoke) {
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f)),PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
 
             new ModItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
             new ModItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
-            new ModItem("Coke",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
-            new ModItem("Meth",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Meth", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
+            new ModItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow",eConsumableType.Snort) {
+                ModelItem = new PhysicalItem("ba_prop_battle_sniffing_pipe",57005,new Vector3(0.11f, 0.0f, -0.02f),new Rotator(-179f, 72f, -28f)),
+                IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+
+            new ModItem("Crack","",eConsumableType.AltSmoke) {
+                ModelItem = new PhysicalItem("prop_cs_crackpipe",57005,new Vector3(0.14f, 0.07f, 0.02f),new Rotator(-119f, 47f, 0f))
+                ,PackageItem = new PhysicalItem("prop_meth_bag_01")
+                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+
+
+            new ModItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy",eConsumableType.Inject) {
+                ModelItem = new PhysicalItem("prop_syringe_01",57005,new Vector3(0.16f, 0.02f, -0.07f),new Rotator(-170f, -148f, -36f))
+                ,PackageItem = new PhysicalItem("prop_meth_bag_01")
+                ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+
+
+            new ModItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth",eConsumableType.AltSmoke) {
+                ModelItem = new PhysicalItem("prop_cs_meth_pipe",57005,new Vector3(0.14f, 0.05f, -0.01f),new Rotator(-119f, 0f, 0f))
+                ,PackageItem = new PhysicalItem("prop_meth_bag_01")
+                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram" },
 
 
 
             new ModItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10},  
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10},  
             new ModItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
                 //PackageItem = new PhysicalItem("v_res_tt_pharm2",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), 
             },
             new ModItem("Lax to the Max","Lubricated suppositories. Get flowing again!",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Alco Patch",AmountPerPackage = 10,
                 //PackageItem = new PhysicalItem("v_res_tt_pharm3",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), 
             },
             new ModItem("Mollis","For outstanding erections. Get the performance you've always dreamed of",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Mollis",AmountPerPackage = 10,
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Mollis",AmountPerPackage = 10,
                 //PackageItem = new PhysicalItem("v_res_tt_pharm1",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),  
             },
             new ModItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Chesty", AmountPerPackage = 10 },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Chesty", AmountPerPackage = 10 },
             new ModItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. Equanox may cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Equanox", AmountPerPackage = 10 },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Equanox", AmountPerPackage = 10 },
             new ModItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'",eConsumableType.Ingest) {
-                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)),IntoxicantName = "Zombix", AmountPerPackage = 10 },
+                ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Zombix", AmountPerPackage = 10 },
 
         //WEAPONS
         //Melee

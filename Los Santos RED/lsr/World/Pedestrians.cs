@@ -591,6 +591,12 @@ public class Pedestrians
             MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName);
         }
 
+        DispatchablePerson gangPerson = null;
+        if(MyGang.Personnel != null)
+        {
+            gangPerson = MyGang.GetSpecificPed(Pedestrian);
+        }
+
         if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOutsideTerritory)
         {
             Zone CurrentZone = Zones.GetZone(Pedestrian.Position);
@@ -604,8 +610,8 @@ public class Pedestrians
                 }
             }
         }
-        SetCivilianStats(Pedestrian);
-        bool WillFight = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage);
+       // SetCivilianStats(Pedestrian);
+        bool WillFight = RandomItems.RandomPercent(MyGang.FightPercentage);
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
         {    
@@ -621,31 +627,92 @@ public class Pedestrians
             myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
         }
         ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
+        if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
         {
             toAdd = ShopMenus.GetRandomDrugDealerMenu();
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
         gm.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
-        gm.Accuracy = RandomItems.GetRandomNumberInt(MyGang.AccuracyMin, MyGang.AccuracyMax);
-        gm.ShootRate = RandomItems.GetRandomNumberInt(MyGang.ShootRateMin, MyGang.ShootRateMax);
-        gm.CombatAbility = RandomItems.GetRandomNumberInt(MyGang.CombatAbilityMin, MyGang.CombatAbilityMax);
-        Pedestrian.Accuracy = gm.Accuracy;
-        NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
-        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+        bool withPerson = false;
+        if(gangPerson != null)
+        {
+            if (Settings.SettingsManager.GangSettings.OverrideHealth)
+            {
+                int health = RandomItems.GetRandomNumberInt(gangPerson.HealthMin, gangPerson.HealthMax) + 100;
+                Pedestrian.MaxHealth = health;
+                Pedestrian.Health = health;
+            }
+            if (Settings.SettingsManager.GangSettings.OverrideArmor)
+            {
+                int armor = RandomItems.GetRandomNumberInt(gangPerson.ArmorMin, gangPerson.ArmorMax);
+                Pedestrian.Armor = armor;
+            }
+            gm.Accuracy = RandomItems.GetRandomNumberInt(gangPerson.AccuracyMin, gangPerson.AccuracyMax);
+            gm.ShootRate = RandomItems.GetRandomNumberInt(gangPerson.ShootRateMin, gangPerson.ShootRateMax);
+            gm.CombatAbility = RandomItems.GetRandomNumberInt(gangPerson.CombatAbilityMin, gangPerson.CombatAbilityMax);
+
+            if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+            {
+                Pedestrian.Accuracy = gm.Accuracy;
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+            }
+            withPerson = true;
+        }
+        else
+        {
+            if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+            {
+                Pedestrian.Accuracy = gm.Accuracy;
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+            }
+            EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
+        }
+        EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
         GangMembers.Add(gm);
     }
     private void AddAmbientCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
-        if (AssignedAgency != null && Pedestrian.Exists())
+        var AgencyData = GetAgencyData(Pedestrian, 0);
+        Agency AssignedAgency = AgencyData.agency;
+        DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
+
+        if (AssignedAgency != null && Pedestrian.Exists() && AssignedPerson != null)
         {
-            SetCopStats(Pedestrian, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinHealth, Settings.SettingsManager.PoliceSettings.MaxHealth) + 100, RandomItems.MyRand.Next(Settings.SettingsManager.PoliceSettings.MinArmor, Settings.SettingsManager.PoliceSettings.MaxArmor));
+            if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
+            {
+                int health = RandomItems.GetRandomNumberInt(AssignedPerson.HealthMin, AssignedPerson.HealthMax) + 100;
+                Pedestrian.MaxHealth = health;
+                Pedestrian.Health = health;
+            }
+            if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
+            {
+                int armor = RandomItems.GetRandomNumberInt(AssignedPerson.ArmorMin, AssignedPerson.ArmorMax);
+                Pedestrian.Armor = armor;
+            }
+
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name);
             myCop.IssueWeapons(Weapons, true,true,true);
-            myCop.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-            myCop.ShootRate = Settings.SettingsManager.PoliceSettings.GeneralShootRate;
-            myCop.CombatAbility = Settings.SettingsManager.PoliceSettings.GeneralCombatAbility;
+
+            int accuracy = RandomItems.GetRandomNumberInt(AssignedPerson.AccuracyMin, AssignedPerson.AccuracyMax);
+            int shootRate = RandomItems.GetRandomNumberInt(AssignedPerson.ShootRateMin, AssignedPerson.ShootRateMax);
+            int combatAbility = RandomItems.GetRandomNumberInt(AssignedPerson.CombatAbilityMin, AssignedPerson.CombatAbilityMax);
+
+            int tazerAccuracy = RandomItems.GetRandomNumberInt(AssignedPerson.TaserAccuracyMin, AssignedPerson.TaserAccuracyMax);
+            int tazerShootRate = RandomItems.GetRandomNumberInt(AssignedPerson.TaserShootRateMin, AssignedPerson.TaserShootRateMax);
+
+            int vehicleAccuracy = RandomItems.GetRandomNumberInt(AssignedPerson.VehicleAccuracyMin, AssignedPerson.VehicleAccuracyMax);
+            int vehicleShootRate = RandomItems.GetRandomNumberInt(AssignedPerson.VehicleShootRateMin, AssignedPerson.VehicleShootRateMax);
+
+            myCop.Accuracy = accuracy;
+            myCop.ShootRate = shootRate;
+            myCop.CombatAbility = combatAbility;
+            myCop.TaserAccuracy = tazerAccuracy;
+            myCop.TaserShootRate = tazerShootRate;
+            myCop.VehicleAccuracy = vehicleAccuracy;
+            myCop.VehicleShootRate = vehicleShootRate;
+
             if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
             {
                 Police.Add(myCop);
@@ -654,62 +721,40 @@ public class Pedestrians
         }
         else
         {
-            EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL", 2);
+            if (Pedestrian.IsPersistent)
+            {
+                EntryPoint.PersistentPedsDeleted++;
+            }
+            Pedestrian.Delete();
+            EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL, DELETING", 2);
         }
     }
-    public Agency GetAgency(Ped Cop, int WantedLevel)
+    public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped Cop, int WantedLevel)
     {
-        if (!Cop.IsPoliceArmy())
+        string ZoneName = GetInternalZoneString(Cop.Position);
+        List<Agency> ZoneAgencies = new List<Agency>();
+        if (ZoneName != "")
         {
-            return null;
+            ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel, ResponseType.LawEnforcement);
         }
-        if (Cop.IsArmy())
+        DispatchablePerson dispatchablePerson;
+        foreach (Agency agency in ZoneAgencies)
         {
-            return Agencies.GetRandomMilitaryAgency();//return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
-        }
-        else if (Cop.IsPolice())
-        {
-            Agency ToReturn;
-            List<Agency> ModelMatchAgencies = Agencies.GetAgencies(Cop);
-            if (ModelMatchAgencies.Count > 1)
+            dispatchablePerson = agency.GetSpecificPed(Cop);
+            if(dispatchablePerson != null)
             {
-                string ZoneName = GetInternalZoneString(Cop.Position);
-                if (ZoneName != "")
-                {
-                    //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
-                    if(Jurisdictions == null)
-                    {
-                        //EntryPoint.WriteToConsole("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
-                    }
-                    List<Agency> ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel,ResponseType.LawEnforcement);
-                    if (ZoneAgencies != null)
-                    {
-                        foreach (Agency ZoneAgency in ZoneAgencies)
-                        {
-                            if (ModelMatchAgencies.Any(x => x.ID == ZoneAgency.ID))
-                            {
-                                return ZoneAgency;
-                            }
-                        }
-                    }
-                }
+                return (agency, dispatchablePerson);
             }
-            ToReturn = ModelMatchAgencies.FirstOrDefault();
-            if (ToReturn == null)
-            {
-                //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
-                if(Cop.IsPersistent)
-                {
-                    EntryPoint.PersistentPedsDeleted++;
-                }
-                Cop.Delete();
-            }
-            return ToReturn;
         }
-        else
+        foreach (Agency agency in Agencies.GetAgencies())
         {
-            return null;
+            dispatchablePerson = agency.GetSpecificPed(Cop);
+            if (dispatchablePerson != null)
+            {
+                return (agency, dispatchablePerson);
+            }
         }
+        return (null, null);
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
@@ -730,24 +775,6 @@ public class Pedestrians
             NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
            // NativeFunction.Natives.SET_DRIVER_ABILITY(Pedestrian, 100f);
         }
-    }
-    private void SetCopStats(Ped Pedestrian, int health, int armor)
-    {
-        if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
-        {
-            Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-        }
-        if(Settings.SettingsManager.PoliceSettings.OverrideHealth)
-        {
-            Pedestrian.MaxHealth = health;
-            Pedestrian.Health = health;
-        }
-        if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
-        {
-            Pedestrian.Armor = armor;
-        }
-        //NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-        //NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {

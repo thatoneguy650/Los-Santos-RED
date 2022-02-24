@@ -7,39 +7,40 @@ using System.Threading.Tasks;
 
 public class GangSettings : ISettingsDefaultable
 {
-    public bool ManageTasking { get; set; }
-    public float FightPercentage { get; set; }
-    public bool CheckCrimes { get; set; }
-    public float DrugDealerPercentage { get; set; }
-    public bool ShowSpawnedBlip { get; set; }
-    public bool RemoveVanillaSpawnedPeds { get; set; }
-    public int PercentSpawnOutsideTerritory { get; set; }
+    [Description("Allows mod spawning of gang members in the world.")]
     public bool ManageDispatching { get; set; }
+    [Description("Allows tasking of ambient gang member pedestrians in the world.")]
+    public bool ManageTasking { get; set; }
+    [Description("Attach a blip to any spawned gang member pedestrian.")]
+    public bool ShowSpawnedBlip { get; set; }
+    [Description("Allows settings custom armor values on gang members.")]
+    public bool OverrideArmor { get; set; }
+    [Description("Allows settings custom health values on gang members.")]
+    public bool OverrideHealth { get; set; }
+    [Description("Allows settings custom accuracy values on gang members.")]
+    public bool OverrideAccuracy { get; set; }
+    [Description("Check and enforce crimes committed by ambient gang members. Required for police to react to gang member crimes.")]
+    public bool CheckCrimes { get; set; }
+    [Description("Attempt to remove all non-mod spawned gang members from the world. (Not Currently Recommended)")]
+    public bool RemoveVanillaSpawnedPeds { get; set; }
+    [Description("Attempt to remove all non-mod spawned gang members outside of their defined territories from the world. (Not Currently Recommended)")]
     public bool RemoveVanillaSpawnedPedsOutsideTerritory { get; set; }
+    [Description("Percentage of the time to spawn a gang outside of their regular territory.")]
+    public int PercentSpawnOutsideTerritory { get; set; }
+    [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
-    public float MaxDistanceToSpawn { get; set; }
+    [Description("Minimum distance in meters to spawn from the player.")]
     public float MinDistanceToSpawn { get; set; }
+    [Description("Maximum distance in meters to spawn from the player.")]
+    public float MaxDistanceToSpawn { get; set; }
+    [Description("Total limit of spawned gang members between all gangs. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
-
-    public int MoneyMin { get; set; }
-    public int MoneyMax { get; set; }
-    public float VehicleSpawnPercentage { get; set; }
-
-
-
-
-    public int CostToPayoffGangScalar { get; set; }
-    public bool RemoveRepOnWantedInTerritory { get; set; }
-    public int RemoveRepoOnWantedInTerritoryScalar { get; set; }
-    public bool AddAmbientRep { get; set; }
-
-
+    
     public GangSettings()
     {
         SetDefault();
 #if DEBUG
         ShowSpawnedBlip = true;
-        //RemoveVanillaGangs = true;
         RemoveVanillaSpawnedPedsOutsideTerritory = false;
 #else
                // ShowSpawnedBlips = false;
@@ -48,9 +49,7 @@ public class GangSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ManageTasking = true;
-        FightPercentage = 70f;
         CheckCrimes = true;
-        DrugDealerPercentage = 40f;
         ShowSpawnedBlip = false;
         RemoveVanillaSpawnedPeds = false;
         PercentSpawnOutsideTerritory = 10;
@@ -60,13 +59,9 @@ public class GangSettings : ISettingsDefaultable
         MinDistanceToSpawn = 50f;
         MaxDistanceToSpawn = 150f;
         TotalSpawnedMembersLimit = 8;//5
-        MoneyMin = 500;
-        MoneyMax = 5000;
-        VehicleSpawnPercentage = 40;
-        CostToPayoffGangScalar = 5;
-        RemoveRepOnWantedInTerritory = true;
-        RemoveRepoOnWantedInTerritoryScalar = 5;
-        AddAmbientRep = true;
+        OverrideArmor = true;
+        OverrideHealth = true;
+        OverrideAccuracy = true;
     }
 
 }

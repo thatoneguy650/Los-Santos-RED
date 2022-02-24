@@ -12,6 +12,10 @@
     public int MaxWantedLevelSpawn { get; set; } = 6;
 
 
+
+
+
+
     public int HealthMin { get; set; } = 85;
     public int HealthMax { get; set; } = 125;
     public int ArmorMin { get; set; } = 0;
@@ -28,6 +32,21 @@
 
     public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
     public int CombatAbilityMax { get; set; } = 2;//0 - poor, 1- average, 2 - professional
+
+
+
+
+    public int TaserAccuracyMin { get; set; } = 30;
+    public int TaserAccuracyMax { get; set; } = 30;
+    public int TaserShootRateMin { get; set; } = 100;
+    public int TaserShootRateMax { get; set; } = 100;
+
+
+    public int VehicleAccuracyMin { get; set; } = 10;
+    public int VehicleAccuracyMax { get; set; } = 10;
+    public int VehicleShootRateMin { get; set; } = 20;
+    public int VehicleShootRateMax { get; set; } = 20;
+
 
 
 

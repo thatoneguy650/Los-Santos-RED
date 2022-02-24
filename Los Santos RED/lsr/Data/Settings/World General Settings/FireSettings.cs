@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 public class FireSettings : ISettingsDefaultable
 {
+    [Description("Allows mod spawning of firefighting services in the world. (Currently Disabled)")]
     public bool ManageDispatching { get; set; }
+    [Description("Allows tasking of firefighter pedestrians in the world. (Currently Disabled)")]
     public bool ManageTasking { get; set; }
+    [Description("Attach a blip to any spawned firefighter pedestrian")]
     public bool ShowSpawnedBlips { get; set; }
     public FireSettings()
     {

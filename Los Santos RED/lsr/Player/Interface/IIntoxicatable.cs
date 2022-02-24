@@ -13,7 +13,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsIntoxicated { get; set; }
         float IntoxicatedIntensity { get; set; }
         Vector3 Position { get; }
-        bool IsMoveControlPressed { get; }
+       // bool IsMoveControlPressed { get; }
         Scenario ClosestScenario { get; }
         bool IsInVehicle { get; }
         bool IsDriver { get; }
@@ -21,10 +21,10 @@ namespace LosSantosRED.lsr.Interface
         bool IsSitting { get; set; }
         Rage.Object AttachedProp { get; set; }
         float IntoxicatedIntensityPercent { get; set; }
+        Intoxication Intoxication { get; }
+        string DebugLine4 { get; set; }
 
-        void SetUnarmed();
-        void StartIngesting(Intoxicant intoxicant);
-        void StopIngesting(Intoxicant currentIntoxicant);
+        // void SetUnarmed();
         void PauseDynamicActivity();
         void AddHealth(int healthGained);
     }

@@ -57,7 +57,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
@@ -198,7 +198,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
             EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
@@ -373,9 +373,23 @@ namespace LosSantosRED.lsr.Player
                 AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };//"idle_a", "idle_b", these are kinda bad
                 AnimEnterDictionary = "amb@incar@male@smoking@enter";
                 AnimEnter = "enter";
-                AnimExitDictionary = "amb@incar@male@smoking@exit";
+                AnimExitDictionary = "amb@incar@male@smoking@exit";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
                 AnimExit = "exit";
                 HasLightingAnimation = false;
+
+
+
+
+                AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimBase = "enter";
+                AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimIdle = new List<string> { "idle_a" };//"idle_a", "idle_b", these are kinda bad
+                AnimEnterDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
+                AnimExit = "exit";
+                HasLightingAnimation = false;
+
             }
 
             if (ModItem != null)
@@ -385,7 +399,7 @@ namespace LosSantosRED.lsr.Player
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
-                Player.StartIngesting(CurrentIntoxicant);
+                Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);

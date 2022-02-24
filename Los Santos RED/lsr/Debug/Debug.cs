@@ -852,39 +852,52 @@ public class Debug
     {
 
 
-        PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
 
-        if(pc != null)
-        {
-            uint hashName = NativeFunction.Natives.GET_HASH_NAME_FOR_COMPONENT<uint>(Game.LocalPlayer.Character, 11, pc.DrawableID, pc.TextureID);
+        Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
+        Player.Inventory.Add(ModItems.Get("Heroin"), 4);
+        Player.Inventory.Add(ModItems.Get("Cocaine"), 4);
+        Player.Inventory.Add(ModItems.Get("Crack"), 4);
 
+        Player.Inventory.Add(ModItems.Get("Toilet Cleaner"), 4);
+        Player.Inventory.Add(ModItems.Get("SPANK"), 4);
+        Player.Inventory.Add(ModItems.Get("Marijuana"), 4);
+        Player.Inventory.Add(ModItems.Get("DIC Lighter"), 4);
+        Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
+        Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
+        Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
+        //PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
 
-
-            //ComponentQueryResult result;
-
-
-            //unsafe
-            //{
-            //    NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
-            //    NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
-            //    EntryPoint.WriteToConsole($"uniqueNameHash {result.uniqueNameHash} {result.lockHash} {result.eCharacter} textLabel {result.textureIndex}");
-            //}
-
-            ComponentStoreStruct result;
-
-
-            unsafe
-            {
-                NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
-                NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
-                EntryPoint.WriteToConsole($"uniqueNameHash {result.lockHash} {result.lockHash} {result.hash} textLabel {result.texture}");
-            }
-
-            //NativeFunction.Natives.INIT_SHOP_PED_COMPONENT(out result);
-            //NativeFunction.Natives.GET_SHOP_PED_QUERY_COMPONENT(11, out  result);
+        //if (pc != null)
+        //{
+        //    uint hashName = NativeFunction.Natives.GET_HASH_NAME_FOR_COMPONENT<uint>(Game.LocalPlayer.Character, 11, pc.DrawableID, pc.TextureID);
 
 
-        }
+
+        //    ComponentQueryResult result;
+
+
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+        //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+        //        EntryPoint.WriteToConsole($"uniqueNameHash {result.uniqueNameHash} {result.lockHash} {result.eCharacter} textLabel {result.textureIndex}");
+        //    }
+
+        //    ComponentStoreStruct result;
+
+
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+        //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+        //        EntryPoint.WriteToConsole($"uniqueNameHash {result.lockHash} {result.lockHash} {result.hash} textLabel {result.texture}");
+        //    }
+
+        //    NativeFunction.Natives.INIT_SHOP_PED_COMPONENT(out result);
+        //    NativeFunction.Natives.GET_SHOP_PED_QUERY_COMPONENT(11, out result);
+
+
+        //}
         //Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
         //GameFiber.Sleep(500);
         //Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");

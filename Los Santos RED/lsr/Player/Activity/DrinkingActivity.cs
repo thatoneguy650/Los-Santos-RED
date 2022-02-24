@@ -22,6 +22,7 @@ namespace LosSantosRED.lsr.Player
         private Intoxicant CurrentIntoxicant;
         private bool hasGainedHP = false;
 
+
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
             Player = consumable;
@@ -40,7 +41,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Pause()
         {
@@ -107,7 +108,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
-            Player.StopIngesting(CurrentIntoxicant);
+            Player.Intoxication.StopIngesting(CurrentIntoxicant);
             GameFiber.Sleep(5000);
             if (Bottle.Exists())
             {
@@ -188,17 +189,41 @@ namespace LosSantosRED.lsr.Player
                 AnimIdleDictionary = "amb@world_human_drinking@coffee@female@idle_a";
                 AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
             }
-            if(ModItem != null && ModItem.ModelItem != null)
+
+
+
+
+
+            //need left hand and into end exit?
+            //amb@code_human_in_car_mp_actions@drink@std@ds@base enter
+            //amb@code_human_in_car_mp_actions@drink_bottle@std@ps@base exit
+
+
+            if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModel = ModItem.ModelItem.ModelName;
                 HandBoneID = ModItem.ModelItem.AttachBoneIndex;
                 HandOffset = ModItem.ModelItem.AttachOffset;
                 HandRotator = ModItem.ModelItem.AttachRotation;
             }
+
+
+            //if (Player.IsSitting || Player.IsInVehicle)
+            //{
+            //    HandBoneID = 18905;
+            //    AnimEnterDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
+            //    AnimEnter = "enter";
+            //    AnimExitDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
+            //    AnimExit = "exit";
+            //    AnimIdleDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
+            //    AnimIdle = new List<string>() { "idle_a" };
+            //}
+
+
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
-                Player.StartIngesting(CurrentIntoxicant);
+                Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

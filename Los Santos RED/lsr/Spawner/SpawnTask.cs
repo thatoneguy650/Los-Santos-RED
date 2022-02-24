@@ -281,6 +281,23 @@ public class SpawnTask
             PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
             PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
             PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
+            PrimaryCop.TaserAccuracy = RandomItems.GetRandomNumberInt(PersonType.TaserAccuracyMin, PersonType.TaserAccuracyMax);
+            PrimaryCop.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
+            PrimaryCop.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
+            PrimaryCop.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
+
+            if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
+            {
+                int health = RandomItems.GetRandomNumberInt(PersonType.HealthMin, PersonType.HealthMax) + 100;
+                ped.MaxHealth = health;
+                ped.Health = health;
+            }
+            if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
+            {
+                int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
+                ped.Armor = armor;
+            }
+
             return PrimaryCop;
         }
         else if (Agency.ResponseType == ResponseType.EMS)
@@ -317,19 +334,38 @@ public class SpawnTask
             myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
         }
         ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.DrugDealerPercentage))
+        if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
             toAdd = ShopMenus.GetRandomDrugDealerMenu();//move this into the gang as well
         }
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
+        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
         World.Pedestrians.AddEntity(GangMember);  
         GangMember.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
         GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
         GangMember.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
         GangMember.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
-        ped.Accuracy = GangMember.Accuracy;
-        NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
-        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
+        GangMember.TaserAccuracy = RandomItems.GetRandomNumberInt(PersonType.TaserAccuracyMin, PersonType.TaserAccuracyMax);
+        GangMember.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
+        GangMember.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
+        GangMember.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
+
+        if (Settings.SettingsManager.GangSettings.OverrideHealth)
+        {
+            int health = RandomItems.GetRandomNumberInt(PersonType.HealthMin, PersonType.HealthMax) + 100;
+            ped.MaxHealth = health;
+            ped.Health = health;
+        }
+        if (Settings.SettingsManager.GangSettings.OverrideArmor)
+        {
+            int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
+            ped.Armor = armor;
+        }
+        if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+        {
+            ped.Accuracy = GangMember.Accuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
+        }
         return GangMember;
     }
     private void SetPedVariation(Ped ped)
@@ -401,7 +437,11 @@ public class SpawnTask
             GameFiber.Yield();
             if (SpawnedVehicle.Exists())
             {
-                VehicleExt CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+                if (CreatedVehicle == null)
+                {
+                    CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                }
                 CreatedVehicle.WasModSpawned = true;
                 if (Agency != null)
                 {
@@ -411,6 +451,7 @@ public class SpawnTask
                 {
                     World.Vehicles.AddEntity(CreatedVehicle, ResponseType.None);
                 }
+
                 if (SpawnedVehicle.Exists())
                 {
                     CreatedVehicle.WasModSpawned = true;

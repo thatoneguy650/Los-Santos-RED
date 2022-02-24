@@ -55,6 +55,9 @@ namespace LosSantosRED.lsr.Interface
         void StartHotwiring();
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
+        Intoxication Intoxication { get; }
+
         void RemoveOwnershipOfNearestCar();
+        void SetMoney(int bribeAmount);
     }
 }

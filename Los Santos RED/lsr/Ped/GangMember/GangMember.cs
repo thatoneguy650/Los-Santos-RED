@@ -17,15 +17,21 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
-        Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.GangSettings.MoneyMin, settings.SettingsManager.GangSettings.MoneyMax);
+        Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
     }
     public int ShootRate { get; set; } = 600;
     public int Accuracy { get; set; } = 10;
     public int CombatAbility { get; set; } = 0;
+    public int TaserAccuracy { get; set; } = 10;
+    public int TaserShootRate { get; set; } = 100;
+    public int VehicleAccuracy { get; set; } = 10;
+    public int VehicleShootRate { get; set; } = 600;
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
     public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
     public Gang Gang { get; set; } = new Gang();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool WasModSpawned { get; private set; }
+
+
 }

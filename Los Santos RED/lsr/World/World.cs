@@ -105,18 +105,18 @@ namespace Mod
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            if (Settings.SettingsManager.WorldSettings.AddPOIBlipsToMap)
-            {
-                foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
-                {
-                    if (MyLocation.ShouldAlwaysHaveBlip && MyLocation.IsBlipEnabled)
-                    {
-                        MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.BlipSprite);
-                        AddBlip(myBlip.AddToMap());
-                        GameFiber.Yield();
-                    }
-                }
-            }
+            //if (Settings.SettingsManager.WorldSettings.AddPOIBlipsToMap)
+            //{
+            //    foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
+            //    {
+            //        if (MyLocation.ShouldAlwaysHaveBlip && MyLocation.IsBlipEnabled)
+            //        {
+            //            MapBlip myBlip = new MapBlip(MyLocation.EntrancePosition, MyLocation.Name, MyLocation.BlipSprite);
+            //            AddBlip(myBlip.AddToMap());
+            //            GameFiber.Yield();
+            //        }
+            //    }
+            //}
         }
         public void RemoveBlips()
         {

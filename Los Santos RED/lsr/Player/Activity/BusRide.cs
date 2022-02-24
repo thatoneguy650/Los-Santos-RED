@@ -1,16 +1,7 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExtensionsMethods;
-using LSR.Vehicles;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Helper;
-using Mod;
-using LosSantosRED.lsr.Interface;
 
 public class BusRide
 {
@@ -58,7 +49,7 @@ public class BusRide
                     if (Player.IsInVehicle)
                     {
                         Player.IsRidingBus = true;
-                        if(Bus.Driver.Exists())
+                        if (Bus.Driver.Exists())
                         {
                             PedExt BusDriver = World.Pedestrians.GetPedExt(Bus.Driver.Handle);
                             Bus.Driver.BlockPermanentEvents = true;
@@ -81,14 +72,13 @@ public class BusRide
                             }
                             EntryPoint.WriteToConsole("PLAYER EVENT: BusRide Tasked Driver", 3);
                         }
-                    
-                            while (Player.IsInVehicle)
-                            {
-                                GameFiber.Yield();
-                            }
-                            Player.IsRidingBus = false;
-                            EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End", 3);
 
+                        while (Player.IsInVehicle)
+                        {
+                            GameFiber.Yield();
+                        }
+                        Player.IsRidingBus = false;
+                        EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End", 3);
                     }
                     else
                     {
@@ -105,7 +95,5 @@ public class BusRide
     }
 
     //new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
-  //  new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
-
+    //  new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
 }
-

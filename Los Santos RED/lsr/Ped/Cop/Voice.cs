@@ -16,7 +16,7 @@ public class Voice
     private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE", "COMBAT_TAUNT" };
     private readonly List<string> DeadlyChaseSpeech = new List<string> { "COVER_YOU", "COVER_ME", "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "GET_HIM", "REQUEST_NOOSE" };
     //{ "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };  
-    private readonly List<string> WeaponsFreeSpeech = new List<string> { "CHALLENGE_THREATEN", "FIGHT","GENERIC_CURSE_HIGH","GENERIC_FRIGHTENED_HIGH","GENERIC_WAR_CRY","OFFICER_DOWN", "SHOOTOUT_OPEN_FIRE", "PINNED_DOWN", "TAKE_COVER" };
+    private readonly List<string> WeaponsFreeSpeech = new List<string> { "CHALLENGE_THREATEN", "FIGHT", "GENERIC_CURSE_HIGH", "GENERIC_WAR_CRY", "OFFICER_DOWN", "SHOOTOUT_OPEN_FIRE", "PINNED_DOWN", "TAKE_COVER" };//,"GENERIC_FRIGHTENED_HIGH" };
     //{ "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_SHOCKED_HIGH", "GENERIC_WAR_CRY", "PINNED_DOWN", "GENERIC_INSULT_HIGH", "GET_HIM" };
 
     private readonly List<string> IdleSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
@@ -28,6 +28,9 @@ public class Voice
 
     private bool isFreeMode = false;
     private string freeModeVoice = "";
+    private int TimeBetweenYelling = 2500;
+    private int TimeBetweenSpeaking;
+    private uint GameTimeLastYelled;
 
     public Voice(Cop cop, string modelName)
     {
@@ -35,19 +38,21 @@ public class Voice
         if (modelName.ToLower() == "mp_m_freemode_01")
         {
             isFreeMode = true;
-            freeModeVoice = "S_M_Y_COP_01";
+            freeModeVoice = "S_M_Y_COP_01_WHITE_FULL_01";// "S_M_Y_COP_01";
         }
         else if (modelName.ToLower() == "mp_f_freemode_01")
         {
             isFreeMode = true;
-            freeModeVoice = "S_F_Y_COP_01";
+            freeModeVoice = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
         }
     }
-    public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
-    public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
-    public int TimeBetweenSpeaking { get; private set; }
+    public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < 60000;
+    public bool IsSpeechTimedOut => Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
+    public bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
+    public bool CanYell => !IsYellingTimeOut && Cop.DistanceToPlayer <= 50f;
+
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
         if (CanRadioIn && currentPlayer.IsWanted)
@@ -64,7 +69,7 @@ public class Voice
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
-        if (Cop.Pedestrian.Exists() && (Cop.Pedestrian.IsInWrithe || Cop.Health <= 15))
+        if (Cop.Pedestrian.Exists() && (Cop.Pedestrian.IsInWrithe || Cop.RecentlyInjured))
         {
             YellInPain();
         }
@@ -86,8 +91,6 @@ public class Voice
                 SpeakToPlayer(currentPlayer);
             }
         }
-
-        
     }
     private void SpeakToPlayer(IPoliceRespondable currentPlayer)
     {
@@ -95,15 +98,15 @@ public class Voice
         {
             if (currentPlayer.WantedLevel <= 3)
             {
-                TimeBetweenSpeaking = 25000 + RandomItems.GetRandomNumberInt(0, 13000);
+                TimeBetweenSpeaking = 15000 + RandomItems.GetRandomNumberInt(0, 13000);
             }
             else if (currentPlayer.PoliceResponse.IsWeaponsFree)
             {
-                TimeBetweenSpeaking = 10000 + RandomItems.GetRandomNumberInt(0, 4000);
+                TimeBetweenSpeaking = 5000 + RandomItems.GetRandomNumberInt(0, 4000);
             }
             else if (currentPlayer.PoliceResponse.IsDeadlyChase)
             {
-                TimeBetweenSpeaking = 18000 + RandomItems.GetRandomNumberInt(0, 7000);
+                TimeBetweenSpeaking = 15000 + RandomItems.GetRandomNumberInt(0, 4000);
             }
             if (currentPlayer.IsWanted)
             {
@@ -182,6 +185,7 @@ public class Voice
             {
                 Cop.Pedestrian.PlayAmbientSpeech(freeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
             }
+            EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Cop.Pedestrian.Handle} freeModeVoice {freeModeVoice} speechName {speechName}");
         }
         else
         {
@@ -190,12 +194,23 @@ public class Voice
     }
     private void YellInPain()
     {
-        if (CanSpeak)
+        if (CanYell)
         {
-            List<int> PossibleYells = new List<int>() { 6,7,8 };
-            NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, PossibleYells.PickRandom(), 0, 0);
-            TimeBetweenSpeaking = 2000;
-            GameTimeLastSpoke = Game.GameTime;
+            if (RandomItems.RandomPercent(80))
+            {
+                List<int> PossibleYells = new List<int>() { 6, 7, 8 };
+                int YellType = PossibleYells.PickRandom();
+                NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, YellType, 0, 0);
+
+                EntryPoint.WriteToConsole($"YELL IN PAIN {Cop.Pedestrian.Handle} YellType {YellType}");
+            }
+            else
+            {
+                PlaySpeech("GENERIC_FRIGHTENED_HIGH", Cop.IsInVehicle);
+                EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Cop.Pedestrian.Handle}");
+            }
+
+            GameTimeLastYelled = Game.GameTime;
         }
     }
 }

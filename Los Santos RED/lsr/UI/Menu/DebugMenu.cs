@@ -18,7 +18,10 @@ public class DebugMenu : Menu
     private UIMenu Debug;
     private UIMenuListItem AutoSetRadioStation;
     private UIMenuItem GiveMoney;
+    private UIMenuItem SetMoney;
+    private UIMenuItem FillHealth;
     private UIMenuItem FillHealthAndArmor;
+    private UIMenuItem ForceSober;
     private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
     private UIMenuItem StartRandomCrime;
@@ -107,6 +110,7 @@ public class DebugMenu : Menu
     {
 
         DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
+        DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
         DispatcherMenu.OnItemSelect += DispatcherMenuSelect;
 
         SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Cop Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
@@ -127,7 +131,14 @@ public class DebugMenu : Menu
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
-        FillHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
+        SetMoney = new UIMenuItem("Set Money", "Sets your cash");
+
+
+        FillHealth = new UIMenuItem("Fill Health", "Refill health only");
+        FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
+
+        ForceSober = new UIMenuItem("Become Sober", "Froces a sober state on the player (if intoxicated)");
+
         AutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
         LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
         LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
@@ -159,7 +170,12 @@ public class DebugMenu : Menu
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GiveMoney);
+        Debug.AddItem(SetMoney);
+        Debug.AddItem(FillHealth);
         Debug.AddItem(FillHealthAndArmor);
+
+        Debug.AddItem(ForceSober);
+
         Debug.AddItem(AutoSetRadioStation);
         Debug.AddItem(StartRandomCrime);
         Debug.AddItem(TeleportToPOI);
@@ -242,6 +258,17 @@ public class DebugMenu : Menu
         {
             Player.GiveMoney(50000);
         }
+        else if (selectedItem == SetMoney)
+        {
+            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
+            {
+                Player.SetMoney(moneyToSet);
+            }
+        }
+        else if (selectedItem == FillHealth)
+        {
+            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+        }
         else if (selectedItem == FillHealthAndArmor)
         {
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
@@ -250,6 +277,10 @@ public class DebugMenu : Menu
         else if (selectedItem == StartRandomCrime)
         {
             Tasker.CreateCrime();
+        }
+        else if (selectedItem == ForceSober)
+        {
+            Player.Intoxication.Dispose();
         }
         else if (selectedItem == LogLocationMenu)
         {

@@ -198,19 +198,17 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
-
-
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
-            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","FamiliesDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","FamiliesDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","FamiliesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","FamiliesDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
@@ -222,9 +220,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
             new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VagosDenMenu", "AMBIENT_GANG_SALVA") { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
             new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "",null, "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false  },
             new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false  },
-            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "",null, "AMBIENT_GANG_HILLBILLY") { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
+            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { OpenTime = 0,CloseTime = 24, IsEnabled = false  },
             new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false },
             new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false },
 
