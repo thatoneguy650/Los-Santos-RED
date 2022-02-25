@@ -851,7 +851,7 @@ public class Debug
     private void DebugNumpad7()
     {
 
-
+        Game.LocalPlayer.Character.Health -= 25;
 
         Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         Player.Inventory.Add(ModItems.Get("Heroin"), 4);
@@ -944,6 +944,10 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        Player.YellInPain();
+
+
+
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CurrentCellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(1));
         //EntryPoint.WriteToConsole($"ADDED Text", 5);
@@ -1009,7 +1013,7 @@ public class Debug
         //    Player.GangRelationships.SetReputation(myGang, -2000, true);
         //}
 
-        Dispatcher.DebugSpawnGang();
+        //Dispatcher.DebugSpawnGang();
 
 
         //ModController.DebugInputRunning = !ModController.DebugInputRunning;

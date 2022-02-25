@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         Ped Character { get; }
         string DebugLine4 { get; set; }
+        bool IsRagdoll { get; }
     }
 }

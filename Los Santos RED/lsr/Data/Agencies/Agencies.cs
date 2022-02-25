@@ -219,7 +219,7 @@ public class Agencies : IAgencies
             new DispatchablePerson("s_m_y_swat_01", 0,0),
 
             //more police style swat stuff
-            new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
+            new DispatchablePerson("mp_m_freemode_01", 100, 100, 100, 100, 100, 100, 70, 70, 500, 500, 2, 2) { RandomizeHead = true,
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 40, 0, 0), new PedComponent(3, 17, 0, 0),new PedComponent(4, 129, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(7, 146, 0, 0), new PedComponent(8, 15, 0, 0), new PedComponent(9, 15, 2, 0), new PedComponent(11, 328, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,150,0),new PedPropComponent(1,23,9) }) },

@@ -4,7 +4,7 @@
     public string GroupName { get; set; } = "";
     public PedVariation RequiredVariation { get; set; }
     public bool RandomizeHead { get; set; }
-
+    public string OverrideVoice { get; set; } = "";
 
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
@@ -19,11 +19,11 @@
     public int HealthMin { get; set; } = 85;
     public int HealthMax { get; set; } = 125;
     public int ArmorMin { get; set; } = 0;
-    public int ArmorMax { get; set; } = 50;
+    public int ArmorMax { get; set; } = 0;
 
 
-    public int AccuracyMin { get; set; } = 40;
-    public int AccuracyMax { get; set; } = 40;
+    public int AccuracyMin { get; set; } = 30;//40
+    public int AccuracyMax { get; set; } = 30;//40
 
 
     public int ShootRateMin { get; set; } = 500;

@@ -573,6 +573,8 @@ public class Pedestrians
                 WillCallPolice = false;
                 canBeAmbientTasked = false;
             }
+
+            //EntryPoint.WriteToConsole($"Added Ambient Civilian {Pedestrian.Handle}");
         }
         PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
         if(myGroup == null)
@@ -581,6 +583,10 @@ public class Pedestrians
         }
         ShopMenu toAdd = GetIllicitMenu();
         Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+
+
+
+
     }
     private void AddAmbientGangMember(Ped Pedestrian)
     {
@@ -620,6 +626,7 @@ public class Pedestrians
                 WillFight = false;
                 canBeAmbientTasked = false;
             }
+            //EntryPoint.WriteToConsole($"Added Ambient Gang Member {Pedestrian.Handle}");
         }
         PedGroup myGroup = RelationshipGroups.GetPedGroup(relationshipGroupName);
         if (myGroup == null)
@@ -667,9 +674,9 @@ public class Pedestrians
                 NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
                 NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
             }
-            EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
+           //EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
         }
-        EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
+        //EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
         GangMembers.Add(gm);
     }
     private void AddAmbientCop(Ped Pedestrian)
@@ -737,21 +744,24 @@ public class Pedestrians
         {
             ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel, ResponseType.LawEnforcement);
         }
-        DispatchablePerson dispatchablePerson;
-        foreach (Agency agency in ZoneAgencies)
+        if (ZoneAgencies != null)
         {
-            dispatchablePerson = agency.GetSpecificPed(Cop);
-            if(dispatchablePerson != null)
+            DispatchablePerson dispatchablePerson;
+            foreach (Agency agency in ZoneAgencies)
             {
-                return (agency, dispatchablePerson);
+                dispatchablePerson = agency.GetSpecificPed(Cop);
+                if (dispatchablePerson != null)
+                {
+                    return (agency, dispatchablePerson);
+                }
             }
-        }
-        foreach (Agency agency in Agencies.GetAgencies())
-        {
-            dispatchablePerson = agency.GetSpecificPed(Cop);
-            if (dispatchablePerson != null)
+            foreach (Agency agency in Agencies.GetAgencies())
             {
-                return (agency, dispatchablePerson);
+                dispatchablePerson = agency.GetSpecificPed(Cop);
+                if (dispatchablePerson != null)
+                {
+                    return (agency, dispatchablePerson);
+                }
             }
         }
         return (null, null);

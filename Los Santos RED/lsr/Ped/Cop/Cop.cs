@@ -23,12 +23,20 @@ public class Cop : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
-        Pedestrian.VisionRange = settings.SettingsManager.PoliceSettings.SightDistance;//55F
-        Pedestrian.HearingRange = 55;//25 not really used
+        //Pedestrian.VisionRange = settings.SettingsManager.PoliceSettings.SightDistance;//55F
+        //Pedestrian.HearingRange = 55;//25 not really used
         Settings = settings;
         if(Pedestrian.IsPersistent)
         {
             WasAlreadySetPersistent = true;
+        }
+        if (modelName.ToLower() == "mp_m_freemode_01")
+        {
+            VoiceName = "S_M_Y_COP_01_WHITE_FULL_01";// "S_M_Y_COP_01";
+        }
+        else if (modelName.ToLower() == "mp_f_freemode_01")
+        {
+            VoiceName = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
         }
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new Voice(this, ModelName);

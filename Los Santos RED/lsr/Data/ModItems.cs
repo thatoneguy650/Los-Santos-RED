@@ -516,7 +516,7 @@ public class ModItems : IModItems
             new ModItem("Crack","",eConsumableType.AltSmoke) {
                 ModelItem = new PhysicalItem("prop_cs_crackpipe",57005,new Vector3(0.14f, 0.07f, 0.02f),new Rotator(-119f, 47f, 0f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
-                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
+                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter },
 
 
             new ModItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy",eConsumableType.Inject) {
@@ -528,7 +528,7 @@ public class ModItems : IModItems
             new ModItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth",eConsumableType.AltSmoke) {
                 ModelItem = new PhysicalItem("prop_cs_meth_pipe",57005,new Vector3(0.14f, 0.05f, -0.01f),new Rotator(-119f, 0f, 0f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
-                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram" },
+                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter },
 
 
 

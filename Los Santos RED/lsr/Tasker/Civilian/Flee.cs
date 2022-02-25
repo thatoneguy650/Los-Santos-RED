@@ -22,6 +22,15 @@ public class Flee : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
+
+            if(NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(Ped.Pedestrian))
+            {
+                Vector3 PedPos = Ped.Pedestrian.Position;
+                NativeFunction.Natives.SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
+                NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
+            }
+
+
             //Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {

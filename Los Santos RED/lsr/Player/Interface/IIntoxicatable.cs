@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Interface
         float IntoxicatedIntensityPercent { get; set; }
         Intoxication Intoxication { get; }
         string DebugLine4 { get; set; }
+        Sprinting Sprinting { get; }
 
         // void SetUnarmed();
         void PauseDynamicActivity();

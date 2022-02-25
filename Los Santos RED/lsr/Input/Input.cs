@@ -225,11 +225,11 @@ namespace LosSantosRED.lsr
             {
                 if(IsPressingSprint)
                 {
-                    Player.StartSprinting();
+                    Player.Sprinting.Start();
                 }
                 else
                 {
-                    Player.StopSprinting();
+                    Player.Sprinting.Stop();
                 }
             }
         }

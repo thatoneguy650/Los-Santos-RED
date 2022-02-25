@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -19,7 +20,12 @@ public class HealthState
     private bool HurtByPed;
     private bool HurtByVehicle;
     private ISettingsProvideable Settings;
+    //private int TimeBetweenYelling = 2500;
+    //private uint GameTimeLastYelled;
+    //private string VoiceName;
 
+    //private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
+    //private bool CanYell => !IsYellingTimeOut;
     public HealthState()
     {
 
@@ -104,18 +110,22 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if(Math.Abs(Health - prevHealth) >= 15 && MyPed.HasExistedFor >= 4000)
+                if((HurtByPed || HurtByVehicle) && Math.Abs(Health - prevHealth) >= 15 && MyPed.HasExistedFor >= 4000)
                 {
-                    
+                    MyPed.YellInPain();
                     MyPed.GameTimeLastInjured = Game.GameTime;
-                    EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
+                    EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
                 }
             }
         }
+        if(MyPed.IsInWrithe)
+        {
+            MyPed.YellInPain();
+        }
     }
-    public void Update()
+    public void UpdatePlayer(IPoliceRespondable CurrentPlayer)
     {
-        if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
+        if (Game.GameTime - GameTimeLastCheckedDamage >= 300 && MyPed.Pedestrian.Exists())
         {
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
@@ -124,13 +134,23 @@ public class HealthState
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
             }
+            int prevHealth = Health;
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 GameFiber.Yield();
-               // EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
-                ModifyDamage();
-                Health = CurrentHealth;
-                Armor = CurrentArmor;
+                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
+                {
+                    ModifyDamage();
+                    Health = CurrentHealth;
+                    Armor = CurrentArmor;
+                }
+            }
+            if (Math.Abs(Health - prevHealth) >= 15 && MyPed.HasExistedFor >= 4000)
+            {
+                CurrentPlayer.YellInPain();
+                MyPed.GameTimeLastInjured = Game.GameTime;
+                EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
             }
         }
     }
@@ -521,4 +541,5 @@ public class HealthState
         };
         return PedBones.FirstOrDefault(x => x.Tag == ID);
     }
+
 }

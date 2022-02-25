@@ -219,7 +219,7 @@ public class UI : IMenuProvideable
         if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
         {
             DrawText();
-            BarDisplay.Draw(DisplayablePlayer.StaminaPercent, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
+            BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
             DrawDebug();
         }
         MenuUpdate();

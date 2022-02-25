@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCustomizingPed { get; }
         bool IsPressingFireWeapon { get; set; }
         bool ReleasedFireWeapon { get; set; }
-
+        Sprinting Sprinting { get; }
         void RaiseHands();
         void LowerHands();
         void DropWeapon();
@@ -43,8 +43,7 @@ namespace LosSantosRED.lsr.Interface
         void SurrenderToPolice(GameLocation location);
         void StartTransaction();
         void StartSimpleTransaction();
-        void StartSprinting();
-        void StopSprinting();
+        
         void EnterLocation();
         void ExitLocation();
         void CloseDriverDoor();

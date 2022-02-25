@@ -558,31 +558,48 @@ public class Gangs : IGangs
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang","Unk", "White", null, null, "", null, null,null) { MaxWantedLevelSpawn = 0 };
         GangsList = new List<Gang>
         {
-            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",MeleeWeapons,LostSidearms,LostLongGuns, "LOST MC President","CHAR_MP_BIKER_BOSS") { DenName = "Clubhouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000 } ,//Meth
-            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",MeleeWeapons,VagosSidearms,VagosLongGuns,"Vagos O.G.", "CHAR_MP_MEX_BOSS") { DenName = "Hangout",AmbientMemberMoneyMin = 500, AmbientMemberMoneyMax = 2000 } ,//marijuana
-            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Families O.G.","CHAR_MP_FAM_BOSS") { DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000 } ,//marijuana
-            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",MeleeWeapons,BallasSidearms,BallasLongGuns,"Ballas O.G.","CHAR_MP_JULIO") { DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000 } ,//crack
-            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MeleeWeapons,MarabuntaSidearms,MarabuntaLongGuns,"Marabunta O.G.","CHAR_MP_MEX_LT") { DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000 } ,//marijuana
-            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","CHAR_PA_MALE") { DenName = "Gathering Location",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,
-            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",MeleeWeapons,VarriosSidearms,VarriosLongGuns,"Varrios O.G.","CHAR_ORTEGA") { DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000 } ,//crack
-            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",MeleeWeapons,TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR") { DenName = "Meeting Spot",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000 } ,//heroin
-            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL") { DenName = "Clubhouse",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,//TOILET CLEANER
-            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",MeleeWeapons,KkangpaeSidearms,KkangpaeLongGuns,"Kkangpae Leader","CHAR_CHENG") { DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000 } ,//heroin
+            new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC","LOST MC", "White", LostMCPEds, LostMCVehicles, "LOST ",MeleeWeapons,LostSidearms,LostLongGuns, "LOST MC President","CHAR_MP_BIKER_BOSS") { 
+                DenName = "Clubhouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO", "AMBIENT_GANG_GAMBETTI", "AMBIENT_GANG_ANCELOTTI" } } ,//Meth
+            new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos","Vagos", "Orange", VagosPeds, VagosVehicles, "",MeleeWeapons,VagosSidearms,VagosLongGuns,"Vagos O.G.", "CHAR_MP_MEX_BOSS") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 500, AmbientMemberMoneyMax = 2000,EnemyGangs = new List<string>() { "AMBIENT_GANG_SALVA" } } ,//marijuana
+            new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families","Families", "Green", FamiliesPeds, FamiliesVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Families O.G.","CHAR_MP_FAM_BOSS") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000,EnemyGangs = new List<string>() { "AMBIENT_GANG_BALLAS" } } ,//marijuana
+            new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas","Ballas", "Purple", BallasPeds, BallasVehicles, "",MeleeWeapons,BallasSidearms,BallasLongGuns,"Ballas O.G.","CHAR_MP_JULIO") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_FAMILY" } } ,//crack
+            new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MeleeWeapons,MarabuntaSidearms,MarabuntaLongGuns,"Marabunta O.G.","CHAR_MP_MEX_LT") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO", "AMBIENT_GANG_SALVA" } } ,//marijuana
+            new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","CHAR_PA_MALE") { 
+                DenName = "Gathering Location",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_HILLBILLY" } } ,
+            new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",MeleeWeapons,VarriosSidearms,VarriosLongGuns,"Varrios O.G.","CHAR_ORTEGA") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MARABUNTE" } } ,//crack
+            new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",MeleeWeapons,TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR") { 
+                DenName = "Meeting Spot",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MESSINA" } } ,//heroin
+            new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL") { 
+                DenName = "Clubhouse",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_CULT" } } ,//TOILET CLEANER
+            new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae","Kkangpae", "Pink", KoreanPeds, KoreanVehicles, "",MeleeWeapons,KkangpaeSidearms,KkangpaeLongGuns,"Kkangpae Leader","CHAR_CHENG") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_YARDIES" } } ,//heroin
 
-            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Gambetti Boss","CHAR_TOM") { DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000 } ,//cocaine
-            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Pavano Boss","CHAR_DOM") { DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000 } ,//cocaine
-            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Lupisella Boss","CHAR_AGENT14") { DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000 } ,//cocaine
-            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_BARRY") { DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000 } ,//cocaine
-            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DREYFUSS") { DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000 } ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family","Gambetti", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Gambetti Boss","CHAR_TOM") { 
+                DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST" } } ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Pavano Boss","CHAR_DOM") { 
+                DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_ARMENIAN" } } ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Lupisella Boss","CHAR_AGENT14") { 
+                DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE" } } ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_BARRY") { 
+                DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" } } ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DREYFUSS") { 
+                DenName = "Social Club",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST" } } ,//cocaine
 
 
 
-
-
-            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Madrazo","CHAR_MANUEL") { DenName = "Den",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,//Meth
-            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Armenian Leader","CHAR_MP_PROF_BOSS") { DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,//heroin
-            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Yardie O.G.","CHAR_MP_GERALD") { DenName = "Chill Spot",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,//marijuana
-            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Diablo Leader","CHAR_TW") { DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000 } ,//SPANK
+            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", CartelPeds, CartelVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Madrazo","CHAR_MANUEL") { 
+                DenName = "Den",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MARABUNTE" } } ,//Meth
+            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", ArmenianPeds, ArmeniaVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Armenian Leader","CHAR_MP_PROF_BOSS") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_PAVANO" } } ,//heroin
+            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", YardiesPeds, YardieVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Yardie O.G.","CHAR_MP_GERALD") { 
+                DenName = "Chill Spot",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE", "AMBIENT_GANG_DIABLOS" } } ,//marijuana
+            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", VagosPeds, DiablosVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Diablo Leader","CHAR_TW") { 
+                DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_YARDIES" } } ,//SPANK
 
             //DefaultGang
         };

@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         float SearchModePercentage { get; }
         //uint HasBeenWantedFor { get; }
-        Vector3 RootPosition { get; }
+        //Vector3 RootPosition { get; }
         bool IsAttemptingToSurrender { get; }
         bool IsCop { get; }
         float ClosestPoliceDistanceToPlayer { get; set; }
@@ -70,6 +70,8 @@ namespace LosSantosRED.lsr.Interface
         //void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         GangRelationships GangRelationships { get; }
         BigMessageHandler BigMessage { get; }
+
+        void YellInPain();
         //void ChangeReputation(Gang gang, int v, bool sendNotification);
     }
 }

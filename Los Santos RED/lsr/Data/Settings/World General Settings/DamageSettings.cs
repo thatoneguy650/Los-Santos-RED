@@ -9,6 +9,8 @@ public class DamageSettings : ISettingsDefaultable
 {
     [Description("Allows modification of damage in the game world.")]
     public bool ModifyDamage { get; set; }
+    [Description("Allows modification of damage to the player in the game world. Requires ModifyDamage to be enabled")]
+    public bool ModifyPlayerDamage { get; set; }
     [Description("Clear the last damage after updating. Disable to increase compatibility with other mods.")]
     public bool ClearDamage { get; set; }
     [Description("Percentage of hits that a determined to be normal. Maximum of 100.")]
@@ -35,6 +37,8 @@ public class DamageSettings : ISettingsDefaultable
     public float Health_CriticalDamageModifier { get; set; }
     [Description("Allow additional ragdoll on critical and fatal hits. (Currently Unusued)")]
     public bool AllowRagdoll { get; set; }
+
+
     public DamageSettings()
     {
         SetDefault();

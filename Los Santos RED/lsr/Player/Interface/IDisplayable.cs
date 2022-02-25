@@ -51,8 +51,8 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
-        bool IsSprinting { get; }
-        float StaminaPercent { get; }
+        //bool IsSprinting { get; }
+       // float StaminaPercent { get; }
         float IntoxicatedIntensityPercent { get; }
         GameLocation CurrentShop { get; }
         WeaponInformation CurrentWeapon { get; }
@@ -62,5 +62,6 @@ namespace LosSantosRED.lsr.Interface
         int CellX { get; }
         int CellY { get; }
         Ped Character { get; }
+        Sprinting Sprinting { get; }
     }
 }

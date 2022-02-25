@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
@@ -70,7 +71,7 @@ namespace Mod
         private IScenarios Scenarios;
         private SearchMode SearchMode;
         private ISettingsProvideable Settings;
-        private Sprinting Sprinting;
+        
         private int storedViewMode = -1;
         private SurrenderActivity Surrendering;
         private uint targettingHandle;
@@ -84,6 +85,10 @@ namespace Mod
         private WeaponSway WeaponSway;
         private IEntityProvideable World;
         private IZones Zones;
+        private int TimeBetweenYelling = 2500;
+        private uint GameTimeLastYelled;
+        private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
+        private bool CanYell => !IsYellingTimeOut;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
         {
             ModelName = modelName;
@@ -104,6 +109,10 @@ namespace Mod
             Zones = zones;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
+            if (CharacterModelIsFreeMode)
+            {
+                HealthState.MyPed.VoiceName = FreeModeVoice;
+            }
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, World);
@@ -300,7 +309,6 @@ namespace Mod
         public bool IsRidingBus { get; set; }
         public bool IsSitting { get; set; } = false;
         public bool IsSpeeding => Violations.IsSpeeding;
-        public bool IsSprinting => Sprinting.IsSprinting;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }
@@ -349,11 +357,14 @@ namespace Mod
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
-        public Vector3 RootPosition { get; set; }
+       // public Vector3 RootPosition { get; set; }
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
-        public float StaminaPercent => Sprinting.StaminaPercentage;
+
+        public Sprinting Sprinting { get; private set; }
+
+       // public float StaminaPercent => Sprinting.StaminaPercentage;
         public uint TargettingHandle
         {
             get => targettingHandle;
@@ -779,6 +790,73 @@ namespace Mod
             }
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
             //Game.DisableControlAction(0, GameControl.Attack, false);
+        }
+        public void YellInPain()
+        {
+            if (CanYell)
+            {
+                if (RandomItems.RandomPercent(80))
+                {
+                    List<int> PossibleYells = new List<int>() { 8 };
+                    int YellType = PossibleYells.PickRandom();
+                    NativeFunction.Natives.PLAY_PAIN(Character, YellType, 0, 0);
+
+                    List<string> PossibleAnimations = new List<string>() { "pain_6","pain_5","pain_4","pain_3","pain_2","pain_1",
+      "electrocuted_1",
+      "burning_1" };
+                    string Animation = PossibleAnimations.PickRandom();
+                    if (IsMale)
+                    {
+                        if(ModelName.ToLower() == "player_zero")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_zero@base");
+                        }
+                        else if (ModelName.ToLower() == "player_one")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_one@base");
+                        }
+                        else if (ModelName.ToLower() == "player_two")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_two@base");
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_male@base");
+                        }
+                    }
+                    else
+                    {
+                        NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_female@base");
+                    }
+                    EntryPoint.WriteToConsole($"PLAYER YELL IN PAIN {Character.Handle} YellType {YellType} Animation {Animation}");
+                }
+                else
+                {
+                    PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+                    EntryPoint.WriteToConsole($"PLAYER CRY SPEECH FOR PAIN {Character.Handle}");
+                }
+
+                GameTimeLastYelled = Game.GameTime;
+            }
+        }
+        private void PlaySpeech(string speechName, bool useMegaphone)
+        {
+            if (CharacterModelIsFreeMode && FreeModeVoice != "")
+            {
+                if (useMegaphone)
+                {
+                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.Force);
+                }
+                else
+                {
+                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
+                }
+                EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
+            }
+            else
+            {
+                Character.PlayAmbientSpeech(speechName, useMegaphone);
+            }
         }
         public void DropWeapon() => WeaponDropping.DropWeapon();
         public void EnterLocation()
@@ -1329,6 +1407,19 @@ namespace Mod
 
             BigMessageThread = new BigMessageThread(true);
             BigMessage = BigMessageThread.MessageInstance;
+
+
+
+            AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
+
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
+            
+
+
+
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
@@ -1540,7 +1631,6 @@ namespace Mod
                 LowerBodyActivity.Start();
             }
         }
-        public void StartSprinting() => Sprinting.Start();
         public void StartTransaction()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -1575,7 +1665,6 @@ namespace Mod
             }
         }
        // public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
-        public void StopSprinting() => Sprinting.Stop();
         public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
         {
@@ -1719,14 +1808,19 @@ namespace Mod
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
                 HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName);
+                if(CharacterModelIsFreeMode)
+                {
+                    HealthState.MyPed.VoiceName = FreeModeVoice;
+                }
+                
             }
-            HealthState.Update();
+            HealthState.UpdatePlayer(this);
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
             IsInCover = Game.LocalPlayer.Character.IsInCover;
             IsMovingDynamically = IsInCover || Game.LocalPlayer.Character.IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
             position = Game.LocalPlayer.Character.Position;
-            RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
+           // RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
                                                                                                                                                                                                                   //See which cell it is in now
             CellX = (int)(position.X / EntryPoint.CellSize);
             CellY = (int)(position.Y / EntryPoint.CellSize);

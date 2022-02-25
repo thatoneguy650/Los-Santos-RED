@@ -276,7 +276,17 @@ public class PlayerTasks
         {
             bool IsCancelled = false;
             GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
-            Gang TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+
+
+            Gang TargetGang = null;
+            if (ActiveGang.EnemyGangs != null && ActiveGang.EnemyGangs.Any())
+            {
+                TargetGang = Gangs.GetGang(ActiveGang.EnemyGangs.PickRandom());
+            }
+            if (TargetGang == null)
+            {
+                TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+            }
             if (myDen != null && TargetGang != null)
             {
                 
@@ -375,7 +385,15 @@ public class PlayerTasks
         {
             bool IsCancelled = false;
             GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
-            Gang TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+            Gang TargetGang = null;
+            if (ActiveGang.EnemyGangs != null && ActiveGang.EnemyGangs.Any())
+            {
+                TargetGang = Gangs.GetGang(ActiveGang.EnemyGangs.PickRandom());
+            }
+            if (TargetGang == null)
+            {
+                TargetGang = Gangs.GetAllGangs().Where(x => x.ID != ActiveGang.ID).PickRandom();
+            }
             if (myDen != null && TargetGang != null)
             {
                 

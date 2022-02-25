@@ -26,32 +26,32 @@ public class Voice
     private uint GameTimeLastRadioed;
     private uint GameTimeLastSpoke;
 
-    private bool isFreeMode = false;
-    private string freeModeVoice = "";
-    private int TimeBetweenYelling = 2500;
+    //private bool isFreeMode = false;
+    //private string freeModeVoice = "";
+    //private int TimeBetweenYelling = 2500;
     private int TimeBetweenSpeaking;
-    private uint GameTimeLastYelled;
+    //private uint GameTimeLastYelled;
 
     public Voice(Cop cop, string modelName)
     {
         Cop = cop;
-        if (modelName.ToLower() == "mp_m_freemode_01")
-        {
-            isFreeMode = true;
-            freeModeVoice = "S_M_Y_COP_01_WHITE_FULL_01";// "S_M_Y_COP_01";
-        }
-        else if (modelName.ToLower() == "mp_f_freemode_01")
-        {
-            isFreeMode = true;
-            freeModeVoice = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
-        }
+        //if (modelName.ToLower() == "mp_m_freemode_01")
+        //{
+        //    isFreeMode = true;
+        //    freeModeVoice = "S_M_Y_COP_01_WHITE_FULL_01";// "S_M_Y_COP_01";
+        //}
+        //else if (modelName.ToLower() == "mp_f_freemode_01")
+        //{
+        //    isFreeMode = true;
+        //    freeModeVoice = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
+        //}
     }
     public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < 60000;
     public bool IsSpeechTimedOut => Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
-    public bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
+    //public bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
-    public bool CanYell => !IsYellingTimeOut && Cop.DistanceToPlayer <= 50f;
+    //public bool CanYell => !IsYellingTimeOut && Cop.DistanceToPlayer <= 50f;
 
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
@@ -69,12 +69,12 @@ public class Voice
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
-        if (Cop.Pedestrian.Exists() && (Cop.Pedestrian.IsInWrithe || Cop.RecentlyInjured))
-        {
-            YellInPain();
-        }
-        else
-        {
+        //if (Cop.Pedestrian.Exists() && (Cop.Pedestrian.IsInWrithe || Cop.RecentlyInjured))
+        //{
+        //    YellInPain();
+        //}
+        //else
+        //{
             if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
             {
                 if (Cop.CurrentTask.OtherTarget.WantedLevel > currentPlayer.WantedLevel || Cop.CurrentTask.OtherTarget.IsDeadlyChase && currentPlayer.PoliceResponse.IsDeadlyChase)
@@ -90,7 +90,7 @@ public class Voice
             {
                 SpeakToPlayer(currentPlayer);
             }
-        }
+        //}
     }
     private void SpeakToPlayer(IPoliceRespondable currentPlayer)
     {
@@ -175,43 +175,43 @@ public class Voice
     }
     private void PlaySpeech(string speechName,bool useMegaphone)
     {
-        if(isFreeMode)
+        if(Cop.VoiceName != "")// isFreeMode)
         {
             if(useMegaphone)
             {
-                Cop.Pedestrian.PlayAmbientSpeech(freeModeVoice, speechName, 0, SpeechModifier.Force);
+                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.Force);
             }
             else
             {
-                Cop.Pedestrian.PlayAmbientSpeech(freeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
+                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
             }
-            EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Cop.Pedestrian.Handle} freeModeVoice {freeModeVoice} speechName {speechName}");
+            EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Cop.Pedestrian.Handle} freeModeVoice {Cop.VoiceName} speechName {speechName}");
         }
         else
         {
             Cop.Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
         }
     }
-    private void YellInPain()
-    {
-        if (CanYell)
-        {
-            if (RandomItems.RandomPercent(80))
-            {
-                List<int> PossibleYells = new List<int>() { 6, 7, 8 };
-                int YellType = PossibleYells.PickRandom();
-                NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, YellType, 0, 0);
+    //public void YellInPain()
+    //{
+    //    if (CanYell)
+    //    {
+    //        if (RandomItems.RandomPercent(80))
+    //        {
+    //            List<int> PossibleYells = new List<int>() { 6, 7, 8 };
+    //            int YellType = PossibleYells.PickRandom();
+    //            NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, YellType, 0, 0);
 
-                EntryPoint.WriteToConsole($"YELL IN PAIN {Cop.Pedestrian.Handle} YellType {YellType}");
-            }
-            else
-            {
-                PlaySpeech("GENERIC_FRIGHTENED_HIGH", Cop.IsInVehicle);
-                EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Cop.Pedestrian.Handle}");
-            }
+    //            EntryPoint.WriteToConsole($"YELL IN PAIN {Cop.Pedestrian.Handle} YellType {YellType}");
+    //        }
+    //        else
+    //        {
+    //            PlaySpeech("GENERIC_FRIGHTENED_HIGH", Cop.IsInVehicle);
+    //            EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Cop.Pedestrian.Handle}");
+    //        }
 
-            GameTimeLastYelled = Game.GameTime;
-        }
-    }
+    //        GameTimeLastYelled = Game.GameTime;
+    //    }
+    //}
 }
 

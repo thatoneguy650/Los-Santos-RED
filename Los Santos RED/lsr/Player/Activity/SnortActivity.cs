@@ -86,7 +86,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.SetUnarmed();
-           // AttachItemToHand();
+            AttachItemToHand();
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
@@ -129,7 +129,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (Item.Exists())
                     {
-                        Item.Delete();
+                        //Item.Delete();
                         if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
                         {
                             Player.AddHealth(ModItem.HealthGained);
@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr.Player
                 PropModel = ModItem.ModelItem.ModelName;
             }
 
-            AnimIdleDictionary = "amb@code_human_in_car_idles@generic@ds@idle_d";
+            AnimIdleDictionary = "amb@code_human_in_car_idles@generic@ps@idle_d";
             AnimIdle = new List<string>() { "idle_j" };
 
             if (ModItem != null && ModItem.IsIntoxicating)

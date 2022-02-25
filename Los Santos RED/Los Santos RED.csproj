@@ -179,6 +179,7 @@
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
+    <Compile Include="lsr\Player\Intoxication\IntoxicationEffect.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />

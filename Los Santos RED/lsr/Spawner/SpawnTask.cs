@@ -227,7 +227,8 @@ public class SpawnTask
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             if (ped.Exists())
-            {             
+            {          
+
                 int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
                 int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
                 ped.MaxHealth = DesiredHealth;
@@ -246,6 +247,10 @@ public class SpawnTask
                 else if(Gang != null)
                 {
                     Person = SetupGangMember(ped);
+                }
+                if (Person != null && PersonType.OverrideVoice != "")
+                {
+                    Person.VoiceName = PersonType.OverrideVoice;
                 }
                 SetPedVariation(ped);
                 GameFiber.Yield();

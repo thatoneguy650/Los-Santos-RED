@@ -21,6 +21,7 @@ public class Sprinting
     public bool IsSprinting => isSprinting;
     public float Stamina => CurrentStamina;
     public float StaminaPercentage => CurrentStamina / Settings.SettingsManager.SprintSettings.MaxStamina;
+    public bool InfiniteStamina { get; set; }
     public Sprinting(ISprintable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -43,11 +44,15 @@ public class Sprinting
             isSprinting = false;
         }
     }
+    public void Dispose()
+    {
+
+    }
     public void Update()
     {
         if (Game.GameTime - GameTimeLastUpdatedSprint >= 250)
         {
-            if (isSprinting)
+            if (isSprinting && !InfiniteStamina)
             {
                 if (CurrentStamina >= Settings.SettingsManager.SprintSettings.DrainRate)
                 {
@@ -76,6 +81,7 @@ public class Sprinting
             NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.SprintSettings.MoveSpeedOverride);
         }
     }
+
 
 }
 

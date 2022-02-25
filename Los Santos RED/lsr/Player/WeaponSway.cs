@@ -56,6 +56,10 @@ public class WeaponSway
             {
                 return;
             }
+            if (Player.IsRagdoll)
+            {
+                return;
+            }
             ApplySway();
         }
     }

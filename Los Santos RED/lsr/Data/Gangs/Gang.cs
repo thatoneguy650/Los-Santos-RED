@@ -112,7 +112,7 @@ public class Gang
 
 
 
-
+    public List<string> EnemyGangs = new List<string>();
     public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> MeleeWeapons { get; set; } = new List<IssuableWeapon>();

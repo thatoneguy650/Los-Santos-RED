@@ -257,7 +257,7 @@ public class Intoxication
         }
         if (Player.IsIntoxicated)
         {
-            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE")
+            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE" && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesStumbling))
             {
                 CurrentClipset = ClipsetAtCurrentIntensity;
                 if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
@@ -271,9 +271,17 @@ public class Intoxication
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             Player.IntoxicatedIntensity = CurrentIntensity;
             Player.IntoxicatedIntensityPercent = CurrentIntensity / PrimaryIntoxicator.Intoxicant.MaxEffectAllowed;
-            if (Player.IsInVehicle)
+            if (Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesSwerving))
             {
                 UpdateSwerving();
+            }
+            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.InfiniteStamina))
+            {
+                Player.Sprinting.InfiniteStamina = true;
+            }
+            else
+            {
+                Player.Sprinting.InfiniteStamina = false;
             }
         }
     }
@@ -308,7 +316,7 @@ public class Intoxication
         Player.IsIntoxicated = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle)
+        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesStumbling))
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {
@@ -321,6 +329,14 @@ public class Intoxication
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
         NativeFunction.Natives.x80C8B1846639BB19(1);
         NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
+        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.InfiniteStamina))
+        {
+            Player.Sprinting.InfiniteStamina = true;
+        }
+        else
+        {
+            Player.Sprinting.InfiniteStamina = false;
+        }
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
     }
     private void SetSober(bool ResetClipset)
@@ -337,6 +353,7 @@ public class Intoxication
         NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
         Player.IntoxicatedIntensityPercent = 0.0f;
         Player.IntoxicatedIntensity = 0.0f;
+        Player.Sprinting.InfiniteStamina = false;
         //EntryPoint.WriteToConsole("Player Made Sober");
     }
 }

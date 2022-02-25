@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -24,6 +25,12 @@ public class PedExt : IComplexTaskable
     private Vector3 position;
     private ISettingsProvideable Settings;
     private Vector3 SpawnPosition;
+    private int TimeBetweenYelling = 2500;
+    private uint GameTimeLastYelled;
+    
+
+    private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
+    private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name)
     {
         Pedestrian = _Pedestrian;
@@ -100,7 +107,6 @@ public class PedExt : IComplexTaskable
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 2 : 3;
-
     public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
@@ -118,6 +124,7 @@ public class PedExt : IComplexTaskable
     public bool IsInBoat { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
+    public bool IsInWrithe { get; private set; } = false;
     public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
     public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
@@ -172,6 +179,7 @@ public class PedExt : IComplexTaskable
     public bool WillCallPolice { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
+    public string VoiceName { get; set; } = "";
     private int FullUpdateInterval//dont forget distance and LOS in here
     {
         get
@@ -228,7 +236,6 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
@@ -361,6 +368,7 @@ public class PedExt : IComplexTaskable
             {
                 if (NeedsFullUpdate)
                 {
+                    IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
                     UpdateVehicleState();
@@ -465,6 +473,46 @@ public class PedExt : IComplexTaskable
             {
                 GameTimeLastMovedFast = 0;
             }
+        }
+    }
+    public void YellInPain()
+    {
+        if (CanYell)
+        {
+            if (RandomItems.RandomPercent(80))
+            {
+                List<int> PossibleYells = new List<int>() { 6, 7, 8 };
+                int YellType = PossibleYells.PickRandom();
+                NativeFunction.Natives.PLAY_PAIN(Pedestrian, YellType, 0, 0);
+
+                EntryPoint.WriteToConsole($"YELL IN PAIN {Pedestrian.Handle} YellType {YellType}");
+            }
+            else
+            {
+                PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+                EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
+            }
+
+            GameTimeLastYelled = Game.GameTime;
+        }
+    }
+    private void PlaySpeech(string speechName, bool useMegaphone)
+    {
+        if (VoiceName != "")
+        {
+            if (useMegaphone)
+            {
+                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.Force);
+            }
+            else
+            {
+                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
+            }
+            EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Pedestrian.Handle} freeModeVoice {VoiceName} speechName {speechName}");
+        }
+        else
+        {
+            Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
         }
     }
 }
