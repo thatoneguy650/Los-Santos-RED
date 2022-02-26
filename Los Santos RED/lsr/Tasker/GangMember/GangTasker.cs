@@ -72,7 +72,7 @@ public class GangTasker
         bool isHostile = Player.GangRelationships.IsHostile(GangMember.Gang);
         if (GangMember.IsBusted)
         {
-            if (GangMember.DistanceToPlayer <= 75f)
+            if (GangMember.DistanceToPlayer <= 175f)
             {
                 SetArrested(GangMember);
             }

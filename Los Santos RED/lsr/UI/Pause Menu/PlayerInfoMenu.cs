@@ -227,7 +227,7 @@ public class PlayerInfoMenu
     private void AddLocations()
     {
         List<UIMenuItem> menuItems = new List<UIMenuItem>();
-        menuItems.Add(new UIMenuItem("Remove GPR Route", "Remove any enabled GPS Blip"));
+        menuItems.Add(new UIMenuItem("Remove GPS Route", "Remove any enabled GPS Blip"));
 
 
         List<BasicLocation> Hotels = new List<BasicLocation>();
@@ -315,13 +315,22 @@ public class PlayerInfoMenu
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
             items.Add(tItem);
         }
+        TabItem ClearPhoneResponses = new TabTextItem("Clear Phone Responses", "Clear Phone Responses", "Select to clear all ~o~Phone Responses~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        ClearPhoneResponses.Activated += (s, e) =>
+        {
+            tabView.Visible = false;
+            Game.IsPaused = false;
+            Player.CellPhone.ClearPhoneResponses();
+        };
+        items.Add(ClearPhoneResponses);
+
         PhoneRepliesSubMenu = new TabSubmenuItem("Replies", items);
         tabView.AddTab(PhoneRepliesSubMenu);
     }
     private void AddTextMessages()
     {
         List<TabItem> items = new List<TabItem>();
-        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived))
+        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
         {
             string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
 
@@ -333,6 +342,10 @@ public class PlayerInfoMenu
             string DescriptionHeaderText = $"{text.Name}";
 
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
+
+
+
+
 
             tItem.Activated += (s, e) =>
             {
@@ -347,11 +360,21 @@ public class PlayerInfoMenu
             };//Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
             items.Add(tItem);
         }
+
+        TabItem ClearTexts = new TabTextItem("Clear Text Messages", "Clear Text Messages", "Select to clear all ~o~Text Messages~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        ClearTexts.Activated += (s, e) =>
+        {
+            tabView.Visible = false;
+            Game.IsPaused = false;
+            Player.CellPhone.ClearTextMessages();
+        };
+        items.Add(ClearTexts);
+
+
+
         TextMessagesSubMenu = new TabSubmenuItem("Text Messages", items);
         tabView.AddTab(TextMessagesSubMenu);
     }
-
-
 
     private void AddVehicles()
     {
@@ -413,6 +436,43 @@ public class PlayerInfoMenu
             items.Add(tItem);
         }
         tabView.AddTab(VehiclesSubMenu = new TabSubmenuItem("Vehicles", items));
+    }
+    private void AddOther()
+    {
+
+
+
+
+
+        List<TabItem> items = new List<TabItem>();
+        TabItem ClearTexts = new TabTextItem("Clear Text Messages", "Clear Text Messages", "Select to clear all ~o~Text Messages~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        ClearTexts.Activated += (s, e) =>
+        {
+            tabView.Visible = false;
+            Game.IsPaused = false;
+            Player.CellPhone.ClearTextMessages();
+        };
+        items.Add(ClearTexts);
+
+        //TabItem ClearContacts = new TabTextItem("Clear Contacts", "Clear Contacts", "Select to clear all ~o~Contacts~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        //ClearContacts.Activated += (s, e) =>
+        //{
+        //    tabView.Visible = false;
+        //    Game.IsPaused = false;
+        //    Player.CellPhone.ClearContacts();
+        //};
+        //items.Add(ClearContacts);
+
+        TabItem ClearPhoneResponses = new TabTextItem("Clear Phone Responses", "Clear Phone Responses", "Select to clear all ~o~Phone Responses~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        ClearPhoneResponses.Activated += (s, e) =>
+        {
+            tabView.Visible = false;
+            Game.IsPaused = false;
+            Player.CellPhone.ClearPhoneResponses();
+        };
+        items.Add(ClearPhoneResponses);
+
+        tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Other", items));
     }
     private void BackingMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -495,6 +555,7 @@ public class PlayerInfoMenu
         AddPhoneRepliesMessages();
         AddTextMessages();
         AddLocations();
+       //AddOther();
         tabView.RefreshIndex();
     }
 }

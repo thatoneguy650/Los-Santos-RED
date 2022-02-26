@@ -2,6 +2,7 @@
 using iFruitAddon2;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -77,7 +78,7 @@ public class Gang
     public string ContactName { get; set; } = "Unknown";
     public string ContactIcon { get; set; }
 
-
+    public string DealerMenuGroup { get; set; } = "";
     public string DenName { get; set; } = "Den";
 
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
@@ -86,19 +87,20 @@ public class Gang
     public float PercentageWithSidearms { get; set; } = 40f;
     public float PercentageWithMelee { get; set; } = 50f;
 
-    public int HitPaymentMin { get; set; } = 10000;
-    public int HitPaymentMax { get; set; } = 30000;
 
 
-    public int TheftPaymentMin { get; set; } = 1000;
-    public int TheftPaymentMax { get; set; } = 5000;
+
+
 
 
     public int PickupPaymentMin { get; set; } = 200;
     public int PickupPaymentMax { get; set; } = 1000;
 
+    public int TheftPaymentMin { get; set; } = 1000;
+    public int TheftPaymentMax { get; set; } = 5000;
 
-
+    public int HitPaymentMin { get; set; } = 10000;
+    public int HitPaymentMax { get; set; } = 30000;
 
     public float FightPercentage { get; set; } = 70f;
     public float DrugDealerPercentage { get; set; } = 40f;
@@ -111,7 +113,7 @@ public class Gang
     public bool AddAmbientRep { get; set; } = true;
 
 
-
+    public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     public List<string> EnemyGangs = new List<string>();
     public bool IsFedUpWithPlayer { get; set; } = false;
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();

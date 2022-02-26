@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class SnortActivity : DynamicActivity
+    public class InhaleActivity : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private EatingData Data;
@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public SnortActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public InhaleActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -49,7 +49,7 @@ namespace LosSantosRED.lsr.Player
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
                 Enter();
-            }, "DrinkingWatcher");
+            }, "InhaleActivity");
         }
         private void AttachItemToHand()
         {

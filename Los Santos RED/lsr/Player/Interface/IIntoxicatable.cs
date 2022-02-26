@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         Intoxication Intoxication { get; }
         string DebugLine4 { get; set; }
         Sprinting Sprinting { get; }
+        bool IsOnMuscleRelaxants { get; set; }
 
         // void SetUnarmed();
         void PauseDynamicActivity();

@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Interface
         string ModelName { get; }
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
-        BigMessageHandler BigMessage { get; }
+     //   BigMessageHandler BigMessage { get; }
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation();

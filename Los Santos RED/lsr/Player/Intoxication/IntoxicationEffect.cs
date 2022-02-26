@@ -1,13 +1,20 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 [Flags]
 public enum IntoxicationEffect
 {
-    CausesSwerving = 1,
+    [Display(Name = "Impares Driving")]
+    ImparesDriving = 1,
+    [Display(Name = "Never Tired")]
     InfiniteStamina = 2,
+    [Display(Name = "Invincibility")]
     Invincibility = 4,
-    CausesStumbling = 8,
-    Unused2 = 16,
-    Unused3 = 32,
+    [Display(Name = "Impares Walking")]
+    ImparesWalking = 8,
+    [Display(Name = "Super Speed")]
+    FastSpeed = 16,
+    [Display(Name = "Increased Weapon Control")]
+    RelaxesMuscles = 32,
     Unused4 = 64,
 }

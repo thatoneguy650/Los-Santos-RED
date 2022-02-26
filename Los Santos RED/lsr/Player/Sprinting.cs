@@ -22,6 +22,7 @@ public class Sprinting
     public float Stamina => CurrentStamina;
     public float StaminaPercentage => CurrentStamina / Settings.SettingsManager.SprintSettings.MaxStamina;
     public bool InfiniteStamina { get; set; }
+    public bool TurboSpeed { get; set; }
     public Sprinting(ISprintable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -46,7 +47,8 @@ public class Sprinting
     }
     public void Dispose()
     {
-
+        InfiniteStamina = false;
+        TurboSpeed = false;
     }
     public void Update()
     {
@@ -78,7 +80,12 @@ public class Sprinting
         }
         if (isSprinting)
         {
-            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.SprintSettings.MoveSpeedOverride);
+            float MoveSpeed = Settings.SettingsManager.SprintSettings.MoveSpeedOverride;
+            if(TurboSpeed)
+            {
+                MoveSpeed += 1.5f;
+            }
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, MoveSpeed);
         }
     }
 

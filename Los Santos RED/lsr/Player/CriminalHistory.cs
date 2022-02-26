@@ -47,11 +47,11 @@ namespace LosSantosRED.lsr
             CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x=> x.ResultingWantedLevel));
             if(isDeadly)
             {
-                Player.BigMessage.ShowColoredShard("APB Issued", "", HudColor.Gold, HudColor.InGameBackground, 2500);
+               // Player.BigMessage.ShowColoredShard("APB Issued", "", HudColor.Gold, HudColor.InGameBackground, 2500);
             }
             else
             {
-                Player.BigMessage.ShowColoredShard("BOLO Issued", "", HudColor.Red, HudColor.InGameBackground, 2500);
+               // Player.BigMessage.ShowColoredShard("BOLO Issued", "", HudColor.Red, HudColor.InGameBackground, 2500);
             }
         }
         public void OnLostWanted()

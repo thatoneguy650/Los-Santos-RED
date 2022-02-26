@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         string DebugLine4 { get; set; }
         bool IsRagdoll { get; }
+        bool IsStunned { get; }
     }
 }

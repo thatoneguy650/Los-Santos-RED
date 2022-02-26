@@ -257,7 +257,7 @@ public class Intoxication
         }
         if (Player.IsIntoxicated)
         {
-            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE" && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesStumbling))
+            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE" && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
             {
                 CurrentClipset = ClipsetAtCurrentIntensity;
                 if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
@@ -271,7 +271,7 @@ public class Intoxication
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             Player.IntoxicatedIntensity = CurrentIntensity;
             Player.IntoxicatedIntensityPercent = CurrentIntensity / PrimaryIntoxicator.Intoxicant.MaxEffectAllowed;
-            if (Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesSwerving))
+            if (Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesDriving))
             {
                 UpdateSwerving();
             }
@@ -282,6 +282,22 @@ public class Intoxication
             else
             {
                 Player.Sprinting.InfiniteStamina = false;
+            }
+            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.FastSpeed))
+            {
+                Player.Sprinting.TurboSpeed = true;
+            }
+            else
+            {
+                Player.Sprinting.TurboSpeed = false;
+            }
+            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.RelaxesMuscles))
+            {
+                Player.IsOnMuscleRelaxants = true;
+            }
+            else
+            {
+                Player.IsOnMuscleRelaxants = false;
             }
         }
     }
@@ -316,7 +332,7 @@ public class Intoxication
         Player.IsIntoxicated = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.CausesStumbling))
+        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {
@@ -337,6 +353,22 @@ public class Intoxication
         {
             Player.Sprinting.InfiniteStamina = false;
         }
+        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.FastSpeed))
+        {
+            Player.Sprinting.TurboSpeed = true;
+        }
+        else
+        {
+            Player.Sprinting.TurboSpeed = false;
+        }
+        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.RelaxesMuscles))
+        {
+            Player.IsOnMuscleRelaxants = true;
+        }
+        else
+        {
+            Player.IsOnMuscleRelaxants = false;
+        }
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
     }
     private void SetSober(bool ResetClipset)
@@ -354,6 +386,8 @@ public class Intoxication
         Player.IntoxicatedIntensityPercent = 0.0f;
         Player.IntoxicatedIntensity = 0.0f;
         Player.Sprinting.InfiniteStamina = false;
+        Player.Sprinting.TurboSpeed = false;
+        Player.IsOnMuscleRelaxants = false;
         //EntryPoint.WriteToConsole("Player Made Sober");
     }
 }

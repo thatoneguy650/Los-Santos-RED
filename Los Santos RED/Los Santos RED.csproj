@@ -87,6 +87,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -170,8 +171,8 @@
     <Compile Include="lsr\Ped\Variation\StoreStructs.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
-    <Compile Include="lsr\Player\Activity\MethActivity.cs" />
-    <Compile Include="lsr\Player\Activity\SnortActivity.cs" />
+    <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
+    <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\CorruptCopInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\EmergencyServicesInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />

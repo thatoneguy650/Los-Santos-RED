@@ -20,7 +20,7 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable
     {
         public int UpdateState = 0;
-        private BigMessageThread BigMessageThread;
+        //private BigMessageThread BigMessageThread;
         private InteractableLocation ClosestInteractableLocation;
         private GameLocation ClosestPurchaseLocation;
         private GameLocation ClosestSimpleTransaction;
@@ -153,7 +153,7 @@ namespace Mod
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public Rage.Object AttachedProp { get; set; }
         public bool BeingArrested { get; private set; }
-        public BigMessageHandler BigMessage { get; private set; }
+        //public BigMessageHandler BigMessage { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
@@ -304,6 +304,7 @@ namespace Mod
         public bool IsNotWanted => wantedLevel == 0;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsPerformingActivity { get; set; }
+        public bool IsOnMuscleRelaxants { get; set; }
         public bool IsPressingFireWeapon { get; set; }
         public bool IsRagdoll { get; private set; }
         public bool IsRidingBus { get; set; }
@@ -1405,8 +1406,8 @@ namespace Mod
                 }
             }, "CellPhone");
 
-            BigMessageThread = new BigMessageThread(true);
-            BigMessage = BigMessageThread.MessageInstance;
+            //BigMessageThread = new BigMessageThread(true);
+            //BigMessage = BigMessageThread.MessageInstance;
 
 
 
@@ -1510,11 +1511,11 @@ namespace Mod
                 }
                 else if (modItem.Type == eConsumableType.AltSmoke)
                 {
-                    UpperBodyActivity = new MethActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new PipeSmokingActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Snort)
                 {
-                    UpperBodyActivity = new SnortActivity(this, Settings, modItem, Intoxicants);
+                    UpperBodyActivity = new InhaleActivity(this, Settings, modItem, Intoxicants);
                 }
                 else if (modItem.Type == eConsumableType.Inject)
                 {
@@ -2532,7 +2533,7 @@ namespace Mod
 
                     if (Settings.SettingsManager.UISettings.ShowWantedMessageOnStart)
                     {
-                        BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
+                       // BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
                     }
                 }
             }

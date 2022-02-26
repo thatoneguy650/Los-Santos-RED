@@ -69,7 +69,7 @@ namespace LosSantosRED.lsr.Interface
         //void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         //void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         GangRelationships GangRelationships { get; }
-        BigMessageHandler BigMessage { get; }
+       // BigMessageHandler BigMessage { get; }
 
         void YellInPain();
         //void ChangeReputation(Gang gang, int v, bool sendNotification);

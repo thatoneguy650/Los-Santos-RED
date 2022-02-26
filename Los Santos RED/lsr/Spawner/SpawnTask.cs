@@ -31,9 +31,9 @@ public class SpawnTask
     private IShopMenus ShopMenus;
 
     private SpawnLocation SpawnLocation;
-    private List<RandomHeadData> RandomHeadList;
+    //private List<RandomHeadData> RandomHeadList;
     private IEntityProvideable World;
-    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, List<RandomHeadData> randomHeadList, IEntityProvideable world)
+    public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world)
     {
         Agency = agency;
         PersonType = personType;
@@ -47,10 +47,10 @@ public class SpawnTask
         Weapons = weapons;
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
-        RandomHeadList = randomHeadList;
+        //RandomHeadList = randomHeadList;
         World = world;
     }
-    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, List<RandomHeadData> randomHeadList, IEntityProvideable world)
+    public SpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world)
     {
         Gang = gang;
         PersonType = personType;
@@ -67,7 +67,7 @@ public class SpawnTask
         RelationshipGroups = pedGroups;
         AddOptionalPassengers = addOptionalPassengers;
         ShopMenus = shopMenus;
-        RandomHeadList = randomHeadList;
+        //RandomHeadList = randomHeadList;
         World = world;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
@@ -109,7 +109,7 @@ public class SpawnTask
                 return;
             }
             
-            EntryPoint.WriteToConsole($"SPAWNTASK AttemptSpawn FIRST! PersonType {PersonType?.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"SPAWNTASK AttemptSpawn FIRST! PersonType {PersonType?.ModelName}", 3);
             if (Agency != null || Gang != null)
             {
                 if (VehicleType != null)
@@ -117,14 +117,14 @@ public class SpawnTask
                     Vehicle = CreateVehicle();
                     if (Vehicle != null && Vehicle.Vehicle.Exists())
                     {
-                        EntryPoint.WriteToConsole($"SPAWNTASK 11111111111", 3);
+                       // EntryPoint.WriteToConsole($"SPAWNTASK 11111111111", 3);
                         if (PersonType != null)
                         {
-                            EntryPoint.WriteToConsole($"SPAWNTASK 222222 {PersonType.ModelName}", 3);
+                            //EntryPoint.WriteToConsole($"SPAWNTASK 222222 {PersonType.ModelName}", 3);
                             PedExt Person = CreatePerson();
                             if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
-                                EntryPoint.WriteToConsole($"SPAWNTASK 33333 vehicle exists! {PersonType.ModelName}", 3);
+                                //EntryPoint.WriteToConsole($"SPAWNTASK 33333 vehicle exists! {PersonType.ModelName}", 3);
                                 Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
                                 Person.AssignedVehicle = Vehicle;
                                 Person.AssignedSeat = -1;
@@ -165,6 +165,7 @@ public class SpawnTask
                                                 EntryPoint.WriteToConsole($"SpawnTask: Adding Passenger To {VehicleType.ModelName} Failed", 5);
                                             }
                                         }
+                                        GameFiber.Yield();
                                     }
                                 }
                             }
@@ -341,7 +342,11 @@ public class SpawnTask
         ShopMenu toAdd = null;
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
-            toAdd = ShopMenus.GetRandomDrugDealerMenu();//move this into the gang as well
+            toAdd = ShopMenus.GetRandomMenu(Gang.DealerMenuGroup);
+            if (toAdd == null)
+            {
+                toAdd = ShopMenus.GetRandomDrugDealerMenu();
+            }
         }
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
         World.Pedestrians.AddEntity(GangMember);  
@@ -385,7 +390,19 @@ public class SpawnTask
             if (PersonType.RandomizeHead)
             {
                 bool isMale = PersonType.ModelName.ToLower() == "mp_m_freemode_01";
-                RandomizeHead(ped, RandomHeadList.Where(x => x.IsMale == isMale).PickRandom());
+                RandomHeadData rhd = null;
+                if(Agency != null)
+                {
+                    rhd = Agency.PossibleHeads.Where(x => x.IsMale == isMale).PickRandom();
+                }
+                else if (Gang != null)
+                {
+                    rhd = Gang.PossibleHeads.Where(x => x.IsMale == isMale).PickRandom();
+                }
+                if (rhd != null)
+                {
+                    RandomizeHead(ped, rhd);
+                }
             }
         }
 

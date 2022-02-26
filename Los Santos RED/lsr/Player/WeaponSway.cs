@@ -25,6 +25,7 @@ public class WeaponSway
     private float PercentVeritcalSwayElapsed;
     private float PercentHorizontalSwayElapsed;
     private float Speed;
+    public bool IsDisabled { get; set; } = false;
 
     public WeaponSway(IWeaponSwayable player, ISettingsProvideable settings)
     {
@@ -42,9 +43,13 @@ public class WeaponSway
     }
     private void Sway()
     {
-        if (Settings.SettingsManager.SwaySettings.ApplySway && Player.CurrentWeapon != null)// && !IsInVehicle)
+        if (Settings.SettingsManager.SwaySettings.ApplySway && Player.CurrentWeapon != null && !IsDisabled)// && !IsInVehicle)
         {
             if (Player.CurrentWeapon.Category == WeaponCategory.Throwable || Player.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.CurrentWeapon.Category == WeaponCategory.Melee || Player.CurrentWeapon.Category == WeaponCategory.Misc || Player.CurrentWeapon.Category == WeaponCategory.Unknown)
+            {
+                return;
+            }
+            if (Player.IsRagdoll || Player.IsStunned)
             {
                 return;
             }
@@ -53,10 +58,6 @@ public class WeaponSway
                 return;
             }
             if(!Player.IsInVehicle && !Settings.SettingsManager.SwaySettings.ApplySwayOnFoot)
-            {
-                return;
-            }
-            if (Player.IsRagdoll)
             {
                 return;
             }

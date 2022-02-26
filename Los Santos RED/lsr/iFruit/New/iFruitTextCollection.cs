@@ -54,7 +54,7 @@ namespace iFruitAddon2
 
             int i = 0;
             // Browsing every added text
-            foreach (iFruitText text in this.ToList().OrderByDescending(x=> x.TimeReceived))
+            foreach (iFruitText text in this.ToList().OrderByDescending(x=> x.TimeReceived).Take(15))
             {
                 if (_shouldDraw)
                 {

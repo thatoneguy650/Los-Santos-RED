@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 public class RandomHeadData
 {
+    public RandomHeadData()
+    {
+
+    }
     public RandomHeadData(int headID, string name, List<int> hairColors, List<int> hairComponents, bool isMale)
     {
         HeadID = headID;

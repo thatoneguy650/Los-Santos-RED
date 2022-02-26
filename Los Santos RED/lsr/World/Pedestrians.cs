@@ -636,7 +636,11 @@ public class Pedestrians
         ShopMenu toAdd = null;
         if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
         {
-            toAdd = ShopMenus.GetRandomDrugDealerMenu();
+            toAdd = ShopMenus.GetRandomMenu(MyGang.DealerMenuGroup);
+            if (toAdd == null)
+            {
+                toAdd = ShopMenus.GetRandomDrugDealerMenu();
+            }
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
         gm.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));

@@ -17,9 +17,17 @@ public class ShopMenu
         Name = name;
         Items = items;
     }
+    public ShopMenu(string iD, string name, List<MenuItem> items, string groupName)
+    {
+        ID = iD;
+        Name = name;
+        Items = items;
+        GroupName = groupName;
+    }
     public List<MenuItem> Items { get; set; }
     public string ID { get; set; }
     public string Name { get; set; }
+    public string GroupName { get; set; } = "";
     public string BannerOverride { get; set; } = "";
     public void Randomize()
     {

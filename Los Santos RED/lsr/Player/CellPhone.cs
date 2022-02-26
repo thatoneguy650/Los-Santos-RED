@@ -292,6 +292,19 @@ public class CellPhone
             AddEmergencyServicesCustomContact();
         }
     }
+    public void ClearTextMessages()
+    {
+        AddedTexts = new List<iFruitText>();
+    }
+    public void ClearContacts()
+    {
+        ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
+        AddedContacts = new List<iFruitContact>();
+    }
+    public void ClearPhoneResponses()
+    {
+        PhoneResponses = new List<PhoneResponse>();
+    }
     public void Dispose()
     {
         CustomiFruit.ForceClose();

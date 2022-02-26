@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Interface;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -107,6 +108,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 {
                     Description = coolio.Description;
                 }
+                Description = Description.Substring(0, Math.Min(800, Description.Length));
                 if (fi.PropertyType == typeof(bool))
                 {
                     UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(SubSettings), Description);

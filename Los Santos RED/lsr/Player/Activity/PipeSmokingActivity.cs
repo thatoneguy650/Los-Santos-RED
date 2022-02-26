@@ -5,10 +5,11 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class MethActivity : DynamicActivity
+    public class PipeSmokingActivity : DynamicActivity
     {
         private Intoxicant CurrentIntoxicant;
         private SmokingData Data;
@@ -45,13 +46,13 @@ namespace LosSantosRED.lsr.Player
         private Vector3 LighterOffset = new Vector3(0.13f,0.02f,0.02f);
         private Rotator LighterRotator = new Rotator(-93f,40f,0f);
 
-        public MethActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
+        public PipeSmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
         }
-        public MethActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public PipeSmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
@@ -120,7 +121,18 @@ namespace LosSantosRED.lsr.Player
             {
                 try
                 {
-                    LighterItem = new Rage.Object(Game.GetHashKey("p_cs_lighter_01"), Player.Character.GetOffsetPositionUp(60f));
+                    InventoryItem LighterInventoryItem = Player.Inventory.Items.Where(x => x.ModItem?.ToolType == ToolTypes.Lighter).FirstOrDefault();
+                    if(LighterInventoryItem != null)
+                    {
+                        LighterItem = new Rage.Object(Game.GetHashKey(LighterInventoryItem.ModItem.ModelItem?.ModelName), Player.Character.GetOffsetPositionUp(60f));
+                    }
+                    else
+                    {
+                        LighterItem = new Rage.Object(Game.GetHashKey("p_cs_lighter_01"), Player.Character.GetOffsetPositionUp(60f));
+                    }
+
+
+                    
                 }
                 catch (Exception e)
                 {

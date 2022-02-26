@@ -38,6 +38,10 @@ public class ShopMenus : IShopMenus
     {
         return ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault();
     }
+    public ShopMenu GetRandomMenu(string menuGroup)
+    {
+        return ShopMenuList.Where(x => x.GroupName == menuGroup).PickRandom();
+    }
     public ShopMenu GetRandomDrugDealerMenu()
     {
         ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DealerMenu").PickRandom();
@@ -356,128 +360,141 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Zombix", 267, 0),
             }),
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             new ShopMenu("DealerMenu","Marijuana Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }}),
+                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }},"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 3, 1) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana", 3, 1) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 3",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 6, 2) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana", 6, 2) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 4",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 5, 1) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana", 5, 1) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 5",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 4, 1) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana", 4, 1) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 6",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 7",new List<MenuItem>() {
-                    new MenuItem("Marijuana",10, 6) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",10, 6) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 8",new List<MenuItem>() {
-                    new MenuItem("Marijuana",11, 5) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",11, 5) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 9",new List<MenuItem>() {
-                    new MenuItem("Marijuana",9, 5) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",9, 5) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 10",new List<MenuItem>() {
-                    new MenuItem("Marijuana",20, 5) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",20, 5) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 11",new List<MenuItem>() {
-                    new MenuItem("Marijuana",11, 8) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",11, 8) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 12",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 7) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",12, 7) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 13",new List<MenuItem>() {
-                    new MenuItem("Marijuana",15, 8) { IsIllicilt = true } }),
+                    new MenuItem("Marijuana",15, 8) { IsIllicilt = true } },"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 14",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }}),
+                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }},"MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu","Marijuana Dealer 15",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }}),
+                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true }},"MarijuanaDealerMenu"),
 
             new ShopMenu("DealerMenu","Toilet Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",25, 2) { IsIllicilt = true } }),
+                    new MenuItem("Toilet Cleaner",25, 2) { IsIllicilt = true } },"ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu","Toilet Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",26, 5) { IsIllicilt = true } }),
+                    new MenuItem("Toilet Cleaner",26, 5) { IsIllicilt = true } },"ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu","Toilet Dealer 3",new List<MenuItem>() {
                     new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },
-                    new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true }, }),
+                    new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true }, },"ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu","Toilet Dealer 4",new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },}),
+                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },},"ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu","Toilet Dealer 53",new List<MenuItem>() {
                     new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true },
-                    new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },}),
+                    new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },},"ToiletCleanerDealerMenu"),
 
             new ShopMenu("DealerMenu","SPANK Dealer 1",new List<MenuItem>() {
-                    new MenuItem("SPANK", 45, 23) { IsIllicilt = true } }),
+                    new MenuItem("SPANK", 45, 23) { IsIllicilt = true } },"SPANKDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 2",new List<MenuItem>() {
-                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true } }),
+                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true } },"SPANKDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 3",new List<MenuItem>() {
                     new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
-                    new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}),
+                    new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },},"SPANKDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 4",new List<MenuItem>() {
                     new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
-                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },},"SPANKDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 5",new List<MenuItem>() {
                     new MenuItem("SPANK", 39, 20) { IsIllicilt = true },
-                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
+                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } },"SPANKDealerMenu"),
 
             new ShopMenu("DealerMenu","Meth Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 45, 23) { IsIllicilt = true } }),
+                    new MenuItem("Methamphetamine", 45, 23) { IsIllicilt = true } },"MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu","Meth Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 55, 25) { IsIllicilt = true } }),
+                    new MenuItem("Methamphetamine", 55, 25) { IsIllicilt = true } },"MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu","Meth Dealer 3",new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 56, 20) { IsIllicilt = true },
                     new MenuItem("Hawk & Little PTF092F",200) { IsIllicilt = true },
-                    new MenuItem("Switchblade",300) { IsIllicilt = true },}),
+                    new MenuItem("Switchblade",300) { IsIllicilt = true },},"MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu","Meth Dealer 4",new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 66, 20) { IsIllicilt = true },
-                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },},"MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu","Meth Dealer 5",new List<MenuItem>() {
                     new MenuItem("Methamphetamine", 57, 20) { IsIllicilt = true },
-                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
+                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } },"MethamphetamineDealerMenu"),
 
             new ShopMenu("DealerMenu","Heroin Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Heroin", 145, 67) { IsIllicilt = true } }),
+                    new MenuItem("Heroin", 145, 67) { IsIllicilt = true } },"HeroinDealerMenu"),
             new ShopMenu("DealerMenu","Heroin Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Heroin", 156, 86) { IsIllicilt = true } }),
+                    new MenuItem("Heroin", 156, 86) { IsIllicilt = true } },"HeroinDealerMenu"),
             new ShopMenu("DealerMenu","Heroin Dealer 3",new List<MenuItem>() {
                     new MenuItem("Heroin", 160, 78) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
-                    new MenuItem("Switchblade",300) { IsIllicilt = true },}),
+                    new MenuItem("Switchblade",300) { IsIllicilt = true },},"HeroinDealerMenu"),
             new ShopMenu("DealerMenu","Heroin Dealer 4",new List<MenuItem>() {
                     new MenuItem("Heroin", 170, 67) { IsIllicilt = true },
-                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },},"HeroinDealerMenu"),
             new ShopMenu("DealerMenu","Heroin Dealer 5",new List<MenuItem>() {
-                    new MenuItem("Heroin", 155, 70) { IsIllicilt = true }, }),
+                    new MenuItem("Heroin", 155, 70) { IsIllicilt = true }, },"HeroinDealerMenu"),
 
             new ShopMenu("DealerMenu","Crack Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Crack", 38, 23) { IsIllicilt = true } }),
+                    new MenuItem("Crack", 38, 23) { IsIllicilt = true } },"CrackDealerMenu"),
             new ShopMenu("DealerMenu","Crack Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Crack", 52, 25) { IsIllicilt = true } }),
+                    new MenuItem("Crack", 52, 25) { IsIllicilt = true } },"CrackDealerMenu"),
             new ShopMenu("DealerMenu","Crack Dealer 3",new List<MenuItem>() {
                     new MenuItem("Crack", 39, 22) { IsIllicilt = true },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
-                    new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}),
+                    new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },},"CrackDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 4",new List<MenuItem>() {
                     new MenuItem("Crack", 39, 25) { IsIllicilt = true },
-                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },},"CrackDealerMenu"),
             new ShopMenu("DealerMenu","SPANK Dealer 5",new List<MenuItem>() {
                     new MenuItem("Crack", 41, 30) { IsIllicilt = true },
-                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }),
+                    new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } },"CrackDealerMenu"),
 
             new ShopMenu("DealerMenu","Coke Dealer 1",new List<MenuItem>() {
-                    new MenuItem("Cocaine", 145, 67) { IsIllicilt = true } }),
+                    new MenuItem("Cocaine", 145, 67) { IsIllicilt = true } },"CokeDealerMenu"),
             new ShopMenu("DealerMenu","Coke Dealer 2",new List<MenuItem>() {
-                    new MenuItem("Cocaine", 146, 56) { IsIllicilt = true } }),
+                    new MenuItem("Cocaine", 146, 56) { IsIllicilt = true } },"CokeDealerMenu"),
             new ShopMenu("DealerMenu","Coke Dealer 3",new List<MenuItem>() {
                     new MenuItem("Cocaine", 152, 60) { IsIllicilt = true },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
-                    new MenuItem("Switchblade",300) { IsIllicilt = true },}),
+                    new MenuItem("Switchblade",300) { IsIllicilt = true },},"CokeDealerMenu"),
             new ShopMenu("DealerMenu","Coke Dealer 4",new List<MenuItem>() {
                     new MenuItem("Cocaine", 150, 64) { IsIllicilt = true },
-                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}),
+                    new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },},"CokeDealerMenu"),
             new ShopMenu("DealerMenu","Coke Dealer 5",new List<MenuItem>() {
                     new MenuItem("Cocaine", 158, 65) { IsIllicilt = true },
-                    new MenuItem("Hawk & Little PTF092F",250) { IsIllicilt = true } }),
-
-
+                    new MenuItem("Hawk & Little PTF092F",250) { IsIllicilt = true } },"CokeDealerMenu"),
 
 
             new ShopMenu("DrugCustomerMenu","Marijuana Customer 1",new List<MenuItem>() {

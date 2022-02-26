@@ -30,8 +30,7 @@ public class LEDispatcher
    // private int World.TotalWantedLevel;
     private bool TotalIsWanted;
     private INameProvideable Names;
-    private List<RandomHeadData> RandomHeadList;
-    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, List<RandomHeadData> randomHeadList)
+    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
     {
         Player = player;
         World = world;
@@ -42,7 +41,6 @@ public class LEDispatcher
         Jurisdictions = jurisdictions;
         Weapons = weapons;
         Names = names;
-        RandomHeadList = randomHeadList;
     }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
@@ -331,7 +329,8 @@ public class LEDispatcher
             {
                 spawnLocation.InitialPosition = GetPositionAroundPlayer();
                 spawnLocation.GetClosestStreet();
-                //spawnLocation.GetClosestSidewalk();
+                spawnLocation.GetClosestSidewalk();
+                GameFiber.Yield();
                 isValidSpawn = IsValidSpawn(spawnLocation);
                 timesTried++;
                 GameFiber.Yield();
@@ -375,7 +374,7 @@ public class LEDispatcher
                         {
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), RandomHeadList, World);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
                                 spawnTask.AttemptSpawn();
                                 GameFiber.Yield();
                                 spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
@@ -635,7 +634,7 @@ public class LEDispatcher
                                 Roadblock.Dispose();
                                 GameFiber.Yield();
                             }
-                            Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names, RandomHeadList);
+                            Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names);
                             Roadblock.SpawnRoadblock();
                             GameFiber.Yield();
                             GameTimeLastSpawnedRoadblock = Game.GameTime;
@@ -708,7 +707,7 @@ public class LEDispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, RandomHeadList, World);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
                             spawnTask.AllowAnySpawn = true;
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();

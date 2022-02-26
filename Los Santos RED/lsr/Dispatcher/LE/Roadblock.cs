@@ -33,8 +33,7 @@ public class Roadblock
     private Model VehicleModel;
     private IWeapons Weapons;
     private IEntityProvideable World;
-    private List<RandomHeadData> RandomHeadList;
-    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, List<RandomHeadData> randomHeadList)
+    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
     {
         Player = player;
         World = world;
@@ -47,7 +46,6 @@ public class Roadblock
         SpikeStripModel = new Model(SpikeStripName);
         Weapons = weapons;
         Names = names;
-        RandomHeadList = randomHeadList;
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -266,7 +264,7 @@ public class Roadblock
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
 
-        SpawnTask spawnTask = new SpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, RandomHeadList, World);
+        SpawnTask spawnTask = new SpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World);
         spawnTask.AttemptSpawn();
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
         {
@@ -276,7 +274,7 @@ public class Roadblock
         {
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
-            SpawnTask pedSpawn = new SpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, RandomHeadList, World);
+            SpawnTask pedSpawn = new SpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
             pedSpawn.AttemptSpawn();
             foreach (PedExt person in pedSpawn.CreatedPeople)
             {
