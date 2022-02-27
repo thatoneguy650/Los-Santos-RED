@@ -19,14 +19,21 @@ public class GangTerritories : IGangTerritories
     }
     public void ReadConfig()
     {
-        if (File.Exists(ZoneConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("GangTerritories*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ZoneConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ZoneConfigFileName}");
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
         }
         else
         {
             DefaultZoneConfig();
-            Serialization.SerializeParams(ZoneJurisdictionsList, ZoneConfigFileName);
         }
     }
     public Gang GetMainGang(string ZoneName)
@@ -330,6 +337,7 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
 
         };
+        Serialization.SerializeParams(ZoneJurisdictionsList, ZoneConfigFileName);
     }
 }
 

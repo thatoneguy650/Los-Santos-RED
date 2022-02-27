@@ -25,7 +25,7 @@ public class PedExt : IComplexTaskable
     private Vector3 position;
     private ISettingsProvideable Settings;
     private Vector3 SpawnPosition;
-    private int TimeBetweenYelling = 2500;
+    private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
     
 
@@ -63,9 +63,9 @@ public class PedExt : IComplexTaskable
     public VehicleExt AssignedVehicle { get; set; }
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
-    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember);
+    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember);
     public bool CanBeTasked { get; set; } = true;
-    public bool CanConverse => Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
+    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -502,11 +502,12 @@ public class PedExt : IComplexTaskable
         {
             if (useMegaphone)
             {
-                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.Force);
+                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
             }
             else
             {
-                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
+                Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.Force);
+                
             }
             EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Pedestrian.Handle} freeModeVoice {VoiceName} speechName {speechName}");
         }

@@ -24,14 +24,21 @@ public class ShopMenus : IShopMenus
     }
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("ShopMenus*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            ShopMenuList = Serialization.DeserializeParams<ShopMenu>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             ShopMenuList = Serialization.DeserializeParams<ShopMenu>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(ShopMenuList, ConfigFileName);
         }
     }
     public ShopMenu GetMenu(string menuID)
@@ -1707,6 +1714,7 @@ public class ShopMenus : IShopMenus
         };
         DenList();
         GunShopList();
+        Serialization.SerializeParams(ShopMenuList, ConfigFileName);
     }
     private void DenList()
     {
@@ -2180,6 +2188,7 @@ public class ShopMenus : IShopMenus
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
+
     }
     private void FamiliesDenMenu()
     {
@@ -2473,6 +2482,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
                     }),
         });
+
     }
     private void MarabunteDenMenu()
     {

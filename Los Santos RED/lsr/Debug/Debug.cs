@@ -439,8 +439,16 @@ public class Debug
         //}
         //Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
 
+        PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        SpawnGunAttackers();
+        if(myPed != null)
+        {
+            myPed.IsDrunk = true;
+            myPed.IsDealingDrugs = true;
+        }
+
+
+        //SpawnGunAttackers();
 
         //  NativeFunction.Natives.x759E13EBC1C15C5A(50f);
 

@@ -98,15 +98,15 @@ public class Voice
         {
             if (currentPlayer.WantedLevel <= 3)
             {
-                TimeBetweenSpeaking = 15000 + RandomItems.GetRandomNumberInt(0, 13000);
+                TimeBetweenSpeaking = 25000 + RandomItems.GetRandomNumberInt(0, 13000);
             }
             else if (currentPlayer.PoliceResponse.IsWeaponsFree)
             {
-                TimeBetweenSpeaking = 5000 + RandomItems.GetRandomNumberInt(0, 4000);
+                TimeBetweenSpeaking = 10000 + RandomItems.GetRandomNumberInt(0, 4000);
             }
             else if (currentPlayer.PoliceResponse.IsDeadlyChase)
             {
-                TimeBetweenSpeaking = 15000 + RandomItems.GetRandomNumberInt(0, 4000);
+                TimeBetweenSpeaking = 18000 + RandomItems.GetRandomNumberInt(0, 7000);
             }
             if (currentPlayer.IsWanted)
             {
@@ -179,11 +179,12 @@ public class Voice
         {
             if(useMegaphone)
             {
-                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.Force);
+                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
+                
             }
             else
             {
-                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.ForceMegaphone);
+                Cop.Pedestrian.PlayAmbientSpeech(Cop.VoiceName, speechName, 0, SpeechModifier.Force);
             }
             EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Cop.Pedestrian.Handle} freeModeVoice {Cop.VoiceName} speechName {speechName}");
         }

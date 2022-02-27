@@ -18,14 +18,21 @@ public class Streets : IStreets
     private List<Street> StreetsList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Streets*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            StreetsList = Serialization.DeserializeParams<Street>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             StreetsList = Serialization.DeserializeParams<Street>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(StreetsList, ConfigFileName);
         }
     }
     public string GetStreetNames(Vector3 Position)
@@ -315,6 +322,7 @@ public class Streets : IStreets
             new Street("Strangeways Dr", 30f, "MPH"),
             new Street("Mt Haan Dr", 40f, "MPH")
         };
+        Serialization.SerializeParams(StreetsList, ConfigFileName);
     }
 }
 

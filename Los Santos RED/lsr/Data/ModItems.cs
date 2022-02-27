@@ -19,14 +19,21 @@ public class ModItems : IModItems
     public List<ModItem> Items => ModItemsList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("ModItems*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(ModItemsList, ConfigFileName);
         }
     }
 
@@ -1235,6 +1242,7 @@ public class ModItems : IModItems
         new ModItem("Speedophile Seashark 2") { ModelItem = new PhysicalItem("seashark2") { Type = ePhysicalItemType.Vehicle }},
         new ModItem("Speedophile Seashark 3", true) { ModelItem = new PhysicalItem("seashark3") { Type = ePhysicalItemType.Vehicle }},
     };
+        Serialization.SerializeParams(ModItemsList, ConfigFileName);
     }
 
 }

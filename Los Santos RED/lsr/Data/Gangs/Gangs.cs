@@ -27,21 +27,22 @@ public class Gangs : IGangs
 #else
             UseVanillaConfig = true;
 #endif
-        if (File.Exists(ConfigFileName))
+
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Gangs*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            GangsList = Serialization.DeserializeParams<Gang>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             GangsList = Serialization.DeserializeParams<Gang>(ConfigFileName);
         }
         else
         {
-            if (UseVanillaConfig)
-            {
-                DefaultConfig();
-            }
-            else
-            {
-                //CustomConfig();
-            }
-            Serialization.SerializeParams(GangsList, ConfigFileName);
+            DefaultConfig();
         }
     }
     public List<Gang> GetAllGangs()
@@ -643,8 +644,6 @@ public class Gangs : IGangs
 
             //DefaultGang
         };
+        Serialization.SerializeParams(GangsList, ConfigFileName);
     }
-
-
-   
 }

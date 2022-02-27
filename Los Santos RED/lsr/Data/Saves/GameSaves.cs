@@ -22,7 +22,7 @@ public class GameSaves : IGameSaves
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(GameSaveList, ConfigFileName);
+            
         }
     }
     public void Save(ISaveable player, IWeapons weapons, ITimeReportable time)
@@ -157,7 +157,8 @@ public class GameSaves : IGameSaves
             AlexisGameSave,
             SawyerGameSave,
         };
-        AddCopModels();
+        //AddCopModels();
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     private void AddCopModels()
     {

@@ -70,6 +70,7 @@ public class AIApprehend : ComplexTask
         Goto,
         None,
         Look,
+        Fight,
     }
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
@@ -221,13 +222,13 @@ public class AIApprehend : ComplexTask
         if (Ped.Pedestrian.Exists() && ShouldUpdate)
         {
             bool TargetChanged = false;
-            if(CurrentlyChasingHandle != 0)
+            if (CurrentlyChasingHandle != 0)
             {
-                if(OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Handle != CurrentlyChasingHandle)
+                if (OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Handle != CurrentlyChasingHandle)
                 {
                     EntryPoint.WriteToConsole($"TASKER: Target Changed From: {CurrentlyChasingHandle} to {OtherTarget.Handle}", 5);
                     CurrentlyChasingHandle = OtherTarget.Handle;
-                    TargetChanged = true;   
+                    TargetChanged = true;
                 }
             }
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
@@ -350,9 +351,9 @@ public class AIApprehend : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian.CurrentVehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                                                                                                                                        // NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //doesnt really work
-                                                                                                                                        //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Target.Pedestrian.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car,also has an error with the seat index!
+                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian.CurrentVehicle, -1, 4f, 500f, 1073741824, 1); //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian.CurrentVehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                                                                                                                                             // NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //doesnt really work
+                                                                                                                                             //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Target.Pedestrian.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car,also has an error with the seat index!
                 NativeFunction.CallByName<bool>("TASK_ARREST_PED", 0, OtherTarget.Pedestrian);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -375,18 +376,18 @@ public class AIApprehend : ComplexTask
         NeedsUpdates = false;
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && OtherTarget.Pedestrian.Exists())
         {
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                    NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
-                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
+                NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
+                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
             //EntryPoint.WriteToConsole(string.Format("Started Exit Car: {0}", Ped.Pedestrian.Handle));
         }
     }
@@ -401,16 +402,6 @@ public class AIApprehend : ComplexTask
                 FootChaseLoop();
                 EntryPoint.WriteToConsole($"COP EVENT: AI Apprehend Start: {Ped.Pedestrian.Handle}", 3);
             }
-            //FootChaseLoop();
-            //if (OtherTarget.Pedestrian.IsStunned && !OtherTarget.IsBusted && !OtherTarget.IsZombie)
-            //{
-            //    OtherTarget.IsBusted = true;
-            //    if (Ped.Pedestrian.Exists())
-            //    {
-            //        OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
-            //    }
-            //    EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
-            //}
         }
     }
 
@@ -425,15 +416,17 @@ public class AIApprehend : ComplexTask
         CurrentSubTask = SubTask.None;
         GameFiber.StartNew(delegate
         {
-        while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
-        {
-            if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a error?
+            while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
             {
-                SubTaskName = "";
-            }
 
 
-                if(OtherTarget.IsBusted)
+                if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a error?
+                {
+                    SubTaskName = "";
+                    CurrentSubTask = SubTask.None;
+                }
+
+                if (OtherTarget.IsBusted)
                 {
                     IsChasingSlowly = true;
                     RunSpeed = 1.0f;// 1.4f;
@@ -452,92 +445,74 @@ public class AIApprehend : ComplexTask
 
 
 
-            if (IsArresting && OtherTarget != null && OtherTarget.IsDeadlyChase)
-            {
-                IsArresting = false;
-            }
-            else if (!IsArresting && OtherTarget != null && !OtherTarget.IsDeadlyChase)
-            {
-                IsArresting = true;
-            }
-
-
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
-            float LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
-
-                if(OtherTarget.IsBusted)
+                if (IsArresting && OtherTarget != null && OtherTarget.IsDeadlyChase)
                 {
-                    if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+                    IsArresting = false;
+                }
+                else if (!IsArresting && OtherTarget != null && !OtherTarget.IsDeadlyChase)
+                {
+                    IsArresting = true;
+                }
+
+
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                float LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
+
+                if (OtherTarget.IsBusted)
+                {
+                    if (CurrentSubTask != SubTask.Aim && LocalDistance < 10f)//7f
                     {
                         CurrentSubTask = SubTask.Aim;
-                        if (LocalDistance > 5f)
-                        {
-                            unsafe
-                            {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                            }
-                        }
-                        else
-                        {
-                            unsafe
-                            {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                            }
-                        }
-                    }
-                }
-            else if (IsArresting)
-            {
-
-                if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
-                {
-                    CurrentSubTask = SubTask.Shoot;
-                    if (LocalDistance > 5f)
-                    {
+                        SubTaskName = "BustedAim";
                         unsafe
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 0.5f, false, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
                     }
-                    else
+                    else if (CurrentSubTask != SubTask.Goto && LocalDistance >= 10f)//15f
                     {
+                        CurrentSubTask = SubTask.Goto;
+                        SubTaskName = "BustedGoTo";
                         unsafe
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, (uint)FiringPattern.DelayFireByOneSecond);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, RunSpeed, 2f, 0); //Original and works ok//7f
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
                     }
-
                 }
-                else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+                else if (IsArresting)
                 {
-                    CurrentSubTask = SubTask.Aim;
-                    if (LocalDistance > 5f)
+                    if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 10f)//7f
                     {
+                        CurrentSubTask = SubTask.Shoot;
+                        SubTaskName = "ArrestingShoot";
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 1.5f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                    }
+                    else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+                    {
+                        CurrentSubTask = SubTask.Aim;
+                        SubTaskName = "ArrestingAim";
                         unsafe
                         {
                             int lol = 0;
@@ -548,99 +523,67 @@ public class AIApprehend : ComplexTask
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
+                        
                     }
-                    else
+                    else if (CurrentSubTask != SubTask.Look && !ShouldShoot && LocalDistance < 10f && !ShouldAim)//7f
                     {
+                        CurrentSubTask = SubTask.Look;
+                        SubTaskName = "ArrestingLook";
                         unsafe
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 3f, RunSpeed, 2f, 0);
+                            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, OtherTarget.Pedestrian, 2000);
+                            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, 0, 2);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
                     }
-                }
-                else if (CurrentSubTask != SubTask.Look && !ShouldShoot && LocalDistance < 10f && !ShouldAim)//7f
-                {
-                    CurrentSubTask = SubTask.Look;
-                    unsafe
+                    else if (CurrentSubTask != SubTask.Goto && LocalDistance >= 10f)//15f
                     {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 3f, RunSpeed, 2f, 0);
-                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, OtherTarget.Pedestrian, 2000);
-                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, 0, 2);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        CurrentSubTask = SubTask.Goto;
+                        SubTaskName = "ArrestingGoTo";
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, RunSpeed, 2f, 0); //Original and works ok//7f
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                    }
+                    if ((OtherTarget.Pedestrian.IsStunned || OtherTarget.Pedestrian.IsRagdoll || OtherTarget.Pedestrian.Speed <= 0.25f) && !OtherTarget.IsBusted && LocalDistance <= 5f && !OtherTarget.IsZombie)
+                    {
+                        OtherTarget.IsBusted = true;
+                        if (Ped.Pedestrian.Exists())
+                        {
+                            OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
+                        }
+                        EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
                     }
                 }
-                else if (CurrentSubTask != SubTask.Goto && LocalDistance >= 10f)//15f
+                else
                 {
-                    CurrentSubTask = SubTask.Goto;
-                    unsafe
+                    Ped combatTarget = Ped.Pedestrian.CombatTarget;
+                    bool IsTargettingPlayer = combatTarget.Exists() && Game.LocalPlayer.Character.Exists() && combatTarget.Handle == Game.LocalPlayer.Character.Handle;//OtherTarget.Pedestrian.Handle;
+                    if (CurrentSubTask != SubTask.Fight || IsTargettingPlayer)//    SubTaskName != "Fighting" || ISSTUPIDSHIT)
                     {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 5f, RunSpeed, 2f, 0); //Original and works ok//7f
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        SubTaskName = "Fight";
+                        CurrentSubTask = SubTask.Fight;
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
+                        //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
+                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+                        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
+                        NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
                     }
                 }
-
-
-
-
-                if ((OtherTarget.Pedestrian.IsStunned || OtherTarget.Pedestrian.IsRagdoll) && !OtherTarget.IsBusted && LocalDistance <= 5f && !OtherTarget.IsZombie)
-                {
-                    OtherTarget.IsBusted = true;
-                    if (Ped.Pedestrian.Exists())
-                    {
-                        OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
-                    }
-                    //if (OtherTarget.CurrentTask?.Name != "GetArrestedSimple")
-                    //{
-                    //    OtherTarget.CurrentTask = new GetArrestedSimple(OtherTarget, Player);
-                    //    GameFiber.Yield();//TR Added back 7
-                    //    OtherTarget.CurrentTask.Start();
-                    //}
-                    EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
-                }
-
-
-
-
-
-
-            }
-            else
-            {
-                Ped combatTarget = Ped.Pedestrian.CombatTarget;
-                bool ISSTUPIDSHIT = combatTarget.Exists() && Game.LocalPlayer.Character.Exists() && combatTarget.Handle == Game.LocalPlayer.Character.Handle;//OtherTarget.Pedestrian.Handle;
-
-                if(ISSTUPIDSHIT)
-                {
-                    EntryPoint.WriteToConsole($"RETARD COP ALERT, IM GONNA JUST SHOOT RANDOMLY CUZ IM A FUCKUP! {Ped.Pedestrian.Handle}");
-                }
-                if (SubTaskName != "Fighting" || ISSTUPIDSHIT)
-                {
-
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Ped.Pedestrian, true);
-                    //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
-                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-                    NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
-                    NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
-                    SubTaskName = "Fighting";
-                }
-            }
-            GameFiber.Yield();
+                GameFiber.Yield();
             }
             Ped.IsRunningOwnFiber = false;
         }, "Run Cop Chase Logic");
@@ -718,7 +661,7 @@ public class AIApprehend : ComplexTask
                         }
                         else
                         {
-                            if(OtherTarget.IsBusted)
+                            if (OtherTarget.IsBusted)
                             {
                                 if (SubTaskName != "ArrestingCloseBusted")
                                 {

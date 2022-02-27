@@ -15,14 +15,21 @@ public class Names : INameProvideable
     private List<PedName> NameList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Names*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            NameList = Serialization.DeserializeParams<PedName>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             NameList = Serialization.DeserializeParams<PedName>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(NameList, ConfigFileName);
         }
     }
     public string GetRandomName(bool IsMale)
@@ -3988,6 +3995,7 @@ public class Names : INameProvideable
         {
             NameList.Add(new PedName(Name, NameType.Unisex));
         }
+        Serialization.SerializeParams(NameList, ConfigFileName);
     }
 }
 

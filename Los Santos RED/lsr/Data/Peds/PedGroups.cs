@@ -18,14 +18,21 @@ public class PedGroups : IPedGroups
     }
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("PedGroups*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             PedGroupList = Serialization.DeserializeParams<PedGroup>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(PedGroupList, ConfigFileName);
         }
     }
     private void DefaultConfig()
@@ -100,6 +107,7 @@ public class PedGroups : IPedGroups
                 new PedGroup("DOMESTIC_ANIMAL","DOMESTIC_ANIMAL","Pet",false),
                 new PedGroup("DEER","DEER","Deer",false),
             };
+        Serialization.SerializeParams(PedGroupList, ConfigFileName);
     }
     public PedGroup GetPedGroup(string internalName)
     {

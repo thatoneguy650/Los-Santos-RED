@@ -19,14 +19,21 @@ public class Intoxicants : IIntoxicants
     public List<Intoxicant> Items => IntoxicantList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Itoxicants*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(IntoxicantList, ConfigFileName);
         }
     }
     private void DefaultConfig()
@@ -54,6 +61,7 @@ public class Intoxicants : IIntoxicants
             new Intoxicant("Equanox", 30000, 60000, 5.0f, "drug_wobbly",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) { ContinuesWithoutCurrentUse = true },
             new Intoxicant("Zombix", 25000, 60000, 5.0f, "BeastIntro01",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) {  EffectIntoxicationLimit = 0.5f, ContinuesWithoutCurrentUse = true },
         };
+        Serialization.SerializeParams(IntoxicantList, ConfigFileName);
     }
     public Intoxicant Get(string name)
     {

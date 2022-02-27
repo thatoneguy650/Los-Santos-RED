@@ -221,11 +221,11 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.GunStores.AddRange(new List<GunStore>()
 
         {
-            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General Specialty","GunShop1") { IsEnabled = true, IsIllegalShop = true },
-            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Pistol Specialty","GunShop5") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 5000 },       
-            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "SMG Specialty","GunShop3") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 10000 },
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "AR Specialty","GunShop4") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 15000 },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Heavy Specialty","GunShop2") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General shop","GunShop1") { IsEnabled = true, IsIllegalShop = true },
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 5000 },       
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 10000 },
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 15000 },
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
 
         });
 

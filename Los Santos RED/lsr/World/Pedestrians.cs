@@ -327,12 +327,12 @@ public class Pedestrians
                 if(otherGang.ID != gang.ID)
                 {
                     RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
-                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Like);
+                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
                 }
             }
-            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Like);
-            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
+            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
+            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
         }
     }
     public void Dispose()

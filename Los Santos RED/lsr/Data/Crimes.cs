@@ -2,37 +2,33 @@
 using LosSantosRED.lsr.Interface;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class Crimes : ICrimes
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Crimes.xml";
-    private bool UseVanillaConfig = true;
     public Crimes()
     {
     }
     public List<Crime> CrimeList { get; private set; } = new List<Crime>();
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFileName);
         }
         else
         {
-            if (UseVanillaConfig)
-            {
-                DefaultConfig();
-            }
-            else
-            {
-                CustomConfig();
-            }
-            Serialization.SerializeParams(CrimeList, ConfigFileName);
+            DefaultConfig();
         }
-    }
-    private void CustomConfig()
-    {
-        DefaultConfig();
     }
     private void DefaultConfig()
     {
@@ -96,5 +92,6 @@ public class Crimes : ICrimes
             new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false, false,false),
 
         };
+        Serialization.SerializeParams(CrimeList, ConfigFileName);
     }
 }

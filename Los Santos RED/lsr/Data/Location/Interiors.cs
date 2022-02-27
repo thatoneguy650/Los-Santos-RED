@@ -18,14 +18,21 @@ public class Interiors : IInteriors
     private List<Interior> LocationsList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Interiors*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            LocationsList = Serialization.DeserializeParams<Interior>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             LocationsList = Serialization.DeserializeParams<Interior>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(LocationsList, ConfigFileName);
         }
     }
     public List<Interior> GetAllPlaces()
@@ -387,6 +394,7 @@ public class Interiors : IInteriors
 
 
     };
+        Serialization.SerializeParams(LocationsList, ConfigFileName);
     }
 }
 

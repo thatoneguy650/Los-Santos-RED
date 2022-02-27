@@ -20,14 +20,21 @@ public class Weapons : IWeapons
     private List<WeaponInformation> WeaponsList;
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Weapons*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(WeaponsList, ConfigFileName);
         }
     }
     public bool CanPlayerWeaponSuicide(Ped Pedestrian)
@@ -1016,6 +1023,8 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("gadget_parachute", 1, WeaponCategory.Misc, 0, 0xFBAB5776, false, false, false));
         WeaponsList.Add(new WeaponInformation("weapon_fireextinguisher", 1, WeaponCategory.Misc, 0, 0x060EC506, false, false, false));
         WeaponsList.Add(new WeaponInformation("weapon_hazardcan", 1, WeaponCategory.Misc, 0, 0xBA536372, false, false, false));
+
+        Serialization.SerializeParams(WeaponsList, ConfigFileName);
 
     }
 }

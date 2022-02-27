@@ -16,14 +16,21 @@ public class Zones : IZones
     public List<Zone> ZoneList { get; private set; } = new List<Zone>();
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Zones*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            ZoneList = Serialization.DeserializeParams<Zone>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
             ZoneList = Serialization.DeserializeParams<Zone>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            Serialization.SerializeParams(ZoneList, ConfigFileName);
         }
     }
     public string GetZoneName(Vector3 ZonePosition)
@@ -222,6 +229,7 @@ public class Zones : IZones
 
 
             };
+        Serialization.SerializeParams(ZoneList, ConfigFileName);
     }
     private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {

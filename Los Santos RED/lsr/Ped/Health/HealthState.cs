@@ -110,7 +110,7 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if((HurtByPed || HurtByVehicle) && Math.Abs(Health - prevHealth) >= 15 && MyPed.HasExistedFor >= 4000)
+                if((HurtByPed || HurtByVehicle) && Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
                 {
                     MyPed.YellInPain();
                     MyPed.GameTimeLastInjured = Game.GameTime;

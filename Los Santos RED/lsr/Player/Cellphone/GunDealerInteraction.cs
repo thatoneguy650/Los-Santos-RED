@@ -36,25 +36,15 @@ public class GunDealerInteraction
         GunDealerMenu.RemoveBanner();
         MenuPool.Add(GunDealerMenu);
         GunDealerMenu.OnItemSelect += OnTopItemSelect;
-
-        // RequestLocation = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = 0.ToString("C0") };
         RequestWork = new UIMenuItem("Request Work", "Ask for some work from the gun dealers, better be strapped");
-        LocationSubMenu = MenuPool.AddSubMenu(GunDealerMenu, "Request Store Address");
-
         GunDealerMenu.AddItem(RequestWork);
-
-        LocationSubMenu.RemoveBanner();
-        //GunDealerMenu.AddItem(RequestLocation);
-
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
             if (gl.IsIllegalShop && gl.IsEnabled)
             {
-                LocationSubMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.StreetAddress));
+                GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.StreetAddress));
             }
         }
-
-        LocationSubMenu.OnItemSelect += OnGangItemSelect;
         GunDealerMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
@@ -62,10 +52,9 @@ public class GunDealerInteraction
             {
                 GameFiber.Yield();
             }
-            Player.CellPhone.Close(2000);
+            Player.CellPhone.Close(250);
         }, "CellPhone");
     }
-
     private void OnTopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == RequestWork)
@@ -81,21 +70,20 @@ public class GunDealerInteraction
             Player.CellPhone.AddPhoneResponse(AnsweredContact.Name, AnsweredContact.IconName, Replies.PickRandom());
             sender.Visible = false;
         }
+        else
+        {
+            RequestLocations(selectedItem.Text);
+            sender.Visible = false;
+        }
     }
 
     public void Update()
     {
         MenuPool.ProcessMenus();
     }
-
-    private void OnGangItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void RequestLocations(string name)
     {
-        RequestLocations(selectedItem.Text);
-        sender.Visible = false;
-    }
-    private void RequestLocations(string AddressText)
-    {
-        GunStore gunStore = PlacesOfInterest.PossibleLocations.GunStores.FirstOrDefault(x => x.StreetAddress == AddressText);
+        GunStore gunStore = PlacesOfInterest.PossibleLocations.GunStores.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
         if (gunStore != null)
         {
             Player.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);
