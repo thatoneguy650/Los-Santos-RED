@@ -66,6 +66,11 @@ public class CivilianTasker
                     else if (civilian.IsBusted)
                     {
                         UpdateCurrentTask(civilian);
+                        if (civilian.CurrentTask != null && civilian.CurrentTask.ShouldUpdate)
+                        {
+                            civilian.UpdateTask(null);
+                            GameFiber.Yield();
+                        }
                     }
                 }
                 catch (Exception e)
@@ -105,6 +110,11 @@ public class CivilianTasker
                     else if (merchant.IsBusted)
                     {
                         UpdateCurrentTask(merchant);
+                        if (merchant.CurrentTask != null && merchant.CurrentTask.ShouldUpdate)
+                        {
+                            merchant.UpdateTask(null);
+                            GameFiber.Yield();
+                        }
                     }
                 }
                 catch (Exception e)

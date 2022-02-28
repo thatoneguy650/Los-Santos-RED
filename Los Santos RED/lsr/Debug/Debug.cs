@@ -629,13 +629,13 @@ public class Debug
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CellPhone.AddContact(myGang, true);
 
-
+        SpawnNoGunAttackers();
 
 
         //Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
 
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.GangRelationships.SetReputation(myGang, 2000, true);
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.GangRelationships.SetReputation(myGang, 2000, true);
 
         //SpawnNoGunAttackers();
         //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
@@ -735,12 +735,12 @@ public class Debug
 
 
 
-        Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
-        Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
-        Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
-        Player.Inventory.Add(ModItems.Get("Alco Patch"), 4);
+        //Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
+        //Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
+        //Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
+        //Player.Inventory.Add(ModItems.Get("Alco Patch"), 4);
 
-        Player.Inventory.Add(ModItems.Get("Equanox"), 4);
+        //Player.Inventory.Add(ModItems.Get("Equanox"), 4);
 
         //SetInRandomInterior();
 
@@ -858,8 +858,9 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        ArrestScene();
 
-        Game.LocalPlayer.Character.Health -= 25;
+       // Game.LocalPlayer.Character.Health -= 25;
 
         Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         Player.Inventory.Add(ModItems.Get("Heroin"), 4);
@@ -2133,12 +2134,14 @@ public class Debug
     {
         GameFiber.StartNew(delegate
         {
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(-20f).Around2D(10f));
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(20f).Around2D(10f));
             GameFiber.Yield();
             if (coolguy.Exists())
             {
                 coolguy.BlockPermanentEvents = true;
                 coolguy.KeepTasks = true;
+                NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe
+                NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", coolguy, false);
 
                 if (RandomItems.RandomPercent(30))
                 {
@@ -3329,6 +3332,128 @@ public class Debug
 ,"whitenightlighting"
 ,"WhiteOut"};
     }
+
+
+    private void ArrestScene()
+    {
+
+
+        GameFiber.StartNew(delegate
+        {
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(0.5f));
+            GameFiber.Yield();
+
+            GameFiber.Sleep(1000);
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
+
+
+
+
+
+                string Dictionary =  "mp_arrest_paired";
+                string PlayerAnimation = "cop_p1_rf_right_0";
+                string DriverAnimation = "crook_p1_right";
+
+
+                Dictionary = "mp_arresting";
+                PlayerAnimation = "arrest_on_floor_back_right_a";
+                DriverAnimation = "arrest_on_floor_back_right_b";
+
+                Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+                float PlayerHeading = Game.LocalPlayer.Character.Heading;
+
+
+
+                int PlayerScene;
+                int DriverScene;
+                AnimationDictionary.RequestAnimationDictionay(Dictionary);
+
+
+                //coolguy.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(1f);
+                coolguy.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(0.5f);
+                coolguy.Heading = PlayerHeading;
+
+
+                Vector3 DriverPos = coolguy.Position;
+                float DriverHeading = coolguy.Heading;
+
+
+                PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 0.0f, 0.0f, PlayerHeading, 2);//270f //old
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Dictionary, PlayerAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+                DriverScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverPos.X, DriverPos.Y, DriverPos.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", DriverScene, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", coolguy, DriverScene, Dictionary, DriverAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", DriverScene, 0.0f);
+                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) < 1.0f && coolguy.Exists())
+                {
+                    //float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+                    GameFiber.Yield();
+                }
+                EntryPoint.WriteToConsole("Arrest Test First Phase Over");
+                //if (coolguy.Exists())
+                //{
+                //    //PlayerAnimation = "cop_p2_back_right";
+                //    //DriverAnimation = "crook_p2_back_right";
+                //    PlayerAnimation = "cop_p2_back_right";
+                //    DriverAnimation = "crook_p2_back_right";
+                //    PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 0.0f, 0.0f, PlayerHeading, 2);//270f //old
+                //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+                //    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Dictionary, PlayerAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+                //    DriverScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverPos.X, DriverPos.Y, DriverPos.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", DriverScene, false);
+                //    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", coolguy, DriverScene, Dictionary, DriverAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", DriverScene, 0.0f);
+                //    while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) < 1.0f && coolguy.Exists())
+                //    {
+                //        //float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+                //        GameFiber.Yield();
+                //    }
+                //    EntryPoint.WriteToConsole("Arrest Test Second Phase Over");
+                //    //if (coolguy.Exists())
+                //    //{
+                //    //    PlayerAnimation = "cop_p3_fwd";
+                //    //    DriverAnimation = "crook_p3";
+                //    //    PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 0.0f, 0.0f, PlayerHeading, 2);//270f //old
+                //    //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+                //    //    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Dictionary, PlayerAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                //    //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+                //    //    DriverScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverPos.X, DriverPos.Y, DriverPos.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                //    //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", DriverScene, false);
+                //    //    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", coolguy, DriverScene, Dictionary, DriverAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                //    //    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", DriverScene, 0.0f);
+                //    //    while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) < 1.0f && coolguy.Exists())
+                //    //    {
+                //    //        //float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+                //    //        GameFiber.Yield();
+                //    //    }
+                //    //    EntryPoint.WriteToConsole("Arrest Test Third Phase Over");
+                //    //}
+                //}
+
+            }
+
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+            Game.LocalPlayer.Character.Tasks.Clear();
+
+        }, "Run Debug Logic");
+
+
+
+
+
+
+    }
+
+
     public class InteriorPosition
     {
         public string Name { get; set; }

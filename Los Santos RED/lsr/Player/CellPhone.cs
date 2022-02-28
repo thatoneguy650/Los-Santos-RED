@@ -267,6 +267,16 @@ public class CellPhone
         }
 
     }
+
+    public void DeleteText(iFruitText text)
+    {
+        AddedTexts.Remove(text);
+        CustomiFruit.Texts.Remove(text);
+    }
+    public void DeletePhoneRespone(PhoneResponse phoneResponse)
+    {
+        PhoneResponses.Remove(phoneResponse);
+    }
     public void Update()
     {
         CheckScheduledItems();
@@ -295,11 +305,13 @@ public class CellPhone
     public void ClearTextMessages()
     {
         AddedTexts = new List<iFruitText>();
+        CustomiFruit.Texts.Clear();
     }
     public void ClearContacts()
     {
         ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
         AddedContacts = new List<iFruitContact>();
+        CustomiFruit.Contacts.Clear();
     }
     public void ClearPhoneResponses()
     {

@@ -137,18 +137,18 @@ public class GameLocation
             {
                 return BlipSprite.CriminalDrugs;
             }
-            else if (Type == LocationType.Hotel)
-            {
-                return (BlipSprite)475;
-            }
+            //else if (Type == LocationType.Hotel)
+            //{
+            //    return (BlipSprite)475;
+            //}
             else if (Type == LocationType.Apartment)
             {
                 return BlipSprite.GarageForSale;
             }
-            else if (Type == LocationType.GangDen)
-            {
-                return BlipSprite.Shrink;
-            }
+            //else if (Type == LocationType.GangDen)
+            //{
+            //    return BlipSprite.Shrink;
+            //}
             else if (Type == LocationType.House)
             {
                 return BlipSprite.GarageForSale;
@@ -157,14 +157,14 @@ public class GameLocation
             {
                 return BlipSprite.Barber;
             }
-            else if (Type == LocationType.ScrapYard)
-            {
-                return BlipSprite.CriminalCarsteal;
-            }
-            else if (Type == LocationType.GunShop)
-            {
-                return BlipSprite.AmmuNation;
-            }
+            //else if (Type == LocationType.ScrapYard)
+            //{
+            //    return BlipSprite.CriminalCarsteal;
+            //}
+            //else if (Type == LocationType.GunShop)
+            //{
+            //    return BlipSprite.AmmuNation;
+            //}
             else if (Type == LocationType.HardwareStore)
             {
                 return (BlipSprite)566; //BlipSprite.Repair;

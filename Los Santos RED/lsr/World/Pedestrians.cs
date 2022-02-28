@@ -643,7 +643,7 @@ public class Pedestrians
             }
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
-        gm.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
+        gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
         bool withPerson = false;
         if(gangPerson != null)
         {

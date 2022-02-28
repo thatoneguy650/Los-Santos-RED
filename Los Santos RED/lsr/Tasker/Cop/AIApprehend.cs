@@ -469,7 +469,7 @@ public class AIApprehend : ComplexTask
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 0.5f, false, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 1.0f, false, 3.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -494,7 +494,7 @@ public class AIApprehend : ComplexTask
                 }
                 else if (IsArresting)
                 {
-                    if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 10f)//7f
+                    if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 7f)//7f
                     {
                         CurrentSubTask = SubTask.Shoot;
                         SubTaskName = "ArrestingShoot";
@@ -502,14 +502,14 @@ public class AIApprehend : ComplexTask
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 1.5f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
                     }
-                    else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+                    else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 7f && ShouldAim)//7f
                     {
                         CurrentSubTask = SubTask.Aim;
                         SubTaskName = "ArrestingAim";
@@ -525,7 +525,7 @@ public class AIApprehend : ComplexTask
                         }
                         
                     }
-                    else if (CurrentSubTask != SubTask.Look && !ShouldShoot && LocalDistance < 10f && !ShouldAim)//7f
+                    else if (CurrentSubTask != SubTask.Look && !ShouldShoot && LocalDistance < 7f && !ShouldAim)//7f
                     {
                         CurrentSubTask = SubTask.Look;
                         SubTaskName = "ArrestingLook";
@@ -559,7 +559,7 @@ public class AIApprehend : ComplexTask
                     }
                     if ((OtherTarget.Pedestrian.IsStunned || OtherTarget.Pedestrian.IsRagdoll || OtherTarget.Pedestrian.Speed <= 0.25f) && !OtherTarget.IsBusted && LocalDistance <= 5f && !OtherTarget.IsZombie)
                     {
-                        OtherTarget.IsBusted = true;
+                        OtherTarget.SetBusted();
                         if (Ped.Pedestrian.Exists())
                         {
                             OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;

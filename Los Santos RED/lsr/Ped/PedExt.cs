@@ -359,6 +359,12 @@ public class PedExt : IComplexTaskable
         //    PedCrimes.Reset();
         //}
     }
+    public void SetBusted()
+    {
+        IsBusted = true;
+        CanBeAmbientTasked = false;
+        CanBeTasked = false;
+    }
     public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -403,7 +409,7 @@ public class PedExt : IComplexTaskable
         {
             if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
             {
-                IsBusted = true;
+                SetBusted();
                 EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
             }
         }

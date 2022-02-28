@@ -350,7 +350,7 @@ public class SpawnTask
         }
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
         World.Pedestrians.AddEntity(GangMember);  
-        GangMember.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
+        GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
         GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
         GangMember.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
         GangMember.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
@@ -446,7 +446,7 @@ public class SpawnTask
                 NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
                 GameFiber.Yield();
             }
-            EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID}");
+            EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");
         }
     }
     private VehicleExt CreateVehicle()

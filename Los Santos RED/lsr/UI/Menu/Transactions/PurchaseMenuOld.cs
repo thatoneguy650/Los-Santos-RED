@@ -1409,13 +1409,13 @@ public class PurchaseMenuOld : Menu
             //    Hide();
             //}
             ItemsBought++;
-            if (modItem.Type == eConsumableType.Service && Store?.Type == LocationType.Hotel)
-            {
-                StayAtHotel(modItem, Store, TotalItems);
-                //Player.StartServiceActivity(modItem, Store, TotalItems);
-            }
-            else
-            {
+            //if (modItem.Type == eConsumableType.Service && Store?.Type == LocationType.Hotel)
+            //{
+            //    StayAtHotel(modItem, Store, TotalItems);
+            //    //Player.StartServiceActivity(modItem, Store, TotalItems);
+            //}
+            //else
+            //{
                 if (modItem.ConsumeOnPurchase)
                 {
                     Player.ConsumeItem(modItem);
@@ -1424,7 +1424,7 @@ public class PurchaseMenuOld : Menu
                 {
                     Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
                 }
-            }
+            //}
             if (subtractCash)
             {
                 Player.GiveMoney(-1 * TotalPrice);

@@ -140,15 +140,15 @@ public class SellMenuOld : Menu
 
                         bool enabled = Player.Inventory.HasItem(cii.ModItemName);
                         description += "~n~~s~";
-                        if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-                        {
-                            ToSellVehicle = World.Vehicles.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
-                            if (ToSellVehicle != null)
-                            {
-                                enabled = true;
-                                description += $"~n~Selected Vehicle: ~p~{ToSellVehicle.MakeName()} ~p~{ToSellVehicle.ModelName()}~s~";
-                            }
-                        }                       
+                        //if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
+                        //{
+                        //    ToSellVehicle = World.Vehicles.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
+                        //    if (ToSellVehicle != null)
+                        //    {
+                        //        enabled = true;
+                        //        description += $"~n~Selected Vehicle: ~p~{ToSellVehicle.MakeName()} ~p~{ToSellVehicle.ModelName()}~s~";
+                        //    }
+                        //}                       
 
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
                         UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
@@ -174,17 +174,17 @@ public class SellMenuOld : Menu
             {
                 Hide();
             }
-            if (ToAdd.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-            {
-                ExitAfterPurchase = true;
-                Player.GiveMoney(menuItem.SalesPrice);
-                ItemsSold++;
+            //if (ToAdd.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
+            //{
+            //    ExitAfterPurchase = true;
+            //    Player.GiveMoney(menuItem.SalesPrice);
+            //    ItemsSold++;
 
-                ScrapVehicle();
+            //    ScrapVehicle();
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 if (ToAdd.CanConsume)
                 {
                     if (Player.Inventory.Remove(ToAdd, 1))
@@ -194,7 +194,7 @@ public class SellMenuOld : Menu
                         EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
                     }
                 }
-            }
+            //}
         }
         GameFiber.Sleep(500);
         while (Player.IsPerformingActivity)

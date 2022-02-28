@@ -176,29 +176,32 @@ public class WeaponInventory
     }
     public void UpdateSettings()
     {
-        if (WeaponOwner.CurrentTask?.Name == "AIApprehend")
+        if (WeaponOwner.Pedestrian.Exists())
         {
-            WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
-        }
-        else if (WeaponOwner.IsInVehicle)
-        {
-            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.VehicleAccuracy;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.VehicleShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
-        }
-        else if (IsSetLessLethal)
-        {
-            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.TaserAccuracy;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.TaserShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
-        }
-        else
-        {
-            WeaponOwner.Pedestrian.Accuracy = WeaponOwner.Accuracy;//Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.ShootRate);// Settings.SettingsManager.PoliceSettings.GeneralShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+            if (WeaponOwner.IsCop && WeaponOwner.CurrentTask?.Name == "AIApprehend")
+            {
+                WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
+            }
+            else if (WeaponOwner.IsInVehicle)
+            {
+                WeaponOwner.Pedestrian.Accuracy = WeaponOwner.VehicleAccuracy;
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.VehicleShootRate);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+            }
+            else if (WeaponOwner.IsCop && IsSetLessLethal)
+            {
+                WeaponOwner.Pedestrian.Accuracy = WeaponOwner.TaserAccuracy;
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.TaserShootRate);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+            }
+            else
+            {
+                WeaponOwner.Pedestrian.Accuracy = WeaponOwner.Accuracy;//Settings.SettingsManager.PoliceSettings.GeneralAccuracy;
+                NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.ShootRate);// Settings.SettingsManager.PoliceSettings.GeneralShootRate);
+                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, WeaponOwner.CombatAbility);
+            }
         }
     }
     public void SetDefault()
@@ -214,6 +217,12 @@ public class WeaponInventory
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(WeaponOwner.Pedestrian);
+            }
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
+            if (currentWeapon != 2725352035)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, 2725352035, true);
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys       

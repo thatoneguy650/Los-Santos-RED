@@ -310,9 +310,20 @@ public class PlayerInfoMenu
             string DescriptionText = "";
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
+            DescriptionText += $"~n~~n~Select to ~r~Delete Response~s~";
             string ListEntryItem = $"{text.ContactName} {TimeReceived}";
             string DescriptionHeaderText = $"{text.ContactName}";
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
+            tItem.Activated += (s, e) =>
+            {
+                if (text != null)
+                {
+                    Player.CellPhone.DeletePhoneRespone(text);
+                    PhoneRepliesSubMenu.Items.Remove(tItem);
+                    PhoneRepliesSubMenu.RefreshIndex();
+                    EntryPoint.WriteToConsole($"Phone Reply deleted {text.ContactName} {text.Message}");
+                }
+            };
             items.Add(tItem);
         }
         TabItem ClearPhoneResponses = new TabTextItem("Clear Phone Responses", "Clear Phone Responses", "Select to clear all ~o~Phone Responses~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
@@ -337,27 +348,20 @@ public class PlayerInfoMenu
             string DescriptionText = "";
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
-
+            DescriptionText += $"~n~~n~Select to ~r~Delete Message~s~";
             string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
             string DescriptionHeaderText = $"{text.Name}";
-
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
-
-
-
-
-
             tItem.Activated += (s, e) =>
             {
-                //iFruitText myText = Player.CellPhone.TextList.Where(x => x.Index == ).FirstOrDefault();
                 if (text != null)
                 {
-                    text.IsRead = true;
-                    EntryPoint.WriteToConsole($"Text Message Marked Read {text.Name} {text.Message}");
-
-                    Game.DisplaySubtitle($"Text Message Marked Read {text.Name} {text.Message}", 5000);
+                    Player.CellPhone.DeleteText(text);
+                    TextMessagesSubMenu.Items.Remove(tItem);
+                    TextMessagesSubMenu.RefreshIndex();
+                    EntryPoint.WriteToConsole($"Text Message deleted {text.Name} {text.Message}");
                 }
-            };//Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
+            };
             items.Add(tItem);
         }
 
@@ -517,21 +521,21 @@ public class PlayerInfoMenu
                 return "Liquor Store";
             case LocationType.PawnShop:
                 return "Pawn Shop";
-            case LocationType.ScrapYard:
-                return "Scrap Yard";
+            //case LocationType.ScrapYard:
+            //    return "Scrap Yard";
             case LocationType.StripClub:
                 return "Strip Club";
             case LocationType.VendingMachine:
                 return "Vending Machine";
-            case LocationType.GunShop:
-                return "Gun Shop";
+            //case LocationType.GunShop:
+            //    return "Gun Shop";
             default:
                 return lt.ToString();
         }
     }
     private bool IsValidLocationType(LocationType lt)
     {
-        if (lt == LocationType.BeautyShop || lt == LocationType.GangDen || lt == LocationType.Garage || lt == LocationType.VendingMachine || lt == LocationType.Stadium || lt == LocationType.Grave || lt == LocationType.GunShop || lt == LocationType.BusStop || lt == LocationType.DrugDealer || lt == LocationType.Other)
+        if (lt == LocationType.BeautyShop || lt == LocationType.Garage || lt == LocationType.VendingMachine || lt == LocationType.Stadium || lt == LocationType.Grave || lt == LocationType.BusStop || lt == LocationType.DrugDealer || lt == LocationType.Other)
         {
             return false;
         }

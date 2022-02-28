@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 public class Voice
 {
     private Cop Cop;
+    private bool IsInFiber = false;
 
     private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE", "COMBAT_TAUNT" };
     private readonly List<string> DeadlyChaseSpeech = new List<string> { "COVER_YOU", "COVER_ME", "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "GET_HIM", "REQUEST_NOOSE" };
@@ -26,71 +27,64 @@ public class Voice
     private uint GameTimeLastRadioed;
     private uint GameTimeLastSpoke;
 
-    //private bool isFreeMode = false;
-    //private string freeModeVoice = "";
-    //private int TimeBetweenYelling = 2500;
     private int TimeBetweenSpeaking;
-    //private uint GameTimeLastYelled;
-
+    private int TimeBetweenRadioIn;
     public Voice(Cop cop, string modelName)
     {
         Cop = cop;
-        //if (modelName.ToLower() == "mp_m_freemode_01")
-        //{
-        //    isFreeMode = true;
-        //    freeModeVoice = "S_M_Y_COP_01_WHITE_FULL_01";// "S_M_Y_COP_01";
-        //}
-        //else if (modelName.ToLower() == "mp_f_freemode_01")
-        //{
-        //    isFreeMode = true;
-        //    freeModeVoice = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
-        //}
+        TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 15000);
+        TimeBetweenSpeaking = 25000 + RandomItems.GetRandomNumberInt(0, 13000);
     }
-    public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < 60000;
+    public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < TimeBetweenRadioIn;
     public bool IsSpeechTimedOut => Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
-    //public bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
-    public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
+    public bool CanRadioIn => !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
-    //public bool CanYell => !IsYellingTimeOut && Cop.DistanceToPlayer <= 50f;
 
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
-        if (CanRadioIn && currentPlayer.IsWanted)
+        if (CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
         {
-            string AnimationToPlay = "generic_radio_enter";
-            //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
-            //if (CurrentGun != null && CurrentGun.IsOneHanded)
-            //    AnimationToPlay = "radio_enter";
-            Speak(currentPlayer);
-            AnimationDictionary.RequestAnimationDictionay("random@arrests");
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
+            TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 25000);
             GameTimeLastRadioed = Game.GameTime;
+            GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+            {
+                IsInFiber = true;
+                AnimationDictionary.RequestAnimationDictionay("random@arrests");
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_enter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+                GameFiber.Sleep(1000);
+                if (Cop.Pedestrian.Exists())
+                {
+                    PlaySpeech("CRIMINAL_APPREHENDED", false);
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_chatter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+                    GameFiber.Sleep(1000);
+                }
+                
+                if (Cop.Pedestrian.Exists())
+                {
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_exit", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+                }
+                IsInFiber = false;
+                GameTimeLastRadioed = Game.GameTime;
+            }, "SetArrestedAnimation");
         }
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
-        //if (Cop.Pedestrian.Exists() && (Cop.Pedestrian.IsInWrithe || Cop.RecentlyInjured))
-        //{
-        //    YellInPain();
-        //}
-        //else
-        //{
-            if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
+        if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
+        {
+            if (Cop.CurrentTask.OtherTarget.WantedLevel > currentPlayer.WantedLevel || Cop.CurrentTask.OtherTarget.IsDeadlyChase && currentPlayer.PoliceResponse.IsDeadlyChase)
             {
-                if (Cop.CurrentTask.OtherTarget.WantedLevel > currentPlayer.WantedLevel || Cop.CurrentTask.OtherTarget.IsDeadlyChase && currentPlayer.PoliceResponse.IsDeadlyChase)
-                {
-                    SpeakToTarget();
-                }
-                else
-                {
-                    SpeakToPlayer(currentPlayer);
-                }
+                SpeakToTarget();
             }
             else
             {
                 SpeakToPlayer(currentPlayer);
             }
-        //}
+        }
+        else
+        {
+            SpeakToPlayer(currentPlayer);
+        }
     }
     private void SpeakToPlayer(IPoliceRespondable currentPlayer)
     {

@@ -558,11 +558,11 @@ public class TransactionOld : Interaction
         {
             float distanceAway = 10f;
             float distanceAbove = 7f;
-            if (Store.Type == LocationType.Hotel)
-            {
-                distanceAway = 30f;
-                distanceAbove = 20f;
-            }
+            //if (Store.Type == LocationType.Hotel)
+            //{
+            //    distanceAway = 30f;
+            //    distanceAbove = 20f;
+            //}
             Vector3 InitialCameraPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, distanceAway);
             InitialCameraPosition = new Vector3(InitialCameraPosition.X, InitialCameraPosition.Y, InitialCameraPosition.Z + distanceAbove);
             StoreCam.Position = InitialCameraPosition;

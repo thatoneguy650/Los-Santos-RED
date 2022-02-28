@@ -195,6 +195,14 @@ public class DebugMenu : Menu
         Debug.AddItem(LoadSPMap);
         Debug.AddItem(LoadMPMap);
 
+
+
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To ScrapYard", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.ScrapYards));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Hotel", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Hotels));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To GunStores", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GunStores));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Gang Den", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GangDens));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
+
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
             Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));

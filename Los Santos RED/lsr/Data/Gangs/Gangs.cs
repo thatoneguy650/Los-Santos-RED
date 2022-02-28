@@ -165,84 +165,84 @@ public class Gangs : IGangs
 
         //Peds
         List<DispatchablePerson> LostMCPEds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_lost_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_lost_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_lost_03",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("ig_clay",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_f_y_lost_01",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> VagosPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_mexgoon_03",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_f_y_vagos_01",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgoon_03",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_vagos_01",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> FamiliesPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_famca_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_famdnf_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_famfor_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_f_y_families_01",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_famca_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_famdnf_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_famfor_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_families_01",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> BallasPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_ballasout_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_ballaeast_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_ballaorig_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_f_y_ballas_01",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_ballasout_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_ballaeast_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_ballaorig_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_ballas_01",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> MarabuntaPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_salvaboss_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_salvagoon_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_salvagoon_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_salvagoon_03",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_salvaboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_03",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> AltruistPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("a_m_m_acult_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_o_acult_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_o_acult_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_y_acult_01",10,10,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_y_acult_02",10,10,5,15,500,800,0,1),
-            new DispatchablePerson("a_f_m_fatcult_01",10,10,5,15,500,800,0,1), };
+            new DispatchablePerson("a_m_m_acult_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_acult_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_acult_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_acult_01",10,10,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_acult_02",10,10,5,10,400,600,0,1),
+            new DispatchablePerson("a_f_m_fatcult_01",10,10,5,10,400,600,0,1), };
 
         List<DispatchablePerson> VarriosPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_azteca_01",100,100,5,15,500,800,0,1),
-            new DispatchablePerson("ig_ortega",20,20,5,15,500,800,0,1), };
+            new DispatchablePerson("g_m_y_azteca_01",100,100,5,10,400,600,0,1),
+            new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1), };
 
         List<DispatchablePerson> TriadsPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_m_chigoon_01",33,33,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_m_chigoon_02",33,33,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_m_korboss_01",33,33,5,15,500,800,0,1),
-            new DispatchablePerson("ig_hao",33,33,5,15,500,800,0,1),  };
+            new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_korboss_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("ig_hao",33,33,5,10,400,600,0,1),  };
 
         List<DispatchablePerson> KoreanPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_y_korean_01",33,33,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_korean_02",33,33,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_korlieut_01",33,33,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_y_korean_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_korean_02",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_korlieut_01",33,33,5,10,400,600,0,1) };
 
         List<DispatchablePerson> RedneckPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_m_hillbilly_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_m_hillbilly_02",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_02",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> ArmenianPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_m_armboss_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_m_armgoon_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_m_armlieut_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_armgoon_02",10,10,5,15,500,800,0,1) };
+            new DispatchablePerson("g_m_m_armboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_armgoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_armgoon_02",10,10,5,10,400,600,0,1) };
 
         List<DispatchablePerson> CartelPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("g_m_m_mexboss_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_m_mexboss_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("g_m_y_mexgang_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_y_mexthug_01",30,30,5,15,500,800,0,1), };
+            new DispatchablePerson("g_m_m_mexboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_mexboss_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1), };
 
         List<DispatchablePerson> MafiaPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,15,500,800,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,15,500,800,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,15,500,800,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_02",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("u_m_m_jewelsec_01",30,30,5,15,500,800,0,1),
-             new DispatchablePerson("u_m_m_aldinapoli",30,30,5,15,500,800,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("u_m_m_jewelsec_01",30,30,5,10,400,600,0,1),
+             new DispatchablePerson("u_m_m_aldinapoli",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
                                                                                                                                                                                                    };
         //u_m_m_jewelsec_01//has some bad heads
         //u_m_m_aldinapoli
@@ -251,9 +251,9 @@ public class Gangs : IGangs
         
 
         List<DispatchablePerson> YardiesPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("a_m_m_og_boss_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_o_soucent_01",30,30,5,15,500,800,0,1),
-            new DispatchablePerson("a_m_y_soucent_02",30,30,5,15,500,800,0,1),};
+            new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1),};
 
         //Vehicles
         List<DispatchableVehicle> LostMCVehicles = new List<DispatchableVehicle>() {

@@ -40,7 +40,15 @@ namespace LosSantosRED.lsr.Helper
             }
             else
             {
-                StreetNumber = Math.Abs(CellY * 10).ToString() + "N";
+                if(CellY == 0)
+                {
+                    StreetNumber = "1N";
+                }
+                else
+                {
+                    StreetNumber = Math.Abs(CellY * 10).ToString() + "N";
+                }
+                
             }
             if (CellX < 0)
             {
@@ -48,7 +56,14 @@ namespace LosSantosRED.lsr.Helper
             }
             else
             {
-                StreetNumber += Math.Abs(CellX * 10).ToString() + "E";
+                if (CellX == 0)
+                {
+                    StreetNumber = "1E";
+                }
+                else
+                {
+                    StreetNumber += Math.Abs(CellX * 10).ToString() + "E";
+                }
             }
             return StreetNumber;
         }

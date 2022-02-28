@@ -411,7 +411,10 @@ public class PedSwap : IPedSwap
                 WantedToSet++;//just make it deadly chase if its 3, get it over with, most likely i should add crimes here or there might be unexpected issues
             }
             toCreate.SetWantedLevel(WantedToSet);
-            toCreate.IsBusted = CurrentPedIsBusted;
+            if(CurrentPedIsBusted)
+            {
+                toCreate.SetBusted();
+            }
             Entities.Pedestrians.AddEntity(toCreate);
             //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
             TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
