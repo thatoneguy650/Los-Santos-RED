@@ -858,7 +858,7 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        ArrestScene();
+        //ArrestScene();
 
        // Game.LocalPlayer.Character.Health -= 25;
 

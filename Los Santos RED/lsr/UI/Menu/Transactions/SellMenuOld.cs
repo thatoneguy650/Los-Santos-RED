@@ -139,20 +139,19 @@ public class SellMenuOld : Menu
                         }
 
                         bool enabled = Player.Inventory.HasItem(cii.ModItemName);
+                        InventoryItem coolItem = Player.Inventory.Items.Where(x => x.ModItem.Name == cii.ModItemName).FirstOrDefault();
+                        int MaxSell = 1;
+                        if (coolItem != null)
+                        {
+                            MaxSell = coolItem.Amount;
+                        }
                         description += "~n~~s~";
-                        //if (!enabled && myItem.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-                        //{
-                        //    ToSellVehicle = World.Vehicles.GetClosestVehicleExt(Store.EntrancePosition, true, 15f);
-                        //    if (ToSellVehicle != null)
-                        //    {
-                        //        enabled = true;
-                        //        description += $"~n~Selected Vehicle: ~p~{ToSellVehicle.MakeName()} ~p~{ToSellVehicle.ModelName()}~s~";
-                        //    }
-                        //}                       
-
                         description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-                        UIMenuItem myMenuItem = new UIMenuItem(cii.ModItemName, description) { Enabled = enabled, RightLabel = formattedSalesPrice };
-                        sellMenu.AddItem(myMenuItem);
+
+
+                        sellMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, MaxSell, 1) { Enabled = enabled, Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 });
+
+                        //sellMenu.AddItem(myMenuItem);
                     }
                 }
             }
@@ -174,27 +173,21 @@ public class SellMenuOld : Menu
             {
                 Hide();
             }
-            //if (ToAdd.Type == eConsumableType.Service && Store.Type == LocationType.ScrapYard)
-            //{
-            //    ExitAfterPurchase = true;
-            //    Player.GiveMoney(menuItem.SalesPrice);
-            //    ItemsSold++;
-
-            //    ScrapVehicle();
-
-            //}
-            //else
-            //{
-                if (ToAdd.CanConsume)
+            int TotalItems = 1;
+            if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
+            {
+                UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                TotalItems = myItem.Value;
+            }
+            if (ToAdd.CanConsume)
+            {
+                if (Player.Inventory.Remove(ToAdd, TotalItems))
                 {
-                    if (Player.Inventory.Remove(ToAdd, 1))
-                    {
-                        Player.GiveMoney(menuItem.SalesPrice);
-                        ItemsSold++;
-                        EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {1}", 5);
-                    }
+                    Player.GiveMoney(menuItem.SalesPrice * TotalItems);
+                    ItemsSold++;
+                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {TotalItems}", 5);
                 }
-            //}
+            }
         }
         GameFiber.Sleep(500);
         while (Player.IsPerformingActivity)

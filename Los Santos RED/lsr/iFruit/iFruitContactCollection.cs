@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace iFruitAddon2
         //public static int _currentIndex = 40;
         private bool _shouldDraw = true;
         private int _mScriptHash;
+        private bool HasReleasedSelect = false;
+        private uint GameTimeOpenedContacts;
+        private int timesShow;
 
         public iFruitContactCollection()
         {
@@ -20,15 +24,19 @@ namespace iFruitAddon2
         public bool IsScriptRunning { get; set; } = false;
         internal void Update(int handle)
         {
-            int _selectedIndex = 0;
+            int _selectedIndex = -999;
 
             // If we are in the Contacts menu
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
                 IsScriptRunning = true;
                 _shouldDraw = true;
+                if (!HasReleasedSelect && !Game.IsControlPressed(2, GameControl.CellphoneSelect))
+                {
+                    HasReleasedSelect = true;
+                }
 
-                if (Game.IsControlPressed(2, GameControl.CellphoneSelect))
+                if (Game.IsControlPressed(2, GameControl.CellphoneSelect) && HasReleasedSelect)
                 {
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
                 }
@@ -36,8 +44,14 @@ namespace iFruitAddon2
             else
             {
                 IsScriptRunning = false;
+                HasReleasedSelect = false;
+                timesShow = 0;
                 _selectedIndex = -1;
             }
+            
+            //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "SET_DATA_SLOT_EMPTY");
+            //NativeFunction.Natives.xC3D0841A0CC546A6(2);//2
+            //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
             // Browsing every added contacts
             foreach (iFruitContact contact in this)
@@ -61,6 +75,14 @@ namespace iFruitAddon2
                     GameFiber.Wait(10);
                     RemoveActiveNotification();
                 }
+            }
+            if (IsScriptRunning && timesShow <= 5)
+            {
+                NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "DISPLAY_VIEW");
+                NativeFunction.Natives.xC3D0841A0CC546A6(2);
+                NativeFunction.Natives.xC3D0841A0CC546A6(0);
+                NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+                timesShow++;
             }
             _shouldDraw = false;
         }

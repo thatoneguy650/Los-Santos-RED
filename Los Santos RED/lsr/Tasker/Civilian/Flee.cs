@@ -51,5 +51,9 @@ public class Flee : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
 }
 

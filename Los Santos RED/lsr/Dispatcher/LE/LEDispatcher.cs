@@ -10,8 +10,8 @@ public class LEDispatcher
 {
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
-    private readonly int LikelyHoodOfAnySpawn = 20;
-    private readonly int LikelyHoodOfCountySpawn = 15;
+    private readonly int LikelyHoodOfAnySpawn = 5;
+    private readonly int LikelyHoodOfCountySpawn = 10;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;

@@ -65,5 +65,9 @@ public class Fight : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
 }
 

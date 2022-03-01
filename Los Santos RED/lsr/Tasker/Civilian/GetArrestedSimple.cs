@@ -78,6 +78,10 @@ public class GetArrestedSimple : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
     private void ExecuteCurrentSubTask(bool IsFirstRun)
     {
         if (CurrentTask == Task.SetArrested)

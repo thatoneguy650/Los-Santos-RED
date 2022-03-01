@@ -13,7 +13,7 @@ namespace iFruitAddon2
         private int _mScriptHash;
         private int timesShow;
         private int CurrentTextIndex;
-        private bool HasLetGoOfSelect = false;
+        private bool HasReleasedSelect = false;
 
         public iFruitTextCollection()
         {
@@ -29,13 +29,13 @@ namespace iFruitAddon2
             {
                 IsScriptRunning = true;
                 _shouldDraw = true;
-
-                if(!HasLetGoOfSelect && !Game.IsControlPressed(2, GameControl.CellphoneSelect))
+                
+                if (!HasReleasedSelect && !Game.IsControlPressed(2, GameControl.CellphoneSelect))
                 {
-                    HasLetGoOfSelect = true;
+                    HasReleasedSelect = true;
                 }
 
-                if (Game.IsControlPressed(2, GameControl.CellphoneSelect) && HasLetGoOfSelect)
+                if (Game.IsControlPressed(2, GameControl.CellphoneSelect) && HasReleasedSelect)
                 {
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
                 }
@@ -43,7 +43,7 @@ namespace iFruitAddon2
             else
             {
                 IsScriptRunning = false;
-                HasLetGoOfSelect = false;
+                HasReleasedSelect = false;
                 timesShow = 0;
                 _selectedIndex = -1;
             }

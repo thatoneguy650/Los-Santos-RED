@@ -25,7 +25,7 @@ public class CellphoneSettings : ISettingsDefaultable
     public void SetDefault()
     {
         OverwriteVanillaEmergencyServicesContact = true;
-        EmergencyServicesContactID = 29;
+        EmergencyServicesContactID = 29;//29
         CustomContactStartingID = 30;
 
         OverwriteVanillaTextMessages = true;

@@ -160,6 +160,10 @@ public class Chase : ComplexTask
         }
         //EntryPoint.WriteToConsole($"TASKER: Chase UpdateEnd: {Ped.Pedestrian.Handle} InVeh: {Ped.IsInVehicle} InVeh2: {Ped.Pedestrian.IsInAnyVehicle(false)}");
     }
+    public override void ReTask()
+    {
+        CurrentSubTask = SubTask.None;
+    }
     private void EnterVehicle()
     {
         Ped.Pedestrian.BlockPermanentEvents = true;
@@ -303,6 +307,41 @@ public class Chase : ComplexTask
                 Ped.Pedestrian.KeepTasks = false;
                 float LocalDistance = Ped.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character);
 
+
+                //if (Player.IsBusted)
+                //{
+                //    if (CurrentSubTask != SubTask.Aim && LocalDistance < 10f)
+                //    {
+                //        CurrentSubTask = SubTask.Aim;
+                //        SubTaskName = "BustedAim";
+                //        unsafe
+                //        {
+                //            int lol = 0;
+                //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, RunSpeed, false, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
+                //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                //        }
+                //    }
+                //    else if (CurrentSubTask != SubTask.Goto && LocalDistance >= 10f)//15f
+                //    {
+                //        CurrentSubTask = SubTask.Goto;
+                //        SubTaskName = "BustedGoTo";
+                //        unsafe
+                //        {
+                //            int lol = 0;
+                //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 5f, RunSpeed, 2f, 0); //Original and works ok//7f
+                //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                //        }
+                //    }
+                //}
+                //else 
                 if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
                 {
                     CurrentSubTask = SubTask.Shoot;

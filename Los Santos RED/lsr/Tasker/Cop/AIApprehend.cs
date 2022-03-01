@@ -71,6 +71,7 @@ public class AIApprehend : ComplexTask
         None,
         Look,
         Fight,
+        Radio,
     }
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
@@ -290,6 +291,10 @@ public class AIApprehend : ComplexTask
         }
         //EntryPoint.WriteToConsole($"TASKER: Chase UpdateEnd: {Ped.Pedestrian.Handle} InVeh: {Ped.IsInVehicle} InVeh2: {Ped.Pedestrian.IsInAnyVehicle(false)}");
     }
+    public override void ReTask()
+    {
+        CurrentSubTask = SubTask.None;
+    }
     private void ExecuteCurrentSubTask()
     {
         if (CurrentTask == Task.CarJack)
@@ -429,7 +434,23 @@ public class AIApprehend : ComplexTask
                 if (OtherTarget.IsBusted)
                 {
                     IsChasingSlowly = true;
-                    RunSpeed = 1.0f;// 1.4f;
+                    if (OtherTarget.Pedestrian.Exists())
+                    {
+                        float speed = OtherTarget.Pedestrian.Speed;
+                        if (speed >= 0.25f)
+                        {
+                            RunSpeed = OtherTarget.Pedestrian.Speed;
+                        }
+                        else
+                        {
+                            RunSpeed = 1.0f;// 1.4f;
+                        }
+                    }
+                    else
+                    {
+                        RunSpeed = 1.0f;// 1.4f;
+                    }
+                    
                 }
                 else if (OtherTarget.WantedLevel == 1)
                 {
@@ -461,7 +482,7 @@ public class AIApprehend : ComplexTask
 
                 if (OtherTarget.IsBusted)
                 {
-                    if (CurrentSubTask != SubTask.Aim && LocalDistance < 10f)//7f
+                    if(CurrentSubTask != SubTask.Aim && LocalDistance < 10f)
                     {
                         CurrentSubTask = SubTask.Aim;
                         SubTaskName = "BustedAim";
@@ -469,7 +490,7 @@ public class AIApprehend : ComplexTask
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 1.0f, false, 3.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
+                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, RunSpeed, false, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, 4f, 20f);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);

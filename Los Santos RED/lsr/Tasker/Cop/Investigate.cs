@@ -70,6 +70,10 @@ public class Investigate : ComplexTask
             SetSiren();
         }
     }
+    public override void ReTask()
+    {
+
+    }
     private void ExecuteCurrentSubTask()
     {
         if (CurrentTask == Task.Wander)

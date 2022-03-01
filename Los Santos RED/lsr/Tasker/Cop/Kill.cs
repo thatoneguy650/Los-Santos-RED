@@ -164,6 +164,10 @@ public class Kill : ComplexTask
             }
         }
     }
+    public override void ReTask()
+    {
+
+    }
     public void ClearTasks()//temp public
     {
         if (Ped.Pedestrian.Exists())

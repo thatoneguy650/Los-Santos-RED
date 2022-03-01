@@ -52,6 +52,10 @@ public class CommitCrime : ComplexTask
             GameTimeTimeStartedHarassing = 0;
         }
     }
+    public override void ReTask()
+    {
+
+    }
     private void AttackTarget()
     {
         if (Ped.Pedestrian.Exists() && Target.Exists())

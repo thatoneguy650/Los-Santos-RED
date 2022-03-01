@@ -56,5 +56,9 @@ public class GangFlee : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
 }
 

@@ -75,6 +75,10 @@ public class GangIdle : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
     private void ExecuteCurrentSubTask(bool IsFirstRun)
     {
         if (CurrentTask == Task.Wander)

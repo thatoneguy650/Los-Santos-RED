@@ -78,6 +78,10 @@ public class ScaredCallIn : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
     private void ReportCrime()
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsRagdoll)

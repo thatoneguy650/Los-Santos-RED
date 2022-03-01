@@ -58,5 +58,9 @@ public class GangFight : ComplexTask
     {
 
     }
+    public override void ReTask()
+    {
+
+    }
 }
 

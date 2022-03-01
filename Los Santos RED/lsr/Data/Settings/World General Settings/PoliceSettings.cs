@@ -120,7 +120,7 @@ public class PoliceSettings : ISettingsDefaultable
                 ShowSpawnedBlips = true;
                 ShowVanillaBlips = false;
        // ManageDispatching = false;
-       // AllowRadioInAnimations = true;
+        AllowRadioInAnimations = true;
 #else
                        // ShowSpawnedBlips = false;
 #endif

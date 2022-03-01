@@ -97,6 +97,10 @@ public class Idle : ComplexTask
             SetSiren();
         }
     }
+    public override void ReTask()
+    {
+
+    }
     public override void Stop()
     {
 
