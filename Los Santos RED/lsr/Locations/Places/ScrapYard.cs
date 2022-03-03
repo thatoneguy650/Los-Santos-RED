@@ -141,11 +141,19 @@ public class ScrapYard : InteractableLocation
 
     private void ScrapSubMenu_OnIndexChange(UIMenu sender, int newIndex)
     {
-        VehicleExt carToScrap = GetVehicle(sender.MenuItems[newIndex].Text);
-        if (carToScrap != null && carToScrap.Vehicle.Exists())
+        if (sender != null && sender.MenuItems != null && sender.MenuItems.Any() && newIndex != -1)
         {
-            StoreCamera.HighlightEntity(carToScrap.Vehicle);
+            UIMenuItem coolmen = sender.MenuItems[newIndex];
+            if (coolmen != null)
+            {
+                VehicleExt carToScrap = GetVehicle(sender.MenuItems[newIndex].Text);
+                if (carToScrap != null && carToScrap.Vehicle.Exists())
+                {
+                    StoreCamera.HighlightEntity(carToScrap.Vehicle);
+                }
+            }
         }
+
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -167,7 +175,7 @@ public class ScrapYard : InteractableLocation
 
 
 
-            Game.FadeScreenOut(1500, true);     
+            Game.FadeScreenOut(1000, true);     
             string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
             string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
             string CarName = (MakeName + " " + ModelName).Trim();
@@ -177,7 +185,7 @@ public class ScrapYard : InteractableLocation
             ScrapSubMenu.Close(true);
 
 
-            Game.FadeScreenIn(1500, true);
+            Game.FadeScreenIn(1000, true);
 
             //InteractionMenu.Visible = false;
             Player.GiveMoney(Price);

@@ -156,6 +156,7 @@
     <Compile Include="lsr\Locations\Places\GunStore.cs" />
     <Compile Include="lsr\Locations\Places\Hotel.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
+    <Compile Include="lsr\Locations\Places\Residence.cs" />
     <Compile Include="lsr\Locations\Places\StoreCamera.cs" />
     <Compile Include="lsr\Locations\Places\StorePurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\StoreSellMenu.cs" />

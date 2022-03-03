@@ -1696,6 +1696,7 @@ namespace Mod
                 toOwn.SetNotWanted();
                 toOwn.Vehicle.IsStolen = false;
                 toOwn.Vehicle.IsPersistent = true;
+
                 OwnedVehicles.Add(toOwn);
                 UpdateOwnedBlips();
                 if (showNotification)

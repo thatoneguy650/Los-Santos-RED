@@ -252,6 +252,13 @@ namespace LosSantosRED.lsr
         }
         private void ButtonPromptCheck()
         {
+            Game.DisableControlAction(0, GameControl.CharacterWheel, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterFranklin, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterMichael, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterMultiplayer, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterTrevor, true);
+
+
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
            // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
             if(Player.ButtonPrompts.Count > 10)

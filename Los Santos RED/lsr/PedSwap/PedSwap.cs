@@ -534,6 +534,7 @@ public class PedSwap : IPedSwap
         {
             TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
         }
+        VehicleExt NewVehicle = null;
         if (TargetPedInVehicle)
         {
             if (TargetPedVehicle.Exists())
@@ -541,7 +542,7 @@ public class PedSwap : IPedSwap
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
                 NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
             }
-            VehicleExt NewVehicle = Entities.Vehicles.GetVehicleExt(TargetPedVehicle);
+            NewVehicle = Entities.Vehicles.GetVehicleExt(TargetPedVehicle);
             if (NewVehicle != null)
             {
                 NewVehicle.IsStolen = false;
@@ -564,6 +565,17 @@ public class PedSwap : IPedSwap
         else
         {
             EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
+        }
+
+
+        if(NewVehicle != null)
+        {
+            NewVehicle.IsStolen = false;
+            if (NewVehicle.Vehicle.Exists())
+            {
+                Player.TakeOwnershipOfVehicle(NewVehicle, false);
+                NewVehicle.Vehicle.IsStolen = false;
+            }
         }
         Player.ModelName = TargetPedModel.Name;
         Player.CurrentModelVariation = TargetPedVariation;

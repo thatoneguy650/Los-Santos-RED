@@ -48,6 +48,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.GangDens);
         AllLocations.AddRange(PossibleLocations.GunStores);
         AllLocations.AddRange(PossibleLocations.Hotels);
+        AllLocations.AddRange(PossibleLocations.Residences);
         return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
@@ -267,6 +268,32 @@ public class PlacesOfInterest : IPlacesOfInterest
         });
 
 
+        PossibleLocations.Residences.AddRange(new List<Residence>()
+
+        {
+
+            //Apartments
+            new Residence(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578, PurchasePrice = 550000, RentalDays = 28, RentalFee = 2250 },
+            //new Residence(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
+            
+            //House
+            new Residence(new Vector3(983.7811f, 2718.655f, 39.50342f), 175.7726f, "345 Route 68", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 234000, RentalDays = 28, RentalFee = 1400  },
+            new Residence(new Vector3(980.1745f, 2666.563f, 40.04342f), 1.699184f, "140 Route 68", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 225000, RentalDays = 28, RentalFee = 1250  },
+            new Residence(new Vector3(-3030.045f, 568.7484f, 7.823583f), 280.3508f, "566 Ineseno Road", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 556000, RentalDays = 28, RentalFee = 2200 },
+            new Residence(new Vector3(-3031.865f, 525.1087f, 7.424246f), 267.6694f, "800 Ineseno Road", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 467000, RentalDays = 28, RentalFee = 1850  },
+            new Residence(new Vector3(-3039.567f, 492.8512f, 6.772703f), 226.448f, "805 Ineseno Road", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, RentalDays = 28, RentalFee = 1750  },
+            new Residence(new Vector3(195.0935f, 3031.064f, 43.89068f), 273.1078f, "125 Joshua Road", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 298000, RentalDays = 28, RentalFee = 1580  },
+
+
+
+         
+
+
+
+        });
+
+
+
 
         PossibleLocations.LocationsList.AddRange(new List<GameLocation>
         {
@@ -307,20 +334,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, LocationType.BeautyShop, "Discount Beauty Store", ""),
             new GameLocation(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, LocationType.BeautyShop, "Belinda May's Beauty Salon", ""),
             new GameLocation(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, LocationType.BeautyShop, "Aunt Tammy's Hair Salon", ""),
-
-            ////Scrapyard
-            //new GameLocation(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, LocationType.ScrapYard, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
-            //new GameLocation(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, LocationType.ScrapYard, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
-            //new GameLocation(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, LocationType.ScrapYard, "Red's Machine Supplies", "Parts Bought and Sold!") { Menu = ScrapMenu, OpenTime = 0, CloseTime = 24 },
-            
-            
-            //Gun
-            //new GameLocation(new Vector3(243.8133f, -44.96839f, 69.89659f), 67.38559f,new Vector3(254.8037f, -49.72024f, 69.94106f), 67.47948f, LocationType.GunShop, "Ammu Nation Vinewood Plaza", "Ammu Nation Vinewood Plaza") {  InteriorID = 29698, VendorModels = new List<string>() {"s_m_y_ammucity_01", "s_m_m_ammucountry" }, Menu = AmmunationMenu },
-            //new GameLocation(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop1 },
-            //new GameLocation(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop2 },
-            //new GameLocation(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop3 },
-            //new GameLocation(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop4 },
-            //new GameLocation(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, LocationType.GunShop, "Underground Guns", "") { Menu = GunShop5 },
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = 50178 },
@@ -629,35 +642,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f, LocationType.Bank, "Fleeca Bank", ""),
             new GameLocation(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, LocationType.Bank, "Fleeca Bank", ""),
 
-            //Hotel
-            //new GameLocation(new Vector3(-1183.073f, -1556.673f, 5.036984f), 122.3785f, LocationType.Hotel, "Vespucci Hotel", "Vespucci Hotel") {Menu = CheapHotelMenu,OpenTime = 0, CloseTime = 24 },
-            //new GameLocation(new Vector3(-1343.127f, -1091.096f, 6.936333f), 299.9456f, LocationType.Hotel, "Venetian", "Venetian") {Menu = ExpensiveHotelMenu,OpenTime = 0, CloseTime = 24 },
-            //new GameLocation(new Vector3(-1309.048f, -931.2507f, 13.35856f), 23.25741f, LocationType.Hotel, "Crown Jewel Hotel", "Crown Jewel Hotel") {Menu = CheapHotelMenu,OpenTime = 0, CloseTime = 24 },
-            //new GameLocation(new Vector3(-1660.706f, -533.756f, 36.02398f), 141.6077f, LocationType.Hotel, "Banner", "Banner") {Menu = ExpensiveHotelMenu,OpenTime = 0, CloseTime = 24,CameraPosition = new Vector3(-1660.326f, -566.6978f, 39.62436f), CameraRotation = new Rotator(-11.99999f, 1.091059E-07f, 4.528234f) },//, new Vector3(0f, 0f, 0f), //Camera Position LocationName: bannerhotel
-            //new GameLocation(new Vector3(-1856.868f, -347.9391f, 49.83775f), 141.5183f, LocationType.Hotel, "Von Krastenburg", "Von Krastenburg") {Menu = ExpensiveHotelMenu,OpenTime = 0, CloseTime = 24 },//needs zoom out
-            //new GameLocation(new Vector3(-1356.452f, -791.2153f, 20.24218f), 129.4868f, LocationType.Hotel, "Hedera", "Hedera") {Menu = ExpensiveHotelMenu,OpenTime = 0, CloseTime = 24 },//needs zoom out
-            //new GameLocation(new Vector3(-2007.835f, -314.862f, 32.09708f), 46.05545f, LocationType.Hotel, "The Jetty", "The Jetty") {Menu = ExpensiveHotelMenu,OpenTime = 0, CloseTime = 24 },//needs zoome out
-            //new GameLocation(new Vector3(-823.0718f, -1223.552f, 7.365416f), 54.09635f, LocationType.Hotel, "The Viceroy", ""){Menu = ViceroyMenu,BannerImage = "viceroy.png",OpenTime = 0, CloseTime = 24, CameraPosition = new Vector3(-847.939f, -1207.791f, 7.15155f), CameraDirection = new Vector3(0.9588153f, -0.1468293f, 0.2431342f), CameraRotation = new Rotator(14.0716f, 0f, -98.70642f) },//needs zoome out
-            //new GameLocation(new Vector3(-287.0405f, -1060.003f, 27.20538f), 252.0524f, LocationType.Hotel, "Banner", "") {Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(-233.506f, -1048.275f, 34.58431f), CameraDirection = new Vector3(-0.9516708f, -0.2260422f, -0.2079124f), CameraRotation = new Rotator(-12.00004f, 0f, 103.3614f) },
-            //new GameLocation(new Vector3(68.509f, -958.8935f, 29.80383f), 161.9325f, LocationType.Hotel, "The Emissary", ""){Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(81.53342f, -1010.819f, 63.66661f), CameraDirection = new Vector3(-0.1635272f, 0.9643815f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, 2.182118E-07f, 9.623925f) },
-            //new GameLocation(new Vector3(313.3858f, -225.0208f, 54.22117f), 160.1122f, LocationType.Hotel, "Pink Cage", ""){Menu = CheapHotelMenu },
-            //new GameLocation(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, LocationType.Hotel, "Alesandro Hotel", ""){Menu = CheapHotelMenu },
-            //new GameLocation(new Vector3(-702.4747f, -2274.476f, 13.45538f), 225.7683f, LocationType.Hotel, "Opium Nights", "") {Menu = ExpensiveHotelMenu},
-            //new GameLocation(new Vector3(379.4438f, -1781.435f, 29.46008f), 47.01642f, LocationType.Hotel, "Motel & Beauty", "") {Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(570.0554f, -1745.989f, 29.22319f), 260.0757f, LocationType.Hotel, "Billings Gate Motel", ""){Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(-104.5376f, 6315.921f, 31.57622f), 141.414f, LocationType.Hotel, "Dream View Motel", "Mostly Bug Free!"){Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(317.7083f, 2623.256f, 44.46722f), 306.9629f, LocationType.Hotel, "Eastern Motel", ""){Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(1142.035f, 2664.177f, 38.16088f), 86.68575f, LocationType.Hotel, "The Motor Motel", ""){Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(-477.0448f, 217.5538f, 83.70456f), 355.1573f, LocationType.Hotel, "The Generic Hotel", ""){Menu = ExpensiveHotelMenu },
-            //new GameLocation(new Vector3(-309.8708f, 221.5867f, 87.92822f), 6.029551f, LocationType.Hotel, "Pegasus Hotel", "") { Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(-347.6738f, 229.8998f, 98.77297f), CameraDirection = new Vector3(0.9052147f, -0.3525268f, -0.2372999f), CameraRotation = new Rotator(-13.72723f, -5.712704E-06f, -111.2779f) },
-            //new GameLocation(new Vector3(-60.74598f, 360.7194f, 113.0564f), 243.5531f, LocationType.Hotel, "Gentry Manor Hotel", ""){ Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(40.25754f, 259.9668f, 126.4436f), CameraDirection = new Vector3(-0.6868073f, 0.7189223f, -0.1069881f), CameraRotation = new Rotator(-6.141719f, -9.445725E-06f, 43.69126f) },
-            //new GameLocation(new Vector3(-1273.729f, 316.0054f, 65.51177f), 152.4087f, LocationType.Hotel, "The Richman Hotel", ""){Menu = ExpensiveHotelMenu },
-            //new GameLocation(new Vector3(286.5596f, -936.6477f, 29.46787f), 138.6224f, LocationType.Hotel, "Elkridge Hotel", "") {Menu = ExpensiveHotelMenu, CameraPosition = new Vector3(257.891f, -952.2925f, 43.25403f), CameraDirection = new Vector3(0.8390263f, 0.4567426f, -0.2956704f), CameraRotation = new Rotator(-17.19774f, -1.072479E-05f, -61.43736f) },
-            //new GameLocation(new Vector3(104.8123f, -932.9781f, 29.81516f), 248.7484f, LocationType.Hotel, "The Emissary", ""){Menu = ExpensiveHotelMenu },
-            //new GameLocation(new Vector3(329.0126f, -69.0122f, 73.03772f), 158.678f, LocationType.Hotel, "Vinewood Gardens", ""){Menu = ExpensiveHotelMenu },
-            //new GameLocation(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, LocationType.Hotel, "Cheep Motel", "POOL!"){Menu = CheapHotelMenu},
-            //new GameLocation(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, LocationType.Hotel, "Crastenburg", ""){Menu = ExpensiveHotelMenu },
-            //new GameLocation(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, LocationType.Hotel, "Hotel Von Crastenburg",""){Menu = ExpensiveHotelMenu },
 
             //Pharmacy
             new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
@@ -740,17 +724,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
             new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
 
-            //Apartments
-            new GameLocation(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, LocationType.Apartment, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578 },
-            new GameLocation(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, LocationType.Apartment, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
+            ////Apartments
+            //new GameLocation(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, LocationType.Apartment, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578 },
+            //new GameLocation(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, LocationType.Apartment, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
             
-            //House
-            new GameLocation(new Vector3(983.7811f, 2718.655f, 39.50342f), 175.7726f, LocationType.House, "345 Route 68", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
-            new GameLocation(new Vector3(980.1745f, 2666.563f, 40.04342f), 1.699184f, LocationType.House, "140 Route 68", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
-            new GameLocation(new Vector3(-3030.045f, 568.7484f, 7.823583f), 280.3508f, LocationType.House, "566 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true},
-            new GameLocation(new Vector3(-3031.865f, 525.1087f, 7.424246f), 267.6694f, LocationType.House, "800 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
-            new GameLocation(new Vector3(-3039.567f, 492.8512f, 6.772703f), 226.448f, LocationType.House, "805 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
-            new GameLocation(new Vector3(195.0935f, 3031.064f, 43.89068f), 273.1078f, LocationType.House, "125 Joshua Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
+            ////House
+            //new GameLocation(new Vector3(983.7811f, 2718.655f, 39.50342f), 175.7726f, LocationType.House, "345 Route 68", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
+            //new GameLocation(new Vector3(980.1745f, 2666.563f, 40.04342f), 1.699184f, LocationType.House, "140 Route 68", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
+            //new GameLocation(new Vector3(-3030.045f, 568.7484f, 7.823583f), 280.3508f, LocationType.House, "566 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true},
+            //new GameLocation(new Vector3(-3031.865f, 525.1087f, 7.424246f), 267.6694f, LocationType.House, "800 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
+            //new GameLocation(new Vector3(-3039.567f, 492.8512f, 6.772703f), 226.448f, LocationType.House, "805 Ineseno Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
+            //new GameLocation(new Vector3(195.0935f, 3031.064f, 43.89068f), 273.1078f, LocationType.House, "125 Joshua Road", "") {OpenTime = 0,CloseTime = 24,IsPurchaseable = true },
         #endif
 
 

@@ -19,6 +19,7 @@ public class Hotel : TransactableLocation
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private ITimeControllable Time;
+    private bool KeepInteractionGoing = false;
 
     public Hotel() : base()
     {
@@ -56,7 +57,7 @@ public class Hotel : TransactableLocation
                 GenerateHotelMenu();
                 //ProcessInteractionMenu();
 
-                while (IsAnyMenuVisible || Time.IsFastForwarding)
+                while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
@@ -113,7 +114,9 @@ public class Hotel : TransactableLocation
         {
             Player.GiveMoney(-1 * Price);
             Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
+            KeepInteractionGoing = true;
             InteractionMenu.Visible = false;
+            
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
                 while (Time.IsFastForwarding)
@@ -126,6 +129,7 @@ public class Hotel : TransactableLocation
                 }
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for staying at {Name}");
                 InteractionMenu.Visible = true;
+                KeepInteractionGoing = false;
             }, "FastForwardWatcher");
             EntryPoint.WriteToConsole($"PLAYER EVENT: StartServiceActivity HOTEL", 3);
 

@@ -858,9 +858,20 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+
+
+        Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+        if (myPed != null)
+        {
+            myPed.ForceSpeech(Player);
+        }
+
+
+
         //ArrestScene();
 
-       // Game.LocalPlayer.Character.Health -= 25;
+        // Game.LocalPlayer.Character.Health -= 25;
 
         Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         Player.Inventory.Add(ModItems.Get("Heroin"), 4);

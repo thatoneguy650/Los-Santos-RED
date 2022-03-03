@@ -178,7 +178,7 @@ public class DebugMenu : Menu
 
         Debug.AddItem(AutoSetRadioStation);
         Debug.AddItem(StartRandomCrime);
-        Debug.AddItem(TeleportToPOI);
+       // Debug.AddItem(TeleportToPOI);
         Debug.AddItem(DefaultGangRep);
         Debug.AddItem(RandomGangRep);
         Debug.AddItem(RandomSingleGangRep);
@@ -202,7 +202,7 @@ public class DebugMenu : Menu
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To GunStores", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GunStores));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Gang Den", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GangDens));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
-
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Residence", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Residences));
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
             Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
@@ -356,7 +356,15 @@ public class DebugMenu : Menu
                 Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
             }
         }
-
+        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
+        {
+            UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;
+            if (myItem.SelectedItem != null)
+            {
+                Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
+                Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
+            }
+        }
 
         Debug.Visible = false;
     }

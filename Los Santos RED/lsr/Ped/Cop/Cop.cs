@@ -78,4 +78,9 @@ public class Cop : PedExt, IWeaponIssuable
     {
         WeaponInventory.Reset();
     }
+    public void ForceSpeech(IPoliceRespondable currentPlayer)
+    {
+        Voice.ResetSpeech();
+        Speak(currentPlayer);
+    }
 }

@@ -24,7 +24,7 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateHealthRecharge = true;
         TerminateWantedMusic = true;
         TerminateScanner = true;
-        TerminateScenarioCops = true;
+        TerminateScenarioCops = false;
     }
 
 }

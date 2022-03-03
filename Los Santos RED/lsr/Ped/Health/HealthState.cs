@@ -138,15 +138,15 @@ public class HealthState
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 GameFiber.Yield();
-                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                 if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
                 {
                     ModifyDamage();
-                    Health = CurrentHealth;
-                    Armor = CurrentArmor;
                 }
+                Health = CurrentHealth;
+                Armor = CurrentArmor;
             }
-            if (Math.Abs(Health - prevHealth) >= 15 && MyPed.HasExistedFor >= 4000)
+            if (Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
             {
                 CurrentPlayer.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;

@@ -92,6 +92,9 @@
             return AmbientSpawnChance;
         }
     }
+
+    public bool IsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
+
     public DispatchablePerson()
     {
 

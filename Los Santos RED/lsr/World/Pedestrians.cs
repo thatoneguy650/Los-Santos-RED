@@ -727,6 +727,7 @@ public class Pedestrians
             if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
             {
                 Police.Add(myCop);
+                myCop.Pedestrian.IsPersistent = true;
             }
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
         }

@@ -391,8 +391,17 @@ public class PurchaseMenuOld : Menu
     }
     public override void Hide()
     {
-        ClearPreviews();     
+        ClearPreviews();
+        //MenuPool.CloseAllMenus();
         purchaseMenu.Visible = false;
+        //foreach(UIMenuItem uimen in purchaseMenu.MenuItems)
+        //{
+        //    if (uimen.GetType() == typeof(UIMenu))
+        //    {
+        //        UIMenu myItem = (UIMenu)(object)uimen;
+        //        myItem.Visible = false;
+        //    }
+        //}
         Player.ButtonPrompts.Clear();
     }
     public override void Show()
@@ -1225,7 +1234,7 @@ public class PurchaseMenuOld : Menu
                 }
                 if (Ped != null && Ped.Pedestrian.Exists())
                 {
-                    StartVendorBuyAnimation(CurrentModItem, CurrentMenuItem.IsIllicilt);
+                    StartVendorBuyAnimation(CurrentModItem, CurrentMenuItem.IsIllicilt, false);
                 }
                 else
                 {
@@ -1264,7 +1273,7 @@ public class PurchaseMenuOld : Menu
         {
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-                StartVendorBuyAnimation(CurrentModItem, CurrentMenuItem.IsIllicilt);
+                StartVendorBuyAnimation(CurrentModItem, CurrentMenuItem.IsIllicilt, false);
             }
             else
             {
@@ -1398,7 +1407,7 @@ public class PurchaseMenuOld : Menu
             bool subtractCash = true;
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-                StartVendorBuyAnimation(modItem, menuItem.IsIllicilt);
+                StartVendorBuyAnimation(modItem, menuItem.IsIllicilt, true);
             }
             else if (Store != null && Store.Type == LocationType.VendingMachine)
             {
@@ -1443,11 +1452,14 @@ public class PurchaseMenuOld : Menu
     }
 
     //Vendor Only
-    private void StartVendorBuyAnimation(ModItem item, bool isIllicit)
+    private void StartVendorBuyAnimation(ModItem item, bool isIllicit, bool hideShowMenu)
     {
         //Hide();
         IsActivelyConversing = true;
-        Hide();
+        if (hideShowMenu)
+        {
+            Hide();
+        }
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
@@ -1545,7 +1557,10 @@ public class PurchaseMenuOld : Menu
             }
         }
         //Show();   
-        Show();
+        if (hideShowMenu)
+        {
+            Show();
+        }
     }
 
     //Vending Machine Only

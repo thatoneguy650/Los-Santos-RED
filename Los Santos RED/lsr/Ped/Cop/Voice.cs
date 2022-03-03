@@ -187,7 +187,13 @@ public class Voice
         else
         {
             Cop.Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
+            EntryPoint.WriteToConsole($"REGULAR COP SPEAK {Cop.Pedestrian.Handle} freeModeVoice {Cop.VoiceName} speechName {speechName}");
         }
+    }
+    public void ResetSpeech()
+    {
+        GameTimeLastSpoke = 0;
+        GameTimeLastRadioed = 0;
     }
     //public void YellInPain()
     //{

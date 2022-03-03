@@ -322,7 +322,7 @@ public class Intoxication
             SteeringBias = 0f;
             //EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE ENDED", 3);
         }
-        if (Player.IsDriver && IsSwerving)
+        if (Player.IsDriver && IsSwerving && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
             NativeFunction.Natives.SET_VEHICLE_STEER_BIAS(Player.CurrentVehicle.Vehicle, SteeringBias);
         }

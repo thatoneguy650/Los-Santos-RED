@@ -19,5 +19,6 @@ public class PossibleLocations
     public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
     public List<GunStore> GunStores { get; private set; } = new List<GunStore>();
     public List<Hotel> Hotels { get; private set; } = new List<Hotel>();
+    public List<Residence> Residences { get; private set; } = new List<Residence>();
 }
 

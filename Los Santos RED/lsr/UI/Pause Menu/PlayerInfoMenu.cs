@@ -240,6 +240,17 @@ public class PlayerInfoMenu
             menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hotels", $"List of all Hotels", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
         }
 
+
+        List<BasicLocation> Residences = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Residences.Any())
+        {
+            foreach (Residence residence in PlacesOfInterest.PossibleLocations.Residences.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Residences.Add(residence);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Residences", $"List of all Residences", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
         List<BasicLocation> ScrapYards = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
         {

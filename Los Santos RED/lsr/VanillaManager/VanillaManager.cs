@@ -13,6 +13,7 @@ public class VanillaManager
 {
     private bool IsVanillaRespawnActive = true;
     private bool IsVanillaDispatchActive = true;
+    private bool IsVanillaScenarioCopsActive = true;
     private uint GameTimeLastTerminatedVanillaDispatch;
     private ISettingsProvideable Settings;
     private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
@@ -35,6 +36,13 @@ public class VanillaManager
                 TerminateRespawnController();
             }
         }
+        else if (!Settings.SettingsManager.VanillaSettings.TerminateRespawn)
+        {
+            if (!IsVanillaRespawnActive)
+            {
+                ActivateRespawn();
+            }
+        }
         if (Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
             if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
@@ -42,14 +50,32 @@ public class VanillaManager
                 TerminateDispatch();
             }
         }
-        if(Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
+        else if (!Settings.SettingsManager.VanillaSettings.TerminateDispatch)
+        {
+            if (!IsVanillaDispatchActive)
+            {
+                ActivateDispatch();
+            }
+        }
+
+        if (Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
             TerminateScenarioCops();
         }
+        else if (!Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
+        {
+            if (!IsVanillaScenarioCopsActive)
+            {
+                ActivateScenarioCops();
+            }
+        }
+
         if (Settings.SettingsManager.VanillaSettings.TerminateRespawn)
         {
             TerminateRespawnScripts();
         }
+        
+
         if (Settings.SettingsManager.VanillaSettings.TerminateHealthRecharge)
         {
             TerminateHealthRecharge();
@@ -64,6 +90,7 @@ public class VanillaManager
     }
     private void TerminateScenarioCops()
     {
+        IsVanillaScenarioCopsActive = false;
         SetScenarioCops(false);
     }
     private void ActivateDispatch()
@@ -106,11 +133,12 @@ public class VanillaManager
         var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
         Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
         Game.StartNewScript("respawn_controller");
-        Game.StartNewScript("selector");
+       Game.StartNewScript("selector");
         IsVanillaRespawnActive = true;
     }
     private void ActivateScenarioCops()
     {
+        IsVanillaScenarioCopsActive = true;
         SetScenarioCops(true);
     }
     private void SetDispatch(bool Enabled)
@@ -124,11 +152,8 @@ public class VanillaManager
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRoadBlock, Enabled);
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitCruising, Enabled);
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitPulledOver, Enabled);
-
-
         NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.AmbulanceDepartment, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.FireDepartment, Enabled);
-
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.FireDepartment, Enabled);     
         NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
     }
     private void SetScenarioCops(bool Enabled)
