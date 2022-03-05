@@ -1,7 +1,9 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -14,6 +16,9 @@ namespace iFruitAddon2
         private int timesShow;
         private int CurrentTextIndex;
         private bool HasReleasedSelect = false;
+        private bool IsShowingTextMessage = false;
+        private iFruitText ShowingTextMessage;
+        private bool prevIsShowingTextMessage;
 
         public iFruitTextCollection()
         {
@@ -21,12 +26,13 @@ namespace iFruitAddon2
         }
         public bool IsDrawing => _shouldDraw;
         public bool IsScriptRunning { get; set; } = false;
-        internal void Update(int handle)
+        internal void Update(int handle, CustomiFruit customiFruit, ICellPhoneable player)
         {
             int _selectedIndex = -1;
             // If we are in the Text menu
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
+                IsShowingTextMessage = false;
                 IsScriptRunning = true;
                 _shouldDraw = true;
                 
@@ -39,6 +45,20 @@ namespace iFruitAddon2
                 {
                     _selectedIndex = GetSelectedIndex(handle);  // We must use this function only when necessary since it contains Script.Wait(0)
                 }
+
+
+
+
+
+
+                if (Game.IsControlJustPressed(0, GameControl.CellphoneOption))
+                {
+                    EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneOption PRESSED");
+                }
+                if (Game.IsControlJustPressed(0, GameControl.CellphoneExtraOption))
+                {
+                    EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneExtraOption PRESSED");
+                }
             }
             else
             {
@@ -47,6 +67,51 @@ namespace iFruitAddon2
                 timesShow = 0;
                 _selectedIndex = -1;
             }
+
+
+            if(IsShowingTextMessage)
+            {
+                customiFruit.LeftButtonColor = Color.LightBlue;
+                customiFruit.LeftButtonIcon = SoftKeyIcon.Delete;
+
+
+
+
+                if (Game.IsControlJustPressed(0,GameControl.CellphoneOption))
+                {
+
+
+
+                    EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneOption PRESSED");//DELETE KEY !!!
+                }
+                if (Game.IsControlJustPressed(0, GameControl.CellphoneExtraOption))
+                {
+
+                    if (ShowingTextMessage != null)
+                    {
+                        player.CellPhone.DeleteText(ShowingTextMessage);
+                        ShowingTextMessage = null;
+                        NativeFunction.Natives.xE8A25867FBA3B05E(0, (int)GameControl.CellphoneCancel, 1.0f);
+                        EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneOption PRESSED DELETING MESSAGE!");//DELETE KEY !!!
+                    }
+
+                    EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneExtraOption PRESSED");// SPACEBAR
+                }
+            }
+            else
+            {
+                if(prevIsShowingTextMessage != IsShowingTextMessage)
+                {
+                    if (!IsShowingTextMessage)
+                    {
+                        customiFruit.LeftButtonColor = Color.Empty;
+                        customiFruit.LeftButtonIcon = SoftKeyIcon.Delete;
+                    }
+                    prevIsShowingTextMessage = IsShowingTextMessage;
+                }
+            }
+
+            
 
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "SET_DATA_SLOT_EMPTY");
             NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
@@ -83,7 +148,8 @@ namespace iFruitAddon2
         public void DisplayTextUI(int handle, iFruitText text, string statusText = "CELL_211", string picName = "CELL_300")
         {
             IsScriptRunning = false;
-
+            IsShowingTextMessage = true;
+            ShowingTextMessage = text;
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(handle, "SET_DATA_SLOT");
             NativeFunction.Natives.xC3D0841A0CC546A6(7);
             NativeFunction.Natives.xC3D0841A0CC546A6(0);

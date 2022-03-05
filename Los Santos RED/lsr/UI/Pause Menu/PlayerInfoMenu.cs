@@ -446,7 +446,18 @@ public class PlayerInfoMenu
 
                 DescriptionText += $"~n~Location: {LocationText}";
             }
+
+            DescriptionText += $"~n~Select to ~r~Clear Ownership~s~";
+
             TabItem tItem = new TabTextItem(ListEntryText, DescriptionHeaderText, DescriptionText);
+            tItem.Activated += (s, e) =>
+            {
+                VehiclesSubMenu.Items.Remove(tItem);
+                VehiclesSubMenu.RefreshIndex();
+                Player.RemoveOwnershipOfVehicle(car);
+            };
+
+
             //tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
             items.Add(tItem);
         }

@@ -281,7 +281,19 @@ public class SpawnTask
             RelationshipGroup rg = new RelationshipGroup("COP");
             ped.RelationshipGroup = rg;
             NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-            Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale), PersonType.ModelName);
+
+            bool isMale;
+            if(PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
+            {
+                isMale = false;
+            }
+            else
+            {
+                isMale = ped.IsMale;
+            }
+
+
+            Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName);
             World.Pedestrians.AddEntity(PrimaryCop);
             PrimaryCop.IssueWeapons(Weapons, true, true, true);
             PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
@@ -310,7 +322,18 @@ public class SpawnTask
         {
             RelationshipGroup rg = new RelationshipGroup("MEDIC");
             ped.RelationshipGroup = rg;
-            EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+
+            bool isMale;
+            if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
+            {
+                isMale = false;
+            }
+            else
+            {
+                isMale = ped.IsMale;
+            }
+
+            EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale));
             World.Pedestrians.AddEntity(PrimaryEmt);
             return PrimaryEmt;
         }
@@ -318,7 +341,16 @@ public class SpawnTask
         {
             RelationshipGroup rg = new RelationshipGroup("FIREMAN");
             ped.RelationshipGroup = rg;
-            Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(ped.IsMale));
+            bool isMale;
+            if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
+            {
+                isMale = false;
+            }
+            else
+            {
+                isMale = ped.IsMale;
+            }
+            Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale));
             World.Pedestrians.AddEntity(PrimaryFirefighter);
             return PrimaryFirefighter;
         }
@@ -334,11 +366,20 @@ public class SpawnTask
         }
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         ped.RelationshipGroup = rg;
-        PedGroup myGroup = RelationshipGroups.GetPedGroup(Gang.ID);
-        if (myGroup == null)
+        bool isMale;
+        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
         {
-            myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
+            isMale = false;
         }
+        else
+        {
+            isMale = ped.IsMale;
+        }
+        //PedGroup myGroup = RelationshipGroups.GetPedGroup(Gang.ID);
+        //if (myGroup == null)
+        //{
+        //    myGroup = new PedGroup(Gang.ID, Gang.ID, Gang.ID, false);
+        //}
         ShopMenu toAdd = null;
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
@@ -348,7 +389,7 @@ public class SpawnTask
                 toAdd = ShopMenus.GetRandomDrugDealerMenu();
             }
         }
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(ped.IsMale), myGroup, Crimes, Weapons) { TransactionMenu = toAdd?.Items };
+        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons) { TransactionMenu = toAdd?.Items };
         World.Pedestrians.AddEntity(GangMember);  
         GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
         GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
@@ -500,7 +541,7 @@ public class SpawnTask
         }
         catch(Exception ex)
         {
-            EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"SPAWN TASK: Spawn ERROR DELETED VEHICLE {ex.Message} {ex.StackTrace} ATTEMPTING {VehicleType.ModelName}", 0);
             if(SpawnedVehicle.Exists())
             {
                 SpawnedVehicle.Delete();

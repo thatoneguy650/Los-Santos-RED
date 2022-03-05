@@ -114,8 +114,8 @@ public class UISettings : ISettingsDefaultable
         #if DEBUG
             SetRadarZoomDistance = false;
             ShowDebug = false;
-        FadeStreetDisplay = false;
-        FadeZoneDisplay = false;
+        FadeStreetDisplay = true;
+        FadeZoneDisplay = true;
         #endif
     }
     public void SetDefault()

@@ -296,7 +296,19 @@ public class Pedestrians
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: GANG MEMBER {GangMember.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
-
+        foreach (PedExt Civilian in Civilians.Where(x => x.IsBusted && x.DistanceToPlayer >= 100f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        {
+            bool hasBlip = false;
+            Blip myblip = Civilian.Pedestrian.GetAttachedBlip();
+            if (myblip.Exists())
+            {
+                hasBlip = true;
+                myblip.Delete();
+            }
+            Civilian.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+        }
 
         foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -577,12 +589,12 @@ public class Pedestrians
             //EntryPoint.WriteToConsole($"Added Ambient Civilian {Pedestrian.Handle}");
         }
         PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
-        if(myGroup == null)
+        if (myGroup == null)
         {
             myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         }
         ShopMenu toAdd = GetIllicitMenu();
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
+        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
 
 
 
@@ -594,7 +606,7 @@ public class Pedestrians
         Gang MyGang = Gangs.GetGang(relationshipGroupName);
         if(MyGang == null)
         {
-            MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName);
+            MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName, relationshipGroupName);
         }
 
         DispatchablePerson gangPerson = null;
@@ -628,11 +640,11 @@ public class Pedestrians
             }
             //EntryPoint.WriteToConsole($"Added Ambient Gang Member {Pedestrian.Handle}");
         }
-        PedGroup myGroup = RelationshipGroups.GetPedGroup(relationshipGroupName);
-        if (myGroup == null)
-        {
-            myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
-        }
+        //PedGroup myGroup = RelationshipGroups.GetPedGroup(relationshipGroupName);
+        //if (myGroup == null)
+        //{
+        //    myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
+        //}
         ShopMenu toAdd = null;
         if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
         {
@@ -642,7 +654,7 @@ public class Pedestrians
                 toAdd = ShopMenus.GetRandomDrugDealerMenu();
             }
         }
-        GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), myGroup, Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+        GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
         gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
         bool withPerson = false;
         if(gangPerson != null)

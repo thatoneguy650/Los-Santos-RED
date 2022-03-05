@@ -456,7 +456,10 @@ public class GetArrested : ComplexTask
                     PlayedUnArrestAnimation = true;
                 }
             }
-            PedToArrest.BlockPermanentEvents = true;
+            if (PedToArrest.Exists())
+            {
+                PedToArrest.BlockPermanentEvents = true;
+            }
             //EntryPoint.WriteToConsole($"TASKER: GetArrested Played UNArrest Animation: {Ped.Pedestrian.Handle}", 3);
         }, "UnSetArrestedAnimation");
     }

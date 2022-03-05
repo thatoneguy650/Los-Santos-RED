@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
 
         string PlayerName { get; }
+        CellPhone CellPhone { get; }
 
         void GiveMoney(int v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

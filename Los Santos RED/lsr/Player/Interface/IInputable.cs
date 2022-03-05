@@ -34,6 +34,12 @@ namespace LosSantosRED.lsr.Interface
         bool IsPressingFireWeapon { get; set; }
         bool ReleasedFireWeapon { get; set; }
         Sprinting Sprinting { get; }
+        bool IsMale { get; }
+        bool IsWavingHands { get; set; }
+        bool IsNotWanted { get; }
+        bool IsWanted { get; }
+        bool CanWaveHands { get; }
+
         void RaiseHands();
         void LowerHands();
         void DropWeapon();
@@ -51,5 +57,7 @@ namespace LosSantosRED.lsr.Interface
         void ToggleSelector();
         void StartLocationInteraction();
         void Gesture();
+        void WaveHands();
+        void PlaySpeech(string player, bool v);
     }
 }

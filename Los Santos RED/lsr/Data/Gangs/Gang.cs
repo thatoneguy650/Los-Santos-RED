@@ -14,15 +14,16 @@ public class Gang
     public Gang()
     {
     }
-    public Gang(string _ID, string _FullName, string _ShortName)
+    public Gang(string _ID, string _FullName, string _ShortName, string _MemberName)
     {
         ID = _ID;
         FullName = _FullName;
         ShortName = _ShortName;
         ContactName = _ShortName;
         ContactIcon = "CHAR_DEFAULT";
+        MemberName = _MemberName;
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _MemberName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
@@ -37,8 +38,9 @@ public class Gang
         LongGuns = longGuns;
         ContactName = _ShortName;
         ContactIcon = "CHAR_DEFAULT";
+        MemberName = _MemberName;
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon, string _MemberName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
@@ -53,6 +55,7 @@ public class Gang
         LongGuns = longGuns;
         ContactName = _ContactName;
         ContactIcon = contactIcon;
+        MemberName = _MemberName;
     }
     public Color Color => Color.FromName(ColorString);
     public string ColorString { get; set; } = "White";
@@ -121,6 +124,8 @@ public class Gang
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
+    public string MemberName { get; set; }
+
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {

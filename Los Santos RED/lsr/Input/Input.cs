@@ -87,7 +87,6 @@ namespace LosSantosRED.lsr
             CellPhoneCheck();
 
         }
-
         private void CellPhoneCheck()
         {
             if (DisableCellPhoneControl)
@@ -161,7 +160,6 @@ namespace LosSantosRED.lsr
             //    }
             //}
         }
-
         private void KeyBindCheck()
         {
             if(IsPressingGesture)
@@ -241,10 +239,18 @@ namespace LosSantosRED.lsr
                 {
                     Player.RaiseHands();
                 }
+                else if(Player.CanWaveHands)
+                {
+                    Player.WaveHands();
+                }
             }
             else
             {
                 if (Player.HandsAreUp && !Player.IsBusted)
+                {
+                    Player.LowerHands();
+                }
+                else if (Player.IsWavingHands)
                 {
                     Player.LowerHands();
                 }

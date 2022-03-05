@@ -404,7 +404,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons, CurrentPedName);
+            PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons, CurrentPedName,"Person");
             int WantedToSet = Player.WantedLevel;
             if (Player.WantedLevel == 3)
             {

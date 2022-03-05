@@ -24,6 +24,7 @@ public class DebugMenu : Menu
     private UIMenuItem ForceSober;
     private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
+    private UIMenuItem GoToReleaseSettings;
     private UIMenuItem StartRandomCrime;
     private UIMenuItem KillPlayer;
     private UIMenuItem LogCameraPositionMenu;
@@ -127,6 +128,13 @@ public class DebugMenu : Menu
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
 
+
+
+
+
+        GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
+
+
         StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
@@ -173,6 +181,7 @@ public class DebugMenu : Menu
         Debug.AddItem(SetMoney);
         Debug.AddItem(FillHealth);
         Debug.AddItem(FillHealthAndArmor);
+        Debug.AddItem(GoToReleaseSettings);
 
         Debug.AddItem(ForceSober);
 
@@ -244,6 +253,13 @@ public class DebugMenu : Menu
         if (selectedItem == KillPlayer)
         {
             Game.LocalPlayer.Character.Kill();
+        }
+        else if (selectedItem == GoToReleaseSettings)
+        {
+            Settings.SettingsManager.GangSettings.ShowSpawnedBlip = false;
+            Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
+            Settings.SettingsManager.UISettings.ShowDebug = false;
+            Settings.SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         }
         else if (selectedItem == GetRandomWeapon)
         {

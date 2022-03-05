@@ -75,12 +75,16 @@ public class WeaponSway
         {
             CurrentPitch *= -1.0f;//weird shit needed for in the car for some reason....
         }
-        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
-
+        if (Math.Abs(AdjustedPitch) > 0f)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+        }
         CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
         AdjustHeading();
-        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
-
+        if (Math.Abs(AdjustedHeading) > 0f)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+        }
         //Player.DebugLine4 = $"Speed {Speed:N2} % Hor {PercentHorizontalSwayElapsed:P2} %Ver {PercentVeritcalSwayElapsed:P2} VerDIr {VerticalSwayDirection} HorDIr {HorizontalSwayDirection}";
     }
     private void UpdateDirection()

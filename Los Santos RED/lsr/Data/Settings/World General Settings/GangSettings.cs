@@ -35,7 +35,9 @@ public class GangSettings : ISettingsDefaultable
     public float MaxDistanceToSpawn { get; set; }
     [Description("Total limit of spawned gang members between all gangs. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
-    
+    [Description("Percentage of the time to spawn a gang outside of the den when near.")]
+    public int PercentageSpawnNearDen { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -63,6 +65,7 @@ public class GangSettings : ISettingsDefaultable
         OverrideArmor = true;
         OverrideHealth = true;
         OverrideAccuracy = true;
+        PercentageSpawnNearDen = 60;
     }
 
 }

@@ -31,17 +31,24 @@ public class PedCrimes
     {
         get
         {
-            if(PedExt != null)
+            if(PedExt != null && PedExt.Pedestrian.Exists())
             {
-                if (PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARD" || PedExt.PedGroup?.InternalName?.ToUpper() == "SECURITY_GUARDS" || PedExt.PedGroup?.InternalName?.ToUpper() == "PRIVATE_SECURITY" || PedExt.PedGroup?.InternalName?.ToUpper() == "FIREMAN" || PedExt.PedGroup?.InternalName?.ToUpper() == "MEDIC")
+                string RelationshipGroupName = PedExt.Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
+                if(RelationshipGroupName == string.Empty)
+                {
+                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {PedExt.Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
+                    RelationshipGroupName = RelationshipGroupName.ToUpper();
+                }
+                
+                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC")
                 {
                     return false;
                 }
-                else if (PedExt.PedGroup == null)
+                else if (RelationshipGroupName == "")
                 {
                     return true;
                 }
-                else if (PedExt.PedGroup?.InternalName?.ToUpper() == "ZOMBIE")
+                else if (RelationshipGroupName == "ZOMBIE")
                 {
                     return true;
                 }

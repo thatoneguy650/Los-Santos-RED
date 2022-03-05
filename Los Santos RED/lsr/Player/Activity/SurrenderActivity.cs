@@ -11,6 +11,8 @@ public class SurrenderActivity : DynamicActivity
     //private VehicleExt VehicleTryingToEnter;
     //private int SeatTryingToEnter;
     private IEntityProvideable World;
+    private uint GameTimeLastYelled;
+
     //private Vehicle VehicleTaskedToEnter;
     //private int SeatTaskedToEnter;
     public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world)
@@ -18,7 +20,8 @@ public class SurrenderActivity : DynamicActivity
         Player = currentPlayer;
         World = world;
     }
-    public bool CanSurrender => !Player.HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);
+    public bool CanSurrender => !Player.HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
+    public bool CanWaveHands => !Player.HandsAreUp && !Player.IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public bool IsCommitingSuicide { get; set; }
@@ -42,6 +45,7 @@ public class SurrenderActivity : DynamicActivity
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
         Player.HandsAreUp = false; // You put your hands down
+        Player.IsWavingHands = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.IsPerformingActivity = false;
     }
@@ -71,6 +75,46 @@ public class SurrenderActivity : DynamicActivity
         }
 
     }
+
+    public void WaveHands()
+    {
+        EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
+
+
+
+
+        if (Player.HandsAreUp || Player.IsInVehicle || Player.IsWavingHands)
+        {
+            return;
+        }
+        Player.SetUnarmed();
+        Player.IsWavingHands = true;
+
+        string Animation;
+        string DictionaryName;
+        if(Player.IsMale)
+        {
+            DictionaryName = "anim@amb@waving@male";
+        }
+        else
+        {
+            DictionaryName = "anim@amb@waving@female";
+        }
+        //if (RandomItems.RandomPercent(50))
+        //{
+        //    Animation = "ground_wave";
+        //}
+        //else
+        //{
+            Animation = "air_wave";
+        //}
+        AnimationDictionary.RequestAnimationDictionay(DictionaryName);
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, 49, 0, false, false, false);
+
+
+    }
+
+
     public void SetArrestedAnimation(bool StayStanding)
     {
         //StayStanding = false;
@@ -125,10 +169,17 @@ public class SurrenderActivity : DynamicActivity
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(1000);
+                    if (!Player.Character.Exists() || !Player.IsBusted)
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        return;
+                    }
+
                     //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
                     GameFiber.Wait(5000);//was just 6000 here
                     if (!Player.Character.Exists() || !Player.IsBusted)
                     {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                         return;
                     }
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);

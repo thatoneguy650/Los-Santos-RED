@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -23,6 +24,8 @@ public class GangIdle : ComplexTask
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
     private Vector3 taskedPosition;
+    private uint GameTimeLastStartedScenario;
+    private uint GameTimeLastChangedWanderStuff;
 
     private enum Task
     {
@@ -117,6 +120,10 @@ public class GangIdle : ComplexTask
                 WanderTask(IsFirstRun);
                 EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
             }
+            else if (GameTimeLastChangedWanderStuff != 0 && Game.GameTime - GameTimeLastChangedWanderStuff >= 60000 && !Ped.IsInVehicle)
+            {
+                WanderDecisionTask();
+            }
         }
     }
     private void WanderTask(bool IsFirstRun)
@@ -152,20 +159,59 @@ public class GangIdle : ComplexTask
             }
             else
             {
-                //Ped.Pedestrian.Tasks.Wander();
-                Vector3 pedPos = Ped.Pedestrian.Position;
-                if (IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 5f, true))
-                {
-                    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 20000);
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
-                }
-                else
-                {
-                    NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
-                }
+
+                WanderDecisionTask();
+
+                ////Ped.Pedestrian.Tasks.Wander();
+                //Vector3 pedPos = Ped.Pedestrian.Position;
+                //if (IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 5f, true))
+                //{
+                //    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 20000);
+                //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
+                //}
+                //else
+                //{
+                //    NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
+                //}
             }
+            
         }
+    }
+    private void WanderDecisionTask()
+    {
+        Vector3 pedPos = Ped.Pedestrian.Position;
+        float ForceScenarioPercent = 30f;
+        if(Ped.HasMenu)
+        {
+            ForceScenarioPercent = 80f;
+        }
+        if (RandomItems.RandomPercent(ForceScenarioPercent))
+        {
+            string Scenario = "";
+            if (Ped.HasMenu)
+            {
+                Scenario = new List<string>() { "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_DRUG_DEALER_HARD","WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" }.PickRandom();
+            }
+            else
+            {
+                Scenario = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" }.PickRandom();
+            }
+            NativeFunction.Natives.TASK_START_SCENARIO_IN_PLACE(Ped.Pedestrian, Scenario, 0, true);
+            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario FORCED! {Scenario}", 5);
+        }
+        else if (NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
+        {
+            NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
+            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion NEARBY", 5);
+        }
+        else
+        {
+            //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 100f, 5f, 5f);
+            NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
+        }
+        GameTimeLastChangedWanderStuff = Game.GameTime;
     }
     private void GetInCar(bool IsFirstRun)
     {

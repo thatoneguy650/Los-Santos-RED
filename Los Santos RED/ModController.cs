@@ -140,7 +140,7 @@ namespace LosSantosRED.lsr
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             Tasker.Setup();
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus, PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies);

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class Zombie : PedExt
 {
     private uint GameTimeSpawned;
-    public Zombie(Ped pedestrian, ISettingsProvideable settings, int health, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name) : base(pedestrian, settings, crimes, weapons, name)
+    public Zombie(Ped pedestrian, ISettingsProvideable settings, int health, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string groupName) : base(pedestrian, settings, crimes, weapons, name, groupName)
     {
         Health = health;
         WasModSpawned = wasModSpawned;

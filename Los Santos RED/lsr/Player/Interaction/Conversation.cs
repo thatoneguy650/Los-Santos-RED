@@ -87,8 +87,8 @@ public class Conversation : Interaction
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
 
-        SayInsult(Player.Character);
-        SayInsult(Ped.Pedestrian);
+        SayInsult(Player.Character, true);
+        SayInsult(Ped.Pedestrian,false);
 
         //Ped.TimesInsultedByPlayer++;
         Ped.InsultedByPlayer();
@@ -118,16 +118,16 @@ public class Conversation : Interaction
         Player.ButtonPrompts.Clear();
         if (Ped.TimesInsultedByPlayer >= 1)
         {
-            SayApology(Player.Character, false);
+            SayApology(Player.Character, false,true);
             if(!Ped.IsFedUpWithPlayer)
             {
-                SayApology(Ped.Pedestrian, true);
+                SayApology(Ped.Pedestrian, true,false);
             }
         }
         else
         {
-            SaySmallTalk(Player.Character, false);
-            SaySmallTalk(Ped.Pedestrian, true);
+            SaySmallTalk(Player.Character, false,true);
+            SaySmallTalk(Ped.Pedestrian, true,false);
         }
         if (Ped.TimesInsultedByPlayer > 0)
         {
@@ -137,7 +137,7 @@ public class Conversation : Interaction
         GameFiber.Sleep(200);
         IsActivelyConversing = false;
     }
-    private void SayApology(Ped ToReply, bool IsReply)
+    private void SayApology(Ped ToReply, bool IsReply, bool isPlayer)
     {
         if (IsReply)
         {
@@ -147,35 +147,49 @@ public class Conversation : Interaction
             }
             else if (Ped.TimesInsultedByPlayer >= 2)
             {
-                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_WHATEVER" }, true);
+                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_WHATEVER" }, true, isPlayer);
             }
             else
             {
-                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_THANKS" }, true);
+                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_THANKS" }, true, isPlayer);
             }
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "APOLOGY_NO_TROUBLE", "GENERIC_HOWS_IT_GOING", "GETTING_OLD", "LISTEN_TO_RADIO" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "APOLOGY_NO_TROUBLE", "GENERIC_HOWS_IT_GOING", "GETTING_OLD", "LISTEN_TO_RADIO" }, true, isPlayer);
         }
     }
-    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
+    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete, bool isPlayer)
     {   
         bool Spoke = false;
         if (CanContinueConversation)
         {
             foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
             {
-                if(ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                if(isPlayer)
                 {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    if (Player.CharacterModelIsFreeMode)
+                    {
+                        ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
                 else
                 {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    if(Ped.VoiceName != "")
+                    {
+                        ToSpeak.PlayAmbientSpeech(Ped.VoiceName, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
                 
-                GameFiber.Sleep(100);
+                GameFiber.Sleep(300);//100
                 if (ToSpeak.IsAnySpeechPlaying)
                 {
                     Spoke = true;
@@ -199,24 +213,31 @@ public class Conversation : Interaction
         }
         return Spoke;
     }
-    private void SayInsult(Ped ToReply)
+    private void SayInsult(Ped ToReply, bool isPlayer)
     {
         if (Ped.TimesInsultedByPlayer <= 0)
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, true, isPlayer);//
         }
         else if (Ped.TimesInsultedByPlayer <= 2)
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED", "GENERIC_CURSE_MED" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED", "GENERIC_CURSE_MED" }, true, isPlayer);
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true, isPlayer);
         }
     }
-    private void SaySmallTalk(Ped ToReply, bool IsReply)
+    private void SaySmallTalk(Ped ToReply, bool IsReply, bool isPlayer)
     {
-        SayAvailableAmbient(ToReply, new List<string>() { "PED_RANT_RESP", "CULT_TALK", "PED_RANT_01", "PHONE_CONV1_CHAT1","CHAT_STATE","CHAT_RESP" }, true);
+        if(IsReply)
+        {
+            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_RESP", "PED_RANT_RESP", "CHAT_STATE", "PED_RANT" }, true, isPlayer);
+        }
+        else
+        {
+            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_STATE", "PED_RANT", "CHAT_RESP", "PED_RANT_RESP", "CULT_TALK", "PHONE_CONV1_CHAT1", }, true, isPlayer);
+        }
     }
     private void Greet()
     {
@@ -224,11 +245,11 @@ public class Conversation : Interaction
         IsActivelyConversing = true;
         if (Ped.TimesInsultedByPlayer <= 0)
         {
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false, true);
         }
         else
         {
-            SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false);
+            SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false, true);
         }
         while(CanContinueConversation && Game.GameTime - GameTimeStartedConversing <= 1000)
         {
@@ -289,11 +310,11 @@ public class Conversation : Interaction
             }
             if (Ped.TimesInsultedByPlayer <= 0)
             {
-                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true,false);
             }
             else
             {
-                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
+                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true, false);
             }
             Ped.HasSpokenWithPlayer = true;
         }

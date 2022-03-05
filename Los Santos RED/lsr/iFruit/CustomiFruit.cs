@@ -1,5 +1,7 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
+using System;
 using System.Drawing;
 using System.Linq;
 
@@ -17,6 +19,10 @@ namespace iFruitAddon2
         private bool IsScriptHashRunning = false;
         private int _mScriptHash;
         private int _timerClose = -1;
+        private bool onHomescreen = false;
+        private bool prevOnHomeScreen;
+        private int timesShow;
+        private string DebugStuff;
 
         public string DebugString { get; set; } = "";
 
@@ -138,7 +144,7 @@ namespace iFruitAddon2
         {
             NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "SET_SOFT_KEYS");
             NativeFunction.Natives.xC3D0841A0CC546A6(buttonID);
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD_PARAMETER_BOOL(true);
+            NativeFunction.Natives.xC58424BA936EB458(true);
             NativeFunction.Natives.xC3D0841A0CC546A6((int)icon);
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         }
@@ -184,7 +190,7 @@ namespace iFruitAddon2
             _wallpaper = new Wallpaper(textureDict);
         }
 
-        public void Update()
+        public void Update(ICellPhoneable Player)
         {
 
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
@@ -243,14 +249,64 @@ namespace iFruitAddon2
             }
 
             _contacts.Update(Handle);
-//#if DEBUG
+
+
+            //if(IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
+            //{
+            //    //SetUnread();
+            //    onHomescreen = true;
+            //}
+            //else
+            //{
+            //    onHomescreen = false;
+            //}
+
+            //if(prevOnHomeScreen != onHomescreen)
+            //{
+            //    //if(onHomescreen)
+            //    //{
+            //    //    if (timesShow <= 5)
+            //    //    {
+            //    //        //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "DISPLAY_VIEW");
+            //    //        //NativeFunction.Natives.xC3D0841A0CC546A6(0);
+            //    //        //NativeFunction.Natives.xC3D0841A0CC546A6(0);
+            //    //        //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+            //    //        timesShow++;
+            //    //        SetUnread();
+            //    //    }
+            //    //    //SetUnread();
+            //    //}
+            //    //else
+            //    //{
+            //    //    timesShow = 0;
+            //    //}
+            //    timesShow = 0;
+            //    DebugStuff = $"{Game.GameTime} CHANGED TO {onHomescreen}";
+            //}
+
+
+            //if(onHomescreen && timesShow <= 5)
+            //{
+            //    NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "DISPLAY_VIEW");
+            //    NativeFunction.Natives.xC3D0841A0CC546A6(1);
+            //    NativeFunction.Natives.xC3D0841A0CC546A6(0);
+            //    NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+            //    timesShow++;
+            //    SetUnread();
+            //}
+
+
+            // prevOnHomeScreen = onHomescreen;
+
+
+            //#if DEBUG
             if (IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
             {
                 SetUnread();
             }
-            _texts.Update(Handle);
+            _texts.Update(Handle, this, Player);
 //#endif
-            DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning}";
+            DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning} DebugStuff {DebugStuff} TIME:{Game.GameTime}";
         }
         private void SetUnread()
         {
@@ -325,6 +381,17 @@ namespace iFruitAddon2
 
                 Tools.Scripts.StartScript("cellphone_flashhand", 1424);
                 Tools.Scripts.StartScript("cellphone_controller", 1424);
+            }
+        }
+
+        public void RemoveText(iFruitText toRemove)
+        {
+            Texts.Remove(toRemove);
+            int IndexStart = 0;
+            foreach (iFruitText text in Texts.ToList().OrderByDescending(x => x.TimeReceived))
+            {
+                text.Index = IndexStart;
+                IndexStart++;
             }
         }
     }

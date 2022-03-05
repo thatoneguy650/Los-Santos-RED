@@ -52,11 +52,17 @@ public class WeaponRecoil
         {
             CurrentPitch *= -1.0f;
         }
-        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+        if (Math.Abs(AdjustedPitch) > 0)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+        }
 
         CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
         AdjustHeading();
-        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+        if (Math.Abs(AdjustedHeading) > 0)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+        }
     }
     private void AdjustPitch()
     {

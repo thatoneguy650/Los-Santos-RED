@@ -271,7 +271,10 @@ public class CellPhone
     public void DeleteText(iFruitText text)
     {
         AddedTexts.Remove(text);
-        CustomiFruit.Texts.Remove(text);
+        CustomiFruit.RemoveText(text);
+
+        //CustomiFruit.Texts.Remove(text);
+        
     }
     public void DeletePhoneRespone(PhoneResponse phoneResponse)
     {
@@ -280,7 +283,7 @@ public class CellPhone
     public void Update()
     {
         CheckScheduledItems();
-        CustomiFruit.Update();
+        CustomiFruit.Update(Player);
         MenuPool.ProcessMenus();
         GangInteraction?.Update();
         GunDealerInteraction?.Update();

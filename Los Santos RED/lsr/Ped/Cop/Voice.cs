@@ -15,6 +15,13 @@ public class Voice
     private bool IsInFiber = false;
 
     private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE", "COMBAT_TAUNT" };
+
+    private readonly List<string> InVehiclePlayerOnFootMegaPhone = new List<string> { "STOP_ON_FOOT_MEGAPHONE", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE" };
+
+    private readonly List<string> InVehiclePlayerInVehicleMegaPhone = new List<string> { "CHASE_VEHICLE_MEGAPHONE", "STOP_VEHICLE_CAR_MEGAPHONE", "STOP_VEHICLE_CAR_WARNING_MEGAPHONE", "STOP_VEHICLE_GENERIC_MEGAPHONE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE", "COMBAT_TAUNT" };
+
+
+
     private readonly List<string> DeadlyChaseSpeech = new List<string> { "COVER_YOU", "COVER_ME", "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "GET_HIM", "REQUEST_NOOSE" };
     //{ "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };  
     private readonly List<string> WeaponsFreeSpeech = new List<string> { "CHALLENGE_THREATEN", "FIGHT", "GENERIC_CURSE_HIGH", "GENERIC_WAR_CRY", "OFFICER_DOWN", "SHOOTOUT_OPEN_FIRE", "PINNED_DOWN", "TAKE_COVER" };//,"GENERIC_FRIGHTENED_HIGH" };
@@ -106,30 +113,44 @@ public class Voice
             }
             if (currentPlayer.IsWanted)
             {
-                if (currentPlayer.IsBusted)
+                if (Cop.IsInVehicle)
                 {
-                    PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
-                }
-                else if (currentPlayer.IsDead)
-                {
-                    PlaySpeech(SuspectDown.PickRandom(), Cop.IsInVehicle);
+                    if (currentPlayer.IsInVehicle)
+                    {
+                        PlaySpeech(InVehiclePlayerInVehicleMegaPhone.PickRandom(), false);
+                    }
+                    else 
+                    {
+                        PlaySpeech(InVehiclePlayerOnFootMegaPhone.PickRandom(), false);
+                    }
                 }
                 else
                 {
-                    if (currentPlayer.PoliceResponse.IsDeadlyChase)
+                    if (currentPlayer.IsBusted)
                     {
-                        if (currentPlayer.PoliceResponse.IsWeaponsFree)
-                        {
-                            PlaySpeech(WeaponsFreeSpeech.PickRandom(), Cop.IsInVehicle);
-                        }
-                        else
-                        {
-                            PlaySpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
-                        }
+                        PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
+                    }
+                    else if (currentPlayer.IsDead)
+                    {
+                        PlaySpeech(SuspectDown.PickRandom(), Cop.IsInVehicle);
                     }
                     else
                     {
-                        PlaySpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        if (currentPlayer.PoliceResponse.IsDeadlyChase)
+                        {
+                            if (currentPlayer.PoliceResponse.IsWeaponsFree)
+                            {
+                                PlaySpeech(WeaponsFreeSpeech.PickRandom(), Cop.IsInVehicle);
+                            }
+                            else
+                            {
+                                PlaySpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                            }
+                        }
+                        else
+                        {
+                            PlaySpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        }
                     }
                 }
             }
@@ -150,19 +171,33 @@ public class Voice
             }
             if (Cop.CurrentTask.OtherTarget.IsWanted)
             {
-                if (Cop.CurrentTask.OtherTarget.IsBusted)
+                if (Cop.IsInVehicle)
                 {
-                    PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
-                }
-                else
-                {
-                    if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+                    if (Cop.CurrentTask.OtherTarget.IsInVehicle)
                     {
-                        PlaySpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        PlaySpeech(InVehiclePlayerInVehicleMegaPhone.PickRandom(), false);
                     }
                     else
                     {
-                        PlaySpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        PlaySpeech(InVehiclePlayerOnFootMegaPhone.PickRandom(), false);
+                    }
+                }
+                else
+                {
+                    if (Cop.CurrentTask.OtherTarget.IsBusted)
+                    {
+                        PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
+                    }
+                    else
+                    {
+                        if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
+                        {
+                            PlaySpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        }
+                        else
+                        {
+                            PlaySpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
+                        }
                     }
                 }
             }

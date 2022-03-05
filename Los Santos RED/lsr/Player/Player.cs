@@ -108,7 +108,7 @@ namespace Mod
             GangTerritories = gangTerritories;
             Zones = zones;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName), Settings);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName,"Person"), Settings);
             if (CharacterModelIsFreeMode)
             {
                 HealthState.MyPed.VoiceName = FreeModeVoice;
@@ -162,6 +162,7 @@ namespace Mod
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f && !CurrentTargetedPed.IsInVehicle;
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
        public bool CanSurrender => Surrendering.CanSurrender;
+        public bool CanWaveHands => Surrendering.CanWaveHands;
         public bool CanUndie => Respawning.CanUndie;
         public CellPhone CellPhone { get; private set; }
         public int CellX { get; private set; }
@@ -410,6 +411,9 @@ namespace Mod
         public Violations Violations { get; private set; }
         public List<Crime> WantedCrimes => CriminalHistory.WantedCrimes;
         public int WantedLevel => wantedLevel;
+
+        public bool IsWavingHands { get; set; }
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -840,7 +844,7 @@ namespace Mod
                 GameTimeLastYelled = Game.GameTime;
             }
         }
-        private void PlaySpeech(string speechName, bool useMegaphone)
+        public void PlaySpeech(string speechName, bool useMegaphone)
         {
             if (CharacterModelIsFreeMode && FreeModeVoice != "")
             {
@@ -1810,7 +1814,7 @@ namespace Mod
             }
             if (HealthState.MyPed.Pedestrian.Exists() && HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person");
                 if(CharacterModelIsFreeMode)
                 {
                     HealthState.MyPed.VoiceName = FreeModeVoice;
@@ -1952,6 +1956,42 @@ namespace Mod
                     }
                 }
             }
+
+
+            if (IsWavingHands)
+            {
+                if (Game.GameTime - GameTimeLastYelled >= 5000)
+                {
+                    if(World.Pedestrians.Police.Any(x=> x.DistanceToPlayer <= 100f))
+                    {
+                        foreach (PedExt ped in World.Pedestrians.Civilians.Where(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)).ToList())
+                        {
+                            ped.SetWantedLevel(ped.CurrentlyViolatingWantedLevel);
+                            EntryPoint.WriteToConsole($"{ped.Handle} SET WANTED CUZ OF WAVING HANDS");
+                        }
+                    }
+                    PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+                    GameTimeLastYelled = Game.GameTime;
+                }
+            }
+            else if (HandsAreUp)
+            {
+
+                if (Game.GameTime - GameTimeLastYelled >= 10000)
+                {
+                    if(RandomItems.RandomPercent(50))
+                    {
+                        PlaySpeech("GENERIC_FRIGHTENED_MED", false);
+                    }
+                    else
+                    {
+                        PlaySpeech("GUN_BEG", false);
+                    }
+                    GameTimeLastYelled = Game.GameTime;
+                }
+                
+            }
+
 
             PlayerTasks.Update();
 
@@ -2941,5 +2981,8 @@ namespace Mod
                 IsVisiblyArmed = true;
             }
         }
+
+        public void WaveHands() => Surrendering.WaveHands();
+        
     }
 }

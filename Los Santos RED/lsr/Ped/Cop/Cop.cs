@@ -12,7 +12,7 @@ public class Cop : PedExt, IWeaponIssuable
     private Voice Voice;
     private WeaponInventory WeaponInventory;
     private bool WasAlreadySetPersistent = false;
-    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName) : base(pedestrian, settings, crimes, weapons, name)
+    public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName) : base(pedestrian, settings, crimes, weapons, name, "Cop")
     {
         IsCop = true;
         Health = health;
