@@ -871,7 +871,7 @@ public class Debug
 
         //ArrestScene();
 
-        // Game.LocalPlayer.Character.Health -= 25;
+         Game.LocalPlayer.Character.Health -= 25;
 
         Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         Player.Inventory.Add(ModItems.Get("Heroin"), 4);

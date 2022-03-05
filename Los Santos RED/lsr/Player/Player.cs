@@ -469,16 +469,30 @@ namespace Mod
                 }
             }
         }
-        public void AddHealth(int ToAdd)
+        public void ChangeHealth(int ToAdd)
         {
-            if (Character.Health < Character.MaxHealth && ToAdd > 0)
+            if (ToAdd > 0)
             {
-                if (Character.MaxHealth - Character.Health < ToAdd)
+                if (Character.Health < Character.MaxHealth)
                 {
-                    ToAdd = Character.MaxHealth - Character.Health;
+                    if (Character.MaxHealth - Character.Health < ToAdd)
+                    {
+                        ToAdd = Character.MaxHealth - Character.Health;
+                    }
+                    Character.Health += ToAdd;
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}", 5);
                 }
-                Character.Health += ToAdd;
-                EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}", 5);
+            }
+            else if(ToAdd < 0)
+            {
+                if(Character.Health > 0 && Character.Health + ToAdd >= 0)
+                {
+                    Character.Health += ToAdd;
+                }
+                else
+                {
+                    Character.Health = 0;
+                }
             }
         }
         public void AnnounceCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
@@ -666,9 +680,9 @@ namespace Mod
         {
             if (toAdd.CanConsume)
             {
-                if (toAdd.RestoresHealth)
+                if (toAdd.ChangesHealth)
                 {
-                    AddHealth(toAdd.HealthGained);
+                    ChangeHealth(toAdd.HealthChangeAmount);
                 }
             }
         }

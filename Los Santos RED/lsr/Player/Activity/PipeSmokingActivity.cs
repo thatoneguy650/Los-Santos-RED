@@ -185,11 +185,11 @@ namespace LosSantosRED.lsr.Player
                 Player.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
-                    if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                    {
-                        Player.AddHealth(ModItem.HealthGained);
-                        hasGainedHP = true;
-                    }
+                    //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                    //{
+                    //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
+                    //    hasGainedHP = true;
+                    //}
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);

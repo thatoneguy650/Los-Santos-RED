@@ -169,17 +169,21 @@ public class SurrenderActivity : DynamicActivity
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(1000);
-                    if (!Player.Character.Exists() || !Player.IsBusted)
-                    {
-                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                        return;
-                    }
+                    //if (!Player.Character.Exists() || !Player.IsBusted)
+                    //{
+                    //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    //    return;
+                    //}
 
                     //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
                     GameFiber.Wait(5000);//was just 6000 here
                     if (!Player.Character.Exists() || !Player.IsBusted)
                     {
-                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        if(Player.Character.Exists())
+                        {
+                            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        }
+                        
                         return;
                     }
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -203,9 +207,16 @@ public class SurrenderActivity : DynamicActivity
                 GameFiber.Wait(1500);//1250
                 if (!Player.Character.Exists() || !Player.IsBusted)
                 {
+                    if (Player.Character.Exists())
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    }
                     return;
                 }
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                if (Player.Character.Exists())
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                }
             }
             else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3))
             {

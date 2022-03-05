@@ -20,6 +20,10 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
+        private uint GameTimeLastGivenHealth;
+        private int HealthGiven;
+        private int TimesAte;
+
         public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -111,33 +115,71 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
+            //while (Player.CanPerformActivities && !IsCancelled)
+            //{
+            //    Player.SetUnarmed();
+            //    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+            //    UpdateHealthGain();
+            //    if (AnimationTime >= 0.9f)
+            //    {
+            //        if (Food.Exists())
+            //        {
+            //            Food.Delete();
+            //        }
+            //    }
+            //    if (AnimationTime >= 1.0f)
+            //    {
+            //        break;
+            //    }
+            //    GameFiber.Yield();
+            //}
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 0.9f)
-                {
-                    if (Food.Exists())
-                    {
-                        Food.Delete();
-                        if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
-                        {
-                            int ToAdd = ModItem.HealthGained;
-                            if (Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health < ToAdd)
-                            {
-                                ToAdd = Game.LocalPlayer.Character.MaxHealth - Game.LocalPlayer.Character.Health;
-                            }
-                            Player.Character.Health += ToAdd;
-                        }
-                    }
-                }
                 if (AnimationTime >= 1.0f)
                 {
-                    break;
+                    if (TimesAte >= 1 && (HealthGiven == ModItem.HealthChangeAmount || Player.Character.Health == Player.Character.MaxHealth))
+                    {
+                        if (Food.Exists())
+                        {
+                            Food.Delete();
+                        }
+                        IsCancelled = true;
+                    }
+                    else
+                    {
+                        TimesAte++;
+                        PlayingDict = Data.AnimIdleDictionary;
+                        PlayingAnim = Data.AnimIdle.PickRandom();
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                        EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte} HealthGiven {HealthGiven}", 5);
+                    }
                 }
+                UpdateHealthGain();
                 GameFiber.Yield();
             }
             Exit();
+        }
+        private void UpdateHealthGain()
+        {
+            if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
+            {
+                if (ModItem.ChangesHealth)
+                {
+                    if (ModItem.HealthChangeAmount > 0 && HealthGiven < ModItem.HealthChangeAmount)
+                    {
+                        HealthGiven++;
+                        Player.ChangeHealth(1);
+                    }
+                    else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
+                    {
+                        HealthGiven--;
+                        Player.ChangeHealth(-1);
+                    }
+                }
+                GameTimeLastGivenHealth = Game.GameTime;
+            }
         }
         private void Setup()
         {

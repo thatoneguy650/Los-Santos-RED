@@ -28,6 +28,6 @@ namespace LosSantosRED.lsr.Interface
 
         // void SetUnarmed();
         void PauseDynamicActivity();
-        void AddHealth(int healthGained);
+        void ChangeHealth(int healthGained);
     }
 }

@@ -404,9 +404,72 @@ public class GetArrested : ComplexTask
                     GameFiber.Wait(2500);
                 }
             }
-            if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
+            //
+
+
+
+
+            if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup", 3))
             {
                // EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                GameFiber.Wait(1000);
+                if (PedToArrest.Exists())
+                {
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Drop Gun", 3);
+                    NativeFunction.Natives.SET_PED_DROPS_WEAPON(PedToArrest);
+                    GameFiber.Wait(1000);
+                    if (!PedToArrest.Exists() || (PedToArrest.Handle == Game.LocalPlayer.Character.Handle && !Player.IsBusted))
+                    {
+                        return;
+                    }
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up Idle", 3);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup", 2.0f, -2.0f, -1, 1, 0, false, false, false);
+                }
+            }
+            if(PedToArrest.Exists())
+            {
+                PedToArrest.BlockPermanentEvents = true;
+                PedToArrest.KeepTasks = true;
+            }
+            GameTimeFinishedArrestedAnimation = Game.GameTime;
+            PlayedArrestAnimation = true;
+            EntryPoint.WriteToConsole($"TASKER: GetArrested Played Arrest Animation: {Ped.Pedestrian.Handle}", 3);
+
+        }, "SetArrestedAnimation");
+    }
+    private void SetArrestedAnimationOLD(Ped PedToArrest)
+    {
+        SubTaskName = "SetArrested";
+        GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+        {
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+            while (PedToArrest.Exists() && (PedToArrest.IsRagdoll || PedToArrest.IsStunned))
+            {
+                GameFiber.Yield();
+            }
+            if (!PedToArrest.Exists())
+            {
+                return;
+            }
+            if (PedToArrest.IsInAnyVehicle(false))
+            {
+                Vehicle oldVehicle = PedToArrest.CurrentVehicle;
+                if (PedToArrest.Exists() && oldVehicle.Exists())
+                {
+                    NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                    GameFiber.Wait(2500);
+                }
+            }
+            if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
+            {
+                // EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 GameFiber.Wait(1000);
                 if (PedToArrest.Exists())
@@ -422,7 +485,7 @@ public class GetArrested : ComplexTask
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 }
             }
-            if(PedToArrest.Exists())
+            if (PedToArrest.Exists())
             {
                 PedToArrest.BlockPermanentEvents = true;
                 PedToArrest.KeepTasks = true;
@@ -433,7 +496,40 @@ public class GetArrested : ComplexTask
 
         }, "SetArrestedAnimation");
     }
+
+
     public void UnSetArrestedAnimation(Ped PedToArrest)
+    {
+        SubTaskName = "UnSetArrested";
+        GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+        {
+            //AnimationDictionary.RequestAnimationDictionay("random@arrests");
+            //AnimationDictionary.RequestAnimationDictionay("busted");
+            //AnimationDictionary.RequestAnimationDictionay("ped");
+            //AnimationDictionary.RequestAnimationDictionay("mp_arresting");
+            if (PedToArrest.Exists())
+            {
+                
+                //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start UnSet", 3);
+               // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
+                GameFiber.Wait(1500);
+                if (PedToArrest.Exists())
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
+                    GameFiber.Wait(2000);
+                    PlayedUnArrestAnimation = true;
+                }
+            }
+            if (PedToArrest.Exists())
+            {
+                PedToArrest.BlockPermanentEvents = true;
+            }
+            //EntryPoint.WriteToConsole($"TASKER: GetArrested Played UNArrest Animation: {Ped.Pedestrian.Handle}", 3);
+        }, "UnSetArrestedAnimation");
+    }
+    public void UnSetArrestedAnimationOLD(Ped PedToArrest)
     {
         SubTaskName = "UnSetArrested";
         GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate

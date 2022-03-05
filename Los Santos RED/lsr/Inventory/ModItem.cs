@@ -55,8 +55,9 @@ public class ModItem
     public eConsumableType Type { get; set; } = eConsumableType.None;
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
-    public bool RestoresHealth => HealthGained > 0;
-    public int HealthGained { get; set; } = 0;
+    public bool ChangesHealth => HealthChangeAmount != 0;
+    public int HealthChangeAmount { get; set; } = 0;
+    public string HealthChangeDescription => HealthChangeAmount > 0 ? $"~g~+{HealthChangeAmount} ~s~HP" : $"~r~{HealthChangeAmount} ~s~HP";
     public bool ConsumeOnPurchase { get; set; } = false;
 
 

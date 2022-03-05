@@ -41,7 +41,11 @@ public class Intoxicants : IIntoxicants
         IntoxicantList = new List<Intoxicant>
         {
             new Intoxicant("Marijuana", 60000, 120000, 3.0f, "Barry1_Stoned", IntoxicationEffect.RelaxesMuscles) {  EffectIntoxicationLimit = 0.5f },
-            new Intoxicant("Alcohol", 25000, 60000, 3.5f, "Drunk",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving),
+            new Intoxicant("Low Proof Alcohol", 25000, 60000, 3.5f, "Drunk",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving),
+
+            new Intoxicant("High Proof Alcohol", 10000, 60000, 4.0f, "Drunk",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving),
+
+
             new Intoxicant("Mushrooms", 25000, 60000, 10.0f, "DRUG_gas_huffin",IntoxicationEffect.ImparesWalking | IntoxicationEffect.ImparesDriving) { ContinuesWithoutCurrentUse = true },
             new Intoxicant("Nicotine", 120000, 60000, 1.0f, "HeatHaze"),
 

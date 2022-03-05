@@ -316,9 +316,9 @@ public class StorePurchaseMenu : Menu
         {
             description += $"~n~~b~{((float)cii.PurchasePrice / (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
         }
-        if (myItem.RestoresHealth)
+        if (myItem.ChangesHealth)
         {
-            description += $"~n~~g~+{myItem.HealthGained} ~s~HP";
+            description += $"~n~{myItem.HealthChangeDescription}";
         }
         if (myItem.ConsumeOnPurchase && (myItem.Type == eConsumableType.Eat || myItem.Type == eConsumableType.Drink))
         {

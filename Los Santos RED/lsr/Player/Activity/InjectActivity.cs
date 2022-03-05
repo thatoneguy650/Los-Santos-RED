@@ -138,13 +138,13 @@ namespace LosSantosRED.lsr.Player
                     Player.Intoxication.StartIngesting(CurrentIntoxicant);
                     hasStartedIntoxicating = true;
                 }
-                if(AnimationTime >= 0.35f && ModItem.RestoresHealth)
-                {
-                    if(Player.Character.Health < Player.Character.MaxHealth)
-                    {
-                        Player.Character.Health += 1;
-                    }
-                }
+                //if(AnimationTime >= 0.35f && ModItem.ChangesHealth)
+                //{
+                //    if(Player.Character.Health < Player.Character.MaxHealth)
+                //    {
+                //        Player.Character.Health += 1;
+                //    }
+                //}
                 if (AnimationTime >= 0.7f)
                 {
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

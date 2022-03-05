@@ -21,7 +21,9 @@ namespace LosSantosRED.lsr.Player
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
         private bool hasGainedHP = false;
-
+        private uint GameTimeLastGivenHealth;
+        private int HealthGiven;
+        private int TimesDrank;
 
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
@@ -120,21 +122,46 @@ namespace LosSantosRED.lsr.Player
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
-                if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
-                { 
-                    if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 1.0f)
+                {
+                    if (TimesDrank >= 8 && (HealthGiven == ModItem.HealthChangeAmount || Player.Character.Health == Player.Character.MaxHealth))
                     {
-                        Player.AddHealth(ModItem.HealthGained);
-                        hasGainedHP = true;
+                        IsCancelled = true;
                     }
-                    PlayingDict = Data.AnimIdleDictionary;
-                    PlayingAnim = Data.AnimIdle.PickRandom();
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                    //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim}",5);
+                    else
+                    {
+                        TimesDrank++;
+                        PlayingDict = Data.AnimIdleDictionary;
+                        PlayingAnim = Data.AnimIdle.PickRandom();
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
+                    }
                 }
+                UpdateHealthGain();
                 GameFiber.Yield();
             }
             Exit();
+        }
+        private void UpdateHealthGain()
+        {
+            if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
+            {
+                if (ModItem.ChangesHealth)
+                {
+                    if(ModItem.HealthChangeAmount > 0 && HealthGiven < ModItem.HealthChangeAmount)
+                    {
+                        HealthGiven++;
+                        Player.ChangeHealth(1);
+                    }
+                    else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
+                    {
+                        HealthGiven--;
+                        Player.ChangeHealth(-1);
+                    }
+                }
+                GameTimeLastGivenHealth = Game.GameTime;
+            }
         }
         private void Setup()
         {

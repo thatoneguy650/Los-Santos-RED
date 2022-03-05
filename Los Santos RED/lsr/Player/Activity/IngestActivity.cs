@@ -124,11 +124,11 @@ namespace LosSantosRED.lsr.Player
                     if (Item.Exists())
                     {
                         Item.Delete();
-                        if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                        {
-                            Player.AddHealth(ModItem.HealthGained);
-                            hasGainedHP = true;
-                        }
+                        //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
+                        //{
+                        //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
+                        //    hasGainedHP = true;
+                        //}
                     }
                 }
                 if (AnimationTime >= 0.35f)
