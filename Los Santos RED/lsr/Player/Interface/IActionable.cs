@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr.Interface
         void TakeOwnershipOfNearestCar();
         void CallPolice();
         void SetUnarmed();
-        void StartConsumingActivity(ModItem selectedStuff);
+        void StartConsumingActivity(ModItem selectedStuff, bool performActivity);
         void PauseDynamicActivity();
         void ContinueDynamicActivity();
         void Gesture(GestureData gestureData);

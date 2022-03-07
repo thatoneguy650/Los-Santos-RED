@@ -50,6 +50,8 @@ namespace LosSantosRED.lsr
             TotalRan = 0;
             TotalChecked = 0;
             int localRan = 0;
+            float closestCopDistance = 999f;
+            Cop PrimaryPlayerCop = null;
             foreach (Cop Cop in World.Pedestrians.PoliceList)
             {
                 try
@@ -87,6 +89,12 @@ namespace LosSantosRED.lsr
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
+                        if(Cop.DistanceToPlayer < closestCopDistance)
+                        {
+                            PrimaryPlayerCop = Cop;
+                            closestCopDistance = Cop.DistanceToPlayer;
+                        }
+
                         if (yield && localRan == 1)
                         {
                             GameFiber.Yield();
@@ -102,6 +110,8 @@ namespace LosSantosRED.lsr
                 }
                 GameFiber.Yield();
             }
+
+            Player.ArrestingCop = PrimaryPlayerCop;
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()

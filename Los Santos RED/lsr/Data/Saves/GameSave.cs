@@ -8,6 +8,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace LosSantosRED.lsr.Data
             WeaponInventory = weaponInventory;
             OwnedVehicleVariations = vehicleVariations;
         }
-        public void Save(ISaveable player, IWeapons weapons, ITimeReportable time)
+        public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
@@ -58,7 +59,26 @@ namespace LosSantosRED.lsr.Data
                     {
                         NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
                     }
-                    OwnedVehicleVariations.Add(new VehicleVariation(car.VehicleModelName, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
+
+
+                    uint modelHash;
+                    var hex = car.VehicleModelName.ToLower();
+
+                    if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        hex = hex.Substring(2);
+                    }
+                    bool parsedSuccessfully = uint.TryParse(hex,NumberStyles.HexNumber,CultureInfo.CurrentCulture, out modelHash);
+
+                    EntryPoint.WriteToConsole($"STRIPPED NAME {parsedSuccessfully} hex {hex} {modelHash}");
+                    if (parsedSuccessfully)//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
+                    {
+                        OwnedVehicleVariations.Add(new VehicleVariation(modelHash, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
+                    }
+                    else
+                    {
+                        OwnedVehicleVariations.Add(new VehicleVariation(car.VehicleModelName, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
+                    }
                 }
             }
 
@@ -95,6 +115,30 @@ namespace LosSantosRED.lsr.Data
 
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
+
+            if (player.Licenses.HasDriversLicense)
+            {
+                DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate };
+            }
+            if (player.Licenses.HasCCWLicense)
+            {
+                CCWLicense = new CCWLicense() { ExpirationDate = player.Licenses.CCWLicense.ExpirationDate, IssueDate = player.Licenses.CCWLicense.IssueDate };
+            }
+            SavedResidences.Clear();
+            foreach (Residence res in player.Properties.Residences)//placesOfInterest.PossibleLocations.Residences)
+            {
+                if(res.IsOwned || res.IsRented)
+                {
+                    SavedResidence myRes = new SavedResidence(res.Name, res.IsOwned, res.IsRented);
+                    if(res.IsRented)
+                    {
+                        myRes.DateOfLastRentalPayment = res.DateRentalPaymentPaid;
+                        myRes.RentalPaymentDate = res.DateRentalPaymentDue;
+                    }
+                    SavedResidences.Add(myRes);
+                }
+            }
+
         }
         public Vector3 PlayerPosition { get; set; }
         public float PlayerHeading { get; set; }
@@ -105,6 +149,10 @@ namespace LosSantosRED.lsr.Data
         public int MoneySpentAtGunDealers { get; set; }
         public DateTime CurrentDateTime { get; set; }
 
+
+        public DriversLicense DriversLicense { get; set; }
+        public CCWLicense CCWLicense { get; set; }
+
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
         public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
 
@@ -113,7 +161,10 @@ namespace LosSantosRED.lsr.Data
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public List<VehicleVariation> OwnedVehicleVariations { get; set; } = new List<VehicleVariation>();
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time)
+
+        public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
         {
             Game.FadeScreenOut(2500, true);
             time.SetDateTime(CurrentDateTime);
@@ -142,7 +193,16 @@ namespace LosSantosRED.lsr.Data
                 NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
                 if (SpawnPos != Vector3.Zero)
                 {
-                    Vehicle NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
+                    Vehicle NewVehicle = null;
+                    if (OwnedVehicleVariation.ModelName != "")
+                    {
+                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
+                    }
+                    else if(OwnedVehicleVariation.ModelHash != 0)
+                    {
+                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, SpawnPos, Heading);
+                    }
+
                     if (NewVehicle.Exists())
                     {
                         NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
@@ -209,6 +269,35 @@ namespace LosSantosRED.lsr.Data
             }
 
             player.GunDealerRelationship.SetMoneySpent(MoneySpentAtGunDealers,false);
+
+
+            if (DriversLicense != null)
+            {
+                player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };
+            }
+            if (CCWLicense != null)
+            {
+                player.Licenses.CCWLicense = new CCWLicense() { ExpirationDate = CCWLicense.ExpirationDate, IssueDate = CCWLicense.IssueDate };
+            }
+
+            foreach (SavedResidence res in SavedResidences)
+            {
+                if (res.IsOwnedByPlayer || res.IsRentedByPlayer)
+                {
+                    Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == res.Name).FirstOrDefault();
+                    if(savedPlace != null)
+                    {
+                        player.Properties.AddResidence(savedPlace);
+                        savedPlace.IsOwned = res.IsOwnedByPlayer;
+                        savedPlace.IsRented = res.IsRentedByPlayer;
+                        savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
+                        savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
+                        savedPlace.RefreshUI();
+                    }
+                }
+            }
+
+
 
             Game.FadeScreenIn(2500, true);
             player.DisplayPlayerNotification();

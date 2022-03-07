@@ -113,6 +113,8 @@ public class PoliceSettings : ISettingsDefaultable
     public float AddOptionalPassengerPercentage { get; set; }
     public float PedestrianSpawnPercentage { get; set; }
     public int GeneralFineAmount { get; set; }
+    public int DrivingWithoutLicenseFineAmount { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -129,6 +131,7 @@ public class PoliceSettings : ISettingsDefaultable
     public void SetDefault()
     {
         GeneralFineAmount = 500;
+        DrivingWithoutLicenseFineAmount = 1000;
         RoadblockEnabled = true;
         RoadblockSpikeStripsEnabled = true;
         RoadblockMinWantedLevel = 3;

@@ -36,6 +36,9 @@ public class KeySettings : ISettingsDefaultable
     public Keys GestureKey { get; set; }
     public Keys GestureKeyModifier { get; set; }
 
+    public Keys ActivityKey { get; set; }
+    public Keys ActivityKeyModifier { get; set; }
+
     public KeySettings()
     {
         SetDefault();
@@ -68,6 +71,9 @@ public class KeySettings : ISettingsDefaultable
         SelectorKey = Keys.X;
         SelectorKeyModifier = Keys.LShiftKey;
 
+
+        ActivityKey = Keys.O;
+        ActivityKeyModifier = Keys.LShiftKey;
 
         GestureKey = Keys.X;
         GestureKeyModifier = Keys.Z;

@@ -49,10 +49,16 @@ public class Voice
 
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
-        if (CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
+        if (CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted && currentPlayer.ArrestingCop.Handle == Cop.Handle)))
         {
             TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 25000);
             GameTimeLastRadioed = Game.GameTime;
+
+            if(Cop.Pedestrian.Exists() )
+            {
+
+            }
+
             GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
             {
                 IsInFiber = true;

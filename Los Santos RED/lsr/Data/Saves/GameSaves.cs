@@ -25,7 +25,7 @@ public class GameSaves : IGameSaves
             
         }
     }
-    public void Save(ISaveable player, IWeapons weapons, ITimeReportable time)
+    public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
     {
         GameSave mySave = GetSave(player);
         if(mySave == null)
@@ -33,17 +33,24 @@ public class GameSaves : IGameSaves
             mySave = new GameSave();
             GameSaveList.Add(mySave);
         }
-        mySave.Save(player, weapons, time);    
+        mySave.Save(player, weapons, time, placesOfInterest);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {       
-        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time);
+        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time, placesOfInterest);
     }
     public GameSave GetSave(ISaveable player)
     {
         GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
         return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
+    }
+    public void UpdateSave(GameSave toUpdate)
+    {
+        if(toUpdate != null)
+        {
+            Serialization.SerializeParams(GameSaveList, ConfigFileName);
+        }
     }
     public void DeleteSave(string playerName, string modelName)
     {
@@ -108,6 +115,12 @@ public class GameSaves : IGameSaves
         AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
         AlexisGameSave.PlayerHeading = 45f;
         AlexisGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+
+        AlexisGameSave.Contacts.Add(new SavedContact("Underground Guns",30,"CHAR_BLANK_ENTRY"));
+        AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
+        AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
+        AlexisGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28),DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
+        AlexisGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) {  });
 
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
@@ -467,6 +480,7 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(FemaleSave);
     }
+
 }
 
 

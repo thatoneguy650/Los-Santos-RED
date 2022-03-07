@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Data;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
@@ -17,7 +18,7 @@ namespace Mod
 {
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
-                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable
+                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable
     {
         public int UpdateState = 0;
         //private BigMessageThread BigMessageThread;
@@ -66,6 +67,7 @@ namespace Mod
         private Vector3 position;
         private int PreviousWantedLevel;
         private IRadioStations RadioStations;
+        private IGameSaves GameSaves;
         private Respawning Respawning;
         private Scanner Scanner;
         private IScenarios Scenarios;
@@ -89,7 +91,8 @@ namespace Mod
         private uint GameTimeLastYelled;
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
         private bool CanYell => !IsYellingTimeOut;
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -107,6 +110,7 @@ namespace Mod
             Intoxicants = intoxicants;
             GangTerritories = gangTerritories;
             Zones = zones;
+            GameSaves = gameSaves;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName,"Person"), Settings);
             if (CharacterModelIsFreeMode)
@@ -140,6 +144,13 @@ namespace Mod
             PlayerTasks.Setup();
 
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
+
+            Licenses = new Licenses(this);
+
+            Properties = new Properties(this, PlacesOfInterest, TimeControllable);
+            Properties.Setup();
+
+
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
@@ -152,6 +163,7 @@ namespace Mod
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public Rage.Object AttachedProp { get; set; }
+        public Cop ArrestingCop { get; set; }
         public bool BeingArrested { get; private set; }
         //public BigMessageHandler BigMessage { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -318,6 +330,8 @@ namespace Mod
         public bool IsWanted => wantedLevel > 0;
         public GestureData LastGesture { get; set; }
         public WeaponHash LastWeaponHash { get; set; }
+        public Licenses Licenses { get; private set; }
+        public Properties Properties { get; private set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
         public int Money
@@ -359,14 +373,10 @@ namespace Mod
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
-       // public Vector3 RootPosition { get; set; }
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
-
         public Sprinting Sprinting { get; private set; }
-
-       // public float StaminaPercent => Sprinting.StaminaPercentage;
         public uint TargettingHandle
         {
             get => targettingHandle;
@@ -411,9 +421,7 @@ namespace Mod
         public Violations Violations { get; private set; }
         public List<Crime> WantedCrimes => CriminalHistory.WantedCrimes;
         public int WantedLevel => wantedLevel;
-
         public bool IsWavingHands { get; set; }
-
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -783,6 +791,7 @@ namespace Mod
             GangRelationships.Dispose();
             CellPhone.Dispose();
             PlayerTasks.Dispose();
+            Properties.Dispose();
             isActive = false;
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -1221,7 +1230,7 @@ namespace Mod
                 UpperBodyActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties)
         {
             IsDead = false;
             IsBusted = false;
@@ -1295,6 +1304,10 @@ namespace Mod
             {
                 PlayerTasks.Clear();
             }
+            if(clearProperties)
+            {
+                Properties.Dispose();
+            }
         }
         public void ResetScanner() => Scanner.Reset();
         public void ResetScannerDebug()
@@ -1340,6 +1353,19 @@ namespace Mod
             SetMoney(money);
             EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
         }
+        public void ChangeName(string newName)
+        {
+            GameSave mySave = GameSaves.GetSave(this);
+            if(mySave != null)
+            {
+                mySave.PlayerName = newName;
+                GameSaves.UpdateSave(mySave);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: SAVED {newName}", 3);
+            }
+            PlayerName = newName;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}", 3);
+        }
+
         public void SetDenStatus(Gang gang, bool v)
         {
             World.Places.SetGangLocationActive(gang.ID, v);
@@ -1485,9 +1511,9 @@ namespace Mod
                 NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Character, CurrentVehicle.Vehicle, 0);
             }
         }
-        public void StartConsumingActivity(ModItem modItem)
+        public void StartConsumingActivity(ModItem modItem, bool performActivity)
         {
-            if (!IsPerformingActivity && CanPerformActivities && modItem.CanConsume)// modItem.Type != eConsumableType.None)
+            if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) && modItem.CanConsume)// modItem.Type != eConsumableType.None)
             {
                 if (modItem.RequiresTool)
                 {
@@ -1506,41 +1532,48 @@ namespace Mod
                 {
                     Inventory.Remove(modItem, 1);
                 }
-
-                if (UpperBodyActivity != null)
+                if (performActivity)
                 {
-                    UpperBodyActivity.Cancel();
+                    if (UpperBodyActivity != null)
+                    {
+                        UpperBodyActivity.Cancel();
+                    }
+                    IsPerformingActivity = true;
+                    if (modItem.Type == eConsumableType.Drink)
+                    {
+                        UpperBodyActivity = new DrinkingActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.Eat)
+                    {
+                        UpperBodyActivity = new EatingActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.Smoke)
+                    {
+                        UpperBodyActivity = new SmokingActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.Ingest)
+                    {
+                        UpperBodyActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.AltSmoke)
+                    {
+                        UpperBodyActivity = new PipeSmokingActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.Snort)
+                    {
+                        UpperBodyActivity = new InhaleActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    else if (modItem.Type == eConsumableType.Inject)
+                    {
+                        UpperBodyActivity = new InjectActivity(this, Settings, modItem, Intoxicants);
+                    }
+                    UpperBodyActivity?.Start();
                 }
-                IsPerformingActivity = true;
-                if (modItem.Type == eConsumableType.Drink)
+                else
                 {
-                    UpperBodyActivity = new DrinkingActivity(this, Settings, modItem, Intoxicants);
+                    TimeControllable.FastForward(TimeControllable.CurrentDateTime.AddMinutes(3));
+                    ChangeHealth(modItem.HealthChangeAmount);
                 }
-                else if (modItem.Type == eConsumableType.Eat)
-                {
-                    UpperBodyActivity = new EatingActivity(this, Settings, modItem, Intoxicants);
-                }
-                else if (modItem.Type == eConsumableType.Smoke)
-                {
-                    UpperBodyActivity = new SmokingActivity(this, Settings, modItem, Intoxicants);
-                }
-                else if (modItem.Type == eConsumableType.Ingest)
-                {
-                    UpperBodyActivity = new IngestActivity(this, Settings, modItem, Intoxicants);
-                }
-                else if (modItem.Type == eConsumableType.AltSmoke)
-                {
-                    UpperBodyActivity = new PipeSmokingActivity(this, Settings, modItem, Intoxicants);
-                }
-                else if (modItem.Type == eConsumableType.Snort)
-                {
-                    UpperBodyActivity = new InhaleActivity(this, Settings, modItem, Intoxicants);
-                }
-                else if (modItem.Type == eConsumableType.Inject)
-                {
-                    UpperBodyActivity = new InjectActivity(this, Settings, modItem, Intoxicants);
-                }
-                UpperBodyActivity?.Start();
             }
         }
         public void StartConversation()
@@ -1976,14 +2009,21 @@ namespace Mod
             {
                 if (Game.GameTime - GameTimeLastYelled >= 5000)
                 {
-                    if(World.Pedestrians.Police.Any(x=> x.DistanceToPlayer <= 100f))
+                    if (!Investigation.IsActive && World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 100f) && World.Pedestrians.Civilians.Any(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)))
                     {
-                        foreach (PedExt ped in World.Pedestrians.Civilians.Where(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)).ToList())
-                        {
-                            ped.SetWantedLevel(ped.CurrentlyViolatingWantedLevel);
-                            EntryPoint.WriteToConsole($"{ped.Handle} SET WANTED CUZ OF WAVING HANDS");
-                        }
+                        Investigation.Start(Position, false);
                     }
+
+
+
+                    //if(World.Pedestrians.Police.Any(x=> x.DistanceToPlayer <= 100f))
+                    //{
+                    //    foreach (PedExt ped in World.Pedestrians.Civilians.Where(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)).ToList())
+                    //    {
+                    //        ped.SetWantedLevel(ped.CurrentlyViolatingWantedLevel);
+                    //        EntryPoint.WriteToConsole($"{ped.Handle} SET WANTED CUZ OF WAVING HANDS");
+                    //    }
+                    //}
                     PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
                     GameTimeLastYelled = Game.GameTime;
                 }
@@ -2997,6 +3037,18 @@ namespace Mod
         }
 
         public void WaveHands() => Surrendering.WaveHands();
-        
+        public int FineAmount()
+        {
+            int InitialAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
+            if (PoliceResponse.PlayerSeenInVehicleDuringWanted)
+            {
+                if (!Licenses.HasDriversLicense || !Licenses.DriversLicense.IsValid(TimeControllable))
+                {
+                    InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
+                }
+            }
+            return InitialAmount;
+        }
+
     }
 }

@@ -418,7 +418,7 @@ public class GetArrested : ComplexTask
                 {
                     //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Drop Gun", 3);
                     NativeFunction.Natives.SET_PED_DROPS_WEAPON(PedToArrest);
-                    GameFiber.Wait(1000);
+                    GameFiber.Wait(2000);
                     if (!PedToArrest.Exists() || (PedToArrest.Handle == Game.LocalPlayer.Character.Handle && !Player.IsBusted))
                     {
                         return;
@@ -506,7 +506,7 @@ public class GetArrested : ComplexTask
             //AnimationDictionary.RequestAnimationDictionay("random@arrests");
             //AnimationDictionary.RequestAnimationDictionay("busted");
             //AnimationDictionary.RequestAnimationDictionay("ped");
-            //AnimationDictionary.RequestAnimationDictionay("mp_arresting");
+            AnimationDictionary.RequestAnimationDictionay("mp_arresting");
             if (PedToArrest.Exists())
             {
                 

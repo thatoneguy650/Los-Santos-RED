@@ -21,6 +21,8 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         CellPhone CellPhone { get; }
         GunDealerRelationship GunDealerRelationship { get; }
+        Licenses Licenses { get; }
+        Properties Properties { get; }
 
         void ClearVehicleOwnership();
     }

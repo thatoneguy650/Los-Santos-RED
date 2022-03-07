@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 public class GunStore : TransactableLocation
 {
-    private StoreCamera StoreCamera;
+    private LocationCamera StoreCamera;
     private IActivityPerformable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
@@ -34,7 +34,7 @@ public class GunStore : TransactableLocation
     {
         ButtonPromptText = $"Shop at {Name}";
     }
-    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         ModItems = modItems;
@@ -50,7 +50,8 @@ public class GunStore : TransactableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new StoreCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
 
                 CreateInteractionMenu();

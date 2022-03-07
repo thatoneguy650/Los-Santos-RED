@@ -104,6 +104,9 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+        public bool PlayerSeenInVehicleDuringWanted { get; set; }
+
         public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer)
         {
             //this is a fucking mess of references and isnt working properly at all
@@ -245,6 +248,7 @@ namespace LosSantosRED.lsr
             Player.SetWantedLevel(0, "Police Response Reset", true);
             IsWeaponsFree = false;
             PlayerSeenDuringWanted = false;
+            PlayerSeenInVehicleDuringWanted = false;
             PlaceLastReportedCrime = Vector3.Zero;
             PoliceHaveDescription = false;
             CurrentPoliceState = PoliceState.Normal;
@@ -273,6 +277,10 @@ namespace LosSantosRED.lsr
                     {
                         PlayerSeenDuringCurrentWanted = true;
                         PlayerSeenDuringWanted = true;
+                        if(Player.IsInVehicle)
+                        {
+                            PlayerSeenInVehicleDuringWanted = true;
+                        }
                     }
                     if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
                     {

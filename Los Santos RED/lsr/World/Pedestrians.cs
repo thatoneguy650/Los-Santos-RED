@@ -330,17 +330,43 @@ public class Pedestrians
     }
     public void Setup()
     {
-        foreach(Gang gang in Gangs.AllGangs)
+        //foreach(Gang gang in Gangs.AllGangs)
+        //{
+        //    RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
+        //    RelationshipGroup policeGroup = new RelationshipGroup("COP");
+        //    foreach (Gang otherGang in Gangs.AllGangs)
+        //    {
+        //        if(otherGang.ID != gang.ID)
+        //        {
+        //            RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+        //            otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+        //            thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+        //        }
+        //    }
+        //    thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
+        //    policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+        //}
+        foreach (Gang gang in Gangs.AllGangs)
         {
             RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
             RelationshipGroup policeGroup = new RelationshipGroup("COP");
             foreach (Gang otherGang in Gangs.AllGangs)
             {
-                if(otherGang.ID != gang.ID)
+                if (otherGang.ID != gang.ID)
                 {
-                    RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                    otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-                    thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+                    if(gang.EnemyGangs.Contains(otherGang.ID))
+                    {
+                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Dislike);
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Dislike);
+                    }
+                    else
+                    {
+                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+                    }
+
                 }
             }
             thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
@@ -632,68 +658,72 @@ public class Pedestrians
         bool WillFight = RandomItems.RandomPercent(MyGang.FightPercentage);
         bool canBeAmbientTasked = true;
         if (Pedestrian.Exists())
-        {    
+        {
             if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && Pedestrian.IsPersistent)//must have been spawned by another mod?
             {
                 WillFight = false;
                 canBeAmbientTasked = false;
             }
             //EntryPoint.WriteToConsole($"Added Ambient Gang Member {Pedestrian.Handle}");
-        }
-        //PedGroup myGroup = RelationshipGroups.GetPedGroup(relationshipGroupName);
-        //if (myGroup == null)
-        //{
-        //    myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
-        //}
-        ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
-        {
-            toAdd = ShopMenus.GetRandomMenu(MyGang.DealerMenuGroup);
-            if (toAdd == null)
-            {
-                toAdd = ShopMenus.GetRandomDrugDealerMenu();
-            }
-        }
-        GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
-        gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
-        bool withPerson = false;
-        if(gangPerson != null)
-        {
-            if (Settings.SettingsManager.GangSettings.OverrideHealth)
-            {
-                int health = RandomItems.GetRandomNumberInt(gangPerson.HealthMin, gangPerson.HealthMax) + 100;
-                Pedestrian.MaxHealth = health;
-                Pedestrian.Health = health;
-            }
-            if (Settings.SettingsManager.GangSettings.OverrideArmor)
-            {
-                int armor = RandomItems.GetRandomNumberInt(gangPerson.ArmorMin, gangPerson.ArmorMax);
-                Pedestrian.Armor = armor;
-            }
-            gm.Accuracy = RandomItems.GetRandomNumberInt(gangPerson.AccuracyMin, gangPerson.AccuracyMax);
-            gm.ShootRate = RandomItems.GetRandomNumberInt(gangPerson.ShootRateMin, gangPerson.ShootRateMax);
-            gm.CombatAbility = RandomItems.GetRandomNumberInt(gangPerson.CombatAbilityMin, gangPerson.CombatAbilityMax);
 
-            if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+            //PedGroup myGroup = RelationshipGroups.GetPedGroup(relationshipGroupName);
+            //if (myGroup == null)
+            //{
+            //    myGroup = new PedGroup(relationshipGroupName, relationshipGroupName, relationshipGroupName, false);
+            //}
+            ShopMenu toAdd = null;
+            if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
             {
-                Pedestrian.Accuracy = gm.Accuracy;
-                NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
-                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+                toAdd = ShopMenus.GetRandomMenu(MyGang.DealerMenuGroup);
+                if (toAdd == null)
+                {
+                    toAdd = ShopMenus.GetRandomDrugDealerMenu();
+                }
             }
-            withPerson = true;
-        }
-        else
-        {
-            if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+            if (Pedestrian.Exists())
             {
-                Pedestrian.Accuracy = gm.Accuracy;
-                NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
-                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+                gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
             }
-           //EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
+            bool withPerson = false;
+            if (gangPerson != null)
+            {
+                if (Settings.SettingsManager.GangSettings.OverrideHealth)
+                {
+                    int health = RandomItems.GetRandomNumberInt(gangPerson.HealthMin, gangPerson.HealthMax) + 100;
+                    Pedestrian.MaxHealth = health;
+                    Pedestrian.Health = health;
+                }
+                if (Settings.SettingsManager.GangSettings.OverrideArmor)
+                {
+                    int armor = RandomItems.GetRandomNumberInt(gangPerson.ArmorMin, gangPerson.ArmorMax);
+                    Pedestrian.Armor = armor;
+                }
+                gm.Accuracy = RandomItems.GetRandomNumberInt(gangPerson.AccuracyMin, gangPerson.AccuracyMax);
+                gm.ShootRate = RandomItems.GetRandomNumberInt(gangPerson.ShootRateMin, gangPerson.ShootRateMax);
+                gm.CombatAbility = RandomItems.GetRandomNumberInt(gangPerson.CombatAbilityMin, gangPerson.CombatAbilityMax);
+
+                if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+                {
+                    Pedestrian.Accuracy = gm.Accuracy;
+                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
+                    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+                }
+                withPerson = true;
+            }
+            else
+            {
+                if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+                {
+                    Pedestrian.Accuracy = gm.Accuracy;
+                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
+                    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
+                }
+                //EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
+            }
+            //EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
+            GangMembers.Add(gm);
         }
-        //EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
-        GangMembers.Add(gm);
     }
     private void AddAmbientCop(Ped Pedestrian)
     {

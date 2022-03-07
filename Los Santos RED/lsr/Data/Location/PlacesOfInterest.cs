@@ -49,6 +49,8 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.GunStores);
         AllLocations.AddRange(PossibleLocations.Hotels);
         AllLocations.AddRange(PossibleLocations.Residences);
+        AllLocations.AddRange(PossibleLocations.CityHalls);
+
         return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
@@ -132,11 +134,11 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-        List<MenuItem> GunShop1 = ShopMenus.GetMenu("GunShop1")?.Items;
-        List<MenuItem> GunShop2 = ShopMenus.GetMenu("GunShop2")?.Items;
-        List<MenuItem> GunShop3 = ShopMenus.GetMenu("GunShop3")?.Items;
-        List<MenuItem> GunShop4 = ShopMenus.GetMenu("GunShop4")?.Items;
-        List<MenuItem> GunShop5 = ShopMenus.GetMenu("GunShop5")?.Items;
+        //List<MenuItem> GunShop1 = ShopMenus.GetMenu("GunShop1")?.Items;
+        //List<MenuItem> GunShop2 = ShopMenus.GetMenu("GunShop2")?.Items;
+        //List<MenuItem> GunShop3 = ShopMenus.GetMenu("GunShop3")?.Items;
+        //List<MenuItem> GunShop4 = ShopMenus.GetMenu("GunShop4")?.Items;
+        //List<MenuItem> GunShop5 = ShopMenus.GetMenu("GunShop5")?.Items;
 
 
         List<MenuItem> ScrapMenu = ShopMenus.GetMenu("ScrapMenu")?.Items;
@@ -262,16 +264,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Hotel(new Vector3(63.68047f, -261.8232f, 52.35384f), 335.7221f, "Cheep Motel", "POOL!","CheapHotelMenu"),
             new Hotel(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, "Crastenburg", "","ExpensiveHotelMenu"),
             new Hotel(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, "Hotel Von Crastenburg","","ExpensiveHotelMenu"),
-
-
-
         });
 
 
         PossibleLocations.Residences.AddRange(new List<Residence>()
-
         {
-
             //Apartments
             new Residence(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578, PurchasePrice = 550000, RentalDays = 28, RentalFee = 2250 },
             //new Residence(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
@@ -285,15 +282,52 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(195.0935f, 3031.064f, 43.89068f), 273.1078f, "125 Joshua Road", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 298000, RentalDays = 28, RentalFee = 1580  },
 
 
+            new Residence(new Vector3(191.0053f, 3082.26f, 43.47285f), 277.6117f, "610N Joshua Road", "dump grande senora house 200K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 289, RentalDays = 28, RentalFee = 1675  },
+            new Residence(new Vector3(241.7666f, 3107.666f, 42.48719f), 93.76467f, "620N Joshua Road", "Dumpy tgrand house 200K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 275000, RentalDays = 28, RentalFee = 1610  },
+            new Residence(new Vector3(162.8214f, 3119.749f, 43.42594f), 192.0786f, "621N Joshua Road", "burned down shithole 50K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 57000, RentalDays = 28, RentalFee = 850  },
+            new Residence(new Vector3(247.5913f, 3169.535f, 42.78756f), 90.61945f, "630N Joshua Road", "Kinda dump 200K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 267000, RentalDays = 28, RentalFee = 1580  },
 
-         
+
+
+            new Residence(new Vector3(-214.8853f, 6444.098f, 31.31351f), 315.979f, "1280N Procopio Drive", "Paleto Bay, nice almost beach house 450K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 460000, RentalDays = 28, RentalFee = 1700  },
+            new Residence(new Vector3(-272.7155f, 6400.906f, 31.50496f), 215.1084f, "1275N Procopio Drive", "Palento Beach House 450K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 470000, RentalDays = 28, RentalFee = 1850  },
+            new Residence(new Vector3(-247.7424f, 6370.079f, 31.84554f), 45.0573f, "1276N Procopio Drive", "paleto bay 450K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 476000, RentalDays = 28, RentalFee = 1790  },
+            new Residence(new Vector3(-227.3544f, 6377.188f, 31.75924f), 47.93699f, "1278N Procopio Drive", "Paleto Bay 400K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 414000, RentalDays = 28, RentalFee = 1670  },
+            new Residence(new Vector3(-245.4691f, 6413.878f, 31.4606f), 130.3203f, "1281N Procopio Drive", "Paleto 425K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 455000, RentalDays = 28, RentalFee = 1770  },
+            new Residence(new Vector3(-213.7807f, 6395.94f, 33.08509f), 40.99633f, "1282N Procopio Drive", "Paleto 425K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 435000, RentalDays = 28, RentalFee = 1680  },
+            new Residence(new Vector3(-189.0498f, 6409.355f, 32.29676f), 48.98f, "1285N Procopio Drive", "Paleto 400K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 445000, RentalDays = 28, RentalFee = 1650  },
+            new Residence(new Vector3(-280.4388f, 6350.718f, 32.60079f), 24.08426f, "1271N Procopio Drive", "Paleto Crap 250K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 247000, RentalDays = 28, RentalFee = 1380  },
+            new Residence(new Vector3(-359.5872f, 6334.424f, 29.84736f), 226.0376f, "1260N Procopio Drive", "Paleto Big 550K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 565000, RentalDays = 28, RentalFee = 2200  },
+            new Residence(new Vector3(-332.7523f, 6301.959f, 33.08874f), 69.82259f, "1262N Procopio Drive", "Paleto big, dumpy 250K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 257000, RentalDays = 28, RentalFee = 1480  },
+            new Residence(new Vector3(-407.2561f, 6314.223f, 28.94128f), 230.5133f, "1259N Procopio Drive", "Paleto Nice 400K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 414000, RentalDays = 28, RentalFee = 1870  },
+            new Residence(new Vector3(-437.4564f, 6261.807f, 30.06895f), 228.8042f, "1252N Procopio Drive", "Paleto Big with Garage 500K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 520000, RentalDays = 28, RentalFee = 2100  },
+
+            new Residence(new Vector3(1880.423f, 3921.08f, 33.21722f), 100.0703f, "785N Niland Ave", "Sandy Shores, Dumpy 200K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 224000, RentalDays = 28, RentalFee = 1280  },
+            new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "Upscale apartment 350K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 404000, RentalDays = 28, RentalFee = 1650  },
+            new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "West Viewood Upscale Apartment 300K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 375000, RentalDays = 28, RentalFee = 1570  },
+            new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "Upscale Apartment in Hawick 300K") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },
+
 
 
 
         });
 
 
+        PossibleLocations.CityHalls.AddRange(new List<CityHall>()
+        {
+            new CityHall(new Vector3(-609.1187f, -87.8642f, 42.93483f), 247.5173f, "Rockford Hills City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(-591.665f, -98.11681f, 51.31879f), CameraDirection = new Vector3(-0.9335647f, -0.06657825f, -0.3521709f), CameraRotation = new Rotator(-20.62015f, -7.411738E-06f, 94.07921f)},
+            new CityHall(new Vector3(233.2825f, -411.1329f, 48.11194f), 338.9129f, "Los Santos City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(236.4192f, -348.1718f, 79.68157f), CameraDirection = new Vector3(0.0002627021f, -0.9024973f, -0.4306954f), CameraRotation = new Rotator(-25.5117f, 6.462261E-07f, -179.9833f)},
 
+
+            new CityHall(new Vector3(329.4892f, -1580.714f, 32.79719f), 135.1704f, "Davis City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(273.4156f, -1601.353f, 42.17516f), CameraDirection = new Vector3(0.9521951f, 0.2629484f, -0.1555077f), CameraRotation = new Rotator(-8.946239f, -9.507168E-06f, -74.56252f)},
+            new CityHall(new Vector3(-1286.212f, -566.4031f, 31.7124f), 314.9816f, "Del Perro City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(-1262.947f, -546.7318f, 43.99615f), CameraDirection = new Vector3(-0.7403942f, -0.5856928f, -0.3298186f), CameraRotation = new Rotator(-19.25776f, -1.085254E-05f, 128.3459f)},
+
+
+
+
+
+
+        });
 
         PossibleLocations.LocationsList.AddRange(new List<GameLocation>
         {
@@ -311,6 +345,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             //Fire
             new GameLocation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, LocationType.FireStation, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666 },
             new GameLocation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, LocationType.FireStation, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+            new GameLocation(new Vector3(-633.0533f, -122.0594f, 39.01375f), 79.69817f, LocationType.FireStation, "Rockford Hills Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+
+
+
 
             //Police
             new GameLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, LocationType.Police, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },

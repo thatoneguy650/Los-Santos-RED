@@ -24,6 +24,7 @@ public class DebugMenu : Menu
     private UIMenuItem ForceSober;
     private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
+    private UIMenuNumericScrollerItem<int> FastForwardTime;
     private UIMenuItem GoToReleaseSettings;
     private UIMenuItem StartRandomCrime;
     private UIMenuItem KillPlayer;
@@ -131,7 +132,7 @@ public class DebugMenu : Menu
 
 
 
-
+        FastForwardTime = new UIMenuNumericScrollerItem<int>("Fast Forward Time", "Fast forward time.", 1, 24, 1) { Formatter = v => v + " Hours"};
         GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
 
 
@@ -181,6 +182,7 @@ public class DebugMenu : Menu
         Debug.AddItem(SetMoney);
         Debug.AddItem(FillHealth);
         Debug.AddItem(FillHealthAndArmor);
+        Debug.AddItem(FastForwardTime);
         Debug.AddItem(GoToReleaseSettings);
 
         Debug.AddItem(ForceSober);
@@ -212,6 +214,7 @@ public class DebugMenu : Menu
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Gang Den", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GangDens));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Residence", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Residences));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To City Hall", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CityHalls));
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
             Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
@@ -260,6 +263,10 @@ public class DebugMenu : Menu
             Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
             Settings.SettingsManager.UISettings.ShowDebug = false;
             Settings.SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
+        }
+        else if (selectedItem == FastForwardTime)
+        {
+            Time.FastForward(FastForwardTime.Value);
         }
         else if (selectedItem == GetRandomWeapon)
         {
@@ -475,7 +482,8 @@ public class DebugMenu : Menu
         float Heading = Game.LocalPlayer.Character.Heading;
         string text1 = NativeHelper.GetKeyboardInput("LocationType");
         string text2 = NativeHelper.GetKeyboardInput("Name");
-        WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"\"),");
+        string text3 = NativeHelper.GetKeyboardInput("Description");
+        WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, \"{text2}\", \"{text3}\"),  //{text1}");
     }
     private void LogCameraPosition()
     {

@@ -431,7 +431,7 @@ public class StorePurchaseMenu : Menu
         {
             foreach (UIMenu uimen in MenuPool.ToList())
             {
-                if (uimen.SubtitleText == myWeapon.Category.ToString())
+                if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == purchaseMenu)
                 {
                     FoundCategoryMenu = true;
                     WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
@@ -449,7 +449,7 @@ public class StorePurchaseMenu : Menu
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
-        WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
+       // WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
         if (Store.HasBannerImage)
         {
             WeaponMenu.SetBannerType(Store.BannerImage);

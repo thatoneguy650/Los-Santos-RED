@@ -52,6 +52,7 @@ namespace LosSantosRED.lsr.Interface
         float ClosestPoliceDistanceToPlayer { get; set; }
         bool RecentlyShot { get; }
 
+        int FineAmount();
         void Arrest();
       //  void StoreCriminalHistory();
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
@@ -69,7 +70,10 @@ namespace LosSantosRED.lsr.Interface
         //void AddInjured(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         //void AddKilled(PedExt myPed, bool wasShot, bool wasMeleeAttacked, bool wasHitByVehicle);
         GangRelationships GangRelationships { get; }
-       // BigMessageHandler BigMessage { get; }
+        Cop ArrestingCop { get; set; }
+        Licenses Licenses { get; }
+
+        // BigMessageHandler BigMessage { get; }
 
         void YellInPain();
         //void ChangeReputation(Gang gang, int v, bool sendNotification);

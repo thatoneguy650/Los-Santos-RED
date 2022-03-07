@@ -96,12 +96,12 @@ namespace LosSantosRED.lsr
         }
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
-            Player.Reset(true, true, true, true, true, true, true, true, true, true);
+            Player.Reset(true, true, true, true, true, true, true, true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax));
         }
         public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith)//gotta go
         {
-            Player.Reset(true, true, true, true, true, true, true, true, true, true);
+            Player.Reset(true, true, true, true, true, true, true, true, true, true, true);
             Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
         }
         public void ReloadSettingsFromFile()
@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories, Streets);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -143,7 +143,7 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus, PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies, Player);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings, UI, PedSwap);
@@ -343,7 +343,8 @@ namespace LosSantosRED.lsr
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActiveNearLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                 new ModTask(500, "World.UpdateNear", World.Places.UpdateNearLocations, 2),//1000
-                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationshipsUpdate, 3),//might become a priority...
+                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationships.Update, 3),//might become a priority...
+                new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 4),//might become a priority...
             };
 
             FPS = new MovingAverage();

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class StoreCamera
+public class LocationCamera
 {
     //private Camera StoreCam;
     private Camera EntranceCam;
@@ -28,7 +28,8 @@ public class StoreCamera
     private IActivityPerformable Player;
     public Camera StoreCam { get; private set; }
     public Camera CurrentCamera { get; private set; }
-    public StoreCamera(InteractableLocation store, IActivityPerformable player)
+    public bool SayGreeting { get; set; } = true;
+    public LocationCamera(InteractableLocation store, IActivityPerformable player)
     {
         Store = store;
         Player = player;
@@ -199,8 +200,11 @@ public class StoreCamera
         AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
 
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
 
+        if (SayGreeting)
+        {
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+        }
         uint GameTimeStartedWalkingEntrance = Game.GameTime;
         while (Game.GameTime - GameTimeStartedWalkingEntrance <= 3000 && Player.Character.DistanceTo2D(Store.EntrancePosition) > 0.1f)
         {
@@ -255,9 +259,10 @@ public class StoreCamera
         AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
 
-
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, false);
-
+        if (SayGreeting)
+        {
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, false);
+        }
 
         uint GameTimeStartedWalkingEntrance = Game.GameTime;
         while (Game.GameTime - GameTimeStartedWalkingEntrance <= 3000 && Player.Character.DistanceTo2D(EntranceEndWalkPosition) > 0.1f)

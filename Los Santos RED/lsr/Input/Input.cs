@@ -40,6 +40,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedDoorClose;
         private uint GameTimeLastPressedSelectorToggle;
         private bool isCellPhoneControlDisabled;
+        private bool IsShowingActivityPrompts;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
@@ -52,6 +53,9 @@ namespace LosSantosRED.lsr
         private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
         private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
         private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
+
+
+        private bool IsPressingStopActivity => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKeyModifier);
 
         private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier);
 
@@ -86,7 +90,35 @@ namespace LosSantosRED.lsr
 
             CellPhoneCheck();
 
+
+            ActivityCheck();
+
         }
+
+        private void ActivityCheck()
+        {
+            if(Player.IsPerformingActivity)
+            {
+                if (!IsShowingActivityPrompts || !Player.ButtonPrompts.Any(x=> x.Group == "Activity"))
+                {
+                    Player.ButtonPrompts.Add(new ButtonPrompt("Pause Activity", "Activity", "PauseActivity", Settings.SettingsManager.KeySettings.ActivityKey, Settings.SettingsManager.KeySettings.ActivityKeyModifier, 999));
+                    IsShowingActivityPrompts = true;
+                }
+            }
+            else
+            {
+                if(IsShowingActivityPrompts)
+                {
+                    Player.ButtonPrompts.RemoveAll(x => x.Group == "Activity");
+                    IsShowingActivityPrompts = false;
+                }
+            }
+            if(IsPressingStopActivity && Player.IsPerformingActivity)
+            {
+                Player.PauseDynamicActivity();
+            }
+        }
+
         private void CellPhoneCheck()
         {
             if (DisableCellPhoneControl)

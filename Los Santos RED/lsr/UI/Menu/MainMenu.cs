@@ -23,7 +23,7 @@ public class MainMenu : Menu
     private MenuPool MenuPool;
     private UIMenu VehicleItems;
 
-    public MainMenu(MenuPool menuPool, IActionable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time)
+    public MainMenu(MenuPool menuPool, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         MenuPool = menuPool;
         Player = player;
@@ -36,10 +36,10 @@ public class MainMenu : Menu
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
         SettingsMenu = new SettingsMenu(menuPool, Main, Settings);
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time, placesOfInterest);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
-        InventoryMenu = new InventoryMenu(menuPool, Main, Player, modItems);
+        InventoryMenu = new InventoryMenu(menuPool, Main, player, modItems, false);
         CreateMainMenu();
     }
     public override void Hide()

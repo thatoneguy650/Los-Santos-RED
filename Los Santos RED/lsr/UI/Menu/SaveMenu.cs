@@ -22,7 +22,8 @@ public class SaveMenu : Menu
     private IEntityProvideable World;
     private IGangs Gangs;
     private ITimeControllable Time;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time)
+    private IPlacesOfInterest PlacesOfInterest;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         PlayerSave = playersave;
         GameSaves = gameSaves;
@@ -33,6 +34,7 @@ public class SaveMenu : Menu
         World = world;
         Gangs = gangs;
         Time = time;
+        PlacesOfInterest = placesOfInterest;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
@@ -78,11 +80,11 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time, PlacesOfInterest);
         }
         else if (selectedItem == SaveGameItem)
         {
-            GameSaves.Save(PlayerSave, Weapons, Time);
+            GameSaves.Save(PlayerSave, Weapons, Time, PlacesOfInterest);
         }
         Saves.Visible = false;
         GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....

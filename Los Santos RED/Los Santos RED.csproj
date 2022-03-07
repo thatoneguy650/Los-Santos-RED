@@ -119,6 +119,7 @@
     <Compile Include="lsr\Data\ModItems.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Saves\SavedContact.cs" />
+    <Compile Include="lsr\Data\Saves\SavedResidence.cs" />
     <Compile Include="lsr\Data\Saves\SavedTextMessage.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
@@ -151,13 +152,14 @@
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Locations\Places\BasicLocation.cs" />
+    <Compile Include="lsr\Locations\Places\CityHall.cs" />
     <Compile Include="lsr\Locations\Places\DeadDrop.cs" />
     <Compile Include="lsr\Locations\Places\GangDen.cs" />
     <Compile Include="lsr\Locations\Places\GunStore.cs" />
     <Compile Include="lsr\Locations\Places\Hotel.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
     <Compile Include="lsr\Locations\Places\Residence.cs" />
-    <Compile Include="lsr\Locations\Places\StoreCamera.cs" />
+    <Compile Include="lsr\Locations\Places\LocationCamera.cs" />
     <Compile Include="lsr\Locations\Places\StorePurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\StoreSellMenu.cs" />
     <Compile Include="lsr\Locations\Places\StoreTransaction.cs" />
@@ -181,7 +183,14 @@
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
+    <Compile Include="lsr\Player\Interface\ILicenseable.cs" />
+    <Compile Include="lsr\Player\Interface\ILocationInteractable.cs" />
+    <Compile Include="lsr\Player\Interface\IPropertyOwnable.cs" />
     <Compile Include="lsr\Player\Intoxication\IntoxicationEffect.cs" />
+    <Compile Include="lsr\Player\Licenses\CCWLicense.cs" />
+    <Compile Include="lsr\Player\Licenses\DriversLicense.cs" />
+    <Compile Include="lsr\Player\Licenses\License.cs" />
+    <Compile Include="lsr\Player\Licenses\Licenses.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
@@ -213,6 +222,7 @@
     <Compile Include="lsr\Player\Interface\IWeatherReportable.cs" />
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
+    <Compile Include="lsr\Player\Properties\Properties.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />

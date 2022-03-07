@@ -29,9 +29,10 @@ public class InventoryItem
                                                     + $"~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent.Sum(),0)}%~s~)" : "") 
                                                     + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "") 
                                                     + (ModItem.RequiresTool? $"~n~Requires: ~r~{ModItem.RequiredToolType}" : "");
+    public string RightLabel => $"~b~{Amount}~s~" + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "");
 
 
-public ModItem ModItem { get; set; }
+    public ModItem ModItem { get; set; }
     public int Amount => RemainingPercent.Count();
     public List<float> RemainingPercent { get; set; } = new List<float>() { 1.0f };
     public void AddAmount(int toadd)

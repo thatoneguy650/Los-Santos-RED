@@ -36,7 +36,7 @@ public class DeadDrop : InteractableLocation
     {
 
     }
-    public override void OnInteract(IActivityPerformable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         if (IsEnabled)
         {

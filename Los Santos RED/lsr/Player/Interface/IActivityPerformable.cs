@@ -31,10 +31,14 @@ namespace LosSantosRED.lsr.Interface
         PlayerTasks PlayerTasks { get; }
         bool IsDoingSuspiciousActivity { get; set; }
         GunDealerRelationship GunDealerRelationship { get; }
+        string PlayerName { get; }
+        Licenses Licenses { get; }
+        Properties Properties { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();
         void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
         void ConsumeItem(ModItem modItem);
+        void ChangeName(string newName);
     }
 }

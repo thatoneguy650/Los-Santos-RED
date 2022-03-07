@@ -106,7 +106,7 @@ public class UISettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
     public bool ShowWantedMessageOnStart { get; set; }
-
+    public bool NeverShowRadar { get; set; }
 
     public UISettings()
     {
@@ -114,9 +114,11 @@ public class UISettings : ISettingsDefaultable
         #if DEBUG
             SetRadarZoomDistance = false;
             ShowDebug = false;
-        FadeStreetDisplay = true;
-        FadeZoneDisplay = true;
-        #endif
+        FadeStreetDisplay = false;
+        FadeZoneDisplay = false;
+        ZoneDisplayShowPrimaryAgency = false;
+        ZoneDisplayShowSecondaryAgency = false;
+#endif
     }
     public void SetDefault()
     {
@@ -218,5 +220,8 @@ public class UISettings : ISettingsDefaultable
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
         ShowWantedMessageOnStart = true;
+
+
+        NeverShowRadar = false;
     }
 }

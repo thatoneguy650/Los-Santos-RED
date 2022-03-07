@@ -29,6 +29,7 @@ public class PlayerInfoMenu
     private IEntityProvideable World;
     private IZones Zones;
     private TabSubmenuItem PhoneRepliesSubMenu;
+    private TabSubmenuItem LicensesSubMenu;
 
     public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
     {
@@ -230,6 +231,33 @@ public class PlayerInfoMenu
         menuItems.Add(new UIMenuItem("Remove GPS Route", "Remove any enabled GPS Blip"));
 
 
+        List<BasicLocation> Residences = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Residences.Any(x=> x.IsOwnedOrRented))
+        {
+            foreach (Residence res in PlacesOfInterest.PossibleLocations.Residences.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                if(res.IsOwnedOrRented)
+                {
+                    Residences.Add(res);
+                }
+                
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Residences", $"List of all owned or rented residences", Residences) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> ForSaleResidences = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Residences.Any(x=> !x.IsOwnedOrRented))
+        {
+            foreach (Residence residence in PlacesOfInterest.PossibleLocations.Residences.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                if (!residence.IsOwnedOrRented)
+                {
+                    ForSaleResidences.Add(residence);
+                }
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("For Sale/Rental", $"List of all residences that are for sale or rental", ForSaleResidences) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
         List<BasicLocation> Hotels = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Hotels.Any())
         {
@@ -241,15 +269,6 @@ public class PlayerInfoMenu
         }
 
 
-        List<BasicLocation> Residences = new List<BasicLocation>();
-        if (PlacesOfInterest.PossibleLocations.Residences.Any())
-        {
-            foreach (Residence residence in PlacesOfInterest.PossibleLocations.Residences.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
-            {
-                Residences.Add(residence);
-            }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Residences", $"List of all Residences", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
-        }
 
         List<BasicLocation> ScrapYards = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
@@ -259,6 +278,16 @@ public class PlayerInfoMenu
                 ScrapYards.Add(sy);
             }
             menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Scrap Yards", $"List of all Scrap Yards", ScrapYards) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> CityHalls = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
+        {
+            foreach (CityHall sy in PlacesOfInterest.PossibleLocations.CityHalls.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                CityHalls.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("City Halls", $"List of all City Halls", CityHalls) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
         }
 
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
@@ -390,7 +419,6 @@ public class PlayerInfoMenu
         TextMessagesSubMenu = new TabSubmenuItem("Text Messages", items);
         tabView.AddTab(TextMessagesSubMenu);
     }
-
     private void AddVehicles()
     {
         List<TabItem> items = new List<TabItem>();
@@ -500,6 +528,43 @@ public class PlayerInfoMenu
 
         tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Other", items));
     }
+    private void AddLicenses()
+    {
+        List<TabItem> items = new List<TabItem>();
+        string dldesc = "";
+        string ccwdesc = "";
+        if (Player.Licenses.HasDriversLicense)
+        {
+            dldesc = "State: ~y~San Andreas~s~~n~";
+            dldesc += $"~n~Status: " + (Player.Licenses.DriversLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
+            dldesc += Player.Licenses.DriversLicense.ExpirationDescription(Time);
+        }
+        else
+        {
+            dldesc = "~r~No Drivers License Issued~s~";
+        }
+        if (Player.Licenses.HasCCWLicense)
+        {
+            ccwdesc = "State: ~y~San Andreas~s~~n~";
+            ccwdesc += $"~n~Status: " + (Player.Licenses.CCWLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
+            ccwdesc += Player.Licenses.CCWLicense.ExpirationDescription(Time);
+        }
+        else
+        {
+            ccwdesc = "~r~No CCW Issued~s~";
+        }
+        dldesc += "~n~~n~Description: A legal authorization for a specific individual to operate one or more types of motorized vehicles such as motorcycles, cars, trucks, or buses—on a public road.";
+        ccwdesc += "~n~~n~Description: Allows Carrying a weapon (such as a handgun) in public in a concealed manner, either on one's person or in close proximity.";
+
+        TabItem dl = new TabTextItem("Drivers License", "Drivers License", dldesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        items.Add(dl);
+
+        TabItem ccw = new TabTextItem("CCW License", "CCW License", ccwdesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        items.Add(ccw);
+
+        LicensesSubMenu = new TabSubmenuItem("Licenses", items);
+        tabView.AddTab(LicensesSubMenu);
+    }
     private void BackingMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
@@ -575,6 +640,7 @@ public class PlayerInfoMenu
 
         tabView.Tabs.Clear();
         AddVehicles();
+        AddLicenses();
         AddCrimes();
         AddGangItems();
         AddContacts();

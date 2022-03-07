@@ -32,7 +32,7 @@ public class InteractableLocation : BasicLocation
     public InteractableLocation() : base()
     {
     }
-    public virtual void OnInteract(IActivityPerformable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public virtual void OnInteract(ILocationInteractable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         //CreateInteractionMenu();
         //InteractionMenu.Visible = true;

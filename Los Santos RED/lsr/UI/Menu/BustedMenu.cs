@@ -22,15 +22,17 @@ public class BustedMenu : Menu
     private ISettingsProvideable Settings;
     private UIMenuListItem Surrender;
     private UIMenuListItem TakeoverRandomPed;
-    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable)
+    private ITimeReportable Time;
+    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         Player = policeRespondable;
+        Time = time;
         Menu = new UIMenu("Busted", "Choose Respawn");
-        Menu.SetBannerType(System.Drawing.Color.FromArgb(181, 48, 48));
+        Menu.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Menu);
         Menu.OnItemSelect += OnItemSelect;
         Menu.OnListChange += OnListChange;
@@ -56,6 +58,7 @@ public class BustedMenu : Menu
                 PayFine.Enabled = false;
                 Bribe.Enabled = true;
             }
+            PayFine.RightLabel = $"{Player.FineAmount():C0}";
 
             Menu.Visible = true;
         }
@@ -77,7 +80,11 @@ public class BustedMenu : Menu
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         ResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
-        PayFine = new UIMenuItem("Pay Citation", $"Pay a citation of ${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}.");
+
+
+
+
+        PayFine = new UIMenuItem("Pay Citation", $"Pay the citation to be on your way.") { RightLabel = $"{Player.FineAmount():C0}" };
         Surrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PoliceStations);
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
         Menu.AddItem(ResistArrest);
@@ -86,6 +93,7 @@ public class BustedMenu : Menu
         Menu.AddItem(Surrender);
         Menu.AddItem(TakeoverRandomPed);
     }
+
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == ResistArrest)

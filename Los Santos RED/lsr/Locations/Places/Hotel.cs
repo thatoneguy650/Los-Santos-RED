@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 public class Hotel : TransactableLocation
 {
-    private StoreCamera StoreCamera;
+    private LocationCamera StoreCamera;
 
     private IActivityPerformable Player;
     private IModItems ModItems;
@@ -33,7 +33,7 @@ public class Hotel : TransactableLocation
     {
         ButtonPromptText = $"Stay At {Name}";
     }
-    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         ModItems = modItems;
@@ -49,7 +49,7 @@ public class Hotel : TransactableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new StoreCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;

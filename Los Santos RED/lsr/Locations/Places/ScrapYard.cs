@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 
 public class ScrapYard : InteractableLocation
 {
-    private StoreCamera StoreCamera;
+    private LocationCamera StoreCamera;
 
     private IActivityPerformable Player;
     private IModItems ModItems;
@@ -38,7 +38,7 @@ public class ScrapYard : InteractableLocation
     {
         ButtonPromptText = $"Scrap Vehicle At {Name}";
     }
-    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         ModItems = modItems;
@@ -54,7 +54,7 @@ public class ScrapYard : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new StoreCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;

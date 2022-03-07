@@ -15,9 +15,9 @@ using System.Xml.Serialization;
 
 public class Residence : InteractableLocation
 {
-    private StoreCamera StoreCamera;
+    private LocationCamera StoreCamera;
 
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -30,6 +30,7 @@ public class Residence : InteractableLocation
     private UIMenuItem RentResidenceMenuItem;
     private UIMenuItem RentDisplayItem;
     private bool KeepInteractionGoing;
+    private InventoryMenu InventoryMenu;
 
     public Residence() : base()
     {
@@ -37,23 +38,23 @@ public class Residence : InteractableLocation
     }
 
     [XmlIgnore]
-    public bool IsOwnedByPlayer { get; set; } = false;
+    public bool IsOwned { get; set; } = false;
     [XmlIgnore]
-    public bool IsRentedByPlayer { get; set; } = false;
+    public bool IsRented { get; set; } = false;
     [XmlIgnore]
-    public DateTime RentalPaymentDate { get; set; }
+    public DateTime DateRentalPaymentDue { get; set; }
     [XmlIgnore]
-    public DateTime DateOfLastRentalPayment { get; set; }
+    public DateTime DateRentalPaymentPaid { get; set; }
 
-    public bool CanRent => !IsOwnedByPlayer && !IsRentedByPlayer && RentalFee > 0;
-    public bool CanBuy => !IsOwnedByPlayer && PurchasePrice > 0;
-    public bool IsOwnedOrRented => IsOwnedByPlayer || IsRentedByPlayer;
+    public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
+    public bool CanBuy => !IsOwned && PurchasePrice > 0;
+    public bool IsOwnedOrRented => IsOwned || IsRented;
 
     public int RentalDays { get; set; }
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
 
-    public override int MapIcon { get; set; } = (int)BlipSprite.GarageForSale;
+    public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
@@ -67,7 +68,7 @@ public class Residence : InteractableLocation
         OpenTime = 0;
         CloseTime = 24;
     }
-    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         ModItems = modItems;
@@ -76,6 +77,9 @@ public class Residence : InteractableLocation
         Weapons = weapons;
         Time = time;
 
+
+
+
         if (CanInteract)
         {
             Player.IsInteractingWithLocation = true;
@@ -83,13 +87,18 @@ public class Residence : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new StoreCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
                 GenerateResidenceMenu();
+
+
+
+
 
                 //ProcessInteractionMenu();
 
@@ -110,7 +119,37 @@ public class Residence : InteractableLocation
             }, "ResidenceInteract");
         }
     }
+    public void RefreshUI()
+    {
+        UpdateStoredData();
+    }
+    public void Reset()
+    {
+        IsOwned = false;
+        IsRented = false;
+        UpdateStoredData();
+    }
+    public void ReRent()
+    {
+        if (Player.Money >= RentalFee)
+        {
+            Player.GiveMoney(-1 * RentalFee);
+            DateRentalPaymentPaid = Time.CurrentDateTime;
+            DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
+            UpdateStoredData();
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rent Paid", $"You have been charged the rental fee of {RentalFee:C0} for {Name}.~n~Next payment date: {DateRentalPaymentDue:d}");
 
+        }
+        else
+        {
+            Reset();
+            if (MenuPool != null && MenuPool.IsAnyMenuOpen())
+            {
+                MenuPool.CloseAllMenus();
+            }
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Evicted", $"You have been evicted from {Name} for non-payment.");
+        }
+    }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == RestMenuItem)
@@ -125,17 +164,17 @@ public class Residence : InteractableLocation
 
     private void GenerateResidenceMenu()
     {
-        if(!IsOwnedByPlayer || !IsRentedByPlayer)
+        if(!IsOwned || !IsRented)
         {
-            if ((!IsOwnedByPlayer && CanBuy) || (!IsRentedByPlayer && CanRent))
+            if ((!IsOwned && CanBuy) || (!IsRented && CanRent))
             {
                 OfferSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Make an Offer");
                 string offerDescription = "";
-                if (!IsOwnedByPlayer && CanBuy)
+                if (!IsOwned && CanBuy)
                 {
                     offerDescription += "buy ";
                 }
-                if (!IsRentedByPlayer && CanRent)
+                if (!IsRented && CanRent)
                 {
                     if (offerDescription != "")
                     {
@@ -156,12 +195,12 @@ public class Residence : InteractableLocation
                 OfferSubMenu.OnMenuClose += OfferMenu_OnMenuClose;
 
 
-                if (!IsOwnedByPlayer && CanBuy)
+                if (!IsOwned && CanBuy)
                 {
                     PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = $"{PurchasePrice:C0}" };
                     OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
                 }
-                if (!IsRentedByPlayer && CanRent)
+                if (!IsRented && CanRent)
                 {
                     RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = $"{RentalFee:C0} for {RentalDays} days" };
                     OfferSubMenu.AddItem(RentResidenceMenuItem);
@@ -172,18 +211,21 @@ public class Residence : InteractableLocation
     }
     private void AddInteractionItems()
     {
-        if (IsOwnedByPlayer || IsRentedByPlayer)
+        if (IsOwned || IsRented)
         {
-            if (IsRentedByPlayer)
+            if (IsRented)
             {
-                RentDisplayItem = new UIMenuItem("Rental Period", $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((RentalPaymentDate - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~") { RightLabel = "Remaing Days: " + Math.Round((RentalPaymentDate - Time.CurrentDateTime).TotalDays, 0).ToString() };
+                RentDisplayItem = new UIMenuItem("Rental Period", $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~") { RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString() };
                 InteractionMenu.AddItem(RentDisplayItem);
             }
             RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
-            InventoryMenuItem = new UIMenuItem("Inventory", "Access the inventory at this location");
-            InventoryMenuItem.RightBadge = UIMenuItem.BadgeStyle.Heart;
+            //InventoryMenuItem = new UIMenuItem("Inventory", "Access the inventory at this location");
+            //InventoryMenuItem.RightBadge = UIMenuItem.BadgeStyle.Heart;
             InteractionMenu.AddItem(RestMenuItem);
-            InteractionMenu.AddItem(InventoryMenuItem);
+            //InteractionMenu.AddItem(InventoryMenuItem);
+
+            InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
+
 
         }
     }
@@ -191,7 +233,6 @@ public class Residence : InteractableLocation
     {
 
     }
-
     private void OfferMenu_OnMenuOpen(UIMenu sender)
     {
 
@@ -256,6 +297,11 @@ public class Residence : InteractableLocation
                 }
                 GameFiber.Yield();
             }
+            if(RentDisplayItem != null)
+            {
+                RentDisplayItem.Description = $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
+                RentDisplayItem.RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
+            }
             InteractionMenu.Visible = true;
             KeepInteractionGoing = false;
         }, "FastForwardWatcher");
@@ -264,17 +310,15 @@ public class Residence : InteractableLocation
     private void OnRented()
     {
         Player.GiveMoney(-1 * RentalFee);
-        DateOfLastRentalPayment = Time.CurrentDateTime;
-        IsRentedByPlayer = true;
-        RentalPaymentDate = DateOfLastRentalPayment.AddDays(RentalDays);
-        ButtonPromptText = GetButtonPromptText();
+        DateRentalPaymentPaid = Time.CurrentDateTime;
+        IsRented = true;
+        DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
 
-        MapIcon = (int)BlipSprite.Garage;
-        MapIconColor = Color.Yellow;
 
-        Blip.Color = Color.Yellow;
-        Blip.Sprite = BlipSprite.Garage;
 
+        UpdateStoredData();
+
+        Player.Properties.AddResidence(this);
 
         AddInteractionItems();
         OfferSubMenu.Close(true);
@@ -285,23 +329,59 @@ public class Residence : InteractableLocation
     private void OnPurchased()
     {
         Player.GiveMoney(-1 * PurchasePrice);
-        IsOwnedByPlayer = true;
-        ButtonPromptText = GetButtonPromptText();
-
-        MapIcon = (int)BlipSprite.Garage;
-        MapIconColor = Color.Green;
-
-        Blip.Color = Color.Green;
-        Blip.Sprite = BlipSprite.Garage;
+        IsOwned = true;
+        
 
 
-        if(!IsRentedByPlayer)
+        UpdateStoredData();
+
+        Player.Properties.AddResidence(this);
+
+
+
+        if (!IsRented)
         {
             AddInteractionItems();
             OfferSubMenu.Close(true);
         }
 
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {Name}");
+    }
+    private void UpdateStoredData()
+    {
+        ButtonPromptText = GetButtonPromptText();
+        if (IsOwned)
+        {
+            MapIcon = (int)BlipSprite.Garage;
+            MapIconColor = Color.Green;
+
+            if (Blip.Exists())
+            {
+                Blip.Color = Color.Green;
+                Blip.Sprite = BlipSprite.Garage;
+            }
+        }
+        else if(IsRented)
+        {
+            MapIcon = (int)BlipSprite.Garage;
+            MapIconColor = Color.Yellow;
+
+            if (Blip.Exists())
+            {
+                Blip.Color = Color.Yellow;
+                Blip.Sprite = BlipSprite.Garage;
+            }
+        }
+        else
+        {
+            MapIcon = (int)BlipSprite.PropertyForSale;
+            MapIconColor = Color.White;
+            if (Blip.Exists())
+            {
+                Blip.Color = Color.White;
+                Blip.Sprite = BlipSprite.PropertyForSale;
+            }
+        }
     }
     private string GetButtonPromptText()
     {

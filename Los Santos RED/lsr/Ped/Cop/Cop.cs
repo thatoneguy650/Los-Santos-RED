@@ -61,6 +61,7 @@ public class Cop : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 20;
+    public bool IsClosestToPlayer { get; set; } = false;
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);

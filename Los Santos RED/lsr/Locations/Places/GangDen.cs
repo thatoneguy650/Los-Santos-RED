@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 public class GangDen : TransactableLocation
 {
-    private StoreCamera StoreCamera;
+    private LocationCamera StoreCamera;
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
 
@@ -47,7 +47,7 @@ public class GangDen : TransactableLocation
         GangID = _gangID;
         ButtonPromptText = $"Enter {Name}";
     }
-    public override void OnInteract(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         ModItems = modItems;
@@ -63,8 +63,10 @@ public class GangDen : TransactableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new StoreCamera(this, Player);
+                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
+
 
                 CreateInteractionMenu();
                 CreateTransactionMenu(Player, modItems, world, settings, weapons, time);

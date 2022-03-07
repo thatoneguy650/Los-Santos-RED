@@ -8,13 +8,16 @@ using System.Linq;
 public class InventoryMenu : Menu
 {
     private UIMenu inventoryMenu;
-    private IActionable Player;
+    private ILocationInteractable ActionablePlayer;
+    private IActivityPerformable ActivityPerformablePlayer;
     private IModItems ModItems;
+    private bool IsInside;
 
-    public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, IModItems modItems)
+    public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, ILocationInteractable player, IModItems modItems, bool isInside)
     {
-        Player = player;
+        ActionablePlayer = player;
         ModItems = modItems;
+        IsInside = isInside;
         inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Access purchased items.";
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
@@ -53,12 +56,23 @@ public class InventoryMenu : Menu
     private void CreateInventoryMenu()
     {
         inventoryMenu.Clear();
-        foreach(InventoryItem cii in Player.Inventory.Items)
+        foreach(InventoryItem cii in ActionablePlayer.Inventory.Items)
         {
             if(cii.ModItem != null)
             {
                // inventoryMenu.AddItem(new UIMenuListScrollerItem<string>(cii.ModItem?.Name, cii.Description, new List<string>() { "Use", "Drop" }) { Enabled = Player.CanPerformActivities });
-                inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { Enabled = Player.CanPerformActivities });
+
+
+                if(IsInside)
+                {
+                    inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                }
+                else
+                {
+                    inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                }
+
+                
             }
         }        
     }
@@ -69,11 +83,40 @@ public class InventoryMenu : Menu
         {
             if (selectedStuff.CanConsume)
             {
-                Player.StartConsumingActivity(selectedStuff);
+                if(IsInside)
+                {
+                    ActionablePlayer.StartConsumingActivity(selectedStuff, false);
+                    InventoryItem ii = ActionablePlayer.Inventory.Get(selectedStuff);
+                    if (ii != null)
+                    {
+                        if(ii.Amount > 0)
+                        {
+                            selectedItem.Description = ii.Description;
+                            selectedItem.RightLabel = ii.RightLabel;
+                        }
+                        else
+                        {
+                            sender.RemoveItemAt(index);
+                            sender.RefreshIndex();
+                        }
+                        
+                    }
+                    else
+                    {
+                        selectedItem.Enabled = false;
+                    }
+                    
+
+                }
+                else
+                {
+                    ActionablePlayer.StartConsumingActivity(selectedStuff, true);
+                    inventoryMenu.Visible = false;
+                }
               // Player.RemoveFromInventory(selectedStuff, 1);
                 EntryPoint.WriteToConsole($"Removed {selectedStuff.Name} ", 3);  
             }
         }
-        inventoryMenu.Visible = false;
+        
     }
 }
