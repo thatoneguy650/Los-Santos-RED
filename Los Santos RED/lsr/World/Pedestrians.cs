@@ -467,6 +467,12 @@ public class Pedestrians
                         Delete(Pedestrian);
                         continue;
                     }
+                    else if(Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
+                    {
+                        EntryPoint.WriteToConsole("RemoveVanillaSpawnedPedsOnFoot DELETED PED");
+                        Delete(Pedestrian);
+                        continue;
+                    }
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
@@ -613,15 +619,18 @@ public class Pedestrians
             }
 
             //EntryPoint.WriteToConsole($"Added Ambient Civilian {Pedestrian.Handle}");
-        }
-        PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
-        if (myGroup == null)
-        {
-            myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
-        }
-        ShopMenu toAdd = GetIllicitMenu();
-        Civilians.Add(new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items });
 
+            PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
+            if (myGroup == null)
+            {
+                myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
+            }
+            ShopMenu toAdd = GetIllicitMenu();
+            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+            Civilians.Add(toCreate);
+
+            Pedestrian.Money = toCreate.Money;
+        }
 
 
 
@@ -683,6 +692,7 @@ public class Pedestrians
             GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
             if (Pedestrian.Exists())
             {
+                gm.Pedestrian.Money = gm.Money;
                 gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
             }
             bool withPerson = false;

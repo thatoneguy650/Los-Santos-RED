@@ -32,6 +32,7 @@ public class SellMenuOld : Menu
     private bool CanContinueConversation => Ped != null && Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public SellMenuOld(MenuPool menuPool, UIMenu parentMenu, PedExt ped, GameLocation store, IModItems modItems, IInteractionable player, Camera storeCamera, bool shouldPreviewItem, TransactionOld transaction, IEntityProvideable world, ISettingsProvideable settings)
     {
+        MenuPool = menuPool;
         Ped = ped;
         ModItems = modItems;
         Store = store;
@@ -74,7 +75,7 @@ public class SellMenuOld : Menu
     }
     public void Update()
     {
-        if (sellMenu.Visible)
+        if (MenuPool.IsAnyMenuOpen()) //if (sellMenu.Visible)
         {
             if (SellingProp.Exists())
             {
@@ -132,26 +133,9 @@ public class SellMenuOld : Menu
                     }
                     else
                     {
-                        string description = myItem.Description;
-                        if (description == "")
-                        {
-                            description = $"{cii.ModItemName} {formattedSalesPrice}";
-                        }
-
-                        bool enabled = Player.Inventory.HasItem(cii.ModItemName);
-                        InventoryItem coolItem = Player.Inventory.Items.Where(x => x.ModItem.Name == cii.ModItemName).FirstOrDefault();
-                        int MaxSell = 1;
-                        if (coolItem != null)
-                        {
-                            MaxSell = coolItem.Amount;
-                        }
-                        description += "~n~~s~";
-                        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-
-
-                        sellMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, MaxSell, 1) { Enabled = enabled, Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 });
-
-                        //sellMenu.AddItem(myMenuItem);
+                        UIMenuNumericScrollerItem<int> myScroller = new UIMenuNumericScrollerItem<int>(cii.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 };
+                        UpdatePropEntryData(myItem, cii, myScroller);
+                        sellMenu.AddItem(myScroller);
                     }
                 }
             }
@@ -174,34 +158,38 @@ public class SellMenuOld : Menu
                 Hide();
             }
             int TotalItems = 1;
+            UIMenuNumericScrollerItem<int> myItem = null;
             if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
             {
-                UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
                 TotalItems = myItem.Value;
             }
             if (ToAdd.CanConsume)
             {
                 if (Player.Inventory.Remove(ToAdd, TotalItems))
                 {
+                    menuItem.ItemsBoughtFromPlayer += TotalItems;
                     Player.GiveMoney(menuItem.SalesPrice * TotalItems);
+                    UpdatePropEntryData(ToAdd, menuItem, myItem);
                     ItemsSold++;
-                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {TotalItems}", 5);
+                    EntryPoint.WriteToConsole($"REMOVED {ToAdd.Name} {ToAdd.GetType()}  Amount: {TotalItems}  menuItem.ItemsBought {menuItem.ItemsBoughtFromPlayer} {menuItem.NumberOfItemsToSellToPlayer}", 5);
                 }
             }
-        }
-        GameFiber.Sleep(500);
-        while (Player.IsPerformingActivity)
-        {
             GameFiber.Sleep(500);
+            while (Player.IsPerformingActivity)
+            {
+                GameFiber.Sleep(500);
+            }
         }
-        if (ExitAfterPurchase)
-        {
-            Dispose();
-        }
-        else
-        {
-            Show();
-        }
+
+        //if (ExitAfterPurchase)
+        //{
+        //    Dispose();
+        //}
+        //else
+        //{
+        //    Show();
+        //}
     }
     private void OnIndexChange(UIMenu sender, int newIndex)
     {
@@ -306,8 +294,72 @@ public class SellMenuOld : Menu
         }
     }
 
-   
 
+    private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
+    {
+        if (modItem != null && menuItem != null && scrollerItem != null)
+        {
+            bool isEnabled = true;
+            InventoryItem PlayerInventoryItem = Player.Inventory.Items.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            int MaxSell = 1;
+            int PlayerItems = 0;
+            if (PlayerInventoryItem != null)
+            {
+                PlayerItems = PlayerInventoryItem.Amount;
+                MaxSell = PlayerInventoryItem.Amount;
+            }
+            int RemainingToSell = MaxSell;
+            if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
+            {
+                RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - menuItem.ItemsBoughtFromPlayer;
+                if (RemainingToSell >= 1 && PlayerItems >= 1)
+                {
+                    MaxSell = Math.Min(MaxSell, RemainingToSell);
+                }
+                else
+                {
+                    RemainingToSell = 0;
+                    MaxSell = 1;
+                    isEnabled = false;
+                }
+            }
+            else
+            {
+                if (PlayerItems <= 0)
+                {
+                    RemainingToSell = 0;
+                    MaxSell = 1;
+                    isEnabled = false;
+                }
+            }
+
+            string formattedPurchasePrice = menuItem.SalesPrice.ToString("C0");
+            string description = modItem.Description;
+            if (description == "")
+            {
+                description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
+            }
+            description += "~n~~s~";
+            description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
+            description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
+            if (modItem.AmountPerPackage > 1)
+            {
+                description += $"~n~~b~{((float)menuItem.SalesPrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
+            }
+            if (modItem.ChangesHealth)
+            {
+                description += $"~n~{modItem.HealthChangeDescription}";
+            }
+            //if (myItem != null)
+            //{
+            //    myItem.Description = description;
+            //}
+            description += $"~n~Items To Buy: {RemainingToSell}~s~~n~You Have: {PlayerItems}";
+            scrollerItem.Maximum = MaxSell;
+            scrollerItem.Enabled = isEnabled;
+            scrollerItem.Description = description;
+        }
+    }
 
     public void ClearPreviews()
     {
@@ -362,7 +414,7 @@ public class SellMenuOld : Menu
     }
     private void StartSellAnimation(ModItem item, bool isIllicit)
     {
-        Hide();
+        //Hide();
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
@@ -457,16 +509,29 @@ public class SellMenuOld : Menu
         {
             foreach (string AmbientSpeech in Possibilities)
             {
-                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                if (ToSpeak.Handle == Player.Character.Handle)
                 {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    if (Player.CharacterModelIsFreeMode)
+                    {
+                        ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
                 else
                 {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    if (Ped.VoiceName != "")
+                    {
+                        ToSpeak.PlayAmbientSpeech(Ped.VoiceName, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
-                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
+                GameFiber.Sleep(300);
                 if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
                 {
                     Spoke = true;

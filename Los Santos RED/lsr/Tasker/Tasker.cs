@@ -112,10 +112,10 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+        PedExt Criminal = PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         if (Criminal == null)
         {
-            Criminal = PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+            Criminal = PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         }
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {

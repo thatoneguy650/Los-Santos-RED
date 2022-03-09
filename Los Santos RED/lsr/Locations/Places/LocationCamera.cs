@@ -197,13 +197,11 @@ public class LocationCamera
 
         Game.LocalPlayer.Character.Tasks.GoStraightToPosition(Store.EntrancePosition, 1.0f, Store.EntranceHeading - 180f, 1.0f, 3000);
 
-        AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
-
-
         if (SayGreeting)
         {
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+            AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
+            PlayerSayAvailableAmbient(new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
         }
         uint GameTimeStartedWalkingEntrance = Game.GameTime;
         while (Game.GameTime - GameTimeStartedWalkingEntrance <= 3000 && Player.Character.DistanceTo2D(Store.EntrancePosition) > 0.1f)
@@ -255,13 +253,11 @@ public class LocationCamera
 
         Game.LocalPlayer.Character.Tasks.GoStraightToPosition(EntranceEndWalkPosition, 1.0f, Store.EntranceHeading, 1.0f, 3000);
 
-
-        AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
-
         if (SayGreeting)
         {
-            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, false);
+            AnimationDictionary.RequestAnimationDictionay("gestures@f@standing@casual");
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "gestures@f@standing@casual", "gesture_bye_soft", 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
+            PlayerSayAvailableAmbient(new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, false);
         }
 
         uint GameTimeStartedWalkingEntrance = Game.GameTime;
@@ -402,24 +398,23 @@ public class LocationCamera
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
         return CanSay;
     }
-    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
+    private bool PlayerSayAvailableAmbient(List<string> Possibilities, bool WaitForComplete)
     {
         bool Spoke = false;
         if (Player.CanConverse)
         {
             foreach (string AmbientSpeech in Possibilities)
             {
-                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                if (Player.CharacterModelIsFreeMode)
                 {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    Player.Character.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
                 }
                 else
                 {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    Player.Character.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
                 }
-                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
-                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
+                GameFiber.Sleep(300);
+                if (Player.Character.Exists() && Player.Character.IsAnySpeechPlaying)
                 {
                     Spoke = true;
                 }
@@ -430,7 +425,7 @@ public class LocationCamera
                 }
             }
             GameFiber.Sleep(100);
-            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete && Player.CanConverse)
+            while (Player.Character.Exists() && Player.Character.IsAnySpeechPlaying && WaitForComplete && Player.CanConverse)
             {
                 Spoke = true;
                 GameFiber.Yield();

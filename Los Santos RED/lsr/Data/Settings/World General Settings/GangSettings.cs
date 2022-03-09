@@ -37,6 +37,8 @@ public class GangSettings : ISettingsDefaultable
     public int TotalSpawnedMembersLimit { get; set; }
     [Description("Percentage of the time to spawn a gang outside of the den when near.")]
     public int PercentageSpawnNearDen { get; set; }
+    [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
+    public bool RemoveVanillaSpawnedPedsOnFoot { get; set; }
 
     public GangSettings()
     {
@@ -45,6 +47,7 @@ public class GangSettings : ISettingsDefaultable
         ShowSpawnedBlip = true;
         RemoveVanillaSpawnedPedsOutsideTerritory = false;
         //ManageDispatching = false;
+        RemoveVanillaSpawnedPedsOnFoot = true;
 #else
                // ShowSpawnedBlips = false;
 #endif
@@ -55,9 +58,11 @@ public class GangSettings : ISettingsDefaultable
         CheckCrimes = true;
         ShowSpawnedBlip = false;
         RemoveVanillaSpawnedPeds = false;
+        RemoveVanillaSpawnedPedsOutsideTerritory = false;
+        RemoveVanillaSpawnedPedsOnFoot = false;
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
-        RemoveVanillaSpawnedPedsOutsideTerritory = false;
+
         TimeBetweenSpawn = 10000;
         MinDistanceToSpawn = 50f;
         MaxDistanceToSpawn = 150f;
@@ -66,6 +71,7 @@ public class GangSettings : ISettingsDefaultable
         OverrideHealth = true;
         OverrideAccuracy = true;
         PercentageSpawnNearDen = 60;
+        
     }
 
 }

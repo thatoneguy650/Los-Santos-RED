@@ -40,6 +40,7 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
+        bool IsCarJacking { get; set; }
 
         void SetUnarmed();
     }

@@ -15,7 +15,6 @@ public class StoreSellMenu : Menu
     private IModItems ModItems;
     private MenuPool MenuPool;
     private IActivityPerformable Player;
-    private int ItemsSold;
     private Vehicle SellingVehicle;
     private Rage.Object SellingProp;
     private Ped SellingPed;
@@ -36,7 +35,6 @@ public class StoreSellMenu : Menu
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
 
     public bool Visible => sellMenu.Visible;
-    public bool SoldItem => ItemsSold > 0;
     public StoreSellMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
@@ -115,6 +113,23 @@ public class StoreSellMenu : Menu
             Hide();
         }
     }
+
+    public void OnAmountChanged(ModItem modItem)
+    {
+        if (modItem != null)
+        {
+            foreach (UIMenuItem uiMenuItem in sellMenu.MenuItems)
+            {
+                if (uiMenuItem.Text == modItem.Name && uiMenuItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
+                {
+                    MenuItem masdenuItem = Store.Menu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
+                    UpdatePropEntryData(modItem, masdenuItem, (UIMenuNumericScrollerItem<int>)uiMenuItem);
+                }
+            }
+        }
+    }
+
+
     private void CreateSellMenu()
     {
         sellMenu.Clear();
@@ -149,7 +164,7 @@ public class StoreSellMenu : Menu
                 }
             }
         }
-        OnIndexChange(sellMenu, sellMenu.CurrentSelection);
+        //OnIndexChange(sellMenu, sellMenu.CurrentSelection);
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
@@ -225,38 +240,9 @@ public class StoreSellMenu : Menu
 
     private void AddPropEntry(MenuItem cii, ModItem myItem)
     {
-        string formattedPurchasePrice = cii.SalesPrice.ToString("C0");
-        string description = myItem.Description;
-        if (description == "")
-        {
-            description = $"{cii.ModItemName} {formattedPurchasePrice}";
-        }
-        description += "~n~~s~";
-        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-        description += $"~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
-        if (myItem.AmountPerPackage > 1)
-        {
-            description += $"~n~~b~{((float)cii.SalesPrice / (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
-        }
-        if (myItem.ChangesHealth)
-        {
-            description += $"~n~{myItem.HealthChangeDescription}";
-        }
-        //if (myItem.ConsumeOnPurchase && (myItem.Type == eConsumableType.Eat || myItem.Type == eConsumableType.Drink))
-        //{
-        //    description += $"~n~~r~Dine-In Only~s~";
-        //}
-
-        bool enabled = Player.Inventory.HasItem(cii.ModItemName);
-        InventoryItem coolItem = Player.Inventory.Items.Where(x => x.ModItem.Name == cii.ModItemName).FirstOrDefault();
-        int MaxSell = 1;
-        if (coolItem != null)
-        {
-            MaxSell = coolItem.Amount;
-        }
-
-        sellMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, MaxSell, 1) { Enabled = enabled, Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 });
-        // { RightLabel = formattedPurchasePrice });
+        UIMenuNumericScrollerItem<int> myScroller = new UIMenuNumericScrollerItem<int>(cii.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 };
+        UpdatePropEntryData(myItem, cii, myScroller);
+        sellMenu.AddItem(myScroller);
     }
     private void OnVehicleItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -288,6 +274,67 @@ public class StoreSellMenu : Menu
             //{
             //    SellingVehicle.LicensePlate = PlateString.Substring(0,8);
             //}
+        }
+    }
+    private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
+    {
+        if (modItem != null && menuItem != null && scrollerItem != null)
+        {
+            bool isEnabled = true;
+            InventoryItem PlayerInventoryItem = Player.Inventory.Items.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            int MaxSell = 1;
+            int PlayerItems = 0;
+            if (PlayerInventoryItem != null)
+            {
+                PlayerItems = PlayerInventoryItem.Amount;
+                MaxSell = PlayerInventoryItem.Amount;
+            }
+            int RemainingToSell = MaxSell;
+            if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
+            {
+                RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - menuItem.ItemsBoughtFromPlayer;
+                if (RemainingToSell >= 1 && PlayerItems >= 1)
+                {
+                    MaxSell = Math.Min(MaxSell, RemainingToSell);
+                }
+                else
+                {
+                    RemainingToSell = 0;
+                    MaxSell = 1;
+                    isEnabled = false;
+                }
+            }
+            else
+            {
+                if (PlayerItems <= 0)
+                {
+                    RemainingToSell = 0;
+                    MaxSell = 1;
+                    isEnabled = false;
+                }
+            }
+
+            string formattedPurchasePrice = menuItem.SalesPrice.ToString("C0");
+            string description = modItem.Description;
+            if (description == "")
+            {
+                description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
+            }
+            description += "~n~~s~";
+            description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
+            description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
+            if (modItem.AmountPerPackage > 1)
+            {
+                description += $"~n~~b~{((float)menuItem.SalesPrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
+            }
+            if (modItem.ChangesHealth)
+            {
+                description += $"~n~{modItem.HealthChangeDescription}";
+            }
+            description += $"~n~Items To Buy: {RemainingToSell}~s~~n~You Have: {PlayerItems}";
+            scrollerItem.Maximum = MaxSell;
+            scrollerItem.Enabled = isEnabled;
+            scrollerItem.Description = description;
         }
     }
 
@@ -431,14 +478,15 @@ public class StoreSellMenu : Menu
             else
             {
                 int TotalItems = 1;
+                UIMenuNumericScrollerItem<int> myItem = null;
                 if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
                 {
-                    UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                    myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
                     TotalItems = myItem.Value;
                 }
                 CurrentWeapon = null;
                 CurrentWeaponVariation = new WeaponVariation();
-                SellItem(CurrentModItem, CurrentMenuItem, TotalItems);
+                SellItem(CurrentModItem, CurrentMenuItem, TotalItems, myItem);
             }
         }
         else
@@ -446,22 +494,6 @@ public class StoreSellMenu : Menu
             CurrentModItem = null;
             CurrentMenuItem = null;
         }
-
-
-
-        //GameFiber.Sleep(500);
-        //while (Player.IsPerformingActivity)
-        //{
-        //    GameFiber.Sleep(500);
-        //}
-        //if (ExitAfterPurchase)
-        //{
-        //    Dispose();
-        //}
-        //else
-        //{
-        //    Show();
-        //}
     }
     private void OnIndexChange(UIMenu sender, int newIndex)
     {
@@ -474,28 +506,17 @@ public class StoreSellMenu : Menu
     {
 
     }
-    private bool SellItem(ModItem modItem, MenuItem menuItem, int TotalItems)
+    private bool SellItem(ModItem modItem, MenuItem menuItem, int TotalItems, UIMenuNumericScrollerItem<int> myItem)
     {
-        int TotalPrice = menuItem.PurchasePrice * TotalItems;
+        int TotalPrice = menuItem.SalesPrice * TotalItems;
         CurrentTotalPrice = TotalPrice;
-        if (Player.Money >= TotalPrice)
+        if (Player.Inventory.Remove(modItem, TotalItems))
         {
-            bool subtractCash = true;
-            ItemsSold++;
-            if (modItem.ConsumeOnPurchase)
-            {
-                Player.ConsumeItem(modItem);
-            }
-            else
-            {
-                Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
-            }
-            // }
-            if (subtractCash)
-            {
-                Player.GiveMoney(-1 * TotalPrice);
-                MoneySpent += TotalPrice;
-            }
+            Player.GiveMoney(TotalPrice);
+            MoneySpent += TotalPrice;
+            menuItem.ItemsBoughtFromPlayer += TotalItems;
+            Store.OnAmountChanged(CurrentModItem);
+            //UpdatePropEntryData(modItem, menuItem, myItem);
             while (Player.IsPerformingActivity)
             {
                 GameFiber.Sleep(500);
@@ -504,10 +525,6 @@ public class StoreSellMenu : Menu
         }
         return false;
     }
-
-
-
-
 
     private void CreatePreview(UIMenuItem myItem)
     {
@@ -538,7 +555,6 @@ public class StoreSellMenu : Menu
             }
         }
     }
-
 
 
     private void PreviewPed(ModItem itemToShow)
@@ -702,6 +718,7 @@ public class StoreSellMenu : Menu
         {
             SellingPed.Delete();
         }
+        EntryPoint.WriteToConsole($"Sell Menu ClearPreviews Ran", 5);
     }
     private void PreloadModels()
     {

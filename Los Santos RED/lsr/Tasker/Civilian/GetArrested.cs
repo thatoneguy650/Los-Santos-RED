@@ -409,7 +409,7 @@ public class GetArrested : ComplexTask
 
 
 
-            if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup", 3))
+            if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_base", 3))
             {
                // EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -424,7 +424,7 @@ public class GetArrested : ComplexTask
                         return;
                     }
                     //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up Idle", 3);
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup", 2.0f, -2.0f, -1, 1, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_base", 2.0f, -2.0f, -1, 1, 0, false, false, false);
                 }
             }
             if(PedToArrest.Exists())

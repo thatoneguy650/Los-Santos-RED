@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Interface
         void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool IsForPlayer);
         GangRelationships GangRelationships { get; }
         bool RecentlyShot { get; }
+        float ClosestPoliceDistanceToPlayer { get; }
         //bool IsHostile(Gang gang);
     }
 }

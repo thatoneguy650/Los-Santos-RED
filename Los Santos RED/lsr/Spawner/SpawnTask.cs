@@ -391,6 +391,13 @@ public class SpawnTask
         }
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons) { TransactionMenu = toAdd?.Items };
         World.Pedestrians.AddEntity(GangMember);  
+
+
+        if(GangMember.Pedestrian.Exists())
+        {
+            GangMember.Pedestrian.Money = GangMember.Money;
+        }
+
         GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));
         GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
         GangMember.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);

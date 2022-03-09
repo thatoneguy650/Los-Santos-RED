@@ -580,7 +580,7 @@ public class Gangs : IGangs
                                             PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000 } ,//crack
 
             new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande","Marabunta", "Blue", MarabuntaPeds, MarabuntaVehicles, "",MeleeWeapons,MarabuntaSidearms,MarabuntaLongGuns,"Marabunta O.G.","CHAR_MP_MEX_LT","Marabunta Member") { 
-                                            DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO", "AMBIENT_GANG_SALVA" },DealerMenuGroup = "MarijuanaDealerMenu",
+                                            DenName = "Hangout",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO" },DealerMenuGroup = "MarijuanaDealerMenu",
                                             PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000 } ,//marijuana
 
             new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", AltruistPeds, GenericVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Altruist Leader","CHAR_PA_MALE","Altruist Member") { 
@@ -588,11 +588,11 @@ public class Gangs : IGangs
                                             PickupPaymentMin = 100, PickupPaymentMax = 500, TheftPaymentMin = 500, TheftPaymentMax = 2000, HitPaymentMin = 5000, HitPaymentMax = 10000 } ,
 
             new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas","Varrios", "Yellow", VarriosPeds, VarriosVehicles, "",MeleeWeapons,VarriosSidearms,VarriosLongGuns,"Varrios O.G.","CHAR_ORTEGA","Varrios Member") { 
-                                            DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MARABUNTE" }, DealerMenuGroup = "CrackDealerMenu",
+                                            DenName = "Hangout",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 5000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG","AMBIENT_GANG_MESSINA" }, DealerMenuGroup = "CrackDealerMenu",
                                             PickupPaymentMin = 200, PickupPaymentMax = 500, TheftPaymentMin = 1000, TheftPaymentMax = 3000, HitPaymentMin = 10000, HitPaymentMax = 27000 } ,//crack
 
             new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads","Triads", "Red", TriadsPeds, TriadVehicles, "",MeleeWeapons,TriadsSidearms,TriadsLongGuns,"Triad Leader","CHAR_CHENGSR","Triad Member") { 
-                                            DenName = "Meeting Spot",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MESSINA" }, DealerMenuGroup = "HeroinDealerMenu",
+                                            DenName = "Meeting Spot",AmbientMemberMoneyMin = 2000, AmbientMemberMoneyMax = 7000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MESSINA","AMBIENT_GANG_SALVA" }, DealerMenuGroup = "HeroinDealerMenu",
                                             PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000 } ,//heroin
 
             new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks","Rednecks", "Black", RedneckPeds, RedneckVehicles, "",MeleeWeapons,FamiliesSidearms,FamiliesLongGuns,"Redneck Leader","CHAR_ONEIL","Redneck") { 
@@ -617,7 +617,7 @@ public class Gangs : IGangs
                                             PickupPaymentMin = 1000, PickupPaymentMax = 3200, TheftPaymentMin = 2000, TheftPaymentMax = 8000, HitPaymentMin = 20000, HitPaymentMax = 52000 } ,//cocaine
 
             new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Messina Boss","CHAR_BARRY","Messina Assocaite") { 
-                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" }, DealerMenuGroup = "CokeDealerMenu",
+                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG","AMBIENT_GANG_SALVA" }, DealerMenuGroup = "CokeDealerMenu",
                                             PickupPaymentMin = 1000, PickupPaymentMax = 3400, TheftPaymentMin = 2000, TheftPaymentMax = 9000, HitPaymentMin = 20000, HitPaymentMax = 45000 } ,//cocaine
 
             new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", MafiaPeds, MafiaVehicles, "",MeleeWeapons,MafiaSidearms,MafiaLongGuns,"Ancelotti Boss","CHAR_DREYFUSS","Ancelotti Associate") { 

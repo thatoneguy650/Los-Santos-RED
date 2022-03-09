@@ -89,6 +89,8 @@ namespace Mod
         private IZones Zones;
         private int TimeBetweenYelling = 2500;
         private uint GameTimeLastYelled;
+        private uint LookedAtPedButtonPromptHandle;
+
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
         private bool CanYell => !IsYellingTimeOut;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
@@ -171,7 +173,7 @@ namespace Mod
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
-        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f && !CurrentTargetedPed.IsInVehicle;
+        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;// && (!CurrentTargetedPed.IsInVehicle || CurrentTargetedPed.;
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
        public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanWaveHands => Surrendering.CanWaveHands;
@@ -205,7 +207,7 @@ namespace Mod
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 { get; set; }
-        public string DebugLine5 => CellPhone.CustomiFruit.DebugString;
+        public string DebugLine5 => $"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.DebugString;
@@ -2651,42 +2653,48 @@ namespace Mod
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
             {
-                ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
-                ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
 
-                if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
-                {
-                    ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
-                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
-                }
-                if (((CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition) || CurrentLookedAtPed.HasMenu) && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
-                {
-                    bool toSell = false;
-                    bool toBuy = false;
-                    if (CurrentLookedAtPed.HasMenu)
+
+               // if (LookedAtPedButtonPromptHandle != CurrentLookedAtPed.Handle)
+               // {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartSimpleTransaction");
+                    ButtonPrompts.RemoveAll(x => x.Group == "InteractableLocation");
+
+                    if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
                     {
-                        toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
-                        toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
+                        ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
+                        ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
                     }
-                    ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
-                    string promptText = $"Purchase from {CurrentLookedAtPed.FormattedName}";
-                    if (toSell && toBuy)
+                    if (((CurrentLookedAtPed.GetType() == typeof(Merchant) && CurrentLookedAtPed.IsNearSpawnPosition) || CurrentLookedAtPed.HasMenu) && !ButtonPrompts.Any(x => x.Identifier == $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}"))
                     {
-                        promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
-                    }
-                    else if (toBuy)
-                    {
-                        promptText = $"Buy from {CurrentLookedAtPed.FormattedName}";
-                    }
-                    else if (toSell)
-                    {
-                        promptText = $"Sell to {CurrentLookedAtPed.FormattedName}";
-                    }
-                    else
-                    {
-                        promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
-                    }
-                    ButtonPrompts.Add(new ButtonPrompt(promptText, "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2));
+                        bool toSell = false;
+                        bool toBuy = false;
+                        if (CurrentLookedAtPed.HasMenu)
+                        {
+                            toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
+                            toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
+                        }
+                        ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
+                        string promptText = $"Purchase from {CurrentLookedAtPed.FormattedName}";
+                        if (toSell && toBuy)
+                        {
+                            promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
+                        }
+                        else if (toBuy)
+                        {
+                            promptText = $"Buy from {CurrentLookedAtPed.FormattedName}";
+                        }
+                        else if (toSell)
+                        {
+                            promptText = $"Sell to {CurrentLookedAtPed.FormattedName}";
+                        }
+                        else
+                        {
+                            promptText = $"Transact with {CurrentLookedAtPed.FormattedName}";
+                        }
+                        ButtonPrompts.Add(new ButtonPrompt(promptText, "StartTransaction", $"Purchase {CurrentLookedAtPed.Pedestrian.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2));
+                   // }
+                   // LookedAtPedButtonPromptHandle = CurrentLookedAtPed.Handle;
                 }
             }
             else
@@ -2917,7 +2925,7 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)//750
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 300)//750)//750
             {
                 GameFiber.Yield();
 
@@ -2927,13 +2935,55 @@ namespace Mod
                 Vector3 RayEnd = RayStart + NativeHelper.GetGameplayCameraDirection() * 6.0f;
                 //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
                 //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
+
+
+
                 HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
                                                                                                                                                                                      //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
                                                                                                                                                                                      //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+
+
+                //HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+                //                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
+                //                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
                 if (result.Hit && result.HitEntity is Ped)
                 {
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
                     CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
+                }
+                else if (result.Hit && result.HitEntity is Vehicle)
+                {
+                    Vehicle myCar = (Vehicle)result.HitEntity;
+                    if(myCar.Exists() && myCar.Driver.Exists())
+                    {
+                        Ped closestPed = null;
+                        float ClosestDistance = 999f;
+                        foreach(Ped occupant in myCar.Occupants)
+                        {
+                            if(occupant.Exists())
+                            {
+                                float distanceTo = occupant.DistanceTo2D(Character);
+                                if (distanceTo <= ClosestDistance)
+                                {
+                                    closestPed = occupant;
+                                    ClosestDistance = distanceTo;
+                                }
+                            }
+                                
+                        }
+                        if(closestPed.Exists())
+                        {
+                            CurrentLookedAtPed = World.Pedestrians.GetPedExt(closestPed.Handle);
+                        }
+
+                        
+                    }
+                    else
+                    {
+                        CurrentLookedAtPed = null;
+                    }
+                    // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
+                    
                 }
                 else
                 {

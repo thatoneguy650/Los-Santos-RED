@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
 
 public class MenuItem
 {
@@ -33,5 +33,27 @@ public class MenuItem
     public List<MenuItemExtra> Extras { get; set; } = new List<MenuItemExtra>();
     public int SubPrice { get; set; } = 1;
     public int SubAmount { get; set; } = 30;
+
+
+
+
+
+    public int NumberOfItemsToSellToPlayer { get; set; } = -1;
+    [XmlIgnore]
+    public int ItemsSoldToPlayer { get; set; } = 0;
+
+
+
+
+    public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
+    [XmlIgnore]
+    public int ItemsBoughtFromPlayer { get; set; } = 0;
+
+
+
+
+
+
+
 }
 

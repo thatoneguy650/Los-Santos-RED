@@ -301,32 +301,28 @@ public class StorePurchaseMenu : Menu
             ClearPreviews();
         }
     }
-    private void AddPropEntry(MenuItem cii, ModItem myItem)
-    {
-        string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
-        string description = myItem.Description;
-        if (description == "")
-        {
-            description = $"{cii.ModItemName} {formattedPurchasePrice}";
-        }
-        description += "~n~~s~";
-        description += $"~n~Type: ~p~{myItem.FormattedItemType}~s~";
-        description += $"~n~~b~{myItem.AmountPerPackage}~s~ Item(s) per Package";
-        if (myItem.AmountPerPackage > 1)
-        {
-            description += $"~n~~b~{((float)cii.PurchasePrice / (float)myItem.AmountPerPackage).ToString("C2")} ~s~per Item";
-        }
-        if (myItem.ChangesHealth)
-        {
-            description += $"~n~{myItem.HealthChangeDescription}";
-        }
-        if (myItem.ConsumeOnPurchase && (myItem.Type == eConsumableType.Eat || myItem.Type == eConsumableType.Drink))
-        {
-            description += $"~n~~r~Dine-In Only~s~";
-        }
 
-        purchaseMenu.AddItem(new UIMenuNumericScrollerItem<int>(cii.ModItemName, description, 1, 99, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 });
-        // { RightLabel = formattedPurchasePrice });
+    public void OnAmountChanged(ModItem modItem)
+    {
+        if (modItem != null)
+        {
+            foreach (UIMenuItem uiMenuItem in purchaseMenu.MenuItems)
+            {
+                if (uiMenuItem.Text == modItem.Name && uiMenuItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
+                {
+                    MenuItem masdenuItem = Store.Menu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
+                    UpdatePropEntryData(modItem, masdenuItem, (UIMenuNumericScrollerItem<int>)uiMenuItem);
+                }
+            }
+        }
+    }
+
+
+    private void AddPropEntry(MenuItem menuItem, ModItem modItem)
+    {
+        UIMenuNumericScrollerItem<int> myscroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 99, 1) { Formatter = v => $"{(v == 1 && modItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(modItem.MeasurementName != "Item" || v > 1 ? modItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(modItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.PurchasePrice)}", Value = 1 };
+        UpdatePropEntryData(modItem, menuItem, myscroller);
+        purchaseMenu.AddItem(myscroller);
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
@@ -632,9 +628,58 @@ public class StorePurchaseMenu : Menu
                 }
             }
         }
-        OnIndexChange(purchaseMenu, purchaseMenu.CurrentSelection);
+       // OnIndexChange(purchaseMenu, purchaseMenu.CurrentSelection);
 
         //LoopMenus();
+    }
+
+    private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
+    {
+        if (modItem != null && menuItem != null && scrollerItem != null)
+        {
+            string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
+            string description = modItem.Description;
+            if (description == "")
+            {
+                description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
+            }
+            description += "~n~~s~";
+            description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
+            description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
+            if (modItem.AmountPerPackage > 1)
+            {
+                description += $"~n~~b~{((float)menuItem.PurchasePrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
+            }
+            if (modItem.ChangesHealth)
+            {
+                description += $"~n~{modItem.HealthChangeDescription}";
+            }
+            if (modItem.ConsumeOnPurchase && (modItem.Type == eConsumableType.Eat || modItem.Type == eConsumableType.Drink))
+            {
+                description += $"~n~~r~Dine-In Only~s~";
+            }
+            bool enabled = true;
+            int RemainingToBuy = 99;
+            int MaxBuy = 99;
+            if (menuItem.NumberOfItemsToSellToPlayer != -1)
+            {
+                RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - menuItem.ItemsSoldToPlayer;
+                if (RemainingToBuy <= 0)
+                {
+                    MaxBuy = 0;
+                    RemainingToBuy = 1;
+                    enabled = false;
+                }
+                else
+                {
+                    MaxBuy = RemainingToBuy;
+                }
+                description += $"~n~Items To Sell: {MaxBuy}~s~";
+            }
+            scrollerItem.Maximum = RemainingToBuy;
+            scrollerItem.Enabled = enabled;
+            scrollerItem.Description = description;
+        }
     }
     private void OnIndexChange(UIMenu sender, int newIndex)
     {
@@ -670,14 +715,17 @@ public class StorePurchaseMenu : Menu
             else
             {
                 int TotalItems = 1;
+                UIMenuNumericScrollerItem<int> scrollerItem = null;
                 if (selectedItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
                 {
-                    UIMenuNumericScrollerItem<int> myItem = (UIMenuNumericScrollerItem<int>)selectedItem;
-                    TotalItems = myItem.Value;
+                    scrollerItem = (UIMenuNumericScrollerItem<int>)selectedItem;
+                    TotalItems = scrollerItem.Value;
                 }
                 CurrentWeapon = null;
                 CurrentWeaponVariation = new WeaponVariation();
                 PurchaseItem(CurrentModItem, CurrentMenuItem, TotalItems);
+                Store.OnAmountChanged(CurrentModItem);
+                //UpdatePropEntryData(CurrentModItem, CurrentMenuItem, scrollerItem);
             }
         }
         else
@@ -1251,13 +1299,7 @@ public class StorePurchaseMenu : Menu
         {
             bool subtractCash = true;
             ItemsBought++;
-            //if (modItem.Type == eConsumableType.Service && Store?.Type == LocationType.Hotel)
-            //{
-            //    StayAtHotel(modItem, Store, TotalItems);
-            //    //Player.StartServiceActivity(modItem, Store, TotalItems);
-            //}
-            //else
-            //{
+            menuItem.ItemsSoldToPlayer += TotalItems;
             if (modItem.ConsumeOnPurchase)
             {
                 Player.ConsumeItem(modItem);
@@ -1266,7 +1308,6 @@ public class StorePurchaseMenu : Menu
             {
                 Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
             }
-            // }
             if (subtractCash)
             {
                 Player.GiveMoney(-1 * TotalPrice);
@@ -1337,42 +1378,6 @@ public class StorePurchaseMenu : Menu
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
-    }
-    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
-    {
-        bool Spoke = false;
-        if (CanContinueConversation)
-        {
-            foreach (string AmbientSpeech in Possibilities)
-            {
-                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
-                {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
-                }
-                else
-                {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                }
-                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
-                if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
-                {
-                    Spoke = true;
-                }
-
-                if (Spoke)
-                {
-                    break;
-                }
-            }
-            GameFiber.Sleep(100);
-            while (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
-            {
-                Spoke = true;
-                GameFiber.Yield();
-            }
-        }
-        return Spoke;
     }
     private class ColorLookup
     {

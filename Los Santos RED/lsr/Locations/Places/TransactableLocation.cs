@@ -79,7 +79,9 @@ public class TransactableLocation : InteractableLocation
         }
         if (hasSellMenu && hasPurchaseMenu)
         {
+            ClearPreviews();
             InteractionMenu.Visible = true;
+
         }
         else if (hasSellMenu)
         {
@@ -113,6 +115,11 @@ public class TransactableLocation : InteractableLocation
     {
         PurchaseMenu?.ClearPreviews();
         SellMenu?.ClearPreviews();
+    }
+    public void OnAmountChanged(ModItem modItem)
+    {
+        PurchaseMenu?.OnAmountChanged(modItem);
+        SellMenu?.OnAmountChanged(modItem);
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, RAGENativeUI.Elements.UIMenuItem selectedItem, int index)
     {

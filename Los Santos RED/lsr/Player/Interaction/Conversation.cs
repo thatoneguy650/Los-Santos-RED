@@ -10,6 +10,7 @@ public class Conversation : Interaction
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
     private bool IsTasked;
+    private bool IsBlockedEvents;
     private PedExt Ped;
     private IInteractionable Player;
     private bool CancelledConversation;
@@ -30,6 +31,17 @@ public class Conversation : Interaction
         Player.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
         {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+            Ped.Pedestrian.KeepTasks = false;
+            EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 1");
+            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+        }
+        else if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
+        {
+
+            Ped.Pedestrian.BlockPermanentEvents = false;
+            Ped.Pedestrian.KeepTasks = false;
+            EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 2");
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
@@ -225,18 +237,37 @@ public class Conversation : Interaction
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true, isPlayer);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH", "PROVOKE_GENERIC", "PROVOKE_BAR" }, true, isPlayer);
         }
     }
     private void SaySmallTalk(Ped ToReply, bool IsReply, bool isPlayer)
     {
+
         if(IsReply)
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_RESP", "PED_RANT_RESP", "CHAT_STATE", "PED_RANT" }, true, isPlayer);
+            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_RESP", "PED_RANT_RESP", "CHAT_STATE", "PED_RANT",
+                //"PHONE_CONV1_CHAT1", "PHONE_CONV1_CHAT2", "PHONE_CONV1_CHAT3", "PHONE_CONV1_INTRO", "PHONE_CONV1_OUTRO",
+                //"PHONE_CONV2_CHAT1", "PHONE_CONV2_CHAT2", "PHONE_CONV2_CHAT3", "PHONE_CONV2_INTRO", "PHONE_CONV2_OUTRO",
+                //"PHONE_CONV3_CHAT1", "PHONE_CONV3_CHAT2", "PHONE_CONV3_CHAT3", "PHONE_CONV3_INTRO", "PHONE_CONV3_OUTRO",
+                //"PHONE_CONV4_CHAT1", "PHONE_CONV4_CHAT2", "PHONE_CONV4_CHAT3", "PHONE_CONV4_INTRO", "PHONE_CONV4_OUTRO",
+                //"PHONE_SURPRISE_PLAYER_APPEARANCE_01","SEE_WEIRDO_PHONE",
+                "PED_RANT_01",
+
+
+
+            }, true, isPlayer);
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_STATE", "PED_RANT", "CHAT_RESP", "PED_RANT_RESP", "CULT_TALK", "PHONE_CONV1_CHAT1", }, true, isPlayer);
+            SayAvailableAmbient(ToReply, new List<string>() { "CHAT_STATE", "PED_RANT", "CHAT_RESP", "PED_RANT_RESP", "CULT_TALK",
+                //"PHONE_CONV1_CHAT1", "PHONE_CONV1_CHAT2", "PHONE_CONV1_CHAT3", "PHONE_CONV1_INTRO", "PHONE_CONV1_OUTRO",
+                //"PHONE_CONV2_CHAT1", "PHONE_CONV2_CHAT2", "PHONE_CONV2_CHAT3", "PHONE_CONV2_INTRO", "PHONE_CONV2_OUTRO",
+                //"PHONE_CONV3_CHAT1", "PHONE_CONV3_CHAT2", "PHONE_CONV3_CHAT3", "PHONE_CONV3_INTRO", "PHONE_CONV3_OUTRO",
+                //"PHONE_CONV4_CHAT1", "PHONE_CONV4_CHAT2", "PHONE_CONV4_CHAT3", "PHONE_CONV4_INTRO", "PHONE_CONV4_OUTRO",
+                //"PHONE_SURPRISE_PLAYER_APPEARANCE_01","SEE_WEIRDO_PHONE",
+                "PED_RANT_01",
+
+            }, true, isPlayer);
         }
     }
     private void Greet()
@@ -262,7 +293,16 @@ public class Conversation : Interaction
 
         if(!Ped.IsFedUpWithPlayer)
         {
-            if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
+            if (Ped.IsInVehicle)
+            {
+                IsTasked = true;
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                IsBlockedEvents = true;
+                EntryPoint.WriteToConsole("CONVERSATION BLOCKED EVENTS");
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+            }
+            else if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
             {
                 IsTasked = false;
             }
@@ -308,6 +348,7 @@ public class Conversation : Interaction
             {
                 return;
             }
+
             if (Ped.TimesInsultedByPlayer <= 0)
             {
                 SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true,false);
@@ -315,6 +356,14 @@ public class Conversation : Interaction
             else
             {
                 SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true, false);
+            }
+
+
+            if(Ped.Pedestrian.Exists() && IsBlockedEvents)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
             }
             Ped.HasSpokenWithPlayer = true;
         }

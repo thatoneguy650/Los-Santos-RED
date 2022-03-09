@@ -130,6 +130,8 @@ namespace LosSantosRED.lsr
                 RepToRemove = -1000;
             }      
             GangReputation gr = Player.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
+
+
             if (gr != null)
             {
                 if (isKilled)
@@ -174,6 +176,7 @@ namespace LosSantosRED.lsr
                 }
             }
             Player.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
+            Player.GangRelationships.AddAttacked(gm.Gang);
         }
         private void AddCarjackedGang(GangMember gm)
         {
@@ -199,6 +202,7 @@ namespace LosSantosRED.lsr
                 }
             }
             Player.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
+            Player.GangRelationships.AddAttacked(gm.Gang);
         }
         public void Reset()
         {

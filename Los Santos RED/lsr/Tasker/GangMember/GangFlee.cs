@@ -39,11 +39,11 @@ public class GangFlee : ComplexTask
             //Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
-                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 100f, -1, false, false);
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 1000f, -1, false, false);
             }
             else
             {
-                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 100f, -1, false, false);
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 1000f, -1, false, false);
             }
             GameTimeLastRan = Game.GameTime;
         }

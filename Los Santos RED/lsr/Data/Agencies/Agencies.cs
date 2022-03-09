@@ -94,10 +94,10 @@ public class Agencies : IAgencies
         List<int> AsianHairStyles_Male = new List<int>() { 2, 3, 4, 9, 10, 11, 12, 18, 19, 66 };
         List<int> BlackHairStyles_Male = new List<int>() { 0, 1, 8, 14, 24, 25, 30, 72 };
 
-        List<int> WhiteHairColors_Male = new List<int>() { 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13 };
-        List<int> BrownHairColors_Male = new List<int>() { 0, 1, 2, 3 };
-        List<int> AsianHairColors_Male = new List<int>() { 0, 1, 2, 3 };
-        List<int> BlackHairColors_Male = new List<int>() { 0, 1, 2, 3 };
+        List<int> WhiteHairColors_Male = new List<int>() { 0, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13 };
+        List<int> BrownHairColors_Male = new List<int>() { 0, 2, 3 };
+        List<int> AsianHairColors_Male = new List<int>() { 0, 2, 3 };
+        List<int> BlackHairColors_Male = new List<int>() { 0, 2, 3 };
 
         List<int> WhiteHairStyles_Female = new List<int>() { 1, 2, 4, 10, 11, 14, 15, 16, 17, 21, 48 };
         List<int> BrownHairStyles_Female = new List<int>() { 1, 2, 4, 10, 11, 14, 15, 16, 17, 21, 48 };

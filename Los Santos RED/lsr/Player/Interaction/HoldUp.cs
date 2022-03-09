@@ -17,6 +17,8 @@ public class HoldUp : Interaction
     private bool ForcedCower;
     private bool IsActivelyOrdering;
     private ISettingsProvideable Settings;
+    private bool Fleed;
+
     public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings)
     {
         Player = player;
@@ -35,8 +37,77 @@ public class HoldUp : Interaction
         {
             GameFiber.StartNew(delegate
             {
-                Setup();
+                if (Target.Pedestrian.Exists() && (!Target.IsInVehicle || Target.Pedestrian.Speed <= 3f))
+                {
+                    Setup();
+                }
             });
+        }
+    }
+    private void Setup()
+    {
+        EntryPoint.WriteToConsole($"Hold Up Started Target.IsInVehicle {Target.IsInVehicle}");
+        Target.CanBeTasked = false;     
+        Target.HasSpokenWithPlayer = true;
+        Target.Pedestrian.BlockPermanentEvents = true;
+        AnimationDictionary.RequestAnimationDictionay("ped");
+        AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
+        EnterHandsUp();
+    }
+    private void EnterHandsUp()
+    {
+        SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN", "CHALLENGE_ACCEPTED_GENERIC" }, false);
+        Player.IsHoldingUp = true;
+        GameTimeStartedHoldingUp = Game.GameTime;
+        if (Target.IsInVehicle && Target.Pedestrian.CurrentVehicle.Exists())
+        {
+            Player.IsCarJacking = true;
+            EntryPoint.WriteToConsole($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", 0, Target.Pedestrian.CurrentVehicle, 256);
+                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1250);
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Target.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+            while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedHoldingUp <= 5000)
+            {
+                GameFiber.Sleep(100);
+            }
+            Player.IsCarJacking = false;
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1250);
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Target.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+            while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedHoldingUp <= 5000)
+            {
+                GameFiber.Sleep(100);
+            }
+        }
+        if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
+        {
+            CleanUp();
+        }
+        else
+        {
+            SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG", "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED", "GENERIC_SHOCKED_HIGH", "GENERIC_SHOCKED_MED" }, true);
+            CheckIntimidation();
         }
     }
     private void CheckIntimidation()
@@ -53,7 +124,7 @@ public class HoldUp : Interaction
         //Target.TimesInsultedByPlayer += 5;
         GameTimeStartedIntimidating = Game.GameTime;
         GameTimeStoppedTargetting = 0;
-        int TimeToWait = RandomItems.MyRand.Next(1500, 2500);
+        int TimeToWait = 250;// RandomItems.MyRand.Next(500, 1000);
         IsTargetting = true;
         while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && !ForcedCower && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
@@ -75,6 +146,10 @@ public class HoldUp : Interaction
                     {
                         Player.ButtonPrompts.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
                     }
+                    if (!Player.ButtonPrompts.Any(x => x.Identifier == "Flee"))
+                    {
+                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Flee", "HoldUp", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3));
+                    }
                 }
                 else
                 {
@@ -92,6 +167,13 @@ public class HoldUp : Interaction
                     Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
                     ForceCower();
                 }
+                if (Player.ButtonPrompts.Any(x => x.Identifier == "Flee" && x.IsPressedNow) && IsTargetIntimidated && !Fleed)//demand cash?
+                {
+                    Fleed = true;
+                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    FuckOff();
+                }
+
             }
             else
             {
@@ -104,6 +186,8 @@ public class HoldUp : Interaction
             }
             GameFiber.Yield();
         }
+        Player.IsHoldingUp = false;
+        Player.IsCarJacking = false;
         CleanUp();
     }
     private void CleanUp()
@@ -111,22 +195,12 @@ public class HoldUp : Interaction
         Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
         if (Target != null && Target.Pedestrian.Exists())
         {         
-            //if (Target.WillFight)
-            //{
-            //    Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
-            //    Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
-            //}
-            //else if (!ForcedCower)
-            //{
-            //    Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
-            //}
-            //else
-            //{
-                Target.Pedestrian.BlockPermanentEvents = false;
-                Target.CanBeTasked = true;
-           // }
+            Target.Pedestrian.BlockPermanentEvents = false;
+            Target.CanBeTasked = true;
+            NativeFunction.Natives.CLEAR_PED_TASKS(Target.Pedestrian);
         }
         Player.IsHoldingUp = false;
+        Player.IsCarJacking = false;
     }
     private void CreateMoneyDrop()
     {
@@ -151,50 +225,43 @@ public class HoldUp : Interaction
         GameFiber.Sleep(2000);
         IsActivelyOrdering = false;
     }
-    private void EnterHandsUp()
+    private void FuckOff()
     {
-        SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, false);
-        GameFiber.Sleep(500);
-        unsafe
-        {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1250);
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Target.Pedestrian, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        }
-        while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedHoldingUp <= 7000)
-        {
-            GameFiber.Sleep(100);
-        }
-        if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
-        {
-            CleanUp();
-        }
-        else
-        {
-            SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED" }, true);
-            CheckIntimidation();
-        }
+        IsActivelyOrdering = true;
+        SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, true);
+        NativeFunction.Natives.TASK_SMART_FLEE_PED(Target.Pedestrian, Player.Character, 500f, -1, false, false);
+        SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
+        GameFiber.Sleep(2000);
+        IsActivelyOrdering = false;
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
     {
         bool Spoke = false;
         foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
         {
-            if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+            if (ToSpeak.Handle == Player.Character.Handle)
             {
-                ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                if (Player.CharacterModelIsFreeMode)
+                {
+                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                else
+                {
+                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                }
             }
             else
             {
-                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                if (Target.VoiceName != "")
+                {
+                    ToSpeak.PlayAmbientSpeech(Target.VoiceName, AmbientSpeech, 0, SpeechModifier.Force);
+                }
+                else
+                {
+                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                }
             }
-            //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-            GameFiber.Sleep(100);
+            GameFiber.Sleep(300);
             if (ToSpeak.IsAnySpeechPlaying)
             {
                 Spoke = true;
@@ -213,15 +280,5 @@ public class HoldUp : Interaction
         }
         return Spoke;
     }
-    private void Setup()
-    {
-        Player.IsHoldingUp = true;
-        Target.CanBeTasked = false;
-        GameTimeStartedHoldingUp = Game.GameTime;
-        Target.HasSpokenWithPlayer = true;
-        Target.Pedestrian.BlockPermanentEvents = true;
-        AnimationDictionary.RequestAnimationDictionay("ped");
-        AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
-        EnterHandsUp();
-    }
+
 }

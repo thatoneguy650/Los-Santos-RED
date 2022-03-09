@@ -62,6 +62,7 @@ public class GangReputation
             }
         }
     }
+    public bool RecentlyAttacked => GameTimeLastAttacked > 0 && Game.GameTime - GameTimeLastAttacked <= 30000;
    // public bool HasActiveTask { get; set; }
     public int MembersHurt { get; set; }
     public int MembersKilled { get; set; }
@@ -111,7 +112,9 @@ public class GangReputation
             GameTimeLastAddedAmbientRep = Game.GameTime;
         }
     }
-    public uint GameTimeLastAddedAmbientRep { get; internal set; }
+    public uint GameTimeLastAddedAmbientRep { get; set; }
+    public uint GameTimeLastAttacked { get; set; }
+
     private void OnReputationChanged(bool sendText)
     {
         if(PreviousGangRelationship != GangRelationship)

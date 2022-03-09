@@ -177,6 +177,8 @@ public class TransactionOld : Interaction
             {
                 if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.Pedestrian.IsAlive && Store != null && Store.VendorHeading != 0f)
                 {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                    Ped.Pedestrian.KeepTasks = false;
                     NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, Store.VendorHeading, -1);
                     EntryPoint.WriteToConsole($"Transaction: DISPOSE Set Heading", 3);
                 }
@@ -185,6 +187,8 @@ public class TransactionOld : Interaction
             {
                 if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
                 {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                    Ped.Pedestrian.KeepTasks = false;
                     NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                     EntryPoint.WriteToConsole($"Transaction: DISPOSE UnTasking", 3);
                 }
@@ -253,6 +257,7 @@ public class TransactionOld : Interaction
         }
         if (hasSellMenu && hasPurchaseMenu)
         {
+            ClearPreviews();
             ModItemMenu.Visible = true;
         }
         else if (hasSellMenu)
@@ -505,7 +510,7 @@ public class TransactionOld : Interaction
             MenuPool.ProcessMenus();
             if (!IsActivelyConversing && !IsAnyMenuVisible)
             {
-                EntryPoint.WriteToConsole("Transaction Dispose 1",5);
+                EntryPoint.WriteToConsole($"Transaction Dispose 1 IsActivelyConversing {IsActivelyConversing} IsAnyMenuVisible {IsAnyMenuVisible}", 5);
                 Dispose();
             }
             if(ModItemMenu.MenuItems.Count() == 1 && ModItemMenu.Visible)
@@ -513,6 +518,16 @@ public class TransactionOld : Interaction
                 EntryPoint.WriteToConsole("Transaction Dispose 2", 5);
                 Dispose();
             }
+
+
+            if(Ped != null && Ped.Pedestrian.Exists() && Ped.DistanceToPlayer >= 15f)
+            {
+                EntryPoint.WriteToConsole("Transaction Dispose 2.5", 5);
+                Dispose();
+            }
+
+
+
             PurchaseMenu?.Update();
             SellMenu?.Update();
             GameFiber.Yield();
@@ -635,16 +650,29 @@ public class TransactionOld : Interaction
         {
             foreach (string AmbientSpeech in Possibilities)
             {
-                if (ToSpeak.Handle == Player.Character.Handle && Player.CharacterModelIsFreeMode)
+                if (ToSpeak.Handle == Player.Character.Handle)
                 {
-                    ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    if (Player.CharacterModelIsFreeMode)
+                    {
+                        ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
                 else
                 {
-                    ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    if (Ped.VoiceName != "")
+                    {
+                        ToSpeak.PlayAmbientSpeech(Ped.VoiceName, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
+                    else
+                    {
+                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                    }
                 }
-                //ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                GameFiber.Sleep(100);
+                GameFiber.Sleep(300);
                 if (ToSpeak.Exists() && ToSpeak.IsAnySpeechPlaying)
                 {
                     Spoke = true;
@@ -713,12 +741,24 @@ public class TransactionOld : Interaction
 
             if (!Ped.IsFedUpWithPlayer)
             {
-                //if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
-                //{
-                //    IsTasked = false;
-                //}
-                //else
-                //{
+                if (Ped.IsInVehicle)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                    Ped.Pedestrian.KeepTasks = true;
+                    IsTasked = true;
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+                }
+                else
+                {
+
+
+
+                    //if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
+                    //{
+                    //    IsTasked = false;
+                    //}
+                    //else
+                    //{
                     IsTasked = true;
                     unsafe
                     {
@@ -731,10 +771,10 @@ public class TransactionOld : Interaction
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
-              //  }
+                    //  }
 
 
-
+                }
                 if (Player.IsInVehicle)
                 {
                     NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);

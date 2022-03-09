@@ -165,7 +165,7 @@ public class CommitCrime : ComplexTask
             Target = null;
             foreach (PedExt possibletarget in World.Pedestrians.CivilianList)
             {
-                if (possibletarget.Pedestrian.Exists() && possibletarget.Pedestrian.Handle != Ped.Pedestrian.Handle && PreviousTargetHandle != possibletarget.Pedestrian.Handle && possibletarget.DistanceToPlayer <= 85 && possibletarget.CanBeAmbientTasked && possibletarget.Pedestrian.Speed <= 2.0f && !possibletarget.IsGangMember && possibletarget.Pedestrian.IsAlive)
+                if (possibletarget.Pedestrian.Exists() && possibletarget.Pedestrian.IsAlive && possibletarget.Pedestrian.Handle != Ped.Pedestrian.Handle && PreviousTargetHandle != possibletarget.Pedestrian.Handle && possibletarget.DistanceToPlayer <= 85 && possibletarget.CanBeAmbientTasked && possibletarget.Pedestrian.Speed <= 2.0f && !possibletarget.IsGangMember && possibletarget.Pedestrian.IsAlive)
                 {
                     float distanceToPossibleTarget = possibletarget.Pedestrian.DistanceTo2D(Ped.Pedestrian);
                     if (distanceToPossibleTarget <= closestDistance)

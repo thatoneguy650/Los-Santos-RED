@@ -92,6 +92,21 @@ public class GangRelationships
             EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} preValue {preValue} amount {amount} current {gr.ReputationLevel}", 5);
         }
     }
+    public void AddAttacked(Gang gang)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.GameTimeLastAttacked = Game.GameTime;
+        EntryPoint.WriteToConsole($"GangRelationships AddAttacked {gang.FullName} GameTimeLastAttacked {gr.GameTimeLastAttacked} RecentlyAttacked {gr.RecentlyAttacked} current {gr.ReputationLevel}", 5);
+    }
     public void SetReputation(Gang gang, int value, bool sendNotification)
     {
         if(gang == null)
