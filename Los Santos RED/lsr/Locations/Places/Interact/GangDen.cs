@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GangDen : TransactableLocation
+public class GangDen : InteractableLocation
 {
     private LocationCamera StoreCamera;
     private UIMenuItem dropoffCash;
@@ -23,6 +23,9 @@ public class GangDen : TransactableLocation
     private ITimeControllable Time;
     private UIMenuItem completeTask;
 
+
+    private Transaction Transaction;
+
     public GangDen() : base()
     {
 
@@ -31,7 +34,11 @@ public class GangDen : TransactableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
+    public string GangID { get; set; }
 
+    //[XmlIgnore]
+    //public ShopMenu Menu { get; set; }
+    //public string MenuID { get; set; }
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -39,12 +46,10 @@ public class GangDen : TransactableLocation
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
 
-    public string GangID { get; set; }
-
-
-    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, menuID)
+    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         GangID = _gangID;
+        MenuID = menuID;
         ButtonPromptText = $"Enter {Name}";
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -69,7 +74,13 @@ public class GangDen : TransactableLocation
 
 
                 CreateInteractionMenu();
-                CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+
+
+                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                //CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                 PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
 
@@ -77,7 +88,7 @@ public class GangDen : TransactableLocation
 
                 if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                 {
-                    dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") {RightLabel = $"${ExpectedMoney}" };
+                    dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
                     InteractionMenu.AddItem(dropoffCash);
                 }
                 else if (ExpectedItem != null && pt.IsReadyForPayment)
@@ -92,9 +103,15 @@ public class GangDen : TransactableLocation
                 }
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                ProcessTransactionMenu();
 
-                DisposeTransactionMenu();
+                Transaction.ProcessTransactionMenu();
+
+
+                //ProcessTransactionMenu();
+
+                Transaction.DisposeTransactionMenu();
+
+                //DisposeTransactionMenu();
                 DisposeInteractionMenu();
 
                 StoreCamera.Dispose();
@@ -108,13 +125,13 @@ public class GangDen : TransactableLocation
     {
         if (selectedItem.Text == "Buy")
         {
-            SellMenu?.Dispose();
-            PurchaseMenu?.Show();
+            Transaction?.SellMenu?.Dispose();
+            Transaction?.PurchaseMenu?.Show();
         }
         else if (selectedItem.Text == "Sell")
         {
-            PurchaseMenu?.Dispose();
-            SellMenu?.Show();
+            Transaction?.PurchaseMenu?.Dispose();
+            Transaction?.SellMenu?.Show();
         }
         else if (selectedItem == dropoffCash)
         {

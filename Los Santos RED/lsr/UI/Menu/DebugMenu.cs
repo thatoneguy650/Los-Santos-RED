@@ -215,6 +215,29 @@ public class DebugMenu : Menu
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Residence", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Residences));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To City Hall", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CityHalls));
+
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PoliceStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PoliceStations));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To FireStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.FireStations));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Hospital", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Hospitals));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Restaurant", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Restaurants));
+
+
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Bank", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Banks));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To BeautyShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.BeautyShops));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dispensary", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Dispensaries));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To HardwardStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.HardwareStores));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To HeadShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.HeadShops));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PawnShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PawnShops));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Pharmacy", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Pharmacies));
+
+
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Stadium", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Stadiums));
+
+
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To ConvenienceStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.ConvenienceStores));
+
+
+
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {
             Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));

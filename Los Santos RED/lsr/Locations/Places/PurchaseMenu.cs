@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class StorePurchaseMenu : Menu
+public class PurchaseMenu : Menu
 {
     private List<ColorLookup> ColorList;
     private MenuItem CurrentMenuItem;
@@ -36,12 +36,16 @@ public class StorePurchaseMenu : Menu
     private Rage.Object SellingProp;
     private Vehicle SellingVehicle;
     private ISettingsProvideable Settings;
-    private TransactableLocation Store;
+    //private TransactableLocation Store;
     private Camera StoreCam;
     private ITimeControllable Time;
     private IWeapons Weapons;
     private IEntityProvideable World;
-    public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
+
+
+    private Transaction Transaction;
+    private ShopMenu ShopMenu;
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
         Player = player;
@@ -50,21 +54,42 @@ public class StorePurchaseMenu : Menu
         MenuPool = menuPool;
         Weapons = weapons;
         Time = time;
-        Store = store;
+        //Store = store;
+
+        ShopMenu = shopMenu;
+        Transaction = transaction;
+        BannerImage = bannerImage;
+        RemoveBanner = removeBanner;
+        HasBannerImage = hasBannerImage;
+        StoreName = storeName;
+
+
+
+        EntryPoint.WriteToConsole($"PurchaseMenu: HasBannerImage {HasBannerImage} RemoveBanner {RemoveBanner}");
+
         StoreCam = Camera.RenderingCamera;
 
         purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            purchaseMenu.SetBannerType(Store.BannerImage);
+            purchaseMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             purchaseMenu.RemoveBanner();
         }
         purchaseMenu.OnIndexChange += OnIndexChange;
         purchaseMenu.OnItemSelect += OnItemSelect;
     }
+
+    public bool HasBannerImage { get; set; } = false;
+    public Texture BannerImage { get; set; }
+    public bool RemoveBanner { get; set; } = false;
+
+
+    public string StoreName { get; set; } = "";
+
+
     public int MoneySpent { get; private set; } = 0;
     private bool CanContinueConversation => Player.CanConverse;
     public void ClearPreviews()
@@ -96,11 +121,11 @@ public class StorePurchaseMenu : Menu
     }
     public void Setup()
     {
-        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews && Transaction.PreviewItems)
         {
             PreloadModels();
         }
-        Store.ClearPreviews();
+        Transaction.ClearPreviews();
         ColorList = new List<ColorLookup>()
         {
         new ColorLookup(0,"Metallic Black"),
@@ -310,7 +335,7 @@ public class StorePurchaseMenu : Menu
             {
                 if (uiMenuItem.Text == modItem.Name && uiMenuItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
                 {
-                    MenuItem masdenuItem = Store.Menu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
+                    MenuItem masdenuItem = ShopMenu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
                     UpdatePropEntryData(modItem, masdenuItem, (UIMenuNumericScrollerItem<int>)uiMenuItem);
                 }
             }
@@ -377,11 +402,11 @@ public class StorePurchaseMenu : Menu
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            VehicleMenu.SetBannerType(Store.BannerImage);
+            VehicleMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             VehicleMenu.RemoveBanner();
         }
@@ -446,11 +471,11 @@ public class StorePurchaseMenu : Menu
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
        // WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            WeaponMenu.SetBannerType(Store.BannerImage);
+            WeaponMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             WeaponMenu.RemoveBanner();
         }
@@ -500,9 +525,9 @@ public class StorePurchaseMenu : Menu
     {
         List<WeaponCategory> WeaponCategories = new List<WeaponCategory>();
         List<string> VehicleClasses = new List<string>();
-        int TotalWeapons = Store.Menu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Weapon).Count();
-        int TotalVehicles = Store.Menu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Vehicle).Count();
-        foreach (MenuItem cii in Store.Menu.Items.Where(x => x.Purchaseable))
+        int TotalWeapons = ShopMenu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Weapon).Count();
+        int TotalVehicles = ShopMenu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Vehicle).Count();
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable))
         {
             ModItem myItem = ModItems.Get(cii.ModItemName);
             if (myItem != null)
@@ -518,11 +543,11 @@ public class StorePurchaseMenu : Menu
                             {
                                 WeaponCategories.Add(myWeapon.Category);
                                 UIMenu WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, myWeapon.Category.ToString());
-                                if (Store.HasBannerImage)
+                                if (HasBannerImage)
                                 {
-                                    WeaponMenu.SetBannerType(Store.BannerImage);
+                                    WeaponMenu.SetBannerType(BannerImage);
                                 }
-                                else if (Store.RemoveBanner)
+                                else if (RemoveBanner)
                                 {
                                     WeaponMenu.RemoveBanner();
                                 }
@@ -545,11 +570,11 @@ public class StorePurchaseMenu : Menu
                             {
                                 VehicleClasses.Add(ClassName);
                                 UIMenu VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, ClassName);
-                                if (Store.HasBannerImage)
+                                if (HasBannerImage)
                                 {
-                                    VehicleMenu.SetBannerType(Store.BannerImage);
+                                    VehicleMenu.SetBannerType(BannerImage);
                                 }
-                                else if (Store.RemoveBanner)
+                                else if (RemoveBanner)
                                 {
                                     VehicleMenu.RemoveBanner();
                                 }
@@ -568,7 +593,7 @@ public class StorePurchaseMenu : Menu
     {
         ClearPreviews();
         // GameFiber.Yield();
-        if (myItem != null && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (myItem != null && Transaction.PreviewItems && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
             ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
@@ -598,7 +623,7 @@ public class StorePurchaseMenu : Menu
         EntryPoint.WriteToConsole($"CreatePurchaseMenu RAN!", 5);
         purchaseMenu.Clear();
         bool shouldCreateCategories = false;
-        if (Store.Menu.Items.Where(x => x.Purchaseable).Count() >= 7)
+        if (ShopMenu.Items.Where(x => x.Purchaseable).Count() >= 7)
         {
             shouldCreateCategories = true;
         }
@@ -606,7 +631,7 @@ public class StorePurchaseMenu : Menu
         {
             CreateCategories();
         }
-        foreach (MenuItem cii in Store.Menu.Items)
+        foreach (MenuItem cii in ShopMenu.Items)
         {
             if (cii != null && cii.Purchaseable)
             {
@@ -693,7 +718,7 @@ public class StorePurchaseMenu : Menu
     {
         EntryPoint.WriteToConsole($"OnItemSelect {selectedItem.Text}", 5);
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
-        MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
+        MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         if (ToAdd != null && menuItem != null)
         {
             CurrentModItem = ToAdd;
@@ -724,7 +749,7 @@ public class StorePurchaseMenu : Menu
                 CurrentWeapon = null;
                 CurrentWeaponVariation = new WeaponVariation();
                 PurchaseItem(CurrentModItem, CurrentMenuItem, TotalItems);
-                Store.OnAmountChanged(CurrentModItem);
+                Transaction.OnAmountChanged(CurrentModItem);
                 //UpdatePropEntryData(CurrentModItem, CurrentMenuItem, scrollerItem);
             }
         }
@@ -748,7 +773,7 @@ public class StorePurchaseMenu : Menu
         }
         foreach (UIMenuItem uimen in sender.MenuItems)
         {
-            MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == uimen.Text).FirstOrDefault();
+            MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == uimen.Text).FirstOrDefault();
             if (menuItem != null)
             {
                 EntryPoint.WriteToConsole($"    Sub Level: {menuItem.ModItemName}", 5);
@@ -759,13 +784,13 @@ public class StorePurchaseMenu : Menu
     {
         if (selectedItem.Text == "Purchase" && CurrentModItem != null)
         {
-            MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
+            MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
                 EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
                 if (Player.Money < menuItem.PurchasePrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
                 if (!PurchaseVehicle(CurrentModItem))
@@ -833,7 +858,7 @@ public class StorePurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice}", 5);
                 if (Player.Money < TotalPrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
                 if (!PurchaseWeapon())
@@ -863,7 +888,7 @@ public class StorePurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {1}", 5);
                 if (Player.Money < TotalPrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
                 if (!PurchaseAmmo(TotalItems))
@@ -889,7 +914,7 @@ public class StorePurchaseMenu : Menu
                     if (myItem.SelectedItem.ExtraName == "Default")
                     {
                         CurrentWeapon.SetSlotDefault(Player.Character, selectedSlot);
-                        Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Set Default", $"Set the {selectedSlot} slot to default");
+                        Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Set Default", $"Set the {selectedSlot} slot to default");
                         OnWeaponMenuOpen(sender);
                         return;
                     }
@@ -902,12 +927,12 @@ public class StorePurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Component Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice} myComponent {myComponent.Name}", 5);
                 if (Player.Money < myItem.SelectedItem.PurchasePrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
                 if (CurrentWeapon.HasComponent(Player.Character, myComponent))
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Already Owned", "We are sorry, we are unable to complete this transation, as the item is already owned");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Already Owned", "We are sorry, we are unable to complete this transation, as the item is already owned");
                     return;
                 }
                 if (!PurchaseComponent(myComponent))
@@ -1084,7 +1109,7 @@ public class StorePurchaseMenu : Menu
     }
     private void PreloadModels()
     {
-        foreach (MenuItem menuItem in Store.Menu.Items)//preload all item models so it doesnt bog the menu down
+        foreach (MenuItem menuItem in ShopMenu.Items)//preload all item models so it doesnt bog the menu down
         {
             try
             {
@@ -1210,7 +1235,7 @@ public class StorePurchaseMenu : Menu
     {
         if (itemToShow != null && itemToShow.ModelItem != null)
         {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
+            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
         }
         //GameFiber.Yield();
         if (SellingVehicle.Exists())
@@ -1273,22 +1298,22 @@ public class StorePurchaseMenu : Menu
         {
             NativeFunction.Natives.ADD_AMMO_TO_PED(Player.Character, CurrentWeapon.Hash, TotalItems);
 
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
 
             return true;
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
     private bool PurchaseComponent(WeaponComponent myComponent)
     {
         if (CurrentWeapon != null && CurrentWeapon.AddComponent(Player.Character, myComponent))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
 
             return true;
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
     private bool PurchaseItem(ModItem modItem, MenuItem menuItem, int TotalItems)
@@ -1297,6 +1322,11 @@ public class StorePurchaseMenu : Menu
         CurrentTotalPrice = TotalPrice;
         if (Player.Money >= TotalPrice)
         {
+
+            Transaction.OnItemPurchased(modItem, menuItem, TotalItems);
+
+
+
             bool subtractCash = true;
             ItemsBought++;
             menuItem.ItemsSoldToPlayer += TotalItems;
@@ -1313,6 +1343,11 @@ public class StorePurchaseMenu : Menu
                 Player.GiveMoney(-1 * TotalPrice);
                 MoneySpent += TotalPrice;
             }
+
+
+
+
+
             while (Player.IsPerformingActivity)
             {
                 GameFiber.Sleep(500);
@@ -1323,10 +1358,10 @@ public class StorePurchaseMenu : Menu
     }
     private bool PurchaseVehicle(ModItem modItem)
     {
-        bool ItemInDeliveryBay = Rage.World.GetEntities(Store.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+        bool ItemInDeliveryBay = Rage.World.GetEntities(Transaction.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
         if (!ItemInDeliveryBay)
         {
-            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Store.ItemDeliveryPosition, Store.ItemDeliveryHeading);
+            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Transaction.ItemDeliveryPosition, Transaction.ItemDeliveryHeading);
             if (NewVehicle.Exists())
             {
                 //if (PlateString != "")
@@ -1345,18 +1380,18 @@ public class StorePurchaseMenu : Menu
 
                 World.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 Player.TakeOwnershipOfVehicle(MyNewCar, false);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", "Thank you for your purchase");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", "Thank you for your purchase");
                 return true;
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
                 return false;
             }
         }
         else
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
             return false;
         }
     }
@@ -1371,12 +1406,12 @@ public class StorePurchaseMenu : Menu
                 {
                     CurrentWeapon.ApplyWeaponVariation(Player.Character, CurrentWeaponVariation);
                 }
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{CurrentMenuItem.ModItemName}~s~");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{CurrentMenuItem.ModItemName}~s~");
                 Player.SetUnarmed();
                 return true;
             }
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
     private class ColorLookup

@@ -149,35 +149,39 @@ public class Respawning// : IRespawning
             GameTimeLastUndied = Game.GameTime;
         }
     }
-    public void RespawnAtGrave()
+    //public void RespawnAtGrave()
+    //{
+    //    FadeOut();
+    //    Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false, true, false, false, false, false, false);
+    //    GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
+    //    SetPlayerAtLocation(PlaceToSpawn);
+    //    if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
+    //    {
+    //        CurrentPlayer.Inventory.Clear();
+    //    }
+    //    World.ClearSpawned();
+    //    Game.LocalPlayer.Character.IsRagdoll = true;
+    //    FadeIn();
+    //    Game.LocalPlayer.Character.IsRagdoll = false;
+    //    GameTimeLastDischargedFromHospital = Game.GameTime;
+    //}
+    public void RespawnAtHospital(Hospital PlaceToSpawn)
     {
-        FadeOut();
-        Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false, true, false, false, false, false, false);
-        GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
-        SetPlayerAtLocation(PlaceToSpawn);
-        if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
-        {
-            CurrentPlayer.Inventory.Clear();
-        }
-        World.ClearSpawned();
-        Game.LocalPlayer.Character.IsRagdoll = true;
-        FadeIn();
-        Game.LocalPlayer.Character.IsRagdoll = false;
-        GameTimeLastDischargedFromHospital = Game.GameTime;
-    }
-    public void RespawnAtHospital(GameLocation PlaceToSpawn)
-    {
-        if (Settings.SettingsManager.RespawnSettings.AllowRandomGraveRespawn && RandomItems.RandomPercent(Settings.SettingsManager.RespawnSettings.RandomGraveRespawnPercentage))
-        {
-            RespawnAtGrave();
-        }
-        else
-        {
+        //if (Settings.SettingsManager.RespawnSettings.AllowRandomGraveRespawn && RandomItems.RandomPercent(Settings.SettingsManager.RespawnSettings.RandomGraveRespawnPercentage))
+        //{
+        //    RespawnAtGrave();
+        //}
+        //else
+        //{
             FadeOut();
             Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false, true, false, false, false, false, false);
             if (PlaceToSpawn == null)
             {
-                PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+                PlaceToSpawn = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+
+
+
+                //PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
             }
             SetPlayerAtLocation(PlaceToSpawn);
             if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
@@ -191,9 +195,9 @@ public class Respawning// : IRespawning
                 SetHospitalFee(PlaceToSpawn.Name);
             }
             GameTimeLastDischargedFromHospital = Game.GameTime;
-        }
+       // }
     }
-    public void SurrenderToPolice(GameLocation PoliceStation)
+    public void SurrenderToPolice(PoliceStation PoliceStation)
     {
         FadeOut();
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
@@ -205,7 +209,8 @@ public class Respawning// : IRespawning
         ResetPlayer(true, true, false, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender, true, false, true, false, false, false, false, false);
         if (PoliceStation == null)
         {
-            PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
+            PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+            //PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
         World.ClearSpawned();
@@ -354,7 +359,7 @@ public class Respawning// : IRespawning
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
         CurrentPlayer.GiveMoney(-1 * TodaysPayment);
     }
-    private void SetPlayerAtLocation(GameLocation ToSet)
+    private void SetPlayerAtLocation(BasicLocation ToSet)
     {
         Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
@@ -364,13 +369,13 @@ public class Respawning// : IRespawning
 
         if (ToSet.HasInterior)
         {
-            World.Places.ActivateLocation(ToSet);
+            World.Places.ActivateBasicLocation(ToSet);
         }
 
-        if (ToSet.Type == LocationType.Grave)
-        {
-            Game.LocalPlayer.Character.IsRagdoll = true;
-        }
+        //if (ToSet.Type == LocationType.Grave)
+        //{
+        //    Game.LocalPlayer.Character.IsRagdoll = true;
+        //}
         //Game.LocalPlayer.Character.Tasks.ClearImmediately();
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }

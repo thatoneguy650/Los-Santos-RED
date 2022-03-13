@@ -34,6 +34,11 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; }
         Licenses Licenses { get; }
         Properties Properties { get; }
+        bool IsConversing { get; set; }
+        bool IsInVehicle { get; }
+        bool IsDealingDrugs { get; set; }
+        bool IsDealingIllegalGuns { get; set; }
+        bool IsTransacting { get; set; }
 
         void SetUnarmed();
         void StopDynamicActivity();

@@ -389,7 +389,7 @@ public class SpawnTask
                 toAdd = ShopMenus.GetRandomDrugDealerMenu();
             }
         }
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons) { TransactionMenu = toAdd?.Items };
+        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons) { ShopMenu = toAdd };
         World.Pedestrians.AddEntity(GangMember);  
 
 

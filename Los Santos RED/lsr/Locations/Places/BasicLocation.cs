@@ -20,7 +20,7 @@ public class BasicLocation
     private Interior interior;
     private float distanceToPlayer = 999f;
     private int CellsAway = 99;
-   /// private bool isNearby = false;
+    /// private bool isNearby = false;
     private uint GameTimeLastCheckedDistance;
     private uint GameTimeLastCheckedNearby;
     private uint DistanceUpdateIntervalTime
@@ -72,17 +72,13 @@ public class BasicLocation
 
     [XmlIgnore]
     public Texture BannerImage { get; set; }
-
     public string BannerImagePath { get; set; } = "";
-
     public bool RemoveBanner { get; set; } = false;
-
-
+    //[XmlIgnore]
     public bool IsEnabled { get; set; } = true;
     public string Name { get; set; }
     public string Description { get; set; }
-    public int CellX { get; set; }
-    public int CellY { get; set; }
+
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
     public float EntranceHeading { get; set; }
     public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
@@ -97,18 +93,23 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public int InteriorID { get; set; } = -1;
     public Interior Interior => interior;
+
+
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapIconAlpha { get; set; } = 1.0f;
-    public virtual string ButtonPromptText { get; set; }
+    //public virtual string ButtonPromptText { get; set; }
 
 
+  //  [XmlIgnore]
+    public int CellX { get; set; }
+    //[XmlIgnore]
+    public int CellY { get; set; }
     [XmlIgnore]
     public string StreetAddress { get; set; }
     [XmlIgnore]
-
     public bool IsNearby { get; private set; } = false;
     public BasicLocation()
     {
@@ -125,8 +126,6 @@ public class BasicLocation
     }
     public float DistanceToPlayer => distanceToPlayer;
     public bool IsWalkup { get; set; } = false;
-    public bool IsPurchaseable { get; set; } = false;
-    public bool IsPurchased { get; set; } = false;
     public override string ToString()
     {
         return Name.ToString();
@@ -135,7 +134,7 @@ public class BasicLocation
     {
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
     }
-    public void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    public virtual void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
     {
         if (HasInterior)
         {
@@ -169,7 +168,7 @@ public class BasicLocation
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
-    public void Dispose()
+    public virtual void Dispose()
     {
         if (createdBlip.Exists())
         {

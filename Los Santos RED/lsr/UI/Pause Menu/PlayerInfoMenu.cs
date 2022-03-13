@@ -269,6 +269,99 @@ public class PlayerInfoMenu
         }
 
 
+        List<BasicLocation> Banks = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Banks.Any())
+        {
+            foreach (Bank Bank in PlacesOfInterest.PossibleLocations.Banks.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Banks.Add(Bank);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Banks", $"List of all Banks", Banks) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> BeautyShops = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.BeautyShops.Any())
+        {
+            foreach (BeautyShop shop in PlacesOfInterest.PossibleLocations.BeautyShops.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Banks.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Beauty Shops", $"List of all BeautyShops", BeautyShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> Dispensaries = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Dispensaries.Any())
+        {
+            foreach (Dispensary shop in PlacesOfInterest.PossibleLocations.Dispensaries.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Dispensaries.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Dispensaries", $"List of all Dispensaries", Dispensaries) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> HardwareStores = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.HardwareStores.Any())
+        {
+            foreach (HardwareStore shop in PlacesOfInterest.PossibleLocations.HardwareStores.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                HardwareStores.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hardward Stores", $"List of all Hardward Stores", HardwareStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+
+        List<BasicLocation> HeadShops = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.HeadShops.Any())
+        {
+            foreach (HeadShop shop in PlacesOfInterest.PossibleLocations.HeadShops.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                HeadShops.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Head Shops", $"List of all Head Shops", HeadShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> PawnShops = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.PawnShops.Any())
+        {
+            foreach (PawnShop shop in PlacesOfInterest.PossibleLocations.PawnShops.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                PawnShops.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pawn Shops", $"List of all Pawn Shops", PawnShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+
+        List<BasicLocation> Pharmacies = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Pharmacies.Any())
+        {
+            foreach (Pharmacy shop in PlacesOfInterest.PossibleLocations.Pharmacies.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Pharmacies.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pharmacies", $"List of all Pharmacies", Pharmacies) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> Stadiums = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Stadiums.Any())
+        {
+            foreach (Stadium shop in PlacesOfInterest.PossibleLocations.Stadiums.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Stadiums.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Stadiums", $"List of all Stadiums", Stadiums) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+
+        List<BasicLocation> ConvenienceStores = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.ConvenienceStores.Any())
+        {
+            foreach (ConvenienceStore shop in PlacesOfInterest.PossibleLocations.ConvenienceStores.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                ConvenienceStores.Add(shop);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Convenience Stores", $"List of all Convenience Stores", ConvenienceStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
 
         List<BasicLocation> ScrapYards = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
@@ -289,6 +382,47 @@ public class PlayerInfoMenu
             }
             menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("City Halls", $"List of all City Halls", CityHalls) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
         }
+
+        List<BasicLocation> PoliceStations = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.PoliceStations.Any())
+        {
+            foreach (PoliceStation sy in PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                PoliceStations.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Police Stations", $"List of all Police Stations", PoliceStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> FireStations = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.PoliceStations.Any())
+        {
+            foreach (FireStation sy in PlacesOfInterest.PossibleLocations.FireStations.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                FireStations.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Fire Stations", $"List of all Fire Stations", FireStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> Hospitals = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Hospitals.Any())
+        {
+            foreach (Hospital sy in PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Hospitals.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hospitals", $"List of all Hospitals", Hospitals) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+        List<BasicLocation> Restaurants = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Restaurants.Any())
+        {
+            foreach (Restaurant sy in PlacesOfInterest.PossibleLocations.Restaurants.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                Restaurants.Add(sy);
+            }
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Restaurants", $"List of all Restaurants", Restaurants) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
 
         foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
         {

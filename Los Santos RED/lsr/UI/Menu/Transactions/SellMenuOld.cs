@@ -67,6 +67,7 @@ public class SellMenuOld : Menu
             AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
             AnimationDictionary.RequestAnimationDictionay("mp_common");
         }
+        CreateSellMenu();
     }
     public void Dispose()
     {
@@ -99,7 +100,11 @@ public class SellMenuOld : Menu
     }
     public override void Show()
     {
-        CreateSellMenu();
+        //CreateSellMenu();
+        if (sellMenu.CurrentSelection != -1)
+        {
+            CreatePreview(sellMenu.MenuItems[sellMenu.CurrentSelection]);
+        }
         sellMenu.Visible = true;
     }
     public override void Toggle()
@@ -451,7 +456,7 @@ public class SellMenuOld : Menu
             }
         }
         Player.ButtonPrompts.Clear();
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
+        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
@@ -484,7 +489,7 @@ public class SellMenuOld : Menu
                 SellingProp.Delete();
             }
             SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_THANKS", "GENERIC_BYE" }, true);
-            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
+            //SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
         }
         IsActivelyConversing = false;
         if (isIllicit)

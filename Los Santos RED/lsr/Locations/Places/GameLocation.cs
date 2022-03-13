@@ -418,7 +418,7 @@ public class GameLocation
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             merchant = new Merchant(ped, settings, false, false, false, "Vendor", crimes, weapons);
-            merchant.Store = this;
+            //merchant.Store = this;
             //AddEntity(Person);
         }
     }

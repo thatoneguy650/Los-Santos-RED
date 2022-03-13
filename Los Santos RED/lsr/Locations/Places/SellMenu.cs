@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class StoreSellMenu : Menu
+public class SellMenu : Menu
 {
     private UIMenu sellMenu;
     private IModItems ModItems;
@@ -24,7 +24,7 @@ public class StoreSellMenu : Menu
     private VehicleExt ToSellVehicle;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
-    private TransactableLocation Store;
+    //private TransactableLocation Store;
     private ITimeControllable Time;
     private IWeapons Weapons;
     private ModItem CurrentModItem;
@@ -34,24 +34,50 @@ public class StoreSellMenu : Menu
     private WeaponInformation CurrentWeapon;
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
 
-    public bool Visible => sellMenu.Visible;
-    public StoreSellMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+
+    private Transaction Transaction;
+    private ShopMenu ShopMenu;
+
+
+    public bool HasBannerImage { get; set; } = false;
+    public Texture BannerImage { get; set; }
+    public bool RemoveBanner { get; set; } = false;
+
+
+    public string StoreName { get; set; } = "";
+
+
+
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)
     {
         ModItems = modItems;
         Player = player;
         World = world;
         Settings = settings;
         MenuPool = menuPool;
-        Store = store;
+
+
+        Transaction = transaction;
+        ShopMenu = shopMenu;
         Time = time;
         Weapons = weapons;
         StoreCam = Camera.RenderingCamera;
+
+        BannerImage = bannerImage;
+        RemoveBanner = removeBanner;
+        StoreName = storeName;
+        HasBannerImage = hasBannerImage;
+
+
+        EntryPoint.WriteToConsole($"SellMenu: HasBannerImage {HasBannerImage} RemoveBanner {RemoveBanner}");
+
+
         sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            sellMenu.SetBannerType(Store.BannerImage);
+            sellMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             sellMenu.RemoveBanner();
         }
@@ -61,11 +87,11 @@ public class StoreSellMenu : Menu
     }
     public void Setup()
     {
-        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews && Transaction.PreviewItems)
         {
             PreloadModels();
         }
-        Store.ClearPreviews();
+        Transaction.ClearPreviews();
         CreateSellMenu();
     }
     public void Dispose()
@@ -100,6 +126,14 @@ public class StoreSellMenu : Menu
     public override void Show()
     {
         //CreateSellMenu();
+
+
+        if (sellMenu.CurrentSelection != -1)
+        {
+            CreatePreview(sellMenu.MenuItems[sellMenu.CurrentSelection]);
+        }
+
+
         sellMenu.Visible = true;
     }
     public override void Toggle()
@@ -122,7 +156,7 @@ public class StoreSellMenu : Menu
             {
                 if (uiMenuItem.Text == modItem.Name && uiMenuItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
                 {
-                    MenuItem masdenuItem = Store.Menu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
+                    MenuItem masdenuItem = ShopMenu.Items.Where(x => x.ModItemName == modItem.Name).FirstOrDefault();
                     UpdatePropEntryData(modItem, masdenuItem, (UIMenuNumericScrollerItem<int>)uiMenuItem);
                 }
             }
@@ -134,7 +168,7 @@ public class StoreSellMenu : Menu
     {
         sellMenu.Clear();
         bool shouldCreateCategories = false;
-        if (Store.Menu.Items.Where(x => x.Sellable).Count() >= 7)
+        if (ShopMenu.Items.Where(x => x.Sellable).Count() >= 7)
         {
             shouldCreateCategories = true;
         }
@@ -142,7 +176,7 @@ public class StoreSellMenu : Menu
         {
             CreateCategories();
         }
-        foreach (MenuItem cii in Store.Menu.Items)
+        foreach (MenuItem cii in ShopMenu.Items)
         {
             if (cii != null && cii.Sellable)
             {
@@ -219,11 +253,11 @@ public class StoreSellMenu : Menu
             sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            VehicleMenu.SetBannerType(Store.BannerImage);
+            VehicleMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             VehicleMenu.RemoveBanner();
         }
@@ -240,7 +274,7 @@ public class StoreSellMenu : Menu
 
     private void AddPropEntry(MenuItem cii, ModItem myItem)
     {
-        UIMenuNumericScrollerItem<int> myScroller = new UIMenuNumericScrollerItem<int>(cii.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.PurchasePrice)}", Value = 1 };
+        UIMenuNumericScrollerItem<int> myScroller = new UIMenuNumericScrollerItem<int>(cii.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 };
         UpdatePropEntryData(myItem, cii, myScroller);
         sellMenu.AddItem(myScroller);
     }
@@ -248,13 +282,13 @@ public class StoreSellMenu : Menu
     {
         if (selectedItem.Text == "Sell" && CurrentModItem != null)
         {
-            MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
+            MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
                 EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
                 if (Player.Money < menuItem.PurchasePrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Store.Name, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
                 //if (!PurchaseVehicle(CurrentModItem))
@@ -335,6 +369,7 @@ public class StoreSellMenu : Menu
             scrollerItem.Maximum = MaxSell;
             scrollerItem.Enabled = isEnabled;
             scrollerItem.Description = description;
+            EntryPoint.WriteToConsole($"Item: {modItem.Name} formattedPurchasePrice {formattedPurchasePrice}");
         }
     }
 
@@ -342,9 +377,9 @@ public class StoreSellMenu : Menu
     {
         List<WeaponCategory> WeaponCategories = new List<WeaponCategory>();
         List<string> VehicleClasses = new List<string>();
-        int TotalWeapons = Store.Menu.Items.Where(x => x.Sellable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Weapon).Count();
-        int TotalVehicles = Store.Menu.Items.Where(x => x.Sellable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Vehicle).Count();
-        foreach (MenuItem cii in Store.Menu.Items.Where(x => x.Sellable))
+        int TotalWeapons = ShopMenu.Items.Where(x => x.Sellable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Weapon).Count();
+        int TotalVehicles = ShopMenu.Items.Where(x => x.Sellable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Vehicle).Count();
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable))
         {
             ModItem myItem = ModItems.Get(cii.ModItemName);
             if (myItem != null)
@@ -360,11 +395,11 @@ public class StoreSellMenu : Menu
                             {
                                 WeaponCategories.Add(myWeapon.Category);
                                 UIMenu WeaponMenu = MenuPool.AddSubMenu(sellMenu, myWeapon.Category.ToString());
-                                if (Store.HasBannerImage)
+                                if (HasBannerImage)
                                 {
-                                    WeaponMenu.SetBannerType(Store.BannerImage);
+                                    WeaponMenu.SetBannerType(BannerImage);
                                 }
-                                else if (Store.RemoveBanner)
+                                else if (RemoveBanner)
                                 {
                                     WeaponMenu.RemoveBanner();
                                 }
@@ -387,11 +422,11 @@ public class StoreSellMenu : Menu
                             {
                                 VehicleClasses.Add(ClassName);
                                 UIMenu VehicleMenu = MenuPool.AddSubMenu(sellMenu, ClassName);
-                                if (Store.HasBannerImage)
+                                if (HasBannerImage)
                                 {
-                                    VehicleMenu.SetBannerType(Store.BannerImage);
+                                    VehicleMenu.SetBannerType(BannerImage);
                                 }
-                                else if (Store.RemoveBanner)
+                                else if (RemoveBanner)
                                 {
                                     VehicleMenu.RemoveBanner();
                                 }
@@ -421,7 +456,7 @@ public class StoreSellMenu : Menu
 
         foreach (UIMenuItem uimen in sender.MenuItems)
         {
-            MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == uimen.Text).FirstOrDefault();
+            MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == uimen.Text).FirstOrDefault();
             if (menuItem != null)
             {
 
@@ -454,7 +489,7 @@ public class StoreSellMenu : Menu
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
-        MenuItem menuItem = Store.Menu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
+        MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         bool ExitAfterPurchase = false;
         if (ToAdd != null && menuItem != null)
         {
@@ -515,7 +550,8 @@ public class StoreSellMenu : Menu
             Player.GiveMoney(TotalPrice);
             MoneySpent += TotalPrice;
             menuItem.ItemsBoughtFromPlayer += TotalItems;
-            Store.OnAmountChanged(CurrentModItem);
+            Transaction.OnAmountChanged(CurrentModItem);
+            Transaction.OnItemSold(modItem, menuItem, TotalItems);
             //UpdatePropEntryData(modItem, menuItem, myItem);
             while (Player.IsPerformingActivity)
             {
@@ -530,7 +566,7 @@ public class StoreSellMenu : Menu
     {
         ClearPreviews();
         // GameFiber.Yield();
-        if (myItem != null && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
+        if (myItem != null && Transaction.PreviewItems && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
             ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
@@ -645,7 +681,7 @@ public class StoreSellMenu : Menu
     {
         if (itemToShow != null && itemToShow.ModelItem != null)
         {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Store.ItemPreviewPosition, Store.ItemPreviewHeading);
+            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
         }
         //GameFiber.Yield();
         if (SellingVehicle.Exists())
@@ -718,11 +754,11 @@ public class StoreSellMenu : Menu
         {
             SellingPed.Delete();
         }
-        EntryPoint.WriteToConsole($"Sell Menu ClearPreviews Ran", 5);
+        //EntryPoint.WriteToConsole($"Sell Menu ClearPreviews Ran", 5);
     }
     private void PreloadModels()
     {
-        foreach (MenuItem menuItem in Store.Menu.Items)//preload all item models so it doesnt bog the menu down
+        foreach (MenuItem menuItem in ShopMenu.Items)//preload all item models so it doesnt bog the menu down
         {
             try
             {
@@ -818,11 +854,11 @@ public class StoreSellMenu : Menu
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
         //WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
-        if (Store.HasBannerImage)
+        if (HasBannerImage)
         {
-            WeaponMenu.SetBannerType(Store.BannerImage);
+            WeaponMenu.SetBannerType(BannerImage);
         }
-        else if (Store.RemoveBanner)
+        else if (RemoveBanner)
         {
             WeaponMenu.RemoveBanner();
         }
@@ -994,12 +1030,12 @@ public class StoreSellMenu : Menu
             if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
             {
                 NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, CurrentWeapon.Hash);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
                 Player.SetUnarmed();
                 return true;
             }
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
 }

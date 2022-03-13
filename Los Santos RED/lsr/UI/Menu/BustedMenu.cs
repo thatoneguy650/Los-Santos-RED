@@ -4,18 +4,19 @@ using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BustedMenu : Menu
 {
     private UIMenuItem Bribe;
-    private GameLocation CurrentSelectedSurrenderLocation;
+    private PoliceStation CurrentSelectedSurrenderLocation;
     private List<DistanceSelect> Distances;
     private UIMenu Menu;
     private UIMenuItem PayFine;
     private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
     private IPoliceRespondable Player;
-    private List<GameLocation> PoliceStations;
+    private List<PoliceStation> PoliceStations;
     private UIMenuItem ResistArrest;
     private IRespawning Respawning;
     private float SelectedTakeoverRadius;
@@ -76,7 +77,7 @@ public class BustedMenu : Menu
     }
     private void CreateBustedMenu()
     {
-        PoliceStations = PlacesOfInterest.GetLocations(LocationType.Police);
+        PoliceStations = PlacesOfInterest.PossibleLocations.PoliceStations;
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         ResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
         Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
@@ -144,6 +145,6 @@ public class BustedMenu : Menu
     }
     private void UpdateClosestPoliceStationIndex()
     {
-        Surrender.Index = PoliceStations.IndexOf(PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police));
+        Surrender.Index = PoliceStations.IndexOf(PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault());
     }
 }

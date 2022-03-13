@@ -1318,8 +1318,8 @@ namespace Mod
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory, bool clearInventory) => Respawning.RespawnAtCurrentLocation(withInvicibility, resetWanted, clearCriminalHistory, clearInventory);
-        public void RespawnAtGrave() => Respawning.RespawnAtGrave();
-        public void RespawnAtHospital(GameLocation currentSelectedHospitalLocation) => Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
+       // public void RespawnAtGrave() => Respawning.RespawnAtGrave();
+        public void RespawnAtHospital(Hospital currentSelectedHospitalLocation) => Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
         public void ScannerPlayDebug() => Scanner.DebugPlayDispatch();
         public void ScannerUpdate() => Scanner.Tick();
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
@@ -1700,14 +1700,28 @@ namespace Mod
                 {
                     EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
                     Merchant myPed = (Merchant)CurrentLookedAtPed;
-                    Interaction = new TransactionOld(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, World, Weapons);
+
+
+                    Interaction = new PersonTransaction(this, myPed, myPed.ShopMenu, ModItems, World, Settings, Weapons, TimeControllable) { AssociatedStore = myPed.NewStore };// Settings, ModItems, TimeControllable, World, Weapons);
+
+                    
                     Interaction.Start();
+
+
+
+                    //Interaction = new TransactionOld(this, myPed, myPed.Store, Settings, ModItems, TimeControllable, World, Weapons);
+                    //Interaction.Start();
                 }
                 else
                 {
                     EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
-                    Interaction = new TransactionOld(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, World, Weapons);
+
+                    Interaction = new PersonTransaction(this, CurrentLookedAtPed, CurrentLookedAtPed.ShopMenu, ModItems, World, Settings, Weapons, TimeControllable);// Settings, ModItems, TimeControllable, World, Weapons);
                     Interaction.Start();
+
+
+                    //Interaction = new TransactionOld(this, CurrentLookedAtPed, null, Settings, ModItems, TimeControllable, World, Weapons);
+                    //Interaction.Start();
                 }
             }
         }
@@ -1720,7 +1734,7 @@ namespace Mod
             }
         }
        // public void StopIngesting(Intoxicant intoxicant) => Intoxication.StopIngesting(intoxicant);
-        public void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
+        public void SurrenderToPolice(PoliceStation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
         public void TakeOwnershipOfNearestCar()
         {
             VehicleExt toTakeOwnershipOf;
@@ -1933,12 +1947,19 @@ namespace Mod
                 }
 
                 ClosestInteractableLocation = null;
-                //ClosestDistance = 999f;
+                ClosestDistance = 999f;
                 foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
                     if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
                     {
-                        ClosestInteractableLocation = gl;
+                        if(gl.DistanceToPlayer < ClosestDistance)
+                        {
+                            ClosestInteractableLocation = gl;
+                            ClosestDistance = gl.DistanceToPlayer;
+                        }
+
+
+                        
                     }
                 }
             }
@@ -2671,8 +2692,8 @@ namespace Mod
                         bool toBuy = false;
                         if (CurrentLookedAtPed.HasMenu)
                         {
-                            toSell = CurrentLookedAtPed.TransactionMenu.Any(x => x.Sellable);
-                            toBuy = CurrentLookedAtPed.TransactionMenu.Any(x => x.Purchaseable);
+                            toSell = CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable);
+                            toBuy = CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Purchaseable);
                         }
                         ButtonPrompts.RemoveAll(x => x.Group == "StartTransaction");
                         string promptText = $"Purchase from {CurrentLookedAtPed.FormattedName}";

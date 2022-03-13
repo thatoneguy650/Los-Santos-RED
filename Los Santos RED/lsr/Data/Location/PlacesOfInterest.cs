@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 public class PlacesOfInterest : IPlacesOfInterest
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
-    //private List<GameLocation> LocationsList;
     private IShopMenus ShopMenus;
     private IGangs Gangs;
     public PossibleLocations PossibleLocations { get; private set; }
@@ -38,8 +37,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             Serialization.SerializeParam(PossibleLocations, ConfigFileName);
         }
     }
-    //public List<DeadDrop> DeadDrops { get; private set; } = new List<DeadDrop>();
-    //public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
     public List<InteractableLocation> GetAllInteractableLocations()
     {
         List<InteractableLocation> AllLocations = new List<InteractableLocation>();
@@ -50,7 +47,30 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Hotels);
         AllLocations.AddRange(PossibleLocations.Residences);
         AllLocations.AddRange(PossibleLocations.CityHalls);
+        AllLocations.AddRange(PossibleLocations.VendingMachines);
+        AllLocations.AddRange(PossibleLocations.Restaurants);
+        AllLocations.AddRange(PossibleLocations.Pharmacies);
+        AllLocations.AddRange(PossibleLocations.Dispensaries);
+        AllLocations.AddRange(PossibleLocations.HeadShops);
+        AllLocations.AddRange(PossibleLocations.HardwareStores);
+        AllLocations.AddRange(PossibleLocations.PawnShops);
+        AllLocations.AddRange(PossibleLocations.Pharmacies);
 
+
+        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
+
+        return AllLocations;
+    }
+
+    public List<BasicLocation> GetAllBasicLocations()
+    {
+        List<BasicLocation> AllLocations = new List<BasicLocation>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Hospitals);
+        AllLocations.AddRange(PossibleLocations.FireStations);
+        AllLocations.AddRange(PossibleLocations.Banks);
+        AllLocations.AddRange(PossibleLocations.BeautyShops);
+        AllLocations.AddRange(PossibleLocations.Stadiums);
         return AllLocations;
     }
     public List<GameLocation> GetAllPlaces()
@@ -67,15 +87,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     }  
     private void DefaultConfig()
     {
-        List<MenuItem> ToolMenu = ShopMenus.GetMenu("ToolMenu")?.Items;
-        List<MenuItem> CheapHotelMenu = ShopMenus.GetMenu("CheapHotelMenu")?.Items;
-        List<MenuItem> ExpensiveHotelMenu = ShopMenus.GetMenu("ExpensiveHotelMenu")?.Items;
-        List<MenuItem> HookerMenu = ShopMenus.GetMenu("HookerMenu")?.Items;
         List<MenuItem> ConvenienceStoreMenu = ShopMenus.GetMenu("ConvenienceStoreMenu")?.Items;
         List<MenuItem> TwentyFourSevenMenu = ShopMenus.GetMenu("TwentyFourSevenMenu")?.Items;
-        List<MenuItem> FancyDeliMenu = ShopMenus.GetMenu("FancyDeliMenu")?.Items;
-        List<MenuItem> FancyFishMenu = ShopMenus.GetMenu("FancyFishMenu")?.Items;
-        List<MenuItem> FancyGenericMenu = ShopMenus.GetMenu("FancyGenericMenu")?.Items;
         List<MenuItem> GrainOfTruthMenu = ShopMenus.GetMenu("GrainOfTruthMenu")?.Items;
         List<MenuItem> FruitVineMenu = ShopMenus.GetMenu("FruitVineMenu")?.Items;
         List<MenuItem> GasStationMenu = ShopMenus.GetMenu("GasStationMenu")?.Items;
@@ -85,63 +98,21 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<MenuItem> GenericMenu = ShopMenus.GetMenu("GenericMenu")?.Items;
         List<MenuItem> ChihuahuaHotDogMenu = ShopMenus.GetMenu("ChihuahuaHotDogMenu")?.Items;
         List<MenuItem> BeefyBillsMenu = ShopMenus.GetMenu("BeefyBillsMenu")?.Items;
-        List<MenuItem> PizzaMenu = ShopMenus.GetMenu("PizzaMenu")?.Items;
         List<MenuItem> DonutMenu = ShopMenus.GetMenu("DonutMenu")?.Items;
         List<MenuItem> FruitMenu = ShopMenus.GetMenu("FruitMenu")?.Items;
         List<MenuItem> UpNAtomMenu = ShopMenus.GetMenu("UpNAtomMenu")?.Items;
         List<MenuItem> TacoFarmerMenu = ShopMenus.GetMenu("TacoFarmerMenu")?.Items;
-        List<MenuItem> HeadShopMenu = ShopMenus.GetMenu("HeadShopMenu")?.Items;
         List<MenuItem> LiquorStoreMenu = ShopMenus.GetMenu("LiquorStoreMenu")?.Items;
         List<MenuItem> BarMenu = ShopMenus.GetMenu("BarMenu")?.Items;
-        List<MenuItem> CoffeeMenu = ShopMenus.GetMenu("CoffeeMenu")?.Items;
-        List<MenuItem> SandwichMenu = ShopMenus.GetMenu("SandwichMenu")?.Items;
-        List<MenuItem> BiteMenu = ShopMenus.GetMenu("BiteMenu")?.Items;
-        List<MenuItem> TacoBombMenu = ShopMenus.GetMenu("TacoBombMenu")?.Items;
-        List<MenuItem> BurgerShotMenu = ShopMenus.GetMenu("BurgerShotMenu")?.Items;
-        List<MenuItem> WigwamMenu = ShopMenus.GetMenu("WigwamMenu")?.Items;
-        List<MenuItem> ViceroyMenu = ShopMenus.GetMenu("ViceroyMenu")?.Items;
-        List<MenuItem> CluckinBellMenu = ShopMenus.GetMenu("CluckinBellMenu")?.Items;
-        List<MenuItem> AlDentesMenu = ShopMenus.GetMenu("AlDentesMenu")?.Items;
         List<MenuItem> BenefactorGallavanterMenu = ShopMenus.GetMenu("BenefactorGallavanterMenu")?.Items;
-        List<MenuItem> NoodleMenu = ShopMenus.GetMenu("NoodleMenu")?.Items;
-        List<MenuItem> WeedMenu = ShopMenus.GetMenu("WeedMenu")?.Items;
-        List<MenuItem> WeedAndCigMenu = ShopMenus.GetMenu("WeedAndCigMenu")?.Items;
 
         List<MenuItem> VapidMenu = ShopMenus.GetMenu("VapidMenu")?.Items;
-        List<MenuItem> PharmacyMenu = ShopMenus.GetMenu("PharmacyMenu")?.Items;
         List<MenuItem> SandersMenu = ShopMenus.GetMenu("SandersMenu")?.Items;
         List<MenuItem> HelmutMenu = ShopMenus.GetMenu("HelmutMenu")?.Items;
         List<MenuItem> BravadoMenu = ShopMenus.GetMenu("BravadoMenu")?.Items;
         List<MenuItem> LuxuryAutosMenu = ShopMenus.GetMenu("LuxuryAutosMenu")?.Items;
         List<MenuItem> PremiumDeluxeMenu = ShopMenus.GetMenu("PremiumDeluxeMenu")?.Items;
         List<MenuItem> LarrysRVMenu = ShopMenus.GetMenu("LarrysRVMenu")?.Items;
-        List<MenuItem> BeanMachineMenu = ShopMenus.GetMenu("BeanMachineMenu")?.Items;
-        List<MenuItem> AmmunationMenu = ShopMenus.GetMenu("AmmunationMenu")?.Items;
-        //List<MenuItem> WeaponsMenu = ShopMenus.GetMenu("WeaponsMenu")?.Items;
-      //  List<MenuItem> FamiliesGangDenMenu = ShopMenus.GetMenu("FamiliesGangDenMenu")?.Items;
-       // List<MenuItem> GenericGangDenMenu = ShopMenus.GetMenu("GenericGangDenMenu")?.Items;
-
-        List<MenuItem> LostDenMenu = ShopMenus.GetMenu("LostDenMenu")?.Items;
-        List<MenuItem> FamiliesDenMenu = ShopMenus.GetMenu("FamiliesDenMenu")?.Items;
-        List<MenuItem> VagosDenMenu = ShopMenus.GetMenu("VagosDenMenu")?.Items;
-        List<MenuItem> BallasDenMenu = ShopMenus.GetMenu("BallasDenMenu")?.Items;
-        List<MenuItem> VarriosDenMenu = ShopMenus.GetMenu("VarriosDenMenu")?.Items;
-        List<MenuItem> MarabunteDenMenu = ShopMenus.GetMenu("MarabunteDenMenu")?.Items;
-        List<MenuItem> TriadsDenMenu = ShopMenus.GetMenu("TriadsDenMenu")?.Items;
-        List<MenuItem> KkangpaeDenMenu = ShopMenus.GetMenu("KkangpaeDenMenu")?.Items;
-        List<MenuItem> GambettiDenMenu = ShopMenus.GetMenu("GambettiDenMenu")?.Items;
-
-
-
-
-        //List<MenuItem> GunShop1 = ShopMenus.GetMenu("GunShop1")?.Items;
-        //List<MenuItem> GunShop2 = ShopMenus.GetMenu("GunShop2")?.Items;
-        //List<MenuItem> GunShop3 = ShopMenus.GetMenu("GunShop3")?.Items;
-        //List<MenuItem> GunShop4 = ShopMenus.GetMenu("GunShop4")?.Items;
-        //List<MenuItem> GunShop5 = ShopMenus.GetMenu("GunShop5")?.Items;
-
-
-        List<MenuItem> ScrapMenu = ShopMenus.GetMenu("ScrapMenu")?.Items;
 
         PossibleLocations.DeadDrops.AddRange(new List<DeadDrop>() {
 
@@ -165,20 +136,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
             new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
         });
-
-
-
         PossibleLocations.ScrapYards.AddRange(new List<ScrapYard>() {
             new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
-
-
         });
-
-
-
-
         PossibleLocations.GangDens.AddRange(new List<GangDen>()
         {
 
@@ -219,8 +181,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
         }) ;
-
-
         PossibleLocations.GunStores.AddRange(new List<GunStore>()
 
         {
@@ -231,7 +191,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, IsIllegalShop = true, MoneyToUnlock = 25000 },
 
         });
-
         PossibleLocations.Hotels.AddRange(new List<Hotel>()
 
         {
@@ -265,8 +224,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Hotel(new Vector3(-875.8169f, -2110.466f, 9.918293f), 41.67873f, "Crastenburg", "","ExpensiveHotelMenu"),
             new Hotel(new Vector3(435.6202f, 214.7496f, 103.1663f), 340.5429f, "Hotel Von Crastenburg","","ExpensiveHotelMenu"),
         });
-
-
         PossibleLocations.Residences.AddRange(new List<Residence>()
         {
             //Apartments
@@ -311,8 +268,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
         });
-
-
         PossibleLocations.CityHalls.AddRange(new List<CityHall>()
         {
             new CityHall(new Vector3(-609.1187f, -87.8642f, 42.93483f), 247.5173f, "Rockford Hills City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(-591.665f, -98.11681f, 51.31879f), CameraDirection = new Vector3(-0.9335647f, -0.06657825f, -0.3521709f), CameraRotation = new Rotator(-20.62015f, -7.411738E-06f, 94.07921f)},
@@ -328,50 +283,343 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
         });
+        PossibleLocations.PoliceStations.AddRange(new List<PoliceStation>()
+        {
+            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842},
+            new PoliceStation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+        });
+        PossibleLocations.Hospitals.AddRange(new List<Hospital>()
+        {
+            new Hospital(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, "Pill Box Hill Hospital","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            new Hospital(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, "Central Los Santos Hospital","") {OpenTime = 0,CloseTime = 24 },
+            new Hospital(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, "Sandy Shores Hospital","") {OpenTime = 0,CloseTime = 24 },
+            new Hospital(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, "Paleto Bay Hospital","") {OpenTime = 0,CloseTime = 24 },
+            new Hospital(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, "St. Fiacre", "") {OpenTime = 0,CloseTime = 24 },
+            //new Hospital(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
+        });
+        PossibleLocations.FireStations.AddRange(new List<FireStation>()
+        {
+            new FireStation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666 },
+            new FireStation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+            new FireStation(new Vector3(-633.0533f, -122.0594f, 39.01375f), 79.69817f, "Rockford Hills Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+        });
+        PossibleLocations.Restaurants.AddRange(new List<Restaurant>()
+        {
+            new Restaurant(new Vector3(-1487.163f, -308.0127f, 47.02639f), 231.5184f, "Las Cuadras Restaurant", "Las Cuadras Restaurant","FancyDeliMenu"),
+            new Restaurant(new Vector3(-1473.121f, -329.6028f, 44.81668f), 319.3725f, "Las Cuadras Deli", "Las Cuadras Deli","FancyDeliMenu"),
+            new Restaurant(new Vector3(-1221.254f, -1095.873f, 8.115647f), 111.3174f, "Prawn Vivant", "Prawn Vivant","FancyFishMenu"),
+            new Restaurant(new Vector3(-1256.581f, -1079.491f, 8.398257f), 339.5968f, "Surfries Diner", "Surfries Diner","FancyDeliMenu"),
+            new Restaurant(new Vector3(-1247.504f, -1105.777f, 8.109305f), 289.9685f, "The Split Kipper Fish", "The Split Kipper Fish","FancyFishMenu"),
+            new Restaurant(new Vector3(-1230.032f, -1174.862f, 7.700727f), 330.9398f, "Pot Heads Seafood", "Pot Heads Seafood","FancyFishMenu"),
+            new Restaurant(new Vector3(-1111.103f, -1454.387f, 5.582287f), 304.9954f, "Coconut Cafe", "Coconut Cafe","FancyDeliMenu"),
+            new Restaurant(new Vector3(-1037.587f, -1397.168f, 5.553192f), 76.84702f, "La Spada", "La Spada","FancyFishMenu"),
+            new Restaurant(new Vector3(-1129.253f, -1373.276f, 5.056143f), 164.9213f, "Marlin's Cafe", "Marlin's Cafe","FancyDeliMenu"),
+            new Restaurant(new Vector3(2561.869f, 2590.851f, 38.08311f), 294.6638f, "Rex's Diner", "Rex's Diner","FancyDeliMenu"),
+            new Restaurant(new Vector3(2697.521f, 4324.264f, 45.98642f), 41.67124f, "Park View Diner", "Park View Diner","FancyGenericMenu"),
+            new Restaurant(new Vector3(-1389.63f, -744.4225f, 24.62544f), 127.01f, "Haute", "Haute","FancyDeliMenu"),
+            new Restaurant(new Vector3(-1392.125f, -732.2938f, 24.64698f), 37.13289f, "Les Bianco's", "Les Bianco's","FancyGenericMenu"),
+            new Restaurant(new Vector3(-1420.425f, -709.2584f, 24.60311f), 126.5269f, "Pescado Rojo", "Pescado Rojo","FancyFishMenu"),
+            new Restaurant(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, "The Fish Net", "The Fish Net","FancyFishMenu"),
+            new Restaurant(new Vector3(95.79929f, -1682.817f, 29.25364f), 138.4551f, "Yum Fish", "","FancyFishMenu"),
+            new Restaurant(new Vector3(-238.903f, -777.356f, 34.09171f), 71.47642f, "Cafe Redemption", "","FancyDeliMenu"),
+            new Restaurant(new Vector3(370.4181f, -1027.565f, 29.33361f), 184.4234f, "Ground & Pound Cafe", "","FancyGenericMenu"),
+            new Restaurant(new Vector3(502.6628f, 113.1527f, 96.62571f), 164.3104f, "Jazz Desserts", "","FancyGenericMenu"),
+            new Restaurant(new Vector3(16.29523f, -166.5288f, 55.82795f), 341.2336f, "The Fish Net", "","FancyFishMenu"),
+            new Restaurant(new Vector3(281.4706f, -800.5342f, 29.31682f), 227.4364f, "Pescado Azul", "","FancyFishMenu"),
+            new Restaurant(new Vector3(-630.0808f, -2266.577f, 5.933444f), 242.2394f, "Poppy House", "","FancyGenericMenu"),
+            new Restaurant(new Vector3(-122.6395f, 6389.315f, 32.17757f), 44.91608f, "Mojito Inn", "","FancyGenericMenu"),
+            new Restaurant(new Vector3(793.877f, -735.7111f, 27.96293f), 89.91832f, "Casey's Diner", "","FancyDeliMenu"),
+            new Restaurant(new Vector3(-361.3964f, 275.7073f, 86.42198f), 212.2804f, "Last Train Diner", "","FancyDeliMenu"),
+            new Restaurant(new Vector3(-3047.75f, 615.6793f, 7.405877f), 248.6187f, "Mom's Pie Diner", "","FancyDeliMenu"),
+            new Restaurant(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, "Haute", "","FancyFishMenu"),
+            new Restaurant(new Vector3(398.0291f, 175.6789f, 103.8558f), 71.74517f, "Clappers", "","FancyGenericMenu"),
+            //Sandwiches
+            new Restaurant(new Vector3(-1249.812f, -296.1564f, 37.35062f), 206.9039f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(-1539.498f, -427.3804f, 35.59194f), 233.1319f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(229.5384f, -22.3363f, 74.98735f), 160.0777f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(-240.7315f, -346.1899f, 30.02782f), 47.8591f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(-263.1924f, -904.2821f, 32.3108f), 338.4021f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(385.958f, -1010.523f, 29.41794f), 271.5127f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(1139.359f, -463.8952f, 66.85857f), 261.1642f, "Bite!", "Have It Our Way","BiteMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "bite.png" },
+            new Restaurant(new Vector3(100.5837f, 209.4958f, 107.9911f), 342.4262f, "The Pink Sandwich", "The Pink Sandwich","SandwichMenu") {OpenTime = 0, CloseTime = 24 },
+            //Asian
+            new Restaurant(new Vector3(-798.0056f, -632.0029f, 29.02696f), 169.2606f, "S.Ho", "S.Ho Noodles","NoodleMenu") {BannerImagePath ="sho.png" },
+            new Restaurant(new Vector3(-638.5052f, -1249.646f, 11.81044f), 176.4081f, "S.Ho", "S.Ho Noodles","NoodleMenu") {BannerImagePath ="sho.png" },
+            new Restaurant(new Vector3(-700.9553f, -884.5563f, 23.79126f), 41.62328f, "S.Ho", "S.Ho Noodles","NoodleMenu") {BannerImagePath ="sho.png" },
+            new Restaurant(new Vector3(-1229.61f, -285.7077f, 37.73843f), 205.5755f, "Noodle Exchange", "You Won't Want To Share!","NoodleMenu"),
+            new Restaurant(new Vector3(-1199.53f, -1162.439f, 7.696731f), 107.0593f, "Noodle Exchange", "You Won't Want To Share!","NoodleMenu"),
+            new Restaurant(new Vector3(272.8409f, -965.4847f, 29.31605f), 27.34526f, "Noodle Exchange", "You Won't Want To Share!","NoodleMenu"),
+            new Restaurant(new Vector3(-655.6034f, -880.3672f, 24.67554f), 265.7094f, "Wook Noodle House", "Wook Noodle House","NoodleMenu"),
+            new Restaurant(new Vector3(-680.4404f, -945.5441f, 20.93157f), 180.6927f, "Wook Noodle House", "Wook Noodle House","NoodleMenu"),
+            new Restaurant(new Vector3(-654.8373f, -885.7593f, 24.67703f), 273.4168f, "Park Jung Restaurant", "Park Jung Restaurant","GenericMenu"),
+            new Restaurant(new Vector3(-661.5396f, -907.5895f, 24.60632f), 278.5222f, "Hwan Cafe", "Hwan Cafe","GenericMenu"),
+            new Restaurant(new Vector3(-163.0659f, -1440.267f, 31.42698f), 55.5593f, "Wok It Off", "","GenericMenu"),
+            new Restaurant(new Vector3(1894.635f, 3715.372f, 32.74969f), 119.2431f, "Chinese Food", "","GenericMenu"),
+            //Italian
+            new Restaurant(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, "Al Dentes", "Al Dentes","AlDentesMenu"),
+            new Restaurant(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, "Al Dentes", "Al Dentes","AlDentesMenu"),
+            new Restaurant(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, "Al Dentes", "Al Dentes","AlDentesMenu"),
+            new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Pizza This...","PizzaMenu"),
+            new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Pizza This...","PizzaMenu"),
+            new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Pizza This...","PizzaMenu"),
+            new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "Guidos Takeout 24/7","PizzaMenu"),
+            new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Pebble Dash Pizza","PizzaMenu"),
+            new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu"),
+            new Restaurant(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, "Sharkies Bites","Take A Bite Today!","PizzaMenu"){ IsWalkup = true },
+            new Restaurant(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, "Giovanni's Italian", "Giovanni's Italian","PizzaMenu"),
+            //Burger
+            new Restaurant(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, "Wigwam", "No need for reservations","WigwamMenu") {BannerImagePath = "wigwam.png"},
+            new Restaurant(new Vector3(-860.8414f, -1140.393f, 7.39234f), 171.7175f, "Wigwam", "No need for reservations","WigwamMenu") { BannerImagePath = "wigwam.png" },
+            new Restaurant(new Vector3(-1540.86f, -454.866f, 40.51906f), 321.1314f, "Up-N-Atom", "Never Frozen, Often Microwaved","UpNAtomMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "upnatom.png"},
+            new Restaurant(new Vector3(81.31124f, 275.1125f, 110.2102f), 162.7602f, "Up-N-Atom", "Never Frozen, Often Microwaved","UpNAtomMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "upnatom.png"},
+            new Restaurant(new Vector3(1591.054f, 6451.071f, 25.31714f), 158.0088f, "Up-N-Atom Diner", "Never Frozen, Often Microwaved","UpNAtomMenu") {OpenTime = 0, CloseTime = 24,BannerImagePath = "upnatom.png"},
+            new Restaurant(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, "Burger Shot", "Burger Shot","BurgerShotMenu"),
+            new Restaurant(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, "Horny's Burgers", "","BeefyBillsMenu"),
+            new Restaurant(new Vector3(-512.6821f, -683.3517f, 33.18555f), 3.720508f, "Snr. Buns", "Snr. Buns","GenericMenu"),
+            new Restaurant(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, "Snr. Muffin", "Snr. Muffin","GenericMenu"),//??? 
+            new Restaurant(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, "La Vaca Loca", "","BeefyBillsMenu") {CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
+            new Restaurant(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, "Spitroasters", "","BeefyBillsMenu"),
+            //Bagels&Donuts
+            new Restaurant(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, "Dickies Bagels", "Holy Dick!","CoffeeMenu"),
+            new Restaurant(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, "Dickies Bagels", "Holy Dick!","CoffeeMenu"),
+            new Restaurant(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, "Rusty Browns", "","CoffeeMenu") {BannerImagePath = "rustybrowns.png" },
+            new Restaurant(new Vector3(55.28403f, -799.5469f, 31.58599f), 341.3315f, "Ground & Pound Cafe", "","CoffeeMenu"),
+            //Coffee
+            new Restaurant(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-835.4522f, -610.4766f, 29.02697f), 142.0655f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-602.2112f, -1105.766f, 22.32427f), 273.8795f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-659.5289f, -814.0433f, 24.53778f), 232.0023f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") {BannerImagePath = "beanmachine.png"},
+            new Restaurant(new Vector3(-687.0801f, -855.6792f, 23.89398f), 0.2374549f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") {BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-1345.296f, -609.976f, 28.61888f), 304.4266f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-270.3488f, -977.3488f, 31.21763f), 164.5747f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, "The Bean Machine Coffee", "The Bean Machine Coffee","BeanMachineMenu") { BannerImagePath = "beanmachine.png" },
+            new Restaurant(new Vector3(-1206.975f, -1135.029f, 7.693257f), 109.1408f, "Cool Beans Coffee Co", "Cool Beans Coffee Co","CoffeeMenu"),
+            new Restaurant(new Vector3(-1278.833f, -876.438f, 11.9303f), 123.2498f, "Cool Beans Coffee Co", "Cool Beans Coffee Co","CoffeeMenu"),
+            new Restaurant(new Vector3(1169.704f, -403.1992f, 72.24859f), 344.0863f, "Cool Beans Coffee Co", "Cool Beans Coffee Co","CoffeeMenu"),
+            new Restaurant(new Vector3(265.4628f, -981.3839f, 29.36569f), 72.07395f, "Cool Beans Coffee Co", "Cool Beans Coffee Co","CoffeeMenu"),
+            new Restaurant(new Vector3(-1108.847f, -1355.264f, 5.035112f), 206.1676f, "Crucial Fix Coffee", "Crucial Fix Coffee","CoffeeMenu"),
+            new Restaurant(new Vector3(189.0311f, -231.234f, 54.07472f), 340.4597f, "Crucial Fix Coffee", "","CoffeeMenu"),
+            new Restaurant(new Vector3(273.174f, -833.0611f, 29.41237f), 185.6476f, "Crucial Fix Coffee", "","CoffeeMenu"),
+            new Restaurant(new Vector3(-576.6631f, -677.8674f, 32.36259f), 306.9058f, "Hit-N-Run Coffee", "Hit-N-Run Coffee","CoffeeMenu"),
+            new Restaurant(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, "{java.update();}", "Enjoy Hot Coffee","CoffeeMenu"),
+            new Restaurant(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, "Little Teapot", "Little Teapot","CoffeeMenu"),
+            //Mexican
+            new Restaurant(new Vector3(10.96682f, -1605.874f, 29.3931f), 229.8729f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu") { OpenTime = 0, CloseTime = 24 },
+            new Restaurant(new Vector3(649.765f, 2728.621f, 41.9959f), 276.2882f, "Taco Farmer", "Open All Hours!","TacoFarmerMenu") { OpenTime = 0, CloseTime = 24 },
+            new Restaurant(new Vector3(-1168.281f, -1267.279f, 6.198249f), 111.9682f, "Taco Libre", "Taco Libre","TacoFarmerMenu"),
+            new Restaurant(new Vector3(-657.5089f, -679.4656f, 31.46727f), 317.9819f, "Taco Bomb", "My taco looks so tasty!","TacoBombMenu") {BannerImagePath = "tacobomb.png" },
+            new Restaurant(new Vector3(-1196.981f, -791.5534f, 16.40427f), 134.7115f, "Taco Bomb", "My taco looks so tasty!","TacoBombMenu") {BannerImagePath = "tacobomb.png" },
+            new Restaurant(new Vector3(-1553.112f, -439.9938f, 40.51905f), 228.7506f, "Taco Bomb", "My taco looks so tasty!","TacoBombMenu") {BannerImagePath = "tacobomb.png" },
+            new Restaurant(new Vector3(99.21678f, -1419.307f, 29.42156f), 323.9604f, "Aguila Burrito", "","TacoFarmerMenu"),
+            new Restaurant(new Vector3(445.9454f, -1241.581f, 30.27799f), 179.553f, "Attack-A-Taco", "","TacoFarmerMenu"),
+            new Restaurant(new Vector3(1093.13f, -362.9193f, 67.06821f), 168.6222f, "Hearty Taco", "","TacoFarmerMenu"),
+            new Restaurant(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, "Hearty Taco", "","TacoFarmerMenu"),
+            new Restaurant(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, "Mom's Tacos", "","TacoFarmerMenu"),
+            new Restaurant(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, "Mom's Tacos", "","TacoFarmerMenu"),
+            //Ice Cream
+            new Restaurant(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, "The Sundae Post", "The Sundae Post","DonutMenu"),
+            new Restaurant(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, "Ice Maiden", "Ice Maiden","GenericMenu") {IsWalkup = true },
+            //Juice and Smoothies
+            new Restaurant(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, "Vitamin Seaside Juice Bar", "Vitamin Seaside Juice Bar","FruitMenu"),
+            new Restaurant(new Vector3(-1187.057f, -1536.73f, 4.379496f), 32.85152f, "Muscle Peach Juice Bar", "Muscle Peach Juice Bar","FruitMenu"),
+            new Restaurant(new Vector3(-1236.263f, -287.9641f, 37.63038f), 205.8273f, "Limey's Juice and Smoothies", "No Limes About It","GenericMenu"),
+            new Restaurant(new Vector3(250.3842f, -1026.535f, 29.25663f), 124.0668f, "Limey's Juice and Smoothies", "","GenericMenu"),
+            new Restaurant(new Vector3(-1182.576f, -1248.037f, 6.991587f), 110.7639f, "Limey's Juice Bar", "No Limes About It","GenericMenu"),
+            new Restaurant(new Vector3(-471.7646f, -18.46761f, 45.75837f), 357.2652f, "Fruit Machine", "Fruit Machine","GenericMenu"),
+            new Restaurant(new Vector3(2741.563f, 4413.093f, 48.62326f), 201.5914f, "Big Juice Stand", "Big Juice Stand","GenericMenu"),
+            new Restaurant(new Vector3(1791.592f, 4594.844f, 37.68291f), 182.8134f, "Alamo Fruit", "Alamo Fruit","FruitMenu"),
+            new Restaurant(new Vector3(1199.951f, -501.2592f, 65.17791f), 113.7728f, "Squeeze One Out", "","FruitMenu"),
+            //Chicken
+            new Restaurant(new Vector3(-584.761f, -872.753f, 25.91489f), 353.0746f, "Lucky Plucker", "Lucky Plucker","GenericMenu"),
+            new Restaurant(new Vector3(2580.543f, 464.6521f, 108.6232f), 176.5548f, "Bishop's Chicken", "Bishop's Chicken","GenericMenu"),
+            new Restaurant(new Vector3(169.3292f, -1634.163f, 29.29167f), 35.89598f, "Bishop's Chicken", "","GenericMenu"),
+            new Restaurant(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, "Lucky Plucker", "","GenericMenu"),
+            new Restaurant(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, "Cluckin' Bell", "","CluckinBellMenu"),
+            new Restaurant(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, "Cluckin' Bell", "","CluckinBellMenu"),
+            //General    
+            new Restaurant(new Vector3(-1222.546f, -807.5845f, 16.59777f), 305.3918f, "Lettuce Be", "Lettuce Be","GenericMenu"),
+            new Restaurant(new Vector3(-1196.705f, -1167.969f, 7.695099f), 108.4535f, "Lettuce Be", "Lettuce Be","GenericMenu"),
+            new Restaurant(new Vector3(-1535.082f, -422.2449f, 35.59194f), 229.4618f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"),
+            new Restaurant(new Vector3(49.24896f, -1000.381f, 29.35741f), 335.6092f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"),
+            new Restaurant(new Vector3(-1271.224f, -1200.703f, 5.366248f), 70.19876f, "The Nut Buster", "The Nut Buster","GenericMenu"),
+            new Restaurant(new Vector3(166.2677f, -1450.995f, 29.24164f), 142.858f, "Ring Of Fire Chili House", "","GenericMenu"),
+        });
+        PossibleLocations.Pharmacies.AddRange(new List<Pharmacy>()
+        {
+            new Pharmacy(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f,  "Pop's Pills", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, "Dollar Pills", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(326.7227f, -1074.448f, 29.47332f), 359.3641f, "Family Pharmacy", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(805.143f, -1063.586f, 28.42115f), 90.00111f, "Meltz's Pharmacy", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(1225.14f, -391.3563f, 68.68563f), 28.81875f, "Pharmacy", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(151.0329f, 6647.418f, 31.594f), 135.0961f, "Pop's Pills", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(-172.4879f, 6381.202f, 31.47279f), 222.4285f, "Bay Side Drugs", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(214.0241f, -1835.08f, 27.54375f), 318.7183f, "Family Pharmacy", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(591.2585f, 2744.49f, 42.0425f), 184.8661f, "Dollar Pills", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(825.8448f, -97.80138f, 80.59971f), 321.7153f, "Pharmacy", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(84.03228f, -810.2528f, 31.41642f), 350.9262f, "Family Pharmacy", "","PharmacyMenu"),
+        });
+        PossibleLocations.Dispensaries.AddRange(new List<Dispensary>() {         
+            new Dispensary(new Vector3(-1161.365f, -1427.646f, 4.623186f), 31.50553f, "Doctor Kush", "Doctor kush","WeedMenu"),
+            new Dispensary(new Vector3(-502.4879f, 32.92564f, 44.71512f), 179.9803f, "Serenity Wellness", "Serenity Wellness","WeedMenu"),
+            new Dispensary(new Vector3(169.5722f, -222.869f, 54.23643f), 342.0811f, "High Time", "","WeedMenu"),
+            new Dispensary(new Vector3(-1381.142f, -941.0327f, 10.17387f), 126.4558f,"Seagrass Herbals", "Seagrass Herbals","WeedMenu"),
+            new Dispensary(new Vector3(1175.02f, -437.1972f, 66.93162f), 259.358f, "Mile High Organics", "","WeedMenu"),
+        });
+        PossibleLocations.HeadShops.AddRange(new List<HeadShop>() {         
+            new HeadShop(new Vector3(-1191.582f, -1197.779f, 7.617113f), 146.801f, "Pipe Dreams", "Pipe Dreams","HeadShopMenu"),
+            new HeadShop(new Vector3(65.60603f, -137.4155f, 55.11251f), 214.0327f, "Pipe Dreams", "","HeadShopMenu"),
+            new HeadShop(new Vector3(278.8327f, -1027.653f, 29.21136f), 184.1326f, "Pipe Down Cigars", "","HeadShopMenu"),
+            new HeadShop(new Vector3(-1154.942f, -1373.176f, 5.061489f), 305.589f, "Amnesiac Smoke Shop", "Amnesiac Smoke Shop","WeedAndCigMenu"),
+            new HeadShop(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, "Pipe Down", "","HeadShopMenu"),
+
+        });
+        PossibleLocations.HardwareStores.AddRange(new List<HardwareStore>() {
+            new HardwareStore(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, "You Tool", "You Tool","ToolMenu") {BannerImagePath = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
+            new HardwareStore(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, "Krapea", "","ToolMenu"),
+            new HardwareStore(new Vector3(-10.88182f, 6499.395f, 31.50508f), 44.30542f, "Bay Hardware", "","ToolMenu"),
+            new HardwareStore(new Vector3(-3153.697f, 1053.398f, 20.88735f), 338.4756f, "Hardware", "","ToolMenu"),
+            new HardwareStore(new Vector3(343.2759f, -1297.948f, 32.5097f), 164.2121f, "Bert's Tool Supply", "","ToolMenu"),
+
+        });
+        PossibleLocations.PawnShops.AddRange(new List<PawnShop>() {
+            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","ToolMenu"),
+            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","ToolMenu"),
+        });
+        PossibleLocations.Stadiums.AddRange(new List<Stadium>()
+        {
+            new Stadium(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+        });
+        PossibleLocations.BeautyShops.AddRange(new List<BeautyShop>()
+        {
+            new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", ""),
+            new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", ""),
+            new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", ""),
+            new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", ""),
+            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", ""),
+        });
+        PossibleLocations.Banks.AddRange(new List<Bank>()
+        {
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Fleeca Bank"),
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Fleeca Bank"),
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Maze Bank"),
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", ""),
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", ""),
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""),
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", ""),
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", ""),
+        });
+
+        PossibleLocations.ConvenienceStores.AddRange(new List<ConvenienceStore>()
+        {
+            new ConvenienceStore(new Vector3(547f, 2678f, 42.1565f), 22.23846f,  "24/7 Route 68","As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 41474, VendorPosition = new Vector3(549.6005f, 2669.846f, 42.1565f), VendorHeading = 96.91093f,},
+            new ConvenienceStore(new Vector3(-3236.767f,1005.609f,12.33137f), 122.6316f,  "24/7 Chumash","As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 16386, VendorPosition = new Vector3(-3243.302f, 1000.005f, 12.83071f), VendorHeading = 352.6259f, },
+            new ConvenienceStore(new Vector3(2560f, 385f, 108f), 22.23846f,  "24/7 Palomino Freeway","As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 62722, VendorPosition = new Vector3(2555.339f, 380.9034f, 108.6229f), VendorHeading = 347.3629f, },
+            new ConvenienceStore(new Vector3(29.32254f, -1350.485f, 29.33319f), 170.9901f,  "24/7 Strawberry", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 33282, VendorPosition = new Vector3(24.39647f, -1345.484f, 29.49702f), VendorHeading = 252.9084f, },
+            new ConvenienceStore(new Vector3(-3037.729f, 589.7671f, 7.814812f), 289.0175f,  "24/7 Banham Canyon", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 97538, VendorPosition = new Vector3(-3039.787f, 584.1979f, 7.908929f), VendorHeading = 12.80189f, },
+            new ConvenienceStore(new Vector3(376.3202f, 322.694f, 103.4389f), 162.5363f,  "24/7 Downtown Vinewood", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 46850, VendorPosition = new Vector3(372.6485f, 327.0293f, 103.5664f), VendorHeading = 257.6475f, },
+            new ConvenienceStore(new Vector3(2682.938f, 3282.287f, 55.24056f), 243.885f,  "24/7 Senora Freeway", "As fast as you","TwentyFourSevenMenu") { OpenTime = 0, CloseTime = 24 ,BannerImagePath = "247.png", InteriorID = 13826, VendorPosition = new Vector3(2676.595f, 3280.101f, 55.24113f), VendorHeading = 325.0921f,},
+            new ConvenienceStore(new Vector3(1730.507f, 6410.014f, 35.00065f), 153.9039f,  "24/7 Senora Freeway","As fast as you","TwentyFourSevenMenu") {  OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 36354, VendorPosition = new Vector3(1728.436f, 6416.584f, 35.03722f), VendorHeading = 241.2023f, },
+            new ConvenienceStore(new Vector3(1965.801f, 3739.945f, 32.322f), 207.564f,  "24/7 Sandy Shores","As fast as you","TwentyFourSevenMenu") { OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 55554, VendorPosition = new Vector3(1959.352f, 3741.18f, 32.34374f), VendorHeading = 303.8849f, },
+            new ConvenienceStore(new Vector3(-53.5351f, -1757.196f, 29.43954f), 146.0623f,  "LtD Davis", "A one-stop shop!","LTDMenu"){ OpenTime = 0, CloseTime = 24, InteriorID = 80642, VendorPosition = new Vector3(-45.89098f, -1757.345f, 29.42101f), VendorHeading = 52.66933f, },
+            new ConvenienceStore(new Vector3(-578.0112f, -1012.898f, 22.32503f), 359.4114f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
+            new ConvenienceStore(new Vector3(-696.9965f, -858.7673f, 23.69209f), 85.51252f,  "24/7", "24/7","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
+            new ConvenienceStore(new Vector3(152.5101f, 237.4131f, 106.9718f), 165.2823f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
+            new ConvenienceStore(new Vector3(201.8985f, -26.30606f, 69.90953f), 249.8224f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
+            new ConvenienceStore(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
+            new ConvenienceStore(new Vector3(-1264.064f, -1162.599f, 6.764161f), 161.218f,  "Fruit Of The Vine", "Fruit Of The Vine","FruitVineMenu"),
+            new ConvenienceStore(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f,  "Fruit Of The Vine", "Fruit Of The Vine","FruitVineMenu"),
+            new ConvenienceStore(new Vector3(164.9962f, 351.1263f, 109.6859f), 4.847032f,  "Fruit Of The Vine", "Fruit Of The Vine","FruitVineMenu") ,
+            new ConvenienceStore(new Vector3(-144.3732f, -65.01408f, 54.60635f), 159.0404f,  "Fruit Of The Vine", "","FruitVineMenu") ,
+            new ConvenienceStore(new Vector3(-1412.015f, -320.1292f, 44.37897f), 92.48502f,  "The Grain Of Truth", "The Grain Of Truth","GrainOfTruthMenu"),
+            new ConvenienceStore(new Vector3(-1370.819f, -684.5463f, 25.01069f), 214.6929f,  "The Grain Of Truth", "The Grain Of Truth","GrainOfTruthMenu"),
+            new ConvenienceStore(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f,  "Supermarket", "Supermarket","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,  "Del Perro Food Market","No Robberies Please!","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f,  "A&R Market", "A&R Market","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(53.28459f, -1478.863f, 29.28546f), 187.4217f,  "Gabriela's Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f,  "Save-A-Cent", "Save-A-Cent","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1312.64f, -1181.899f, 4.890057f), 271.5434f,  "Beach Buddie", "Beach Buddie","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-661.5522f, -915.5651f, 24.61216f), 260.1033f,  "Convenience Store", "Convenience Store","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(393.8511f, -804.2294f, 29.29397f), 272.0436f,  "Food Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(410.4163f, -1910.432f, 25.45381f), 88.30214f,  "Long Pig Mini Mart", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-170.9145f, -1449.77f, 31.64507f), 50.18372f,  "Cert-L Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-3152.666f, 1110.093f, 20.87176f), 245.5282f,  "Nelsons", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(1331.857f, -1643.031f, 52.13754f), 352.7884f,  "Convenience Store", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(1089.146f, -776.6399f, 58.34211f), 357.3385f,  "Chico's Hypermarket", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(1168.982f, -291.6786f, 69.02177f), 324.2124f,  "Gabriela's Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(105.3277f, -1689.715f, 29.29169f), 138.498f,  "Convenience Store", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-297.9112f, -1332.895f, 31.29597f), 314.8022f,  "Long Pig Mini Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f,  "Convenience Store", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f,  "B.J.'s Market", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f,  "Willie's Supermarket", "","ConvenienceStoreMenu"),
+        });
 
         PossibleLocations.LocationsList.AddRange(new List<GameLocation>
         {
-            //Hospital
-            new GameLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, LocationType.Hospital, "Pill Box Hill Hospital","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
-            new GameLocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, LocationType.Hospital, "Central Los Santos Hospital","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, LocationType.Hospital, "Sandy Shores Hospital","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, LocationType.Hospital, "Paleto Bay Hospital","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, LocationType.Hospital, "St. Fiacre", "") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
+                        //Hardware
+            
+
+            //PawnShop
+            
+
+
+
+
+
+
+
+            ////Hospital
+            //new GameLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, LocationType.Hospital, "Pill Box Hill Hospital","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            //new GameLocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, LocationType.Hospital, "Central Los Santos Hospital","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, LocationType.Hospital, "Sandy Shores Hospital","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, LocationType.Hospital, "Paleto Bay Hospital","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, LocationType.Hospital, "St. Fiacre", "") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
 
             //Grave
             new GameLocation(new Vector3(-1654.301f, -148.7047f, 59.91496f), 299.5774f, LocationType.Grave, "Grave 1","") {OpenTime = 0,CloseTime = 24 },
 
-            //Fire
-            new GameLocation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, LocationType.FireStation, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666 },
-            new GameLocation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, LocationType.FireStation, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-633.0533f, -122.0594f, 39.01375f), 79.69817f, LocationType.FireStation, "Rockford Hills Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+            ////Fire
+            //new GameLocation(new Vector3(1185.842f, -1464.118f, 34.90073f), 356.2903f, LocationType.FireStation, "LSCFD Fire Station 7", "") {OpenTime = 0,CloseTime = 24, InteriorID = 81666 },
+            //new GameLocation(new Vector3(213.8019f, -1640.523f, 29.68287f), 319.3789f, LocationType.FireStation, "Davis Fire Station", "") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-633.0533f, -122.0594f, 39.01375f), 79.69817f, LocationType.FireStation, "Rockford Hills Fire Station", "") {OpenTime = 0,CloseTime = 24 },
 
 
 
 
             //Police
-            new GameLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, LocationType.Police, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, LocationType.Police, "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, LocationType.Police, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842},
-            new GameLocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, LocationType.Police, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, LocationType.Police, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, LocationType.Police, "Vinewood Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, LocationType.Police, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, LocationType.Police, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, LocationType.Police, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new GameLocation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, LocationType.Police, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, LocationType.Police, "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, LocationType.Police, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842},
+            //new GameLocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, LocationType.Police, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, LocationType.Police, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, LocationType.Police, "Vinewood Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, LocationType.Police, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, LocationType.Police, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, LocationType.Police, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, LocationType.Police, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
+            //new GameLocation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, LocationType.Police, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
             
             //Other
-            new GameLocation(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,LocationType.Stadium,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            //new GameLocation(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,LocationType.Stadium,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
                  
             //Beauty
-            new GameLocation(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, LocationType.BeautyShop, "Carson's Beauty Supply", ""),
-            new GameLocation(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, LocationType.BeautyShop, "Chantelle's Beauty Salon", ""),
-            new GameLocation(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, LocationType.BeautyShop, "Discount Beauty Store", ""),
-            new GameLocation(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, LocationType.BeautyShop, "Belinda May's Beauty Salon", ""),
-            new GameLocation(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, LocationType.BeautyShop, "Aunt Tammy's Hair Salon", ""),
+            //new GameLocation(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, LocationType.BeautyShop, "Carson's Beauty Supply", ""),
+            //new GameLocation(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, LocationType.BeautyShop, "Chantelle's Beauty Salon", ""),
+            //new GameLocation(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, LocationType.BeautyShop, "Discount Beauty Store", ""),
+            //new GameLocation(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, LocationType.BeautyShop, "Belinda May's Beauty Salon", ""),
+            //new GameLocation(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, LocationType.BeautyShop, "Aunt Tammy's Hair Salon", ""),
 
             //Liquor
             new GameLocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f,new Vector3(-1221.119f, -908.5667f, 12.32635f), 33.35855f, LocationType.LiquorStore, "Rob's Liquors","Thats My Name, Don't Rob Me!") { Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22, InteriorID = 50178 },
@@ -408,61 +656,61 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(579.2075f, 2677.982f, 41.84144f), 10.21047f, LocationType.LiquorStore, "Jr. Market Liquors", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },
             new GameLocation(new Vector3(910.836f, 3644.788f, 32.67847f), 180.167f, LocationType.LiquorStore, "Liquor Market", ""){ Menu = LiquorStoreMenu, OpenTime = 4, CloseTime = 22 },  
             
-            //HeadShop
-            new GameLocation(new Vector3(-1191.582f, -1197.779f, 7.617113f), 146.801f, LocationType.Headshop, "Pipe Dreams", "Pipe Dreams") {Menu = HeadShopMenu },
-            new GameLocation(new Vector3(65.60603f, -137.4155f, 55.11251f), 214.0327f, LocationType.Headshop, "Pipe Dreams", "") {Menu = HeadShopMenu },
-            new GameLocation(new Vector3(278.8327f, -1027.653f, 29.21136f), 184.1326f, LocationType.Headshop, "Pipe Down Cigars", "") {Menu = HeadShopMenu },
-            new GameLocation(new Vector3(-1154.942f, -1373.176f, 5.061489f), 305.589f, LocationType.Headshop, "Amnesiac Smoke Shop", "Amnesiac Smoke Shop") {Menu = WeedAndCigMenu },
-            new GameLocation(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, LocationType.Headshop, "Pipe Down", "") {Menu = HeadShopMenu },
+            ////HeadShop
+            //new GameLocation(new Vector3(-1191.582f, -1197.779f, 7.617113f), 146.801f, LocationType.Headshop, "Pipe Dreams", "Pipe Dreams") {Menu = HeadShopMenu },
+            //new GameLocation(new Vector3(65.60603f, -137.4155f, 55.11251f), 214.0327f, LocationType.Headshop, "Pipe Dreams", "") {Menu = HeadShopMenu },
+            //new GameLocation(new Vector3(278.8327f, -1027.653f, 29.21136f), 184.1326f, LocationType.Headshop, "Pipe Down Cigars", "") {Menu = HeadShopMenu },
+            //new GameLocation(new Vector3(-1154.942f, -1373.176f, 5.061489f), 305.589f, LocationType.Headshop, "Amnesiac Smoke Shop", "Amnesiac Smoke Shop") {Menu = WeedAndCigMenu },
+            //new GameLocation(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, LocationType.Headshop, "Pipe Down", "") {Menu = HeadShopMenu },
 
-            //Dispensary
-            new GameLocation(new Vector3(-1161.365f, -1427.646f, 4.623186f), 31.50553f, LocationType.Dispensary, "Doctor Kush", "Doctor kush") {Menu = WeedMenu },
-            new GameLocation(new Vector3(-502.4879f, 32.92564f, 44.71512f), 179.9803f, LocationType.Dispensary, "Serenity Wellness", "Serenity Wellness") {Menu = WeedMenu },
-            new GameLocation(new Vector3(169.5722f, -222.869f, 54.23643f), 342.0811f, LocationType.Dispensary, "High Time", "") {Menu = WeedMenu },
-            new GameLocation(new Vector3(-1381.142f, -941.0327f, 10.17387f), 126.4558f, LocationType.Headshop, "Seagrass Herbals", "Seagrass Herbals") {Menu = WeedMenu },
-            new GameLocation(new Vector3(1175.02f, -437.1972f, 66.93162f), 259.358f, LocationType.Dispensary, "Mile High Organics", "") {Menu = WeedMenu },
+            ////Dispensary
+            //new GameLocation(new Vector3(-1161.365f, -1427.646f, 4.623186f), 31.50553f, LocationType.Dispensary, "Doctor Kush", "Doctor kush") {Menu = WeedMenu },
+            //new GameLocation(new Vector3(-502.4879f, 32.92564f, 44.71512f), 179.9803f, LocationType.Dispensary, "Serenity Wellness", "Serenity Wellness") {Menu = WeedMenu },
+            //new GameLocation(new Vector3(169.5722f, -222.869f, 54.23643f), 342.0811f, LocationType.Dispensary, "High Time", "") {Menu = WeedMenu },
+            //new GameLocation(new Vector3(-1381.142f, -941.0327f, 10.17387f), 126.4558f, LocationType.Headshop, "Seagrass Herbals", "Seagrass Herbals") {Menu = WeedMenu },
+            //new GameLocation(new Vector3(1175.02f, -437.1972f, 66.93162f), 259.358f, LocationType.Dispensary, "Mile High Organics", "") {Menu = WeedMenu },
 
             //Convenience
-            new GameLocation(new Vector3(547f, 2678f, 42.1565f), 22.23846f,new Vector3(549.6005f, 2669.846f, 42.1565f), 96.91093f, LocationType.ConvenienceStore, "24/7 Route 68","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 41474},
-            new GameLocation(new Vector3(-3236.767f,1005.609f,12.33137f), 122.6316f,new Vector3(-3243.302f, 1000.005f, 12.83071f), 352.6259f, LocationType.ConvenienceStore, "24/7 Chumash","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 16386 },
-            new GameLocation(new Vector3(2560f, 385f, 108f), 22.23846f,new Vector3(2555.339f, 380.9034f, 108.6229f), 347.3629f, LocationType.ConvenienceStore, "24/7 Palomino Freeway","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 62722 },
-            new GameLocation(new Vector3(29.32254f, -1350.485f, 29.33319f), 170.9901f,new Vector3(24.39647f, -1345.484f, 29.49702f), 252.9084f, LocationType.ConvenienceStore, "24/7 Strawberry", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 33282 },
-            new GameLocation(new Vector3(-3037.729f, 589.7671f, 7.814812f), 289.0175f,new Vector3(-3039.787f, 584.1979f, 7.908929f), 12.80189f, LocationType.ConvenienceStore, "24/7 Banham Canyon", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 97538 },
-            new GameLocation(new Vector3(376.3202f, 322.694f, 103.4389f), 162.5363f,new Vector3(372.6485f, 327.0293f, 103.5664f), 257.6475f, LocationType.ConvenienceStore, "24/7 Downtown Vinewood", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 46850 },
-            new GameLocation(new Vector3(2682.938f, 3282.287f, 55.24056f), 243.885f,new Vector3(2676.595f, 3280.101f, 55.24113f), 325.0921f, LocationType.ConvenienceStore, "24/7 Senora Freeway", "As fast as you") { Menu = TwentyFourSevenMenu,OpenTime = 0, CloseTime = 24 ,BannerImage = "247.png", InteriorID = 13826},
-            new GameLocation(new Vector3(1730.507f, 6410.014f, 35.00065f), 153.9039f,new Vector3(1728.436f, 6416.584f, 35.03722f), 241.2023f, LocationType.ConvenienceStore, "24/7 Senora Freeway","As fast as you") { Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 36354 },
-            new GameLocation(new Vector3(1965.801f, 3739.945f, 32.322f), 207.564f,new Vector3(1959.352f, 3741.18f, 32.34374f), 303.8849f, LocationType.ConvenienceStore, "24/7 Sandy Shores","As fast as you") { Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 55554 },
-            new GameLocation(new Vector3(-53.5351f, -1757.196f, 29.43954f), 146.0623f,new Vector3(-45.89098f, -1757.345f, 29.42101f), 52.66933f, LocationType.ConvenienceStore, "LtD Davis", "A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24, InteriorID = 80642 },
-            new GameLocation(new Vector3(-578.0112f, -1012.898f, 22.32503f), 359.4114f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(-696.9965f, -858.7673f, 23.69209f), 85.51252f, LocationType.ConvenienceStore, "24/7", "24/7"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(152.5101f, 237.4131f, 106.9718f), 165.2823f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(201.8985f, -26.30606f, 69.90953f), 249.8224f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
-            new GameLocation(new Vector3(-1264.064f, -1162.599f, 6.764161f), 161.218f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine"){ Menu = FruitVineMenu },
-            new GameLocation(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
-            new GameLocation(new Vector3(164.9962f, 351.1263f, 109.6859f), 4.847032f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
-            new GameLocation(new Vector3(-144.3732f, -65.01408f, 54.60635f), 159.0404f, LocationType.ConvenienceStore, "Fruit Of The Vine", "") { Menu = FruitVineMenu },
-            new GameLocation(new Vector3(-1412.015f, -320.1292f, 44.37897f), 92.48502f, LocationType.ConvenienceStore, "The Grain Of Truth", "The Grain Of Truth") { Menu = GrainOfTruthMenu },
-            new GameLocation(new Vector3(-1370.819f, -684.5463f, 25.01069f), 214.6929f, LocationType.ConvenienceStore, "The Grain Of Truth", "The Grain Of Truth") { Menu = GrainOfTruthMenu },
-            new GameLocation(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f, LocationType.ConvenienceStore, "Supermarket", "Supermarket"){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.ConvenienceStore, "Del Perro Food Market","No Robberies Please!"){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f, LocationType.ConvenienceStore, "A&R Market", "A&R Market"){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(53.28459f, -1478.863f, 29.28546f), 187.4217f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f, LocationType.ConvenienceStore, "Save-A-Cent", "Save-A-Cent"){ Menu = ConvenienceStoreMenu, OpenTime = 0, CloseTime = 24 },
-            new GameLocation(new Vector3(-1312.64f, -1181.899f, 4.890057f), 271.5434f, LocationType.ConvenienceStore, "Beach Buddie", "Beach Buddie"){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-661.5522f, -915.5651f, 24.61216f), 260.1033f, LocationType.ConvenienceStore, "Convenience Store", "Convenience Store"){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(393.8511f, -804.2294f, 29.29397f), 272.0436f, LocationType.ConvenienceStore, "Food Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(410.4163f, -1910.432f, 25.45381f), 88.30214f, LocationType.ConvenienceStore, "Long Pig Mini Mart", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-170.9145f, -1449.77f, 31.64507f), 50.18372f, LocationType.ConvenienceStore, "Cert-L Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-3152.666f, 1110.093f, 20.87176f), 245.5282f, LocationType.ConvenienceStore, "Nelsons", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(1331.857f, -1643.031f, 52.13754f), 352.7884f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(1089.146f, -776.6399f, 58.34211f), 357.3385f, LocationType.ConvenienceStore, "Chico's Hypermarket", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(1168.982f, -291.6786f, 69.02177f), 324.2124f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(105.3277f, -1689.715f, 29.29169f), 138.498f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-297.9112f, -1332.895f, 31.29597f), 314.8022f, LocationType.ConvenienceStore, "Long Pig Mini Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f, LocationType.ConvenienceStore, "B.J.'s Market", ""){ Menu = ConvenienceStoreMenu },
-            new GameLocation(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f, LocationType.ConvenienceStore, "Willie's Supermarket", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(547f, 2678f, 42.1565f), 22.23846f,new Vector3(549.6005f, 2669.846f, 42.1565f), 96.91093f, LocationType.ConvenienceStore, "24/7 Route 68","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 41474},
+            //new GameLocation(new Vector3(-3236.767f,1005.609f,12.33137f), 122.6316f,new Vector3(-3243.302f, 1000.005f, 12.83071f), 352.6259f, LocationType.ConvenienceStore, "24/7 Chumash","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 16386 },
+            //new GameLocation(new Vector3(2560f, 385f, 108f), 22.23846f,new Vector3(2555.339f, 380.9034f, 108.6229f), 347.3629f, LocationType.ConvenienceStore, "24/7 Palomino Freeway","As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 62722 },
+            //new GameLocation(new Vector3(29.32254f, -1350.485f, 29.33319f), 170.9901f,new Vector3(24.39647f, -1345.484f, 29.49702f), 252.9084f, LocationType.ConvenienceStore, "24/7 Strawberry", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 33282 },
+            //new GameLocation(new Vector3(-3037.729f, 589.7671f, 7.814812f), 289.0175f,new Vector3(-3039.787f, 584.1979f, 7.908929f), 12.80189f, LocationType.ConvenienceStore, "24/7 Banham Canyon", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 97538 },
+            //new GameLocation(new Vector3(376.3202f, 322.694f, 103.4389f), 162.5363f,new Vector3(372.6485f, 327.0293f, 103.5664f), 257.6475f, LocationType.ConvenienceStore, "24/7 Downtown Vinewood", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 46850 },
+            //new GameLocation(new Vector3(2682.938f, 3282.287f, 55.24056f), 243.885f,new Vector3(2676.595f, 3280.101f, 55.24113f), 325.0921f, LocationType.ConvenienceStore, "24/7 Senora Freeway", "As fast as you") { Menu = TwentyFourSevenMenu,OpenTime = 0, CloseTime = 24 ,BannerImage = "247.png", InteriorID = 13826},
+            //new GameLocation(new Vector3(1730.507f, 6410.014f, 35.00065f), 153.9039f,new Vector3(1728.436f, 6416.584f, 35.03722f), 241.2023f, LocationType.ConvenienceStore, "24/7 Senora Freeway","As fast as you") { Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 36354 },
+            //new GameLocation(new Vector3(1965.801f, 3739.945f, 32.322f), 207.564f,new Vector3(1959.352f, 3741.18f, 32.34374f), 303.8849f, LocationType.ConvenienceStore, "24/7 Sandy Shores","As fast as you") { Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png", InteriorID = 55554 },
+            //new GameLocation(new Vector3(-53.5351f, -1757.196f, 29.43954f), 146.0623f,new Vector3(-45.89098f, -1757.345f, 29.42101f), 52.66933f, LocationType.ConvenienceStore, "LtD Davis", "A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24, InteriorID = 80642 },
+            //new GameLocation(new Vector3(-578.0112f, -1012.898f, 22.32503f), 359.4114f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
+            //new GameLocation(new Vector3(-696.9965f, -858.7673f, 23.69209f), 85.51252f, LocationType.ConvenienceStore, "24/7", "24/7"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
+            //new GameLocation(new Vector3(152.5101f, 237.4131f, 106.9718f), 165.2823f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
+            //new GameLocation(new Vector3(201.8985f, -26.30606f, 69.90953f), 249.8224f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
+            //new GameLocation(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f, LocationType.ConvenienceStore, "24/7", "As fast as you"){ Menu = TwentyFourSevenMenu, OpenTime = 0, CloseTime = 24,BannerImage = "247.png" },
+            //new GameLocation(new Vector3(-1264.064f, -1162.599f, 6.764161f), 161.218f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine"){ Menu = FruitVineMenu },
+            //new GameLocation(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
+            //new GameLocation(new Vector3(164.9962f, 351.1263f, 109.6859f), 4.847032f, LocationType.ConvenienceStore, "Fruit Of The Vine", "Fruit Of The Vine") { Menu = FruitVineMenu },
+            //new GameLocation(new Vector3(-144.3732f, -65.01408f, 54.60635f), 159.0404f, LocationType.ConvenienceStore, "Fruit Of The Vine", "") { Menu = FruitVineMenu },
+            //new GameLocation(new Vector3(-1412.015f, -320.1292f, 44.37897f), 92.48502f, LocationType.ConvenienceStore, "The Grain Of Truth", "The Grain Of Truth") { Menu = GrainOfTruthMenu },
+            //new GameLocation(new Vector3(-1370.819f, -684.5463f, 25.01069f), 214.6929f, LocationType.ConvenienceStore, "The Grain Of Truth", "The Grain Of Truth") { Menu = GrainOfTruthMenu },
+            //new GameLocation(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f, LocationType.ConvenienceStore, "Supermarket", "Supermarket"){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f, LocationType.ConvenienceStore, "Del Perro Food Market","No Robberies Please!"){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f, LocationType.ConvenienceStore, "A&R Market", "A&R Market"){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(53.28459f, -1478.863f, 29.28546f), 187.4217f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f, LocationType.ConvenienceStore, "Save-A-Cent", "Save-A-Cent"){ Menu = ConvenienceStoreMenu, OpenTime = 0, CloseTime = 24 },
+            //new GameLocation(new Vector3(-1312.64f, -1181.899f, 4.890057f), 271.5434f, LocationType.ConvenienceStore, "Beach Buddie", "Beach Buddie"){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-661.5522f, -915.5651f, 24.61216f), 260.1033f, LocationType.ConvenienceStore, "Convenience Store", "Convenience Store"){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(393.8511f, -804.2294f, 29.29397f), 272.0436f, LocationType.ConvenienceStore, "Food Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(410.4163f, -1910.432f, 25.45381f), 88.30214f, LocationType.ConvenienceStore, "Long Pig Mini Mart", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-170.9145f, -1449.77f, 31.64507f), 50.18372f, LocationType.ConvenienceStore, "Cert-L Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-3152.666f, 1110.093f, 20.87176f), 245.5282f, LocationType.ConvenienceStore, "Nelsons", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(1331.857f, -1643.031f, 52.13754f), 352.7884f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(1089.146f, -776.6399f, 58.34211f), 357.3385f, LocationType.ConvenienceStore, "Chico's Hypermarket", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(1168.982f, -291.6786f, 69.02177f), 324.2124f, LocationType.ConvenienceStore, "Gabriela's Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(105.3277f, -1689.715f, 29.29169f), 138.498f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-297.9112f, -1332.895f, 31.29597f), 314.8022f, LocationType.ConvenienceStore, "Long Pig Mini Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f, LocationType.ConvenienceStore, "Convenience Store", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f, LocationType.ConvenienceStore, "B.J.'s Market", ""){ Menu = ConvenienceStoreMenu },
+            //new GameLocation(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f, LocationType.ConvenienceStore, "Willie's Supermarket", ""){ Menu = ConvenienceStoreMenu },
 
             //Gas      
             new GameLocation(new Vector3(-711.9264f, -917.7573f, 19.21472f), 180.3014f,new Vector3(-705.7453f, -913.6598f, 19.21559f), 83.75771f, LocationType.GasStation, "LtD Little Seoul", "A one-stop shop!"){ Menu = LTDMenu,OpenTime = 0, CloseTime = 24, InteriorID = 47874 },
@@ -520,147 +768,147 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f,new Vector3(-1391.372f, -605.995f, 30.31955f), 116.404f, LocationType.Bar, "Bahama Mama's", "") { Menu = BarMenu,InteriorID = 107778, TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },
             new GameLocation(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,new Vector3(-561.9947f, 284.9062f, 82.17636f), 262.2369f, LocationType.Bar, "Tequila-La", "Tequila-La") { Menu = BarMenu, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
             //Restaurant Fancy
-            new GameLocation(new Vector3(-1487.163f, -308.0127f, 47.02639f), 231.5184f, LocationType.Restaurant, "Las Cuadras Restaurant", "Las Cuadras Restaurant")  {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-1473.121f, -329.6028f, 44.81668f), 319.3725f, LocationType.Restaurant, "Las Cuadras Deli", "Las Cuadras Deli")  {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-1221.254f, -1095.873f, 8.115647f), 111.3174f, LocationType.Restaurant, "Prawn Vivant", "Prawn Vivant") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-1256.581f, -1079.491f, 8.398257f), 339.5968f, LocationType.Restaurant, "Surfries Diner", "Surfries Diner") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-1247.504f, -1105.777f, 8.109305f), 289.9685f, LocationType.Restaurant, "The Split Kipper Fish", "The Split Kipper Fish") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-1230.032f, -1174.862f, 7.700727f), 330.9398f, LocationType.Restaurant, "Pot Heads Seafood", "Pot Heads Seafood") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-1111.103f, -1454.387f, 5.582287f), 304.9954f, LocationType.Restaurant, "Coconut Cafe", "Coconut Cafe") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-1037.587f, -1397.168f, 5.553192f), 76.84702f, LocationType.Restaurant, "La Spada", "La Spada") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-1129.253f, -1373.276f, 5.056143f), 164.9213f, LocationType.Restaurant, "Marlin's Cafe", "Marlin's Cafe") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(2561.869f, 2590.851f, 38.08311f), 294.6638f, LocationType.Restaurant, "Rex's Diner", "Rex's Diner") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(2697.521f, 4324.264f, 45.98642f), 41.67124f, LocationType.Restaurant, "Park View Diner", "Park View Diner") {Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(-1389.63f, -744.4225f, 24.62544f), 127.01f, LocationType.Restaurant, "Haute", "Haute") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-1392.125f, -732.2938f, 24.64698f), 37.13289f, LocationType.Restaurant, "Les Bianco's", "Les Bianco's") {Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(-1420.425f, -709.2584f, 24.60311f), 126.5269f, LocationType.Restaurant, "Pescado Rojo", "Pescado Rojo") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, LocationType.Restaurant, "The Fish Net", "The Fish Net") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(95.79929f, -1682.817f, 29.25364f), 138.4551f, LocationType.Restaurant, "Yum Fish", "") {Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-238.903f, -777.356f, 34.09171f), 71.47642f, LocationType.Restaurant, "Cafe Redemption", "") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(370.4181f, -1027.565f, 29.33361f), 184.4234f, LocationType.Restaurant, "Ground & Pound Cafe", "") {Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(502.6628f, 113.1527f, 96.62571f), 164.3104f, LocationType.Restaurant, "Jazz Desserts", ""){Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(16.29523f, -166.5288f, 55.82795f), 341.2336f, LocationType.Restaurant, "The Fish Net", ""){Menu = FancyFishMenu },
-            new GameLocation(new Vector3(281.4706f, -800.5342f, 29.31682f), 227.4364f, LocationType.Restaurant, "Pescado Azul", ""){Menu = FancyFishMenu },
-            new GameLocation(new Vector3(-630.0808f, -2266.577f, 5.933444f), 242.2394f, LocationType.Restaurant, "Poppy House", ""){Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(-122.6395f, 6389.315f, 32.17757f), 44.91608f, LocationType.Restaurant, "Mojito Inn", ""){Menu = FancyGenericMenu },
-            new GameLocation(new Vector3(793.877f, -735.7111f, 27.96293f), 89.91832f, LocationType.Restaurant, "Casey's Diner", "") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-361.3964f, 275.7073f, 86.42198f), 212.2804f, LocationType.Restaurant, "Last Train Diner", "") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-3047.75f, 615.6793f, 7.405877f), 248.6187f, LocationType.Restaurant, "Mom's Pie Diner", "") {Menu = FancyDeliMenu },
-            new GameLocation(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, LocationType.Restaurant, "Haute", ""){Menu = FancyFishMenu },
-            new GameLocation(new Vector3(398.0291f, 175.6789f, 103.8558f), 71.74517f, LocationType.Restaurant, "Clappers", "") {Menu = FancyGenericMenu },
-            //Sandwiches
-            new GameLocation(new Vector3(-1249.812f, -296.1564f, 37.35062f), 206.9039f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(-1539.498f, -427.3804f, 35.59194f), 233.1319f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(229.5384f, -22.3363f, 74.98735f), 160.0777f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(-240.7315f, -346.1899f, 30.02782f), 47.8591f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(-263.1924f, -904.2821f, 32.3108f), 338.4021f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(385.958f, -1010.523f, 29.41794f), 271.5127f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(1139.359f, -463.8952f, 66.85857f), 261.1642f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
-            new GameLocation(new Vector3(100.5837f, 209.4958f, 107.9911f), 342.4262f, LocationType.Restaurant, "The Pink Sandwich", "The Pink Sandwich") {Menu = SandwichMenu,OpenTime = 0, CloseTime = 24 },
-            //Asian
-            new GameLocation(new Vector3(-798.0056f, -632.0029f, 29.02696f), 169.2606f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
-            new GameLocation(new Vector3(-638.5052f, -1249.646f, 11.81044f), 176.4081f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
-            new GameLocation(new Vector3(-700.9553f, -884.5563f, 23.79126f), 41.62328f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
-            new GameLocation(new Vector3(-1229.61f, -285.7077f, 37.73843f), 205.5755f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
-            new GameLocation(new Vector3(-1199.53f, -1162.439f, 7.696731f), 107.0593f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
-            new GameLocation(new Vector3(272.8409f, -965.4847f, 29.31605f), 27.34526f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
-            new GameLocation(new Vector3(-655.6034f, -880.3672f, 24.67554f), 265.7094f, LocationType.Restaurant, "Wook Noodle House", "Wook Noodle House") {Menu = NoodleMenu },
-            new GameLocation(new Vector3(-680.4404f, -945.5441f, 20.93157f), 180.6927f, LocationType.Restaurant, "Wook Noodle House", "Wook Noodle House") {Menu = NoodleMenu },
-            new GameLocation(new Vector3(-654.8373f, -885.7593f, 24.67703f), 273.4168f, LocationType.Restaurant, "Park Jung Restaurant", "Park Jung Restaurant") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-661.5396f, -907.5895f, 24.60632f), 278.5222f, LocationType.Restaurant, "Hwan Cafe", "Hwan Cafe") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-163.0659f, -1440.267f, 31.42698f), 55.5593f, LocationType.Restaurant, "Wok It Off", "") {Menu = GenericMenu },
-            new GameLocation(new Vector3(1894.635f, 3715.372f, 32.74969f), 119.2431f, LocationType.Restaurant, "Chinese Food", "") {Menu = GenericMenu },
-            //Italian
-            new GameLocation(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
-            new GameLocation(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
-            new GameLocation(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, LocationType.Restaurant, "Al Dentes", "Al Dentes"){ Menu = AlDentesMenu },
-            new GameLocation(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
-            new GameLocation(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
-            new GameLocation(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
-            new GameLocation(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, LocationType.Restaurant, "Guidos Takeout 24/7", "Guidos Takeout 24/7") {Menu = PizzaMenu },
-            new GameLocation(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, LocationType.Restaurant, "Pebble Dash Pizza", "Pebble Dash Pizza"){ Menu = PizzaMenu },
-            new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.Restaurant, "Slice N Dice Pizza","Slice UP!"){ Menu = PizzaMenu},
-            new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.Restaurant, "Sharkies Bites","Take A Bite Today!"){ Menu = PizzaMenu, IsWalkup = true },
-            new GameLocation(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, LocationType.Restaurant, "Giovanni's Italian", "Giovanni's Italian"){ Menu = PizzaMenu },
-            //Burger
-            new GameLocation(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, LocationType.Restaurant, "Wigwam", "No need for reservations") { Menu = WigwamMenu ,BannerImage = "wigwam.png"},
-            new GameLocation(new Vector3(-860.8414f, -1140.393f, 7.39234f), 171.7175f, LocationType.Restaurant, "Wigwam", "No need for reservations") { Menu = WigwamMenu,BannerImage = "wigwam.png" },
-            new GameLocation(new Vector3(-1540.86f, -454.866f, 40.51906f), 321.1314f, LocationType.Restaurant, "Up-N-Atom", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
-            new GameLocation(new Vector3(81.31124f, 275.1125f, 110.2102f), 162.7602f, LocationType.Restaurant, "Up-N-Atom", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
-            new GameLocation(new Vector3(1591.054f, 6451.071f, 25.31714f), 158.0088f, LocationType.Restaurant, "Up-N-Atom Diner", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
-            new GameLocation(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, LocationType.Restaurant, "Burger Shot", "Burger Shot") {Menu = BurgerShotMenu },
-            new GameLocation(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, LocationType.Restaurant, "Horny's Burgers", ""){Menu = BeefyBillsMenu },
-            new GameLocation(new Vector3(-512.6821f, -683.3517f, 33.18555f), 3.720508f, LocationType.Restaurant, "Snr. Buns", "Snr. Buns") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, LocationType.Restaurant, "Snr. Muffin", "Snr. Muffin") {Menu = GenericMenu },//??? 
-            new GameLocation(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, LocationType.Restaurant, "La Vaca Loca", "") {Menu = BeefyBillsMenu, CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
-            new GameLocation(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, LocationType.Restaurant, "Spitroasters", ""){Menu = BeefyBillsMenu },
-            //Bagels&Donuts
-            new GameLocation(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, LocationType.Restaurant, "Rusty Browns", "") { Menu = CoffeeMenu,BannerImage = "rustybrowns.png" },
-            new GameLocation(new Vector3(55.28403f, -799.5469f, 31.58599f), 341.3315f, LocationType.Restaurant, "Ground & Pound Cafe", "") { Menu = CoffeeMenu },
-            //Coffee
-            new GameLocation(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-835.4522f, -610.4766f, 29.02697f), 142.0655f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-602.2112f, -1105.766f, 22.32427f), 273.8795f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-659.5289f, -814.0433f, 24.53778f), 232.0023f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu ,BannerImage = "beanmachine.png"},
-            new GameLocation(new Vector3(-687.0801f, -855.6792f, 23.89398f), 0.2374549f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-1345.296f, -609.976f, 28.61888f), 304.4266f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-270.3488f, -977.3488f, 31.21763f), 164.5747f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
-            new GameLocation(new Vector3(-1206.975f, -1135.029f, 7.693257f), 109.1408f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co")  { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-1278.833f, -876.438f, 11.9303f), 123.2498f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(1169.704f, -403.1992f, 72.24859f), 344.0863f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(265.4628f, -981.3839f, 29.36569f), 72.07395f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-1108.847f, -1355.264f, 5.035112f), 206.1676f, LocationType.Restaurant, "Crucial Fix Coffee", "Crucial Fix Coffee") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(189.0311f, -231.234f, 54.07472f), 340.4597f, LocationType.Restaurant, "Crucial Fix Coffee", "") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(273.174f, -833.0611f, 29.41237f), 185.6476f, LocationType.Restaurant, "Crucial Fix Coffee", "") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-576.6631f, -677.8674f, 32.36259f), 306.9058f, LocationType.Restaurant, "Hit-N-Run Coffee", "Hit-N-Run Coffee"){ Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, LocationType.Restaurant, "{java.update();}", "Enjoy Hot Coffee") { Menu = CoffeeMenu },
-            new GameLocation(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, LocationType.Restaurant, "Little Teapot", "Little Teapot") { Menu = CoffeeMenu },
-            //Mexican
-            new GameLocation(new Vector3(10.96682f, -1605.874f, 29.3931f), 229.8729f, LocationType.Restaurant, "The Taco Farmer", "Open All Hours!") {Menu = TacoFarmerMenu, OpenTime = 0, CloseTime = 24 },
-            new GameLocation(new Vector3(649.765f, 2728.621f, 41.9959f), 276.2882f, LocationType.Restaurant, "Taco Farmer", "Open All Hours!") {Menu = TacoFarmerMenu, OpenTime = 0, CloseTime = 24 },
-            new GameLocation(new Vector3(-1168.281f, -1267.279f, 6.198249f), 111.9682f, LocationType.Restaurant, "Taco Libre", "Taco Libre") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(-657.5089f, -679.4656f, 31.46727f), 317.9819f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
-            new GameLocation(new Vector3(-1196.981f, -791.5534f, 16.40427f), 134.7115f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
-            new GameLocation(new Vector3(-1553.112f, -439.9938f, 40.51905f), 228.7506f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
-            new GameLocation(new Vector3(99.21678f, -1419.307f, 29.42156f), 323.9604f, LocationType.Restaurant, "Aguila Burrito", "") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(445.9454f, -1241.581f, 30.27799f), 179.553f, LocationType.Restaurant, "Attack-A-Taco", "") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(1093.13f, -362.9193f, 67.06821f), 168.6222f, LocationType.Restaurant, "Hearty Taco", "") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, LocationType.Restaurant, "Hearty Taco", "") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, LocationType.Restaurant, "Mom's Tacos", "") {Menu = TacoFarmerMenu },
-            new GameLocation(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, LocationType.Restaurant, "Mom's Tacos", "") {Menu = TacoFarmerMenu },
-            //Ice Cream
-            new GameLocation(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, LocationType.Restaurant, "The Sundae Post", "The Sundae Post") {Menu = DonutMenu },
-            new GameLocation(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, LocationType.Restaurant, "Ice Maiden", "Ice Maiden") {Menu = GenericMenu, IsWalkup = true },
-            //Juice and Smoothies
-            new GameLocation(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, LocationType.Restaurant, "Vitamin Seaside Juice Bar", "Vitamin Seaside Juice Bar"){ Menu = FruitMenu },
-            new GameLocation(new Vector3(-1187.057f, -1536.73f, 4.379496f), 32.85152f, LocationType.Restaurant, "Muscle Peach Juice Bar", "Muscle Peach Juice Bar"){ Menu = FruitMenu },
-            new GameLocation(new Vector3(-1236.263f, -287.9641f, 37.63038f), 205.8273f, LocationType.Restaurant, "Limey's Juice and Smoothies", "No Limes About It") {Menu = GenericMenu },
-            new GameLocation(new Vector3(250.3842f, -1026.535f, 29.25663f), 124.0668f, LocationType.Restaurant, "Limey's Juice and Smoothies", "") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-1182.576f, -1248.037f, 6.991587f), 110.7639f, LocationType.Restaurant, "Limey's Juice Bar", "No Limes About It") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-471.7646f, -18.46761f, 45.75837f), 357.2652f, LocationType.Restaurant, "Fruit Machine", "Fruit Machine"){Menu = GenericMenu },
-            new GameLocation(new Vector3(2741.563f, 4413.093f, 48.62326f), 201.5914f, LocationType.Restaurant, "Big Juice Stand", "Big Juice Stand"){Menu = GenericMenu },
-            new GameLocation(new Vector3(1791.592f, 4594.844f, 37.68291f), 182.8134f, LocationType.Restaurant, "Alamo Fruit", "Alamo Fruit"){ Menu = FruitMenu },
-            new GameLocation(new Vector3(1199.951f, -501.2592f, 65.17791f), 113.7728f, LocationType.Restaurant, "Squeeze One Out", ""){ Menu = FruitMenu },
-            //Chicken
-            new GameLocation(new Vector3(-584.761f, -872.753f, 25.91489f), 353.0746f, LocationType.Restaurant, "Lucky Plucker", "Lucky Plucker") {Menu = GenericMenu },
-            new GameLocation(new Vector3(2580.543f, 464.6521f, 108.6232f), 176.5548f, LocationType.Restaurant, "Bishop's Chicken", "Bishop's Chicken") {Menu = GenericMenu },
-            new GameLocation(new Vector3(169.3292f, -1634.163f, 29.29167f), 35.89598f, LocationType.Restaurant, "Bishop's Chicken", "") {Menu = GenericMenu },
-            new GameLocation(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, LocationType.Restaurant, "Lucky Plucker", "") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, LocationType.Restaurant, "Cluckin' Bell", "") {Menu = CluckinBellMenu },
-            new GameLocation(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, LocationType.Restaurant, "Cluckin' Bell", "") {Menu = CluckinBellMenu },
-            //General    
-            new GameLocation(new Vector3(-1222.546f, -807.5845f, 16.59777f), 305.3918f, LocationType.Restaurant, "Lettuce Be", "Lettuce Be") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-1196.705f, -1167.969f, 7.695099f), 108.4535f, LocationType.Restaurant, "Lettuce Be", "Lettuce Be") {Menu = GenericMenu },
-            new GameLocation(new Vector3(-1535.082f, -422.2449f, 35.59194f), 229.4618f, LocationType.Restaurant, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ Menu = ChihuahuaHotDogMenu },
-            new GameLocation(new Vector3(49.24896f, -1000.381f, 29.35741f), 335.6092f, LocationType.Restaurant, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ Menu = ChihuahuaHotDogMenu },
-            new GameLocation(new Vector3(-1271.224f, -1200.703f, 5.366248f), 70.19876f, LocationType.Restaurant, "The Nut Buster", "The Nut Buster") {Menu = GenericMenu },
-            new GameLocation(new Vector3(166.2677f, -1450.995f, 29.24164f), 142.858f, LocationType.Restaurant, "Ring Of Fire Chili House", "") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-1487.163f, -308.0127f, 47.02639f), 231.5184f, LocationType.Restaurant, "Las Cuadras Restaurant", "Las Cuadras Restaurant")  {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-1473.121f, -329.6028f, 44.81668f), 319.3725f, LocationType.Restaurant, "Las Cuadras Deli", "Las Cuadras Deli")  {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-1221.254f, -1095.873f, 8.115647f), 111.3174f, LocationType.Restaurant, "Prawn Vivant", "Prawn Vivant") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-1256.581f, -1079.491f, 8.398257f), 339.5968f, LocationType.Restaurant, "Surfries Diner", "Surfries Diner") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-1247.504f, -1105.777f, 8.109305f), 289.9685f, LocationType.Restaurant, "The Split Kipper Fish", "The Split Kipper Fish") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-1230.032f, -1174.862f, 7.700727f), 330.9398f, LocationType.Restaurant, "Pot Heads Seafood", "Pot Heads Seafood") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-1111.103f, -1454.387f, 5.582287f), 304.9954f, LocationType.Restaurant, "Coconut Cafe", "Coconut Cafe") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-1037.587f, -1397.168f, 5.553192f), 76.84702f, LocationType.Restaurant, "La Spada", "La Spada") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-1129.253f, -1373.276f, 5.056143f), 164.9213f, LocationType.Restaurant, "Marlin's Cafe", "Marlin's Cafe") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(2561.869f, 2590.851f, 38.08311f), 294.6638f, LocationType.Restaurant, "Rex's Diner", "Rex's Diner") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(2697.521f, 4324.264f, 45.98642f), 41.67124f, LocationType.Restaurant, "Park View Diner", "Park View Diner") {Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(-1389.63f, -744.4225f, 24.62544f), 127.01f, LocationType.Restaurant, "Haute", "Haute") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-1392.125f, -732.2938f, 24.64698f), 37.13289f, LocationType.Restaurant, "Les Bianco's", "Les Bianco's") {Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(-1420.425f, -709.2584f, 24.60311f), 126.5269f, LocationType.Restaurant, "Pescado Rojo", "Pescado Rojo") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, LocationType.Restaurant, "The Fish Net", "The Fish Net") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(95.79929f, -1682.817f, 29.25364f), 138.4551f, LocationType.Restaurant, "Yum Fish", "") {Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-238.903f, -777.356f, 34.09171f), 71.47642f, LocationType.Restaurant, "Cafe Redemption", "") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(370.4181f, -1027.565f, 29.33361f), 184.4234f, LocationType.Restaurant, "Ground & Pound Cafe", "") {Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(502.6628f, 113.1527f, 96.62571f), 164.3104f, LocationType.Restaurant, "Jazz Desserts", ""){Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(16.29523f, -166.5288f, 55.82795f), 341.2336f, LocationType.Restaurant, "The Fish Net", ""){Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(281.4706f, -800.5342f, 29.31682f), 227.4364f, LocationType.Restaurant, "Pescado Azul", ""){Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(-630.0808f, -2266.577f, 5.933444f), 242.2394f, LocationType.Restaurant, "Poppy House", ""){Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(-122.6395f, 6389.315f, 32.17757f), 44.91608f, LocationType.Restaurant, "Mojito Inn", ""){Menu = FancyGenericMenu },
+            //new GameLocation(new Vector3(793.877f, -735.7111f, 27.96293f), 89.91832f, LocationType.Restaurant, "Casey's Diner", "") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-361.3964f, 275.7073f, 86.42198f), 212.2804f, LocationType.Restaurant, "Last Train Diner", "") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-3047.75f, 615.6793f, 7.405877f), 248.6187f, LocationType.Restaurant, "Mom's Pie Diner", "") {Menu = FancyDeliMenu },
+            //new GameLocation(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, LocationType.Restaurant, "Haute", ""){Menu = FancyFishMenu },
+            //new GameLocation(new Vector3(398.0291f, 175.6789f, 103.8558f), 71.74517f, LocationType.Restaurant, "Clappers", "") {Menu = FancyGenericMenu },
+            ////Sandwiches
+            //new GameLocation(new Vector3(-1249.812f, -296.1564f, 37.35062f), 206.9039f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(-1539.498f, -427.3804f, 35.59194f), 233.1319f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(229.5384f, -22.3363f, 74.98735f), 160.0777f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(-240.7315f, -346.1899f, 30.02782f), 47.8591f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(-263.1924f, -904.2821f, 32.3108f), 338.4021f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(385.958f, -1010.523f, 29.41794f), 271.5127f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(1139.359f, -463.8952f, 66.85857f), 261.1642f, LocationType.Restaurant, "Bite!", "Have It Our Way") {Menu = BiteMenu,OpenTime = 0, CloseTime = 24,BannerImage = "bite.png" },
+            //new GameLocation(new Vector3(100.5837f, 209.4958f, 107.9911f), 342.4262f, LocationType.Restaurant, "The Pink Sandwich", "The Pink Sandwich") {Menu = SandwichMenu,OpenTime = 0, CloseTime = 24 },
+            ////Asian
+            //new GameLocation(new Vector3(-798.0056f, -632.0029f, 29.02696f), 169.2606f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
+            //new GameLocation(new Vector3(-638.5052f, -1249.646f, 11.81044f), 176.4081f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
+            //new GameLocation(new Vector3(-700.9553f, -884.5563f, 23.79126f), 41.62328f, LocationType.Restaurant, "S.Ho", "S.Ho Noodles") {Menu = NoodleMenu,BannerImage ="sho.png" },
+            //new GameLocation(new Vector3(-1229.61f, -285.7077f, 37.73843f), 205.5755f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
+            //new GameLocation(new Vector3(-1199.53f, -1162.439f, 7.696731f), 107.0593f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
+            //new GameLocation(new Vector3(272.8409f, -965.4847f, 29.31605f), 27.34526f, LocationType.Restaurant, "Noodle Exchange", "You Won't Want To Share!") {Menu = NoodleMenu },
+            //new GameLocation(new Vector3(-655.6034f, -880.3672f, 24.67554f), 265.7094f, LocationType.Restaurant, "Wook Noodle House", "Wook Noodle House") {Menu = NoodleMenu },
+            //new GameLocation(new Vector3(-680.4404f, -945.5441f, 20.93157f), 180.6927f, LocationType.Restaurant, "Wook Noodle House", "Wook Noodle House") {Menu = NoodleMenu },
+            //new GameLocation(new Vector3(-654.8373f, -885.7593f, 24.67703f), 273.4168f, LocationType.Restaurant, "Park Jung Restaurant", "Park Jung Restaurant") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-661.5396f, -907.5895f, 24.60632f), 278.5222f, LocationType.Restaurant, "Hwan Cafe", "Hwan Cafe") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-163.0659f, -1440.267f, 31.42698f), 55.5593f, LocationType.Restaurant, "Wok It Off", "") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(1894.635f, 3715.372f, 32.74969f), 119.2431f, LocationType.Restaurant, "Chinese Food", "") {Menu = GenericMenu },
+            ////Italian
+            //new GameLocation(new Vector3(-1182.659f, -1410.577f, 4.499721f), 215.9843f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
+            //new GameLocation(new Vector3(-213.0357f, -40.15178f, 50.04371f), 157.8173f, LocationType.Restaurant, "Al Dentes", "Al Dentes") {Menu = AlDentesMenu },
+            //new GameLocation(new Vector3(-1393.635f, -919.5128f, 11.24511f), 89.35195f, LocationType.Restaurant, "Al Dentes", "Al Dentes"){ Menu = AlDentesMenu },
+            //new GameLocation(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
+            //new GameLocation(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
+            //new GameLocation(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, LocationType.Restaurant, "Pizza This...", "Pizza This...") {Menu = PizzaMenu },
+            //new GameLocation(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, LocationType.Restaurant, "Guidos Takeout 24/7", "Guidos Takeout 24/7") {Menu = PizzaMenu },
+            //new GameLocation(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, LocationType.Restaurant, "Pebble Dash Pizza", "Pebble Dash Pizza"){ Menu = PizzaMenu },
+            //new GameLocation(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, LocationType.Restaurant, "Slice N Dice Pizza","Slice UP!"){ Menu = PizzaMenu},
+            //new GameLocation(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, LocationType.Restaurant, "Sharkies Bites","Take A Bite Today!"){ Menu = PizzaMenu, IsWalkup = true },
+            //new GameLocation(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, LocationType.Restaurant, "Giovanni's Italian", "Giovanni's Italian"){ Menu = PizzaMenu },
+            ////Burger
+            //new GameLocation(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, LocationType.Restaurant, "Wigwam", "No need for reservations") { Menu = WigwamMenu ,BannerImage = "wigwam.png"},
+            //new GameLocation(new Vector3(-860.8414f, -1140.393f, 7.39234f), 171.7175f, LocationType.Restaurant, "Wigwam", "No need for reservations") { Menu = WigwamMenu,BannerImage = "wigwam.png" },
+            //new GameLocation(new Vector3(-1540.86f, -454.866f, 40.51906f), 321.1314f, LocationType.Restaurant, "Up-N-Atom", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
+            //new GameLocation(new Vector3(81.31124f, 275.1125f, 110.2102f), 162.7602f, LocationType.Restaurant, "Up-N-Atom", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
+            //new GameLocation(new Vector3(1591.054f, 6451.071f, 25.31714f), 158.0088f, LocationType.Restaurant, "Up-N-Atom Diner", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24,BannerImage = "upnatom.png"},
+            //new GameLocation(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, LocationType.Restaurant, "Burger Shot", "Burger Shot") {Menu = BurgerShotMenu },
+            //new GameLocation(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, LocationType.Restaurant, "Horny's Burgers", ""){Menu = BeefyBillsMenu },
+            //new GameLocation(new Vector3(-512.6821f, -683.3517f, 33.18555f), 3.720508f, LocationType.Restaurant, "Snr. Buns", "Snr. Buns") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, LocationType.Restaurant, "Snr. Muffin", "Snr. Muffin") {Menu = GenericMenu },//??? 
+            //new GameLocation(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, LocationType.Restaurant, "La Vaca Loca", "") {Menu = BeefyBillsMenu, CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
+            //new GameLocation(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, LocationType.Restaurant, "Spitroasters", ""){Menu = BeefyBillsMenu },
+            ////Bagels&Donuts
+            //new GameLocation(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, LocationType.Restaurant, "Dickies Bagels", "Holy Dick!") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, LocationType.Restaurant, "Rusty Browns", "") { Menu = CoffeeMenu,BannerImage = "rustybrowns.png" },
+            //new GameLocation(new Vector3(55.28403f, -799.5469f, 31.58599f), 341.3315f, LocationType.Restaurant, "Ground & Pound Cafe", "") { Menu = CoffeeMenu },
+            ////Coffee
+            //new GameLocation(new Vector3(-1283.567f, -1130.118f, 6.795891f), 143.1178f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-1549.39f, -435.5105f, 35.88667f), 234.6563f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-835.4522f, -610.4766f, 29.02697f), 142.0655f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-602.2112f, -1105.766f, 22.32427f), 273.8795f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-659.5289f, -814.0433f, 24.53778f), 232.0023f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu ,BannerImage = "beanmachine.png"},
+            //new GameLocation(new Vector3(-687.0801f, -855.6792f, 23.89398f), 0.2374549f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-1345.296f, -609.976f, 28.61888f), 304.4266f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-270.3488f, -977.3488f, 31.21763f), 164.5747f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, LocationType.Restaurant, "The Bean Machine Coffee", "The Bean Machine Coffee") { Menu = BeanMachineMenu,BannerImage = "beanmachine.png" },
+            //new GameLocation(new Vector3(-1206.975f, -1135.029f, 7.693257f), 109.1408f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co")  { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-1278.833f, -876.438f, 11.9303f), 123.2498f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(1169.704f, -403.1992f, 72.24859f), 344.0863f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(265.4628f, -981.3839f, 29.36569f), 72.07395f, LocationType.Restaurant, "Cool Beans Coffee Co", "Cool Beans Coffee Co") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-1108.847f, -1355.264f, 5.035112f), 206.1676f, LocationType.Restaurant, "Crucial Fix Coffee", "Crucial Fix Coffee") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(189.0311f, -231.234f, 54.07472f), 340.4597f, LocationType.Restaurant, "Crucial Fix Coffee", "") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(273.174f, -833.0611f, 29.41237f), 185.6476f, LocationType.Restaurant, "Crucial Fix Coffee", "") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-576.6631f, -677.8674f, 32.36259f), 306.9058f, LocationType.Restaurant, "Hit-N-Run Coffee", "Hit-N-Run Coffee"){ Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, LocationType.Restaurant, "{java.update();}", "Enjoy Hot Coffee") { Menu = CoffeeMenu },
+            //new GameLocation(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, LocationType.Restaurant, "Little Teapot", "Little Teapot") { Menu = CoffeeMenu },
+            ////Mexican
+            //new GameLocation(new Vector3(10.96682f, -1605.874f, 29.3931f), 229.8729f, LocationType.Restaurant, "The Taco Farmer", "Open All Hours!") {Menu = TacoFarmerMenu, OpenTime = 0, CloseTime = 24 },
+            //new GameLocation(new Vector3(649.765f, 2728.621f, 41.9959f), 276.2882f, LocationType.Restaurant, "Taco Farmer", "Open All Hours!") {Menu = TacoFarmerMenu, OpenTime = 0, CloseTime = 24 },
+            //new GameLocation(new Vector3(-1168.281f, -1267.279f, 6.198249f), 111.9682f, LocationType.Restaurant, "Taco Libre", "Taco Libre") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(-657.5089f, -679.4656f, 31.46727f), 317.9819f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
+            //new GameLocation(new Vector3(-1196.981f, -791.5534f, 16.40427f), 134.7115f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
+            //new GameLocation(new Vector3(-1553.112f, -439.9938f, 40.51905f), 228.7506f, LocationType.Restaurant, "Taco Bomb", "My taco looks so tasty!") {Menu = TacoBombMenu,BannerImage = "tacobomb.png" },
+            //new GameLocation(new Vector3(99.21678f, -1419.307f, 29.42156f), 323.9604f, LocationType.Restaurant, "Aguila Burrito", "") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(445.9454f, -1241.581f, 30.27799f), 179.553f, LocationType.Restaurant, "Attack-A-Taco", "") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(1093.13f, -362.9193f, 67.06821f), 168.6222f, LocationType.Restaurant, "Hearty Taco", "") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, LocationType.Restaurant, "Hearty Taco", "") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, LocationType.Restaurant, "Mom's Tacos", "") {Menu = TacoFarmerMenu },
+            //new GameLocation(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, LocationType.Restaurant, "Mom's Tacos", "") {Menu = TacoFarmerMenu },
+            ////Ice Cream
+            //new GameLocation(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, LocationType.Restaurant, "The Sundae Post", "The Sundae Post") {Menu = DonutMenu },
+            //new GameLocation(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, LocationType.Restaurant, "Ice Maiden", "Ice Maiden") {Menu = GenericMenu, IsWalkup = true },
+            ////Juice and Smoothies
+            //new GameLocation(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, LocationType.Restaurant, "Vitamin Seaside Juice Bar", "Vitamin Seaside Juice Bar"){ Menu = FruitMenu },
+            //new GameLocation(new Vector3(-1187.057f, -1536.73f, 4.379496f), 32.85152f, LocationType.Restaurant, "Muscle Peach Juice Bar", "Muscle Peach Juice Bar"){ Menu = FruitMenu },
+            //new GameLocation(new Vector3(-1236.263f, -287.9641f, 37.63038f), 205.8273f, LocationType.Restaurant, "Limey's Juice and Smoothies", "No Limes About It") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(250.3842f, -1026.535f, 29.25663f), 124.0668f, LocationType.Restaurant, "Limey's Juice and Smoothies", "") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-1182.576f, -1248.037f, 6.991587f), 110.7639f, LocationType.Restaurant, "Limey's Juice Bar", "No Limes About It") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-471.7646f, -18.46761f, 45.75837f), 357.2652f, LocationType.Restaurant, "Fruit Machine", "Fruit Machine"){Menu = GenericMenu },
+            //new GameLocation(new Vector3(2741.563f, 4413.093f, 48.62326f), 201.5914f, LocationType.Restaurant, "Big Juice Stand", "Big Juice Stand"){Menu = GenericMenu },
+            //new GameLocation(new Vector3(1791.592f, 4594.844f, 37.68291f), 182.8134f, LocationType.Restaurant, "Alamo Fruit", "Alamo Fruit"){ Menu = FruitMenu },
+            //new GameLocation(new Vector3(1199.951f, -501.2592f, 65.17791f), 113.7728f, LocationType.Restaurant, "Squeeze One Out", ""){ Menu = FruitMenu },
+            ////Chicken
+            //new GameLocation(new Vector3(-584.761f, -872.753f, 25.91489f), 353.0746f, LocationType.Restaurant, "Lucky Plucker", "Lucky Plucker") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(2580.543f, 464.6521f, 108.6232f), 176.5548f, LocationType.Restaurant, "Bishop's Chicken", "Bishop's Chicken") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(169.3292f, -1634.163f, 29.29167f), 35.89598f, LocationType.Restaurant, "Bishop's Chicken", "") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, LocationType.Restaurant, "Lucky Plucker", "") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, LocationType.Restaurant, "Cluckin' Bell", "") {Menu = CluckinBellMenu },
+            //new GameLocation(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, LocationType.Restaurant, "Cluckin' Bell", "") {Menu = CluckinBellMenu },
+            ////General    
+            //new GameLocation(new Vector3(-1222.546f, -807.5845f, 16.59777f), 305.3918f, LocationType.Restaurant, "Lettuce Be", "Lettuce Be") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-1196.705f, -1167.969f, 7.695099f), 108.4535f, LocationType.Restaurant, "Lettuce Be", "Lettuce Be") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(-1535.082f, -422.2449f, 35.59194f), 229.4618f, LocationType.Restaurant, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ Menu = ChihuahuaHotDogMenu },
+            //new GameLocation(new Vector3(49.24896f, -1000.381f, 29.35741f), 335.6092f, LocationType.Restaurant, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes."){ Menu = ChihuahuaHotDogMenu },
+            //new GameLocation(new Vector3(-1271.224f, -1200.703f, 5.366248f), 70.19876f, LocationType.Restaurant, "The Nut Buster", "The Nut Buster") {Menu = GenericMenu },
+            //new GameLocation(new Vector3(166.2677f, -1450.995f, 29.24164f), 142.858f, LocationType.Restaurant, "Ring Of Fire Chili House", "") {Menu = GenericMenu },
             //Drive Thru
             new GameLocation(new Vector3(95.41846f, 285.0295f, 110.2042f), 251.8247f, LocationType.DriveThru, "Up-N-Atom Burger", "Never Frozen, Often Microwaved") {Menu = UpNAtomMenu,OpenTime = 0, CloseTime = 24, BannerImage = "upnatom.png"},
             new GameLocation(new Vector3(15.48935f, -1595.832f, 29.28254f), 319.2816f, LocationType.DriveThru, "The Taco Farmer", "Open All Hours!") {Menu = TacoFarmerMenu },
@@ -671,45 +919,45 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GameLocation(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, LocationType.DriveThru, "Horny's Burgers", "Horny's Burgers") {Menu = BeefyBillsMenu },
             
             //Bank
-            new GameLocation(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, LocationType.Bank, "Fleeca Bank", "Fleeca Bank"),
-            new GameLocation(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, LocationType.Bank, "Fleeca Bank", "Fleeca Bank"),
-            new GameLocation(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, LocationType.Bank, "Maze Bank", "Maze Bank"),
-            new GameLocation(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f, LocationType.Bank, "Fleeca Bank", ""),
-            new GameLocation(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f, LocationType.Bank, "Fleeca Bank", ""),
-            new GameLocation(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, LocationType.Bank, "Blaine County Savings", ""),
-            new GameLocation(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f, LocationType.Bank, "Fleeca Bank", ""),
-            new GameLocation(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, LocationType.Bank, "Fleeca Bank", ""),
+            //new GameLocation(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, LocationType.Bank, "Fleeca Bank", "Fleeca Bank"),
+            //new GameLocation(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, LocationType.Bank, "Fleeca Bank", "Fleeca Bank"),
+            //new GameLocation(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, LocationType.Bank, "Maze Bank", "Maze Bank"),
+            //new GameLocation(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f, LocationType.Bank, "Fleeca Bank", ""),
+            //new GameLocation(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f, LocationType.Bank, "Fleeca Bank", ""),
+            //new GameLocation(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, LocationType.Bank, "Blaine County Savings", ""),
+            //new GameLocation(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f, LocationType.Bank, "Fleeca Bank", ""),
+            //new GameLocation(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, LocationType.Bank, "Fleeca Bank", ""),
 
 
             //Pharmacy
-            new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, LocationType.Pharmacy, "Dollar Pills", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(326.7227f, -1074.448f, 29.47332f), 359.3641f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(805.143f, -1063.586f, 28.42115f), 90.00111f, LocationType.Pharmacy, "Meltz's Pharmacy", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(1225.14f, -391.3563f, 68.68563f), 28.81875f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(151.0329f, 6647.418f, 31.594f), 135.0961f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(-172.4879f, 6381.202f, 31.47279f), 222.4285f, LocationType.Pharmacy, "Bay Side Drugs", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(214.0241f, -1835.08f, 27.54375f), 318.7183f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(591.2585f, 2744.49f, 42.0425f), 184.8661f, LocationType.Pharmacy, "Dollar Pills", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(825.8448f, -97.80138f, 80.59971f), 321.7153f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
-            new GameLocation(new Vector3(84.03228f, -810.2528f, 31.41642f), 350.9262f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, LocationType.Pharmacy, "Dollar Pills", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(326.7227f, -1074.448f, 29.47332f), 359.3641f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(805.143f, -1063.586f, 28.42115f), 90.00111f, LocationType.Pharmacy, "Meltz's Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(1225.14f, -391.3563f, 68.68563f), 28.81875f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(151.0329f, 6647.418f, 31.594f), 135.0961f, LocationType.Pharmacy, "Pop's Pills", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(-172.4879f, 6381.202f, 31.47279f), 222.4285f, LocationType.Pharmacy, "Bay Side Drugs", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(214.0241f, -1835.08f, 27.54375f), 318.7183f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(591.2585f, 2744.49f, 42.0425f), 184.8661f, LocationType.Pharmacy, "Dollar Pills", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(825.8448f, -97.80138f, 80.59971f), 321.7153f, LocationType.Pharmacy, "Pharmacy", "") {Menu = PharmacyMenu },
+            //new GameLocation(new Vector3(84.03228f, -810.2528f, 31.41642f), 350.9262f, LocationType.Pharmacy, "Family Pharmacy", "") {Menu = PharmacyMenu },
 
 
 
 
-            //Hardware
-            new GameLocation(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, LocationType.HardwareStore, "You Tool", "You Tool") {Menu = ToolMenu,BannerImage = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
-            new GameLocation(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, LocationType.HardwareStore, "Krapea", ""){Menu = ToolMenu },
-            new GameLocation(new Vector3(-10.88182f, 6499.395f, 31.50508f), 44.30542f, LocationType.HardwareStore, "Bay Hardware", ""){Menu = ToolMenu },
-            new GameLocation(new Vector3(-3153.697f, 1053.398f, 20.88735f), 338.4756f, LocationType.HardwareStore, "Hardware", ""){Menu = ToolMenu },
-            new GameLocation(new Vector3(343.2759f, -1297.948f, 32.5097f), 164.2121f, LocationType.HardwareStore, "Bert's Tool Supply", ""){Menu = ToolMenu },
+            ////Hardware
+            //new GameLocation(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, LocationType.HardwareStore, "You Tool", "You Tool") {Menu = ToolMenu,BannerImage = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
+            //new GameLocation(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, LocationType.HardwareStore, "Krapea", ""){Menu = ToolMenu },
+            //new GameLocation(new Vector3(-10.88182f, 6499.395f, 31.50508f), 44.30542f, LocationType.HardwareStore, "Bay Hardware", ""){Menu = ToolMenu },
+            //new GameLocation(new Vector3(-3153.697f, 1053.398f, 20.88735f), 338.4756f, LocationType.HardwareStore, "Hardware", ""){Menu = ToolMenu },
+            //new GameLocation(new Vector3(343.2759f, -1297.948f, 32.5097f), 164.2121f, LocationType.HardwareStore, "Bert's Tool Supply", ""){Menu = ToolMenu },
 
-            //PawnShop
-            new GameLocation(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, LocationType.PawnShop, "F.T. Pawn", "") {Menu = ToolMenu },
-            new GameLocation(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, LocationType.PawnShop, "Pawn & Jewelery", "") {Menu = ToolMenu },
+            ////PawnShop
+            //new GameLocation(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, LocationType.PawnShop, "F.T. Pawn", "") {Menu = ToolMenu },
+            //new GameLocation(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, LocationType.PawnShop, "Pawn & Jewelery", "") {Menu = ToolMenu },
 
-            //Strip
-            new GameLocation(new Vector3(-379.3227f, 217.9178f, 83.65989f), 355.8053f, LocationType.StripClub, "Hornbills", ""),
+            ////Strip
+            //new GameLocation(new Vector3(-379.3227f, 217.9178f, 83.65989f), 355.8053f, LocationType.StripClub, "Hornbills", ""),
 
             //Car Dealer
             new GameLocation(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, LocationType.CarDealer, "Benefactor/Gallivanter", "") { BannerImage = "benefactorgallivanter.png", Menu = BenefactorGallavanterMenu,
@@ -758,9 +1006,9 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         #if DEBUG
 
-            //Bus Stop
-            new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
-            new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
+            ////Bus Stop
+            //new GameLocation(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, LocationType.BusStop, "PillBoxHospitalStop", ""),
+            //new GameLocation(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, LocationType.BusStop, "LaMesaPoliceStop1", ""),
 
             ////Apartments
             //new GameLocation(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, LocationType.Apartment, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578 },
@@ -778,40 +1026,6 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         });
 
-
-                /*prop_vend_snak_01.yft candy vending machine
-        prop_vend_coffe_01.ydr coffee machine
-        prop_vend_condom_01.ydr condom machine, but up on wall
-        prop_vend_fags_01.ydr cigarette machine, but up on wall
-        prop_vend_soda_01.yft eCola machine
-        prop_vend_soda_02.yft sprunkmacine full
-        prop_vend_water_01.yft water machine full raine
-        prop_vend_fridge01.yft frigde with soda like at the ends of grocery store aisle
-        prop_gumball_01.yft 103 , 3 is most like gumba;ll, 2 is like those m& m machines with 3 items*/
-
-
-
-        /*            new GameLocation(new Vector3(2683.969f,3282.098f,55.24052f), 89.53969f, LocationType.GasStation, "24/7 Supermarket Grande Senora" ,"As fast as you"),//,new List<Vector3>() { new Vector3(2678.073f, 3265.522f, 54.7076f),new Vector3(2681.173f, 3262.774f, 54.70736f) }),
-            new GameLocation(new Vector3(1725f, 6410f, 35f), 22.23846f, LocationType.GasStation, "24/7 Mount Chilliad (Gas)","As fast as you"),//,new List<Vector3>() { new Vector3(1706.173f, 6412.223f, 32.22713f), new Vector3(1701.657f, 6414.528f, 32.1186f), new Vector3(1697.71f, 6416.565f, 32.08189f),new Vector3(1706.173f, 6412.223f, 32.22713f)
-                                                                                                                                                //, new Vector3(1697.869f,6420.53f,32.05283f), new Vector3(1701.852f,6418.417f,32.05503f), new Vector3(1705.852f,6416.659f,32.05479f) }),
-            new GameLocation(new Vector3(-1429.33f,-270.8909f,46.2077f), 325.7301f, LocationType.GasStation, "Ron Morningwood","Good Morningwood!"),//,new List<Vector3>() { new Vector3(-1428.23f,-277.0434f,45.79089f), new Vector3(-1436.362f,-267.6647f,45.79237f),
-                                                                                                                                                         // new Vector3(-1440.16f,-270.164f,45.79181f),new Vector3(-1431.339f,-280.2279f,45.79009f),
-                                                                                                                                                         // new Vector3(-1434.153f,-282.5898f,45.79139f), new Vector3(-1442.416f,-273.0687f,45.7986f),
-                                                                                                                                                         // new Vector3(-1446.231f,-276.2419f,45.80196f),new Vector3(-1437.798f,-285.5625f,45.77643f) }),
-            new GameLocation(new Vector3(160.4977f,6635.249f,31.61175f), 70.88637f, LocationType.GasStation, "Dons Country Store & Gas","Country Manners!"),//,new List<Vector3>() { new Vector3(188.7231f,6607.43f,31.84954f), new Vector3(184.8491f,6606.112f,31.85245f), new Vector3(181.3225f,6605.81f,31.84829f)
-                                                                                                                                               // , new Vector3(178.1896f,6604.389f,31.89782f), new Vector3(174.0998f,6604.168f,31.84834f), new Vector3(171.1875f,6603.454f,32.04737f) }),
-            new GameLocation(new Vector3(266.2746f,2599.669f,44.7383f), 231.9223f, LocationType.GasStation, "Harmony General Store & Gas","Always in Harmony!"), //,new List<Vector3>() { new Vector3(262.5423f, 2610.143f, 44.3814f),new Vector3(265.0521f, 2604.807f, 44.38421f) }),
-
-            new GameLocation(new Vector3(1039.753f,2666.26f,39.55253f), 143.6208f, LocationType.GasStation, "Grande Senora Cafe & Gas","Extra Grande!"),//,new List<Vector3>() { new Vector3(1043.293f,2677.189f,38.90083f), new Vector3(1035.182f,2677.444f,38.90271f), new Vector3(1034.835f,2670.396f,38.9343f)
-                                                                                                                                                //, new Vector3(1043.761f,2670.147f,38.94082f), new Vector3(1043.412f,2672.185f,38.95105f), new Vector3(1034.338f,2672.41f,38.94936f) }),
-
-
-            new GameLocation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, LocationType.GasStation, "LTD Richmond Glen",""),//,new List<Vector3>() { new Vector3(-1804.758f,792.6874f,138.5142f), new Vector3(-1809.721f,798.1087f,138.5137f),
-                                                                                                                                                        //  new Vector3(-1807.576f,801.251f,138.5144f),new Vector3(-1802.39f,796.0137f,138.5141f),
-                                                                                                                                                       //   new Vector3(-1798.391f,798.9479f,138.5154f), new Vector3(-1802.964f,805.196f,138.5681f),
-                                                                                                                                                       //   new Vector3(-1800.726f,807.3672f,138.515f),new Vector3(-1796.539f,803.0259f,138.5148f),
-                                                                                                                                                        //  new Vector3(-1792.259f,804.6542f,138.5133f),new Vector3(-1796.816f,810.0197f,138.5144f),
-                                                                                                                                                       //   new Vector3(-1794.411f,813.2302f,138.5146f),new Vector3(-1789.586f,808.2133f,138.5163f)}),*/
     }
 }
 

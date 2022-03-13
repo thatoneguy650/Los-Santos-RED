@@ -46,7 +46,6 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void StartConversation();
         void StartScenario();
-        void SurrenderToPolice(GameLocation location);
         void StartTransaction();
         void StartSimpleTransaction();
         

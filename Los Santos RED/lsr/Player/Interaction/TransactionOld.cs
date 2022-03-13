@@ -201,7 +201,7 @@ public class TransactionOld : Interaction
         if (Store == null)
         {
             Store = new GameLocation() { Name = "" };
-            Store.Menu = Ped.TransactionMenu;
+            Store.Menu = Ped.ShopMenu.Items;
             ModItemMenu = new UIMenu("", "Transaction");
             RemoveBanner = true;
             ModItemMenu.RemoveBanner();

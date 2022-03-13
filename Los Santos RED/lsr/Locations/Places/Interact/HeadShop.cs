@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class GunStore : TransactableLocation
+public class HeadShop : InteractableLocation
 {
     private LocationCamera StoreCamera;
     private IActivityPerformable Player;
@@ -18,20 +18,23 @@ public class GunStore : TransactableLocation
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private ITimeControllable Time;
-    private UIMenuItem completeTask;
-
-    public GunStore() : base()
+    private Transaction Transaction;
+    public HeadShop() : base()
     {
 
     }
-    public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;
+
+    //[XmlIgnore]
+    //public ShopMenu Menu { get; set; }
+    //public string MenuID { get; set; }
+
+    public override int MapIcon { get; set; } = 96;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public bool IsIllegalShop { get; set; } = false;
-    public int MoneyToUnlock { get; set; } = 0;
-    public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, menuID)
+    public HeadShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
+        MenuID = menuID;
         ButtonPromptText = $"Shop at {Name}";
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -51,43 +54,37 @@ public class GunStore : TransactableLocation
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
 
                 CreateInteractionMenu();
-                CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                ProcessTransactionMenu();
+                Transaction.ProcessTransactionMenu();
 
-                if (IsIllegalShop)
-                {
-                    Player.GunDealerRelationship.AddMoneySpent(PurchaseMenu.MoneySpent);
-                }
-
-
-                DisposeTransactionMenu();
+                Transaction.DisposeTransactionMenu();
                 DisposeInteractionMenu();
 
                 StoreCamera.Dispose();
 
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
-            }, "GangDenInteract");
+            }, "RestaurantInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Buy")
         {
-            SellMenu?.Dispose();
-            PurchaseMenu?.Show();
+            Transaction?.SellMenu?.Dispose();
+            Transaction?.PurchaseMenu?.Show();
         }
         else if (selectedItem.Text == "Sell")
         {
-            PurchaseMenu?.Dispose();
-            SellMenu?.Show();
+            Transaction?.PurchaseMenu?.Dispose();
+            Transaction?.SellMenu?.Show();
         }
     }
 

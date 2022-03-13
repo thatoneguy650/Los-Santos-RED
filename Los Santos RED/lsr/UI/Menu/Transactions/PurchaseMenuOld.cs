@@ -407,6 +407,13 @@ public class PurchaseMenuOld : Menu
     public override void Show()
     {
         //CreatePurchaseMenu();
+
+        if (purchaseMenu.CurrentSelection != -1)
+        {
+            CreatePreview(purchaseMenu.MenuItems[purchaseMenu.CurrentSelection]);
+        }
+
+
         purchaseMenu.Visible = true;
     }
     public override void Toggle()

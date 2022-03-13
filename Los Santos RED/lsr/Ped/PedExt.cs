@@ -110,7 +110,7 @@ public class PedExt : IComplexTaskable
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
-    public bool HasMenu => TransactionMenu != null && TransactionMenu.Any();
+    public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasSpokenWithPlayer { get; set; }
     public bool HatesPlayer { get; set; } = false;
@@ -178,7 +178,10 @@ public class PedExt : IComplexTaskable
     public int RelationShipToPlayer { get; set; } = 255;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
-    public List<MenuItem> TransactionMenu { get; set; }
+    //public List<MenuItem> TransactionMenu { get; set; }
+
+    public ShopMenu ShopMenu { get; set; }
+
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;

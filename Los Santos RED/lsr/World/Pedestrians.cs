@@ -626,7 +626,7 @@ public class Pedestrians
                 myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
             }
             ShopMenu toAdd = GetIllicitMenu();
-            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd };
             Civilians.Add(toCreate);
 
             Pedestrian.Money = toCreate.Money;
@@ -689,7 +689,7 @@ public class Pedestrians
                     toAdd = ShopMenus.GetRandomDrugDealerMenu();
                 }
             }
-            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, TransactionMenu = toAdd?.Items };
+            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd };
             if (Pedestrian.Exists())
             {
                 gm.Pedestrian.Money = gm.Money;

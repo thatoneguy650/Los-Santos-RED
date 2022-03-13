@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Hotel : TransactableLocation
+public class Hotel : InteractableLocation
 {
     private LocationCamera StoreCamera;
 
@@ -21,16 +21,24 @@ public class Hotel : TransactableLocation
     private ITimeControllable Time;
     private bool KeepInteractionGoing = false;
 
+
+
+
     public Hotel() : base()
     {
 
     }
+
+    //[XmlIgnore]
+    //public ShopMenu Menu { get; set; }
+    //public string MenuID { get; set; }
     public override int MapIcon { get; set; } = 475;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public Hotel(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description, menuID)
+    public Hotel(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
+        MenuID = menuID;
         ButtonPromptText = $"Stay At {Name}";
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -55,8 +63,6 @@ public class Hotel : TransactableLocation
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 GenerateHotelMenu();
-                //ProcessInteractionMenu();
-
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();

@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr
             Weather = new Weather(WavAudio, Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher, Zones, Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs, Input);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher, Zones, Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs, Input, ShopMenus);
             Debug.Setup();
             GameFiber.Yield();
             World.Setup();
