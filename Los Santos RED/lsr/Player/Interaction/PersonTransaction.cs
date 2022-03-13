@@ -33,11 +33,17 @@ public class PersonTransaction : Interaction
     private bool IsVendorTasked = false;
     private bool IsDisposed = false;
     private Rage.Object SellingProp;
+    private UIMenuItem GetInCar;
+    private UIMenuItem InviteInCar;
+    private UIMenuItem Follow;
+    private bool PedWasPersistent = false;
+    private bool isPaused;
+    private bool isFollowing;
 
     public InteractableLocation AssociatedStore { get; set; }
 
 
-    private bool CanContinueConversation => Player.CanConverse;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
+    private bool CanContinueConversation => Player.CanConverse && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 12f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
     public override string DebugString => "";
 
     public PersonTransaction(IActivityPerformable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -71,7 +77,7 @@ public class PersonTransaction : Interaction
 
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-
+                PedWasPersistent = Ped.WasEverSetPersistent;
                 Player.IsConversing = true;
                 Player.IsTransacting = true;
 
@@ -87,19 +93,29 @@ public class PersonTransaction : Interaction
                 Transaction.PersonTransaction = this;
                 Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
 
+                AddAdditionalOptions();
+                StopVehicleActions();
 
                 Greet();
 
-
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
-                
-
-
                 //Transaction.ProcessTransactionMenu();
-                while (MenuPool.IsAnyMenuOpen())
+                while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation)
                 {
+                    UpdateOptions();
+
+
+                    if(isPaused && Player.ButtonPromptList.Any(x=> x.Group == "ContinueTransaction" && x.IsPressedNow))
+                    {
+                        Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
+                        isPaused = false;
+                        InteractionMenu.Visible = true;
+                        HavePedLookAtPlayer();
+                        HavePlayerLookAtPed();
+                        EntryPoint.WriteToConsole("Unpased Person Transaction");
+                    }
+
                     MenuPool.ProcessMenus();
                     Transaction.PurchaseMenu?.Update();
                     Transaction.SellMenu?.Update();
@@ -121,10 +137,21 @@ public class PersonTransaction : Interaction
             Player.IsTransacting = false;
             Transaction?.DisposeTransactionMenu();
             DisposeInteractionMenu();
-
+            Player.LastFriendlyVehicle = null;
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-                if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
+                Ped.Pedestrian.CanBePulledOutOfVehicles = true;
+
+                if(Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                    Ped.Pedestrian.KeepTasks = false;
+                    NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
+                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
+                }
+                else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
                 {
                     Ped.Pedestrian.BlockPermanentEvents = false;
                     Ped.Pedestrian.KeepTasks = false;
@@ -138,11 +165,74 @@ public class PersonTransaction : Interaction
                     NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking", 3);
                 }
+                //if (Ped.Pedestrian.CurrentVehicle.Exists())
+                //{
+                //    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, -1);
+                //}
+
             }
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         }
     }
+    private void StopVehicleActions()
+    {
+        GameFiber.StartNew(delegate
+        {
+            while (!IsDisposed)
+            {
+                if (Ped != null && Ped.Pedestrian.Exists())
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                    Ped.Pedestrian.KeepTasks = true;
 
+                    if (Ped.Pedestrian.CurrentVehicle.Exists() && Ped.IsDriver)
+                    {
+                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, -1);
+                    }
+                }
+                GameFiber.Yield();
+            }
+        }, "PersonTransaction");
+    }
+    private void AddAdditionalOptions()
+    {
+        GetInCar = new UIMenuItem("Get In Car", "Get in the car to do the deal");
+        InviteInCar = new UIMenuItem("Invite In Car", "Invite them in the car to do the deal");
+        Follow = new UIMenuItem("Follow", "Have the ped follow you to somewhere more discreet");
+        if (Ped != null && Ped.HasMenu && Ped.ShopMenu.Items.Any(x=> x.IsIllicilt))
+        {
+            InteractionMenu.AddItem(GetInCar);
+            InteractionMenu.AddItem(InviteInCar);
+            InteractionMenu.AddItem(Follow);   
+        }
+    }
+    private void UpdateOptions()
+    {
+        if(Ped.IsInVehicle && !Player.IsInVehicle)
+        {
+            GetInCar.Enabled = true;
+        }
+        else
+        {
+            GetInCar.Enabled = false;
+        }
+        if(!Ped.IsInVehicle && Player.IsInVehicle)
+        {
+            InviteInCar.Enabled = true;
+        }
+        else
+        {
+            InviteInCar.Enabled = false;
+        }
+        if(!Player.IsInVehicle && !Ped.IsInVehicle)
+        {
+            Follow.Enabled = true;
+        }
+        else
+        {
+            Follow.Enabled = false;
+        }
+    }
     public void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
         StartBuyAnimation(modItem, menuItem.IsIllicilt);
@@ -173,6 +263,137 @@ public class PersonTransaction : Interaction
         {
             Transaction?.PurchaseMenu?.Dispose();
             Transaction?.SellMenu?.Show();
+        }
+        else if (selectedItem == GetInCar)
+        {
+            PlayerGetInCar();
+        }
+        else if (selectedItem == InviteInCar)
+        {
+            PedGetInCar();
+        }
+        else if (selectedItem == Follow)
+        {
+            FollowPlayer(Ped.Pedestrian);
+        }
+    }
+    private void GetInVehicleAsPassenger(Ped passenegerToAdd, Vehicle vehicleToEnter)
+    {
+        if(passenegerToAdd.Exists() && vehicleToEnter.Exists())
+        {
+            int? seatIndex = vehicleToEnter.GetFreePassengerSeatIndex();
+            if (seatIndex != null)
+            {
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, 5000, seatIndex, 0.5f, 0);
+                //NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, 5000, seatIndex, 1f, 9);
+            }
+        }
+    }
+    private void HavePedLookAtPlayer()
+    {
+        IsVendorTasked = true;
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+    }
+    private void HavePlayerLookAtPed()
+    {
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
+            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+    }
+    private void PlayerGetInCar()
+    {
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            Ped.Pedestrian.CanBePulledOutOfVehicles = false;
+            Ped.Pedestrian.CurrentVehicle.IsStolen = false;
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+            Player.LastFriendlyVehicle = null;
+            Player.LastFriendlyVehicle = Ped.Pedestrian.CurrentVehicle;
+            EntryPoint.WriteToConsole("Paused Person Transaction");
+
+            InteractionMenu.Visible = false;
+            isPaused = true;
+
+            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            {
+                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+            }
+
+
+            GetInVehicleAsPassenger(Player.Character, Ped.Pedestrian.CurrentVehicle);
+
+        }
+    }
+    private void PedGetInCar()
+    {
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            Ped.Pedestrian.StaysInVehiclesWhenJacked = true;
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+            GetInVehicleAsPassenger(Ped.Pedestrian, Player.CurrentVehicle?.Vehicle);
+        }
+    }
+    private void FollowPlayer(Ped personToFollow)
+    {
+        if (personToFollow.Exists())
+        {
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+            isPaused = true;
+            EntryPoint.WriteToConsole("Paused Person Transaction");
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY" }, true);
+            SayAvailableAmbient(personToFollow, new List<string>() { "GENERIC_YES" }, true);
+            
+            InteractionMenu.Visible = false;
+            
+
+            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            {
+                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+            }
+
+            isFollowing = true;
+
+            personToFollow.BlockPermanentEvents = true;
+            personToFollow.KeepTasks = true;
+            //NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 2.0f, 2.0f, 0f, 0.75f, -1, 3f, true);
+
+
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_FOLLOW_TO_OFFSET_OF_ENTITY", 0, Player.Character, 2.0f, 0f, 0f, 0.75f, -1, 10.0f, true);//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
+                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+
+
+
+
+
+            // vehicleToEnter, 5000, seatIndex, 0.5f, 0);
         }
     }
     public void CreateInteractionMenu()
@@ -264,7 +485,10 @@ public class PersonTransaction : Interaction
         }
         if (Ped != null && Ped.Pedestrian.Exists())
         {
-
+            if (Ped.Pedestrian.CurrentVehicle.Exists() && Ped.IsDriver)
+            {
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, -1);
+            }
             IsActivelyConversing = true;
             GameTimeStartedConversing = Game.GameTime;
             IsActivelyConversing = true;
@@ -287,12 +511,41 @@ public class PersonTransaction : Interaction
 
             if (!Ped.IsFedUpWithPlayer)
             {
+                //Ped.Pedestrian.IsPersistent = true;
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                
+
                 if (Ped.IsInVehicle)
                 {
+                    //Ped.Pedestrian.BlockPermanentEvents = true;
+                    //Ped.Pedestrian.KeepTasks = true;
+
+                    if (Ped.Pedestrian.CurrentVehicle.Exists() && Ped.IsDriver)
+                    {
+                        //NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, -1);
+
+
+                        IsVendorTasked = true;
+                        //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 2000);
+                            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                    }
+
+
                     Ped.Pedestrian.BlockPermanentEvents = true;
                     Ped.Pedestrian.KeepTasks = true;
-                    IsVendorTasked = true;
-                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
+                    EntryPoint.WriteToConsole("PersonTransaction, THEY HAVE BEEN BLOCKED< CLEARED< AND FUCKING TASKED SO FUCK OFF");
                 }
                 else
                 {
@@ -392,7 +645,7 @@ public class PersonTransaction : Interaction
                 Ped.IsDealingDrugs = true;
             }
         }
-        Player.ButtonPrompts.Clear();
+        Player.ButtonPromptList.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
         {
@@ -486,7 +739,7 @@ public class PersonTransaction : Interaction
                 Ped.IsDealingDrugs = true;
             }
         }
-        Player.ButtonPrompts.Clear();
+        Player.ButtonPromptList.Clear();
         SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
         {
@@ -538,5 +791,6 @@ public class PersonTransaction : Interaction
         }
         //Show();     
     }
+
 }
 

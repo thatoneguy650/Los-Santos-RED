@@ -113,7 +113,7 @@ public class UISettings : ISettingsDefaultable
         SetDefault();
         #if DEBUG
             SetRadarZoomDistance = false;
-            ShowDebug = false;
+            ShowDebug = true;
         FadeStreetDisplay = false;
         FadeZoneDisplay = false;
         ZoneDisplayShowPrimaryAgency = false;

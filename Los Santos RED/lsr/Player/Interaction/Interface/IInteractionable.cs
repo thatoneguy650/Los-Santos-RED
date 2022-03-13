@@ -17,7 +17,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         PedExt CurrentTargetedPed { get; }
         bool IsAliveAndFree { get; }
-        List<ButtonPrompt> ButtonPrompts { get; }
+        List<ButtonPrompt> ButtonPromptList { get; }
         bool IsInVehicle { get; }
         bool CanConverse { get; }
         int Money { get; }
@@ -27,7 +27,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSitting { get; }
         bool CharacterModelIsFreeMode { get; }
         string FreeModeVoice { get; }
-        GameLocation CurrentShop { get; set; }
+      //  GameLocation CurrentShop { get; set; }
         bool IsMoveControlPressed { get; }
         bool CanPerformActivities { get; }
         bool IsDealingDrugs { get; set; }

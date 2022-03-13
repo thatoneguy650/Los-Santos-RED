@@ -145,7 +145,7 @@ public class InteractableLocation : BasicLocation
             {
                 Merchant = new Merchant(ped, settings, false, false, false, "Vendor", crimes, weapons);
                 Merchant.ShopMenu = Menu;
-                Merchant.NewStore = this;
+                Merchant.AssociatedStore = this;
                 EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
             }
         }

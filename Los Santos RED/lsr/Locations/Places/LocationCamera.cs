@@ -22,7 +22,11 @@ public class LocationCamera
     private float EntityCamFOV = 55f;
     private bool IsCancelled;
     private InteractableLocation Store;
-    
+    private bool isHighlightingLocation = false;
+
+
+    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    public float ItemPreviewHeading { get; set; } = 0f;
 
 
     private IActivityPerformable Player;
@@ -54,14 +58,38 @@ public class LocationCamera
     {
         DisableControl();
         DoEntryCam();
-        HighlightStoreWithCamera();
+
+        if(ItemPreviewPosition != Vector3.Zero)
+        {
+            isHighlightingLocation = true;
+            HighlightLocationWithCamera();
+        }
+        else
+        {
+            HighlightStoreWithCamera();
+        }
+        
         Game.LocalPlayer.Character.IsVisible = false;
         EntryPoint.WriteToConsole("Transaction: Setup Camera Ran", 5);
     }
     public void Dispose()
     {
-        ReturnToGameplay();
-        DoExitCam();
+        if (isHighlightingLocation)
+        {
+            Game.FadeScreenOut(1500, true);
+            NativeFunction.Natives.CLEAR_FOCUS();
+            
+            ReturnToGameplay();
+            Game.FadeScreenIn(1500, true);
+            DoExitCam();
+            
+
+        }
+        else
+        {
+            ReturnToGameplay();
+            DoExitCam();
+        }
         EnableControl();
         if (StoreCam.Exists())
         {
@@ -229,6 +257,8 @@ public class LocationCamera
         ToLookAtPos += new Vector3(0f, 0f, 0.4f);
         Vector3 EntranceEndWalkPosition = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 3f);
 
+
+
         if (!EntranceCam.Exists())
         {
             EntranceCam = new Camera(false);
@@ -250,6 +280,9 @@ public class LocationCamera
 
 
         Player.Character.IsVisible = true;
+        NativeFunction.Natives.CLEAR_FOCUS();
+
+        //NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, 0f, 0f, 0f);
 
         Game.LocalPlayer.Character.Tasks.GoStraightToPosition(EntranceEndWalkPosition, 1.0f, Store.EntranceHeading, 1.0f, 3000);
 
@@ -370,12 +403,40 @@ public class LocationCamera
         GameFiber.Sleep(1500);
     }
 
+
+
+    private void HighlightLocationWithCamera()
+    {
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        if (Store.HasCustomCamera)
+        {
+            StoreCam.Position = Store.CameraPosition;
+            StoreCam.Rotation = Store.CameraRotation;
+            StoreCam.Direction = Store.CameraDirection;
+            Game.FadeScreenOut(1500, true);
+            NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(Store.CameraPosition.X, Store.CameraPosition.Y, Store.CameraPosition.Z, 0f, 0f, 0f);
+            Vector3 ToLookAt = new Vector3(ItemPreviewPosition.X, ItemPreviewPosition.Y, ItemPreviewPosition.Z);
+            _direction = (ToLookAt - Store.CameraPosition).ToNormalized();
+            StoreCam.Direction = _direction;
+            StoreCam.Active = true;
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(1500, true);
+        }
+    }
+
+
     private void ReturnToGameplay()
     {
         if (!CameraTo.Exists())
         {
             CameraTo = new Camera(false);
         }
+
+
+        
 
         Vector3 ToLookAtPos = NativeHelper.GetOffsetPosition(Store.EntrancePosition, Store.EntranceHeading + 90f, 2f);
         EgressCamPosition = NativeHelper.GetOffsetPosition(ToLookAtPos, Store.EntranceHeading, 1f);

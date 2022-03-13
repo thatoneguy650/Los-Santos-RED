@@ -117,7 +117,7 @@ public class PurchaseMenu : Menu
     {
         ClearPreviews();
         purchaseMenu.Visible = false;
-        Player.ButtonPrompts.Clear();
+        Player.ButtonPromptList.Clear();
     }
     public void Setup()
     {
@@ -662,6 +662,13 @@ public class PurchaseMenu : Menu
     {
         if (modItem != null && menuItem != null && scrollerItem != null)
         {
+            InventoryItem PlayerInventoryItem = Player.Inventory.Items.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            int PlayerItems = 0;
+            if (PlayerInventoryItem != null)
+            {
+                PlayerItems = PlayerInventoryItem.Amount;
+            }
+
             string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
             string description = modItem.Description;
             if (description == "")
@@ -699,8 +706,9 @@ public class PurchaseMenu : Menu
                 {
                     MaxBuy = RemainingToBuy;
                 }
-                description += $"~n~Items To Sell: {MaxBuy}~s~";
+                description += $"~n~{MaxBuy} {modItem.MeasurementName}(s) For Purchase~s~";
             }
+            description += $"~n~Player Inventory: {PlayerItems}~s~ {modItem.MeasurementName}(s)";
             scrollerItem.Maximum = RemainingToBuy;
             scrollerItem.Enabled = enabled;
             scrollerItem.Description = description;

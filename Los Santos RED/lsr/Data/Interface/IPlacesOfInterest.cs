@@ -11,9 +11,9 @@ namespace LosSantosRED.lsr.Interface
     {
         PossibleLocations PossibleLocations { get; }
 
-        GameLocation GetClosestLocation(Vector3 position, LocationType grave);
-        List<GameLocation> GetAllPlaces();
-        List<GameLocation> GetLocations(LocationType hospital);
+        //GameLocation GetClosestLocation(Vector3 position, LocationType grave);
+        //List<GameLocation> GetAllPlaces();
+        //List<GameLocation> GetLocations(LocationType hospital);
         List<BasicLocation> GetAllBasicLocations();
         List<InteractableLocation> GetAllInteractableLocations();
     }

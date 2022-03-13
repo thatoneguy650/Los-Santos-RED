@@ -36,7 +36,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsConversing { get; }
         bool IsPerformingActivity { get; }
         bool CanConverseWithLookedAtPed { get; }
-        List<ButtonPrompt> ButtonPrompts { get; }
+        List<ButtonPrompt> ButtonPromptList { get; }
         string DebugLine8 { get; }
         string DebugLine9 { get; }
         float VehicleSpeedMPH { get; }
@@ -54,7 +54,7 @@ namespace LosSantosRED.lsr.Interface
         //bool IsSprinting { get; }
        // float StaminaPercent { get; }
         float IntoxicatedIntensityPercent { get; }
-        GameLocation CurrentShop { get; }
+        //GameLocation CurrentShop { get; }
         WeaponInformation CurrentWeapon { get; }
         SelectorOptions CurrentSelectorSetting { get; }
         short CurrentWeaponMagazineSize { get; }

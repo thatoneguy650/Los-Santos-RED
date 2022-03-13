@@ -138,39 +138,39 @@ public class HoldUp : Interaction
                 }
                 if (IsTargetting && IsTargetIntimidated)
                 {
-                    if (!Target.HasBeenMugged && !Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash"))
+                    if (!Target.HasBeenMugged && !Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                        Player.ButtonPromptList.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
                     }
-                    if (!Player.ButtonPrompts.Any(x => x.Identifier == "ForceDown"))
+                    if (!Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+                        Player.ButtonPromptList.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
                     }
-                    if (!Player.ButtonPrompts.Any(x => x.Identifier == "Flee"))
+                    if (!Player.ButtonPromptList.Any(x => x.Identifier == "Flee"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Flee", "HoldUp", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3));
+                        Player.ButtonPromptList.Add(new ButtonPrompt("Force Flee", "HoldUp", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3));
                     }
                 }
                 else
                 {
-                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                 }
-                if (Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
-                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     CreateMoneyDrop();
                 }
-                if (Player.ButtonPrompts.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
+                if (Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
                 {
                     ForcedCower = true;
-                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     ForceCower();
                 }
-                if (Player.ButtonPrompts.Any(x => x.Identifier == "Flee" && x.IsPressedNow) && IsTargetIntimidated && !Fleed)//demand cash?
+                if (Player.ButtonPromptList.Any(x => x.Identifier == "Flee" && x.IsPressedNow) && IsTargetIntimidated && !Fleed)//demand cash?
                 {
                     Fleed = true;
-                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     FuckOff();
                 }
 
@@ -192,7 +192,7 @@ public class HoldUp : Interaction
     }
     private void CleanUp()
     {
-        Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
         if (Target != null && Target.Pedestrian.Exists())
         {         
             Target.Pedestrian.BlockPermanentEvents = false;

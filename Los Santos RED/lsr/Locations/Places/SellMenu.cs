@@ -121,7 +121,7 @@ public class SellMenu : Menu
     {
         ClearPreviews();
         sellMenu.Visible = false;
-        Player.ButtonPrompts.Clear();
+        Player.ButtonPromptList.Clear();
     }
     public override void Show()
     {
@@ -333,7 +333,7 @@ public class SellMenu : Menu
                 }
                 else
                 {
-                    RemainingToSell = 0;
+                    //RemainingToSell = 0;
                     MaxSell = 1;
                     isEnabled = false;
                 }
@@ -342,7 +342,7 @@ public class SellMenu : Menu
             {
                 if (PlayerItems <= 0)
                 {
-                    RemainingToSell = 0;
+                    //RemainingToSell = 0;
                     MaxSell = 1;
                     isEnabled = false;
                 }
@@ -365,7 +365,8 @@ public class SellMenu : Menu
             {
                 description += $"~n~{modItem.HealthChangeDescription}";
             }
-            description += $"~n~Items To Buy: {RemainingToSell}~s~~n~You Have: {PlayerItems}";
+            description += $"~n~{RemainingToSell} {modItem.MeasurementName}(s) For Purchase~s~";
+            description += $"~n~Player Inventory: {PlayerItems}~s~ {modItem.MeasurementName}(s)";
             scrollerItem.Maximum = MaxSell;
             scrollerItem.Enabled = isEnabled;
             scrollerItem.Description = description;
@@ -485,7 +486,6 @@ public class SellMenu : Menu
             }
         }
     }
-
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();

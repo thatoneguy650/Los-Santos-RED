@@ -26,7 +26,7 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
         bool CanConverse { get; }
         bool IsInteractingWithLocation { get; set; }
-        List<ButtonPrompt> ButtonPrompts { get; }
+        List<ButtonPrompt> ButtonPromptList { get; }
         Inventory Inventory { get; }
         PlayerTasks PlayerTasks { get; }
         bool IsDoingSuspiciousActivity { get; set; }
@@ -39,11 +39,14 @@ namespace LosSantosRED.lsr.Interface
         bool IsDealingDrugs { get; set; }
         bool IsDealingIllegalGuns { get; set; }
         bool IsTransacting { get; set; }
+        VehicleExt CurrentVehicle { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
 
         void SetUnarmed();
         void StopDynamicActivity();
         void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
         void ConsumeItem(ModItem modItem);
         void ChangeName(string newName);
+        void EnterVehicleAsPassenger();
     }
 }

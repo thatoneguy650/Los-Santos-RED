@@ -82,26 +82,19 @@ namespace LosSantosRED.lsr
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
             Player.IsPressingFireWeapon = IsPressingFireWeapon;
-
             Player.ReleasedFireWeapon = ReleasedFireWeapon;
-
             //GameFiber.Yield();
             MenuCheck();
-
             CellPhoneCheck();
-
-
             ActivityCheck();
-
         }
-
         private void ActivityCheck()
         {
             if(Player.IsPerformingActivity)
             {
-                if (!IsShowingActivityPrompts || !Player.ButtonPrompts.Any(x=> x.Group == "Activity"))
+                if (!IsShowingActivityPrompts || !Player.ButtonPromptList.Any(x=> x.Group == "Activity"))
                 {
-                    Player.ButtonPrompts.Add(new ButtonPrompt("Pause Activity", "Activity", "PauseActivity", Settings.SettingsManager.KeySettings.ActivityKey, Settings.SettingsManager.KeySettings.ActivityKeyModifier, 999));
+                    Player.ButtonPromptList.Add(new ButtonPrompt("Pause Activity", "Activity", "PauseActivity", Settings.SettingsManager.KeySettings.ActivityKey, Settings.SettingsManager.KeySettings.ActivityKeyModifier, 999));
                     IsShowingActivityPrompts = true;
                 }
             }
@@ -109,7 +102,7 @@ namespace LosSantosRED.lsr
             {
                 if(IsShowingActivityPrompts)
                 {
-                    Player.ButtonPrompts.RemoveAll(x => x.Group == "Activity");
+                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Activity");
                     IsShowingActivityPrompts = false;
                 }
             }
@@ -202,55 +195,28 @@ namespace LosSantosRED.lsr
         }
         private void ConversationCheck()
         {
-            if (Player.ButtonPrompts.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
+            if (Player.ButtonPromptList.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
             {
                 Player.StartConversation();
             }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
             {
                 Player.StartTransaction();
             }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "StartSimpleTransaction" && x.IsPressedNow))//string for now...
-            {
-                Player.StartSimpleTransaction();
-            }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
             {
                 Player.StartLocationInteraction();
             }
         }
         private void ScenarioCheck()
         {
-            if (Player.ButtonPrompts.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
+            if (Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
                 Player.StartScenario();
-            }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "EnterLocation" && x.IsPressedNow))//string for now...
-            {
-                Player.EnterLocation();
-            }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "PurchaseLocation" && x.IsPressedNow))//string for now...
-            {
-                Player.PurchaseLocation();
-            }
-            else if (Player.ButtonPrompts.Any(x => x.Group == "ExitLocation" && x.IsPressedNow))//string for now...
-            {
-                Player.ExitLocation();
             }  
         }
         private void ControlCheck()
         {
-            if (Player.ButtonPrompts.Any(x => x.Group == "AIControl" && x.IsPressedNow))//string for now...
-            {
-                if(Player.AliasedCop != null)
-                {
-                    Player.AliasedCop.CanBeTasked = !Player.AliasedCop.CanBeTasked;
-                    if(!Player.AliasedCop.CanBeTasked)
-                    {
-                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                    }
-                }
-            }
             if(!Player.IsInVehicle)
             {
                 if(IsPressingSprint)
@@ -299,11 +265,11 @@ namespace LosSantosRED.lsr
 
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
            // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
-            if(Player.ButtonPrompts.Count > 10)
+            if(Player.ButtonPromptList.Count > 10)
             {
-                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPrompts.Count}", 1);
+                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPromptList.Count}", 1);
             }
-            foreach (ButtonPrompt bp in Player.ButtonPrompts)
+            foreach (ButtonPrompt bp in Player.ButtonPromptList)
             {
                 if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)
                 {
@@ -424,7 +390,5 @@ namespace LosSantosRED.lsr
                 return Game.IsKeyDownRightNow(key);
             }
         }
-
-
     }
 }

@@ -785,12 +785,14 @@ public class Pedestrians
         }
         else
         {
+
             if (Pedestrian.IsPersistent)
             {
                 EntryPoint.PersistentPedsDeleted++;
             }
             Pedestrian.Delete();
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL, DELETING", 2);
+            
         }
     }
     public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped Cop, int WantedLevel)

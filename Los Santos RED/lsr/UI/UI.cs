@@ -361,9 +361,9 @@ public class UI : IMenuProvideable
         {
             instructional.Buttons.Clear();
 
-            if (DisplayablePlayer.ButtonPrompts.Any())
+            if (DisplayablePlayer.ButtonPromptList.Any())
             {
-                foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.OrderByDescending(x => x.Order))
+                foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPromptList.OrderByDescending(x => x.Order))
                 {
                     if (buttonPrompt.Key != Keys.None)
                     {
@@ -394,7 +394,7 @@ public class UI : IMenuProvideable
                 }
             }
             instructional.Update();
-            if (DisplayablePlayer.ButtonPrompts.Any())
+            if (DisplayablePlayer.ButtonPromptList.Any())
             {
                 instructional.Draw();
             }
@@ -756,9 +756,9 @@ public class UI : IMenuProvideable
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (DisplayablePlayer.CurrentShop != null)
+        if (1==0)//DisplayablePlayer.CurrentShop != null)//add back in some capacity?
         {
-            StreetDisplay += $"{CurrentDefaultTextColor}Inside ~p~{DisplayablePlayer.CurrentShop.Name}{CurrentDefaultTextColor}";
+            //StreetDisplay += $"{CurrentDefaultTextColor}Inside ~p~{DisplayablePlayer.CurrentShop.Name}{CurrentDefaultTextColor}";
         }
         else
         {

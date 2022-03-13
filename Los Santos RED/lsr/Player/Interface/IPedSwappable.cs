@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCustomizingPed { get; set; }
         string ModelName { get; set; }
         bool CharacterModelIsFreeMode { get; }
-        List<ButtonPrompt> ButtonPrompts { get; }
+        List<ButtonPrompt> ButtonPromptList { get; }
         void SetUnarmed();
         void DisplayPlayerNotification();
         void SetMoney(int currentPedMoney);

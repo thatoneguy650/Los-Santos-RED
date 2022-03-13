@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Interface
         bool CanConverseWithLookedAtPed { get; }
         bool CanHoldUpTargettedPed { get; }
         bool IsConversing { get; }
-        List<ButtonPrompt> ButtonPrompts { get; }
+        List<ButtonPrompt> ButtonPromptList { get; }
         bool IsInteracting { get; }
         bool IsAiming { get; }
         bool IsMoving { get; }
@@ -47,12 +47,10 @@ namespace LosSantosRED.lsr.Interface
         void StartConversation();
         void StartScenario();
         void StartTransaction();
-        void StartSimpleTransaction();
         
-        void EnterLocation();
-        void ExitLocation();
+
         void CloseDriverDoor();
-        void PurchaseLocation();
+
         void ToggleSelector();
         void StartLocationInteraction();
         void Gesture();

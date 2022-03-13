@@ -13,7 +13,6 @@ public class PossibleLocations
     {
 
     }
-    public List<GameLocation> LocationsList { get; private set; } = new List<GameLocation>();
     public List<DeadDrop> DeadDrops { get; private set; } = new List<DeadDrop>();
     public List<ScrapYard> ScrapYards { get; private set; } = new List<ScrapYard>();
     public List<GangDen> GangDens { get; private set; } = new List<GangDen>();
@@ -34,8 +33,13 @@ public class PossibleLocations
     public List<Stadium> Stadiums { get; private set; } = new List<Stadium>();
     public List<BeautyShop> BeautyShops { get; private set; } = new List<BeautyShop>();
     public List<Bank> Banks { get; private set; } = new List<Bank>();
-
     public List<ConvenienceStore> ConvenienceStores { get; private set; } = new List<ConvenienceStore>();
+    public List<GasStation> GasStations { get; private set; } = new List<GasStation>();
+    public List<LiquorStore> LiquorStores { get; private set; } = new List<LiquorStore>();
+    public List<FoodStand> FoodStands { get; private set; } = new List<FoodStand>();
+    public List<CarDealership> CarDealerships { get; private set; } = new List<CarDealership>();
+    public List<Bar> Bars { get; private set; } = new List<Bar>();
+    public List<DriveThru> DriveThrus { get; private set; } = new List<DriveThru>();
 
 }
 

@@ -181,7 +181,7 @@ public class Idle : ComplexTask
                 {
                     if (IsReturningToStation)
                     {
-                        GameLocation closestPoliceStation = PlacesOfInterest.GetClosestLocation(Ped.Pedestrian.Position, LocationType.Police);
+                        BasicLocation closestPoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Ped.Pedestrian.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
                         if (closestPoliceStation != null)
                         {
                             taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.EntrancePosition);

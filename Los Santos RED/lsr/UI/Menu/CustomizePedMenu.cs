@@ -84,7 +84,7 @@ public class CustomizePedMenu : Menu
             {
                 ModelPed.Delete();
             }
-            Player.ButtonPrompts.RemoveAll(x => x.Group == "ChangeCamera");
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "ChangeCamera");
             MenuPool.CloseAllMenus();
             CharCam.Active = false;
             Game.LocalPlayer.Character.Position = PreviousPos;
@@ -128,52 +128,52 @@ public class CustomizePedMenu : Menu
     {
         if (1 == 1)
         {
-            if (!Player.ButtonPrompts.Any(x => x.Group == $"ChangeCamera"))
+            if (!Player.ButtonPromptList.Any(x => x.Group == $"ChangeCamera"))
             {
-                Player.ButtonPrompts.RemoveAll(x => x.Group == "ChangeCamera");
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Turn Left", "ChangeCamera", $"RotateModelLeft", System.Windows.Forms.Keys.J, 1));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Turn Right", "ChangeCamera", $"RotateModelRight", System.Windows.Forms.Keys.K, 2));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Camera Up", "ChangeCamera", $"CameraUp", System.Windows.Forms.Keys.O, 4));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Camera Down", "ChangeCamera", $"CameraDown", System.Windows.Forms.Keys.L, 5));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Zoom In", "ChangeCamera", $"ZoomCameraIn", System.Windows.Forms.Keys.U, 3));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Zoom Out", "ChangeCamera", $"ZoomCameraOut", System.Windows.Forms.Keys.I, 4));
-                Player.ButtonPrompts.Add(new ButtonPrompt($"Reset", "ChangeCamera", $"ResetCamera", System.Windows.Forms.Keys.P, 6));
+                Player.ButtonPromptList.RemoveAll(x => x.Group == "ChangeCamera");
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Turn Left", "ChangeCamera", $"RotateModelLeft", System.Windows.Forms.Keys.J, 1));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Turn Right", "ChangeCamera", $"RotateModelRight", System.Windows.Forms.Keys.K, 2));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Camera Up", "ChangeCamera", $"CameraUp", System.Windows.Forms.Keys.O, 4));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Camera Down", "ChangeCamera", $"CameraDown", System.Windows.Forms.Keys.L, 5));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Zoom In", "ChangeCamera", $"ZoomCameraIn", System.Windows.Forms.Keys.U, 3));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Zoom Out", "ChangeCamera", $"ZoomCameraOut", System.Windows.Forms.Keys.I, 4));
+                Player.ButtonPromptList.Add(new ButtonPrompt($"Reset", "ChangeCamera", $"ResetCamera", System.Windows.Forms.Keys.P, 6));
             }
         }
-        if (Player.ButtonPrompts.Any(x => x.Identifier == "ResetCamera" && x.IsPressedNow))
+        if (Player.ButtonPromptList.Any(x => x.Identifier == "ResetCamera" && x.IsPressedNow))
         {
             ModelPed.Tasks.AchieveHeading(182.7549f, 5000);
             CharCam.Position = new Vector3(402.8473f, -998.3224f, -98.00025f);
             CharCam.Direction = NativeHelper.GetCameraDirection(CharCam);
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "RotateModelLeft" && x.IsPressedNow))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "RotateModelLeft" && x.IsPressedNow))
         {
             if (ModelPed.Exists())
             {
                 ModelPed.Tasks.AchieveHeading(ModelPed.Heading + 45f, 5000);
             }
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "RotateModelRight" && x.IsPressedNow))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "RotateModelRight" && x.IsPressedNow))
         {
             if (ModelPed.Exists())
             {
                 ModelPed.Tasks.AchieveHeading(ModelPed.Heading - 45, 5000);
             }
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraUp" && (x.IsPressedNow || x.IsHeldNow)))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "CameraUp" && (x.IsPressedNow || x.IsHeldNow)))
         {
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z + 0.05f);
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "CameraDown" && (x.IsPressedNow || x.IsHeldNow)))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "CameraDown" && (x.IsPressedNow || x.IsHeldNow)))
         {
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y, CharCam.Position.Z - 0.05f);
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "ZoomCameraIn" && (x.IsPressedNow || x.IsHeldNow)))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "ZoomCameraIn" && (x.IsPressedNow || x.IsHeldNow)))
         {
             EntryPoint.WriteToConsole("ZoomCameraIn", 5);
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y + 0.05f, CharCam.Position.Z);
         }
-        else if (Player.ButtonPrompts.Any(x => x.Identifier == "ZoomCameraOut" && (x.IsPressedNow || x.IsHeldNow)))
+        else if (Player.ButtonPromptList.Any(x => x.Identifier == "ZoomCameraOut" && (x.IsPressedNow || x.IsHeldNow)))
         {
             EntryPoint.WriteToConsole("ZoomCameraOut", 5);
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y - 0.05f, CharCam.Position.Z);

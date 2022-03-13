@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class ConvenienceStore : InteractableLocation
+public class Bar : InteractableLocation
 {
     private LocationCamera StoreCamera;
     private IActivityPerformable Player;
@@ -20,15 +20,15 @@ public class ConvenienceStore : InteractableLocation
     private IWeapons Weapons;
     private ITimeControllable Time;
     private Transaction Transaction;
-    public ConvenienceStore() : base()
+    public Bar() : base()
     {
 
     }
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalHoldups;
+    public override int MapIcon { get; set; } = (int)BlipSprite.Bar;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public ConvenienceStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public Bar(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
         ButtonPromptText = $"Shop at {Name}";
@@ -51,7 +51,7 @@ public class ConvenienceStore : InteractableLocation
             {
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.Setup();
-      
+
                 CreateInteractionMenu();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
@@ -64,10 +64,10 @@ public class ConvenienceStore : InteractableLocation
                 DisposeInteractionMenu();
 
                 StoreCamera.Dispose();
-                
+
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
-            }, "RestaurantInteract");
+            }, "BarInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)

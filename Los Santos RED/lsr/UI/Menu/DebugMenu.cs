@@ -159,7 +159,7 @@ public class DebugMenu : Menu
         LoadMPMap = new UIMenuItem("Load MP Map", "Load the MP map if you have the SP map enabled");
 
 
-        TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
+       // TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
 
 
         DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
@@ -215,13 +215,10 @@ public class DebugMenu : Menu
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Residence", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Residences));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To City Hall", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CityHalls));
-
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PoliceStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PoliceStations));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To FireStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.FireStations));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Hospital", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Hospitals));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Restaurant", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Restaurants));
-
-
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Bank", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Banks));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To BeautyShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.BeautyShops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dispensary", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Dispensaries));
@@ -229,19 +226,42 @@ public class DebugMenu : Menu
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To HeadShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.HeadShops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PawnShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PawnShops));
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Pharmacy", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Pharmacies));
-
-
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Stadium", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Stadiums));
-
-
         Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To ConvenienceStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.ConvenienceStores));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To LiquorStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.LiquorStores));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To GasStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GasStations));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Bar", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Bars));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To FoodStand", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.FoodStands));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To CarDealership", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CarDealerships));
+        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To DriveThru", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DriveThrus));
 
 
 
-        foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
-        {
-            Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
+        //{
+        //    Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
+        //}
 
 
 
@@ -299,15 +319,15 @@ public class DebugMenu : Menu
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
             }
         }
-        else if (selectedItem == TeleportToPOI)
-        {
-            GameLocation ToTeleportTo = PlacesOfInterest.GetAllPlaces()[PlaceOfInterestSelected];
-            if(ToTeleportTo != null)
-            {
-                Game.LocalPlayer.Character.Position = ToTeleportTo.EntrancePosition;
-                Game.LocalPlayer.Character.Heading = ToTeleportTo.EntranceHeading;
-            }
-        }
+        //else if (selectedItem == TeleportToPOI)
+        //{
+        //    GameLocation ToTeleportTo = PlacesOfInterest.GetAllPlaces()[PlaceOfInterestSelected];
+        //    if(ToTeleportTo != null)
+        //    {
+        //        Game.LocalPlayer.Character.Position = ToTeleportTo.EntrancePosition;
+        //        Game.LocalPlayer.Character.Heading = ToTeleportTo.EntranceHeading;
+        //    }
+        //}
         else if (selectedItem == GiveMoney)
         {
             Player.GiveMoney(50000);
@@ -393,15 +413,15 @@ public class DebugMenu : Menu
             Player.GangRelationships.SetFriendlyReputations();
         }
 
-        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
-        {
-            UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;
-            if (myItem.SelectedItem != null)
-            {
-                Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
-                Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
-            }
-        }
+        //if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
+        //{
+        //    UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;
+        //    if (myItem.SelectedItem != null)
+        //    {
+        //        Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
+        //        Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
+        //    }
+        //}
         if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
         {
             UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;

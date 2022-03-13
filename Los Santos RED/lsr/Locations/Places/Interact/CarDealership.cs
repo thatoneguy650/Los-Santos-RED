@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class ConvenienceStore : InteractableLocation
+public class CarDealership : InteractableLocation
 {
     private LocationCamera StoreCamera;
     private IActivityPerformable Player;
@@ -20,15 +20,23 @@ public class ConvenienceStore : InteractableLocation
     private IWeapons Weapons;
     private ITimeControllable Time;
     private Transaction Transaction;
-    public ConvenienceStore() : base()
+    public CarDealership() : base()
     {
 
     }
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalHoldups;
+    public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public ConvenienceStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+
+
+    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    public float ItemPreviewHeading { get; set; } = 0f;
+    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
+    public float ItemDeliveryHeading { get; set; } = 0f;
+
+
+    public CarDealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
         ButtonPromptText = $"Shop at {Name}";
@@ -50,10 +58,20 @@ public class ConvenienceStore : InteractableLocation
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
+
+                StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
+                StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
+
                 StoreCamera.Setup();
-      
+
                 CreateInteractionMenu();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+
+                Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
+                Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
+                Transaction.ItemPreviewPosition = ItemPreviewPosition;
+                Transaction.ItemPreviewHeading = ItemPreviewHeading;
+
                 Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                 InteractionMenu.Visible = true;
@@ -64,10 +82,10 @@ public class ConvenienceStore : InteractableLocation
                 DisposeInteractionMenu();
 
                 StoreCamera.Dispose();
-                
+
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
-            }, "RestaurantInteract");
+            }, "CarDealershipInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
