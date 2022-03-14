@@ -44,7 +44,7 @@ public class Civilians
         UpdateMerchants();
         UpdateZombies();
         UpdateGangMembers();
-
+        UpdateEMTs();
 
         PedExt worstPed = World.Pedestrians.Citizens.OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
@@ -66,6 +66,42 @@ public class Civilians
     {
         int localRan = 0;
         foreach (PedExt ped in World.Pedestrians.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
+        {
+            try
+            {
+                bool yield = false;
+                if (ped.NeedsFullUpdate)
+                {
+                    yield = true;
+                    TotalRan++;
+                    localRan++;
+                }
+                ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                {
+                    ped.CanBeAmbientTasked = false;
+                    ped.WillCallPolice = false;
+                    ped.WillFight = false;
+                    ped.WasEverSetPersistent = true;
+                }
+                if (yield && localRan == 5)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalChecked++;
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
+            }
+        }
+    }
+    private void UpdateEMTs()
+    {
+        int localRan = 0;
+        foreach (EMT ped in World.Pedestrians.EMTList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
             {

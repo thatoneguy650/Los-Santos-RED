@@ -71,7 +71,7 @@ public class EMSDispatcher
                 Agency agency = GetRandomAgency(spawnLocation);
                 if (agency != null)
                 {
-                    //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
                     DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
                     if (VehicleType != null)
                     {
@@ -84,7 +84,7 @@ public class EMSDispatcher
                         DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
                         if (PersonType != null)
                         {
-                            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
+                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
                             try
                             {
                                 SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
@@ -256,5 +256,80 @@ public class EMSDispatcher
             return false;
         }
         return true;
+    }
+    public void DebugSpawnEMT(string agencyID, bool onFoot)
+    {
+
+        EntryPoint.WriteToConsole($"DebugSpawnCop  1 agencyID {agencyID} onFoot {onFoot}");
+        int timesTried = 0;
+            bool isValidSpawn = false;
+            SpawnLocation spawnLocation = new SpawnLocation();
+            do
+            {
+                spawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);//GetPositionAroundPlayer();
+                spawnLocation.StreetPosition = spawnLocation.InitialPosition;
+                isValidSpawn = true;// IsValidSpawn(spawnLocation);
+                timesTried++;
+                GameFiber.Yield();
+            }
+            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+            if (spawnLocation.HasSpawns && isValidSpawn)
+            {
+                Agency agency = null;
+                if (agencyID == "")
+                {
+                    EntryPoint.WriteToConsole($"DebugSpawnCop  1.5 agencyID {agencyID} onFoot {onFoot}");
+                    agency = Agencies.GetRandomAgency(ResponseType.EMS);
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"DebugSpawnCop  1.6 agencyID {agencyID} onFoot {onFoot}");
+                    agency = Agencies.GetAgency(agencyID);//
+                }
+                GameFiber.Yield();
+                if (agency != null)
+                {
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
+                    DispatchableVehicle VehicleType = null;
+                    if (!onFoot)
+                    {
+                        VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, false,false, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                    }
+                    if (VehicleType != null || onFoot)
+                    {
+                        //EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {VehicleType.ModelName}", 3);
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                        if (PersonType != null)
+                        {
+                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
+                            try
+                            {
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                            spawnTask.AllowAnySpawn = true;
+
+
+                            spawnTask.AttemptSpawn();
+                                spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
+                                HasDispatchedThisTick = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn EMS Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+            }
+            GameTimeAttemptedDispatch = Game.GameTime;
     }
 }

@@ -28,6 +28,7 @@ public class Tasker : ITaskerable, ITaskerReportable
     private CopTasker CopTasker;
     private GangTasker GangTasker;
     private CivilianTasker CivilianTasker;
+    private EMTTasker EMTTasker;
     private PedExt CurrentCriminal;
 
 
@@ -56,6 +57,9 @@ public class Tasker : ITaskerable, ITaskerReportable
         CopTasker = new CopTasker(this,PedProvider,player,weapons,settings,PlacesOfInterest);
         GangTasker = new GangTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
         CivilianTasker = new CivilianTasker(this, PedProvider, player, weapons, settings);
+
+        EMTTasker = new EMTTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
+        EMTTasker.Setup();
     }
     public void Setup()
     {
@@ -89,6 +93,11 @@ public class Tasker : ITaskerable, ITaskerReportable
         }
         CivilianTasker.Update();
         GangTasker.Update();
+
+
+        EMTTasker.Update();
+
+
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);

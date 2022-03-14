@@ -52,6 +52,9 @@ public class Pedestrians
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
+
+    public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
+
     public List<PedExt> Citizens
     {
         get
@@ -248,7 +251,10 @@ public class Pedestrians
             Cop.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-
+            if(!DeadPeds.Any(x=> x.Handle == Cop.Handle))
+            {
+                DeadPeds.Add(Cop);
+            }
         }
         foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -262,6 +268,10 @@ public class Pedestrians
             EMT.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            if (!DeadPeds.Any(x => x.Handle == EMT.Handle))
+            {
+                DeadPeds.Add(EMT);
+            }
         }
         foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -275,6 +285,10 @@ public class Pedestrians
             Firefighter.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            if (!DeadPeds.Any(x => x.Handle == Firefighter.Handle))
+            {
+                DeadPeds.Add(Firefighter);
+            }
         }
         foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -292,7 +306,10 @@ public class Pedestrians
                 GangMember.Pedestrian.CurrentVehicle.IsPersistent = false;
                 EntryPoint.PersistentVehiclesNonPersistent++;
             }
-
+            if (!DeadPeds.Any(x => x.Handle == GangMember.Handle))
+            {
+                DeadPeds.Add(GangMember);
+            }
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: GANG MEMBER {GangMember.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
@@ -318,14 +335,41 @@ public class Pedestrians
             }
         }
         // Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
+        
+
+
+        foreach(PedExt Civilian in Civilians.Where(x=> x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
+        {
+            if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
+            {
+                DeadPeds.Add(Civilian);
+            }
+        }
+        foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
+        {
+            if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
+            {
+                DeadPeds.Add(Civilian);
+            }
+        }
+
+
+
         Police.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove);
         Firefighters.RemoveAll(x => x.CanRemove);
         Merchants.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
         Zombies.RemoveAll(x => x.CanRemove);
+        GangMembers.RemoveAll(x => x.CanRemove);
+
+
+
 
         Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
+
+
+        DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
 
     }
     public void Setup()

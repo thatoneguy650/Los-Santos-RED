@@ -671,11 +671,14 @@ public class PurchaseMenu : Menu
 
             string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
             string description = modItem.Description;
-            if (description == "")
-            {
-                description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
-            }
+            //if (description == "")
+            //{
+            //    description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
+            //}
             description += "~n~~s~";
+
+            description += $"~n~Price: ~r~{formattedPurchasePrice}~s~";
+
             description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
             description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
             if (modItem.AmountPerPackage > 1)

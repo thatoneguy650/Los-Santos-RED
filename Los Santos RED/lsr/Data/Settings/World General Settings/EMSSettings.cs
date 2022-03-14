@@ -17,9 +17,9 @@ public class EMSSettings : ISettingsDefaultable
     {
         SetDefault();
         #if DEBUG
-            //ShowSpawnedBlips =  true;
-            ManageDispatching = false;
-            ManageTasking = false;
+            ShowSpawnedBlips =  true;
+            ManageDispatching = true;
+            ManageTasking = true;
         #else
             ShowSpawnedBlips = false;
         #endif

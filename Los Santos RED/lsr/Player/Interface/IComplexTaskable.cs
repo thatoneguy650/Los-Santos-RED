@@ -43,6 +43,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsGangMember { get; }
         bool IsDealingDrugs { get; set; }
         bool HasMenu { get; }
+        string VoiceName { get; }
 
         void SetWantedLevel(int v);
     }

@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsTransacting { get; set; }
         VehicleExt CurrentVehicle { get; }
         Vehicle LastFriendlyVehicle { get; set; }
+        Violations Violations { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();

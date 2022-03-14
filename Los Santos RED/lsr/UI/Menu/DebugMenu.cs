@@ -272,12 +272,28 @@ public class DebugMenu : Menu
         if(selectedItem == SpawnAgencyFoot)
         {
             EntryPoint.WriteToConsole($"SpawnAgencyFoot SELECTED {SpawnAgencyFoot.SelectedItem.ID}");
-            Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
+
+            if(SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
+            {
+                Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true);
+            }
+            else 
+            {
+
+                Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
+            }
         }
         else if (selectedItem == SpawnAgencyVehicle)
         {
             EntryPoint.WriteToConsole($"SpawnAgencyVehicle SELECTED {SpawnAgencyVehicle.SelectedItem.ID}");
-            Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
+            if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
+            {
+                Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false);
+            }
+            else
+            {
+                Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
+            }
         }
 
 

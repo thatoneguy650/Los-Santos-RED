@@ -40,6 +40,8 @@ public class PersonTransaction : Interaction
     private bool isPaused;
     private bool isFollowing;
 
+    private bool PanickedByPlayer = false;
+
     public InteractableLocation AssociatedStore { get; set; }
 
 
@@ -101,18 +103,38 @@ public class PersonTransaction : Interaction
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 //Transaction.ProcessTransactionMenu();
-                while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation)
+                while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer)
                 {
                     UpdateOptions();
+
+
+                    if(Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime))
+                    {
+                        PanickedByPlayer = true;
+                        EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime}");
+                    }
 
 
                     if(isPaused && Player.ButtonPromptList.Any(x=> x.Group == "ContinueTransaction" && x.IsPressedNow))
                     {
                         Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
                         isPaused = false;
+
+                        if(Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
+                        {
+                            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+                        }
+
+
                         InteractionMenu.Visible = true;
-                        HavePedLookAtPlayer();
-                        HavePlayerLookAtPed();
+                        if (!Ped.IsInVehicle)
+                        {
+                            HavePedLookAtPlayer();
+                        }
+                        if (!Player.IsInVehicle)
+                        {
+                            HavePlayerLookAtPed();
+                        }
                         EntryPoint.WriteToConsole("Unpased Person Transaction");
                     }
 
@@ -143,7 +165,16 @@ public class PersonTransaction : Interaction
             {
                 Ped.Pedestrian.CanBePulledOutOfVehicles = true;
 
-                if(Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
+                if(PanickedByPlayer)
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                    Ped.Pedestrian.KeepTasks = false;
+                    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Player.Character, 100f, -1, false, false);
+                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
+                }
+
+                else if(Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                     Ped.Pedestrian.BlockPermanentEvents = false;
@@ -348,6 +379,19 @@ public class PersonTransaction : Interaction
         {
             Ped.Pedestrian.StaysInVehiclesWhenJacked = true;
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+
+
+
+            InteractionMenu.Visible = false;
+            isPaused = true;
+
+            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            {
+                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+            }
+
+
+
             GetInVehicleAsPassenger(Ped.Pedestrian, Player.CurrentVehicle?.Vehicle);
         }
     }

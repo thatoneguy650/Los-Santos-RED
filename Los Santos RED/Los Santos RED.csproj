@@ -250,6 +250,9 @@
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
     <Compile Include="lsr\Tasker\Civilian\GetArrestedSimple.cs" />
+    <Compile Include="lsr\Tasker\EMT\EMTIdle.cs" />
+    <Compile Include="lsr\Tasker\EMT\EMTRespond.cs" />
+    <Compile Include="lsr\Tasker\EMT\EMTTasker.cs" />
     <Compile Include="lsr\Tasker\GangMember\GangIdle.cs" />
     <Compile Include="lsr\Tasker\Civilian\CivilianTasker.cs" />
     <Compile Include="lsr\Tasker\Cop\CopTasker.cs" />

@@ -617,7 +617,22 @@ public class Debug
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CellPhone.AddContact(myGang, true);
 
-        SpawnNoGunAttackers();
+        PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+        if (myPed != null && myPed.Pedestrian.Exists())
+        {
+            if(RandomItems.RandomPercent(50))
+            {
+                myPed.Pedestrian.Kill();
+            }
+            
+            else
+            {
+                NativeFunction.Natives.TASK_WRITHE(myPed.Pedestrian, Player.Character, -1, false);
+            }
+        }
+
+        //SpawnNoGunAttackers();
 
 
         //Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
@@ -952,8 +967,33 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
+
+
+        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
+        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
+        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
+        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
+
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 0.5f, 1.4f, 1073741824, 1); //Original and works ok
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_b", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_c", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+
+        GameFiber.Sleep(1000);
+
+        //   // Gang myGang = Gangs.AllGangs.PickRandom();
+        //// Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
         //Player.YellInPain();
 
 
@@ -2188,9 +2228,18 @@ public class Debug
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} SM? {ped.ShopMenu != null} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} SM? {ped.ShopMenu != null} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
+        EntryPoint.WriteToConsole($"============================================ EMT START", 5);
+        foreach (PedExt ped in World.Pedestrians.EMTList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        {
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} SM? {ped.ShopMenu != null} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ EMT END", 5);
         EntryPoint.WriteToConsole($"============================================ GANGS START", 5);
         foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
@@ -2219,7 +2268,15 @@ public class Debug
             EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} SM? {ped.ShopMenu != null} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ MERCHANTS END", 5);
-
+        EntryPoint.WriteToConsole($"============================================ DEAD START", 5);
+        foreach (PedExt ped in World.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        {
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+            EntryPoint.WriteToConsole($"DEAD !!! Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} SM? {ped.ShopMenu != null} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+        }
+        EntryPoint.WriteToConsole($"============================================ DEAD END", 5);
 
         EntryPoint.WriteToConsole($"============================================ COPS START", 5);
 

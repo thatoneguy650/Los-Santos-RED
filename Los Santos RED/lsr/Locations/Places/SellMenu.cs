@@ -333,7 +333,6 @@ public class SellMenu : Menu
                 }
                 else
                 {
-                    //RemainingToSell = 0;
                     MaxSell = 1;
                     isEnabled = false;
                 }
@@ -342,19 +341,14 @@ public class SellMenu : Menu
             {
                 if (PlayerItems <= 0)
                 {
-                    //RemainingToSell = 0;
                     MaxSell = 1;
                     isEnabled = false;
                 }
             }
-
             string formattedPurchasePrice = menuItem.SalesPrice.ToString("C0");
             string description = modItem.Description;
-            if (description == "")
-            {
-                description = $"{menuItem.ModItemName} {formattedPurchasePrice}";
-            }
             description += "~n~~s~";
+            description += $"~n~Price: ~g~{formattedPurchasePrice}~s~";
             description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
             description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
             if (modItem.AmountPerPackage > 1)

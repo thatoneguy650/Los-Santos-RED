@@ -70,7 +70,7 @@ public class CalmCallIn : ComplexTask
             {
                 //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
+                foreach (Crime toReport in Ped.PlayerCrimesWitnessed.ToList())
                 {
                     Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
                 }

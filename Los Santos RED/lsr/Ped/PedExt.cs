@@ -112,6 +112,9 @@ public class PedExt : IComplexTaskable
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
     public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
+    public bool HasBeenTreatedByEMTs { get; set; }
+    public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x=> x.AngersCivilians || x.ScaresCivilians);
+    public bool HasSeenPlayerCommitTrafficCrime => PlayerPerception.CrimesWitnessed.Any(x => x.IsTrafficViolation);
     public bool HasSpokenWithPlayer { get; set; }
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
