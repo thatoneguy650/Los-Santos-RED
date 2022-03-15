@@ -26,7 +26,7 @@ public class HoldUp : Interaction
         Settings = settings;
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
-    private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1500;
+    private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1000;
     public override void Dispose()
     {
         CleanUp();
@@ -106,7 +106,7 @@ public class HoldUp : Interaction
         }
         else
         {
-            SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG", "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED", "GENERIC_SHOCKED_HIGH", "GENERIC_SHOCKED_MED" }, true);
+            SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG", "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED", "GENERIC_SHOCKED_HIGH", "GENERIC_SHOCKED_MED" }, false);
             CheckIntimidation();
         }
     }
@@ -124,7 +124,7 @@ public class HoldUp : Interaction
         //Target.TimesInsultedByPlayer += 5;
         GameTimeStartedIntimidating = Game.GameTime;
         GameTimeStoppedTargetting = 0;
-        int TimeToWait = 250;// RandomItems.MyRand.Next(500, 1000);
+        int TimeToWait = 500;// RandomItems.MyRand.Next(500, 1000);
         IsTargetting = true;
         while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && !ForcedCower && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
@@ -273,7 +273,8 @@ public class HoldUp : Interaction
             }
         }
         GameFiber.Sleep(100);
-        while (ToSpeak.IsAnySpeechPlaying && WaitForComplete)
+        uint GameTimeStarted = Game.GameTime;
+        while (ToSpeak.IsAnySpeechPlaying && WaitForComplete && Game.GameTime - GameTimeStarted <= 10000)
         {
             Spoke = true;
             GameFiber.Yield();

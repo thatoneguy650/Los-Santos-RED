@@ -28,5 +28,7 @@ namespace LosSantosRED.lsr.Interface
         void PayoffPolice();
         void SetWantedLevel(int v1, string v2, bool v3);
         void CallPolice();
+        void CallEMS();
+        void CallFire();
     }
 }

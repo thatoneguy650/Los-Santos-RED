@@ -66,6 +66,22 @@ public class Pedestrians
             return myList;
         }
     }
+
+    public List<PedExt> PedExts
+    {
+        get
+        {
+            List<PedExt> myList = new List<PedExt>();
+            myList.AddRange(CivilianList);
+            myList.AddRange(GangMemberList);
+            myList.AddRange(MerchantList);
+            myList.AddRange(EMTList);
+            myList.AddRange(PoliceList);
+            myList.AddRange(FirefighterList);
+            return myList;
+        }
+    }
+    public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
     public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned

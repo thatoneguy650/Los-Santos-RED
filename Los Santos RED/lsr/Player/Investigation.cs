@@ -30,6 +30,11 @@ public class Investigation
     public bool IsSuspicious => IsActive && IsNearPosition && HavePlayerDescription;
     public Vector3 Position { get; private set; }
     private bool IsOutsideInvestigationRange { get; set; }
+
+    public bool RequiresPolice { get; set; }
+    public bool RequiresEMS { get; set; }
+    public bool RequiresFirefighters { get; set; }
+
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
     public bool IsNearPosition { get; private set; }
     public void Dispose()
@@ -45,15 +50,21 @@ public class Investigation
         HavePlayerDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = 0;
+        RequiresPolice = false;
+        RequiresEMS = false;
+        RequiresFirefighters = false;
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();
         }
     }
-    public void Start(Vector3 postionToInvestigate, bool havePlayerDescription)
+    public void Start(Vector3 postionToInvestigate, bool havePlayerDescription, bool requiresPolice, bool requiresEMS, bool requiresFirefighters)
     {
         if (Player.IsNotWanted)
         {
+            RequiresPolice = requiresPolice;
+            RequiresEMS = requiresEMS;
+            RequiresFirefighters = requiresFirefighters;
             Position = NativeHelper.GetStreetPosition(postionToInvestigate);
             GameFiber.Yield();
             if (havePlayerDescription)
@@ -88,7 +99,7 @@ public class Investigation
         IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
-            if ((IsTimedOut && !World.Pedestrians.AnyWantedPeopleNearPlayer) || IsOutsideInvestigationRange) //remove after 3 minutes
+            if ((IsTimedOut && (!World.Pedestrians.AnyWantedPeopleNearPlayer || !RequiresPolice) && (!World.Pedestrians.AnyInjuredPeopleNearPlayer || !RequiresEMS)) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
             }
@@ -142,6 +153,9 @@ public class Investigation
         HavePlayerDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = Game.GameTime;
+        RequiresPolice = false;
+        RequiresEMS = false;
+        RequiresFirefighters = false;
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();

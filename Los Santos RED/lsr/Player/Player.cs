@@ -457,7 +457,7 @@ namespace Mod
             }
             if (!isObservedByPolice && IsNotWanted)
             {
-                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription);
+                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription,true,false,false);
             }
         }
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
@@ -557,42 +557,28 @@ namespace Mod
             {
                 Scanner.Reset();
                 Scanner.AnnounceCrime(ToCallIn, description);
-                Investigation.Start(Position, false);
+                Investigation.Start(Position, false, true, false, false);
             }
             else
             {
                 AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
             }
-
-            //if (IsCop)
-            //{
-            //    CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
-            //    Scanner.AnnounceCrime(crimeObserved, description);
-
-            //        Investigation.Start(Position, false);
-
-            //}
-            //else
-            //{
-            //    PedExt violatingCiv = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-            //    if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-            //    {
-            //        Crime ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-            //        if (ToCallIn != null)
-            //        {
-            //            AddCrime(ToCallIn, IsCop, Position, null, null, false, true, false);
-            //        }
-            //        else
-            //        {
-            //            AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), IsCop, Position, null, null, false, true, false);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        AddCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded"), IsCop, Position, null, null, false, true, false);
-            //    }
-            //}
         }
+
+
+        public void CallEMS()
+        {
+            Scanner.Reset();
+            Investigation.Start(Position, false, false, true, false);
+            Scanner.OnMedicalServicesRequested();
+        }
+        public void CallFire()
+        {
+            Scanner.Reset();
+            Investigation.Start(Position, false, false, false, true);
+            Scanner.OnFirefightingServicesRequested();
+        }
+
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
@@ -1933,7 +1919,7 @@ namespace Mod
                 {
                     if (!Investigation.IsActive && World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 100f) && World.Pedestrians.Civilians.Any(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)))
                     {
-                        Investigation.Start(Position, false);
+                        Investigation.Start(Position, false, true, false, false);
                     }
                     PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
                     GameTimeLastYelled = Game.GameTime;

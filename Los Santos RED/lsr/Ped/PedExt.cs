@@ -144,6 +144,9 @@ public class PedExt : IComplexTaskable
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
     public bool IsSuicidal { get; set; } = false;
+
+    public bool IsUnconscious { get; set; }
+
     public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedCrimes.IsWanted;
     public bool IsZombie { get; set; } = false;
@@ -496,9 +499,9 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public void YellInPain()
+    public void YellInPain(bool force)
     {
-        if (CanYell)
+        if (CanYell || force)
         {
             if (RandomItems.RandomPercent(80))
             {

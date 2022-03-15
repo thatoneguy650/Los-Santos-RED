@@ -30,29 +30,17 @@ public class EMTRespond : ComplexTask
     {
         get
         {
-            if (HasReachedVictim && !Ped.IsInVehicle)
-            {
-                return Task.TreatVictim;
-            }
-            else if (HasReachedReportedPosition && OtherTarget != null && OtherTarget.Pedestrian.Exists())
-            {
-                return Task.ExitVehicle;
-            }
-            else if (OtherTarget == null || !OtherTarget.Pedestrian.Exists())
+            if(HasReachedReportedPosition)
             {
                 return Task.Wander;
             }
-            else
-            {
-                return Task.GoTo;
-            }
+            return Task.GoTo;
         }
     }
-    public EMTRespond(IComplexTaskable cop, ITargetable player, PedExt targetPed) : base(player, cop, 1000)
+    public EMTRespond(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
     {
         Name = "EMTRespond";
         SubTaskName = "";
-        OtherTarget = targetPed;
     }
     public override void Start()
     {
@@ -69,7 +57,6 @@ public class EMTRespond : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //EntryPoint.WriteToConsole($"TASKER:      Investigate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask}",5);
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -78,50 +65,6 @@ public class EMTRespond : ComplexTask
             }
             SetSiren();
         }
-
-        if(!HasReachedVictim && !Ped.IsInVehicle && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists())
-        {
-            if(Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian.Position) <= 5f)
-            {
-                EntryPoint.WriteToConsole("EMT REACHED VICTIM");
-                HasReachedVictim = true;
-                GameTimeStartedTreatingVictim = Game.GameTime;
-            }
-        }
-        if(HasReachedVictim && !Ped.IsInVehicle && GameTimeStartedTreatingVictim != 0 && OtherTarget != null && !OtherTarget.HasBeenTreatedByEMTs)
-        {
-            if(Game.GameTime - GameTimeLastSpoke >= 5000)
-            {
-                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_SHOCKED_MED" }, false, false);
-                GameTimeLastSpoke = Game.GameTime;
-            }
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
-            {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
-            }
-        }
-        if (Ped.Pedestrian.Exists() && HasReachedVictim && Game.GameTime - GameTimeStartedTreatingVictim >= 15000 && OtherTarget != null)
-        {
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-
-            OtherTarget.HasBeenTreatedByEMTs = true;
-            if(OtherTarget.Pedestrian.Exists())
-            {
-                NativeFunction.Natives.RESURRECT_PED(OtherTarget.Pedestrian);
-                NativeFunction.Natives.REVIVE_INJURED_PED(OtherTarget.Pedestrian);
-                NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(OtherTarget.Pedestrian);
-                NativeFunction.Natives.SET_ENTITY_COLLISION(OtherTarget.Pedestrian, true, true);
-             
-
-                SayAvailableAmbient(OtherTarget.Pedestrian, new List<string>() { "GENERIC_THANKS" }, false, false);
-
-
-                NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", OtherTarget.Pedestrian, "move_m@drunk@verydrunk", 0x3E800000);
-
-                //NativeFunction.Natives._PLAY_AMBIENT_SPEECH1, reviveTarget.Handle, "GENERIC_THANKS", "SPEECH_PARAMS_FORCE");
-            }
-        }
-
     }
     public override void ReTask()
     {
@@ -145,12 +88,6 @@ public class EMTRespond : ComplexTask
             SubTaskName = "ExitVehicle";
             ExitVehicle();
         }
-        else if (CurrentTask == Task.TreatVictim)
-        {
-            RunInterval = 200;
-            SubTaskName = "TreatVictim";
-            TreatVictim();
-        }
         GameTimeLastRan = Game.GameTime;
     }
     private void ExitVehicle()
@@ -167,39 +104,6 @@ public class EMTRespond : ComplexTask
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
                 NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 64);
                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 3f, 4.4f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-        }
-    }
-    private void TreatVictim()
-    {
-
-        NeedsUpdates = false;
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.KeepTasks = true;
-        if (Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists())
-        {
-            EntryPoint.WriteToConsole("EMT TREAT VICTIM RAN");
-            AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
-            AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
-            AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
-            AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
-
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-               // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 0.25f, 1.4f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, OtherTarget.Pedestrian, 3000);
-                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, OtherTarget.Pedestrian, 1500, 0, 2);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_b", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_c", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -235,15 +139,13 @@ public class EMTRespond : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            //Ped.Pedestrian.BlockPermanentEvents = true;
-            //Ped.Pedestrian.KeepTasks = true;
             NeedsUpdates = true;
-            if (OtherTarget.Pedestrian.Exists() && CurrentTaskedPosition.DistanceTo2D(OtherTarget.Pedestrian.Position) >= 5f)
+            if (Player.Investigation.IsActive && Player.Investigation.RequiresEMS && CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
             {
                 HasReachedReportedPosition = false;
-                CurrentTaskedPosition = OtherTarget.Pedestrian.Position;
+                CurrentTaskedPosition = Player.Investigation.Position;
                 UpdateGoTo();
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated 1: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)

@@ -133,7 +133,7 @@ public class CopTasker
                         }
                     }
                 }
-                else if (Player.Investigation.IsActive)// && Cop.IsIdleTaskable)
+                else if (Player.Investigation.IsActive && Player.Investigation.RequiresPolice)// && Cop.IsIdleTaskable)
                 {
                     if (Cop.CurrentTask?.Name != "Investigate")
                     {

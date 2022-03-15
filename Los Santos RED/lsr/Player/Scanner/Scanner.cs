@@ -80,6 +80,11 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleCrashed;
         private Dispatch VehicleStartedFire;
 
+
+        private Dispatch MedicalServicesRequired;
+        private Dispatch FirefightingServicesRequired;
+
+
         private bool AbortedAudio;
         private bool ExecutingQueue;
         private List<uint> NotificationHandles = new List<uint>();
@@ -281,6 +286,25 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+
+        public void OnMedicalServicesRequested()
+        {
+            if (!MedicalServicesRequired.HasRecentlyBeenPlayed)
+            {
+                AddToQueue(MedicalServicesRequired);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
+        }
+        public void OnFirefightingServicesRequested()
+        {
+            if (!FirefightingServicesRequired.HasRecentlyBeenPlayed)
+            {
+                AddToQueue(FirefightingServicesRequired);
+            }
+            EntryPoint.WriteToConsole($"SCANNER EVENT: FirefightingServicesRequired", 3);
+        }
+
         public void OnInvestigationExpire()
         {
             if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed)
@@ -2416,6 +2440,37 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { s_m_y_sheriff_white_full_02.SuspectLeftFreeway2.FileName},"suspect left the freeway"),
             },
             };
+
+            MedicalServicesRequired = new Dispatch()
+            {
+                Name = "Medical Services Required",
+                IncludeReportedBy = true,
+                LocationDescription = LocationSpecificity.StreetAndZone,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_medical_aid_requested.Medicalaidrequested.FileName},"medical aid requested"),
+            },
+            };
+
+            FirefightingServicesRequired = new Dispatch()
+            {
+                Name = "Fire Fighting Services Required",
+                IncludeReportedBy = true,
+                LocationDescription = LocationSpecificity.StreetAndZone,
+                IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { emergency.Apossiblefire.FileName},"a possible fire"),
+            },
+            };
+
+
+
+
+
             VehicleStartedFire = new Dispatch()
             {
                 Name = "Vehicle On Fire",

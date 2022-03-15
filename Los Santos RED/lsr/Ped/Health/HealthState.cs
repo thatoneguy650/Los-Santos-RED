@@ -20,6 +20,8 @@ public class HealthState
     private bool HurtByPed;
     private bool HurtByVehicle;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastSetRagDoll;
+
     //private int TimeBetweenYelling = 2500;
     //private uint GameTimeLastYelled;
     //private string VoiceName;
@@ -110,9 +112,13 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if((HurtByPed || HurtByVehicle) && Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
+                if(Health > 100 && Health <= 130 && !MyPed.IsUnconscious)// && RandomItems.RandomPercent(40))
                 {
-                    MyPed.YellInPain();
+                    SetUnconscious();
+                }
+                if((HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
+                {
+                    MyPed.YellInPain(true);
                     MyPed.GameTimeLastInjured = Game.GameTime;
                     EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
                 }
@@ -120,7 +126,17 @@ public class HealthState
         }
         if(MyPed.IsInWrithe)
         {
-            MyPed.YellInPain();
+            MyPed.YellInPain(false);
+        }
+        else if (MyPed.Pedestrian.Exists() && MyPed.IsUnconscious && (Game.GameTime - GameTimeLastSetRagDoll <= 1000 || !MyPed.Pedestrian.IsRagdoll))
+        {
+            MyPed.Pedestrian.BlockPermanentEvents = true;
+            MyPed.Pedestrian.KeepTasks = true;
+            MyPed.Pedestrian.IsRagdoll = true;
+            //NativeFunction.Natives.SET_PED_TO_RAGDOLL(MyPed.Pedestrian, -1, -1, 0, true, true, false);
+            MyPed.Pedestrian.BlockPermanentEvents = true;
+            MyPed.Pedestrian.KeepTasks = true;
+            GameTimeLastSetRagDoll = Game.GameTime;
         }
     }
     public void UpdatePlayer(IPoliceRespondable CurrentPlayer)
@@ -166,6 +182,20 @@ public class HealthState
             CurrentHealth = Health;
         }
     }
+
+    private void SetUnconscious()
+    {
+        if(MyPed.Pedestrian.Exists())
+        {
+            MyPed.CanBeAmbientTasked = false;
+            MyPed.CanBeTasked = false;
+            MyPed.YellInPain(true);
+            MyPed.IsUnconscious = true;
+            NativeFunction.Natives.SET_PED_TO_RAGDOLL(MyPed.Pedestrian, -1, -1, 0, true, true, false);
+            EntryPoint.WriteToConsole($"HEALTHSTATE SetUnconscious {MyPed.Pedestrian.Handle} GameTimeLastInjured {MyPed.GameTimeLastInjured} Health {Health}", 5);
+        }
+    }
+
     private void FlagDamage(IPoliceRespondable CurrentPlayer)
     {
         if(CurrentPlayer == null || !MyPed.Pedestrian.Exists())//only flag the player we want to have the damage

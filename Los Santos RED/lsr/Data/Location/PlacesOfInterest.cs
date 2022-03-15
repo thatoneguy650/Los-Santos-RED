@@ -54,7 +54,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.HeadShops);
         AllLocations.AddRange(PossibleLocations.HardwareStores);
         AllLocations.AddRange(PossibleLocations.PawnShops);
-        AllLocations.AddRange(PossibleLocations.Pharmacies);
         AllLocations.AddRange(PossibleLocations.ConvenienceStores);
         AllLocations.AddRange(PossibleLocations.LiquorStores);
         AllLocations.AddRange(PossibleLocations.GasStations);
@@ -76,47 +75,42 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Stadiums);
         return AllLocations;
     }
-    //public List<GameLocation> GetAllPlaces()
-    //{
-    //    return PossibleLocations.LocationsList;
-    //}
-    //public GameLocation GetClosestLocation(Vector3 Position, LocationType Type)
-    //{
-    //    return PossibleLocations.LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.EntrancePosition)).FirstOrDefault();
-    //}
-    //public List<GameLocation> GetLocations(LocationType Type)
-    //{
-    //    return PossibleLocations.LocationsList.Where(x => x.Type == Type).ToList();
-    //}  
+    public List<BasicLocation> GetAllLocations()
+    {
+        List<BasicLocation> AllLocations = new List<BasicLocation>();
+
+        AllLocations.AddRange(PossibleLocations.DeadDrops);
+        AllLocations.AddRange(PossibleLocations.ScrapYards);
+        AllLocations.AddRange(PossibleLocations.GangDens);
+        AllLocations.AddRange(PossibleLocations.GunStores);
+        AllLocations.AddRange(PossibleLocations.Hotels);
+        AllLocations.AddRange(PossibleLocations.Residences);
+        AllLocations.AddRange(PossibleLocations.CityHalls);
+        AllLocations.AddRange(PossibleLocations.VendingMachines);
+        AllLocations.AddRange(PossibleLocations.Restaurants);
+        AllLocations.AddRange(PossibleLocations.Pharmacies);
+        AllLocations.AddRange(PossibleLocations.Dispensaries);
+        AllLocations.AddRange(PossibleLocations.HeadShops);
+        AllLocations.AddRange(PossibleLocations.HardwareStores);
+        AllLocations.AddRange(PossibleLocations.PawnShops);
+        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
+        AllLocations.AddRange(PossibleLocations.LiquorStores);
+        AllLocations.AddRange(PossibleLocations.GasStations);
+        AllLocations.AddRange(PossibleLocations.Bars);
+        AllLocations.AddRange(PossibleLocations.FoodStands);
+        AllLocations.AddRange(PossibleLocations.CarDealerships);
+        AllLocations.AddRange(PossibleLocations.DriveThrus);
+
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Hospitals);
+        AllLocations.AddRange(PossibleLocations.FireStations);
+        AllLocations.AddRange(PossibleLocations.Banks);
+        AllLocations.AddRange(PossibleLocations.BeautyShops);
+        AllLocations.AddRange(PossibleLocations.Stadiums);
+        return AllLocations;
+    }
     private void DefaultConfig()
     {
-        List<MenuItem> ConvenienceStoreMenu = ShopMenus.GetMenu("ConvenienceStoreMenu")?.Items;
-        List<MenuItem> TwentyFourSevenMenu = ShopMenus.GetMenu("TwentyFourSevenMenu")?.Items;
-        List<MenuItem> GrainOfTruthMenu = ShopMenus.GetMenu("GrainOfTruthMenu")?.Items;
-        List<MenuItem> FruitVineMenu = ShopMenus.GetMenu("FruitVineMenu")?.Items;
-        List<MenuItem> GasStationMenu = ShopMenus.GetMenu("GasStationMenu")?.Items;
-        List<MenuItem> RonMenu = ShopMenus.GetMenu("RonMenu")?.Items;
-        List<MenuItem> XeroMenu = ShopMenus.GetMenu("XeroMenu")?.Items;
-        List<MenuItem> LTDMenu = ShopMenus.GetMenu("LTDMenu")?.Items;
-        List<MenuItem> GenericMenu = ShopMenus.GetMenu("GenericMenu")?.Items;
-        List<MenuItem> ChihuahuaHotDogMenu = ShopMenus.GetMenu("ChihuahuaHotDogMenu")?.Items;
-        List<MenuItem> BeefyBillsMenu = ShopMenus.GetMenu("BeefyBillsMenu")?.Items;
-        List<MenuItem> DonutMenu = ShopMenus.GetMenu("DonutMenu")?.Items;
-        List<MenuItem> FruitMenu = ShopMenus.GetMenu("FruitMenu")?.Items;
-        List<MenuItem> UpNAtomMenu = ShopMenus.GetMenu("UpNAtomMenu")?.Items;
-        List<MenuItem> TacoFarmerMenu = ShopMenus.GetMenu("TacoFarmerMenu")?.Items;
-        List<MenuItem> LiquorStoreMenu = ShopMenus.GetMenu("LiquorStoreMenu")?.Items;
-        List<MenuItem> BarMenu = ShopMenus.GetMenu("BarMenu")?.Items;
-        List<MenuItem> BenefactorGallavanterMenu = ShopMenus.GetMenu("BenefactorGallavanterMenu")?.Items;
-
-        List<MenuItem> VapidMenu = ShopMenus.GetMenu("VapidMenu")?.Items;
-        List<MenuItem> SandersMenu = ShopMenus.GetMenu("SandersMenu")?.Items;
-        List<MenuItem> HelmutMenu = ShopMenus.GetMenu("HelmutMenu")?.Items;
-        List<MenuItem> BravadoMenu = ShopMenus.GetMenu("BravadoMenu")?.Items;
-        List<MenuItem> LuxuryAutosMenu = ShopMenus.GetMenu("LuxuryAutosMenu")?.Items;
-        List<MenuItem> PremiumDeluxeMenu = ShopMenus.GetMenu("PremiumDeluxeMenu")?.Items;
-        List<MenuItem> LarrysRVMenu = ShopMenus.GetMenu("LarrysRVMenu")?.Items;
-
         PossibleLocations.DeadDrops.AddRange(new List<DeadDrop>() {
 
             new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
@@ -710,12 +704,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DriveThru(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, "Horny's Burgers", "Horny's Burgers","BeefyBillsMenu"),
 
         });
-
-
-
-
-      
-
     }
 }
 

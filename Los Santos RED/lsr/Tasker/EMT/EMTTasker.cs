@@ -42,7 +42,7 @@ public class EMTTasker
             SetPossibleTargets();
             Tasker.ExpireSeatAssignments();
 
-            foreach (EMT emt in PedProvider.Pedestrians.EMTs.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked))
+            foreach (EMT emt in PedProvider.Pedestrians.EMTs.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked).ToList())
             {
                 try
                 {
@@ -66,31 +66,63 @@ public class EMTTasker
     }
     private void ReAssignTask(EMT emt)
     {
-        if (emt.DistanceToPlayer <= 1200f)
+        if (emt.DistanceToPlayer <= 150f)
         {
-            if(PossibleTargets.Any())//and the body has been called in?
+            WitnessedCrime HighestPriority = emt.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            bool SeenScaryCrime = emt.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenAngryCrime = emt.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
+            bool SeenMundaneCrime = emt.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+
+            PedExt MainTarget = PedToGoTo(emt);
+
+            if (SeenScaryCrime || SeenAngryCrime)
             {
-                PedExt MainTarget = PedToGoTo(emt);
-                GameFiber.Yield();
-                if (MainTarget != null)
-                {
-                    SetRespondTask(emt, MainTarget);
-                }
-                else
-                {
-                    SetIdleTask(emt);
-                }
+                SetScaredTask(emt, HighestPriority);
+            }
+            else if (SeenMundaneCrime)
+            {
+                SetCallInTask(emt);
+            }
+            else if (MainTarget != null)
+            {
+                SetTreatTask(emt, MainTarget);
+            }
+            else if (Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+            {
+                SetRespondTask(emt);
             }
             else
             {
                 SetIdleTask(emt);
             }
         }
+        else if (emt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+        {
+            SetRespondTask(emt);
+        }
         else
         {
             SetIdleTask(emt);
         }
         emt.GameTimeLastUpdatedTask = Game.GameTime;
+    }
+    private void SetCallInTask(EMT emt)
+    {
+        if (emt.CurrentTask?.Name != "CalmCallIn")
+        {
+            emt.CurrentTask = new CalmCallIn(emt, Player);//oither target not needed, they just call in all crimes
+            GameFiber.Yield();//TR Added back 7
+            emt.CurrentTask.Start();
+        }
+    }
+    private void SetScaredTask(EMT emt, WitnessedCrime HighestPriority)
+    {
+        if (emt.CurrentTask?.Name != "ScaredCallIn")
+        {
+            emt.CurrentTask = new ScaredCallIn(emt, Player) { OtherTarget = HighestPriority?.Perpetrator };
+            GameFiber.Yield();//TR Added back 7
+            emt.CurrentTask.Start();
+        }
     }
     private void SetIdleTask(EMT emt)
     {
@@ -102,12 +134,22 @@ public class EMTTasker
             emt.CurrentTask.Start();
         }
     }
-    private void SetRespondTask(EMT emt, PedExt targetPed)
+    private void SetRespondTask(EMT emt)
     {
-        if (emt.CurrentTask?.Name != "EMTRespond" || (targetPed != null && emt.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)
+        if (emt.CurrentTask?.Name != "EMTRespond")// && Cop.IsIdleTaskable)
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTIdle", 3);
-            emt.CurrentTask = new EMTRespond(emt, Player, targetPed);
+            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
+            emt.CurrentTask = new EMTRespond(emt, Player);
+            GameFiber.Yield();//TR Added back 4
+            emt.CurrentTask.Start();
+        }
+    }
+    private void SetTreatTask(EMT emt, PedExt targetPed)
+    {
+        if (emt.CurrentTask?.Name != "EMTTreat" || (targetPed != null && emt.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTTreat", 3);
+            emt.CurrentTask = new EMTTreat(emt, Player, targetPed);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();
         }
@@ -123,14 +165,20 @@ public class EMTTasker
                 int TotalOtherAssignedEMTs = PedProvider.Pedestrians.EMTList.Count(x => x.Handle != emt.Handle && x.CurrentTask != null && x.CurrentTask.OtherTarget != null && x.CurrentTask.OtherTarget.Handle == possibleTarget.Handle);
                 if (possibleTarget.Pedestrian.Exists())
                 {
-                    EMTsPossibleTargets.Add(new EMTTarget(possibleTarget, possibleTarget.Pedestrian.DistanceTo2D(emt.Pedestrian)) { TotalAssignedEMTs = TotalOtherAssignedEMTs });
+                    float distanceTo = possibleTarget.Pedestrian.DistanceTo2D(emt.Pedestrian);
+                    if (distanceTo <= 60f)
+                    {
+                        EMTsPossibleTargets.Add(new EMTTarget(possibleTarget, distanceTo) { TotalAssignedEMTs = TotalOtherAssignedEMTs });
+                    }
                 }
             }
+
+            int PossibleTargetCount = EMTsPossibleTargets.Count();
             EMTTarget MainPossibleTarget = EMTsPossibleTargets
                 .OrderBy(x => x.IsOverloaded)
                 .ThenBy(x => x.DistanceToTarget).FirstOrDefault();
 
-            if(MainPossibleTarget != null && !MainPossibleTarget.IsOverloaded)
+            if(MainPossibleTarget != null && (!MainPossibleTarget.IsOverloaded || PossibleTargetCount == 1))
             {
                 MainTarget = MainPossibleTarget.Target;
             }
@@ -139,13 +187,8 @@ public class EMTTasker
     }
     private void SetPossibleTargets()
     {
-        List<PedExt> TotalList = new List<PedExt>();
-        TotalList.AddRange(PedProvider.Pedestrians.PoliceList);
-        TotalList.AddRange(PedProvider.Pedestrians.CivilianList);
-        TotalList.AddRange(PedProvider.Pedestrians.GangMemberList);
-        TotalList.AddRange(PedProvider.Pedestrians.MerchantList);
-        PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInWrithe && !x.HasBeenTreatedByEMTs).ToList();//150f//writhe peds that are still alive
-        PossibleTargets.AddRange(PedProvider.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists() && !x.HasBeenTreatedByEMTs));//dead peds go here?
+        PossibleTargets = PedProvider.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.HasBeenTreatedByEMTs).ToList();//150f//writhe peds that are still alive
+        //PossibleTargets.AddRange(PedProvider.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists() && !x.HasBeenTreatedByEMTs));//dead peds go here?
     }
     private class EMTTarget
     {
@@ -157,7 +200,7 @@ public class EMTTasker
         public PedExt Target { get; set; }
         public float DistanceToTarget { get; set; } = 999f;
         public int TotalAssignedEMTs { get; set; } = 0;
-        public bool IsOverloaded => TotalAssignedEMTs > 2;
+        public bool IsOverloaded => TotalAssignedEMTs >= 1;
     }
 }
 
