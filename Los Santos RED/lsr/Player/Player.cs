@@ -568,16 +568,33 @@ namespace Mod
 
         public void CallEMS()
         {
-            Scanner.Reset();
-            Investigation.Start(Position, false, false, true, false);
-            Scanner.OnMedicalServicesRequested();
+            if (World.TotalWantedLevel <= 1)
+            {
+                Scanner.Reset();
+                Investigation.Start(Position, false, false, true, false);
+                Scanner.OnMedicalServicesRequested();
+            }
         }
         public void CallFire()
         {
-            Scanner.Reset();
-            Investigation.Start(Position, false, false, false, true);
-            Scanner.OnFirefightingServicesRequested();
+            if (World.TotalWantedLevel <= 1)
+            {
+                Scanner.Reset();
+                Investigation.Start(Position, false, false, false, true);
+                Scanner.OnFirefightingServicesRequested();
+            }
         }
+
+        public void AddDistressedPed(Vector3 position)
+        {
+            if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => x.IsUnconscious || x.IsInWrithe && !x.HasStartedEMTTreatment))
+            {
+                Scanner.Reset();
+                Investigation.Start(position, false, false, true, false);
+                Scanner.OnMedicalServicesRequested();
+            }
+        }
+
 
         public void ChangePlate(int Index)
         {
@@ -1587,7 +1604,6 @@ namespace Mod
                 {
                     Interaction.Dispose();
                 }
-                IsHoldingUp = true;
                 Interaction = new HoldUp(this, CurrentTargetedPed, Settings);
                 Interaction.Start();
             }

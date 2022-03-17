@@ -42,6 +42,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         Vehicle LastFriendlyVehicle { get; set; }
         Violations Violations { get; }
+        bool IsDriver { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();

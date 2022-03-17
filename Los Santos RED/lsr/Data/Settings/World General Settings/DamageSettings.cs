@@ -47,18 +47,33 @@ public class DamageSettings : ISettingsDefaultable
     {
         ModifyDamage = true;
         ClearDamage = true;
+        //Armor_NormalDamageModifier = 1.0f;
+        //Armor_GrazeDamageModifier = 0.25f;
+        //Armor_CriticalDamageModifier = 2.0f;
+        //Health_FatalDamageModifier = 10.0f;
+        //Health_NormalDamageModifier = 2.0f;
+        //Health_GrazeDamageModifier = 0.75f;
+        //Health_CriticalDamageModifier = 3.0f;
+        //AllowRagdoll = true;
+        //NormalDamagePercent = 60f;
+        //GrazeDamagePercent = 10f;
+        //CriticalDamagePercent = 22f;
+        //FatalDamagePercent = 8f;
+
         Armor_NormalDamageModifier = 1.0f;
         Armor_GrazeDamageModifier = 0.25f;
         Armor_CriticalDamageModifier = 2.0f;
         Health_FatalDamageModifier = 10.0f;
-        Health_NormalDamageModifier = 2.0f;
-        Health_GrazeDamageModifier = 0.75f;
-        Health_CriticalDamageModifier = 3.0f;
+        Health_NormalDamageModifier = 1.5f;
+        Health_GrazeDamageModifier = 0.5f;
+        Health_CriticalDamageModifier = 2.0f;
+
+
         AllowRagdoll = true;
-        NormalDamagePercent = 60f;
+        NormalDamagePercent = 70f;
         GrazeDamagePercent = 10f;
-        CriticalDamagePercent = 22f;
-        FatalDamagePercent = 8f;
+        CriticalDamagePercent = 15;
+        FatalDamagePercent = 5f;
     }
 
 }

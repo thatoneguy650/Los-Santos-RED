@@ -10,7 +10,7 @@ public class Cop : PedExt, IWeaponIssuable
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;
     private Voice Voice;
-    private WeaponInventory WeaponInventory;
+    
     private bool WasAlreadySetPersistent = false;
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName) : base(pedestrian, settings, crimes, weapons, name, "Cop")
     {
@@ -47,12 +47,12 @@ public class Cop : PedExt, IWeaponIssuable
     public Agency AssignedAgency { get; set; } = new Agency();
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
+    public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool WasModSpawned { get; private set; }
-    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
-    public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
-    public IssuableWeapon LongGun => WeaponInventory.LongGun;
+  //  public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
+    //public IssuableWeapon Sidearm => WeaponInventory.Sidearm;
+    //public IssuableWeapon LongGun => WeaponInventory.LongGun;
     public string ModelName { get; set; }
     public int ShootRate { get; set; } = 500;
     public int Accuracy { get; set; } = 40;
@@ -65,7 +65,11 @@ public class Cop : PedExt, IWeaponIssuable
     public void RadioIn(IPoliceRespondable currentPlayer) => Voice.RadioIn(currentPlayer);
     public void Speak(IPoliceRespondable currentPlayer) => Voice.Speak(currentPlayer);
     public void UpdateAssists(bool IsWanted) => AssistManager.UpdateCollision(IsWanted);
-    public void UpdateLoadout(bool IsPlayerInvehicle, bool IsDeadlyChase, int WantedLevel, bool IsAttemptingToSurrender, bool IsBusted, bool IsWeaponsFree, bool HasShotAtPolice, bool LethalForceAuthorized) => WeaponInventory.UpdateLoadout(IsPlayerInvehicle, IsDeadlyChase, WantedLevel, IsAttemptingToSurrender, IsBusted, IsWeaponsFree, HasShotAtPolice, LethalForceAuthorized);
+
+
+    public WeaponInventory WeaponInventory { get; private set; }
+
+ //   public void UpdateLoadout(bool IsPlayerInvehicle, bool IsDeadlyChase, int WantedLevel, bool IsAttemptingToSurrender, bool IsBusted, bool IsWeaponsFree, bool HasShotAtPolice, bool LethalForceAuthorized) => WeaponInventory.UpdateLoadout(IsPlayerInvehicle, IsDeadlyChase, WantedLevel, IsAttemptingToSurrender, IsBusted, IsWeaponsFree, HasShotAtPolice, LethalForceAuthorized);
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Speak(currentPlayer);

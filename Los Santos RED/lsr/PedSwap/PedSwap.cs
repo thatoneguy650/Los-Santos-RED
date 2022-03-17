@@ -151,10 +151,10 @@ public class PedSwap : IPedSwap
         HandlePreviousPed(false);
         PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
         //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        IssueWeapons(toSwapWith.Sidearm, toSwapWith.LongGun);
+        IssueWeapons(toSwapWith.WeaponInventory.Sidearm, toSwapWith.WeaponInventory.LongGun);
         Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer", CurrentModelPlayerIs.Name);
         Entities.Pedestrians.AddEntity(Player.AliasedCop);
-        Player.AliasedCop.IssueWeapons(Weapons, true, true, true);
+        Player.AliasedCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
     }
     public void BecomeRandomPed()
     {

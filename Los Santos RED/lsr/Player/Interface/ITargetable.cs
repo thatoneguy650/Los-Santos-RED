@@ -35,6 +35,8 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         bool RecentlyShot { get; }
         float ClosestPoliceDistanceToPlayer { get; }
+
+        void AddDistressedPed(Vector3 positionLastSeenDistressedPed);
         //bool IsHostile(Gang gang);
     }
 }

@@ -535,13 +535,20 @@ public class UI : IMenuProvideable
         }
         else if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
         {
-            if (DisplayablePlayer.Investigation.IsSuspicious)
+            if (DisplayablePlayer.Investigation.RequiresPolice)
             {
-                PlayerDisplay += $"~r~ Police Responding with Description{CurrentDefaultTextColor}";
+                if (DisplayablePlayer.Investigation.IsSuspicious)
+                {
+                    PlayerDisplay += $"~r~ Police Responding with Description{CurrentDefaultTextColor}";
+                }
+                else if (DisplayablePlayer.Investigation.IsNearPosition)
+                {
+                    PlayerDisplay += $"~o~ Police Responding{CurrentDefaultTextColor}";
+                }
             }
-            else if (DisplayablePlayer.Investigation.IsNearPosition)
+            else if (DisplayablePlayer.Investigation.RequiresEMS || DisplayablePlayer.Investigation.RequiresFirefighters)
             {
-                PlayerDisplay += $"~o~ Police Responding{CurrentDefaultTextColor}";
+                PlayerDisplay += $"~o~ Emergency Services Responding{CurrentDefaultTextColor}";
             }
         }
         else if (DisplayablePlayer.HasCriminalHistory)

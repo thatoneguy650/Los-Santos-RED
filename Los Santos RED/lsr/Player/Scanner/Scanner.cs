@@ -2448,6 +2448,7 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
+                IsStatus = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_medical_aid_requested.Medicalaidrequested.FileName},"medical aid requested"),
@@ -2461,6 +2462,7 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
+                IsStatus = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { emergency.Apossiblefire.FileName},"a possible fire"),

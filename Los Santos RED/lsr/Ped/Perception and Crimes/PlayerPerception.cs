@@ -455,7 +455,7 @@ public class PlayerPerception
     }
     public void UpdateWitnessedCrimes()
     {
-        if (Originator.Pedestrian.Exists())
+        if (Originator.Pedestrian.Exists() && !Originator.IsUnconscious)
         {
             foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
             {

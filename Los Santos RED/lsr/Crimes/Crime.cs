@@ -7,14 +7,6 @@ using System.Threading.Tasks;
 [Serializable()]
 public class Crime
 {
-    //public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority)
-    //{
-    //    ID = _ID;
-    //    ResultsInLethalForce = _ResultsInLethalForce;
-    //    ResultingWantedLevel = _ResultingWantedLevel;
-    //    Name = _Name;
-    //    Priority = priority;
-    //}
     public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, bool canBeReportedByCivilians, bool angersCivilians, bool scaresCivilians)
     {
         ID = _ID;
@@ -26,15 +18,6 @@ public class Crime
         AngersCivilians = angersCivilians;
         ScaresCivilians = scaresCivilians;
     }
-    //public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, bool canBeReportedByCivilians)
-    //{
-    //    ID = _ID;
-    //    ResultsInLethalForce = _ResultsInLethalForce;
-    //    ResultingWantedLevel = _ResultingWantedLevel;
-    //    Name = _Name;
-    //    Priority = priority;
-    //    CanBeReportedByCivilians = canBeReportedByCivilians;
-    //}
     public Crime()
     {
 
@@ -52,4 +35,5 @@ public class Crime
     public bool ScaresCivilians { get; set; } = true;
     public int Priority { get; set; } = 99;
     public bool Enabled { get; set; } = true;
+
 }

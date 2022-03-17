@@ -17,7 +17,7 @@ public class Investigation
     private bool HavePlayerDescription = false;
     private uint GameTimeLastUpdatedInvestigation;
 
-    private Color blipColor => IsSuspicious? Color.Orange : Color.Yellow;
+    private Color blipColor => RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
@@ -62,9 +62,18 @@ public class Investigation
     {
         if (Player.IsNotWanted)
         {
-            RequiresPolice = requiresPolice;
-            RequiresEMS = requiresEMS;
-            RequiresFirefighters = requiresFirefighters;
+            if(requiresPolice)
+            {
+                RequiresPolice = true;
+            }
+            if(requiresEMS)
+            {
+                RequiresEMS = true;
+            }
+            if(requiresFirefighters)
+            {
+                RequiresFirefighters = true;
+            }
             Position = NativeHelper.GetStreetPosition(postionToInvestigate);
             GameFiber.Yield();
             if (havePlayerDescription)
@@ -99,7 +108,16 @@ public class Investigation
         IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
-            if ((IsTimedOut && (!World.Pedestrians.AnyWantedPeopleNearPlayer || !RequiresPolice) && (!World.Pedestrians.AnyInjuredPeopleNearPlayer || !RequiresEMS)) || IsOutsideInvestigationRange) //remove after 3 minutes
+            //if(!World.Pedestrians.AnyInjuredPeopleNearPlayer)
+            //{
+            //    RequiresEMS = false;
+            //}
+            //if(!World.Pedestrians.AnyWantedPeopleNearPlayer)
+            //{
+            //    RequiresPolice = false;
+            //}
+
+            if ((IsTimedOut && (!RequiresPolice || !World.Pedestrians.AnyWantedPeopleNearPlayer) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
             }

@@ -139,7 +139,7 @@ public class EMTTasker
         if (emt.CurrentTask?.Name != "EMTRespond")// && Cop.IsIdleTaskable)
         {
             EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
-            emt.CurrentTask = new EMTRespond(emt, Player);
+            emt.CurrentTask = new EMTRespond(emt, Player, PedProvider, Tasker, PlacesOfInterest, emt);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();
         }

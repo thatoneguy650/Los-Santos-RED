@@ -44,6 +44,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDealingDrugs { get; set; }
         bool HasMenu { get; }
         string VoiceName { get; }
+        bool HasSeenDistressedPed { get; set; }
+        Vector3 PositionLastSeenDistressedPed { get; }
 
         void SetWantedLevel(int v);
     }

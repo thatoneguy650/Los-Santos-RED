@@ -112,7 +112,7 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if(Health > 100 && Health <= 130 && !MyPed.IsUnconscious)// && RandomItems.RandomPercent(40))
+                if(Health > 100 && !MyPed.IsUnconscious && (Health <= 130 || Health - prevHealth >= 20) && RandomItems.RandomPercent(60))// && RandomItems.RandomPercent(40))
                 {
                     SetUnconscious();
                 }

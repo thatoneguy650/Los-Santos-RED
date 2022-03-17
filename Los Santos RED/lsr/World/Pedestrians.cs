@@ -689,7 +689,12 @@ public class Pedestrians
             PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd };
             Civilians.Add(toCreate);
 
-            Pedestrian.Money = toCreate.Money;
+
+            if (Pedestrian.Exists())
+            {
+                Pedestrian.Money = toCreate.Money;
+                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+            }
         }
 
 
@@ -753,6 +758,7 @@ public class Pedestrians
             if (Pedestrian.Exists())
             {
                 gm.Pedestrian.Money = gm.Money;
+                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
                 gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
             }
             bool withPerson = false;
@@ -816,7 +822,7 @@ public class Pedestrians
             }
 
             Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name);
-            myCop.IssueWeapons(Weapons, true,true,true);
+            myCop.WeaponInventory.IssueWeapons(Weapons, true,true,true);
 
             int accuracy = RandomItems.GetRandomNumberInt(AssignedPerson.AccuracyMin, AssignedPerson.AccuracyMax);
             int shootRate = RandomItems.GetRandomNumberInt(AssignedPerson.ShootRateMin, AssignedPerson.ShootRateMax);

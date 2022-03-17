@@ -59,14 +59,14 @@ public class ScaredCallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any()))
+            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
             }
         }
         else
         {
-            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any()))
+            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
                 //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
@@ -106,9 +106,14 @@ public class ScaredCallIn : ComplexTask
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
-                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
+                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, false);// true);//why was this set to true?
                 }
                 Ped.OtherCrimesWitnessed.Clear();
+            }
+            else if (Ped.HasSeenDistressedPed)
+            {
+                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Ped.HasSeenDistressedPed = false;
             }
             //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
         }
@@ -135,6 +140,11 @@ public class ScaredCallIn : ComplexTask
                     Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
                 }
                 Ped.OtherCrimesWitnessed.Clear();
+            }
+            else if (Ped.HasSeenDistressedPed)
+            {
+                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Ped.HasSeenDistressedPed = false;
             }
             //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime GHOST: {Ped.Handle}", 3);
         }

@@ -12,14 +12,18 @@ public class WeaponInventory
 {
     private IWeaponIssuable WeaponOwner;
     private uint GameTimeLastWeaponCheck;
-    private bool IsSetDeadly;
-    private bool IsSetLessLethal;
-    private bool IsSetUnarmed;
-    private bool IsSetDefault;
+
     public IssuableWeapon LongGun { get; private set; }
     public IssuableWeapon Sidearm { get; private set; }
     public IssuableWeapon Melee { get; private set; }
-    private bool HasHeavyWeaponOnPerson;
+
+    public bool IsSetDeadly { get; private set; }
+    public bool IsSetLessLethal { get; private set; }
+    public bool IsSetUnarmed { get; private set; }
+    public bool IsSetDefault { get; private set; }
+
+
+    public bool HasHeavyWeaponOnPerson { get; private set; }
     private ISettingsProvideable Settings;
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {

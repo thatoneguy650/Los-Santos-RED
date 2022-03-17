@@ -39,14 +39,14 @@ public class CalmCallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any()))
+            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
             }
         }
         else
         {
-            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any()))
+            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
                 EntryPoint.WriteToConsole($"TASKER: CalmCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
@@ -86,6 +86,11 @@ public class CalmCallIn : ComplexTask
                 }
                 Ped.OtherCrimesWitnessed.Clear();
             }
+            else if (Ped.HasSeenDistressedPed)
+            {
+                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Ped.HasSeenDistressedPed = false;
+            }
             //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
         }
         else if (!Ped.Pedestrian.Exists())
@@ -109,6 +114,11 @@ public class CalmCallIn : ComplexTask
                     Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
                 }
                 Ped.OtherCrimesWitnessed.Clear();
+            }
+            else if (Ped.HasSeenDistressedPed)
+            {
+                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Ped.HasSeenDistressedPed = false;
             }
             //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime GHOST: {Ped.Handle}", 3);
         }

@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -186,6 +187,8 @@ public class PedExt : IComplexTaskable
     public int TimesInsultedByPlayer { get; private set; }
     //public List<MenuItem> TransactionMenu { get; set; }
 
+    public Vector3 PositionLastSeenDistressedPed { get; set; }
+
     public ShopMenu ShopMenu { get; set; }
 
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
@@ -256,6 +259,10 @@ public class PedExt : IComplexTaskable
     }
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
+
+    public bool HasSeenDistressedPed { get; set; }
+    public bool HasStartedEMTTreatment { get; internal set; }
+
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
     {
@@ -396,7 +403,7 @@ public class PedExt : IComplexTaskable
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
                     UpdateVehicleState();
-                    if (!IsCop)
+                    if (!IsCop && !IsUnconscious)
                     {
                         if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                         {
@@ -406,6 +413,10 @@ public class PedExt : IComplexTaskable
                         {
                             CheckPlayerBusted();
                         }
+                    }
+                    if(Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        LookForDistressedPeds(world);
                     }
                     GameTimeLastUpdated = Game.GameTime;
                 }
@@ -419,6 +430,20 @@ public class PedExt : IComplexTaskable
         {
             CurrentTask.OtherTarget = otherTarget;
             CurrentTask.Update();
+        }
+    }
+    private void LookForDistressedPeds(IEntityProvideable world)
+    {
+        foreach(PedExt distressedPed in world.Pedestrians.PedExts.Where(x=> (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
+        {
+            float distanceToCriminal = Pedestrian.DistanceTo2D(distressedPed.Pedestrian);
+            if (distanceToCriminal <= 15f || (distanceToCriminal <= 45f && distressedPed.Pedestrian.IsThisPedInFrontOf(Pedestrian)))
+            {
+                PositionLastSeenDistressedPed = distressedPed.position;
+                HasSeenDistressedPed = true;
+                break;
+            }
+                
         }
     }
     private void CheckPlayerBusted()

@@ -709,15 +709,24 @@ public class SellMenu : Menu
                     EntryPoint.WriteToConsole($"SELL MENU PreviewWeapon CREATED ITEM {itemToShow?.Name}");
                     float length = SellingProp.Model.Dimensions.X;
                     float width = SellingProp.Model.Dimensions.Y;
+
+                    float LargestSideLength = length;
+
+                    if (width > length)
+                    {
+                        LargestSideLength = width;
+                    }
+
+
                     if (StoreCam.Exists())
                     {
-                        Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 0.5f) + (StoreCam.Direction.ToNormalized() * length / 2f);//
+                        Position = StoreCam.Position + (StoreCam.Direction.ToNormalized() * 0.5f) + (StoreCam.Direction.ToNormalized() * LargestSideLength / 2f);//
                     }
                     else
                     {
                         Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                         Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
-                        Position = GPCamPos + (GPCamDir.ToNormalized() * 0.5f) + (GPCamDir.ToNormalized() * length / 2f);
+                        Position = GPCamPos + (GPCamDir.ToNormalized() * 0.5f) + (GPCamDir.ToNormalized() * LargestSideLength / 2f);
                     }
                     SellingProp.Position = Position;
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);

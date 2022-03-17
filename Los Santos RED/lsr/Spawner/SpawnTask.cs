@@ -295,7 +295,7 @@ public class SpawnTask
 
             Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName);
             World.Pedestrians.AddEntity(PrimaryCop);
-            PrimaryCop.IssueWeapons(Weapons, true, true, true);
+            PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
             PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
             PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
             PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);

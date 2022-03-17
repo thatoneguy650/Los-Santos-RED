@@ -174,7 +174,7 @@ public class PersonTransaction : Interaction
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
                 }
 
-                else if(Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
+                else if(Ped.Pedestrian.IsInAnyVehicle(false) && Player.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                     Ped.Pedestrian.BlockPermanentEvents = false;
