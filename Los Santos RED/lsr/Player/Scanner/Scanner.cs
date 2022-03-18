@@ -1059,7 +1059,13 @@ namespace LosSantosRED.lsr
             }
             EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
             EventToPlay.NotificationTitle = DispatchToPlay.NotificationTitle;
-            if (DispatchToPlay.IsStatus)
+
+
+            if(DispatchToPlay.NotificationSubtitle != "")
+            {
+                EventToPlay.NotificationSubtitle = DispatchToPlay.NotificationSubtitle + "~s~";
+            }
+            else if (DispatchToPlay.IsStatus)
             {
                 EventToPlay.NotificationSubtitle = "~g~Status";
             }
@@ -2449,6 +2455,8 @@ namespace LosSantosRED.lsr
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
                 IsStatus = true,
+                NotificationTitle = "Emergency Scanner",
+                NotificationSubtitle = "~y~Injured Person Reported~s~",
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_medical_aid_requested.Medicalaidrequested.FileName},"medical aid requested"),
@@ -2463,6 +2471,8 @@ namespace LosSantosRED.lsr
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
                 IsStatus = true,
+                NotificationTitle = "Emergency Scanner",
+                NotificationSubtitle = "~y~Fire Reported~s~",
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { emergency.Apossiblefire.FileName},"a possible fire"),
@@ -2529,6 +2539,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysBeInterrupted = true,
+                NotificationTitle = "Emergency Scanner",
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { officers_on_scene.Officersareatthescene.FileName },"officers are at the scene"),
@@ -2779,6 +2790,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
+                NotificationTitle = "Emergency Scanner",
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
@@ -2886,6 +2898,8 @@ namespace LosSantosRED.lsr
             public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
             public int TimesPlayed { get; set; }
             public bool VehicleIncludesIn { get; set; }
+            public string NotificationSubtitle { get; set; } = "";
+
             public void SetPlayed()
             {
                 GameTimeLastPlayed = Game.GameTime;

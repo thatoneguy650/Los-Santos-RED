@@ -45,6 +45,8 @@ public class VehicleSettings : ISettingsDefaultable
     public bool RequireScrewdriverForHotwire { get; set; }
     [Description("Allows mission (persistent) vehicles to be locked by the game automatically. If disabled, only ambient vehicles will be locked by the mod.")]
     public bool AllowLockMissionVehicles { get;  set; }
+    [Description("Stops the player ped from automatically putting on a helmet when on a motorcycle.")]
+    public bool DisableAutoHelmet { get; set; }
 
     public VehicleSettings()
     {
@@ -75,5 +77,6 @@ public class VehicleSettings : ISettingsDefaultable
         RequireScrewdriverForLockPickEntry = false;
         RequireScrewdriverForHotwire = false;
         AllowLockMissionVehicles = false;
+        DisableAutoHelmet = true;
     }
 }

@@ -81,7 +81,7 @@ public class GangDispatcher
                     if(DistanceTo >= 45f)
                     {
                         IsDenSpawn = true;
-                        spawnLocation.InitialPosition = gangDen.EntrancePosition.Around2D(30f);
+                        spawnLocation.InitialPosition = gangDen.EntrancePosition.Around2D(50f);
                         EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn AROUND DEN", 3);
                     }
                     else
@@ -276,14 +276,17 @@ public class GangDispatcher
     private Vector3 GetPositionAroundPlayer()
     {
         Vector3 Position;
-        if (Player.IsInVehicle)
-        {
-            Position = Player.Character.GetOffsetPositionFront(100f);//250f//350f
-        }
-        else
-        {
-            Position = Player.Position;
-        }
+
+        Position = Player.Position;
+
+        //if (Player.IsInVehicle)
+        //{
+        //    Position = Player.Character.GetOffsetPositionFront(100f);//250f//350f
+        //}
+        //else
+        //{
+        //    Position = Player.Position;
+        //}
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }

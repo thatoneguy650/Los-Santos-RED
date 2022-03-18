@@ -12,6 +12,9 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateWantedMusic { get; set; }
     public bool TerminateScanner { get; set; }
     public bool TerminateScenarioCops { get; set; }
+    //public bool TerminateScenarioGangs { get; set; }
+    //public bool SuppressVanillaGangPeds { get;  set; }
+
     public VanillaSettings()
     {
 
@@ -25,6 +28,8 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = false;
+        //TerminateScenarioGangs = true;
+        //SuppressVanillaGangPeds = true;
     }
 
 }

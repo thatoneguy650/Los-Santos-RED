@@ -41,11 +41,15 @@ public class PersonTransaction : Interaction
     private bool isFollowing;
 
     private bool PanickedByPlayer = false;
+    private bool PlayerEnteringOtherVehicle;
+    private bool PedEnteringPlayerVehicle;
+    private bool PedCanBeTasked;
+    private bool PedCanBeAmbientTasked;
 
     public InteractableLocation AssociatedStore { get; set; }
 
 
-    private bool CanContinueConversation => Player.CanConverse && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 12f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
+    private bool CanContinueConversation => Player.CanConverse && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
     public override string DebugString => "";
 
     public PersonTransaction(IActivityPerformable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -82,6 +86,13 @@ public class PersonTransaction : Interaction
                 PedWasPersistent = Ped.WasEverSetPersistent;
                 Player.IsConversing = true;
                 Player.IsTransacting = true;
+
+                PedCanBeTasked = Ped.CanBeTasked;
+                PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
+
+
+                Ped.CanBeTasked = false;
+                Ped.CanBeAmbientTasked = false;
 
                 AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
                 AnimationDictionary.RequestAnimationDictionay("mp_common");
@@ -160,40 +171,60 @@ public class PersonTransaction : Interaction
             Transaction?.DisposeTransactionMenu();
             DisposeInteractionMenu();
             Player.LastFriendlyVehicle = null;
+
+            if(PedCanBeTasked)
+            {
+                Ped.CanBeTasked = true;
+            }
+            if(PedCanBeAmbientTasked)
+            {
+                Ped.CanBeAmbientTasked = true;
+            }
+
+
             Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
             if (Ped != null && Ped.Pedestrian.Exists())
             {
-                Ped.Pedestrian.CanBePulledOutOfVehicles = true;
+               // Ped.Pedestrian.CanBePulledOutOfVehicles = true;
 
                 if(PanickedByPlayer)
                 {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
+                    
+
+
+
+
+
                     NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Player.Character, 100f, -1, false, false);
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
                 }
 
-                else if(Ped.Pedestrian.IsInAnyVehicle(false) && Player.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
+                else if(Ped.Pedestrian.IsInAnyVehicle(false) && PedEnteringPlayerVehicle && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
                 {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
+               
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                        Ped.Pedestrian.KeepTasks = false;
+                    
                     NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
                 }
                 else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
                 {
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
+       
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                        Ped.Pedestrian.KeepTasks = false;
+                    
                     NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, AssociatedStore.VendorHeading, -1);
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading", 3);
                 }
                 else
                 {
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+               
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                        Ped.Pedestrian.KeepTasks = false;
+                    
                     EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking", 3);
                 }
                 //if (Ped.Pedestrian.CurrentVehicle.Exists())
@@ -315,7 +346,7 @@ public class PersonTransaction : Interaction
             int? seatIndex = vehicleToEnter.GetFreePassengerSeatIndex();
             if (seatIndex != null)
             {
-                NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, 5000, seatIndex, 0.5f, 0);
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, -1, seatIndex, 0.5f, 0);
                 //NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, 5000, seatIndex, 1f, 9);
             }
         }
@@ -358,6 +389,10 @@ public class PersonTransaction : Interaction
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
             Player.LastFriendlyVehicle = null;
             Player.LastFriendlyVehicle = Ped.Pedestrian.CurrentVehicle;
+
+
+            PlayerEnteringOtherVehicle = true;
+            PedEnteringPlayerVehicle = false;
             EntryPoint.WriteToConsole("Paused Person Transaction");
 
             InteractionMenu.Visible = false;
@@ -377,7 +412,7 @@ public class PersonTransaction : Interaction
     {
         if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            Ped.Pedestrian.StaysInVehiclesWhenJacked = true;
+            //Ped.Pedestrian.StaysInVehiclesWhenJacked = true;
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
 
 
@@ -390,7 +425,8 @@ public class PersonTransaction : Interaction
                 Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
             }
 
-
+            PlayerEnteringOtherVehicle = false;
+            PedEnteringPlayerVehicle = true;
 
             GetInVehicleAsPassenger(Ped.Pedestrian, Player.CurrentVehicle?.Vehicle);
         }
@@ -424,7 +460,7 @@ public class PersonTransaction : Interaction
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_FOLLOW_TO_OFFSET_OF_ENTITY", 0, Player.Character, 2.0f, 0f, 0f, 0.75f, -1, 10.0f, true);//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
+                NativeFunction.CallByName<bool>("TASK_FOLLOW_TO_OFFSET_OF_ENTITY", 0, Player.Character, 0.0f, 2.0f, 0f, 1.0f, -1, 10.0f, true);//NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 3.0f, 3.0f, 0f, 0.75f, 20000, 5f, true);
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
                 NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);

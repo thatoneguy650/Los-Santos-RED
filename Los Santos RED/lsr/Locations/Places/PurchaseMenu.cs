@@ -106,7 +106,7 @@ public class PurchaseMenu : Menu
         {
             SellingPed.Delete();
         }
-        EntryPoint.WriteToConsole($"Purchase Menu ClearPreviews Ran", 5);
+        //EntryPoint.WriteToConsole($"Purchase Menu ClearPreviews Ran", 5);
     }
     public void Dispose()
     {

@@ -338,7 +338,21 @@ public class PlayerPerception
         }
         if (DistanceToTarget <= 0.1f)
         {
-            DistanceToTarget = 999f;
+            if(Originator.IsInVehicle && Target.IsInVehicle)
+            {
+                if(Originator.Pedestrian.CurrentVehicle?.Handle == Target.Character.CurrentVehicle?.Handle)
+                {
+                    DistanceToTarget = DistanceToTarget;
+                }
+                else
+                {
+                    DistanceToTarget = 999f;
+                }
+            }
+            else
+            {
+                DistanceToTarget = 999f;
+            }
         }
         if (DistanceToTarget <= ClosestDistanceToTarget)
         {
@@ -358,7 +372,7 @@ public class PlayerPerception
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (DistanceToTarget >= 100f)//this is new
+        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible)//this is new
         {
             SetTargetUnseen();
             return false;

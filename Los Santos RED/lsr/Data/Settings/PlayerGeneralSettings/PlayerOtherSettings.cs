@@ -45,7 +45,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-        MeleeDamageModifier = 0.2f;
+        MeleeDamageModifier = 1.0f;
     #endif
     }
     public void SetDefault()

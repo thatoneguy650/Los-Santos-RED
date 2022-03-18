@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         //List<GameLocation> GetLocations(LocationType hospital);
         List<BasicLocation> GetAllBasicLocations();
         List<InteractableLocation> GetAllInteractableLocations();
+        List<BasicLocation> GetAllLocations();
     }
 }

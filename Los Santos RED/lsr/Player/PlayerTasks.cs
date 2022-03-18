@@ -607,7 +607,7 @@ public class PlayerTasks
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        myDrop.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 3);
+                        myDrop.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5);
                     }
                     if (myDrop.InteractionComplete && !myDrop.IsNearby)
                     {

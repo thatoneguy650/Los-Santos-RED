@@ -82,7 +82,7 @@ namespace LosSantosRED.lsr
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
                         {
-                            Cop.UpdateAssists(Player.IsWanted);
+                            Cop.AssistManager.UpdateCollision(Player.IsWanted);
                             //GameFiber.Yield();
                         }
                         if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)

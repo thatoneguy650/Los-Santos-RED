@@ -418,6 +418,12 @@ public class PedExt : IComplexTaskable
                     {
                         LookForDistressedPeds(world);
                     }
+                    if(IsCop && HasSeenDistressedPed)
+                    {
+                        perceptable.AddDistressedPed(PositionLastSeenDistressedPed);
+                        HasSeenDistressedPed = false;
+                    }
+
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }

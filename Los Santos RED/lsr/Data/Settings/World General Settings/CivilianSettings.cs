@@ -79,7 +79,7 @@ public class CivilianSettings : ISettingsDefaultable
         SetDefault();
 #if DEBUG
         ShowRandomCriminalBlips = true;
-        OverrideHealth = false;
+       // OverrideHealth = false;
 #else
 
 #endif
@@ -98,7 +98,7 @@ public class CivilianSettings : ISettingsDefaultable
         TaskMissionPeds = false;
         AllowMissionPedsToInteract = false;
         AllowRandomCrimes = true;
-        MinimumTimeBetweenRandomCrimes = 300000;
+        MinimumTimeBetweenRandomCrimes = 900000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         ShowRandomCriminalBlips = false;

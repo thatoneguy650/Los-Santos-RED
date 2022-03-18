@@ -693,7 +693,7 @@ public class Pedestrians
             if (Pedestrian.Exists())
             {
                 Pedestrian.Money = toCreate.Money;
-                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+                //NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
         }
 

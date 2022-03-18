@@ -35,7 +35,7 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
-        if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation)
+        if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && Player.IsNotWanted)
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;

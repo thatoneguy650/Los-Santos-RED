@@ -46,7 +46,6 @@ public class Places
         GangTerritories = gangTerritories;
         Streets = streets;
     }
-   // public List<GameLocation> ActiveLocations { get; private set; } = new List<GameLocation>();
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
     public List<BasicLocation> ActiveBasicLocations { get; private set; } = new List<BasicLocation>();
     public void Setup()
@@ -82,7 +81,7 @@ public class Places
             {0x3b21c5e7,0x426a547c,0x418f055a};
 
 
-        foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllBasicLocations())
+        foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllLocations())
         {
             Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
             string betweener = "";
@@ -113,73 +112,6 @@ public class Places
             string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
             basicLocation.StreetAddress = LocationName;
         }
-
-        foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllInteractableLocations())
-        {
-            Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
-            string betweener = "";
-            string zoneString = "";
-            if (placeZone != null)
-            {
-                if (placeZone.IsSpecificLocation)
-                {
-                    betweener = $"near";
-                }
-                else
-                {
-                    betweener = $"in";
-                }
-                zoneString = $"~p~{placeZone.DisplayName}~s~";
-            }
-            string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
-            string StreetNumber = "";
-
-            if (streetName == "")
-            {
-                betweener = "";
-            }
-            else
-            {
-                StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
-            }
-            string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
-            basicLocation.StreetAddress = LocationName;
-        }
-
-
-        //foreach (GameLocation basicLocation in PlacesOfInterest.GetAllPlaces())
-        //{
-        //    Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
-        //    string betweener = "";
-        //    string zoneString = "";
-        //    if (placeZone != null)
-        //    {
-        //        if (placeZone.IsSpecificLocation)
-        //        {
-        //            betweener = $"near";
-        //        }
-        //        else
-        //        {
-        //            betweener = $"in";
-        //        }
-        //        zoneString = $"~p~{placeZone.DisplayName}~s~";
-        //    }
-        //    string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
-        //    string StreetNumber = "";
-        //    if (streetName == "")
-        //    {
-        //        betweener = "";
-        //    }
-        //    else
-        //    {
-        //        StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
-        //    }
-        //    string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
-        //    basicLocation.StreetAddress = LocationName;
-        //}
-
-
-
         foreach(GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
         {
             tl.Menu = ShopMenus.GetMenu(tl.MenuID);
@@ -190,52 +122,9 @@ public class Places
         {
             tl.Menu = ShopMenus.GetMenu(tl.MenuID);
         }
-
-
-        //foreach (Hotel tl in PlacesOfInterest.PossibleLocations.Hotels)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (GunStore tl in PlacesOfInterest.PossibleLocations.GunStores)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (Dispensary tl in PlacesOfInterest.PossibleLocations.Dispensaries)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (HardwareStore tl in PlacesOfInterest.PossibleLocations.HardwareStores)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (HeadShop tl in PlacesOfInterest.PossibleLocations.HeadShops)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (PawnShop tl in PlacesOfInterest.PossibleLocations.PawnShops)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (Pharmacy tl in PlacesOfInterest.PossibleLocations.Pharmacies)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach (Restaurant tl in PlacesOfInterest.PossibleLocations.Restaurants)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-        //foreach(ConvenienceStore tl in PlacesOfInterest.PossibleLocations.ConvenienceStores)
-        //{
-        //    tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-        //}
-
     }
     public void Dispose()
     {
-        //foreach (GameLocation loc in ActiveLocations)
-        //{
-        //    loc.Dispose();
-        //}
         foreach (InteractableLocation loc in ActiveInteractableLocations)
         {
             loc.Dispose();
@@ -248,42 +137,6 @@ public class Places
     public void ActiveNearLocations()
     {
         int LocationsCalculated = 0;
-        //foreach (GameLocation gl in PlacesOfInterest.GetAllPlaces())
-        //{
-        //    if (gl.IsEnabled && gl.IsOpen(Time.CurrentHour) && gl.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5))// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
-        //    {
-        //        if (!ActiveLocations.Contains(gl))
-        //        {
-        //            ActiveLocations.Add(gl);
-        //            gl.Setup(Interiors, Settings, Crimes, Weapons);
-        //            World.Pedestrians.AddEntity(gl.Merchant);
-        //            World.AddBlip(gl.Blip);
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (ActiveLocations.Contains(gl))
-        //        {
-        //            ActiveLocations.Remove(gl);
-        //            gl.Dispose();
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    LocationsCalculated++;
-        //    if (LocationsCalculated >= 20)//50//20//5
-        //    {
-        //        LocationsCalculated = 0;
-        //        GameFiber.Yield();
-        //    }
-        //}
-
-
-
-
-
-
-        LocationsCalculated = 0;
         foreach (InteractableLocation gl in PlacesOfInterest.GetAllInteractableLocations())
         {
             if (gl.IsOpen(Time.CurrentHour) && gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
@@ -315,8 +168,6 @@ public class Places
                 GameFiber.Yield();
             }
         }
-
-
 
         LocationsCalculated = 0;
         foreach (BasicLocation gl in PlacesOfInterest.GetAllBasicLocations())
@@ -353,11 +204,6 @@ public class Places
     }
     public void UpdateNearLocations()
     {
-        //foreach (GameLocation gl in ActiveLocations.ToList())
-        //{
-        //    gl.Update();
-        //    GameFiber.Yield();
-        //}
         foreach (InteractableLocation gl in ActiveInteractableLocations.ToList())
         {
             gl.Update();
@@ -404,7 +250,7 @@ public class Places
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
         {
             VendingMachine gl = ActiveVendingMachines[i];
-            if (gl.DistanceToPlayer >= 100f)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+            if (gl.DistanceToPlayer >= 100f)
             {
                 if(ActiveInteractableLocations.Contains(gl))
                 {
@@ -420,70 +266,18 @@ public class Places
             }
         }
     }
-    //private void UpdateVendingMachines()
-    //{
-    //    List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
-    //    foreach (Rage.Object obj in Objects)
-    //    {
-    //        if (obj.Exists())
-    //        {
-    //            string modelName = obj.Model.Name.ToLower();
-    //            Vector3 position = obj.Position;
-    //            float heading = obj.Heading;
-    //            uint hash = obj.Model.Hash;
-    //            if (VendingMachines.Contains(modelName) || VendingMachinesHash.Contains(hash))
-    //            {
-    //                float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-    //                if (distanceTo <= 50f)
-    //                {
-    //                    if (!ActiveLocations.Any(x => x.Type == LocationType.VendingMachine && x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
-    //                    {
-    //                        ShopMenu toBuy = ShopMenus.GetVendingMenu(modelName);
-    //                        GameLocation newVend = new GameLocation(position, heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
-    //                        newVend.Setup(Interiors, Settings, Crimes, Weapons);
-    //                        World.AddBlip(newVend.Blip);
-    //                        ActiveLocations.Add(newVend);
-    //                        EntryPoint.WriteToConsole($"Nearby Vending {toBuy.Name} ADDED Props FOUND {modelName}", 5);
-    //                    }
-    //                }
-    //                GameFiber.Yield();
-    //            }
-    //        }
-    //    }
-    //    GameFiber.Yield();
-    //    for (int i = ActiveLocations.Count - 1; i >= 0; i--)
-    //    {
-    //        GameLocation gl = ActiveLocations[i];
-    //        if (gl.Type == LocationType.VendingMachine && gl.DistanceToPlayer >= 100f)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
-    //        {
-    //            if (ActiveLocations.Contains(gl))
-    //            {
-    //                EntryPoint.WriteToConsole($"Nearby Vending {gl.Name} REMOVED", 5);
-    //                ActiveLocations.Remove(gl);
-    //                gl.Dispose();
-    //                GameFiber.Yield();
-
-    //            }
-    //        }
-    //    }
-    //}
     public void ActivateBasicLocation(BasicLocation gl)
     {
         if (!ActiveBasicLocations.Contains(gl))
         {
             ActiveBasicLocations.Add(gl);
             gl.Setup(Interiors, Settings, Crimes, Weapons);
-            //World.Pedestrians.AddEntity(gl.Merchant);
             World.AddBlip(gl.Blip);
             GameFiber.Yield();
         }    
     }
     public void SetGangLocationActive(string iD, bool v)
     {
-        //foreach (GameLocation gl in PlacesOfInterest.GetAllPlaces().Where(x => x.GangID == iD))
-        //{
-        //    gl.IsEnabled = v;
-        //}
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
             EntryPoint.WriteToConsole($"Enabled Den {gl.Name}");

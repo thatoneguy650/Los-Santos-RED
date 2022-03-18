@@ -43,6 +43,8 @@ namespace LosSantosRED.lsr.Interface
         Vehicle LastFriendlyVehicle { get; set; }
         Violations Violations { get; }
         bool IsDriver { get; }
+        List<VehicleExt> OwnedVehicles { get; }
+        Vector3 Position { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();
@@ -50,5 +52,6 @@ namespace LosSantosRED.lsr.Interface
         void ConsumeItem(ModItem modItem);
         void ChangeName(string newName);
         void EnterVehicleAsPassenger();
+        void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
     }
 }

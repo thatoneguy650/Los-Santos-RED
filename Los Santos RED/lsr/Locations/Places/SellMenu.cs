@@ -202,7 +202,7 @@ public class SellMenu : Menu
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
-        string formattedPurchasePrice = cii.SalesPrice.ToString("C0");
+        string formattedSalesPrice = cii.SalesPrice.ToString("C0");
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
@@ -236,12 +236,12 @@ public class SellMenu : Menu
         bool FoundCategoryMenu = false;
         foreach (UIMenu uimen in MenuPool.ToList())
         {
-            if (uimen.SubtitleText == ClassName)
+            if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenu)
             {
                 FoundCategoryMenu = true;
                 VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
                 uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
                 EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
                 break;
             }
@@ -250,7 +250,7 @@ public class SellMenu : Menu
         {
             VehicleMenu = MenuPool.AddSubMenu(sellMenu, cii.ModItemName);
             sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].Description = description;
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
         if (HasBannerImage)
@@ -264,11 +264,19 @@ public class SellMenu : Menu
         description = myItem.Description;
         if (description == "")
         {
-            description = $"List Price {formattedPurchasePrice}";
+            description = $"List Price {formattedSalesPrice}";
         }
-        UIMenuItem Purchase = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedPurchasePrice };
-        VehicleMenu.AddItem(Purchase);
+        bool enabled = false;
+        if (Player.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(myItem.ModelItem.ModelName)))
+        {
+            enabled = true;
+        }
+
+
+        UIMenuItem Sell = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedSalesPrice, Enabled = enabled };
+        VehicleMenu.AddItem(Sell);
         VehicleMenu.OnItemSelect += OnVehicleItemSelect;
+        //VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
     }
 
 
@@ -285,29 +293,16 @@ public class SellMenu : Menu
             MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
-                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
-                if (Player.Money < menuItem.PurchasePrice)
+                EntryPoint.WriteToConsole($"Vehicle Sell {menuItem.ModItemName} Player.Money {Player.Money} menuItem.SalesPrice {menuItem.SalesPrice}", 5);
+                if (!SellVehicle(CurrentModItem))
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     return;
                 }
-                //if (!PurchaseVehicle(CurrentModItem))
-                //{
-                //    return;
-                //}
-                Player.GiveMoney(-1 * menuItem.PurchasePrice);
-                MoneySpent += menuItem.PurchasePrice;
+                Player.GiveMoney(menuItem.SalesPrice);
+                MoneySpent += menuItem.SalesPrice;
             }
             sender.Visible = false;
             Dispose();
-        }
-        if (selectedItem.Text == "Set Plate" && CurrentModItem != null)
-        {
-            //PlateString = NativeHelper.GetKeyboardInput("");
-            //if (SellingVehicle.Exists() && PlateString != "")
-            //{
-            //    SellingVehicle.LicensePlate = PlateString.Substring(0,8);
-            //}
         }
     }
     private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
@@ -586,7 +581,21 @@ public class SellMenu : Menu
         }
     }
 
-
+    private bool SellVehicle(ModItem modItem)
+    {
+        VehicleExt toSell = Player.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(modItem.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
+        if (toSell != null)
+        {
+            Player.RemoveOwnershipOfVehicle(toSell);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", "Thank you for your sale");
+            return true;
+        }
+        else
+        {
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
+            return false;
+        }
+    }
     private void PreviewPed(ModItem itemToShow)
     {
         //GameFiber.Yield();
@@ -675,7 +684,24 @@ public class SellMenu : Menu
     {
         if (itemToShow != null && itemToShow.ModelItem != null)
         {
-            SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
+            VehicleExt toSell = Player.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(itemToShow.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
+            if (toSell != null)
+            {
+                SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
+                if(SellingVehicle.Exists())
+                {
+                    SellingVehicle.PrimaryColor = toSell.Vehicle.PrimaryColor;
+                    SellingVehicle.SecondaryColor = toSell.Vehicle.SecondaryColor;
+                    SellingVehicle.LicensePlate = toSell.Vehicle.LicensePlate;
+                    SellingVehicle.LicensePlateStyle = toSell.Vehicle.LicensePlateStyle;
+                }
+
+            }
+
+
+
+
+            
         }
         //GameFiber.Yield();
         if (SellingVehicle.Exists())

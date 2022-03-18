@@ -335,6 +335,10 @@ public class LocationCamera
             _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
             StoreCam.Direction = _direction;
         }
+
+
+
+
         StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
         if (!CameraTo.Exists())
         {
@@ -403,7 +407,10 @@ public class LocationCamera
         GameFiber.Sleep(1500);
     }
 
-
+    private void RemovePedsAroundEntrance()
+    {
+        
+    }
 
     private void HighlightLocationWithCamera()
     {

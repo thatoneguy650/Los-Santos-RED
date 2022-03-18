@@ -71,7 +71,7 @@ public class GangTasker
     {
         GangReputation gr = Player.GangRelationships.GetReputation(GangMember.Gang);
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
-        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 120f;
+        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 350f;
 
         if (GangMember.IsBusted)
         {
@@ -89,7 +89,7 @@ public class GangTasker
             //bool SeenReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
             if (SeenPlayerReactiveCrime)
             {
-                if (GangMember.WillFight && (!arePoliceNearby || isHostile) && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))
+                if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
                 {
                     SetFight(GangMember, HighestPriority);
                 }
@@ -100,7 +100,7 @@ public class GangTasker
             }
             else if (SeenOtherReactiveCrime)
             {
-                if (GangMember.WillFight && !arePoliceNearby)
+                if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted)
                 {
                     SetFight(GangMember, HighestPriority);
                 }

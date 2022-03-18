@@ -70,6 +70,9 @@ public class Transaction
     {
         while (MenuPool.IsAnyMenuOpen())
         {
+
+
+
             MenuPool.ProcessMenus();
             PurchaseMenu?.Update();
             SellMenu?.Update();
