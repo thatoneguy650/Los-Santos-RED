@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -40,6 +41,10 @@ public class ModItems : IModItems
     public ModItem Get(string name)
     {
         return ModItemsList.FirstOrDefault(x => x.Name == name);
+    }
+    public ModItem GetRandomItem()
+    {
+        return ModItemsList.Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped).PickRandom();
     }
 
 
@@ -512,28 +517,28 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("p_amb_joint_01",57005, new Vector3(0.14f, 0.03f, 0.0f),new Rotator(0.49f, 79f, 79f))
                 ,PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a",57005,new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0f, 0f, 0f)), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter },
 
-            new ModItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?",eConsumableType.Ingest) {
+            new ModItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?",eConsumableType.Ingest) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
-            new ModItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.",eConsumableType.Ingest) {
+            new ModItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.",eConsumableType.Ingest) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_cs_pills",57005,new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Toilet Cleaner" },
-            new ModItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow",eConsumableType.Snort) {
+            new ModItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow",eConsumableType.Snort) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("ba_prop_battle_sniffing_pipe",57005,new Vector3(0.11f, 0.0f, -0.02f),new Rotator(-179f, 72f, -28f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
                 ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
 
-            new ModItem("Crack","",eConsumableType.AltSmoke) {
+            new ModItem("Crack","",eConsumableType.AltSmoke) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_cs_crackpipe",57005,new Vector3(0.14f, 0.07f, 0.02f),new Rotator(-119f, 47f, 0f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
                 ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter },
 
 
-            new ModItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy",eConsumableType.Inject) {
+            new ModItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy",eConsumableType.Inject) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_syringe_01",57005,new Vector3(0.16f, 0.02f, -0.07f),new Rotator(-170f, -148f, -36f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
                 ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram" },
 
 
-            new ModItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth",eConsumableType.AltSmoke) {
+            new ModItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth",eConsumableType.AltSmoke) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_cs_meth_pipe",57005,new Vector3(0.14f, 0.05f, -0.01f),new Rotator(-119f, 0f, 0f))
                 ,PackageItem = new PhysicalItem("prop_meth_bag_01")
                 ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter },

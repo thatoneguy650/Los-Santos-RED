@@ -29,6 +29,12 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
+
+    public static string OfficerFriendlyContactName => "Officer Friendly";
+    public static string UndergroundGunsContactName => "Underground Guns";
+    public static string EmergencyServicesContactName => "911 - Emergency Services";
+
+
     public static void Main()
     {
         #if DEBUG

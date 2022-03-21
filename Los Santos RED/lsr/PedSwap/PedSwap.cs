@@ -37,7 +37,8 @@ public class PedSwap : IPedSwap
     private Vehicle TargetPedVehicle;
     private IWeapons Weapons;
     private ITimeControllable World;
-    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names)
+    private IModItems ModItems;
+    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems)
     {
         World = world;
         Player = player;
@@ -46,6 +47,7 @@ public class PedSwap : IPedSwap
         Weapons = weapons;
         Crimes = crimes;
         Names = names;
+        ModItems = modItems;
     }
     public int CurrentPedMoney { get; private set; }
     public void AddOffset()
@@ -275,17 +277,14 @@ public class PedSwap : IPedSwap
         InitialPlayerVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
         CurrentModelPlayerIs = InitialPlayerModel;
     }
-
     public void TreatAsCivilian()
     {
         Player.IsCop = false;
     }
-
     public void TreatAsCop()
     {
         Player.IsCop = true;
     }
-
     private void ActivatePreviousScenarios()
     {
         if (TargetPedUsingScenario)
@@ -384,6 +383,18 @@ public class PedSwap : IPedSwap
         {
             Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
         }
+        if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomItems))
+        {
+            if (Settings.SettingsManager.PedSwapSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.PedSwapSettings.MaxRandomItemsAmount >= 1)
+            {
+                int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PedSwapSettings.MaxRandomItemsToGet);
+                for (int i = 0; i < ItemsToGet; i++)
+                {
+                    Player.Inventory.Add(ModItems.GetRandomItem(), RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PedSwapSettings.MaxRandomItemsAmount));
+                }
+            }
+        }
+
     }
     private void HandlePreviousPed(bool deleteOld)
     {

@@ -13,6 +13,8 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         CellPhone CellPhone { get; }
         VehicleExt CurrentVehicle { get; }
+        Ped Character { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
 
         void GiveMoney(int paymentAmountOnCompletion);
     }

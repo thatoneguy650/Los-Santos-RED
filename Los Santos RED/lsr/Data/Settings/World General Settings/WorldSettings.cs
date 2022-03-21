@@ -13,6 +13,9 @@ public class WorldSettings : ISettingsDefaultable
     public bool CleanupVehicles { get; set; }
     [Description("Delete the ambient shopkeeper peds as they spawn to not interfere with mod spawned merchant peds.")]
     public bool ReplaceVanillaShopKeepers { get; set; }
+
+
+
     public WorldSettings()
     {
         SetDefault();

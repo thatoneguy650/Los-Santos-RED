@@ -57,5 +57,6 @@ namespace LosSantosRED.lsr.Interface
         void WaveHands();
         void PlaySpeech(string player, bool v);
         void PauseDynamicActivity();
+        void LootPed();
     }
 }

@@ -186,49 +186,49 @@ public class Chase : ComplexTask
         }
         else if (CurrentTask == Task.EnterVehicle)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 200;
             SubTaskName = "EnterVehicle";
             EnterVehicle();
         }
         else if (CurrentTask == Task.ExitVehicle)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 200;
             SubTaskName = "ExitVehicle";
             ExitVehicle();
         }
         else if (CurrentTask == Task.FootChase)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 200;
             SubTaskName = "FootChase";
             FootChase();
         }
         else if (CurrentTask == Task.VehicleChase)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 500;
             SubTaskName = "VehicleChase";
             VehicleChase();
         }
         else if (CurrentTask == Task.VehicleChasePed)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 500;
             SubTaskName = "VehicleChasePed";
             VehicleChasePed();
         }
         else if (CurrentTask == Task.Nothing)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 500;
             SubTaskName = "Nothing";
             //VehicleChasePed();
         }
         else if (CurrentTask == Task.StopCar)
         {
-            Cop.ResetWeaponsState();
+            Cop.WeaponInventory.Reset();
             RunInterval = 500;
             SubTaskName = "StopCar";
             StopCar();
@@ -550,7 +550,7 @@ public class Chase : ComplexTask
             {
                 if (Player.WantedLevel == 1)
                 {
-                    Cop.ResetWeaponsState();
+                    Cop.WeaponInventory.Reset();
                     IsChasingSlowly = true;
                     unsafe
                     {
@@ -565,7 +565,7 @@ public class Chase : ComplexTask
                 }
                 else
                 {
-                    Cop.SetCompletlyUnarmed();
+                    Cop.WeaponInventory.SetCompletelyUnarmed();
                     IsChasingSlowly = false;
                     CurrentSubTask = SubTask.GoToVehicleDoor;
                     unsafe

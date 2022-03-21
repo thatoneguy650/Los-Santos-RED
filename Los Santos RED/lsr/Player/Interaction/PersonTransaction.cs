@@ -119,10 +119,10 @@ public class PersonTransaction : Interaction
                     UpdateOptions();
 
 
-                    if(Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime))
+                    if(Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle))
                     {
                         PanickedByPlayer = true;
-                        EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime}");
+                        EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
                     }
 
 
@@ -261,7 +261,7 @@ public class PersonTransaction : Interaction
         GetInCar = new UIMenuItem("Get In Car", "Get in the car to do the deal");
         InviteInCar = new UIMenuItem("Invite In Car", "Invite them in the car to do the deal");
         Follow = new UIMenuItem("Follow", "Have the ped follow you to somewhere more discreet");
-        if (Ped != null && Ped.HasMenu && Ped.ShopMenu.Items.Any(x=> x.IsIllicilt))
+        if (Ped != null && Ped.HasMenu && Ped.ShopMenu.Items.Any(x=> x.IsIllicilt) && Ped.IsTrustingOfPlayer)
         {
             InteractionMenu.AddItem(GetInCar);
             InteractionMenu.AddItem(InviteInCar);
@@ -270,7 +270,7 @@ public class PersonTransaction : Interaction
     }
     private void UpdateOptions()
     {
-        if(Ped.IsInVehicle && !Player.IsInVehicle)
+        if(Ped.IsInVehicle && !Player.IsInVehicle && Ped.IsTrustingOfPlayer)
         {
             GetInCar.Enabled = true;
         }
@@ -278,7 +278,7 @@ public class PersonTransaction : Interaction
         {
             GetInCar.Enabled = false;
         }
-        if(!Ped.IsInVehicle && Player.IsInVehicle)
+        if(!Ped.IsInVehicle && Player.IsInVehicle && Ped.IsTrustingOfPlayer)
         {
             InviteInCar.Enabled = true;
         }
@@ -286,7 +286,7 @@ public class PersonTransaction : Interaction
         {
             InviteInCar.Enabled = false;
         }
-        if(!Player.IsInVehicle && !Ped.IsInVehicle)
+        if(!Player.IsInVehicle && !Ped.IsInVehicle && Ped.IsTrustingOfPlayer)
         {
             Follow.Enabled = true;
         }
@@ -297,24 +297,55 @@ public class PersonTransaction : Interaction
     }
     public void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        StartBuyAnimation(modItem, menuItem.IsIllicilt);
-        if (Ped.GetType() == typeof(GangMember))
+        if (modItem != null)
         {
-            GangMember gm = (GangMember)Ped;
-            Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.PurchasePrice * totalItems, true);
+            StartBuyAnimation(modItem, menuItem.IsIllicilt);
+
+            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
+
+            if (modItem.MeasurementName == "Item")
+            {
+                Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name} (s)~s~");
+            }
+            else
+            {
+                Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+            if (Ped.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)Ped;
+                Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.PurchasePrice * totalItems, true);
+            }
         }
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        StartSellAnimation(modItem, menuItem.IsIllicilt);
-        if (Ped.GetType() == typeof(GangMember))
+        if (modItem != null)
         {
-            GangMember gm = (GangMember)Ped;
-            Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.SalesPrice * totalItems, true);
+            StartSellAnimation(modItem, menuItem.IsIllicilt);
+
+
+            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
+
+            if (modItem.MeasurementName == "Item")
+            {
+                Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
+            }
+            else
+            {
+                Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+            if (Ped.GetType() == typeof(GangMember))
+            {
+                GangMember gm = (GangMember)Ped;
+                Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.SalesPrice * totalItems, true);
+            }
         }
     }
 
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
+    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Buy")
         {

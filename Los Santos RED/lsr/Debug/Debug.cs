@@ -424,14 +424,14 @@ public class Debug
 
         if(myPed != null)
         {
-            if(RandomItems.RandomPercent(50))
-            {
+            //if(RandomItems.RandomPercent(50))
+            //{
                 myPed.ShopMenu = ShopMenus.GetRandomDrugDealerMenu();
-            }
-            else
-            {
-                myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
-            }
+            //}
+            //else
+            //{
+            //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+            //}
 
         }
 
@@ -970,28 +970,28 @@ public class Debug
     {
 
 
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
+        //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
+        //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
+        //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
+        //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
 
-        unsafe
-        {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 0.5f, 1.4f, 1073741824, 1); //Original and works ok
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_b", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_c", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        }
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 0.5f, 1.4f, 1073741824, 1); //Original and works ok
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_b", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_c", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
 
-        GameFiber.Sleep(1000);
+        //GameFiber.Sleep(1000);
 
         //   // Gang myGang = Gangs.AllGangs.PickRandom();
         //// Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
@@ -1050,7 +1050,10 @@ public class Debug
         //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
         //        GameFiber.Yield();
         //    }
-        Player.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
+        Player.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
+
+        Player.CellPhone.AddScheduledContact(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
+
         //}
         //if (RandomItems.RandomPercent(50))
         //{

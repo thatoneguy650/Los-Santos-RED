@@ -135,7 +135,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Civilians = new Civilians(World, Player, Player, Settings);
             GameFiber.Yield();
-            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes, Names);
+            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes, Names, ModItems);
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
             Tasker.Setup();

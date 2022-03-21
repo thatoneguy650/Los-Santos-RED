@@ -41,7 +41,10 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
         bool IsCarJacking { get; set; }
+        bool IsLootingBody { get; set; }
+        WeaponInformation CurrentWeapon { get; }
 
         void SetUnarmed();
+        void SetPlayerToLastWeapon();
     }
 }

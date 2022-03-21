@@ -114,37 +114,37 @@ public class GangInteraction
         }
         else if (selectedItem == PayoffDebt)
         {
-            Player.PlayerTasks.PayoffDebt(ActiveGang);
+            Player.PlayerTasks.GangTasks.PayoffDebt(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == PayoffGangFriendly)
         {
-            Player.PlayerTasks.PayoffGangToFriendly(ActiveGang);
+            Player.PlayerTasks.GangTasks.PayoffToFriendly(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == PayoffGangNeutral)
         {
-            Player.PlayerTasks.PayoffGangToNeutral(ActiveGang);
+            Player.PlayerTasks.GangTasks.PayoffToNeutral(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTaskCancel)
         {
-            Player.PlayerTasks.GangCancel(ActiveGang);
+            Player.PlayerTasks.CancelTask(ActiveGang?.ContactName);
             sender.Visible = false;
         }
         else if (selectedItem == DeadDropPickup)
         {
-            Player.PlayerTasks.GangPickupWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.PickupWork(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTheft)
         {
-            Player.PlayerTasks.GangTheftWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.TheftWork(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangHit)
         {
-            Player.PlayerTasks.GangHitWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.HitWork(ActiveGang);
             sender.Visible = false;
         }
 

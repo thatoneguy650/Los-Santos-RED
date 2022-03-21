@@ -116,6 +116,8 @@ public class Gang
     public bool AddAmbientRep { get; set; } = true;
 
 
+    public float PercentageTrustingOfPlayer { get; set; } = 60f;
+
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     public List<string> EnemyGangs = new List<string>();
     public bool IsFedUpWithPlayer { get; set; } = false;

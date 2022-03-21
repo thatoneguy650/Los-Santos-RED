@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDriver { get; }
         List<VehicleExt> OwnedVehicles { get; }
         Vector3 Position { get; }
+        float VehicleSpeedMPH { get; }
+        bool RecentlyCrashedVehicle { get; }
 
         void SetUnarmed();
         void StopDynamicActivity();

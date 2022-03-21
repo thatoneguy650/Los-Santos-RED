@@ -140,7 +140,7 @@ public class GangDen : InteractableLocation
                 Player.GiveMoney(-1*ExpectedMoney);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
                 ExpectedMoney = 0;
-                Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
+                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;
             }
             else
@@ -155,7 +155,7 @@ public class GangDen : InteractableLocation
                 Player.Inventory.Remove(ExpectedItem,1);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItem.Name}. Have something for your time.");
                 ExpectedItem = null;
-                Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
+                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
                 InteractionMenu.Visible = false;
             }
             else
@@ -168,7 +168,7 @@ public class GangDen : InteractableLocation
         {
             Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for taking care of that thing. Here's your share.");
             ExpectedMoney = 0;
-            Player.PlayerTasks.CompletedTask(AssociatedGang.ContactName);
+            Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
             InteractionMenu.Visible = false;
         }
     }

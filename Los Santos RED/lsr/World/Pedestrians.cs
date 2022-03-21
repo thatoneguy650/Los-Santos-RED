@@ -78,6 +78,7 @@ public class Pedestrians
             myList.AddRange(EMTList);
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
+            myList.AddRange(DeadPeds);
             return myList;
         }
     }
@@ -220,32 +221,37 @@ public class Pedestrians
     }
     public PedExt GetPedExt(uint Handle)
     {
-        PedExt pedExt = Police.FirstOrDefault(x => x.Handle == Handle);
-        if (pedExt != null)
-        {
-            return pedExt;
-       }
-        pedExt = EMTs.FirstOrDefault(x => x.Handle == Handle);
-        if (pedExt != null)
-        {
-            return pedExt;
-        }
-        pedExt = Firefighters.FirstOrDefault(x => x.Handle == Handle);
-        if (pedExt != null)
-        {
-            return pedExt;
-        }
-        pedExt = Merchants.FirstOrDefault(x => x.Handle == Handle);
-        if (pedExt != null)
-        {
-            return pedExt;
-        }
-        pedExt = GangMembers.FirstOrDefault(x => x.Handle == Handle);
-        if (pedExt != null)
-        {
-            return pedExt;
-        }
-        return Civilians.FirstOrDefault(x => x.Handle == Handle);
+        return PedExts.FirstOrDefault(x => x.Handle == Handle);
+
+
+
+
+       // PedExt pedExt = Police.FirstOrDefault(x => x.Handle == Handle);
+       // if (pedExt != null)
+       // {
+       //     return pedExt;
+       //}
+       // pedExt = EMTs.FirstOrDefault(x => x.Handle == Handle);
+       // if (pedExt != null)
+       // {
+       //     return pedExt;
+       // }
+       // pedExt = Firefighters.FirstOrDefault(x => x.Handle == Handle);
+       // if (pedExt != null)
+       // {
+       //     return pedExt;
+       // }
+       // pedExt = Merchants.FirstOrDefault(x => x.Handle == Handle);
+       // if (pedExt != null)
+       // {
+       //     return pedExt;
+       // }
+       // pedExt = GangMembers.FirstOrDefault(x => x.Handle == Handle);
+       // if (pedExt != null)
+       // {
+       //     return pedExt;
+       // }
+       // return Civilians.FirstOrDefault(x => x.Handle == Handle);
 
     }
     public void Prune()
@@ -269,6 +275,7 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if(!DeadPeds.Any(x=> x.Handle == Cop.Handle))
             {
+                Cop.IsDead = true;
                 DeadPeds.Add(Cop);
             }
         }
@@ -286,6 +293,7 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == EMT.Handle))
             {
+                EMT.IsDead = true;
                 DeadPeds.Add(EMT);
             }
         }
@@ -303,6 +311,7 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == Firefighter.Handle))
             {
+                Firefighter.IsDead = true;
                 DeadPeds.Add(Firefighter);
             }
         }
@@ -324,6 +333,7 @@ public class Pedestrians
             }
             if (!DeadPeds.Any(x => x.Handle == GangMember.Handle))
             {
+                GangMember.IsDead = true;
                 DeadPeds.Add(GangMember);
             }
             EntryPoint.PersistentPedsNonPersistent++;
@@ -358,6 +368,7 @@ public class Pedestrians
         {
             if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
             {
+                Civilian.IsDead = true;
                 DeadPeds.Add(Civilian);
             }
         }
@@ -365,6 +376,7 @@ public class Pedestrians
         {
             if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
             {
+                Civilian.IsDead = true;
                 DeadPeds.Add(Civilian);
             }
         }
@@ -757,6 +769,7 @@ public class Pedestrians
             GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd };
             if (Pedestrian.Exists())
             {
+                gm.Money = gm.Money;
                 gm.Pedestrian.Money = gm.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
                 gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));

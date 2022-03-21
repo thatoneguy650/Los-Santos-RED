@@ -32,6 +32,9 @@ public class InteractableLocation : BasicLocation
     public Rotator CameraRotation { get; set; }
 
 
+    public string ContactName { get; set; } = "";
+
+
 
     [XmlIgnore]
     public ShopMenu Menu { get; set; }
@@ -104,9 +107,41 @@ public class InteractableLocation : BasicLocation
         base.Setup(interiors, settings, crimes, weapons);
     }
 
-    public virtual void OnItemSold(ModItem modItem)
+    public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
+        if (modItem != null)
+        {
 
+            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
+
+            if (modItem.MeasurementName == "Item")
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name} (s)~s~");
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+        }
+    }
+    public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
+    {
+        if (modItem != null)
+        {
+            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
+
+
+            if (modItem.MeasurementName == "Item")
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name} (s)~s~");
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+        }
     }
 
     public override void Dispose()
@@ -151,9 +186,6 @@ public class InteractableLocation : BasicLocation
         }
     }
 
-    public virtual void OnItemPurchased(ModItem modItem)
-    {
 
-    }
 }
 

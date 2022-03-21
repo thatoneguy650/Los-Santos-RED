@@ -35,6 +35,19 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
+
+        if (!addedPromptGroup && Player.CanLootLookedAtPed)
+        {
+            PersonLootingPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        }
+
+
+
         if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && Player.IsNotWanted)
         {
             LocationInteractingPrompts();
@@ -102,11 +115,29 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
     }
+
+    private void PersonLootingPrompts()
+    {
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Loot {Player.CurrentLookedAtPed.Handle}"))
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+            Player.ButtonPromptList.Add(new ButtonPrompt($"Loot {Player.CurrentLookedAtPed.FormattedName}", "Loot", $"Loot {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
+        }
+        //else
+        //{
+        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        //}
+    }
+
+
     private void LocationInteractingPrompts()
     {
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
 
         if (!Player.ButtonPromptList.Any(x => x.Identifier == $"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
@@ -119,6 +150,7 @@ public class ButtonPrompts
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
 
 
         if (!Player.ButtonPromptList.Any(x => x.Identifier == $"StartScenario"))

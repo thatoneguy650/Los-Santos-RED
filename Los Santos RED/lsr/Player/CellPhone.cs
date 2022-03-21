@@ -20,7 +20,7 @@ public class CellPhone
     private MenuPool MenuPool;
     private IJurisdictions Jurisdictions;
     private List<iFruitContact> AddedContacts = new List<iFruitContact>();
-    private List<ContactLookup> ContactLookups;
+    private List<ContactLookup> ContactLookups = new List<ContactLookup>();
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
@@ -39,6 +39,7 @@ public class CellPhone
     private IContactInteractable ContactInteractable;
     private CorruptCopInteraction CorruptCopInteraction;
     private EmergencyServicesInteraction EmergencyServicesInteraction;
+
 
     public CustomiFruit CustomiFruit { get; private set; }
     public List<iFruitText> TextList => AddedTexts;
@@ -246,17 +247,17 @@ public class CellPhone
             GangInteraction = new GangInteraction(ContactInteractable, Gangs, PlacesOfInterest);
             GangInteraction.Start(myGang);
         }
-        else if (contact.Name == "Officer Friendly")
+        else if (contact.Name == EntryPoint.OfficerFriendlyContactName)
         {
             CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
             CorruptCopInteraction.Start(contact);
         }
-        else if (contact.Name == "Underground Guns")
+        else if (contact.Name == EntryPoint.UndergroundGunsContactName)
         {
-            GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest);
+            GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
             GunDealerInteraction.Start(contact);
         }
-        else if (contact.Name == "911 - Emergency Services")
+        else if (contact.Name == EntryPoint.EmergencyServicesContactName)
         {
             EmergencyServicesInteraction = new EmergencyServicesInteraction(ContactInteractable, Gangs, PlacesOfInterest, Jurisdictions);
             EmergencyServicesInteraction.Start(contact);
@@ -333,6 +334,10 @@ public class CellPhone
         CheckScheduledTexts();
         CheckScheduledContacts();
     }
+    public string GetContactIcon(string contactName)
+    {
+        return ContactList.FirstOrDefault(x => x.Name.ToLower() == contactName.ToLower())?.IconName;
+    }
     private void CheckScheduledTexts()
     {
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
@@ -355,7 +360,7 @@ public class CellPhone
                         {
                             AddContact(relatedGang, true);
                         }
-                        else if (sc.ContactName == "Officer Friendly")
+                        else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
                         {
                             AddCopContact(sc.ContactName, sc.IconName, true);
                         }
@@ -384,9 +389,13 @@ public class CellPhone
                     {
                         AddContact(relatedGang, true);
                     }
-                    else if (sc.ContactName == "Officer Friendly")
+                    else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
                     {
                         AddCopContact(sc.ContactName,sc.IconName, true);
+                    }
+                    else if (sc.ContactName == EntryPoint.UndergroundGunsContactName)
+                    {
+                        AddGunDealerContact(true);
                     }
                     else
                     {
@@ -482,7 +491,7 @@ public class CellPhone
     }
     public void AddGunDealerContact(bool displayNotification)
     {
-        string Name = "Underground Guns";
+        string Name = EntryPoint.UndergroundGunsContactName;
         string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == Name))
         {
@@ -506,9 +515,9 @@ public class CellPhone
     }
     public void AddEmergencyServicesCustomContact()
     {
-        if (!AddedContacts.Any(x => x.Name == "911 - Emergency Services"))
+        if (!AddedContacts.Any(x => x.Name == EntryPoint.EmergencyServicesContactName))
         {
-            iFruitContact contactA = new iFruitContact("911 - Emergency Services", Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
+            iFruitContact contactA = new iFruitContact(EntryPoint.EmergencyServicesContactName, Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
             contactA.Answered += ContactAnswered;
             contactA.DialTimeout = 3000;
             contactA.Active = true;
@@ -591,7 +600,7 @@ public class CellPhone
             }
             string MessageToSend;
             MessageToSend = Replies.PickRandom();
-            AddScheduledText(gang.ContactName, gang.ContactIcon, MessageToSend);
+            AddScheduledText(gang.ContactName,gang.ContactIcon, MessageToSend);
         }
     }
     public void AddScheduledText(string Name, string IconName, string MessageToSend, int minutesToWait)
@@ -636,6 +645,13 @@ public class CellPhone
         Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
     }
+    public void AddPhoneResponse(string Name, string Message)
+    {
+        string IconName = ContactList.FirstOrDefault(x => x.Name.ToLower() == Name.ToLower())?.IconName;
+        PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
+        Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
+    }
     public void DisableContact(string Name)
     {
         iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
@@ -655,12 +671,27 @@ public class CellPhone
     }
     private ContactIcon GetIconFromString(string StringName)
     {
-        ContactLookup cl = ContactLookups.FirstOrDefault(x => x.IconText.ToLower() == StringName.ToLower());
+        EntryPoint.WriteToConsole($"HERES SOME RETARDED FUCKING SHIT FOR YOU ASSHOLE FUCKER {StringName}");
+        if(ContactLookups != null)
+        {
+            EntryPoint.WriteToConsole($"CONTACT LOOKUPS IS NOT NULL");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"CONTACT LOOKUPS IS NULL");
+        }
+
+        if(StringName == "")
+        {
+            return ContactIcon.Blank;
+        }
+
+        ContactLookup cl = ContactLookups.FirstOrDefault(x => x != null && x.IconText?.ToLower() == StringName?.ToLower());
         if (cl != null)
         {
             return cl.ContactIcon;
         }
-        return ContactIcon.Generic;
+        return ContactIcon.Blank;
     }
     private class ContactLookup
     {

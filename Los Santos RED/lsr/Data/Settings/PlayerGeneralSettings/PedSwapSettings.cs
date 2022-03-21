@@ -21,6 +21,13 @@ public class PedSwapSettings : ISettingsDefaultable
     public int PercentageToGetRandomWeapon { get; set; }
     [Description("Percentage of time you will get random criminal history when taking over a random ped")]
     public int PercentageToGetCriminalHistory { get; set; }
+    [Description("Percentage of time you will get random items when taking over a random ped (weapons and vehicles excluded)")]
+    public float PercentageToGetRandomItems { get; set; }
+    [Description("Max number of random items to get when taking over a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
+    public int MaxRandomItemsToGet { get; set; }
+    [Description("Max amount to get for each random item when taking over a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
+    public int MaxRandomItemsAmount { get; set; }
+
     public PedSwapSettings()
     {
         SetDefault();
@@ -34,5 +41,8 @@ public class PedSwapSettings : ISettingsDefaultable
         RandomMoneyMax = 5000;
         PercentageToGetRandomWeapon = 20;
         PercentageToGetCriminalHistory = 5;
+        PercentageToGetRandomItems = 80;
+        MaxRandomItemsToGet = 5;
+        MaxRandomItemsAmount = 7;
     }
 }

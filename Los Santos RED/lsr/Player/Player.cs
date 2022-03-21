@@ -92,6 +92,7 @@ namespace Mod
         private int TimeBetweenYelling = 2500;
         private uint GameTimeLastYelled;
         private uint LookedAtPedButtonPromptHandle;
+        private uint GameTimeLastCrashedVehicle;
 
         private ButtonPrompts ButtonPrompts;
 
@@ -177,6 +178,12 @@ namespace Mod
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically; // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
+
+
+        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody;
+        public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead) && ((CurrentLookedAtPed.Money > 0 && !CurrentLookedAtPed.IsDead) || (CurrentLookedAtPed.HasMenu && CurrentLookedAtPed.ShopMenu.Items.Any(x=>x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0)));
+        public bool IsLootingBody { get; set; }
+
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;// && (!CurrentTargetedPed.IsInVehicle || CurrentTargetedPed.;
@@ -216,7 +223,7 @@ namespace Mod
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 { get; set; }
-        public string DebugLine5 => $"{Violations.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
+        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed}    {Violations.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.DebugString;
@@ -384,6 +391,7 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
+        public bool RecentlyCrashedVehicle => GameTimeLastCrashedVehicle != 0 && Game.GameTime - GameTimeLastCrashedVehicle <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
@@ -1117,6 +1125,7 @@ namespace Mod
             GameFiber.Yield();
             if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
             {
+                GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
@@ -1126,6 +1135,7 @@ namespace Mod
             GameFiber.Yield();
             if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
             {
+                GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
@@ -1135,6 +1145,7 @@ namespace Mod
             GameFiber.Yield();
             if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50 && TimeInCurrentVehicle >= 5000)
             {
+                GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
@@ -1591,6 +1602,40 @@ namespace Mod
                 }
             }
         }
+
+
+        public void LootPed()
+        {
+
+
+            if (!IsPerformingActivity && CanPerformActivities && CanLootLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+                LowerBodyActivity.Start();
+            }
+
+
+
+
+            //if (!IsInteracting && CanLootLookedAtPed)
+            //{
+            //    if (Interaction != null)
+            //    {
+            //        Interaction.Dispose();
+            //    }
+            //    Interaction = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+            //    Interaction.Start();
+            //}
+        }
+
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -1599,7 +1644,7 @@ namespace Mod
                 {
                     Interaction.Dispose();
                 }
-                IsConversing = true;
+                //IsConversing = true;
                 Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes);
                 Interaction.Start();
             }
@@ -2323,6 +2368,11 @@ namespace Mod
                         CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                         CurrentVehicle.Vehicle.MustBeHotwired = false;
                     }
+                    else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)//vanilla owned vehicles?
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
                     else
                     {
                         if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
@@ -2673,7 +2723,7 @@ namespace Mod
 
 
 
-                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPeds, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
                                                                                                                                                                                      //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
                                                                                                                                                                                      //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
 
@@ -2683,6 +2733,7 @@ namespace Mod
                 //                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
                 if (result.Hit && result.HitEntity is Ped)
                 {
+                    //EntryPoint.WriteToConsole("Hit Ped in Looked At");
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
                     CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
                 }

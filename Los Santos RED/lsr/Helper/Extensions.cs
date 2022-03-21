@@ -18,6 +18,9 @@ namespace ExtensionsMethods
 {
     public static class Extensions
     {
+
+
+
         private static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
         private enum ePedType
         {
@@ -52,6 +55,9 @@ namespace ExtensionsMethods
             PED_TYPE_ANIMAL,
             PED_TYPE_ARMY
         };
+
+
+
         public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
         {
             if (val.CompareTo(min) < 0) return min;

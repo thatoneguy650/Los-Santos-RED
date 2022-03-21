@@ -119,5 +119,7 @@ public class ModItem
             }
         }
     }
+
+    public bool IsPossessionIllicit { get; set; } = false;
 }
 

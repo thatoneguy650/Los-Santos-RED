@@ -20,10 +20,13 @@ public class CorruptCopInteraction
     private iFruitContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
     private UIMenuItem PayoffCopsInvestigation;
-    private UIMenuItem RequestCopWork;
+   // private UIMenuItem RequestCopWork;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private ISettingsProvideable Settings;
+    private UIMenuItem GangHit;
+    private UIMenuItem TaskCancel;
+
     private int CostToClearWanted
     {
         get
@@ -53,12 +56,20 @@ public class CorruptCopInteraction
         MenuPool.Add(CopMenu);
         CopMenu.OnItemSelect += OnCopItemSelect;
         LastAnsweredContact = contact;
+
+
         PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
-
-
         PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
 
-        RequestCopWork = new UIMenuItem("Request Work", "Ask for some work from the cops");
+        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+
+
+        if (Player.PlayerTasks.HasTask(EntryPoint.OfficerFriendlyContactName))
+        {
+            TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+            CopMenu.AddItem(TaskCancel);
+        }
+
 
         if (Player.IsWanted)
         {
@@ -70,7 +81,7 @@ public class CorruptCopInteraction
         }
         else if (Player.IsNotWanted)
         {
-            CopMenu.AddItem(RequestCopWork);
+            CopMenu.AddItem(GangHit);
         }
         else
         {
@@ -103,23 +114,16 @@ public class CorruptCopInteraction
             PayoffCopInvestigation(LastAnsweredContact);
             CopMenu.Visible = false;
         }
-        else if (selectedItem == RequestCopWork)
+        else if (selectedItem == TaskCancel)
         {
-            RequestWorkFromCop(LastAnsweredContact);
-            CopMenu.Visible = false;
+            Player.PlayerTasks.CancelTask(EntryPoint.OfficerFriendlyContactName);
+            sender.Visible = false;
         }
-    }
-    private void RequestWorkFromCop(iFruitContact contact)
-    {
-        List<string> Replies = new List<string>() {
-                "Nothing yet, I'll let you know",
-                "I've got nothing for you yet",
-                "Give me a few days",
-                "Not a lot to be done right now",
-                "We will let you know when you can do something for us",
-                "Check back later.",
-                };
-        Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+        else if (selectedItem == GangHit)
+        {
+            Player.PlayerTasks.CorruptCopTasks.GangHitWork();
+            sender.Visible = false;
+        }
     }
     private void PayoffCop(iFruitContact contact)
     {

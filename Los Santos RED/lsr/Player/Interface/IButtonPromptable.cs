@@ -22,6 +22,7 @@ namespace LosSantosRED.lsr.Interface
         Scenario ClosestScenario { get; }
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
+        bool CanLootLookedAtPed { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

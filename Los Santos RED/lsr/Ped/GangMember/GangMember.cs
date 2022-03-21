@@ -17,6 +17,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
+        IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
     }
     public int ShootRate { get; set; } = 400;

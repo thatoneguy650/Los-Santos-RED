@@ -20,7 +20,6 @@ public class PurchaseMenu : Menu
     private bool hasAttachedProp;
     private bool IsActivelyConversing;
     private bool IsCancelled;
-    private int ItemsBought;
     private MenuPool MenuPool;
     private IModItems ModItems;
     private string PlateString = "";
@@ -814,14 +813,6 @@ public class PurchaseMenu : Menu
             sender.Visible = false;
             Dispose();
         }
-        if (selectedItem.Text == "Set Plate" && CurrentModItem != null)
-        {
-            //PlateString = NativeHelper.GetKeyboardInput("");
-            //if (SellingVehicle.Exists() && PlateString != "")
-            //{
-            //    SellingVehicle.LicensePlate = PlateString.Substring(0,8);
-            //}
-        }
     }
     private void OnVehicleScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
@@ -1316,9 +1307,14 @@ public class PurchaseMenu : Menu
         if (CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
         {
             NativeFunction.Natives.ADD_AMMO_TO_PED(Player.Character, CurrentWeapon.Hash, TotalItems);
-
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
-
+            if(StoreName == "")
+            {
+                Game.DisplayNotification($"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
             return true;
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
@@ -1328,8 +1324,14 @@ public class PurchaseMenu : Menu
     {
         if (CurrentWeapon != null && CurrentWeapon.AddComponent(Player.Character, myComponent))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
-
+            if(StoreName == "")
+            {
+                Game.DisplayNotification($"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{CurrentMenuItem.ModItemName}~s~");
+            }
             return true;
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
@@ -1341,13 +1343,7 @@ public class PurchaseMenu : Menu
         CurrentTotalPrice = TotalPrice;
         if (Player.Money >= TotalPrice)
         {
-
             Transaction.OnItemPurchased(modItem, menuItem, TotalItems);
-
-
-
-            bool subtractCash = true;
-            ItemsBought++;
             menuItem.ItemsSoldToPlayer += TotalItems;
             if (modItem.ConsumeOnPurchase)
             {
@@ -1357,20 +1353,8 @@ public class PurchaseMenu : Menu
             {
                 Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
             }
-            if (subtractCash)
-            {
-                Player.GiveMoney(-1 * TotalPrice);
-                MoneySpent += TotalPrice;
-            }
-
-
-
-
-
-            while (Player.IsPerformingActivity)
-            {
-                GameFiber.Sleep(500);
-            }
+            Player.GiveMoney(-1 * TotalPrice);
+            MoneySpent += TotalPrice;
             return true;
         }
         return false;
@@ -1383,23 +1367,18 @@ public class PurchaseMenu : Menu
             Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Transaction.ItemDeliveryPosition, Transaction.ItemDeliveryHeading);
             if (NewVehicle.Exists())
             {
-                //if (PlateString != "")
-                //{
-                //    NewVehicle.LicensePlate = PlateString.Substring(0, 8);
-                //}
+                Transaction.OnItemPurchased(modItem, CurrentMenuItem, 1);
+                CurrentMenuItem.ItemsSoldToPlayer += 1;
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = World.Vehicles.GetVehicleExt(NewVehicle);
-
                 if (MyNewCar == null)
                 {
                     MyNewCar = new VehicleExt(NewVehicle, Settings);
                     EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
                 }
-
                 World.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 Player.TakeOwnershipOfVehicle(MyNewCar, false);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", "Thank you for your purchase");
                 return true;
             }
             else
@@ -1420,12 +1399,13 @@ public class PurchaseMenu : Menu
         {
             if (CurrentWeapon.Category == WeaponCategory.Throwable || !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
             {
+                Transaction.OnItemPurchased(CurrentModItem, CurrentMenuItem, 1);
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, CurrentWeapon.Hash, CurrentWeapon.AmmoAmount, false, false);
                 if (CurrentWeaponVariation != null)
                 {
                     CurrentWeapon.ApplyWeaponVariation(Player.Character, CurrentWeaponVariation);
                 }
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Purchase", $"Thank you for your purchase of ~r~{CurrentMenuItem.ModItemName}~s~");
+               
                 Player.SetUnarmed();
                 return true;
             }

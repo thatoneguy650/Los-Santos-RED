@@ -40,6 +40,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int CorruptCopInvestigationClearCost { get; set; }
     [Description("Cost to remove your wanted level using the corrupt cop interaction. Number is multiplied by your current wanted level to get the total cost. Ex. 5000 at 2 starts would cost $10000")]
     public int CorruptCopWantedClearCostScalar { get; set; }
+    [Description("Days needed to wait between contact tasks after completing the previous task.")]
+    public double DaysBetweenTasksWhenCompleted { get; set; }
+    [Description("Days needed to wait between contact tasks after failing the previous task.")]
+    public double DaysBetweenTasksWhenFailed { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -67,6 +71,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
 
         CorruptCopInvestigationClearCost = 2000;
         CorruptCopWantedClearCostScalar = 5000;
+        DaysBetweenTasksWhenCompleted = 1;
+        DaysBetweenTasksWhenFailed = 2;
     }
 
 }

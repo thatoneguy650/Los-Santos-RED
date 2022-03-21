@@ -66,11 +66,6 @@ public class Cop : PedExt, IWeaponIssuable
             Voice.RadioIn(currentPlayer);
         }
     }
-    public void SetCompletlyUnarmed() => WeaponInventory.SetCompletelyUnarmed();
-    public void ResetWeaponsState()
-    {
-        WeaponInventory.Reset();
-    }
     public void ForceSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.ResetSpeech();

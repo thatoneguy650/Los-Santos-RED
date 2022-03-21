@@ -116,6 +116,10 @@ public class HealthState
                 {
                     SetUnconscious();
                 }
+                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(60))
+                {
+                    SetUnconscious();
+                }
                 if((HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
                 {
                     MyPed.YellInPain(true);

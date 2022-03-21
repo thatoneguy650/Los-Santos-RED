@@ -22,5 +22,15 @@ public class PlayerTask
     public int RepAmountOnCompletion { get; set; } = 0;
     public int DebtAmountOnFail { get; set; } = 0;
     public int RepAmountOnFail { get; set; } = -200;
+
+
+    public bool WasCompleted { get; set; } = false;
+    public bool WasFailed { get; set; } = false;
+    public DateTime CompletionTime { get; set; }
+    public DateTime FailedTime { get; set; }
+
+
+    //public uint GameTimeCompleted { get; set; }
+    //public uint GameTimeFailed { get; set; }
 }
 

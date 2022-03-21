@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using System;
 using System.Collections.Generic;
@@ -98,9 +99,9 @@ public class Transaction
     {
         if(Store != null)
         {
-            Store.OnItemPurchased(modItem);
+            Store.OnItemPurchased(modItem, menuItem, TotalItems);
         }
-        if(PersonTransaction != null)
+        else if(PersonTransaction != null)
         {
             PersonTransaction.OnItemPurchased(modItem, menuItem, TotalItems);
         }
@@ -109,9 +110,9 @@ public class Transaction
     {
         if (Store != null)
         {
-            Store.OnItemSold(modItem);
+            Store.OnItemSold(modItem, menuItem, TotalItems);
         }
-        if (PersonTransaction != null)
+        else if (PersonTransaction != null)
         {
             PersonTransaction.OnItemSold(modItem, menuItem, TotalItems);
         }

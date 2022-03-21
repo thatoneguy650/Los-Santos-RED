@@ -41,8 +41,11 @@ public class RespawnSettings : ISettingsDefaultable
     public int HospitalFee { get; set; }
     [Description("Used to disallow saving and undieing with a given chracter.")]
     public bool PermanentDeathMode { get; set; }
-    [Description("Clears all items from inventory when you die")]
-    public bool ClearInventoryOnDeath { get; set; }
+    [Description("Clears all illicit items from inventory when you die")]
+    public bool ClearIllicitInventoryOnDeath { get; set; }
+    [Description("Clears all illicit items from inventory when you die")]
+    public bool ClearIllicitInventoryOnSurrender { get; set; }
+
     public RespawnSettings()
     {
         SetDefault();
@@ -66,6 +69,7 @@ public class RespawnSettings : ISettingsDefaultable
         PoliceBailWantedLevelScale = 750;
         HospitalFee = 5000;
         PermanentDeathMode = false;
-        ClearInventoryOnDeath = true;
+        ClearIllicitInventoryOnDeath = true;
+        ClearIllicitInventoryOnSurrender = true;
     }
 }

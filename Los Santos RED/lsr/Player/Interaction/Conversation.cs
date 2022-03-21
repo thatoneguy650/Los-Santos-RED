@@ -16,6 +16,8 @@ public class Conversation : Interaction
     private bool CancelledConversation;
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
+    private dynamic pedHeadshotHandle;
+
     public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes)
     {
         Player = player;
@@ -291,7 +293,14 @@ public class Conversation : Interaction
             return;
         }
 
-        if(!Ped.IsFedUpWithPlayer)
+
+
+        pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
+
+
+
+
+        if (!Ped.IsFedUpWithPlayer)
         {
             if (Ped.IsInVehicle)
             {
@@ -371,6 +380,32 @@ public class Conversation : Interaction
     }
     private void Tick()
     {
+        if(CanContinueConversation && !CancelledConversation)
+        {
+            string Description = $"~p~{Ped.GroupName}~s~";
+            if(Ped.IsFedUpWithPlayer)
+            {
+                Description += "~n~~r~Fed Up~s~";
+            }
+            else if (Ped.TimesInsultedByPlayer > 0)
+            {
+                Description += $"~n~~o~Insulted {Ped.TimesInsultedByPlayer} time(s)~s~";
+            }
+            if(Ped.HasMenu)
+            {
+                Description += $"~n~~g~Can Transact~s~";
+            }
+            if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
+            {
+                string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
+                Game.DisplayNotification(str, str, "~b~Ped Info", $"~y~{Ped.Name}", Description);
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Ped Info", $"~y~{Ped.Name}", Description);
+            }
+        }
+
         while (CanContinueConversation)
         {
             CheckInput();

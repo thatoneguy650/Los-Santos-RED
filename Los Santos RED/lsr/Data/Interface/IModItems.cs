@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
         List<ModItem> Items { get; }
 
         ModItem Get(string text);
+        ModItem GetRandomItem();
     }
 }

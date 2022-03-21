@@ -42,10 +42,11 @@ public class SettingsManager
     public KeySettings KeySettings { get; set; } = new KeySettings();
     [Category("Player")]
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
-
-
     [Category("Player")]
     public CellphoneSettings CellphoneSettings { get; set; } = new CellphoneSettings();
+
+
+
 
     [Category("World")]
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
@@ -62,9 +63,13 @@ public class SettingsManager
     [Category("World")]
     public WorldSettings WorldSettings { get; set; } = new WorldSettings();
     [Category("World")]
+    public TaskSettings TaskSettings { get; set; } = new TaskSettings();
+    [Category("World")]
     public TimeSettings TimeSettings { get; set; } = new TimeSettings();
     [Category("World")]
     public WeatherReportingSettings WeatherReportingSettings { get; set; } = new WeatherReportingSettings();
+
+
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 

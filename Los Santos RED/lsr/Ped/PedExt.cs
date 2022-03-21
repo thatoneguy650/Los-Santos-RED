@@ -49,6 +49,11 @@ public class PedExt : IComplexTaskable
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
         PlayerPerception = new PlayerPerception(this, null, settings);
+
+        IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
+
+
+
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName)
     {
@@ -65,9 +70,9 @@ public class PedExt : IComplexTaskable
     public VehicleExt AssignedVehicle { get; set; }
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
-    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember);
+    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember);
     public bool CanBeTasked { get; set; } = true;
-    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
+    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -84,6 +89,8 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
+
+    public bool IsTrustingOfPlayer { get; set; } = true;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
@@ -260,8 +267,10 @@ public class PedExt : IComplexTaskable
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
 
-    public bool HasSeenDistressedPed { get; set; }
-    public bool HasStartedEMTTreatment { get; internal set; }
+    public bool HasSeenDistressedPed { get; set; } = false;
+    public bool HasStartedEMTTreatment { get; set; } = false;
+    public bool HasBeenLooted { get; set; } = false;
+    public bool IsDead { get; set; } = false;
 
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()

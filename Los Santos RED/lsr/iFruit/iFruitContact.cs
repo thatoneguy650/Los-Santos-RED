@@ -50,7 +50,7 @@ namespace iFruitAddon2
         /// <summary>
         /// The icon to associate with this contact.
         /// </summary>
-        public ContactIcon Icon { get; set; } = ContactIcon.Generic;
+        public ContactIcon Icon { get; set; } = ContactIcon.Blank;
         /// <summary>
         /// The icon name to associate with this contact.
         /// </summary>

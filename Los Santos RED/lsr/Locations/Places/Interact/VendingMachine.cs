@@ -98,10 +98,10 @@ public class VendingMachine : InteractableLocation
             }, "GangDenInteract");
         }
     }
-    public override void OnItemPurchased(ModItem modItem)
+    public override void OnItemPurchased(ModItem modItem,MenuItem menuItem, int totalItems)
     {
         StartMachineBuyAnimation(modItem, false);
-        base.OnItemPurchased(modItem);
+        base.OnItemPurchased(modItem, menuItem, totalItems);
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {

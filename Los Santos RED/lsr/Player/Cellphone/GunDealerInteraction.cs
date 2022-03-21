@@ -22,11 +22,16 @@ public class GunDealerInteraction
     private UIMenuItem RequestWork;
     private UIMenu LocationSubMenu;
     private iFruitContact AnsweredContact;
-    public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest)
+    private UIMenuItem TaskCancel;
+    private UIMenuItem GunPickup;
+    private ISettingsProvideable Settings;
+
+    public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
         MenuPool = new MenuPool();
     }
     public void Start(iFruitContact contact)
@@ -36,8 +41,17 @@ public class GunDealerInteraction
         GunDealerMenu.RemoveBanner();
         MenuPool.Add(GunDealerMenu);
         GunDealerMenu.OnItemSelect += OnTopItemSelect;
-        RequestWork = new UIMenuItem("Request Work", "Ask for some work from the gun dealers, better be strapped");
-        GunDealerMenu.AddItem(RequestWork);
+
+
+        GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
+
+        if (Player.PlayerTasks.HasTask(EntryPoint.UndergroundGunsContactName))
+        {
+            TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
+            GunDealerMenu.AddItem(TaskCancel);
+        }
+        GunDealerMenu.AddItem(GunPickup);
+
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
             if (gl.IsIllegalShop && gl.IsEnabled)
@@ -57,17 +71,14 @@ public class GunDealerInteraction
     }
     private void OnTopItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if(selectedItem == RequestWork)
+        if (selectedItem == TaskCancel)
         {
-            List<string> Replies = new List<string>() {
-                "Nothing yet, I'll let you know",
-                "I've got nothing for you yet",
-                "Give me a few days",
-                "Not a lot to be done right now",
-                "We will let you know when you can do something for us",
-                "Check back later.",
-                };
-            Player.CellPhone.AddPhoneResponse(AnsweredContact.Name, AnsweredContact.IconName, Replies.PickRandom());
+            Player.PlayerTasks.CancelTask(EntryPoint.UndergroundGunsContactName);
+            sender.Visible = false;
+        }
+        else if (selectedItem == GunPickup)
+        {
+            Player.PlayerTasks.UndergroundGunsTasks.GunPickupWork();
             sender.Visible = false;
         }
         else

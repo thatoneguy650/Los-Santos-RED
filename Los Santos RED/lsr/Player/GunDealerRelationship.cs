@@ -40,7 +40,7 @@ public class GunDealerRelationship
                     $"Got some other things at the shop on {gs.StreetAddress}",
                 };
 
-                Player.CellPhone.AddScheduledText("Underground Guns", "CHAR_BLANK_ENTRY", Replies.PickRandom());
+                Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
                 EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
             }
         }
@@ -79,7 +79,7 @@ public class GunDealerRelationship
                                 $"Got some other things at the shop on {gs.StreetAddress}",
                             };
 
-                            Player.CellPhone.AddScheduledText("Underground Guns", "CHAR_BLANK_ENTRY", Replies.PickRandom());
+                            Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
                         }
                         EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
                     }

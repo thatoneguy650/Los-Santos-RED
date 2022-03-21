@@ -15,7 +15,7 @@ namespace iFruitAddon2
         public int MinuteSent { get; set; } = 0;
         public bool IsRead { get; set; } = false;
         public int Index { get; set; } = 0;
-        public ContactIcon Icon { get; set; } = ContactIcon.Generic;
+        public ContactIcon Icon { get; set; } = ContactIcon.Blank;
         public string IconName { get; set; } = "";
         public bool Bold { get; set; } = false;
         public DateTime TimeReceived { get; set; }

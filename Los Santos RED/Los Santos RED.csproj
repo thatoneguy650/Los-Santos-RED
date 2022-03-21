@@ -134,6 +134,7 @@
     <Compile Include="lsr\Data\Settings\World General Settings\GangSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\VehicleSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ScannerSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherReportingSettings.cs" />
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
@@ -192,6 +193,9 @@
     <Compile Include="lsr\Ped\Variation\RandomRegularHeadData.cs" />
     <Compile Include="lsr\Ped\Variation\StoreStructs.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\CorruptCopTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\GangTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\UndergroundGunsTasks.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
@@ -201,6 +205,7 @@
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
+    <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
     <Compile Include="lsr\Player\Interface\IButtonPromptable.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />

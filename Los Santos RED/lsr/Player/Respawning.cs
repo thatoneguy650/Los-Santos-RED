@@ -82,7 +82,7 @@ public class Respawning// : IRespawning
         }
         else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
                 CurrentPlayer.GiveMoney(-1 * Amount);
@@ -92,15 +92,10 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
-
-            CurrentPlayer.CellPhone.AddScheduledContact("Officer Friendly", "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
-
-
-
-            
+            CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));            
             return true;
         }
     }
@@ -119,7 +114,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false);
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Officer Friendly", "~o~Citation", CitationCopResponses.PickRandom());
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", EntryPoint.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;
             return true;
@@ -149,53 +144,30 @@ public class Respawning// : IRespawning
             GameTimeLastUndied = Game.GameTime;
         }
     }
-    //public void RespawnAtGrave()
-    //{
-    //    FadeOut();
-    //    Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false, true, false, false, false, false, false);
-    //    GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
-    //    SetPlayerAtLocation(PlaceToSpawn);
-    //    if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
-    //    {
-    //        CurrentPlayer.Inventory.Clear();
-    //    }
-    //    World.ClearSpawned();
-    //    Game.LocalPlayer.Character.IsRagdoll = true;
-    //    FadeIn();
-    //    Game.LocalPlayer.Character.IsRagdoll = false;
-    //    GameTimeLastDischargedFromHospital = Game.GameTime;
-    //}
     public void RespawnAtHospital(Hospital PlaceToSpawn)
     {
-        //if (Settings.SettingsManager.RespawnSettings.AllowRandomGraveRespawn && RandomItems.RandomPercent(Settings.SettingsManager.RespawnSettings.RandomGraveRespawnPercentage))
-        //{
-        //    RespawnAtGrave();
-        //}
-        //else
-        //{
-            FadeOut();
-            Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true, false, true, false, false, false, false, false);
-            if (PlaceToSpawn == null)
-            {
-                PlaceToSpawn = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-
-
-
-                //PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
-            }
-            SetPlayerAtLocation(PlaceToSpawn);
-            if (Settings.SettingsManager.RespawnSettings.ClearInventoryOnDeath)
-            {
-                CurrentPlayer.Inventory.Clear();
-            }
-            World.ClearSpawned();
-            FadeIn();
-            if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
-            {
-                SetHospitalFee(PlaceToSpawn.Name);
-            }
-            GameTimeLastDischargedFromHospital = Game.GameTime;
-       // }
+        FadeOut();
+        if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath)
+        {
+            CheckWeapons();
+        }
+        Respawn(true, true, true, false, true, false, true, false, false, false, false, false);//we are already removing the weapons above, done need to do it twice with the old bug
+        if (PlaceToSpawn == null)
+        {
+            PlaceToSpawn = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+        }
+        SetPlayerAtLocation(PlaceToSpawn);
+        if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath)
+        {
+            RemoveIllicitInventoryItems();
+        }
+        World.ClearSpawned();
+        FadeIn();
+        if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
+        {
+            SetHospitalFee(PlaceToSpawn.Name);
+        }
+        GameTimeLastDischargedFromHospital = Game.GameTime;
     }
     public void SurrenderToPolice(PoliceStation PoliceStation)
     {
@@ -206,13 +178,16 @@ public class Respawning// : IRespawning
         }
         BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
-        ResetPlayer(true, true, false, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender, true, false, true, false, false, false, false, false);
+        ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false);//if you pass clear weapons here it will just remover everything anwyays
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-            //PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
+        if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
+        {
+            RemoveIllicitInventoryItems();
+        }
         World.ClearSpawned();
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
@@ -223,14 +198,14 @@ public class Respawning// : IRespawning
     }
     private void CheckWeapons()
     {
-        //if (!CurrentPlayer.KilledAnyCops)//need to add something like this back
-        //{
-        //    RemoveIllegalWeapons();
-        //}
-        //else
-        //{
-                Game.LocalPlayer.Character.Inventory.Weapons.Clear();//ResetPlayer is also doing this already......, if you add the above need to stop that from clearing everything anyways (this was that old bug lol)
-        //}      
+        if (CurrentPlayer.Licenses.HasCCWLicense && CurrentPlayer.Licenses.CCWLicense.IsValid(Time))//need to add something like this back
+        {
+            RemoveIllegalWeapons();
+        }
+        else
+        {
+            Game.LocalPlayer.Character.Inventory.Weapons.Clear();//ResetPlayer is also doing this already......, if you add the above need to stop that from clearing everything anyways (this was that old bug lol), removed from doing that
+        }      
     }
     private void FadeIn()
     {
@@ -242,6 +217,18 @@ public class Respawning// : IRespawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
     }
+
+    private void RemoveIllicitInventoryItems()
+    {
+        foreach(InventoryItem ii in CurrentPlayer.Inventory.Items.ToList())
+        {
+            if(ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
+            {
+                CurrentPlayer.Inventory.Remove(ii.ModItem);
+            }
+        }
+    }
+
     private void RemoveIllegalWeapons()
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all

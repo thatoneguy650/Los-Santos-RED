@@ -66,7 +66,7 @@ public class PlayerInfoMenu
         tabView.Update();
         if (tabView.Visible)
         {
-            tabView.Money = Time.CurrentTime;
+            tabView.Money = Time.CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");
         }
     }
     private void AddContacts()
@@ -87,6 +87,18 @@ public class PlayerInfoMenu
                     SubTitle = $"{gr.Gang.ColorPrefix}{contact.Name}~s~";
                 }
             }
+
+            PlayerTask contactTask = Player.PlayerTasks.GetTask(contact.Name);
+            if (contactTask != null)
+            {
+                DescriptionText += $"~n~~g~Has Task~s~";
+                if (contactTask.CanExpire)
+                {
+                    DescriptionText += $" Complete Before: ~r~{contactTask.ExpireTime:d} {contactTask.ExpireTime:t}~s~";
+                }
+            }
+
+
             TabItem tabItem = new TabTextItem(Title, SubTitle, DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
             tabItem.Activated += (s, e) =>
             {
@@ -110,7 +122,7 @@ public class PlayerInfoMenu
                 crimeText += $" Instances: ({crime.Instances})";
                 menuItems2.Add(new UIMenuItem(crimeText, "") { RightLabel = $"Wanted Level: {crime.AssociatedCrime.ResultingWantedLevel}" });
             }
-            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Current Crimes", menuItems2);
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
             tabView.AddTab(interactiveListItem2);
         }
         else if (Player.WantedCrimes != null)
@@ -119,12 +131,12 @@ public class PlayerInfoMenu
             {
                 menuItems2.Add(new UIMenuItem(crime.Name, "") { RightLabel = $"Wanted Level: {crime.ResultingWantedLevel}" });
             }
-            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Criminal History", menuItems2);
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
             tabView.AddTab(interactiveListItem2);
         }
         else
         {
-            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Criminal History", menuItems2);
+            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
             tabView.AddTab(interactiveListItem2);
         }
         //menuItems2[0].Activated += (m, s) => Game.DisplaySubtitle("Activated first item!");
@@ -167,10 +179,14 @@ public class PlayerInfoMenu
                 string ContactText = gr.Gang.ContactName;
                 DescriptionText += $"~n~Contacts: {ContactText}";
             }
-
-            if (Player.PlayerTasks.HasTask(gr.Gang.ContactName))
+            PlayerTask gangTask = Player.PlayerTasks.GetTask(gr.Gang.ContactName);
+            if (gangTask != null)
             {
                 DescriptionText += $"~n~~g~Has Task~s~";
+                if(gangTask.CanExpire)
+                {
+                    DescriptionText += $" Complete Before: ~r~{gangTask.ExpireTime:d} {gangTask.ExpireTime:t}~s~";
+                }
             }
 
             if (gr.MembersKilled > 0)
@@ -506,7 +522,7 @@ public class PlayerInfoMenu
 
 
 
-        TextMessagesSubMenu = new TabSubmenuItem("Text Messages", items);
+        TextMessagesSubMenu = new TabSubmenuItem("Texts", items);
         tabView.AddTab(TextMessagesSubMenu);
     }
     private void AddVehicles()
@@ -643,8 +659,8 @@ public class PlayerInfoMenu
         {
             ccwdesc = "~r~No CCW Issued~s~";
         }
-        dldesc += "~n~~n~Description: A legal authorization for a specific individual to operate one or more types of motorized vehicles such as motorcycles, cars, trucks, or buses—on a public road.";
-        ccwdesc += "~n~~n~Description: Allows Carrying a weapon (such as a handgun) in public in a concealed manner, either on one's person or in close proximity.";
+        dldesc += "~n~~n~Description: A legal authorization for a specific individual to operate one or more types of motorized vehicles such as motorcycles, cars, trucks, or buses—on a public road. Vehicle Operators caught without one will be fined.";
+        ccwdesc += "~n~~n~Description: Allows Carrying a weapon (such as a handgun) in public in a concealed manner, either on one's person or in close proximity. Legal weapons are returned to owners after medical/bail services.";
 
         TabItem dl = new TabTextItem("Drivers License", "Drivers License", dldesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
         items.Add(dl);
@@ -652,7 +668,7 @@ public class PlayerInfoMenu
         TabItem ccw = new TabTextItem("CCW License", "CCW License", ccwdesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
         items.Add(ccw);
 
-        LicensesSubMenu = new TabSubmenuItem("Licenses", items);
+        LicensesSubMenu = new TabSubmenuItem("Info", items);
         tabView.AddTab(LicensesSubMenu);
     }
     private void BackingMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)

@@ -30,7 +30,6 @@ public class SellMenu : Menu
     private ModItem CurrentModItem;
     private MenuItem CurrentMenuItem;
     private int CurrentTotalPrice;
-    private int MoneySpent;
     private WeaponInformation CurrentWeapon;
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
 
@@ -46,7 +45,7 @@ public class SellMenu : Menu
 
     public string StoreName { get; set; } = "";
 
-
+    public int MoneySpent { get; private set; } = 0;
 
     public SellMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)
     {
@@ -587,7 +586,8 @@ public class SellMenu : Menu
         if (toSell != null)
         {
             Player.RemoveOwnershipOfVehicle(toSell);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", "Thank you for your sale");
+            Transaction.OnItemSold(modItem, CurrentMenuItem, 1);
+            //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", "Thank you for your sale");
             return true;
         }
         else
@@ -1059,12 +1059,13 @@ public class SellMenu : Menu
             if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
             {
                 NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, CurrentWeapon.Hash);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
+                Transaction.OnItemSold(CurrentModItem, CurrentMenuItem, 1);
+                //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
                 Player.SetUnarmed();
                 return true;
             }
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
 }

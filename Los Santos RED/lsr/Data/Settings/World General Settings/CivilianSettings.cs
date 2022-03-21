@@ -73,6 +73,8 @@ public class CivilianSettings : ISettingsDefaultable
     public int MoneyMin { get; set; }
     [Description("Maximum amount of money a civilian will surrender upon mugging.")]
     public int MoneyMax { get; set; }
+    [Description("Percentage of civilians that will follow you to do deals. Maximum value of 100.")]
+    public float PercentageTrustingOfPlayer { get; set; }
 
     public CivilianSettings()
     {
@@ -122,7 +124,8 @@ public class CivilianSettings : ISettingsDefaultable
         MerchantMoneyMax = 2000;
 
         MoneyMin = 15;
-        MoneyMax = 100;
+        MoneyMax = 550;
+        PercentageTrustingOfPlayer = 85f;
     }
 
 }

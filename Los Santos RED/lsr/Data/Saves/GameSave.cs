@@ -242,7 +242,7 @@ namespace LosSantosRED.lsr.Data
             foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
             {
                 Gang gang = gangs.GetGangByContact(ifc.Name);
-                if (ifc.Name == "Underground Guns")
+                if (ifc.Name == EntryPoint.UndergroundGunsContactName)
                 {
                     player.CellPhone.AddGunDealerContact(false);
                 }
