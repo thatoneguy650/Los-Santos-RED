@@ -47,7 +47,7 @@ public class GangSettings : ISettingsDefaultable
         ShowSpawnedBlip = true;
         RemoveVanillaSpawnedPedsOutsideTerritory = false;
         //ManageDispatching = false;
-        RemoveVanillaSpawnedPedsOnFoot = true;
+        RemoveVanillaSpawnedPedsOnFoot = false;
 #else
                // ShowSpawnedBlips = false;
 #endif

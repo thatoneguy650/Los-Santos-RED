@@ -111,7 +111,14 @@ namespace LosSantosRED.lsr.Data
             CurrentDateTime = time.CurrentDateTime;
 
 
-            MoneySpentAtGunDealers = player.GunDealerRelationship.TotalMoneySpent;
+            UndergroundGunsMoneySpent = player.GunDealerRelationship.TotalMoneySpentAtShops;
+            UndergroundGunsDebt = player.GunDealerRelationship.PlayerDebt;
+            UndergroundGunsReputation = player.GunDealerRelationship.ReputationLevel;
+
+            OfficerFriendlyMoneySpent = player.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
+            OfficerFriendlyDebt = player.OfficerFriendlyRelationship.PlayerDebt;
+            OfficerFriendlyReputation = player.OfficerFriendlyRelationship.ReputationLevel;
+
 
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
@@ -146,7 +153,7 @@ namespace LosSantosRED.lsr.Data
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-        public int MoneySpentAtGunDealers { get; set; }
+
         public DateTime CurrentDateTime { get; set; }
 
 
@@ -163,6 +170,13 @@ namespace LosSantosRED.lsr.Data
         public List<VehicleVariation> OwnedVehicleVariations { get; set; } = new List<VehicleVariation>();
 
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+        public int UndergroundGunsMoneySpent { get; set; }
+        public int UndergroundGunsDebt { get; set; }
+        public int UndergroundGunsReputation { get; set; }
+
+        public int OfficerFriendlyMoneySpent { get; set; }
+        public int OfficerFriendlyDebt { get; set; }
+        public int OfficerFriendlyReputation { get; set; }
 
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
         {
@@ -268,7 +282,15 @@ namespace LosSantosRED.lsr.Data
                 player.Character.Heading = PlayerHeading;
             }
 
-            player.GunDealerRelationship.SetMoneySpent(MoneySpentAtGunDealers,false);
+            player.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
+            player.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
+            player.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
+
+
+            player.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
+            player.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
+            player.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
+
 
 
             if (DriversLicense != null)

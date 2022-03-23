@@ -16,6 +16,8 @@ public class PlayerTasks
     private ITimeReportable Time;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
+    private IEntityProvideable World;
+    private ICrimes Crimes;
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
     private ISettingsProvideable Settings;
     private List<PlayerTask> LastContactTask = new List<PlayerTask>();
@@ -23,16 +25,18 @@ public class PlayerTasks
     public CorruptCopTasks CorruptCopTasks { get; private set; }
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
-    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
     {
         Player = player;
         Time = time;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        World = world;
+        Crimes = crimes;
         GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings);
         CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings);
-        UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings);
+        UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
     }
     public void Setup()
     {
@@ -48,6 +52,10 @@ public class PlayerTasks
             if(pt != null && pt.CanExpire && DateTime.Compare(pt.ExpireTime, Time.CurrentDateTime) < 0)
             {
                 ExpireTask(pt);
+            }
+            else if (pt != null && pt.CanExpire && pt.DaysToCompleted >= 2 && DateTime.Compare(pt.ExpireTime.AddDays(-1), Time.CurrentDateTime) < 0)
+            {
+                WarnAboutToExpire(pt);
             }
         }
     }
@@ -71,9 +79,9 @@ public class PlayerTasks
             List<string> Replies = new List<string>() {
                     "I knew you were reliable",
                     "You really fucked me on this one",
-                    "You are very helpful",
+                    "Complete waste of my time, go fuck yourself",
                     "This is a great time to fuck me like this prick",
-                    "Whatever prick",
+                    "You can't even complete a simple task. Useless.",
                     "Sorry I stuck my neck out for you",
                     };
             Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
@@ -93,10 +101,29 @@ public class PlayerTasks
                 }
                 Player.GangRelationships.SetDebt(myGang, 0);
             }
-            if(myTask.PaymentAmountOnCompletion != 0)
+            else if (contactName == EntryPoint.UndergroundGunsContactName)
+            {
+                if (myTask.RepAmountOnCompletion != 0)
+                {
+                    Player.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
+                }
+                Player.GunDealerRelationship.SetDebt(0);
+            }
+            else if (contactName == EntryPoint.OfficerFriendlyContactName)
+            {
+                if (myTask.RepAmountOnCompletion != 0)
+                {
+                    Player.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
+                }
+                Player.OfficerFriendlyRelationship.SetDebt(0);
+            }
+
+
+            if (myTask.PaymentAmountOnCompletion != 0)
             {
                 Player.GiveMoney(myTask.PaymentAmountOnCompletion);
             }
+
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasCompleted = true;
@@ -124,6 +151,28 @@ public class PlayerTasks
                     Player.GangRelationships.AddDebt(myGang, myTask.DebtAmountOnFail);
                 }
             }
+            else if(contactName == EntryPoint.UndergroundGunsContactName)
+            {
+                if (myTask.RepAmountOnFail != 0)
+                {
+                    Player.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
+                }
+                if (myTask.DebtAmountOnFail != 0)
+                {
+                    Player.GunDealerRelationship.AddDebt(myTask.DebtAmountOnFail);
+                } 
+            }
+            else if (contactName == EntryPoint.OfficerFriendlyContactName)
+            {
+                if (myTask.RepAmountOnFail != 0)
+                {
+                    Player.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
+                }
+                if (myTask.DebtAmountOnFail != 0)
+                {
+                    Player.OfficerFriendlyRelationship.AddDebt(myTask.DebtAmountOnFail);
+                }
+            }
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasFailed = true;
@@ -142,14 +191,14 @@ public class PlayerTasks
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail });
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
         }
     }
     public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete) });
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void RemoveTask(string contactName)
@@ -230,7 +279,9 @@ public class PlayerTasks
                     $"Let the heat die down for a bit. Give me a call tomorrow.",
                     $"Didn't you just get done with that thing? Give us some time.",
                     $"You should lay low for a bit after that thing. Call us in a few.",
-
+                    $"We just got done with you give us some time.",
+                    $"You already took care of that thing, give us a few.",
+                    $"We just gave you work, don't get greedy.",
                     };
         Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
     }
@@ -251,5 +302,17 @@ public class PlayerTasks
 
             Player.CellPhone.AddPhoneResponse(pt.ContactName, ifc?.IconName, Replies.PickRandom());
         }
+    }
+    private void WarnAboutToExpire(PlayerTask pt)
+    {
+        List<string> Replies = new List<string>() {
+                    $"Get going on that thing, it needs to be done by {pt.ExpireTime:g}.",
+                    $"That thing we talked about, I need it done by {pt.ExpireTime:g}.",
+                    $"Go do that thing before its too late {pt.ExpireTime:g}.",
+                    $"Its almost {pt.ExpireTime:g}",
+                    $"Remeber that thing? {pt.ExpireTime:g} is the deadline.",
+                    $"Go get that thing done before you really piss me off. {pt.ExpireTime:g}.",
+                    };
+        Player.CellPhone.AddPhoneResponse(pt.ContactName, Replies.PickRandom());
     }
 }

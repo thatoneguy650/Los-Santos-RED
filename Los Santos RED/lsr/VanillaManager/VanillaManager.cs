@@ -88,29 +88,28 @@ public class VanillaManager
         //if (Game.GameTime - GameTimeLastStoppedGang >= 10000)
         //{
 
-        //    if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
-        //    {
-        //        TerminateScenarioGangs();
-        //    }
-        //    else
-        //    {
-        //        if (!IsVanillaScenarioGangsActive)
-        //        {
-        //            ActivateScenarioGangs();
-        //        }
-        //    }
-        //    if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
-        //    {
-        //        SupressVanillaGangPeds();
-
-        //    }
-        //    else
-        //    {
-        //        if (IsVanillaGangPedsSupressed)
-        //        {
-        //            UnSupressVanillaGangPeds();
-        //        }
-        //    }
+        if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
+        {
+            TerminateScenarioGangs();
+        }
+        else
+        {
+            if (!IsVanillaScenarioGangsActive)
+            {
+                ActivateScenarioGangs();
+            }
+        }
+        if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
+        {
+            SupressVanillaGangPeds();
+        }
+        else
+        {
+            if (IsVanillaGangPedsSupressed)
+            {
+                UnSupressVanillaGangPeds();
+            }
+        }
         //    GameTimeLastStoppedGang = Game.GameTime;
         //}
 

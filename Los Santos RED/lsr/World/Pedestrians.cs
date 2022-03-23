@@ -444,10 +444,12 @@ public class Pedestrians
             thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
             policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
         }
+        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
     }
     public void Dispose()
     {
         ClearSpawned();
+        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(true);
     }
     public void AddEntity(PedExt pedExt)
     {
@@ -704,8 +706,8 @@ public class Pedestrians
 
             if (Pedestrian.Exists())
             {
-                Pedestrian.Money = toCreate.Money;
-                //NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+                Pedestrian.Money = 0;// toCreate.Money;
+                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
         }
 
@@ -770,7 +772,7 @@ public class Pedestrians
             if (Pedestrian.Exists())
             {
                 gm.Money = gm.Money;
-                gm.Pedestrian.Money = gm.Money;
+                gm.Pedestrian.Money = 0;// gm.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
                 gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
             }

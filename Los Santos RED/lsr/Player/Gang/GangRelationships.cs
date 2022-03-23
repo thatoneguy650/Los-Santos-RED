@@ -41,7 +41,7 @@ public class GangRelationships
     }
     public void Dispose()
     {
-        ResetReputations();
+        ResetAllReputations();
     }
     public void Setup()
     {
@@ -171,7 +171,7 @@ public class GangRelationships
         gr.MembersCarJackedInTerritory = carjackedInTerritory;
         gr.PlayerDebt = playerDebt;
     }
-    public void ResetReputations()
+    public void ResetAllReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
@@ -179,7 +179,7 @@ public class GangRelationships
             //rg.SetRepuation(rg.DefaultRepAmount,false);
         }
     }
-    public void SetRandomReputations()
+    public void SetAllRandomReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {

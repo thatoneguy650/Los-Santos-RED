@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr.Interface
         CellPhone CellPhone { get; }
         GangRelationships GangRelationships { get; }
         GunDealerRelationship GunDealerRelationship { get; }
+        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
         Licenses Licenses { get; }
         Properties Properties { get; }
     }

@@ -76,6 +76,14 @@ public class CivilianSettings : ISettingsDefaultable
     [Description("Percentage of civilians that will follow you to do deals. Maximum value of 100.")]
     public float PercentageTrustingOfPlayer { get; set; }
 
+
+    [Description("Percentage of time you will get random items when looting a random ped (weapons and vehicles excluded)")]
+    public float PercentageToGetRandomItems { get; set; }
+    [Description("Max number of random items to get when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
+    public int MaxRandomItemsToGet { get; set; }
+    [Description("Max amount to get for each random item when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
+    public int MaxRandomItemsAmount { get; set; }
+
     public CivilianSettings()
     {
         SetDefault();
@@ -126,6 +134,9 @@ public class CivilianSettings : ISettingsDefaultable
         MoneyMin = 15;
         MoneyMax = 550;
         PercentageTrustingOfPlayer = 85f;
+        PercentageToGetRandomItems = 80;
+        MaxRandomItemsToGet = 5;
+        MaxRandomItemsAmount = 3;
     }
 
 }

@@ -410,7 +410,7 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == RandomGangRep)
         {
-            Player.GangRelationships.SetRandomReputations();
+            Player.GangRelationships.SetAllRandomReputations();
         }
         else if (selectedItem == RandomSingleGangRep)
         {
@@ -418,7 +418,7 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == DefaultGangRep)
         {
-            Player.GangRelationships.ResetReputations();
+            Player.GangRelationships.ResetAllReputations();
         }
         else if (selectedItem == HostileGangRep)
         {

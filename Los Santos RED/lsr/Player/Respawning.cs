@@ -178,7 +178,7 @@ public class Respawning// : IRespawning
         }
         BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
-        ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false);//if you pass clear weapons here it will just remover everything anwyays
+        ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false);//if you pass clear weapons here it will just remover everything anwyays
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();

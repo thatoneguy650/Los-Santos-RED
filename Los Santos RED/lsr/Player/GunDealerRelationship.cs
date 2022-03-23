@@ -11,18 +11,72 @@ public class GunDealerRelationship
 {
     private IGunDealerRelateable Player;
     private IPlacesOfInterest PlacesOfInterest;
-    public int TotalMoneySpent { get; private set; } = 0;
+    private int reputationLevel = 200;
+    public readonly int DefaultRepAmount = 200;
+    public readonly int RepMaximum = 2000;
+    public readonly int RepMinimum = -2000;
+    public int TotalMoneySpentAtShops { get; private set; } = 0;
+    public int PlayerDebt { get; private set; } = 0;
+    public int ReputationLevel => reputationLevel;
     public GunDealerRelationship(IGunDealerRelateable player, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
     }
+    public void Setup()
+    {
+
+    }
+    public void Dispose()
+    {
+        Reset(false);
+    }
+    public void Reset(bool sendText)
+    {
+        SetReputation(DefaultRepAmount, sendText);
+        PlayerDebt = 0;
+    }
+    public void SetReputation(int value, bool sendText)
+    {
+        if (reputationLevel != value)
+        {
+            if (value > RepMaximum)
+            {
+                reputationLevel = RepMaximum;
+            }
+            else if (value < RepMinimum)
+            {
+                reputationLevel = RepMinimum;
+            }
+            else
+            {
+                reputationLevel = value;
+            }
+            OnReputationChanged(sendText);
+        }
+    }
+    public void ChangeReputation(int Amount, bool sendText)
+    {
+        SetReputation(ReputationLevel + Amount, sendText);
+    }
+    private void OnReputationChanged(bool sendText)
+    {
+
+    }
+    public void AddDebt(int Amount)
+    {
+        PlayerDebt += Amount;
+    }
+    public void SetDebt(int Amount)
+    {
+        PlayerDebt = Amount;
+    }
     public void AddMoneySpent(int Amount)
     {
-        TotalMoneySpent += Amount;
+        TotalMoneySpentAtShops += Amount;
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if (gs.IsIllegalShop && !gs.IsEnabled && TotalMoneySpent >= gs.MoneyToUnlock)
+            if (gs.ContactName == EntryPoint.UndergroundGunsContactName && !gs.IsEnabled && TotalMoneySpentAtShops >= gs.MoneyToUnlock)
             {
                 gs.IsEnabled = true;
 
@@ -44,21 +98,20 @@ public class GunDealerRelationship
                 EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
             }
         }
-        if(TotalMoneySpent >= 2000)
+        if(TotalMoneySpentAtShops >= 2000)
         {
             Player.CellPhone.AddGunDealerContact(true);
         }
-        EntryPoint.WriteToConsole($"You spent {Amount} for a total of {TotalMoneySpent}");
-
+        EntryPoint.WriteToConsole($"You spent {Amount} for a total of {TotalMoneySpentAtShops}");
     }
     public void SetMoneySpent(int Amount, bool sendNotification)
     {
-        TotalMoneySpent = Amount;
+        TotalMoneySpentAtShops = Amount;
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if(gs.IsIllegalShop)
+            if(gs.ContactName == EntryPoint.UndergroundGunsContactName)
             {
-                if(TotalMoneySpent >= gs.MoneyToUnlock)
+                if(TotalMoneySpentAtShops >= gs.MoneyToUnlock)
                 {
                     if (!gs.IsEnabled)
                     {
@@ -90,7 +143,7 @@ public class GunDealerRelationship
                 }
             }
         }
-        if (TotalMoneySpent >= 2000)
+        if (TotalMoneySpentAtShops >= 2000)
         {
             Player.CellPhone.AddGunDealerContact(sendNotification);
         }

@@ -37,7 +37,6 @@ public class GunStore : InteractableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public bool IsIllegalShop { get; set; } = false;
     public int MoneyToUnlock { get; set; } = 0;
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -72,10 +71,13 @@ public class GunStore : InteractableLocation
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 Transaction.ProcessTransactionMenu();
 
-                if (IsIllegalShop)
+                if (ContactName == EntryPoint.UndergroundGunsContactName)
                 {
                     Player.GunDealerRelationship.AddMoneySpent(Transaction.PurchaseMenu.MoneySpent);
                     Player.GunDealerRelationship.AddMoneySpent(Transaction.SellMenu.MoneySpent);
+
+
+                    player.GunDealerRelationship.SetReputation((Transaction.PurchaseMenu.MoneySpent + Transaction.SellMenu.MoneySpent) / 5, false);
                 }
 
                 Transaction.DisposeTransactionMenu();

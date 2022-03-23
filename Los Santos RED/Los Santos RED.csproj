@@ -218,6 +218,7 @@
     <Compile Include="lsr\Player\Licenses\DriversLicense.cs" />
     <Compile Include="lsr\Player\Licenses\License.cs" />
     <Compile Include="lsr\Player\Licenses\Licenses.cs" />
+    <Compile Include="lsr\Player\OfficerFriendlyRelationship.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />

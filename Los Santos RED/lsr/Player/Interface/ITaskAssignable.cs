@@ -15,7 +15,11 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         Ped Character { get; }
         Vehicle LastFriendlyVehicle { get; set; }
+        GunDealerRelationship GunDealerRelationship { get; }
+        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
+        bool IsNotWanted { get; }
 
         void GiveMoney(int paymentAmountOnCompletion);
+        void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
     }
 }

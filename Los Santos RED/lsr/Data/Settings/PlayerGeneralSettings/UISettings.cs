@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 public class UISettings : ISettingsDefaultable
 {
     public bool UIEnabled { get; set; }
+    public bool ShowDebug { get; set; }
     public bool ShowCrimesDisplay { get; set; }
     public float CrimesViolatingPositionX { get; set; }
     public float CrimesViolatingPositionY { get; set; }
@@ -70,7 +71,7 @@ public class UISettings : ISettingsDefaultable
     public bool AlwaysShowCash { get; set; }
     public bool AlwaysShowRadar { get; set; }
     public bool AlwaysShowHUD { get; set; }
-    public bool ShowDebug { get; set; }
+
     public bool ShowVanillaVehicleUI { get; set; }
     public bool ShowVanillaAreaUI { get; set; }
     public bool SetBustedEffect { get; set; }
@@ -113,7 +114,7 @@ public class UISettings : ISettingsDefaultable
         SetDefault();
         #if DEBUG
             SetRadarZoomDistance = false;
-            ShowDebug = true;
+            ShowDebug = false;
         FadeStreetDisplay = false;
         FadeZoneDisplay = false;
         ZoneDisplayShowPrimaryAgency = false;

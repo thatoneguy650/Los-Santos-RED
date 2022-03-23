@@ -138,6 +138,10 @@ namespace LSR.Vehicles
                 {
                     return true;
                 }
+                else if (CurrentClass == VehicleClass.Van)
+                {
+                    return true;
+                }
                 return false;
             }
         }

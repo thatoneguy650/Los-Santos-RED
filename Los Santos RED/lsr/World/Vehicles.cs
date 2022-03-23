@@ -111,7 +111,7 @@ public class Vehicles
                 {
                     if (MyCar.Vehicle.Exists())
                     {
-                        UpdatePlate(MyCar);
+                        UpdatePlate(MyCar, false);
                     }
                     VehiclesUpdated++;
                     if (VehiclesUpdated > 4)
@@ -368,7 +368,7 @@ public class Vehicles
             }
         }
     }
-    public void UpdatePlate(VehicleExt vehicleExt)//this might need to come out of here.... along with the two bools
+    public void UpdatePlate(VehicleExt vehicleExt, bool force)//this might need to come out of here.... along with the two bools
     {
         if (vehicleExt.Vehicle.Exists())
         {
@@ -384,7 +384,36 @@ public class Vehicles
              * 
              * 
              * */
-            if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+
+            if(force)
+            {
+                PlateType NewType = PlateTypes.GetRandomPlateType();
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                    else
+                    {
+                        NewPlateNumber = RandomItems.RandomString(8);
+                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                    if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                    {
+                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                        vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                        vehicleExt.CarPlate.PlateType = NewType.Index;
+                    }
+                    // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                }
+            }
+            else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
             {
                 PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
 

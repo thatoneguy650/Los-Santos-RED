@@ -43,7 +43,7 @@ public class ButtonPrompts
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
         }
 
 
@@ -120,10 +120,10 @@ public class ButtonPrompts
     {
         Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Loot {Player.CurrentLookedAtPed.Handle}"))
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Search {Player.CurrentLookedAtPed.Handle}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"Loot {Player.CurrentLookedAtPed.FormattedName}", "Loot", $"Loot {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
+            Player.ButtonPromptList.Add(new ButtonPrompt($"Search {Player.CurrentLookedAtPed.FormattedName}", "Search", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
         }
         //else
         //{
@@ -137,7 +137,7 @@ public class ButtonPrompts
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
 
         if (!Player.ButtonPromptList.Any(x => x.Identifier == $"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
@@ -150,7 +150,7 @@ public class ButtonPrompts
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
 
 
         if (!Player.ButtonPromptList.Any(x => x.Identifier == $"StartScenario"))

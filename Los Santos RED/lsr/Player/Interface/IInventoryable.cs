@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Interface
         GunDealerRelationship GunDealerRelationship { get; }
         Licenses Licenses { get; }
         Properties Properties { get; }
+        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
 
         void ClearVehicleOwnership();
     }

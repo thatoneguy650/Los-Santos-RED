@@ -98,69 +98,7 @@ namespace Mod
 
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
         private bool CanYell => !IsYellingTimeOut;
-        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves)
-        {
-            ModelName = modelName;
-            IsMale = isMale;
-            PlayerName = suspectsName;
-            Crimes = crimes;
-            World = provider;
-            TimeControllable = timeControllable;
-            Settings = settings;
-            Weapons = weapons;
-            RadioStations = radioStations;
-            Scenarios = scenarios;
-            GameTimeStartedPlaying = Game.GameTime;
-            PlacesOfInterest = placesOfInterest;
-            ModItems = modItems;
-            Intoxicants = intoxicants;
-            GangTerritories = gangTerritories;
-            Zones = zones;
-            GameSaves = gameSaves;
-            Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName,"Person"), Settings);
-            if (CharacterModelIsFreeMode)
-            {
-                HealthState.MyPed.VoiceName = FreeModeVoice;
-            }
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
-            WeaponDropping = new WeaponDropping(this, Weapons, Settings);
-            Surrendering = new SurrenderActivity(this, World);
-            Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
-            Violations.Setup();
-            Investigation = new Investigation(this, Settings, provider);
-            CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
-            PoliceResponse = new PoliceResponse(this, Settings, TimeControllable);
-            SearchMode = new SearchMode(this, Settings);
-            Inventory = new Inventory(this);
-            Sprinting = new Sprinting(this, Settings);
 
-            Intoxication = new Intoxication(this);
-            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            Respawning.Setup();
-            GangRelationships = new GangRelationships(gangs, this, Settings);
-            GangRelationships.Setup();
-            WeaponSway = new WeaponSway(this, Settings);
-            WeaponRecoil = new WeaponRecoil(this, Settings);
-            WeaponSelector = new WeaponSelector(this, Settings);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
-            CellPhone.Setup();
-
-            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings);
-            PlayerTasks.Setup();
-
-            GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
-
-            Licenses = new Licenses(this);
-
-            Properties = new Properties(this, PlacesOfInterest, TimeControllable);
-            Properties.Setup();
-
-            ButtonPrompts = new ButtonPrompts(this, Settings);
-            ButtonPrompts.Setup();
-
-        }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
         public bool AnyGangMemberCanHearPlayer { get; set; }
@@ -174,16 +112,12 @@ namespace Mod
         public Rage.Object AttachedProp { get; set; }
         public Cop ArrestingCop { get; set; }
         public bool BeingArrested { get; private set; }
-        //public BigMessageHandler BigMessage { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically; // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
-
-
         public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody;
-        public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead) && ((CurrentLookedAtPed.Money > 0 && !CurrentLookedAtPed.IsDead) || (CurrentLookedAtPed.HasMenu && CurrentLookedAtPed.ShopMenu.Items.Any(x=>x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0)));
+        public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);// && ((CurrentLookedAtPed.Money > 0 && !CurrentLookedAtPed.IsDead) || (CurrentLookedAtPed.HasMenu && CurrentLookedAtPed.ShopMenu.Items.Any(x=>x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0)));
         public bool IsLootingBody { get; set; }
-
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;// && (!CurrentTargetedPed.IsInVehicle || CurrentTargetedPed.;
@@ -207,10 +141,8 @@ namespace Mod
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public SelectorOptions CurrentSelectorSetting => WeaponSelector.CurrentSelectorSetting;
-
         public Vehicle LastFriendlyVehicle { get; set; }
         public InteractableLocation ClosestInteractableLocation { get; private set; }
-        // public GameLocation CurrentShop { get; set; }
         public PedExt CurrentTargetedPed { get; private set; }
         public ComplexTask CurrentTask { get; set; }
         public VehicleExt CurrentVehicle { get; private set; }
@@ -233,6 +165,7 @@ namespace Mod
         public GangRelationships GangRelationships { get; private set; }
         public int GroupID { get; set; }
         public GunDealerRelationship GunDealerRelationship { get; private set; }
+        public OfficerFriendlyRelationship OfficerFriendlyRelationship { get; private set; }
         public bool HandsAreUp { get; set; }
         public bool HasBeenMoving => GameTimeStartedMoving != 0 && Game.GameTime - GameTimeStartedMoving >= 5000;
         public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 5000;
@@ -273,7 +206,6 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated); //took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -442,6 +374,72 @@ namespace Mod
         public List<Crime> WantedCrimes => CriminalHistory.WantedCrimes;
         public int WantedLevel => wantedLevel;
         public bool IsWavingHands { get; set; }
+        public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves)
+        {
+            ModelName = modelName;
+            IsMale = isMale;
+            PlayerName = suspectsName;
+            Crimes = crimes;
+            World = provider;
+            TimeControllable = timeControllable;
+            Settings = settings;
+            Weapons = weapons;
+            RadioStations = radioStations;
+            Scenarios = scenarios;
+            GameTimeStartedPlaying = Game.GameTime;
+            PlacesOfInterest = placesOfInterest;
+            ModItems = modItems;
+            Intoxicants = intoxicants;
+            GangTerritories = gangTerritories;
+            Zones = zones;
+            GameSaves = gameSaves;
+            Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person"), Settings);
+            if (CharacterModelIsFreeMode)
+            {
+                HealthState.MyPed.VoiceName = FreeModeVoice;
+            }
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
+            WeaponDropping = new WeaponDropping(this, Weapons, Settings);
+            Surrendering = new SurrenderActivity(this, World);
+            Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
+            Violations.Setup();
+            Investigation = new Investigation(this, Settings, provider);
+            CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
+            PoliceResponse = new PoliceResponse(this, Settings, TimeControllable);
+            SearchMode = new SearchMode(this, Settings);
+            Inventory = new Inventory(this);
+            Sprinting = new Sprinting(this, Settings);
+
+            Intoxication = new Intoxication(this);
+            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
+            Respawning.Setup();
+            GangRelationships = new GangRelationships(gangs, this, Settings);
+            GangRelationships.Setup();
+            WeaponSway = new WeaponSway(this, Settings);
+            WeaponRecoil = new WeaponRecoil(this, Settings);
+            WeaponSelector = new WeaponSelector(this, Settings);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
+            CellPhone.Setup();
+
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes);
+            PlayerTasks.Setup();
+
+            GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
+            GunDealerRelationship.Setup();
+            OfficerFriendlyRelationship = new OfficerFriendlyRelationship(this, PlacesOfInterest);
+            OfficerFriendlyRelationship.Setup();
+
+            Licenses = new Licenses(this);
+
+            Properties = new Properties(this, PlacesOfInterest, TimeControllable);
+            Properties.Setup();
+
+            ButtonPrompts = new ButtonPrompts(this, Settings);
+            ButtonPrompts.Setup();
+
+        }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -572,8 +570,6 @@ namespace Mod
                 AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
             }
         }
-
-
         public void CallEMS()
         {
             if (World.TotalWantedLevel <= 1)
@@ -592,7 +588,6 @@ namespace Mod
                 Scanner.OnFirefightingServicesRequested();
             }
         }
-
         public void AddDistressedPed(Vector3 position)
         {
             if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => x.IsUnconscious || x.IsInWrithe && !x.HasStartedEMTTreatment))
@@ -602,8 +597,6 @@ namespace Mod
                 Scanner.OnMedicalServicesRequested();
             }
         }
-
-
         public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
@@ -816,6 +809,10 @@ namespace Mod
             PlayerTasks.Dispose();
             Properties.Dispose();
             ButtonPrompts.Dispose();
+
+            GunDealerRelationship.Dispose();
+            OfficerFriendlyRelationship.Dispose();
+
             isActive = false;
 
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
@@ -1302,8 +1299,7 @@ namespace Mod
 
             if (resetGangRelationships)
             {
-                GangRelationships.ResetReputations();
-
+                GangRelationships.ResetAllReputations();
                 foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
                 {
                     gd.IsEnabled = false;
@@ -1312,6 +1308,8 @@ namespace Mod
                 {
                     gd.IsEnabled = false;
                 }
+                OfficerFriendlyRelationship.Reset(false);
+                GunDealerRelationship.Reset(false);
             }
             if (clearOwnedVehicles)
             {
@@ -1602,8 +1600,6 @@ namespace Mod
                 }
             }
         }
-
-
         public void LootPed()
         {
 
@@ -1635,7 +1631,6 @@ namespace Mod
             //    Interaction.Start();
             //}
         }
-
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)

@@ -44,7 +44,7 @@ public class ModItems : IModItems
     }
     public ModItem GetRandomItem()
     {
-        return ModItemsList.Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped).PickRandom();
+        return ModItemsList.Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped && !x.ConsumeOnPurchase).PickRandom();
     }
 
 

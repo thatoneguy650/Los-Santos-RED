@@ -207,7 +207,7 @@ namespace LosSantosRED.lsr
             {
                 Player.StartLocationInteraction();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "Loot" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
             {
                 Player.LootPed();
             }

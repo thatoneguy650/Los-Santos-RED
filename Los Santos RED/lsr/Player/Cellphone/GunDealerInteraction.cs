@@ -54,7 +54,7 @@ public class GunDealerInteraction
 
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if (gl.IsIllegalShop && gl.IsEnabled)
+            if (gl.ContactName == EntryPoint.UndergroundGunsContactName && gl.IsEnabled)
             {
                 GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.StreetAddress));
             }

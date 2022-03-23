@@ -354,6 +354,13 @@ public class SpawnTask
             World.Pedestrians.AddEntity(PrimaryFirefighter);
             return PrimaryFirefighter;
         }
+
+
+        if(ped.Exists())
+        {
+            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
+        }
+
         return null;
     }
     private PedExt SetupGangMember(Ped ped)
@@ -361,7 +368,7 @@ public class SpawnTask
         if (AddBlip && ped.Exists())
         {
             Blip myBlip = ped.AttachBlip();
-            myBlip.Color = Color.DarkRed;
+            myBlip.Color = Gang.Color;
             myBlip.Scale = 0.3f;
         }
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
@@ -395,7 +402,7 @@ public class SpawnTask
 
         if(GangMember.Pedestrian.Exists())
         {
-            GangMember.Pedestrian.Money = GangMember.Money;
+            GangMember.Pedestrian.Money = 0;// GangMember.Money;
         }
 
         GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns));

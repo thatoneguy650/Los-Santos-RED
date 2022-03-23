@@ -29,6 +29,8 @@ public class TaskSettings : ISettingsDefaultable
 
 
 
+    [Description("Complications Percent Gun Pickup task from Underground Guns")]
+    public float UndergroundGunsGunPickupComplicationsPercentage { get; set; }
 
     [Description("Minimum payment amount for the Gun Pickup task from Underground Guns")]
     public int UndergroundGunsGunPickupPaymentMin { get; set; }
@@ -40,6 +42,12 @@ public class TaskSettings : ISettingsDefaultable
     public TaskSettings()
     {
         SetDefault();
+#if DEBUG
+
+        UndergroundGunsGunPickupComplicationsPercentage = 100f;
+#else
+
+#endif
     }
     public void SetDefault()
     {
@@ -52,6 +60,9 @@ public class TaskSettings : ISettingsDefaultable
 
         UndergroundGunsGunPickupPaymentMin = 5000;
         UndergroundGunsGunPickupPaymentMax = 10000;
+
+
+        UndergroundGunsGunPickupComplicationsPercentage = 30f;
 
 
 

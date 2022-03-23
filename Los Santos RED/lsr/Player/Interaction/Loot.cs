@@ -86,7 +86,7 @@ public class Loot : DynamicActivity
                     }
                 }
             }
-            if (Ped.Money > 0 && !Ped.IsDead)//dead peds already drop it
+            if (Ped.Money > 0)//dead peds already drop it, truned off dropping for now
             {
                 Player.GiveMoney(Ped.Money);
                 CashAdded = Ped.Money;
@@ -94,12 +94,35 @@ public class Loot : DynamicActivity
                 Ped.Pedestrian.Money = 0;
                 hasAddedCash = true;
             }
+
+
+            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
+            {
+                if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
+                {
+                    int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
+                    for (int i = 0; i < ItemsToGet; i++)
+                    {
+                        ModItem toGet = ModItems.GetRandomItem();
+                        int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
+                        if (toGet != null)
+                        {
+                            hasAddedItem = true;
+                            ItemsFound += $"~n~~p~{toGet.Name}~s~ - {AmountToGet} {toGet.MeasurementName}(s)";
+                            Player.Inventory.Add(toGet, AmountToGet);
+                        }
+                    }
+                }
+            }
+
+
+
         }
 
         string Description = "";
         if (hasAddedCash)
         {
-            Description += $"Cash Stolen: ~n~~g~${CashAdded}";
+            Description += $"Cash Stolen: ~n~~g~${CashAdded}~s~";
         }
         if (hasAddedItem)
         {
@@ -123,11 +146,11 @@ public class Loot : DynamicActivity
         if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
         {
             string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
-            Game.DisplayNotification(str, str, "~r~Ped Looted", $"~y~{Ped.Name}", Description);
+            Game.DisplayNotification(str, str, "~r~Ped Searched", $"~y~{Ped.Name}", Description);
         }
         else
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Looted", $"~y~{Ped.Name}", Description);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Searched", $"~y~{Ped.Name}", Description);
         }
 
 
