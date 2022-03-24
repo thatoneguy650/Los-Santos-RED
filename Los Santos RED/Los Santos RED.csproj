@@ -193,9 +193,12 @@
     <Compile Include="lsr\Ped\Variation\RandomRegularHeadData.cs" />
     <Compile Include="lsr\Ped\Variation\StoreStructs.cs" />
     <Compile Include="lsr\Ped\Zombie\Zombie.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\CopGangHitTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\CorruptCopTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\GangTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\GunPickupTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\UndergroundGunsTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\WitnessEliminationTask.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />

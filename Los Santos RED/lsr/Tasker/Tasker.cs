@@ -56,7 +56,7 @@ public class Tasker : ITaskerable, ITaskerReportable
         PlacesOfInterest = placesOfInterest;
         CopTasker = new CopTasker(this,PedProvider,player,weapons,settings,PlacesOfInterest);
         GangTasker = new GangTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
-        CivilianTasker = new CivilianTasker(this, PedProvider, player, weapons, settings);
+        CivilianTasker = new CivilianTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
 
         EMTTasker = new EMTTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
         EMTTasker.Setup();

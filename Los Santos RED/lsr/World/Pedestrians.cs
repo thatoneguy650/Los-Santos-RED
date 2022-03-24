@@ -348,7 +348,11 @@ public class Pedestrians
                 hasBlip = true;
                 myblip.Delete();
             }
-            Civilian.Pedestrian.IsPersistent = false;
+            if(!Civilian.WasModSpawned)
+            {
+                Civilian.Pedestrian.IsPersistent = false;
+            }
+            
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }

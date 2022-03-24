@@ -18,6 +18,7 @@ public class PlayerTasks
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private ICrimes Crimes;
+    private INameProvideable Names;
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
     private ISettingsProvideable Settings;
     private List<PlayerTask> LastContactTask = new List<PlayerTask>();
@@ -25,7 +26,7 @@ public class PlayerTasks
     public CorruptCopTasks CorruptCopTasks { get; private set; }
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
-    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
     {
         Player = player;
         Time = time;
@@ -34,8 +35,9 @@ public class PlayerTasks
         Settings = settings;
         World = world;
         Crimes = crimes;
+        Names = names;
         GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings);
-        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings);
+        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names);
         UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
     }
     public void Setup()

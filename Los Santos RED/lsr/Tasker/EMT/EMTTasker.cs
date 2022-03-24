@@ -149,7 +149,7 @@ public class EMTTasker
         if (emt.CurrentTask?.Name != "EMTTreat" || (targetPed != null && emt.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)
         {
             EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTTreat", 3);
-            emt.CurrentTask = new EMTTreat(emt, Player, targetPed);
+            emt.CurrentTask = new EMTTreat(emt, Player, targetPed, Settings);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();
         }
@@ -187,7 +187,7 @@ public class EMTTasker
     }
     private void SetPossibleTargets()
     {
-        PossibleTargets = PedProvider.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.HasBeenTreatedByEMTs).ToList();//150f//writhe peds that are still alive
+        PossibleTargets = PedProvider.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.HasBeenTreatedByEMTs && x.HasBeenSeenInDistress).ToList();//150f//writhe peds that are still alive
         //PossibleTargets.AddRange(PedProvider.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists() && !x.HasBeenTreatedByEMTs));//dead peds go here?
     }
     private class EMTTarget

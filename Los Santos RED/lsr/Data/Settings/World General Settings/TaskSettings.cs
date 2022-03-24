@@ -27,6 +27,14 @@ public class TaskSettings : ISettingsDefaultable
 
 
 
+    [Description("Minimum payment amount for the Witness Elimination task from Officer Friendly")]
+    public int OfficerFriendlyWitnessEliminationPaymentMin { get; set; }
+    [Description("Maximum payment amount for the Witness Elimination task from Officer Friendly")]
+    public int OfficerFriendlyWitnessEliminationPaymentMax { get; set; }
+
+
+
+
 
 
     [Description("Complications Percent Gun Pickup task from Underground Guns")]
@@ -57,6 +65,10 @@ public class TaskSettings : ISettingsDefaultable
 
         OfficerFriendlyCopHitPaymentMin = 20000;
         OfficerFriendlyCopHitPaymentMax = 45000;
+
+
+        OfficerFriendlyWitnessEliminationPaymentMin = 10000;
+        OfficerFriendlyWitnessEliminationPaymentMax = 20000;
 
         UndergroundGunsGunPickupPaymentMin = 5000;
         UndergroundGunsGunPickupPaymentMax = 10000;

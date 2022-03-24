@@ -55,5 +55,6 @@ namespace LosSantosRED.lsr.Interface
         void ChangeName(string newName);
         void EnterVehicleAsPassenger();
         void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
+        ButtonPrompts ButtonPrompts { get; }
     }
 }

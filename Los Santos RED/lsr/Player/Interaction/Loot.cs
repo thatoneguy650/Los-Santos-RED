@@ -165,7 +165,7 @@ public class Loot : DynamicActivity
         Vector3 DesiredPosition = Ped.Pedestrian.Position;
         float DesiredHeading = Game.LocalPlayer.Character.Heading;
         //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, 1.0f, -1, DesiredHeading, 0.2f);
-        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Player.Character, Ped.Pedestrian, -1, 1.0f, 0.75f, 1073741824, 1); //Original and works ok
+        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Player.Character, Ped.Pedestrian, -1, 1.25f, 0.75f, 1073741824, 1); //Original and works ok
         uint GameTimeStartedMovingToBody = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
         bool IsFacingDirection = true;
@@ -186,9 +186,9 @@ public class Loot : DynamicActivity
         }
 
 
-        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 750);
+        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1000);
 
-        GameFiber.Sleep(750);
+        GameFiber.Sleep(1000);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
             EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);

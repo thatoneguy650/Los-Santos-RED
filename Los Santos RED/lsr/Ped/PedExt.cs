@@ -70,9 +70,9 @@ public class PedExt : IComplexTaskable
     public VehicleExt AssignedVehicle { get; set; }
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
-    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember);
+    public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember);
+    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -268,9 +268,12 @@ public class PedExt : IComplexTaskable
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
 
     public bool HasSeenDistressedPed { get; set; } = false;
+    public bool HasBeenSeenInDistress { get; set; } = false;
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
+
+    public bool WasModSpawned { get; set; } = false;
 
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
@@ -451,11 +454,12 @@ public class PedExt : IComplexTaskable
     {
         foreach(PedExt distressedPed in world.Pedestrians.PedExts.Where(x=> (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
         {
-            float distanceToCriminal = Pedestrian.DistanceTo2D(distressedPed.Pedestrian);
-            if (distanceToCriminal <= 15f || (distanceToCriminal <= 45f && distressedPed.Pedestrian.IsThisPedInFrontOf(Pedestrian)))
+            float distanceToBody = Pedestrian.DistanceTo2D(distressedPed.Pedestrian);
+            if (distanceToBody <= 15f || (distanceToBody <= 45f && distressedPed.Pedestrian.IsThisPedInFrontOf(Pedestrian) && (distressedPed.HasBeenSeenInDistress || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, distressedPed.Pedestrian))))//if someone saw it assume ANYONE close saw it, only performance reason
             {
                 PositionLastSeenDistressedPed = distressedPed.position;
                 HasSeenDistressedPed = true;
+                distressedPed.HasBeenSeenInDistress = true;
                 break;
             }
                 

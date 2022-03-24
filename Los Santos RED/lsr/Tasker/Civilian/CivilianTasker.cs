@@ -17,13 +17,15 @@ public class CivilianTasker
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
     private Tasker Tasker;
-    public CivilianTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings)
+    private IPlacesOfInterest PlacesOfInterest;
+    public CivilianTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
         PedProvider = pedProvider;
         Player = player;
         Weapons = weapons;
         Settings = settings;
+        PlacesOfInterest = placesOfInterest;
     }
 
     public void Setup()
@@ -216,9 +218,25 @@ public class CivilianTasker
                     }
                 }
             }
+            else if(Civilian.WasModSpawned && Civilian.CurrentTask == null)
+            {
+                SetIdle(Civilian);
+            }
         }
         Civilian.GameTimeLastUpdatedTask = Game.GameTime;
     }
+
+    private void SetIdle(PedExt ped)
+    {
+        if (ped.CurrentTask?.Name != "GangIdle")
+        {
+            EntryPoint.WriteToConsole($"TASKER: gm {ped.Pedestrian.Handle} Task Changed from {ped.CurrentTask?.Name} to Idle", 3);
+            ped.CurrentTask = new GangIdle(ped, Player, PedProvider, Tasker, PlacesOfInterest);
+            GameFiber.Yield();//TR Added back 4
+            ped.CurrentTask.Start();
+        }
+    }
+
     private WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
         WeaponInformation ToIssue;

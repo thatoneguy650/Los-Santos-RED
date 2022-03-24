@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         void FastForward(DateTime until);
         void SetDateToToday();
         void SetDateTime(DateTime currentDateTime);
+        void StopFastForwarding();
     }
 }

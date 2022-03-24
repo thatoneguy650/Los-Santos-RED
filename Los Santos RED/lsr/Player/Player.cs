@@ -70,6 +70,9 @@ namespace Mod
         private int PreviousWantedLevel;
         private IRadioStations RadioStations;
         private IGameSaves GameSaves;
+
+        private INameProvideable Names;
+
         private Respawning Respawning;
         private Scanner Scanner;
         private IScenarios Scenarios;
@@ -94,7 +97,7 @@ namespace Mod
         private uint LookedAtPedButtonPromptHandle;
         private uint GameTimeLastCrashedVehicle;
 
-        private ButtonPrompts ButtonPrompts;
+
 
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
         private bool CanYell => !IsYellingTimeOut;
@@ -112,6 +115,7 @@ namespace Mod
         public Rage.Object AttachedProp { get; set; }
         public Cop ArrestingCop { get; set; }
         public bool BeingArrested { get; private set; }
+        public ButtonPrompts ButtonPrompts { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically; // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
@@ -375,7 +379,7 @@ namespace Mod
         public int WantedLevel => wantedLevel;
         public bool IsWavingHands { get; set; }
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -394,6 +398,7 @@ namespace Mod
             GangTerritories = gangTerritories;
             Zones = zones;
             GameSaves = gameSaves;
+            Names = names;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person"), Settings);
             if (CharacterModelIsFreeMode)
@@ -423,7 +428,7 @@ namespace Mod
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
             CellPhone.Setup();
 
-            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes);
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names);
             PlayerTasks.Setup();
 
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);

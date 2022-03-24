@@ -33,7 +33,7 @@ public class GangMember : PedExt, IWeaponIssuable
    // public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
     public Gang Gang { get; set; } = new Gang();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public bool WasModSpawned { get; private set; }
+    //public bool WasModSpawned { get; private set; }
 
 
 }

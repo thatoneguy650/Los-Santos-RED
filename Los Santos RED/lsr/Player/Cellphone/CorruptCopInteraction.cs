@@ -26,6 +26,7 @@ public class CorruptCopInteraction
     private ISettingsProvideable Settings;
     private UIMenuItem GangHit;
     private UIMenuItem TaskCancel;
+    private UIMenuItem WitnessElimination;
 
     private int CostToClearWanted
     {
@@ -62,7 +63,7 @@ public class CorruptCopInteraction
         PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
 
         GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
-
+        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
 
         if (Player.PlayerTasks.HasTask(EntryPoint.OfficerFriendlyContactName))
         {
@@ -82,6 +83,7 @@ public class CorruptCopInteraction
         else if (Player.IsNotWanted)
         {
             CopMenu.AddItem(GangHit);
+            CopMenu.AddItem(WitnessElimination);
         }
         else
         {
@@ -121,7 +123,12 @@ public class CorruptCopInteraction
         }
         else if (selectedItem == GangHit)
         {
-            Player.PlayerTasks.CorruptCopTasks.GangHitWork();
+            Player.PlayerTasks.CorruptCopTasks.CopGangHitTask.Start();
+            sender.Visible = false;
+        }
+        else if (selectedItem == WitnessElimination)
+        {
+            Player.PlayerTasks.CorruptCopTasks.WitnessEliminationTask.Start();
             sender.Visible = false;
         }
     }

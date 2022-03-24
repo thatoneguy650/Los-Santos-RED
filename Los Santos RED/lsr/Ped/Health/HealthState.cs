@@ -101,9 +101,9 @@ public class HealthState
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                     FlagDamage(CurrentPlayer);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR2022
                     ModifyDamage();
-                    GameFiber.Yield();
+                    //GameFiber.Yield();//TR2022
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }

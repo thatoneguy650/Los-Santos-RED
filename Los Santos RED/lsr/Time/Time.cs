@@ -24,8 +24,15 @@ namespace Mod
         private ISettingsProvideable Settings;
         private int DefaultMultiplier = 1;
         private int DefaultInterval = 1000;
-        private int FastForwardMultiplier = 300;
-        private int FastForwardInterval = 10;
+
+
+
+
+        private int FastForwardMultiplier => Settings.SettingsManager.TimeSettings.FastForwardMultiplier;// = 300;
+        private int FastForwardInterval => Settings.SettingsManager.TimeSettings.FastForwardInterval; //= 10;
+
+
+
         private DateTime TimeToStopFastForwarding;
         private bool isClockPaused = false;
         public Time(ISettingsProvideable settings)
@@ -36,6 +43,10 @@ namespace Mod
                 NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
                 isClockPaused = true;
             }
+
+
+
+
         }
         public string CurrentTime => Settings.SettingsManager.UISettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
@@ -147,6 +158,10 @@ namespace Mod
                     }
                 }, "FastForwardWatcher");
             }
+        }
+        public void StopFastForwarding()
+        {
+            IsFastForwarding = false;
         }
         private void CheckTimeInterval()
         {

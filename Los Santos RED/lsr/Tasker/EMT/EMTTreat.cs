@@ -20,6 +20,7 @@ public class EMTTreat : ComplexTask
     private uint GameTimeLastSpoke;
     private int TimeToSpeak = 5000;
     private uint GameTimeFinishedTreatingVictim;
+    private ISettingsProvideable Settings;
 
     private enum Task
     {
@@ -54,11 +55,12 @@ public class EMTTreat : ComplexTask
             }
         }
     }
-    public EMTTreat(IComplexTaskable cop, ITargetable player, PedExt targetPed) : base(player, cop, 1000)
+    public EMTTreat(IComplexTaskable cop, ITargetable player, PedExt targetPed, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "EMTTreat";
         SubTaskName = "";
         OtherTarget = targetPed;
+        Settings = settings;
     }
     public override void Start()
     {
@@ -125,7 +127,7 @@ public class EMTTreat : ComplexTask
                     EntryPoint.WriteToConsole("EMT TREATED VICTIM");
 
 
-                    if (1==1)//RandomItems.RandomPercent(40))
+                    if (RandomItems.RandomPercent(Settings.SettingsManager.EMSSettings.RevivePercentage))
                     {
                         OtherTarget.Pedestrian.IsRagdoll = false;
                         OtherTarget.IsUnconscious = false;
@@ -149,6 +151,8 @@ public class EMTTreat : ComplexTask
                     }
                     else
                     {
+                        OtherTarget.YellInPain(true);
+
                         OtherTarget.Pedestrian.Kill();
                         OtherTarget.IsUnconscious = false;
                         SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_SHOCKED_HIGH" }, false, false);
@@ -284,7 +288,7 @@ public class EMTTreat : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 1.0f, 0.75f, 1073741824, 1); //Original and works ok
+                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, OtherTarget.Pedestrian, -1, 1.25f, 0.75f, 1073741824, 1); //Original and works ok
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, OtherTarget.Pedestrian, 1000);
                 //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, OtherTarget.Pedestrian, 500, 0, 2);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);

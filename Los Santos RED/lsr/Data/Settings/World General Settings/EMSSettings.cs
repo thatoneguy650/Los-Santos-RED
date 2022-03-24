@@ -13,6 +13,9 @@ public class EMSSettings : ISettingsDefaultable
     public bool ManageTasking { get; set; }
     [Description("Attach a blip to any spawned EMS pedestrian")]
     public bool ShowSpawnedBlips { get; set; }
+    [Description("Percent of pedestrians that are revived from unconsciousness. Max of 100")]
+    public float RevivePercentage { get; set; }
+
     public EMSSettings()
     {
         SetDefault();
@@ -29,5 +32,6 @@ public class EMSSettings : ISettingsDefaultable
         ManageDispatching = false;
         ManageTasking = false;
         ShowSpawnedBlips = false;
+        RevivePercentage = 40f;
     }
 }

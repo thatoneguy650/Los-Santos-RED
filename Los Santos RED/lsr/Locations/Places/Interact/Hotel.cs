@@ -119,10 +119,29 @@ public class Hotel : InteractableLocation
         if (Player.Money >= Price)
         {
             Player.GiveMoney(-1 * Price);
-            Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
+
+
+            if(Time.CurrentHour <= 10)
+            {
+                Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights-1, 11, 0, 0));
+            }
+            else
+            {
+                Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
+            }
+            
+
+
+
+
+
+
             KeepInteractionGoing = true;
             InteractionMenu.Visible = false;
-            
+
+
+            Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
                 while (Time.IsFastForwarding)
@@ -131,8 +150,14 @@ public class Hotel : InteractableLocation
                     {
                         Game.LocalPlayer.Character.Health++;
                     }
+                    if(Player.ButtonPrompts.IsPressed("CancelHotelStay"))
+                    {
+                        Time.StopFastForwarding();
+                    }
                     GameFiber.Yield();
                 }
+
+                Player.ButtonPrompts.RemovePrompts("HotelStay");
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for staying at {Name}");
                 InteractionMenu.Visible = true;
                 KeepInteractionGoing = false;

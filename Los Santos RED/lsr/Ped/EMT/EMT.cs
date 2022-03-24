@@ -19,5 +19,5 @@ public class EMT : PedExt
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public bool WasModSpawned { get; private set; }
+   // public bool WasModSpawned { get; private set; }
 }

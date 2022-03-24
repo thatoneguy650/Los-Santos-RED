@@ -85,33 +85,33 @@ public class VanillaManager
             TerminateRespawnScripts();
         }
 
-        //if (Game.GameTime - GameTimeLastStoppedGang >= 10000)
-        //{
+        ////if (Game.GameTime - GameTimeLastStoppedGang >= 10000)
+        ////{
 
-        if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
-        {
-            TerminateScenarioGangs();
-        }
-        else
-        {
-            if (!IsVanillaScenarioGangsActive)
-            {
-                ActivateScenarioGangs();
-            }
-        }
-        if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
-        {
-            SupressVanillaGangPeds();
-        }
-        else
-        {
-            if (IsVanillaGangPedsSupressed)
-            {
-                UnSupressVanillaGangPeds();
-            }
-        }
-        //    GameTimeLastStoppedGang = Game.GameTime;
+        //if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
+        //{
+        //    TerminateScenarioGangs();
         //}
+        //else
+        //{
+        //    if (!IsVanillaScenarioGangsActive)
+        //    {
+        //        ActivateScenarioGangs();
+        //    }
+        //}
+        //if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
+        //{
+        //    SupressVanillaGangPeds();
+        //}
+        //else
+        //{
+        //    if (IsVanillaGangPedsSupressed)
+        //    {
+        //        UnSupressVanillaGangPeds();
+        //    }
+        //}
+        ////    GameTimeLastStoppedGang = Game.GameTime;
+        ////}
 
         if (Settings.SettingsManager.VanillaSettings.TerminateHealthRecharge)
         {

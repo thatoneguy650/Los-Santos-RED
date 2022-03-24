@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 public class ButtonPrompts
 {
@@ -48,7 +48,7 @@ public class ButtonPrompts
 
 
 
-        if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && Player.IsNotWanted)
+        if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && Player.IsNotWanted)
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;
@@ -70,6 +70,22 @@ public class ButtonPrompts
     public void Dispose()
     {
         Player.ButtonPromptList.Clear();
+    }
+    public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
+    {
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier))
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+            Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+        }
+    }
+    public bool HasPrompt(string identifier)
+    {
+        return Player.ButtonPromptList.Any(x => x.Identifier == identifier);
+    }
+    public bool IsPressed(string identifier)
+    {
+        return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsPressedNow);
     }
     private void PersonInteractingPrompts()
     {
@@ -115,7 +131,6 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
     }
-
     private void PersonLootingPrompts()
     {
         Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
@@ -131,6 +146,10 @@ public class ButtonPrompts
         //}
     }
 
+    public void RemovePrompts(string groupName)
+    {
+        Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+    }
 
     private void LocationInteractingPrompts()
     {

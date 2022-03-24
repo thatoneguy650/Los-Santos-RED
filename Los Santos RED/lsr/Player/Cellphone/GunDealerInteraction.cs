@@ -78,7 +78,7 @@ public class GunDealerInteraction
         }
         else if (selectedItem == GunPickup)
         {
-            Player.PlayerTasks.UndergroundGunsTasks.GunPickupWork();
+            Player.PlayerTasks.UndergroundGunsTasks.GunPickupTask.Start();
             sender.Visible = false;
         }
         else
