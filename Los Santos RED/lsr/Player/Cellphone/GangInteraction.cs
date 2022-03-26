@@ -23,8 +23,9 @@ public class GangInteraction
     private UIMenuItem PayoffGangFriendly;
     private UIMenu GangWorkMenu;
     private UIMenuItem GangHit;
-    private UIMenuItem DeadDropPickup;
+    private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangTheft;
+    private UIMenuItem GangDelivery;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private IGangs Gangs;
@@ -57,7 +58,7 @@ public class GangInteraction
         }
         else if (repLevel < 0)
         {
-            PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = "~r~" + Player.GangRelationships.CostToPayoffGang(ActiveGang).ToString("C0") + "~s~" };
+            PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
             ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
             GangMenu.AddItem(PayoffGangNeutral);
             GangMenu.AddItem(ApoligizeToGang);
@@ -72,18 +73,20 @@ public class GangInteraction
             else
             {
                 GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
-                DeadDropPickup = new UIMenuItem("Pickup", "Pickup an item for the gang and bring it back") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
+                GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
                 GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
+                GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
                 GangMenu.AddItem(GangHit);
-                GangMenu.AddItem(DeadDropPickup);
+                GangMenu.AddItem(GangMoneyPickup);
                 GangMenu.AddItem(GangTheft);
+                GangMenu.AddItem(GangDelivery);
             }
             RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
             GangMenu.AddItem(RequestGangDen);
         }
         else
         {
-            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = "~r~" + Player.GangRelationships.CostToPayoffGang(ActiveGang).ToString("C0") + "~s~" };
+            PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
             GangMenu.AddItem(PayoffGangFriendly);
         }
         GangMenu.Visible = true;
@@ -112,19 +115,9 @@ public class GangInteraction
             RequestDenAddress();
             sender.Visible = false;
         }
-        else if (selectedItem == PayoffDebt)
+        else if (selectedItem == PayoffDebt || selectedItem == PayoffGangFriendly || selectedItem == PayoffGangNeutral)
         {
-            Player.PlayerTasks.GangTasks.PayoffDebt(ActiveGang);
-            sender.Visible = false;
-        }
-        else if (selectedItem == PayoffGangFriendly)
-        {
-            Player.PlayerTasks.GangTasks.PayoffToFriendly(ActiveGang);
-            sender.Visible = false;
-        }
-        else if (selectedItem == PayoffGangNeutral)
-        {
-            Player.PlayerTasks.GangTasks.PayoffToNeutral(ActiveGang);
+            Player.PlayerTasks.GangTasks.PayoffGangTask.Start(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTaskCancel)
@@ -132,19 +125,24 @@ public class GangInteraction
             Player.PlayerTasks.CancelTask(ActiveGang?.ContactName);
             sender.Visible = false;
         }
-        else if (selectedItem == DeadDropPickup)
+        else if (selectedItem == GangMoneyPickup)
         {
-            Player.PlayerTasks.GangTasks.PickupWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.GangPickupTask.Start(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTheft)
         {
-            Player.PlayerTasks.GangTasks.TheftWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.RivalGangTheftTask.Start(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangHit)
         {
-            Player.PlayerTasks.GangTasks.HitWork(ActiveGang);
+            Player.PlayerTasks.GangTasks.RivalGangHit.Start(ActiveGang);
+            sender.Visible = false;
+        }
+        else if (selectedItem == GangDelivery)
+        {
+            Player.PlayerTasks.GangTasks.GangDeliveryTask.Start(ActiveGang);
             sender.Visible = false;
         }
 
@@ -181,19 +179,6 @@ public class GangInteraction
                     };
             Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
         }
-    }
-    private void AlreadyWorkingForGang()
-    {
-        List<string> Replies = new List<string>() {
-                    $"Aren't you already taking care of that thing for us?",
-                    $"Didn't we already give you something to do?",
-                    $"Finish your task before you call us again prick.",
-                    $"Get going on that thing, stop calling me",
-                    $"I alredy told you what to do, stop calling me.",
-                    $"You already have an item, stop with the calls.",
-
-                    };
-        Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
     }
 }
 

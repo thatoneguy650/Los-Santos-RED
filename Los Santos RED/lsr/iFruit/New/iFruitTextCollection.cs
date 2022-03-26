@@ -130,7 +130,7 @@ namespace iFruitAddon2
                     //Prevent original Text to be called
                     Tools.Scripts.TerminateScript("appTextMessage");
                     text.IsRead = true;
-                    DisplayTextUI(handle, text, "CELL_211", text.Icon.Name.SetBold(text.Bold));
+                    DisplayTextUI(handle, text, "CELL_211", text.IconName.SetBold(text.Bold));
                     GameFiber.Wait(50);
                 }
                 i++;

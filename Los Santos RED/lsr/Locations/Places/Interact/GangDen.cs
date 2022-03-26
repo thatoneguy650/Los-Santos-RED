@@ -44,6 +44,8 @@ public class GangDen : InteractableLocation
     [XmlIgnore]
     public ModItem ExpectedItem { get; set; }
     [XmlIgnore]
+    public int ExpectedItemAmount { get; set; }
+    [XmlIgnore]
     public Gang AssociatedGang { get; set; }
 
     public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -71,21 +73,10 @@ public class GangDen : InteractableLocation
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
-
-
                 CreateInteractionMenu();
-
-
-
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                 Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                //CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
                 PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-
-
-
                 if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                 {
                     dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
@@ -93,7 +84,7 @@ public class GangDen : InteractableLocation
                 }
                 else if (ExpectedItem != null && pt.IsReadyForPayment)
                 {
-                    dropoffItem = new UIMenuItem($"Drop off item", $"Drop off the {ExpectedItem.Name}.") { RightLabel = $"{ExpectedItem.Name}" };
+                    dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
                     InteractionMenu.AddItem(dropoffItem);
                 }
                 else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
@@ -103,19 +94,10 @@ public class GangDen : InteractableLocation
                 }
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
                 Transaction.ProcessTransactionMenu();
-
-
-                //ProcessTransactionMenu();
-
                 Transaction.DisposeTransactionMenu();
-
-                //DisposeTransactionMenu();
                 DisposeInteractionMenu();
-
                 StoreCamera.Dispose();
-
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "GangDenInteract");       
@@ -140,7 +122,7 @@ public class GangDen : InteractableLocation
                 Player.GiveMoney(-1*ExpectedMoney);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
                 ExpectedMoney = 0;
-                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
+                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
                 InteractionMenu.Visible = false;
             }
             else
@@ -150,17 +132,18 @@ public class GangDen : InteractableLocation
         }
         else if (selectedItem == dropoffItem)
         {
-            if(Player.Inventory.HasItem(ExpectedItem.Name))
+            if(Player.Inventory.Amount(ExpectedItem.Name) >= ExpectedItemAmount)
             {
-                Player.Inventory.Remove(ExpectedItem,1);
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItem.Name}. Have something for your time.");
+                Player.Inventory.Remove(ExpectedItem, ExpectedItemAmount);
+                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}. Have something for your time.");
                 ExpectedItem = null;
-                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
+                ExpectedItemAmount = 0;
+                Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
                 InteractionMenu.Visible = false;
             }
             else
             {
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", $"Come back when you actually have the {ExpectedItem.Name}.");
+                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", $"Come back when you actually have {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}.");
             }
 
         }
@@ -168,7 +151,7 @@ public class GangDen : InteractableLocation
         {
             Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for taking care of that thing. Here's your share.");
             ExpectedMoney = 0;
-            Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName);
+            Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
             InteractionMenu.Visible = false;
         }
     }

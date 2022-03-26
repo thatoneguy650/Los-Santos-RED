@@ -68,17 +68,20 @@ public class PurchaseMenu : Menu
 
         StoreCam = Camera.RenderingCamera;
 
-        purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
-        if (HasBannerImage)
+        if (parentMenu != null)
         {
-            purchaseMenu.SetBannerType(BannerImage);
+            purchaseMenu = MenuPool.AddSubMenu(parentMenu, "Buy");
+            if (HasBannerImage)
+            {
+                purchaseMenu.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                purchaseMenu.RemoveBanner();
+            }
+            purchaseMenu.OnIndexChange += OnIndexChange;
+            purchaseMenu.OnItemSelect += OnItemSelect;
         }
-        else if (RemoveBanner)
-        {
-            purchaseMenu.RemoveBanner();
-        }
-        purchaseMenu.OnIndexChange += OnIndexChange;
-        purchaseMenu.OnItemSelect += OnItemSelect;
     }
 
     public bool HasBannerImage { get; set; } = false;
@@ -115,7 +118,10 @@ public class PurchaseMenu : Menu
     public override void Hide()
     {
         ClearPreviews();
-        purchaseMenu.Visible = false;
+        if (purchaseMenu != null)
+        {
+            purchaseMenu.Visible = false;
+        }
         Player.ButtonPromptList.Clear();
     }
     public void Setup()
@@ -294,7 +300,10 @@ public class PurchaseMenu : Menu
     public override void Show()
     {
         //CreatePurchaseMenu();
-        purchaseMenu.Visible = true;
+        if (purchaseMenu != null)
+        {
+            purchaseMenu.Visible = true;
+        }
     }
     public override void Toggle()
     {
@@ -619,42 +628,45 @@ public class PurchaseMenu : Menu
     }
     private void CreatePurchaseMenu()
     {
-        EntryPoint.WriteToConsole($"CreatePurchaseMenu RAN!", 5);
-        purchaseMenu.Clear();
-        bool shouldCreateCategories = false;
-        if (ShopMenu.Items.Where(x => x.Purchaseable).Count() >= 7)
+        if (purchaseMenu != null)
         {
-            shouldCreateCategories = true;
-        }
-        if (shouldCreateCategories)
-        {
-            CreateCategories();
-        }
-        foreach (MenuItem cii in ShopMenu.Items)
-        {
-            if (cii != null && cii.Purchaseable)
+            EntryPoint.WriteToConsole($"CreatePurchaseMenu RAN!", 5);
+            purchaseMenu.Clear();
+            bool shouldCreateCategories = false;
+            if (ShopMenu.Items.Where(x => x.Purchaseable).Count() >= 7)
             {
-                ModItem myItem = ModItems.Get(cii.ModItemName);
-                if (myItem != null)
+                shouldCreateCategories = true;
+            }
+            if (shouldCreateCategories)
+            {
+                CreateCategories();
+            }
+            foreach (MenuItem cii in ShopMenu.Items)
+            {
+                if (cii != null && cii.Purchaseable)
                 {
-                    if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                    ModItem myItem = ModItems.Get(cii.ModItemName);
+                    if (myItem != null)
                     {
-                        AddVehicleEntry(cii, myItem);
-                    }
-                    else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
-                    {
-                        AddWeaponEntry(cii, myItem);
-                    }
-                    else
-                    {
-                        AddPropEntry(cii, myItem);
+                        if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                        {
+                            AddVehicleEntry(cii, myItem);
+                        }
+                        else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
+                        {
+                            AddWeaponEntry(cii, myItem);
+                        }
+                        else
+                        {
+                            AddPropEntry(cii, myItem);
+                        }
                     }
                 }
             }
-        }
-       // OnIndexChange(purchaseMenu, purchaseMenu.CurrentSelection);
+            // OnIndexChange(purchaseMenu, purchaseMenu.CurrentSelection);
 
-        //LoopMenus();
+            //LoopMenus();
+        }
     }
 
     private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
@@ -1122,23 +1134,35 @@ public class PurchaseMenu : Menu
                     {
                         if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon && myItem.ModelItem.ModelName != "")
                         {
-                            NativeFunction.Natives.REQUEST_WEAPON_ASSET(myItem.ModelItem.ModelHash, 31, 0);
+                            //if (NativeFunction.Natives.IS_MODEL_VALID<bool>(myItem.ModelItem.ModelHash))
+                            //{
+                                NativeFunction.Natives.REQUEST_WEAPON_ASSET(myItem.ModelItem.ModelHash, 31, 0);
+                           // }
                         }
                         else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
                         {
-                            Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
-                            if (MyVehicle.Exists())
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.ModelItem.ModelName.ToLower())))
                             {
-                                MyVehicle.Delete();
+                                Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
+                                if (MyVehicle.Exists())
+                                {
+                                    MyVehicle.Delete();
+                                }
                             }
                         }
                         else if (myItem.PackageItem != null && myItem.PackageItem.Type == ePhysicalItemType.Prop && myItem.PackageItem.ModelName != "")
                         {
-                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.PackageItem.ModelName.ToLower())))
+                            {
+                                new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                            }
                         }
                         else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Prop && myItem.ModelItem.ModelName != "")
                         {
-                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.ModelItem.ModelName.ToLower())))
+                            {
+                                new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                            }
                         }
                     }
                 }
@@ -1235,7 +1259,7 @@ public class PurchaseMenu : Menu
     }
     private void PreviewVehicle(ModItem itemToShow)
     {
-        if (itemToShow != null && itemToShow.ModelItem != null)
+        if (itemToShow != null && itemToShow.ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(itemToShow.ModelItem.ModelName)))
         {
             SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
         }
@@ -1264,7 +1288,10 @@ public class PurchaseMenu : Menu
                     Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
                     Position = GPCamPos + GPCamDir / 2f;
                 }
-                SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+                if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(itemToShow.ModelItem.ModelHash))
+                {
+                    SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+                }
                 if (SellingProp.Exists())
                 {
                     float length = SellingProp.Model.Dimensions.X;
@@ -1405,7 +1432,6 @@ public class PurchaseMenu : Menu
                 {
                     CurrentWeapon.ApplyWeaponVariation(Player.Character, CurrentWeaponVariation);
                 }
-               
                 Player.SetUnarmed();
                 return true;
             }

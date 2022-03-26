@@ -19,26 +19,26 @@ public class GangRelationships
         Player = player;
         Settings = settings;
     }
-    public int CostToPayoffGang(Gang gang)//int repLevel)
-    {
-        GangReputation Rep = GetReputation(gang);
-        if(Rep == null)
-        {
-            return 0;
-        }
-        if (Rep.ReputationLevel < 0)
-        {
-            return ((0 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
-        }
-        else if (Rep.ReputationLevel >= 500)
-        {
-            return 0;
-        }
-        else
-        {
-            return ((500 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
-        }
-    }
+    //public int CostToPayoffGang(Gang gang)//int repLevel)
+    //{
+    //    GangReputation Rep = GetReputation(gang);
+    //    if(Rep == null)
+    //    {
+    //        return 0;
+    //    }
+    //    if (Rep.ReputationLevel < 0)
+    //    {
+    //        return ((0 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
+    //    }
+    //    else if (Rep.ReputationLevel >= 500)
+    //    {
+    //        return 0;
+    //    }
+    //    else
+    //    {
+    //        return ((500 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
+    //    }
+    //}
     public void Dispose()
     {
         ResetAllReputations();

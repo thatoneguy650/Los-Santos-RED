@@ -19,6 +19,7 @@ public class PlayerTasks
     private IEntityProvideable World;
     private ICrimes Crimes;
     private INameProvideable Names;
+    private IWeapons Weapons;
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
     private ISettingsProvideable Settings;
     private List<PlayerTask> LastContactTask = new List<PlayerTask>();
@@ -26,7 +27,7 @@ public class PlayerTasks
     public CorruptCopTasks CorruptCopTasks { get; private set; }
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
-    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
+    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems)
     {
         Player = player;
         Time = time;
@@ -36,8 +37,9 @@ public class PlayerTasks
         World = world;
         Crimes = crimes;
         Names = names;
-        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings);
-        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names);
+        Weapons = weapons;
+        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, shopMenus);
+        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, shopMenus);
         UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
     }
     public void Setup()
@@ -57,7 +59,7 @@ public class PlayerTasks
             }
             else if (pt != null && pt.CanExpire && pt.DaysToCompleted >= 2 && DateTime.Compare(pt.ExpireTime.AddDays(-1), Time.CurrentDateTime) < 0)
             {
-                WarnAboutToExpire(pt);
+                SendExpiringSoonMessage(pt);
             }
         }
     }
@@ -78,18 +80,10 @@ public class PlayerTasks
         if (currentAssignment != null)
         {
             FailTask(contactName);
-            List<string> Replies = new List<string>() {
-                    "I knew you were reliable",
-                    "You really fucked me on this one",
-                    "Complete waste of my time, go fuck yourself",
-                    "This is a great time to fuck me like this prick",
-                    "You can't even complete a simple task. Useless.",
-                    "Sorry I stuck my neck out for you",
-                    };
-            Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
+            SendTaskFailMessage(contactName);
         }
     }
-    public void CompleteTask(string contactName)
+    public void CompleteTask(string contactName, bool addToLast)
     {
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
         if(myTask != null)
@@ -132,7 +126,10 @@ public class PlayerTasks
             myTask.CompletionTime = Time.CurrentDateTime;
             EntryPoint.WriteToConsole($"Task Completed for {contactName}");
             LastContactTask.RemoveAll(x => x.ContactName == contactName);
-            LastContactTask.Add(myTask);
+            if (addToLast)
+            {
+                LastContactTask.Add(myTask);
+            }
         }
         PlayerTaskList.RemoveAll(x => x.ContactName == contactName);
     }
@@ -189,18 +186,18 @@ public class PlayerTasks
     {
         return PlayerTaskList.Any(x => x.ContactName.ToLower() == contactName.ToLower() && x.IsActive);
     }
-    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail)
+    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, string taskName)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
         }
     }
-    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete)
+    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void RemoveTask(string contactName)
@@ -215,12 +212,12 @@ public class PlayerTasks
     {
         if(HasTask(contactName))
         {
-            ReplyAlreadyHasTask(contactName);
+            SendAlreadyHasTaskMessage(contactName);
             return false;
         }
         if(RecentlyEndedTask(contactName))
         {
-            ReplyRecentlyEndedTask(contactName);
+            SendRecentlyEndedTaskMessage(contactName);
             return false;
         }
         return true;
@@ -236,7 +233,7 @@ public class PlayerTasks
         {
             if(lastTask.WasCompleted)
             {
-                if (DateTime.Compare(lastTask.CompletionTime.AddDays(Settings.SettingsManager.PlayerOtherSettings.DaysBetweenTasksWhenCompleted), Time.CurrentDateTime) < 0)
+                if (DateTime.Compare(lastTask.CompletionTime.AddHours(Settings.SettingsManager.PlayerOtherSettings.HoursBetweenTasksWhenCompleted), Time.CurrentDateTime) < 0)
                 {
                     return false;
                 }
@@ -247,7 +244,7 @@ public class PlayerTasks
             }
             else if (lastTask.WasFailed)
             {
-                if (DateTime.Compare(lastTask.FailedTime.AddDays(Settings.SettingsManager.PlayerOtherSettings.DaysBetweenTasksWhenFailed), Time.CurrentDateTime) < 0)
+                if (DateTime.Compare(lastTask.FailedTime.AddHours(Settings.SettingsManager.PlayerOtherSettings.HoursBetweenTasksWhenFailed), Time.CurrentDateTime) < 0)
                 {
                     return false;
                 }
@@ -262,7 +259,51 @@ public class PlayerTasks
             }
         }
     }
-    private void ReplyAlreadyHasTask(string contactName)
+    private void ExpireTask(PlayerTask pt)
+    {
+        if (pt != null)
+        {
+            FailTask(pt.ContactName);
+            SendTaskExpiredMessage(pt);
+        }
+    }
+    private void SendTaskExpiredMessage(PlayerTask pt)
+    {
+        List<string> Replies = new List<string>() {
+                    "You were supposed to take care of that thing this century, forget about it.",
+                    "That thing we talked about? Time expired.",
+                    "Too late on that thing, forget about it.",
+                    "Needed you to get to that thing quicker",
+                    "Forget about the work item, I had someone else take care of it.",
+                    "Are you always this slow? I'll get someone else to handle things.",
+                    };
+        Player.CellPhone.AddPhoneResponse(pt.ContactName, Replies.PickRandom());
+    }
+    private void SendExpiringSoonMessage(PlayerTask pt)
+    {
+        List<string> Replies = new List<string>() {
+                    $"Get going on that thing, it needs to be done by {pt.ExpireTime:g}.",
+                    $"That thing we talked about, I need it done by {pt.ExpireTime:g}.",
+                    $"Go do that thing before its too late {pt.ExpireTime:g}.",
+                    $"Its almost {pt.ExpireTime:g}",
+                    $"Remeber that thing? {pt.ExpireTime:g} is the deadline.",
+                    $"Go get that thing done before you really piss me off. {pt.ExpireTime:g}.",
+                    };
+        Player.CellPhone.AddPhoneResponse(pt.ContactName, Replies.PickRandom());
+    }
+    private void SendTaskFailMessage(string contactName)
+    {
+        List<string> Replies = new List<string>() {
+                    "I knew you were reliable",
+                    "You really fucked me on this one",
+                    "Complete waste of my time, go fuck yourself",
+                    "This is a great time to fuck me like this prick",
+                    "You can't even complete a simple task. Useless.",
+                    "Sorry I stuck my neck out for you",
+                    };
+        Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
+    }
+    private void SendAlreadyHasTaskMessage(string contactName)
     {
         List<string> Replies = new List<string>() {
                     $"Aren't you already taking care of that thing for us?",
@@ -275,7 +316,7 @@ public class PlayerTasks
                     };
         Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
     }
-    private void ReplyRecentlyEndedTask(string contactName)
+    private void SendRecentlyEndedTaskMessage(string contactName)
     {
         List<string> Replies = new List<string>() {
                     $"Let the heat die down for a bit. Give me a call tomorrow.",
@@ -286,35 +327,5 @@ public class PlayerTasks
                     $"We just gave you work, don't get greedy.",
                     };
         Player.CellPhone.AddPhoneResponse(contactName, Replies.PickRandom());
-    }
-    private void ExpireTask(PlayerTask pt)
-    {
-        if (pt != null)
-        {
-            FailTask(pt.ContactName);
-            List<string> Replies = new List<string>() {
-                    "You were supposed to take care of that thing this century, forget about it.",
-                    "That thing we talked about? Time expired.",
-                    "Too late on that thing, forget about it.",
-                    "Needed you to get to that thing quicker",
-                    "Forget about the work item, I had someone else take care of it.",
-                    "Are you always this slow? I'll get someone else to handle things.",
-                    };
-            iFruitContact ifc = Player.CellPhone.ContactList.FirstOrDefault(x => x.Name == pt.ContactName);
-
-            Player.CellPhone.AddPhoneResponse(pt.ContactName, ifc?.IconName, Replies.PickRandom());
-        }
-    }
-    private void WarnAboutToExpire(PlayerTask pt)
-    {
-        List<string> Replies = new List<string>() {
-                    $"Get going on that thing, it needs to be done by {pt.ExpireTime:g}.",
-                    $"That thing we talked about, I need it done by {pt.ExpireTime:g}.",
-                    $"Go do that thing before its too late {pt.ExpireTime:g}.",
-                    $"Its almost {pt.ExpireTime:g}",
-                    $"Remeber that thing? {pt.ExpireTime:g} is the deadline.",
-                    $"Go get that thing done before you really piss me off. {pt.ExpireTime:g}.",
-                    };
-        Player.CellPhone.AddPhoneResponse(pt.ContactName, Replies.PickRandom());
     }
 }

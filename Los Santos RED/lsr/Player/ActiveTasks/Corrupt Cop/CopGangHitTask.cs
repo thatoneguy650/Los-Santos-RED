@@ -134,13 +134,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName);
+                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName);
+                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
             }
         }   
         private void AddTask()
@@ -148,7 +148,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CurrentGangReputation = Player.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = CurrentGangReputation.MembersKilled;
             EntryPoint.WriteToConsole($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
-            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7);
+            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");
             CurrentTask = PlayerTasks.GetTask(EntryPoint.OfficerFriendlyContactName);
         }
         private void GetPayment()
@@ -185,8 +185,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (MembersToKill == 1)
             {
                 Replies = new List<string>() {
-                    $"Some of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ might have ambushed some cops? How about you return the favor. Get rid of one of them to send a message. ${MoneyToRecieve} on completion",
-                    $"The {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ are trying to make some moves that we disagree with. Give them a funeral to think it over. ${MoneyToRecieve}",
+                    $"Some of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ decided to mess with our rackets. Get rid of one of them to send a message. ${MoneyToRecieve} on completion",
+                    $"The {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ thought it was a good idea to try and take out a cop. Make sure one of them ends up dead. ${MoneyToRecieve}",
                     $"Need you to disappear a {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ member without asking a lot of questions. ${MoneyToRecieve} when you are done.",
                     };
             }

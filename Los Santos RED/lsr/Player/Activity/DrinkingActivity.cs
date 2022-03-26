@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void CreateBottle()
         {
-            if (!Bottle.Exists())
+            if (!Bottle.Exists() && Data.PropModelName != "")
             {
                 try 
                 {

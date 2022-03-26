@@ -23,9 +23,12 @@ public class CorruptCopTasks
     private PlayerTask CurrentTask;
     private IEntityProvideable World;
     private ICrimes Crimes;
+    private IWeapons Weapons;
+    private IShopMenus ShopMenus;
     public WitnessEliminationTask WitnessEliminationTask { get; private set; }
     public CopGangHitTask CopGangHitTask { get; private set; }
-    public CorruptCopTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
+    public CopHitTask CopHitTask { get; private set; }
+    public CorruptCopTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus)
     {
         Player = player;
         Time = time;
@@ -36,18 +39,23 @@ public class CorruptCopTasks
         Settings = settings;
         World = world;
         Crimes = crimes;
-        WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, names);
+        Weapons = weapons;
+        ShopMenus = shopMenus;
+        WitnessEliminationTask = new WitnessEliminationTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, names, Weapons, ShopMenus);
         CopGangHitTask = new CopGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        CopHitTask = new CopHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, names);
     }
     public void Setup()
     {
         WitnessEliminationTask.Setup();
         CopGangHitTask.Setup();
+        CopHitTask.Setup();
     }
     public void Dispose()
     {
         WitnessEliminationTask.Dispose();
         CopGangHitTask.Dispose();
+        CopHitTask.Dispose();
     }
 
 }

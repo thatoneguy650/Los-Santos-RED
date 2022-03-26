@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 
 public class InteractableLocation : BasicLocation
 {
+    private uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
     public virtual string ContactIcon { get; set; } = "CHAR_BLANK_ENTRY";
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
@@ -111,17 +112,16 @@ public class InteractableLocation : BasicLocation
     {
         if (modItem != null)
         {
-
             int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
-
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            Game.RemoveNotification(NotificationHandle);
             if (modItem.MeasurementName == "Item")
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name} (s)~s~");
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
             }
         }
     }
@@ -130,16 +130,15 @@ public class InteractableLocation : BasicLocation
         if (modItem != null)
         {
             int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
-
-
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            Game.RemoveNotification(NotificationHandle);
             if (modItem.MeasurementName == "Item")
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name} (s)~s~");
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
             }
         }
     }

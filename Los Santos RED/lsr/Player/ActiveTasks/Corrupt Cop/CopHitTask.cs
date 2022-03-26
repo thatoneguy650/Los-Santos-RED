@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class WitnessEliminationTask
+    public class CopHitTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;
@@ -25,29 +25,32 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int MoneyToRecieve;
         private DeadDrop myDrop;
         private INameProvideable Names;
-        private bool WitnessIsMale;
-        private string WitnessName;
-        private Residence WitnessResidence;
-        private Vector3 WitnessSpawnPosition;
-        private float WitnessSpawnHeading;
-        private readonly List<string> FemaleWitnessPossibleModels = new List<string>() { "a_f_o_ktown_01", "a_f_o_soucent_01","a_f_o_genstreet_01", "a_f_o_soucent_02", "a_f_y_bevhills_01", "a_f_y_bevhills_02","a_f_y_business_01", "a_f_y_business_02", "a_f_y_business_03", "a_f_y_business_04", 
+        private bool TargetCopIsMale;
+        private string TargetCopName;
+        private Residence TargetCopResidence;
+        private Vector3 TargetCopSpawnPosition;
+        private float TargetCopSpawnHeading;
+        private readonly List<string> FemaleTargetCopPossibleModels = new List<string>() { "a_f_o_ktown_01", "a_f_o_soucent_01","a_f_o_genstreet_01", "a_f_o_soucent_02", "a_f_y_bevhills_01", "a_f_y_bevhills_02","a_f_y_business_01", "a_f_y_business_02", "a_f_y_business_03", "a_f_y_business_04",
             "a_f_y_genhot_01", "a_f_y_fitness_01", "a_f_m_business_02", "a_f_y_clubcust_01", "a_f_y_femaleagent","a_f_y_eastsa_03","a_f_y_hiker_01","a_f_y_hipster_01","a_f_y_hipster_04","a_f_y_skater_01","a_f_y_soucent_03","a_f_y_tennis_01","a_f_y_vinewood_01","a_f_y_tourist_02" };
 
-        private readonly List<string> MaleWitnessPossibleModels = new List<string>() { "a_m_m_afriamer_01", "a_m_m_beach_01","a_m_m_bevhills_01", "a_m_m_bevhills_02", "a_m_m_business_01", "a_m_m_fatlatin_01","a_m_m_genfat_01", "a_m_m_malibu_01", "a_m_m_ktown_01", "a_m_m_mexcntry_01",
+        private readonly List<string> MaleTargetCopPossibleModels = new List<string>() { "a_m_m_afriamer_01", "a_m_m_beach_01","a_m_m_bevhills_01", "a_m_m_bevhills_02", "a_m_m_business_01", "a_m_m_fatlatin_01","a_m_m_genfat_01", "a_m_m_malibu_01", "a_m_m_ktown_01", "a_m_m_mexcntry_01",
             "a_m_m_soucent_01", "a_m_m_soucent_02", "a_m_m_tourist_01", "a_m_y_bevhills_01", "a_m_y_bevhills_02","a_m_y_beachvesp_01","a_m_y_business_02","a_m_y_business_01","a_m_y_business_03","a_m_y_clubcust_01","a_m_y_genstreet_01","a_m_y_genstreet_02","a_m_y_hipster_01","a_m_y_hipster_03","a_m_y_ktown_02","a_m_y_polynesian_01","a_m_y_soucent_02" };
 
-        private bool HasSpawnPosition => WitnessSpawnPosition != Vector3.Zero;
+        private bool HasSpawnPosition => TargetCopSpawnPosition != Vector3.Zero;
         private int SpawnPositionCellX;
         private int SpawnPositionCellY;
-        private bool IsWitnessSpawned;
-        private string WitnessModel;
+        private bool IsTargetCopSpawned;
+        private int GameTimeToWaitBeforeComplications;
+        private string TargetCopModel;
 
-        private PedExt Witness;
-        private PedVariation WitnessVariation;
+        private PedExt TargetCop;
+        private PedVariation TargetCopVariation;
+        private bool HasAddedComplications;
+        private bool WillAddComplications;
 
-        private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
-        private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
-        public WitnessEliminationTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
+        private bool IsPlayerFarFromTargetCop => TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
+        private bool IsPlayerNearTargetCopSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
+        public CopHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names)
         {
             Player = player;
             Time = time;
@@ -66,15 +69,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
-            if(Witness != null && Witness.Pedestrian.Exists())
+            if (TargetCop != null && TargetCop.Pedestrian.Exists())
             {
-                Blip attachedBlip = Witness.Pedestrian.GetAttachedBlip();
+                Blip attachedBlip = TargetCop.Pedestrian.GetAttachedBlip();
                 if (attachedBlip.Exists())
                 {
                     attachedBlip.Delete();
                 }
-                Witness.Pedestrian.IsPersistent = false;
-                Witness.Pedestrian.Delete();
+                TargetCop.Pedestrian.IsPersistent = false;
+                TargetCop.Pedestrian.Delete();
             }
         }
         public void Start()
@@ -98,31 +101,35 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     SendTaskAbortMessage();
                 }
             }
+            else
+            {
+                SendTaskAbortMessage();
+            }
         }
         private void GetPedInformation()
         {
-            WitnessIsMale = RandomItems.RandomPercent(60);
-            WitnessName = Names.GetRandomName(WitnessIsMale);
-            WitnessResidence = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented).PickRandom();
-            WitnessVariation = null;
-            if (WitnessIsMale)
+            TargetCopIsMale = RandomItems.RandomPercent(60);
+            TargetCopName = Names.GetRandomName(TargetCopIsMale);
+            TargetCopResidence = PlacesOfInterest.PossibleLocations.Residences.Where(x => !x.IsOwnedOrRented).PickRandom();
+            TargetCopVariation = null;
+            if (TargetCopIsMale)
             {
-                WitnessModel = MaleWitnessPossibleModels.PickRandom();
+                TargetCopModel = MaleTargetCopPossibleModels.PickRandom();
             }
             else
             {
-                WitnessModel = FemaleWitnessPossibleModels.PickRandom();
+                TargetCopModel = FemaleTargetCopPossibleModels.PickRandom();
             }
-            if (WitnessResidence != null)
+            if (TargetCopResidence != null)
             {
-                WitnessSpawnPosition = WitnessResidence.EntrancePosition;
-                WitnessSpawnHeading = WitnessResidence.EntranceHeading;
-                SpawnPositionCellX = (int)(WitnessSpawnPosition.X / EntryPoint.CellSize);
-                SpawnPositionCellY = (int)(WitnessSpawnPosition.Y / EntryPoint.CellSize);
+                TargetCopSpawnPosition = TargetCopResidence.EntrancePosition;
+                TargetCopSpawnHeading = TargetCopResidence.EntranceHeading;
+                SpawnPositionCellX = (int)(TargetCopSpawnPosition.X / EntryPoint.CellSize);
+                SpawnPositionCellY = (int)(TargetCopSpawnPosition.Y / EntryPoint.CellSize);
             }
             else
             {
-                WitnessSpawnPosition = Vector3.Zero;
+                TargetCopSpawnPosition = Vector3.Zero;
                 SpawnPositionCellX = -1;
                 SpawnPositionCellY = -1;
             }
@@ -136,23 +143,23 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
                     break;
                 }
-                if(!IsWitnessSpawned && IsPlayerNearWitnessSpawn)
+                if (!IsTargetCopSpawned && IsPlayerNearTargetCopSpawn)
                 {
-                    IsWitnessSpawned = SpawnWitness();
+                    IsTargetCopSpawned = SpawnTargetCop();
                 }
-                if(IsWitnessSpawned && IsPlayerFarFromWitness)
+                if (IsTargetCopSpawned && IsPlayerFarFromTargetCop)
                 {
-                    DespawnWitness();
+                    DespawnTargetCop();
                 }
-                else if(IsWitnessSpawned && Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.IsDead)
+                else if (IsTargetCopSpawned && TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.IsDead)
                 {
                     CurrentTask.IsReadyForPayment = true;
-                    EntryPoint.WriteToConsole("Witness Elimination WITNESS WAS KILLED");
+                    EntryPoint.WriteToConsole("COP HIT, COP WAS KILLED");
                     break;
                 }
-                if(IsWitnessSpawned && Witness != null && !Witness.Pedestrian.Exists())//somehow it got removed, set it as despawned
+                if (IsTargetCopSpawned && TargetCop != null && !TargetCop.Pedestrian.Exists())//somehow it got removed, set it as despawned
                 {
-                    DespawnWitness();
+                    DespawnTargetCop();
                 }
                 GameFiber.Sleep(1000);
             }
@@ -173,7 +180,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             EntryPoint.WriteToConsole("Witness Elimination COMPLETED");
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName);
+            PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
         }
         private void StartDeadDropPayment()
         {
@@ -199,48 +206,58 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName);
+                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName);
+                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
             }
         }
         private void AddTask()
         {
             EntryPoint.WriteToConsole($"You are hired to kill a witness!");
-            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7);
+            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7, "Witness Elimination");
             CurrentTask = PlayerTasks.GetTask(EntryPoint.OfficerFriendlyContactName);
-            IsWitnessSpawned = false;
+            IsTargetCopSpawned = false;
+
+            GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
+            HasAddedComplications = false;
+            WillAddComplications = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationComplicationsPercentage);
+
+
         }
-        private bool SpawnWitness()
+        private bool SpawnTargetCop()
         {
-            if (WitnessSpawnPosition != Vector3.Zero)
+            if (TargetCopSpawnPosition != Vector3.Zero)
             {
-                Ped ped = new Ped(WitnessModel, WitnessSpawnPosition, WitnessSpawnHeading);
+                Ped ped = new Ped(TargetCopModel, TargetCopSpawnPosition, TargetCopSpawnHeading);
                 GameFiber.Yield();
                 if (ped.Exists())
                 {
                     Blip myBlip = ped.AttachBlip();
                     myBlip.Color = Color.DarkRed;
                     myBlip.Scale = 0.3f;
-
-                    Witness = new PedExt(ped, Settings, Crimes, null, WitnessName, "Witness");
-                    World.Pedestrians.AddEntity(Witness);
-                    Witness.WasEverSetPersistent = true;
-                    Witness.CanBeAmbientTasked = true;
-                    Witness.CanBeTasked = true;
-                    Witness.WasModSpawned = true;
-                    if(WitnessVariation == null)
+                    string GroupName = "Man";
+                    if (!TargetCopIsMale)
                     {
-                        Witness.Pedestrian.RandomizeVariation();
-                        WitnessVariation = NativeHelper.GetPedVariation(Witness.Pedestrian);
+                        GroupName = "Woman";
+                    }
+                    TargetCop = new PedExt(ped, Settings, Crimes, null, TargetCopName, GroupName);
+                    World.Pedestrians.AddEntity(TargetCop);
+                    TargetCop.WasEverSetPersistent = true;
+                    TargetCop.CanBeAmbientTasked = true;
+                    TargetCop.CanBeTasked = true;
+                    TargetCop.WasModSpawned = true;
+                    if (TargetCopVariation == null)
+                    {
+                        TargetCop.Pedestrian.RandomizeVariation();
+                        TargetCopVariation = NativeHelper.GetPedVariation(TargetCop.Pedestrian);
                     }
                     else
                     {
-                        WitnessVariation.ApplyToPed(Witness.Pedestrian);
+                        TargetCopVariation.ApplyToPed(TargetCop.Pedestrian);
                     }
                     SendWitnessSpawnedMessage();
 
@@ -255,14 +272,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
 
         }
-        private void DespawnWitness()
+        private void DespawnTargetCop()
         {
-            if (Witness != null && Witness.Pedestrian.Exists())
+            if (TargetCop != null && TargetCop.Pedestrian.Exists())
             {
-                Witness.Pedestrian.Delete();
+                TargetCop.Pedestrian.Delete();
                 EntryPoint.WriteToConsole("Witness Elimination DESPAWNED WITNESS");
             }
-            IsWitnessSpawned = false;
+            IsTargetCopSpawned = false;
         }
         private void GetPayment()
         {
@@ -287,13 +304,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Got a witness that needs to disappear. Address is ~p~{WitnessResidence.StreetAddress}~s~. Name ~y~{WitnessName}~s~. ${MoneyToRecieve}",
-                    $"Get to ~p~{WitnessResidence.StreetAddress}~s~ and get rid of ~y~{WitnessName}~s~. ${MoneyToRecieve} on complation",
-                    $"We need to you shut this guy up before he squeals. He's at ~p~{WitnessResidence.StreetAddress}~s~. The name is ~y~{WitnessName}~s~. Payment of ${MoneyToRecieve}",
-                    $"~y~{WitnessName}~s~ is at ~p~{WitnessResidence.StreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
-                    $"Need you to make sure ~y~{WitnessName}~s~ doesn't make it to the deposition, they live at ~p~{WitnessResidence.StreetAddress}~s~. ${MoneyToRecieve}",
+                    $"Got a witness that needs to disappear. Address is ~p~{TargetCopResidence.StreetAddress}~s~. Name ~y~{TargetCopName}~s~. ${MoneyToRecieve}",
+                    $"Get to ~p~{TargetCopResidence.StreetAddress}~s~ and get rid of ~y~{TargetCopName}~s~. ${MoneyToRecieve} on complation",
+                    $"We need to you shut this guy up before he squeals. He's at ~p~{TargetCopResidence.StreetAddress}~s~. The name is ~y~{TargetCopName}~s~. Payment of ${MoneyToRecieve}",
+                    $"~y~{TargetCopName}~s~ is at ~p~{TargetCopResidence.StreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
+                    $"Need you to make sure ~y~{TargetCopName}~s~ doesn't make it to the deposition, they live at ~p~{TargetCopResidence.StreetAddress}~s~. ${MoneyToRecieve}",
                      };
-            
+
             Player.CellPhone.AddPhoneResponse(EntryPoint.OfficerFriendlyContactName, Replies.PickRandom());
         }
         private void SendQuickPaymentMessage()

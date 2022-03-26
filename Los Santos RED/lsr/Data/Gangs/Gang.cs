@@ -105,6 +105,10 @@ public class Gang
     public int HitPaymentMin { get; set; } = 10000;
     public int HitPaymentMax { get; set; } = 30000;
 
+
+    public int DeliveryPaymentMin { get; set; } = 1000;
+    public int DeliveryPaymentMax { get; set; } = 4000;
+
     public float FightPercentage { get; set; } = 70f;
     public float DrugDealerPercentage { get; set; } = 40f;
     public int AmbientMemberMoneyMin { get; set; } = 500;

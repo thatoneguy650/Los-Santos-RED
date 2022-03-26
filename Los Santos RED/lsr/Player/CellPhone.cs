@@ -623,7 +623,7 @@ public class CellPhone
         if (!AddedTexts.Any(x => x.Name == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
         {
             iFruitText textA = new iFruitText(Name, TextIndex, message, hourSent, minuteSent);
-            textA.Icon = GetIconFromString(IconName);      // Contact's icon
+            //textA.Icon = GetIconFromString(IconName);      // Contact's icon
             textA.IconName = IconName;
             textA.IsRead = isRead;
             textA.TimeReceived = Time.CurrentDateTime;

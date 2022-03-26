@@ -22,6 +22,9 @@ public class Loot : DynamicActivity
     private dynamic pedHeadshotHandle;
     private IModItems ModItems;
     private bool IsCancelled;
+    private WeaponInformation LastWeapon;
+
+    //private WeaponInformation previousWeapon;
 
     public Loot(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems)
     {
@@ -48,7 +51,6 @@ public class Loot : DynamicActivity
             }, "Conversation");
         }
     }
-
     private void LootBody()
     {
         EntryPoint.WriteToConsole("Looting Body");
@@ -60,9 +62,12 @@ public class Loot : DynamicActivity
                 FinishLoot();
                 PlayAnimation("amb@medic@standing@tendtodead@exit", "exit");
             }
+            if(LastWeapon != null)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon.Hash, true);
+            }
         }
     }
-
     private void FinishLoot()
     {
         bool hasAddedItem = false;
@@ -71,11 +76,10 @@ public class Loot : DynamicActivity
         int CashAdded = 0;
         if (Ped.Pedestrian.Exists())
         {
-            Ped.HasBeenLooted = true;
-            
+            Ped.HasBeenLooted = true;    
             if (Ped.HasMenu)
             {
-                foreach (MenuItem mi in Ped.ShopMenu.Items.Where(x => x.Purchaseable))
+                foreach (MenuItem mi in Ped.ShopMenu.Items.Where(x => x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0))
                 {
                     ModItem localModItem = ModItems.Get(mi.ModItemName);
                     if (localModItem != null && localModItem.ModelItem?.Type == ePhysicalItemType.Prop)
@@ -94,8 +98,6 @@ public class Loot : DynamicActivity
                 Ped.Pedestrian.Money = 0;
                 hasAddedCash = true;
             }
-
-
             if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
             {
                 if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
@@ -114,11 +116,7 @@ public class Loot : DynamicActivity
                     }
                 }
             }
-
-
-
         }
-
         string Description = "";
         if (hasAddedCash)
         {
@@ -141,8 +139,6 @@ public class Loot : DynamicActivity
         {
             Description = "Nothing Found";
         }
-
-
         if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
         {
             string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
@@ -152,20 +148,15 @@ public class Loot : DynamicActivity
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Searched", $"~y~{Ped.Name}", Description);
         }
-
-
-
     }
 
     private bool MoveToBody()
     {
-
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
-
         Vector3 DesiredPosition = Ped.Pedestrian.Position;
         float DesiredHeading = Game.LocalPlayer.Character.Heading;
         //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, 1.0f, -1, DesiredHeading, 0.2f);
-        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Player.Character, Ped.Pedestrian, -1, 1.25f, 0.75f, 1073741824, 1); //Original and works ok
+        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Player.Character, Ped.Pedestrian, -1, 1.75f, 0.75f, 1073741824, 1); //Original and works ok
         uint GameTimeStartedMovingToBody = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
         bool IsFacingDirection = true;
@@ -176,19 +167,16 @@ public class Loot : DynamicActivity
             {
                 IsCancelled = true;
             }
-            if(!Ped.Pedestrian.Exists())
+            if(!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree)
             {
                 IsCancelled = true;
                 break;
             }
-            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(Ped.Pedestrian) < 0.75f;
+            IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(Ped.Pedestrian) <= 1.85f;
             GameFiber.Yield();
         }
-
-
-        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1000);
-
-        GameFiber.Sleep(1000);
+        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1200);
+        GameFiber.Sleep(1200);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
             EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
@@ -207,12 +195,19 @@ public class Loot : DynamicActivity
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
-       // WeaponInformation previousWeapon = Player.CurrentWeapon;
-        Player.SetUnarmed();
-
-        if(PlayAnimation("amb@medic@standing@tendtodead@enter", "enter") && PlayAnimation("amb@medic@standing@tendtodead@idle_a", "idle_a"))
+        if (Player.CurrentWeapon != null)
         {
-            
+            LastWeapon = Player.CurrentWeapon;
+        }
+        else
+        {
+            LastWeapon = null;
+        }
+
+        Player.SetUnarmed();
+        List<string> IdleToPlay = new List<string>() { "idle_a" , "idle_b" , "idle_c" };
+        if(PlayAnimation("amb@medic@standing@tendtodead@enter", "enter") && PlayAnimation("amb@medic@standing@tendtodead@idle_a", IdleToPlay.PickRandom()))
+        {
             return true;
         }
         else
@@ -232,7 +227,7 @@ public class Loot : DynamicActivity
             {
                 IsCancelled = true;
             }
-            if (!Ped.Pedestrian.Exists())
+            if (!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree)
             {
                 IsCancelled = true;
                 break;
@@ -248,13 +243,10 @@ public class Loot : DynamicActivity
             return false;
         }
     }
-
-
     public override void Continue()
     {
 
     }
-
     public override void Cancel()
     {
 
@@ -264,13 +256,10 @@ public class Loot : DynamicActivity
         Player.IsLootingBody = false;
         //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
     }
-
     public override void Pause()
     {
         Cancel();
     }
-
-
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete, bool isPlayer)
     {
         bool Spoke = false;
@@ -322,76 +311,4 @@ public class Loot : DynamicActivity
         }  
         return Spoke;
     }
-
-    private void LootBodyOLD()
-    {
-        EntryPoint.WriteToConsole("Looting Body");
-        if (MoveToBody())
-        {
-
-        }
-
-
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
-        AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
-
-        uint GameTimeStarted = Game.GameTime;
-
-        unsafe
-        {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Ped.Pedestrian, -1, 1.0f, 0.75f, 1073741824, 1); //Original and works ok
-            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 1000);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_b", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@idle_a", "idle_c", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@tendtodead@exit", "exit", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        }
-
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false, true);
-        bool hasCompletedTasks = false;
-        while (Game.GameTime - GameTimeStarted <= 15000)
-        {
-            if (NativeFunction.Natives.GET_SEQUENCE_PROGRESS(Player.Character) == -1)
-            {
-                break;
-            }
-            if (NativeFunction.Natives.GET_SEQUENCE_PROGRESS(Player.Character) == 6)
-            {
-                hasCompletedTasks = true;
-            }
-            GameFiber.Yield();
-        }
-        bool hasAddedItem = false;
-        if (Ped.Pedestrian.Exists() && hasCompletedTasks)
-        {
-            Ped.HasBeenLooted = true;
-
-            foreach (MenuItem mi in Ped.ShopMenu.Items.Where(x => x.Purchaseable))
-            {
-                ModItem modItem = ModItems.Get(mi.ModItemName);
-                if (modItem != null)
-                {
-                    hasAddedItem = true;
-                    Player.Inventory.Add(modItem, mi.NumberOfItemsToSellToPlayer);
-                }
-
-            }
-        }
-        if (hasAddedItem)
-        {
-            Game.DisplayNotification("You got some items");
-        }
-
-    }
-
-
 }

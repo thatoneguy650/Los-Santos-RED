@@ -45,6 +45,7 @@ public class PersonTransaction : Interaction
     private bool PedEnteringPlayerVehicle;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
+    private uint NotificationHandle;
 
     public InteractableLocation AssociatedStore { get; set; }
 
@@ -111,50 +112,58 @@ public class PersonTransaction : Interaction
 
                 Greet();
 
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                //Transaction.ProcessTransactionMenu();
-                while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer)
+
+                if (InteractionMenu != null)
                 {
-                    UpdateOptions();
 
-
-                    if(Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle))
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    //Transaction.ProcessTransactionMenu();
+                    while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer)
                     {
-                        PanickedByPlayer = true;
-                        EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
+                        UpdateOptions();
+
+
+                        if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle))
+                        {
+                            PanickedByPlayer = true;
+                            EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
+                        }
+
+
+                        if (isPaused && Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction" && x.IsPressedNow))
+                        {
+                            Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
+                            isPaused = false;
+
+                            if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
+                            {
+                                NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+                            }
+
+
+                            InteractionMenu.Visible = true;
+                            if (!Ped.IsInVehicle)
+                            {
+                                HavePedLookAtPlayer();
+                            }
+                            if (!Player.IsInVehicle)
+                            {
+                                HavePlayerLookAtPed();
+                            }
+                            EntryPoint.WriteToConsole("Unpased Person Transaction");
+                        }
+
+                        MenuPool.ProcessMenus();
+                        Transaction.PurchaseMenu?.Update();
+                        Transaction.SellMenu?.Update();
+                        GameFiber.Yield();
                     }
-
-
-                    if(isPaused && Player.ButtonPromptList.Any(x=> x.Group == "ContinueTransaction" && x.IsPressedNow))
-                    {
-                        Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
-                        isPaused = false;
-
-                        if(Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
-                        {
-                            NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-                        }
-
-
-                        InteractionMenu.Visible = true;
-                        if (!Ped.IsInVehicle)
-                        {
-                            HavePedLookAtPlayer();
-                        }
-                        if (!Player.IsInVehicle)
-                        {
-                            HavePlayerLookAtPed();
-                        }
-                        EntryPoint.WriteToConsole("Unpased Person Transaction");
-                    }
-
-                    MenuPool.ProcessMenus();
-                    Transaction.PurchaseMenu?.Update();
-                    Transaction.SellMenu?.Update();
-                    GameFiber.Yield();
                 }
-
+                else
+                {
+                    Dispose();
+                }
             }
             Dispose();
 
@@ -299,49 +308,29 @@ public class PersonTransaction : Interaction
     {
         if (modItem != null)
         {
-            StartBuyAnimation(modItem, menuItem.IsIllicilt);
+            MenuPool.CloseAllMenus();
+            StartBuyAnimation(modItem, menuItem, totalItems);
 
-            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
-
-            if (modItem.MeasurementName == "Item")
-            {
-                Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name} (s)~s~");
-            }
-            else
-            {
-                Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
             if (Ped.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)Ped;
                 Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.PurchasePrice * totalItems, true);
             }
+            Transaction.PurchaseMenu?.Show();
         }
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
         if (modItem != null)
         {
-            StartSellAnimation(modItem, menuItem.IsIllicilt);
-
-
-            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "ROBBERY_MONEY_TOTAL", "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET", 0);
-
-            if (modItem.MeasurementName == "Item")
-            {
-                Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
-            }
-            else
-            {
-                Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
+            MenuPool.CloseAllMenus();
+            StartSellAnimation(modItem, menuItem, totalItems);
             if (Ped.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)Ped;
                 Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.SalesPrice * totalItems, true);
             }
+            Transaction.SellMenu?.Show();
         }
     }
 
@@ -522,6 +511,10 @@ public class PersonTransaction : Interaction
         {
             InteractionMenu = new UIMenu("", "");
             InteractionMenu.RemoveBanner();
+        }
+        else if (AssociatedStore != null)
+        {
+            InteractionMenu = new UIMenu(AssociatedStore.Name, AssociatedStore.Description);
         }
         MenuPool.Add(InteractionMenu);
     }
@@ -713,37 +706,42 @@ public class PersonTransaction : Interaction
             IsActivelyConversing = false;
         }
     }
-    private void StartBuyAnimation(ModItem item, bool isIllicit)
+    private void StartBuyAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
     {
+
+       //MenuPool.CloseAllMenus();
+
         //Hide();
         IsActivelyConversing = true;
         //if (hideShowMenu)
         //{
         //    Hide();
         //}
+
+
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
-        if (item.PackageItem != null && item.PackageItem.ModelName != "")
+        if (modItem.PackageItem != null && modItem.PackageItem.ModelName != "")
         {
-            modelName = item.PackageItem.ModelName;
+            modelName = modItem.PackageItem.ModelName;
             HasProp = true;
-            if (item.PackageItem.Type == ePhysicalItemType.Weapon)
+            if (modItem.PackageItem.Type == ePhysicalItemType.Weapon)
             {
                 isWeapon = true;
             }
         }
-        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
+        else if (modItem.ModelItem != null && modItem.ModelItem.ModelName != "")
         {
-            modelName = item.ModelItem.ModelName;
+            modelName = modItem.ModelItem.ModelName;
             HasProp = true;
-            if (item.ModelItem.Type == ePhysicalItemType.Weapon)
+            if (modItem.ModelItem.Type == ePhysicalItemType.Weapon)
             {
                 isWeapon = true;
             }
         }
         IsActivelyConversing = true;
-        if (isIllicit)
+        if (menuItem.IsIllicilt)
         {
             if (isWeapon)
             {
@@ -770,15 +768,38 @@ public class PersonTransaction : Interaction
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(500);
+
+
+        int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+        if (isWeapon)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+        }
+        else
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        }
+        Game.RemoveNotification(NotificationHandle);
+        if (modItem.MeasurementName == "Item")
+        {
+            NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
+        }
+        else
+        {
+            NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+        }
+
+
+
         if (Ped.Pedestrian.Exists())
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(1000);
@@ -792,7 +813,7 @@ public class PersonTransaction : Interaction
             SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
         }
         IsActivelyConversing = false;
-        if (isIllicit)
+        if (menuItem.IsIllicilt)
         {
             if (isWeapon)
             {
@@ -806,38 +827,44 @@ public class PersonTransaction : Interaction
             }
         }
 
+
+ 
+
         //Show();   
         //if (hideShowMenu)
         //{
         //    Show();
         //}
     }
-    private void StartSellAnimation(ModItem item, bool isIllicit)
+    private void StartSellAnimation(ModItem modItem, MenuItem menuItem, int totalItems)
     {
         //Hide();
+
+      //  MenuPool.CloseAllMenus();
+
         string modelName = "";
         bool HasProp = false;
         bool isWeapon = false;
-        if (item.PackageItem != null && item.PackageItem.ModelName != "")
+        if (modItem.PackageItem != null && modItem.PackageItem.ModelName != "")
         {
-            modelName = item.PackageItem.ModelName;
+            modelName = modItem.PackageItem.ModelName;
             HasProp = true;
-            if (item.PackageItem.Type == ePhysicalItemType.Weapon)
+            if (modItem.PackageItem.Type == ePhysicalItemType.Weapon)
             {
                 isWeapon = true;
             }
         }
-        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
+        else if (modItem.ModelItem != null && modItem.ModelItem.ModelName != "")
         {
-            modelName = item.ModelItem.ModelName;
+            modelName = modItem.ModelItem.ModelName;
             HasProp = true;
-            if (item.ModelItem.Type == ePhysicalItemType.Weapon)
+            if (modItem.ModelItem.Type == ePhysicalItemType.Weapon)
             {
                 isWeapon = true;
             }
         }
         IsActivelyConversing = true;
-        if (isIllicit)
+        if (menuItem.IsIllicilt)
         {
             if (isWeapon)
             {
@@ -865,15 +892,41 @@ public class PersonTransaction : Interaction
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(500);
+
+
+        int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+
+        if(isWeapon)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+        }
+        else
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        }
+
+        
+        Game.RemoveNotification(NotificationHandle);
+        if (modItem.MeasurementName == "Item")
+        {
+            NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
+        }
+        else
+        {
+            NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+        }
+
+
+
         if (Ped.Pedestrian.Exists())
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
             }
         }
         GameFiber.Sleep(1000);
@@ -887,7 +940,7 @@ public class PersonTransaction : Interaction
             //SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BYE", "GENERIC_THANKS", "PED_RANT" }, true);
         }
         IsActivelyConversing = false;
-        if (isIllicit)
+        if (menuItem.IsIllicilt)
         {
             if (isWeapon)
             {

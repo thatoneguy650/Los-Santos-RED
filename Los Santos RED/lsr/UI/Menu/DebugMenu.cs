@@ -62,6 +62,9 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Gang> SpawnGangFoot;
     private UIMenuListScrollerItem<Gang> SpawnGangVehicle;
     private IGangs Gangs;
+    private UIMenuListScrollerItem<Gang> SetGangRepDefault;
+    private UIMenuListScrollerItem<Gang> SetGangRepFriendly;
+    private UIMenuListScrollerItem<Gang> SetGangRepHostile;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs)
     {
@@ -131,6 +134,12 @@ public class DebugMenu : Menu
 
 
 
+        SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Default", "Sets the selected gang to the default reputation", Gangs.GetAllGangs());
+        SetGangRepFriendly = new UIMenuListScrollerItem<Gang>("Set Gang Friendly", "Sets the selected gang to a friendly reputation", Gangs.GetAllGangs());
+        SetGangRepHostile = new UIMenuListScrollerItem<Gang>("Set Gang Hostile", "Sets the selected gang to a hostile reputation", Gangs.GetAllGangs());
+
+
+
 
         FastForwardTime = new UIMenuNumericScrollerItem<int>("Fast Forward Time", "Fast forward time.", 1, 24, 1) { Formatter = v => v + " Hours"};
         GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
@@ -194,8 +203,13 @@ public class DebugMenu : Menu
         Debug.AddItem(RandomGangRep);
         Debug.AddItem(RandomSingleGangRep);
 
-        Debug.AddItem(HostileGangRep);
-        Debug.AddItem(FriendlyGangRep);
+        Debug.AddItem(SetGangRepDefault);
+        Debug.AddItem(SetGangRepFriendly);
+        Debug.AddItem(SetGangRepHostile);
+
+
+        //Debug.AddItem(HostileGangRep);
+        //Debug.AddItem(FriendlyGangRep);
 
         Debug.AddItem(FreeCamMenu);
         Debug.AddItem(LogLocationMenu);
@@ -407,6 +421,19 @@ public class DebugMenu : Menu
         else if (selectedItem == LoadSPMap)
         {
             World.LoadSPMap();
+        }
+
+        if(selectedItem == SetGangRepHostile)
+        {
+            Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -2000, false);
+        }
+        if (selectedItem == SetGangRepDefault)
+        {
+            Player.GangRelationships.SetReputation(SetGangRepDefault.SelectedItem, 200, false);
+        }
+        if (selectedItem == SetGangRepFriendly)
+        {
+            Player.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, 2000, false);
         }
         else if (selectedItem == RandomGangRep)
         {

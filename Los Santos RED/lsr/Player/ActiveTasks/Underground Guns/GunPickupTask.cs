@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private uint GameTimeGotInCar;
         private int GameTimeToWaitBeforeComplications;
         private bool HasAddedComplications;
+        private bool WillAddComplications;
         private bool hasSpawnedCar;
         private Vehicle SpawnedVehicle = null;
         private VehicleExt SpawnedVehicleExt;
@@ -97,7 +98,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetCompleted()
         {
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(EntryPoint.UndergroundGunsContactName);
+            PlayerTasks.CompleteTask(EntryPoint.UndergroundGunsContactName, true);
         }
         private void SetInactive()
         {
@@ -163,10 +164,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     OnArrivedAtDestination();
                     break;
                 }
-                if(hasSpawnedCar && hasGottenInCar && !HasAddedComplications && Game.GameTime - GameTimeGotInCar >= GameTimeToWaitBeforeComplications)
+                if(WillAddComplications && hasSpawnedCar && hasGottenInCar && !HasAddedComplications && Game.GameTime - GameTimeGotInCar >= GameTimeToWaitBeforeComplications)
                 {
                     AddComplications();
                 }
+
 
                 GameFiber.Sleep(1000);
             }
@@ -181,15 +183,20 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void OnGotInCar()
         {
+            SendDropoffInstructionsMessage();
             hasGottenInCar = true;
             GameTimeGotInCar = Game.GameTime;
         }
+
+
+
         private void AddComplications()
         {
             GangReputation gr = Player.GangRelationships.GangReputations.Where(x => x.GangRelationship == GangRespect.Hostile).PickRandom();
-            if (gr != null && gr.Gang != null && SpawnedVehicleExt != null && RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupComplicationsPercentage))
+            if (gr != null && gr.Gang != null && SpawnedVehicleExt != null)
             {
                 SendGangSabotageMessage(gr.Gang);
+                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 8000));
                 SpawnedVehicleExt.CarPlate.IsWanted = true;
                 SpawnedVehicleExt.OriginalLicensePlate.IsWanted = true;
                 Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "GrandTheftAuto"), false, Player.Character.Position, SpawnedVehicleExt, null, true, true, true);
@@ -199,13 +206,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(EntryPoint.UndergroundGunsContactName, MoneyToRecieve, 2000, 0, -500, 7);
+            PlayerTasks.AddTask(EntryPoint.UndergroundGunsContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gun Transport");
             CurrentTask = PlayerTasks.GetTask(EntryPoint.UndergroundGunsContactName);
             hasGottenInCar = false;
             hasSpawnedCar = false;
             GameTimeGotInCar = 0;
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
+
+
+            WillAddComplications = RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupComplicationsPercentage);
+
         }
         private void GetPayment()
         {
@@ -268,6 +279,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
             }
             return false;
+        }
+        private void SendDropoffInstructionsMessage()
+        {
+            List<string> Replies = new List<string>() {
+                $"Take the van to the shop on {DropOffStore.StreetAddress}.",
+                $"Get to {DropOffStore.StreetAddress}.",
+                $"Bring the van to {DropOffStore.StreetAddress}, don't loiter.",
+                    };
+            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendVehicleSpawnedMessage()
         {

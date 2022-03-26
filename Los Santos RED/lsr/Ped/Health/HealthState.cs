@@ -211,6 +211,7 @@ public class HealthState
             MyPed.LogSourceOfDeath();
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
+                MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Killed By Player", 5);
             }
@@ -407,6 +408,12 @@ public class HealthState
                 DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
                   MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
             }
+
+            if(MyPed.HasBeenHurtByPlayer)
+            {
+                EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
+            }
+
             //EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
         }
         if (Health != CurrentHealth && MyPed.Pedestrian.Health > 0)

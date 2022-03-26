@@ -66,12 +66,7 @@ public class Respawning// : IRespawning
             "You wanna go to jail or you wanna go home? You've got ~r~30 seconds~s~ to decide.",
             "Pleasure doing business douchebag. You've got ~r~30 seconds~s~ to fuck off.",
         };
-        CitationCopResponses = new List<string>()
-        {
-            $"Thank you for paying the citation amount of ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~. Fuck off before you regret it.",
-            $"You have paid the citation amount of ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~, now fuck off.",
-            $"Citation paid ~r~${Settings.SettingsManager.PoliceSettings.GeneralFineAmount}~s~. Move along."
-        };
+
     }
     public bool BribePolice(int Amount)
     {
@@ -114,6 +109,16 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false);
+
+
+            CitationCopResponses = new List<string>()
+                {
+                    $"Thank you for paying the citation amount of ~r~${FineAmount}~s~. Fuck off before you regret it.",
+                    $"You have paid the citation amount of ~r~${FineAmount}~s~, now fuck off.",
+                    $"Citation of ~r~${FineAmount}~s~ paid. Move along."
+                };
+
+
             Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", EntryPoint.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;

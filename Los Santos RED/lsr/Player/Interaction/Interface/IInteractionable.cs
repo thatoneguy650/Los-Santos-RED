@@ -43,6 +43,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCarJacking { get; set; }
         bool IsLootingBody { get; set; }
         WeaponInformation CurrentWeapon { get; }
+        WeaponHash LastWeaponHash { get; set; }
 
         void SetUnarmed();
         void SetPlayerToLastWeapon();

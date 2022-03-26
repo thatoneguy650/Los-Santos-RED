@@ -27,6 +27,7 @@ public class CorruptCopInteraction
     private UIMenuItem GangHit;
     private UIMenuItem TaskCancel;
     private UIMenuItem WitnessElimination;
+    private UIMenuItem CopHit;
 
     private int CostToClearWanted
     {
@@ -63,7 +64,8 @@ public class CorruptCopInteraction
         PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
 
         GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
-        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
+        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
 
         if (Player.PlayerTasks.HasTask(EntryPoint.OfficerFriendlyContactName))
         {
@@ -84,6 +86,7 @@ public class CorruptCopInteraction
         {
             CopMenu.AddItem(GangHit);
             CopMenu.AddItem(WitnessElimination);
+            //CopMenu.AddItem(CopHit);
         }
         else
         {
@@ -129,6 +132,11 @@ public class CorruptCopInteraction
         else if (selectedItem == WitnessElimination)
         {
             Player.PlayerTasks.CorruptCopTasks.WitnessEliminationTask.Start();
+            sender.Visible = false;
+        }
+        else if (selectedItem == CopHit)
+        {
+            Player.PlayerTasks.CorruptCopTasks.CopHitTask.Start();
             sender.Visible = false;
         }
     }

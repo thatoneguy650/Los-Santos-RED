@@ -402,10 +402,5 @@ namespace LosSantosRED.lsr.Helper
                     return "";
             }
         }
-
-        internal static void GetSimpleCompassHeading(object heading)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

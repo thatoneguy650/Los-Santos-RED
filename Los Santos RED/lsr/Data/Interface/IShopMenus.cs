@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         ShopMenu GetVendingMenu(string v);
         ShopMenu GetRandomDrugCustomerMenu();
         ShopMenu GetRandomMenu(string dealerMenuID);
+        Tuple<int, int> GetPrices(string name);
     }
 }

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 
@@ -34,6 +35,43 @@ public class GangReputation
         //    }
         //}
     } 
+    public int CostToPayoff
+    {
+        get
+        {
+            if (ReputationLevel < 0)
+            {
+                return ((0 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+            }
+            else if (ReputationLevel >= 500)
+            {
+                return 0;
+            }
+            else
+            {
+                return ((500 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+            }
+        }
+    }
+    public int RepToNextLevel
+    {
+        get
+        {
+            if (ReputationLevel < 0)
+            {
+                return 0 - ReputationLevel;
+            }
+            else if (ReputationLevel >= 500)
+            {
+                return 0;
+            }
+            else
+            {
+                return 500 - ReputationLevel;
+            }
+        }
+    }
+
     public GangReputation()
     {
 

@@ -11,7 +11,7 @@ using System.Linq;
 
 public class SellMenu : Menu
 {
-    private UIMenu sellMenu;
+    private UIMenu sellMenuRNUI;
     private IModItems ModItems;
     private MenuPool MenuPool;
     private IActivityPerformable Player;
@@ -70,19 +70,21 @@ public class SellMenu : Menu
 
         EntryPoint.WriteToConsole($"SellMenu: HasBannerImage {HasBannerImage} RemoveBanner {RemoveBanner}");
 
-
-        sellMenu = menuPool.AddSubMenu(parentMenu, "Sell");
-        if (HasBannerImage)
+        if (parentMenu != null)
         {
-            sellMenu.SetBannerType(BannerImage);
+            sellMenuRNUI = menuPool.AddSubMenu(parentMenu, "Sell");
+            if (HasBannerImage)
+            {
+                sellMenuRNUI.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                sellMenuRNUI.RemoveBanner();
+            }
+            sellMenuRNUI.OnIndexChange += OnIndexChange;
+            sellMenuRNUI.OnItemSelect += OnItemSelect;
+            sellMenuRNUI.OnListChange += OnListChange;
         }
-        else if (RemoveBanner)
-        {
-            sellMenu.RemoveBanner();
-        }
-        sellMenu.OnIndexChange += OnIndexChange;
-        sellMenu.OnItemSelect += OnItemSelect;
-        sellMenu.OnListChange += OnListChange;
     }
     public void Setup()
     {
@@ -119,25 +121,26 @@ public class SellMenu : Menu
     public override void Hide()
     {
         ClearPreviews();
-        sellMenu.Visible = false;
-        Player.ButtonPromptList.Clear();
+        if (sellMenuRNUI != null)
+        {
+            sellMenuRNUI.Visible = false;
+            Player.ButtonPromptList.Clear();
+        }
     }
     public override void Show()
     {
-        //CreateSellMenu();
-
-
-        if (sellMenu.CurrentSelection != -1)
+        if (sellMenuRNUI != null)
         {
-            CreatePreview(sellMenu.MenuItems[sellMenu.CurrentSelection]);
+            if (sellMenuRNUI.CurrentSelection != -1)
+            {
+                CreatePreview(sellMenuRNUI.MenuItems[sellMenuRNUI.CurrentSelection]);
+            }
+            sellMenuRNUI.Visible = true;
         }
-
-
-        sellMenu.Visible = true;
     }
     public override void Toggle()
     {
-        if (!sellMenu.Visible)
+        if (!sellMenuRNUI.Visible)
         {
             Show();
         }
@@ -151,7 +154,7 @@ public class SellMenu : Menu
     {
         if (modItem != null)
         {
-            foreach (UIMenuItem uiMenuItem in sellMenu.MenuItems)
+            foreach (UIMenuItem uiMenuItem in sellMenuRNUI.MenuItems)
             {
                 if (uiMenuItem.Text == modItem.Name && uiMenuItem.GetType() == typeof(UIMenuNumericScrollerItem<int>))
                 {
@@ -165,34 +168,37 @@ public class SellMenu : Menu
 
     private void CreateSellMenu()
     {
-        sellMenu.Clear();
-        bool shouldCreateCategories = false;
-        if (ShopMenu.Items.Where(x => x.Sellable).Count() >= 7)
+        if (sellMenuRNUI != null)
         {
-            shouldCreateCategories = true;
-        }
-        if (shouldCreateCategories)
-        {
-            CreateCategories();
-        }
-        foreach (MenuItem cii in ShopMenu.Items)
-        {
-            if (cii != null && cii.Sellable)
+            sellMenuRNUI.Clear();
+            bool shouldCreateCategories = false;
+            if (ShopMenu.Items.Where(x => x.Sellable).Count() >= 7)
             {
-                ModItem myItem = ModItems.Get(cii.ModItemName);
-                if (myItem != null)
+                shouldCreateCategories = true;
+            }
+            if (shouldCreateCategories)
+            {
+                CreateCategories();
+            }
+            foreach (MenuItem cii in ShopMenu.Items)
+            {
+                if (cii != null && cii.Sellable)
                 {
-                    if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                    ModItem myItem = ModItems.Get(cii.ModItemName);
+                    if (myItem != null)
                     {
-                        AddVehicleEntry(cii, myItem);
-                    }
-                    else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
-                    {
-                        AddWeaponEntry(cii, myItem);
-                    }
-                    else
-                    {
-                        AddPropEntry(cii, myItem);
+                        if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
+                        {
+                            AddVehicleEntry(cii, myItem);
+                        }
+                        else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
+                        {
+                            AddWeaponEntry(cii, myItem);
+                        }
+                        else
+                        {
+                            AddPropEntry(cii, myItem);
+                        }
                     }
                 }
             }
@@ -235,7 +241,7 @@ public class SellMenu : Menu
         bool FoundCategoryMenu = false;
         foreach (UIMenu uimen in MenuPool.ToList())
         {
-            if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenu)
+            if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
             {
                 FoundCategoryMenu = true;
                 VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
@@ -247,9 +253,9 @@ public class SellMenu : Menu
         }
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
-            VehicleMenu = MenuPool.AddSubMenu(sellMenu, cii.ModItemName);
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].Description = description;
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+            VehicleMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
+            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
+            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
             EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
         }
         if (HasBannerImage)
@@ -283,7 +289,7 @@ public class SellMenu : Menu
     {
         UIMenuNumericScrollerItem<int> myScroller = new UIMenuNumericScrollerItem<int>(cii.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && myItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(myItem.MeasurementName != "Item" || v > 1 ? myItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(myItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * cii.SalesPrice)}", Value = 1 };
         UpdatePropEntryData(myItem, cii, myScroller);
-        sellMenu.AddItem(myScroller);
+        sellMenuRNUI.AddItem(myScroller);
     }
     private void OnVehicleItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -383,7 +389,7 @@ public class SellMenu : Menu
                             if (!WeaponCategories.Contains(myWeapon.Category))
                             {
                                 WeaponCategories.Add(myWeapon.Category);
-                                UIMenu WeaponMenu = MenuPool.AddSubMenu(sellMenu, myWeapon.Category.ToString());
+                                UIMenu WeaponMenu = MenuPool.AddSubMenu(sellMenuRNUI, myWeapon.Category.ToString());
                                 if (HasBannerImage)
                                 {
                                     WeaponMenu.SetBannerType(BannerImage);
@@ -410,7 +416,7 @@ public class SellMenu : Menu
                             if (!VehicleClasses.Contains(ClassName))
                             {
                                 VehicleClasses.Add(ClassName);
-                                UIMenu VehicleMenu = MenuPool.AddSubMenu(sellMenu, ClassName);
+                                UIMenu VehicleMenu = MenuPool.AddSubMenu(sellMenuRNUI, ClassName);
                                 if (HasBannerImage)
                                 {
                                     VehicleMenu.SetBannerType(BannerImage);
@@ -685,7 +691,7 @@ public class SellMenu : Menu
         if (itemToShow != null && itemToShow.ModelItem != null)
         {
             VehicleExt toSell = Player.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(itemToShow.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
-            if (toSell != null)
+            if (toSell != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(itemToShow.ModelItem.ModelName)))
             {
                 SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
                 if(SellingVehicle.Exists())
@@ -729,7 +735,10 @@ public class SellMenu : Menu
                     Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
                     Position = GPCamPos + GPCamDir / 2f;
                 }
-                SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+                if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(itemToShow.ModelItem.ModelHash))
+                {
+                    SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(itemToShow.ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
+                }
                 if (SellingProp.Exists())
                 {
                     EntryPoint.WriteToConsole($"SELL MENU PreviewWeapon CREATED ITEM {itemToShow?.Name}");
@@ -798,23 +807,35 @@ public class SellMenu : Menu
                     {
                         if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon && myItem.ModelItem.ModelName != "")
                         {
-                            NativeFunction.Natives.REQUEST_WEAPON_ASSET(myItem.ModelItem.ModelHash, 31, 0);
+                            //if (NativeFunction.Natives.IS_MODEL_VALID<bool>(myItem.ModelItem.ModelHash))
+                            //{
+                                NativeFunction.Natives.REQUEST_WEAPON_ASSET(myItem.ModelItem.ModelHash, 31, 0);
+                            //}
                         }
                         else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Vehicle && myItem.ModelItem.ModelName != "")
                         {
-                            Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
-                            if (MyVehicle.Exists())
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.ModelItem.ModelName.ToLower())))
                             {
-                                MyVehicle.Delete();
+                                Vehicle MyVehicle = new Vehicle(myItem.ModelItem.ModelName, Vector3.Zero, 0f);
+                                if (MyVehicle.Exists())
+                                {
+                                    MyVehicle.Delete();
+                                }
                             }
                         }
                         else if (myItem.PackageItem != null && myItem.PackageItem.Type == ePhysicalItemType.Prop && myItem.PackageItem.ModelName != "")
                         {
-                            new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.PackageItem.ModelName.ToLower())))
+                            {
+                                new Model(myItem.PackageItem.ModelName).LoadAndWait();
+                            }
                         }
                         else if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Prop && myItem.ModelItem.ModelName != "")
                         {
-                            new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                            if (NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(myItem.ModelItem.ModelName.ToLower())))
+                            {
+                                new Model(myItem.ModelItem.ModelName).LoadAndWait();
+                            }
                         }
                     }
                 }
@@ -862,7 +883,7 @@ public class SellMenu : Menu
         {
             foreach (UIMenu uimen in MenuPool.ToList())
             {
-                if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == sellMenu)
+                if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
                 {
                     FoundCategoryMenu = true;
                     WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
@@ -876,10 +897,10 @@ public class SellMenu : Menu
         }
         if (!FoundCategoryMenu && WeaponMenu == null)
         {
-            WeaponMenu = MenuPool.AddSubMenu(sellMenu, cii.ModItemName);
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].Description = description;
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            sellMenu.MenuItems[sellMenu.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
+            WeaponMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
+            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
+            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
             EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
         }
         //WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;

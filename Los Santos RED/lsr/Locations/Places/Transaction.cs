@@ -42,7 +42,6 @@ public class Transaction
     {
         if (ShopMenu != null && ShopMenu.Items.Any(x => x.Purchaseable))
         {
-
             if (Store != null)
             {
                 PurchaseMenu = new PurchaseMenu(MenuPool, ParentMenu, ShopMenu, this, modItems, player, world, settings, weapons, time, Store.BannerImage, Store.HasBannerImage, Store.RemoveBanner, Store.Name);
@@ -71,9 +70,6 @@ public class Transaction
     {
         while (MenuPool.IsAnyMenuOpen())
         {
-
-
-
             MenuPool.ProcessMenus();
             PurchaseMenu?.Update();
             SellMenu?.Update();
@@ -97,24 +93,26 @@ public class Transaction
     }
     public void OnItemPurchased(ModItem modItem, MenuItem menuItem, int TotalItems)
     {
-        if(Store != null)
-        {
-            Store.OnItemPurchased(modItem, menuItem, TotalItems);
-        }
-        else if(PersonTransaction != null)
+        if (PersonTransaction != null)
         {
             PersonTransaction.OnItemPurchased(modItem, menuItem, TotalItems);
         }
+        else if (Store != null)
+        {
+            Store.OnItemPurchased(modItem, menuItem, TotalItems);
+        }
+        
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int TotalItems)
     {
-        if (Store != null)
-        {
-            Store.OnItemSold(modItem, menuItem, TotalItems);
-        }
-        else if (PersonTransaction != null)
+        if (PersonTransaction != null)
         {
             PersonTransaction.OnItemSold(modItem, menuItem, TotalItems);
         }
+        else if(Store != null)
+        {
+            Store.OnItemSold(modItem, menuItem, TotalItems);
+        }
+         
     }
 }

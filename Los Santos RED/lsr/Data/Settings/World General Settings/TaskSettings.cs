@@ -18,12 +18,19 @@ public class TaskSettings : ISettingsDefaultable
     public int OfficerFriendlyGangHitPaymentMin { get; set; }
     [Description("Maximum payment amount for the Gang Hit task from Officer Friendly")]
     public int OfficerFriendlyGangHitPaymentMax { get; set; }
+    [Description("Complications Percent for the Gang Hit task from Officer Friendly")]
+    public float OfficerFriendlyGangHitComplicationsPercentage { get; set; }
+
+
+
+
 
     [Description("Minimum payment amount for the Cop Hit task from Officer Friendly")]
     public int OfficerFriendlyCopHitPaymentMin { get; set; }
     [Description("Maximum payment amount for the Cop Hit task from Officer Friendly")]
     public int OfficerFriendlyCopHitPaymentMax { get; set; }
-
+    [Description("Complications Percent for the Cop Hit task from Officer Friendly")]
+    public float OfficerFriendlyCopHitComplicationsPercentage { get; set; }
 
 
 
@@ -31,19 +38,27 @@ public class TaskSettings : ISettingsDefaultable
     public int OfficerFriendlyWitnessEliminationPaymentMin { get; set; }
     [Description("Maximum payment amount for the Witness Elimination task from Officer Friendly")]
     public int OfficerFriendlyWitnessEliminationPaymentMax { get; set; }
+    [Description("Complications Percent for the Witness Elimination task from Officer Friendly")]
+    public float OfficerFriendlyWitnessEliminationComplicationsPercentage { get; set; }
 
 
 
 
 
 
-    [Description("Complications Percent Gun Pickup task from Underground Guns")]
-    public float UndergroundGunsGunPickupComplicationsPercentage { get; set; }
+
 
     [Description("Minimum payment amount for the Gun Pickup task from Underground Guns")]
     public int UndergroundGunsGunPickupPaymentMin { get; set; }
     [Description("Maximum payment amount for the Gun Pickup task from Underground Guns")]
     public int UndergroundGunsGunPickupPaymentMax { get; set; }
+    [Description("Complications Percent for the Gun Pickup task from Underground Guns")]
+    public float UndergroundGunsGunPickupComplicationsPercentage { get; set; }
+
+    [Description("Show blips on entities that are related to the task.")]
+    public bool ShowEntityBlips { get; set; }
+
+
 
 
 
@@ -51,8 +66,11 @@ public class TaskSettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-
+        OfficerFriendlyGangHitComplicationsPercentage = 100f;
+        OfficerFriendlyCopHitComplicationsPercentage = 100f;
+        OfficerFriendlyWitnessEliminationComplicationsPercentage = 100f;
         UndergroundGunsGunPickupComplicationsPercentage = 100f;
+        ShowEntityBlips = true;
 #else
 
 #endif
@@ -61,20 +79,23 @@ public class TaskSettings : ISettingsDefaultable
     {
         OfficerFriendlyGangHitPaymentMin = 10000;
         OfficerFriendlyGangHitPaymentMax = 35000;
-
+        OfficerFriendlyGangHitComplicationsPercentage = 10f;
 
         OfficerFriendlyCopHitPaymentMin = 20000;
         OfficerFriendlyCopHitPaymentMax = 45000;
-
+        OfficerFriendlyCopHitComplicationsPercentage = 5f;
 
         OfficerFriendlyWitnessEliminationPaymentMin = 10000;
         OfficerFriendlyWitnessEliminationPaymentMax = 20000;
+        OfficerFriendlyWitnessEliminationComplicationsPercentage = 30f;
 
         UndergroundGunsGunPickupPaymentMin = 5000;
         UndergroundGunsGunPickupPaymentMax = 10000;
+        UndergroundGunsGunPickupComplicationsPercentage = 15f;
+
+        ShowEntityBlips = false;
 
 
-        UndergroundGunsGunPickupComplicationsPercentage = 30f;
 
 
 

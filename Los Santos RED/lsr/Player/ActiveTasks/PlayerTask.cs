@@ -12,6 +12,9 @@ public class PlayerTask
         ContactName = contactName;
         IsActive = isActive;
     }
+
+    public string Name { get; set; } = "";
+
     public int DaysToCompleted => CanExpire ? (ExpireTime - StartTime).Days : 0;
     public string ContactName { get; set; }
     public bool IsActive { get; set; } = false;
