@@ -13,13 +13,15 @@ using System.Threading.Tasks;
 public class PlayerTasks
 {
     private ITaskAssignable Player;
-    private ITimeReportable Time;
+    private ITimeControllable Time;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private ICrimes Crimes;
     private INameProvideable Names;
     private IWeapons Weapons;
+    private IShopMenus ShopMenus;
+    private IPedGroups PedGroups;
     private List<DeadDrop> ActiveDrops = new List<DeadDrop>();
     private ISettingsProvideable Settings;
     private List<PlayerTask> LastContactTask = new List<PlayerTask>();
@@ -27,7 +29,7 @@ public class PlayerTasks
     public CorruptCopTasks CorruptCopTasks { get; private set; }
     public UndergroundGunsTasks UndergroundGunsTasks { get; private set; }
     public List<PlayerTask> PlayerTaskList { get; set; } = new List<PlayerTask>();
-    public PlayerTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems)
+    public PlayerTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, INameProvideable names, IWeapons weapons, IShopMenus shopMenus, IModItems modItems, IPedGroups pedGroups)
     {
         Player = player;
         Time = time;
@@ -38,8 +40,10 @@ public class PlayerTasks
         Crimes = crimes;
         Names = names;
         Weapons = weapons;
-        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, shopMenus);
-        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, shopMenus);
+        ShopMenus = shopMenus;
+        PedGroups = pedGroups;
+        GangTasks = new GangTasks(Player,Time,Gangs,this,PlacesOfInterest, ActiveDrops, Settings,World,Crimes, modItems, ShopMenus, Weapons,Names,PedGroups);
+        CorruptCopTasks = new CorruptCopTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Names, Weapons, ShopMenus);
         UndergroundGunsTasks = new UndergroundGunsTasks(Player, Time, Gangs, this, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
     }
     public void Setup()

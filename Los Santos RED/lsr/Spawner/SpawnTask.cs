@@ -73,6 +73,8 @@ public class SpawnTask
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
     public bool AllowAnySpawn { get; set; } = false;
+    public bool AllowBuddySpawn { get; set; } = true;
+    public bool SetTask { get; set; } = true;
     private Vector3 Position
     {
         get
@@ -185,7 +187,7 @@ public class SpawnTask
                 else if (PersonType != null)
                 {
                     CreatePerson();
-                    if (Gang != null)
+                    if (Gang != null && AllowBuddySpawn)
                     {
                         int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
                         for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)

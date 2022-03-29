@@ -31,11 +31,8 @@ public class InteractableLocation : BasicLocation
     public Vector3 CameraPosition { get; set; } = Vector3.Zero;
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
-
-
     public string ContactName { get; set; } = "";
-
-
+    public bool CanInteractWhenWanted { get; set; } = false;
 
     [XmlIgnore]
     public ShopMenu Menu { get; set; }
@@ -51,6 +48,7 @@ public class InteractableLocation : BasicLocation
     public MenuPool MenuPool { get; private set; }
 
     public virtual string ButtonPromptText { get; set; }
+    
 
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

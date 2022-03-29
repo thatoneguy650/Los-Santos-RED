@@ -58,5 +58,6 @@ namespace LosSantosRED.lsr.Interface
         void PlaySpeech(string player, bool v);
         void PauseDynamicActivity();
         void LootPed();
+        void GrabPed();
     }
 }

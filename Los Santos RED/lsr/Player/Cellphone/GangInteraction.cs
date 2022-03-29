@@ -26,6 +26,7 @@ public class GangInteraction
     private UIMenuItem GangMoneyPickup;
     private UIMenuItem GangTheft;
     private UIMenuItem GangDelivery;
+    private UIMenuItem GangWheelman;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private IGangs Gangs;
@@ -76,10 +77,14 @@ public class GangInteraction
                 GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
                 GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
                 GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
+                GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
+
+
                 GangMenu.AddItem(GangHit);
                 GangMenu.AddItem(GangMoneyPickup);
                 GangMenu.AddItem(GangTheft);
                 GangMenu.AddItem(GangDelivery);
+                GangMenu.AddItem(GangWheelman);
             }
             RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
             GangMenu.AddItem(RequestGangDen);
@@ -143,6 +148,11 @@ public class GangInteraction
         else if (selectedItem == GangDelivery)
         {
             Player.PlayerTasks.GangTasks.GangDeliveryTask.Start(ActiveGang);
+            sender.Visible = false;
+        }
+        else if (selectedItem == GangWheelman)
+        {
+            Player.PlayerTasks.GangTasks.GangWheelmanTask.Start(ActiveGang);
             sender.Visible = false;
         }
 

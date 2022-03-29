@@ -199,6 +199,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangDeliveryTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangPickupTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangWheelmanTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\PayoffGangTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangHitTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\RivalGangTheftTask.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
+    <Compile Include="lsr\Player\Interaction\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
     <Compile Include="lsr\Player\Interface\IButtonPromptable.cs" />

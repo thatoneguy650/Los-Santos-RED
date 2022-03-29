@@ -81,6 +81,9 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleStartedFire;
 
 
+        private Dispatch ArmedRobbery;
+
+
         private Dispatch MedicalServicesRequired;
         private Dispatch FirefightingServicesRequired;
 
@@ -286,7 +289,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
 
         public void OnMedicalServicesRequested()
         {
@@ -1271,6 +1273,8 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("DealingDrugs",DealingDrugs),
             new CrimeDispatch("DealingGuns",DealingGuns),
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
+            new CrimeDispatch("ArmedRobbery",ArmedRobbery),
+
 
         };
             DispatchList = new List<Dispatch>
@@ -1769,6 +1773,23 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_terrorist_activity.Terroristactivity.FileName },"terrorist activity"),
             },
             };
+
+            ArmedRobbery = new Dispatch()
+            {
+                Name = "Armed Robbery",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_robbery.Apossiblerobbery.FileName },"a possible robbery"),
+                new AudioSet(new List<string>() { crime_2_11.Anarmedrobbery.FileName },"an armed robbery"),
+                new AudioSet(new List<string>() { crime_robbery_with_a_firearm.Arobberywithafirearm.FileName },"a robbery with a firearm"),
+                new AudioSet(new List<string>() { crime_hold_up.Aholdup.FileName },"a hold up"),
+            },
+            };
+
+
+
+
             SuspiciousVehicle = new Dispatch()
             {
                 Name = "Suspicious Vehicle",

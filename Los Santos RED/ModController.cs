@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr
         private string PrevLastRanTertiaryTask;
         private List<ModTask> QuaternaryTasks;
         private List<ModTask> QuinaryTasks;
+        private List<ModTask> SenaryTasks;
         private RadioStations RadioStations;
         private PedGroups RelationshipGroups;
         private Scenarios Scenarios;
@@ -67,6 +68,10 @@ namespace LosSantosRED.lsr
         private Mod.World World;
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
+        
+        private object PrevLastRanSenaryTask;
+        private object LastRanSenaryTask;
+
         public ModController()
         {
         }
@@ -78,6 +83,7 @@ namespace LosSantosRED.lsr
         public bool DebugSecondaryRunning { get; set; } = true;
         public bool DebugTertiaryRunning { get; set; } = true;
         public bool DebugUIRunning { get; set; } = true;
+        public bool DebugSenaryRunning { get; set; } = true;
         public bool IsRunning { get; private set; }
         public void Dispose()
         {
@@ -128,7 +134,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories, Streets);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus, RelationshipGroups);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -173,6 +179,9 @@ namespace LosSantosRED.lsr
             StartQuinaryLogic();
             GameFiber.Yield();
 
+
+            StartSenaryLogic();
+            GameFiber.Yield();
             StartNonPriorityLogic();
             GameFiber.Yield();
             StartUILogic();
@@ -335,8 +344,17 @@ namespace LosSantosRED.lsr
             QuinaryTasks = new List<ModTask>()
             {
                 new ModTask(250, "Police.Update", Police.Update,0),
-                new ModTask(250, "Civilians.Update", Civilians.Update, 1),//500//250
+                //new ModTask(250, "Civilians.Update", Civilians.Update, 1),//500//250
             };
+
+
+            SenaryTasks = new List<ModTask>()
+            {
+                //new ModTask(250, "Police.Update", Police.Update,0),
+                new ModTask(250, "Civilians.Update", Civilians.Update, 0),//500//250
+            };
+
+
 
             NonPriorityTasks = new List<ModTask>()
             {
@@ -573,6 +591,59 @@ namespace LosSantosRED.lsr
             }, "Run Quinary Logic");
             GameFiber.Yield();
         }
+
+
+
+        private void StartSenaryLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int CurrentSenaryTask = 0;
+                    while (IsRunning)
+                    {
+                        if (DebugSenaryRunning)
+                        {
+                            if (CurrentSenaryTask > SenaryTasks.Count)
+                            {
+                                CurrentSenaryTask = 0;
+                            }
+                            PrevLastRanSenaryTask = LastRanSenaryTask;
+                            ModTask firstSenaryTask = SenaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentSenaryTask).FirstOrDefault();
+                            if (firstSenaryTask != null)
+                            {
+                                LastRanSenaryTask = firstSenaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstSenaryTask.GameTimeLastRan}";
+                                firstSenaryTask.Run();
+                                CurrentSenaryTask++;
+                            }
+                            else
+                            {
+                                ModTask alternateSenaryTask = SenaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                if (alternateSenaryTask != null)
+                                {
+                                    LastRanSenaryTask = alternateSenaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateSenaryTask.GameTimeLastRan}";
+                                    alternateSenaryTask.Run();
+                                }
+                                else
+                                {
+                                    LastRanSenaryTask = "NONE";//nothing to run at all this tick, everything is on time
+                                }
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Senary Logic");
+            GameFiber.Yield();
+        }
+
         private void StartSecondaryLogic()
         {
             GameFiber.StartNew(delegate

@@ -23,6 +23,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
         bool CanLootLookedAtPed { get; }
+        bool CanGrabLookedAtPed { get; }
+        float ClosestPoliceDistanceToPlayer { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

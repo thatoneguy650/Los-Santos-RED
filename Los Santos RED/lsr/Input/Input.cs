@@ -211,6 +211,10 @@ namespace LosSantosRED.lsr
             {
                 Player.LootPed();
             }
+            else if (Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
+            {
+                Player.GrabPed();
+            }
         }
         private void ScenarioCheck()
         {

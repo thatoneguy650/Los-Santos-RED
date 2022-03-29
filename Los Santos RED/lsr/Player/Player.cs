@@ -119,9 +119,15 @@ namespace Mod
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically; // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
+
+
+        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
+        public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);// && ((CurrentLookedAtPed.Money > 0 && !CurrentLookedAtPed.IsDead) || (CurrentLookedAtPed.HasMenu && CurrentLookedAtPed.ShopMenu.Items.Any(x=>x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0)));
+
         public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);// && ((CurrentLookedAtPed.Money > 0 && !CurrentLookedAtPed.IsDead) || (CurrentLookedAtPed.HasMenu && CurrentLookedAtPed.ShopMenu.Items.Any(x=>x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0)));
         public bool IsLootingBody { get; set; }
+        public bool IsHoldingHostage { get; set; }
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;// && (!CurrentTargetedPed.IsInVehicle || CurrentTargetedPed.;
@@ -159,7 +165,7 @@ namespace Mod
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 { get; set; }
-        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed}    {Violations.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
+        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed} CanGrabLookedAtPed {CanGrabLookedAtPed} DIstance {CurrentLookedAtPed.DistanceToPlayer}  {Violations.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.DebugString;
@@ -210,7 +216,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated); //took out vehicle in here, might need at one star vehicle is ok
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated); //took out vehicle in here, might need at one star vehicle is ok
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -379,7 +385,7 @@ namespace Mod
         public int WantedLevel => wantedLevel;
         public bool IsWavingHands { get; set; }
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -428,7 +434,7 @@ namespace Mod
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
             CellPhone.Setup();
 
-            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems);
+            PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             PlayerTasks.Setup();
 
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
@@ -819,7 +825,7 @@ namespace Mod
             OfficerFriendlyRelationship.Dispose();
 
             isActive = false;
-
+            RemoveGPSRoute();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
 
 
@@ -1264,6 +1270,9 @@ namespace Mod
             HealthState.Reset();
             IsPerformingActivity = false;
             CurrentVehicle = null;
+
+            RemoveGPSRoute();
+
             // IsIntoxicated = false;
 
             if (resetWanted)
@@ -1636,6 +1645,40 @@ namespace Mod
             //    Interaction.Start();
             //}
         }
+
+        public void GrabPed()
+        {
+
+
+            if (!IsPerformingActivity && CanPerformActivities && CanGrabLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new HumanShield(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+                LowerBodyActivity.Start();
+            }
+
+
+
+
+            //if (!IsInteracting && CanLootLookedAtPed)
+            //{
+            //    if (Interaction != null)
+            //    {
+            //        Interaction.Dispose();
+            //    }
+            //    Interaction = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+            //    Interaction.Start();
+            //}
+        }
+
+
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)

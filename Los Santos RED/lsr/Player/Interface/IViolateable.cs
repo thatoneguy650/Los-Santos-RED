@@ -53,5 +53,6 @@ namespace LosSantosRED.lsr.Interface
         void OnVehicleCrashed();
         GangRelationships GangRelationships { get; }
         bool IsDoingSuspiciousActivity { get; }
+        bool IsHoldingHostage { get; }
     }
 }

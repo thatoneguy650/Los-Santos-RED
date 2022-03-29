@@ -25,6 +25,10 @@ public class GangDen : InteractableLocation
 
 
     private Transaction Transaction;
+    private UIMenuNumericScrollerItem<int> RestMenuItem;
+    private bool KeepInteractionGoing;
+    private UIMenuItem LayLowMenuItem;
+
 
     public GangDen() : base()
     {
@@ -53,6 +57,7 @@ public class GangDen : InteractableLocation
         GangID = _gangID;
         MenuID = menuID;
         ButtonPromptText = $"Enter {Name}";
+        CanInteractWhenWanted = true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
@@ -67,35 +72,61 @@ public class GangDen : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
                 CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-                PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-                if (ExpectedMoney > 0 && pt.IsReadyForPayment)
+                if(Player.IsWanted)
                 {
-                    dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
-                    InteractionMenu.AddItem(dropoffCash);
+                    LayLowMenuItem = new UIMenuItem("Lay Low", "Wait out the cops.");
+                    InteractionMenu.AddItem(LayLowMenuItem);
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing || Player.IsWanted)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                    InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
                 }
-                else if (ExpectedItem != null && pt.IsReadyForPayment)
+                if (Player.IsNotWanted)
                 {
-                    dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
-                    InteractionMenu.AddItem(dropoffItem);
+                    RemoveLayLow();
+                    KeepInteractionGoing = false;
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                    PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
+                    if (ExpectedMoney > 0 && pt.IsReadyForPayment)
+                    {
+                        dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
+                        InteractionMenu.AddItem(dropoffCash);
+                    }
+                    else if (ExpectedItem != null && pt.IsReadyForPayment)
+                    {
+                        dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
+                        InteractionMenu.AddItem(dropoffItem);
+                    }
+                    else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
+                    {
+                        completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
+                        InteractionMenu.AddItem(completeTask);
+                    }
+                    RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                    {
+                        MenuPool.ProcessMenus();
+                        Transaction?.PurchaseMenu?.Update();
+                        Transaction?.SellMenu?.Update();
+                        GameFiber.Yield();
+                    }
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: Gang Den LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
+                    //Transaction.ProcessTransactionMenu();
+                    Transaction.DisposeTransactionMenu();
                 }
-                else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
-                {
-                    completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
-                    InteractionMenu.AddItem(completeTask);
-                }
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
-                Transaction.DisposeTransactionMenu();
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
                 Player.IsInteractingWithLocation = false;
@@ -154,7 +185,69 @@ public class GangDen : InteractableLocation
             Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
             InteractionMenu.Visible = false;
         }
+        else if (selectedItem == RestMenuItem)
+        {
+            Rest(RestMenuItem.Value);
+        }
+        else if (selectedItem == LayLowMenuItem)
+        {
+            LayLow();
+        }
     }
 
+
+    private void Rest(int Hours)
+    {
+        Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
+        InteractionMenu.Visible = false;
+        KeepInteractionGoing = true;
+        DateTime TimeLastAddedItems = Time.CurrentDateTime;
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            while (Time.IsFastForwarding)
+            {
+                if(DateTime.Compare(Time.CurrentDateTime, TimeLastAddedItems) >= 0)
+                {
+                    if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
+                    {
+                        Game.LocalPlayer.Character.Health++;
+                    }
+                    Player.GangRelationships.ChangeReputation(AssociatedGang, 2, false);
+                    TimeLastAddedItems = TimeLastAddedItems.AddMinutes(30);
+                }
+                GameFiber.Yield();
+            }
+            InteractionMenu.Visible = true;
+            KeepInteractionGoing = false;
+        }, "RestWatcher");
+        EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT GANG DEN", 3);
+    }
+    private void LayLow()
+    {
+        int TimeToWait = RandomItems.GetRandomNumberInt(8, 12);
+        Time.FastForward(Time.CurrentDateTime.AddHours(TimeToWait));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
+        InteractionMenu.Visible = false;
+        KeepInteractionGoing = true;
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            while (Time.IsFastForwarding)
+            {
+                GameFiber.Yield();
+            }
+            Player.SetWantedLevel(0, "Gang Lay Low", true);
+            RemoveLayLow();
+            //InteractionMenu.Visible = true;
+            //KeepInteractionGoing = false;
+        }, "LayLowWatcher");
+        EntryPoint.WriteToConsole($"PLAYER EVENT: START LAY LOW ACTIVITY AT GANG DEN", 3);
+    }
+    private void RemoveLayLow()
+    {
+        if (InteractionMenu.MenuItems.IndexOf(LayLowMenuItem) >= 0)
+        {
+            InteractionMenu.RemoveItemAt(InteractionMenu.MenuItems.IndexOf(LayLowMenuItem));
+            InteractionMenu.RefreshIndex();
+        }
+    }
 }
 

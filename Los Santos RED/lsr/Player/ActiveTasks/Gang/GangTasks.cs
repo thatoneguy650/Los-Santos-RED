@@ -14,7 +14,7 @@ public class GangTasks
 {
 
     private ITaskAssignable Player;
-    private ITimeReportable Time;
+    private ITimeControllable Time;
     private IGangs Gangs;
     private PlayerTasks PlayerTasks;
     private IPlacesOfInterest PlacesOfInterest;
@@ -29,8 +29,9 @@ public class GangTasks
     public RivalGangTheftTask RivalGangTheftTask { get; private set; }
     public GangPickupTask GangPickupTask { get; private set; }
     public GangDeliveryTask GangDeliveryTask { get; private set; }
+    public GangWheelmanTask GangWheelmanTask { get; private set; }
 
-    public GangTasks(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus)
+    public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
         Player = player;
         Time = time;
@@ -47,6 +48,7 @@ public class GangTasks
         RivalGangTheftTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
         GangPickupTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
         GangDeliveryTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, shopMenus);
+        GangWheelmanTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, weapons,names, pedGroups, shopMenus);
     }
     public void Setup()
     {
@@ -55,6 +57,7 @@ public class GangTasks
         RivalGangTheftTask.Setup();
         GangPickupTask.Setup();
         GangDeliveryTask.Setup();
+        GangWheelmanTask.Setup();
     }
     public void Dispose()
     {
@@ -63,6 +66,7 @@ public class GangTasks
         RivalGangTheftTask.Dispose();
         GangPickupTask.Dispose();
         GangDeliveryTask.Dispose();
+        GangWheelmanTask.Dispose();
     }
 }
 

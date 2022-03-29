@@ -30,6 +30,9 @@ public class PlayerInfoMenu
     private IZones Zones;
     private TabSubmenuItem PhoneRepliesSubMenu;
     private TabSubmenuItem LicensesSubMenu;
+    private List<BasicLocation> SearchResultLocations = new List<BasicLocation>();
+    private UIMenuItem SearchLocationByName;
+    private UIMenuListScrollerItem<BasicLocation> LocationResults;
 
     public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
     {
@@ -218,9 +221,11 @@ public class PlayerInfoMenu
     {
         List<UIMenuItem> menuItems = new List<UIMenuItem>();
         menuItems.Add(new UIMenuItem("Remove GPS Route", "Remove any enabled GPS Blip"));
-
-
-        List<BasicLocation> Residences = new List<BasicLocation>();
+        SearchLocationByName = new UIMenuItem("Search For Location", "Search for a location");
+        menuItems.Add(SearchLocationByName);
+        LocationResults = new UIMenuListScrollerItem<BasicLocation>("Search Results", "Results of the search", SearchResultLocations) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() };
+        menuItems.Add(LocationResults);
+        List <BasicLocation> Residences = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Residences.Any(x=> x.IsOwnedOrRented))
         {
             foreach (Residence res in PlacesOfInterest.PossibleLocations.Residences.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
@@ -681,10 +686,17 @@ public class PlayerInfoMenu
         //        Player.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);
         //    }
         //}
-        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
+        if(selectedItem == SearchLocationByName)
+        {
+            string text1 = NativeHelper.GetKeyboardInput("");
+            SearchResultLocations = PlacesOfInterest.GetAllLocations().Where(x => x.Name.ToLower().Contains(text1.ToLower())).ToList();
+            LocationResults.Items = SearchResultLocations;
+            LocationResults.Reformat();
+        }
+        else if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
         {
             UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;
-            if (myItem.SelectedItem != null)
+            if (selectedItem != null && myItem != null && myItem.Items.Any() && myItem.SelectedItem != null)
             {
                 Player.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);
             }

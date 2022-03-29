@@ -11,8 +11,7 @@ public class ButtonPrompts
     
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
-
-
+    private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -45,10 +44,16 @@ public class ButtonPrompts
         {
             Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
         }
-
-
-
-        if (!addedPromptGroup && Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && Player.IsNotWanted)
+        if (Player.CanGrabLookedAtPed)
+        {
+            PersonGrabPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
+        }
+        if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;
@@ -86,6 +91,10 @@ public class ButtonPrompts
     public bool IsPressed(string identifier)
     {
         return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsPressedNow);
+    }
+    public bool IsHeld(string identifier)
+    {
+        return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsHeldNow);
     }
     private void PersonInteractingPrompts()
     {
@@ -145,12 +154,24 @@ public class ButtonPrompts
         //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
         //}
     }
-
+    private void PersonGrabPrompts()
+    {
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Grab {Player.CurrentLookedAtPed.Handle}"))
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
+            Player.ButtonPromptList.Add(new ButtonPrompt($"Grab {Player.CurrentLookedAtPed.FormattedName}", "Grab", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999));
+        }
+        //else
+        //{
+        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        //}
+    }
     public void RemovePrompts(string groupName)
     {
         Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
     }
-
     private void LocationInteractingPrompts()
     {
         Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");

@@ -479,6 +479,12 @@ namespace LosSantosRED.lsr
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));
             }
 
+            if(Player.IsHoldingHostage)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));
+            }
+
+
         }
         private void CheckTrafficViolations()
         {

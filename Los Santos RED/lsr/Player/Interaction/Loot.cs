@@ -149,7 +149,6 @@ public class Loot : DynamicActivity
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Searched", $"~y~{Ped.Name}", Description);
         }
     }
-
     private bool MoveToBody()
     {
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
