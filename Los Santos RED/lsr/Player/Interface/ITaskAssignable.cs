@@ -21,6 +21,13 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
+        int WantedLevel { get; }
+        PoliceResponse PoliceResponse { get; }
+        WeaponInformation CurrentWeapon { get; }
+        bool RecentlyShot { get; }
+        bool IsWanted { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
+        bool AnyPoliceCanSeePlayer { get; }
 
         void GiveMoney(int paymentAmountOnCompletion);
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);

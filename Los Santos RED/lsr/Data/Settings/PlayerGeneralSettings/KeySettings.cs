@@ -38,6 +38,8 @@ public class KeySettings : ISettingsDefaultable
 
     public Keys ActivityKey { get; set; }
     public Keys ActivityKeyModifier { get; set; }
+    public Keys CrouchKeyModifier { get; set; }
+    public Keys CrouchKey { get; set; }
 
     public KeySettings()
     {
@@ -61,6 +63,12 @@ public class KeySettings : ISettingsDefaultable
         EngineToggleModifier = Keys.LShiftKey;
         ManualDriverDoorClose = Keys.None;
         ManualDriverDoorCloseModifier = Keys.LControlKey;
+
+
+        CrouchKey = Keys.None;
+        CrouchKeyModifier = Keys.LControlKey;
+
+
         SprintKey = Keys.Z;
         SprintKeyModifier = Keys.None;
         InteractStart = Keys.O;

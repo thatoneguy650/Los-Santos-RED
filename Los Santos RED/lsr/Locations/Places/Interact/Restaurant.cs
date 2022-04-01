@@ -28,13 +28,18 @@ public class Restaurant : InteractableLocation
     //public ShopMenu Menu { get; set; }
     //public string MenuID { get; set; }
 
+
+    public FoodType FoodType { get; set; } = FoodType.Generic;
+
+
     public override int MapIcon { get; set; } = 621;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public Restaurant(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public Restaurant(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID,FoodType foodType) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
+        FoodType = foodType;
         ButtonPromptText = $"Dine at {Name}";
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)

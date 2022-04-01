@@ -59,5 +59,6 @@ namespace LosSantosRED.lsr.Interface
         void PauseDynamicActivity();
         void LootPed();
         void GrabPed();
+        void Crouch();
     }
 }

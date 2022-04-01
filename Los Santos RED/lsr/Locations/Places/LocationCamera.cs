@@ -54,6 +54,8 @@ public class LocationCamera
         SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
         SPC_ALLOW_PAD_SHAKE = (1 << 12)
     };
+
+
     public void Setup()
     {
         DisableControl();

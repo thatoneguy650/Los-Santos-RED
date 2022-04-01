@@ -26,6 +26,8 @@ public class HumanShield : DynamicActivity
 
 
     private bool isAnimationPaused = false;
+    private int storedViewMode;
+
     //private WeaponInformation previousWeapon;
 
     public HumanShield(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems)
@@ -65,8 +67,9 @@ public class HumanShield : DynamicActivity
     }
     private void TakHostage()
     {
+        SetCloseCamera();
         EntryPoint.WriteToConsole("Taking Hostage");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
         Ped.Pedestrian.AttachTo(Player.Character, 0, new Vector3(-0.31f, 0.12f, 0.04f), new Rotator(0, 0, 0));
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1, 0, false, false, false);//-1
         uint GameTimeStarted = Game.GameTime;
@@ -113,12 +116,15 @@ public class HumanShield : DynamicActivity
                 }
                 //Player.Character.IsArmIkEnabled = false;
             }
-            
 
-
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, 0.75f);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Player.Character, (int)PedConfigFlags.PED_FLAG_NO_PLAYER_MELEE, true);
             GameFiber.Yield();
         }
         Player.ButtonPromptList.RemoveAll(x => x.Group == "Hostage");
+
+        SetRegularCamera();
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Player.Character, (int)PedConfigFlags.PED_FLAG_NO_PLAYER_MELEE, false);
     }
 
     private void ReleaseHostage()
@@ -172,6 +178,31 @@ public class HumanShield : DynamicActivity
             }
         }
     }
+
+    private void SetCloseCamera()
+    {
+        int viewMode = NativeFunction.Natives.GET_FOLLOW_PED_CAM_VIEW_MODE<int>();
+        if (viewMode != 4 && viewMode != 0)
+        {
+            storedViewMode = viewMode;
+            NativeFunction.Natives.SET_FOLLOW_PED_CAM_VIEW_MODE(0);
+            EntryPoint.WriteToConsole($"SetCloseCamera viewMode {viewMode} storedViewMode {storedViewMode}", 5);
+        }
+    }
+    private void SetRegularCamera()
+    {
+        int viewMode = NativeFunction.Natives.GET_FOLLOW_PED_CAM_VIEW_MODE<int>();
+        if (viewMode != 4)
+        {
+            if (viewMode != storedViewMode)
+            {
+                NativeFunction.Natives.SET_FOLLOW_PED_CAM_VIEW_MODE(storedViewMode);
+                storedViewMode = -1;
+            }
+            EntryPoint.WriteToConsole($"SetCloseCamera storedViewMode {storedViewMode}", 5);
+        }
+    }
+
 
     private bool PlayAnimation(string dictionary, string animation)
     {

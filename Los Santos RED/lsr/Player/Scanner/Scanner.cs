@@ -1356,6 +1356,9 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription dispatchDescription, Dispatch dispatchToPlay)
         {
+            List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
+
+
             EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}",5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
@@ -1414,48 +1417,52 @@ namespace LosSantosRED.lsr
                 CurrentlyPlayingDispatch = dispatchToPlay;
                 if (Settings.SettingsManager.ScannerSettings.EnableAudio)
                 {
-                    foreach (string audioname in MyAudioEvent.SoundsToPlay)
+                    foreach (string audioname in soundsToPlayer)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}", 5);
-                        if(Settings.SettingsManager.ScannerSettings.SetVolume)
+                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname != ""}", 5);
+                        if (audioname != "")
                         {
-                            AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);
-                        }
-                        else
-                        {
-                            AudioPlayer.Play(audioname, false);
-                        }
-                        while (AudioPlayer.IsAudioPlaying)
-                        {
-                            if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                            
+                            if (Settings.SettingsManager.ScannerSettings.SetVolume)
                             {
-                                Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                                GameTimeLastDisplayedSubtitle = Game.GameTime;
+                                AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);
                             }
-                            GameTimeLastAnnouncedDispatch = Game.GameTime;
-                            if (MyAudioEvent.HasStreetAudio)
+                            else
                             {
-                                GameTimeLastMentionedStreet = Game.GameTime;
+                                AudioPlayer.Play(audioname, false);
                             }
-                            if (MyAudioEvent.HasZoneAudio)
+                            while (AudioPlayer.IsAudioPlaying)
                             {
-                                GameTimeLastMentionedZone = Game.GameTime;
+                                if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                                {
+                                    Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
+                                    GameTimeLastDisplayedSubtitle = Game.GameTime;
+                                }
+                                GameTimeLastAnnouncedDispatch = Game.GameTime;
+                                if (MyAudioEvent.HasStreetAudio)
+                                {
+                                    GameTimeLastMentionedStreet = Game.GameTime;
+                                }
+                                if (MyAudioEvent.HasZoneAudio)
+                                {
+                                    GameTimeLastMentionedZone = Game.GameTime;
+                                }
+                                if (MyAudioEvent.HasUnitAudio)
+                                {
+                                    GameTimeLastMentionedUnits = Game.GameTime;
+                                }
+                                GameFiber.Yield();
+                                if (AbortedAudio)
+                                {
+                                    EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                    break;
+                                }
                             }
-                            if(MyAudioEvent.HasUnitAudio)
-                            {
-                                GameTimeLastMentionedUnits = Game.GameTime;
-                            }
-                            GameFiber.Yield();
                             if (AbortedAudio)
                             {
-                                EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                EntryPoint.WriteToConsole($"AbortedAudio2", 5);
                                 break;
                             }
-                        }
-                        if (AbortedAudio)
-                        {
-                            EntryPoint.WriteToConsole($"AbortedAudio2", 5);
-                            break;
                         }
                     }
                 }

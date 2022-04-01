@@ -123,12 +123,6 @@ public class ShopMenus : IShopMenus
             new ShopMenu("ToolMenu","Tools",new List<MenuItem>() { new MenuItem("Screwdriver",19),new MenuItem("Hammer", 15),new MenuItem("Drill", 50),new MenuItem("Pliers", 20),new MenuItem("Shovel", 60),new MenuItem("Wrench", 24),}),
             new ShopMenu("CheapHotelMenu","Cheap Hotel",new List<MenuItem>() { new MenuItem("Room: Single Twin",99),new MenuItem("Room: Single Queen", 130),new MenuItem("Room: Double Queen", 150),new MenuItem("Room: Single King", 160), }),
             new ShopMenu("ExpensiveHotelMenu","Expensive Hotel",new List<MenuItem>() { new MenuItem("Room: Single Queen", 189),new MenuItem("Room: Double Queen", 220),new MenuItem("Room: Single King", 250),new MenuItem("Room: Delux", 280), }),
-            new ShopMenu("HookerMenu","Hooker",new List<MenuItem>() { new MenuItem("Handy", 50),new MenuItem("Head", 75),new MenuItem("Half And Half", 150),new MenuItem("Full",200),}),
-
-
-            new ShopMenu("ScrapMenu","Scrap",new List<MenuItem>() { new MenuItem("Scrap Vehicle", 0,2500)}),
-
-
             new ShopMenu("ConvenienceStoreMenu","Convenience Store",new List<MenuItem>() { 
                 new MenuItem("Hot Dog", 5),
                 new MenuItem("Burger",3),
@@ -250,7 +244,22 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of Raine Water", 2) }),
-            new ShopMenu("PizzaMenu","Pizza",new List<MenuItem>() { 
+            new ShopMenu("PizzaMenu","Pizza",new List<MenuItem>() {
+
+
+
+
+                new MenuItem("Small Cheese Pizza", 10),
+                new MenuItem("Small Pepperoni Pizza", 12),
+                new MenuItem("Small Supreme Pizza", 13),
+                new MenuItem("Medium Cheese Pizza", 17),
+                new MenuItem("Medium Pepperoni Pizza", 18),
+                new MenuItem("Medium Supreme Pizza", 19),
+                new MenuItem("Large Cheese Pizza", 23),
+                new MenuItem("Large Pepperoni Pizza", 24),
+                new MenuItem("Large Supreme Pizza", 25),
+
+
                 new MenuItem("Slice of Pizza", 3),
                 new MenuItem("Cup of Sprunk", 2),
                 new MenuItem("Bottle of A.M.", 3),
@@ -259,7 +268,16 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Blarneys", 4),
                 new MenuItem("Bottle of Jakeys", 3),
                 new MenuItem("Bottle of Stronzo", 4),
-                new MenuItem("Bottle of Dusche", 3) }),
+                new MenuItem("Bottle of Dusche", 3)
+            
+            
+            
+            
+            
+            
+        
+            
+            }),
             new ShopMenu("DonutMenu","Donut",new List<MenuItem>() {
                 new MenuItem("Donut", 1),
                 new MenuItem("Can of eCola", 1),
@@ -323,27 +341,22 @@ public class ShopMenus : IShopMenus
 
 
             }) { BannerOverride = "candybox.png" },
-
             new ShopMenu("WaterVendingMenu","Raine Machine",new List<MenuItem>() {
                 new MenuItem("Bottle of Raine Water", 2) }) { BannerOverride = "raine.png" },
-
             new ShopMenu("SprunkVendingMenu","Sprunk Machine",new List<MenuItem>() {
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Orang-O-Tang", 1),
                 new MenuItem("Bottle of JUNK Energy", 2),
                 new MenuItem("Bottle of Raine Water", 2), }) { BannerOverride = "sprunk.png" },
-
             new ShopMenu("eColaVendingMenu","eCola Machine",new List<MenuItem>() {
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Orang-O-Tang", 1),
                 new MenuItem("Can of Squirter", 1),
                 new MenuItem("Bottle of Raine Water", 2), }) { BannerOverride = "ecola.png" },
-
             new ShopMenu("BeanMachineVendingMenu","Bean Machine",new List<MenuItem>() {
                 new MenuItem("High Noon Coffee", 2) }) { BannerOverride = "beanmachine.png" },
-
             new ShopMenu("CigVendingMenu","Cigarette Machine",new List<MenuItem>() { 
                 new MenuItem("Redwood Regular", 30),
                 new MenuItem("Redwood Mild", 32),
@@ -364,7 +377,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("DIC Lighter",5), 
                 new MenuItem("DIC Lighter Ultra", 7),
             }),
-
             new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow",10),
                 new MenuItem("OG Kush",12),
                 new MenuItem("Northern Lights",13),
@@ -392,22 +404,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Zombix", 267, 0),
             }),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
 
 
             //Specific
@@ -502,8 +498,17 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup Of Coffee",3),
                 new MenuItem("Cup of eCola",2),
                 new MenuItem("Cup of Sprunk",2), }),
-            new ShopMenu("AlDentesMenu","Al Dentes",new List<MenuItem>() { 
-                new MenuItem("Slice of Pizza", 3),
+
+            new ShopMenu("PizzaThisMenu","Pizza",new List<MenuItem>() {
+                new MenuItem("10 inch Cheese Pizza", 11),
+                new MenuItem("10 inch Pepperoni Pizza", 13),
+                new MenuItem("10 inch Supreme Pizza", 14),
+                new MenuItem("12 inch Cheese Pizza", 18),
+                new MenuItem("12 inch Pepperoni Pizza", 19),
+                new MenuItem("12 inch Supreme Pizza", 20),
+                new MenuItem("18 inch Cheese Pizza", 25),
+                new MenuItem("18 inch Pepperoni Pizza", 27),
+                new MenuItem("18 inch Supreme Pizza", 30),
                 new MenuItem("Cup of Sprunk", 2),
                 new MenuItem("Bottle of A.M.", 3),
                 new MenuItem("Bottle of PiBwasser", 3),
@@ -511,7 +516,30 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Blarneys", 4),
                 new MenuItem("Bottle of Jakeys", 3),
                 new MenuItem("Bottle of Stronzo", 4),
-                new MenuItem("Bottle of Dusche", 3) }),
+                new MenuItem("Bottle of Dusche", 3)
+            }),
+
+            new ShopMenu("AlDentesMenu","Al Dentes",new List<MenuItem>() {
+                new MenuItem("Small Cheese Pizza", 9),
+                new MenuItem("Small Pepperoni Pizza", 11),
+                new MenuItem("Small Supreme Pizza", 12),
+                new MenuItem("Medium Cheese Pizza", 16),
+                new MenuItem("Medium Pepperoni Pizza", 17),
+                new MenuItem("Medium Supreme Pizza", 18),
+                new MenuItem("Large Cheese Pizza", 22),
+                new MenuItem("Large Pepperoni Pizza", 23),
+                new MenuItem("Large Supreme Pizza", 24),
+                new MenuItem("Cup of Sprunk", 2),
+                new MenuItem("Bottle of A.M.", 3),
+                new MenuItem("Bottle of PiBwasser", 3),
+                new MenuItem("Bottle of Barracho", 4),
+                new MenuItem("Bottle of Blarneys", 4),
+                new MenuItem("Bottle of Jakeys", 3),
+                new MenuItem("Bottle of Stronzo", 4),
+                new MenuItem("Bottle of Dusche", 3)
+           
+            
+            }),
             new ShopMenu("BeanMachineMenu","Bean Machine",new List<MenuItem>() {     
                 new MenuItem("High Noon Coffee", 7),
                 new MenuItem("The Eco-ffee", 4),

@@ -77,6 +77,7 @@ public class PlayerTasks
         GangTasks.Dispose();
         CorruptCopTasks.Dispose();
         UndergroundGunsTasks.Dispose();
+        LastContactTask.Clear();
     }
     public void CancelTask(string contactName)
     {
@@ -204,6 +205,15 @@ public class PlayerTasks
             PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
+
+    public void AddQuickTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int hoursToComplete, string taskName)
+    {
+        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+        {
+            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddHours(hoursToComplete), StartTime = Time.CurrentDateTime });
+        }
+    }
+
     public void RemoveTask(string contactName)
     {
         PlayerTaskList.RemoveAll(x => x.ContactName == contactName);

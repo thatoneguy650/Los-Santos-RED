@@ -132,6 +132,9 @@ public class PedExt : IComplexTaskable
     public bool IsCop { get; set; } = false;
     public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
     public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
+
+
+    public Crime WorstObservedCrime => PedCrimes.CrimesObservedViolating.OrderBy(x=> x.Priority).FirstOrDefault();
     public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
     public bool IsDealingDrugs { get; set; } = false;
     public bool IsDealingIllegalGuns { get; set; } = false;
@@ -157,6 +160,7 @@ public class PedExt : IComplexTaskable
 
     public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedCrimes.IsWanted;
+    public bool IsNotWanted => PedCrimes.IsNotWanted;
     public bool IsZombie { get; set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
@@ -563,6 +567,14 @@ public class PedExt : IComplexTaskable
 
             GameTimeLastYelled = Game.GameTime;
         }
+    }
+    public void ResetPlayerCrimes()
+    {
+        PlayerPerception.CrimesWitnessed.Clear();
+    }
+    public void ResetCrimes()
+    {
+        PedCrimes.Reset();
     }
     private void PlaySpeech(string speechName, bool useMegaphone)
     {

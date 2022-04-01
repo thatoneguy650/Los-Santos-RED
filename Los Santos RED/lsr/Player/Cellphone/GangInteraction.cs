@@ -27,6 +27,7 @@ public class GangInteraction
     private UIMenuItem GangTheft;
     private UIMenuItem GangDelivery;
     private UIMenuItem GangWheelman;
+    private UIMenuItem GangPizza;
     private UIMenuItem GangTaskCancel;
     private Gang ActiveGang;
     private IGangs Gangs;
@@ -78,13 +79,20 @@ public class GangInteraction
                 GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
                 GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
                 GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
-
+                GangPizza = new UIMenuItem("Pizza Man", "Pizza Time") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
 
                 GangMenu.AddItem(GangHit);
                 GangMenu.AddItem(GangMoneyPickup);
                 GangMenu.AddItem(GangTheft);
                 GangMenu.AddItem(GangDelivery);
                 GangMenu.AddItem(GangWheelman);
+
+
+                if(gang.ShortName == "Gambetti" || gang.ShortName == "Pavano" || gang.ShortName == "Lupisella" || gang.ShortName == "Messina" || gang.ShortName == "Ancelotti")
+                {
+                    GangMenu.AddItem(GangPizza);
+                }
+
             }
             RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
             GangMenu.AddItem(RequestGangDen);
@@ -153,6 +161,11 @@ public class GangInteraction
         else if (selectedItem == GangWheelman)
         {
             Player.PlayerTasks.GangTasks.GangWheelmanTask.Start(ActiveGang);
+            sender.Visible = false;
+        }
+        else if (selectedItem == GangPizza)
+        {
+            Player.PlayerTasks.GangTasks.GangPizzaDeliveryTask.Start(ActiveGang);
             sender.Visible = false;
         }
 

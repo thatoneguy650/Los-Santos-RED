@@ -101,6 +101,9 @@ public class SpawnTask
             }
         }
     }
+
+    public bool PlacePedOnGround { get; set; } = false;
+
     public void AttemptSpawn()
     {
         try
@@ -226,12 +229,25 @@ public class SpawnTask
     {
         try
         {
-            Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
+            Ped ped = null;
+            if (PlacePedOnGround)
+            {
+                ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
+            }
+            else
+            {
+                ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
+            }
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();
             if (ped.Exists())
-            {          
-
+            {
+                if(PlacePedOnGround)
+                {
+                    float resultArg = ped.Position.Z;
+                    NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD(ped.Position.X, ped.Position.Y, ped.Position.Z, out resultArg, false);
+                    ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+                }
                 int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
                 int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
                 ped.MaxHealth = DesiredHealth;

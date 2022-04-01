@@ -224,6 +224,7 @@ namespace Mod
         public bool IsConversing { get; set; }
         public bool IsCop { get; set; } = false;
         public bool IsCustomizingPed { get; set; }
+        public bool IsCrouched { get; set; }
         public bool IsDead { get; private set; }
         public bool IsDealingDrugs { get; set; } = false;
         public bool IsDealingIllegalGuns { get; set; } = false;
@@ -601,7 +602,7 @@ namespace Mod
         }
         public void AddDistressedPed(Vector3 position)
         {
-            if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => x.IsUnconscious || x.IsInWrithe && !x.HasStartedEMTTreatment))
+            if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
             {
                 Scanner.Reset();
                 Investigation.Start(position, false, false, true, false);
@@ -698,6 +699,39 @@ namespace Mod
                 }
             }
         }
+
+
+        public void Crouch()
+        {
+            string CrouchSet = "move_crouch_proto";
+            CrouchSet = "move_ped_crouched";
+            CrouchSet = "move_ped_crouched";
+
+
+            //if(CurrentWeapon != null && !CurrentWeapon.CanPistolSuicide)
+            //{
+            //    CrouchSet = "move_aim_strafe_crouch_2h";
+            //}
+
+            if (!IsInVehicle)
+            {
+                if (IsCrouched)
+                {
+                    NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Character);
+                    IsCrouched = false;
+                }
+                else
+                {
+                    if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>(CrouchSet))
+                    {
+                        NativeFunction.Natives.REQUEST_ANIM_SET(CrouchSet);
+                    }
+                    NativeFunction.Natives.SET_PED_MOVEMENT_CLIPSET(Character, CrouchSet, 0.5f);
+                    IsCrouched = true;
+                }
+            }
+        }
+
         public void CommitSuicide()
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)

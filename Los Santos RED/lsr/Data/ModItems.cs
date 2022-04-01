@@ -111,7 +111,7 @@ public class ModItems : IModItems
 
 
 
-            new ModItem("Scrap Vehicle","Sell the vehicle for scrap",eConsumableType.Service) { ConsumeOnPurchase = true, MeasurementName = "Vehicle" },
+            //new ModItem("Scrap Vehicle","Sell the vehicle for scrap",eConsumableType.Service) { ConsumeOnPurchase = true, MeasurementName = "Vehicle" },
 
 
 
@@ -176,8 +176,70 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_burger_01",57005,new Vector3(0.16f, 0.01f, -0.04f),new Rotator(0.0f, 28.0f, 0.0f)), HealthChangeAmount = 10 },
             new ModItem("Donut","MMMMMMM Donuts",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("prop_donut_01",57005,new Vector3(0.15f, 0.01f, -0.03f),new Rotator(-15.0f, 17.0f, 0.0f)), HealthChangeAmount = 10 } ,
+
+
+
+
+
+
+
+
+
+
+
+
             new ModItem("Slice of Pizza","Caution may be hot",eConsumableType.Eat) {
                 ModelItem = new PhysicalItem("v_res_tt_pizzaplate",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 10 } ,
+
+
+            new ModItem("Small Cheese Pizza","Best when you are home alone.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25 } ,
+            new ModItem("Small Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30 } ,
+            new ModItem("Small Supreme Pizza","Get stuffed",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35 } ,
+            new ModItem("Medium Cheese Pizza","Best when you are home alone.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50 } ,
+            new ModItem("Medium Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55 } ,
+            new ModItem("Medium Supreme Pizza","Get stuffed",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60 } ,
+            new ModItem("Large Cheese Pizza","Best when you are home alone.",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65 } ,
+            new ModItem("Large Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70 } ,
+            new ModItem("Large Supreme Pizza","Get stuffed",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_02",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75 } ,
+
+
+
+
+            new ModItem("10 inch Cheese Pizza","Extra cheesy!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25 } ,
+            new ModItem("10 inch Pepperoni Pizza","Mostly Meat!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30 } ,
+            new ModItem("10 inch Supreme Pizza","We forgot the kitchen sink!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35 } ,
+
+            new ModItem("12 inch Cheese Pizza","Extra cheesy!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50 } ,
+            new ModItem("12 inch Pepperoni Pizza","Mostly Meat!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55 } ,
+            new ModItem("12 inch Supreme Pizza","We forgot the kitchen sink!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60 } ,
+
+            new ModItem("18 inch Cheese Pizza","Extra cheesy! Extra Large!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65 } ,
+            new ModItem("18 inch Pepperoni Pizza","Mostly Meat! Extra Large!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70 } ,
+            new ModItem("18 inch Supreme Pizza","We forgot the kitchen sink! Extra Large!",eConsumableType.Eat) {
+                ModelItem = new PhysicalItem("prop_pizza_box_01",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75 } ,
+
+
+
+
+
+
             new ModItem("40 oz","Drink like a true thug!",eConsumableType.Drink) {
                 ModelItem = new PhysicalItem("prop_cs_beer_bot_40oz",57005,new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), IntoxicantName = "Low Proof Alcohol" },
             new ModItem("Bagel Sandwich","Bagel with extras, what more do you need?",eConsumableType.Eat) {

@@ -113,6 +113,7 @@
     <Compile Include="lsr\Data\Intoxicants.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
+    <Compile Include="lsr\Data\Location\FoodType.cs" />
     <Compile Include="lsr\Data\Location\Interiors.cs" />
     <Compile Include="lsr\Data\Location\PossibleLocations.cs" />
     <Compile Include="lsr\Data\Location\ShopMenus.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\CorruptCopTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangDeliveryTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangPickupTask.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangPizzaDeliveryTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\GangWheelmanTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Gang\PayoffGangTask.cs" />

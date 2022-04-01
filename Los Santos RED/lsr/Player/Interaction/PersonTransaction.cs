@@ -124,7 +124,7 @@ public class PersonTransaction : Interaction
                         UpdateOptions();
 
 
-                        if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle))
+                        if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle) && PedCanBeTasked && PedCanBeAmbientTasked)
                         {
                             PanickedByPlayer = true;
                             EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");

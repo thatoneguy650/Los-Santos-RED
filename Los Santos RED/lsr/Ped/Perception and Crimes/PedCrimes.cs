@@ -535,7 +535,7 @@ public class PedCrimes
                 }
             }
             //GameFiber.Yield();
-            if (PedExt.Pedestrian.Exists())//do a yiled above
+            if (PedExt.Pedestrian.Exists() && !PedExt.IsInVehicle)//do a yiled above
             {
                 if (PedExt.Pedestrian.IsInCombat || PedExt.Pedestrian.IsInMeleeCombat)
                 {

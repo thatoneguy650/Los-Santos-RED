@@ -30,6 +30,7 @@ public class GangTasks
     public GangPickupTask GangPickupTask { get; private set; }
     public GangDeliveryTask GangDeliveryTask { get; private set; }
     public GangWheelmanTask GangWheelmanTask { get; private set; }
+    public GangPizzaDeliveryTask GangPizzaDeliveryTask { get; private set; }
 
     public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
@@ -49,6 +50,7 @@ public class GangTasks
         GangPickupTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
         GangDeliveryTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, shopMenus);
         GangWheelmanTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, weapons,names, pedGroups, shopMenus);
+        GangPizzaDeliveryTask = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, shopMenus);
     }
     public void Setup()
     {
@@ -58,6 +60,7 @@ public class GangTasks
         GangPickupTask.Setup();
         GangDeliveryTask.Setup();
         GangWheelmanTask.Setup();
+        GangPizzaDeliveryTask.Setup();
     }
     public void Dispose()
     {
@@ -67,6 +70,7 @@ public class GangTasks
         GangPickupTask.Dispose();
         GangDeliveryTask.Dispose();
         GangWheelmanTask.Dispose();
+        GangPizzaDeliveryTask.Dispose();
     }
 }
 
