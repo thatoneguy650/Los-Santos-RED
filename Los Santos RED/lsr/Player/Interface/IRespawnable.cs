@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
         Licenses Licenses { get; }
+        PlayerTasks PlayerTasks { get; }
 
         //   BigMessageHandler BigMessage { get; }
 

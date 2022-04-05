@@ -208,6 +208,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\GunPickupTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\UndergroundGunsTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\WitnessEliminationTask.cs" />
+    <Compile Include="lsr\Player\Activity\CellPhoneInteractionActivity.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
@@ -378,6 +379,7 @@
     <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
+    <Compile Include="lsr\UI\Pause Menu\SimplePhoneMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />

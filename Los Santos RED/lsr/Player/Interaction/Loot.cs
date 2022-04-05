@@ -152,7 +152,7 @@ public class Loot : DynamicActivity
     private bool MoveToBody()
     {
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
-        Vector3 DesiredPosition = Ped.Pedestrian.Position;
+        Vector3 DesiredPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 0));
         float DesiredHeading = Game.LocalPlayer.Character.Heading;
         //NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, 1.0f, -1, DesiredHeading, 0.2f);
         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Player.Character, Ped.Pedestrian, -1, 1.75f, 0.75f, 1073741824, 1); //Original and works ok
@@ -172,10 +172,39 @@ public class Loot : DynamicActivity
                 break;
             }
             IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(Ped.Pedestrian) <= 1.85f;
+
+
+           // Rage.Debug.DrawArrowDebug(DesiredPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+
+
             GameFiber.Yield();
         }
-        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1200);
-        GameFiber.Sleep(1200);
+
+
+        Vector3 PedRoot = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 0));
+        //var Heading = (PedRoot - Player.Character.Position);
+
+        float calcHeading = (float)GetHeading(Player.Character.Position,PedRoot);
+        float calcHeading2 = (float)CalculeAngle(PedRoot,Player.Character.Position);
+
+        DesiredHeading = calcHeading2;
+
+        EntryPoint.WriteToConsole($"calcHeading 1 {calcHeading} calcHeading2  {calcHeading2}", 5);
+
+
+        //calcHeading = -(90 - calcHeading);
+        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 2000);
+
+
+        EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}", 5);
+
+        //NativeFunction.Natives.TASK_ACHIEVE_HEADING(Player.Character, calcHeading2, -1);//1200
+
+
+
+
+
+        GameFiber.Sleep(2000);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
             EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
@@ -188,6 +217,26 @@ public class Loot : DynamicActivity
             return false;
         }
     }
+    private double GetHeading(Vector3 a, Vector3 b)
+    {
+        double x = b.X - a.X;
+        double y = b.Y - a.Y;
+        return 270 - Math.Atan2(y, x) * (180 / Math.PI);
+    }
+
+
+    private double CalculeAngle(Vector3 start, Vector3 arrival)
+    {
+        var deltaX = Math.Pow((arrival.X - start.X), 2);
+        var deltaY = Math.Pow((arrival.Y - start.Y), 2);
+
+        var radian = Math.Atan2((arrival.Y - start.Y), (arrival.X - start.X));
+        var angle = (radian * (180 / Math.PI) + 360) % 360;
+
+        return angle;
+    }
+
+
     private bool DoLootAnimation()
     {
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");

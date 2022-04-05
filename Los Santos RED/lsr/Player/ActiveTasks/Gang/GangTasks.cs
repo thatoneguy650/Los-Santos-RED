@@ -23,14 +23,18 @@ public class GangTasks
     private IEntityProvideable World;
     private ICrimes Crimes;
     private IModItems ModItems;
+    private IShopMenus ShopMenus;
+    private INameProvideable Names;
+    private IWeapons Weapons;
+    private IPedGroups PedGroups;
 
-    public RivalGangHitTask RivalGangHit { get; private set; }
-    public PayoffGangTask PayoffGangTask { get; private set; }
-    public RivalGangTheftTask RivalGangTheftTask { get; private set; }
-    public GangPickupTask GangPickupTask { get; private set; }
-    public GangDeliveryTask GangDeliveryTask { get; private set; }
-    public GangWheelmanTask GangWheelmanTask { get; private set; }
-    public GangPizzaDeliveryTask GangPizzaDeliveryTask { get; private set; }
+    private List<RivalGangHitTask> RivalGangHits = new List<RivalGangHitTask>();
+    private List<PayoffGangTask> PayoffGangTasks = new List<PayoffGangTask>();
+    private List<RivalGangTheftTask> RivalGangTheftTasks = new List<RivalGangTheftTask>();
+    private List<GangPickupTask> GangPickupTasks = new List<GangPickupTask>();
+    private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
+    private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
+    private List<GangPizzaDeliveryTask> GangPizzaDeliveryTasks = new List<GangPizzaDeliveryTask>();
 
     public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
@@ -44,33 +48,94 @@ public class GangTasks
         World = world;
         Crimes = crimes;
         ModItems = modItems;
-        RivalGangHit = new RivalGangHitTask(Player,Time,Gangs,PlayerTasks,PlacesOfInterest,ActiveDrops,Settings,World,Crimes);
-        PayoffGangTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        RivalGangTheftTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        GangPickupTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        GangDeliveryTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, shopMenus);
-        GangWheelmanTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, weapons,names, pedGroups, shopMenus);
-        GangPizzaDeliveryTask = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, shopMenus);
+        ShopMenus = shopMenus;
+        Names = names;
+        Weapons = weapons;
+        PedGroups = pedGroups;
+        //RivalGangHit = new RivalGangHitTask(Player,Time,Gangs,PlayerTasks,PlacesOfInterest,ActiveDrops,Settings,World,Crimes);
+        //PayoffGangTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        //RivalGangTheftTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        //GangPickupTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        //GangDeliveryTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
+        //GangWheelmanTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, weapons, Names, PedGroups, ShopMenus);
+        //GangPizzaDeliveryTask = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
     }
     public void Setup()
     {
-        RivalGangHit.Setup();
-        PayoffGangTask.Setup();
-        RivalGangTheftTask.Setup();
-        GangPickupTask.Setup();
-        GangDeliveryTask.Setup();
-        GangWheelmanTask.Setup();
-        GangPizzaDeliveryTask.Setup();
+        //RivalGangHit.Setup();
+        //PayoffGangTask.Setup();
+        //RivalGangTheftTask.Setup();
+        //GangPickupTask.Setup();
+        //GangDeliveryTask.Setup();
+        //GangWheelmanTask.Setup();
+        //GangPizzaDeliveryTask.Setup();
     }
     public void Dispose()
+    {    
+        RivalGangHits.ForEach(x=> x.Dispose());
+        PayoffGangTasks.ForEach(x => x.Dispose());
+        RivalGangTheftTasks.ForEach(x => x.Dispose());
+        GangPickupTasks.ForEach(x => x.Dispose());
+        GangDeliveryTasks.ForEach(x => x.Dispose());
+        GangWheelmanTasks.ForEach(x => x.Dispose());
+        GangPizzaDeliveryTasks.ForEach(x => x.Dispose());
+
+        RivalGangHits.Clear();
+        PayoffGangTasks.Clear();
+        RivalGangTheftTasks.Clear();
+        GangPickupTasks.Clear();
+        GangDeliveryTasks.Clear();
+        GangWheelmanTasks.Clear();
+        GangPizzaDeliveryTasks.Clear();
+    }
+    public void StartGangHit(Gang gang)
     {
-        RivalGangHit.Dispose();
-        PayoffGangTask.Dispose();
-        RivalGangTheftTask.Dispose();
-        GangPickupTask.Dispose();
-        GangDeliveryTask.Dispose();
-        GangWheelmanTask.Dispose();
-        GangPizzaDeliveryTask.Dispose();
+        RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        RivalGangHits.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartPayoffGang(Gang gang)
+    {
+        PayoffGangTask newTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        PayoffGangTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangTheft(Gang gang)
+    {
+        RivalGangTheftTask newTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        RivalGangTheftTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangPickup(Gang gang)
+    {
+        GangPickupTask newTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        GangPickupTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangDelivery(Gang gang)
+    {
+        GangDeliveryTask newTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
+        GangDeliveryTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangWheelman(Gang gang)
+    {
+        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus);
+        GangWheelmanTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangPizza(Gang gang)
+    {
+        GangPizzaDeliveryTask newDelivery = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
+        GangPizzaDeliveryTasks.Add(newDelivery);
+        newDelivery.Setup();
+        newDelivery.Start(gang);
     }
 }
 

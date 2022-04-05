@@ -154,7 +154,15 @@ public class WeaponInventory
                                 }
                                 else
                                 {
-                                    SetLessLethal();
+                                    if(WantedLevel >= 2)
+                                    {
+                                        SetLessLethal();
+                                    }
+                                    else
+                                    {
+                                        GameTimeLastWeaponCheck = Game.GameTime;
+                                        SetUnarmed();
+                                    }
                                 }
                             }
                         }
@@ -182,13 +190,16 @@ public class WeaponInventory
     {
         if (WeaponOwner.Pedestrian.Exists())
         {
-            if (WeaponOwner.IsCop && WeaponOwner.CurrentTask?.Name == "AIApprehend")
-            {
-                WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
-                NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
-                NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
-            }
-            else if (WeaponOwner.IsInVehicle)
+            //if (WeaponOwner.IsCop && WeaponOwner.CurrentTask?.Name == "AIApprehend")
+            //{
+            //    WeaponOwner.Pedestrian.Accuracy = 95;//they gonna get FUCKED UP, player WATCH OUT!
+            //    NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, 1000);
+            //    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(WeaponOwner.Pedestrian, 2);
+            //}
+            //else 
+            
+            
+            if (WeaponOwner.IsInVehicle)
             {
                 WeaponOwner.Pedestrian.Accuracy = WeaponOwner.VehicleAccuracy;
                 NativeFunction.Natives.SET_PED_SHOOT_RATE(WeaponOwner.Pedestrian, WeaponOwner.VehicleShootRate);

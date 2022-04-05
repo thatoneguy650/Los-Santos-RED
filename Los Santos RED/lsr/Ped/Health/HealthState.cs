@@ -112,11 +112,11 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if(Health > 100 && !MyPed.IsUnconscious && (Health <= 130 || Health - prevHealth >= 20) && RandomItems.RandomPercent(60))// && RandomItems.RandomPercent(40))
+                if(Health > 100 && !MyPed.IsUnconscious && (Health <= 130 || Health - prevHealth >= 20) && RandomItems.RandomPercent(30))// && RandomItems.RandomPercent(40))
                 {
                     SetUnconscious();
                 }
-                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(60))
+                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(10))
                 {
                     SetUnconscious();
                 }

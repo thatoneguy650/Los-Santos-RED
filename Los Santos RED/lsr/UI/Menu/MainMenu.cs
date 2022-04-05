@@ -22,6 +22,7 @@ public class MainMenu : Menu
     private UIMenuItem UnloadMod;
     private MenuPool MenuPool;
     private UIMenu VehicleItems;
+    private UIMenuItem ShowSimplePhoneMenu;
 
     public MainMenu(MenuPool menuPool, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
@@ -91,13 +92,14 @@ public class MainMenu : Menu
     {
         AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
-        ShowReportingMenu = new UIMenuItem("Player Information", "Show the player information menu. This pause menu has info about owned vehicles, gang relationships, locations, text messages, and contacts.");
+        ShowReportingMenu = new UIMenuItem("Player Information", "Show the player information menu. This pause menu has info about Owned Vehicles, Licenses, ~r~Gang Relationships~s~, and ~y~Locations~s~.");
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
 
 
+        ShowSimplePhoneMenu = new UIMenuItem("Replies and Contacts", "Shows the phone replies, text messages, and contacts. Will allow you to call ~p~Contacts~s~ and lookup ~y~Locations~s~.");
+        ShowSimplePhoneMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
 
 
-        
 
 
 
@@ -112,7 +114,7 @@ public class MainMenu : Menu
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
         Main.AddItem(AboutMenu);
         Main.AddItem(ShowReportingMenu);
-
+        Main.AddItem(ShowSimplePhoneMenu);
 
         VehicleItems = MenuPool.AddSubMenu(Main, "Vehicle Ownership");
         VehicleItems.SetBannerType(EntryPoint.LSRedColor);
@@ -137,6 +139,11 @@ public class MainMenu : Menu
         if (selectedItem == ShowReportingMenu)
         {
             UI.ToggleReportingMenu();
+            Main.Visible = false;
+        }
+        else if (selectedItem == ShowSimplePhoneMenu)
+        {
+            UI.ToggleSimplePhoneMenu();
             Main.Visible = false;
         }
         else if (selectedItem == UnloadMod)

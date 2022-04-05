@@ -48,7 +48,7 @@ public class ModItem
 
 
     public int AmountPerPackage { get; set; } = 1;
-
+    public bool CleanupItemImmediately { get; set; } = false;
 
 
     public bool CanConsume => Type == eConsumableType.Drink || Type == eConsumableType.Eat || Type == eConsumableType.Smoke || Type == eConsumableType.Ingest || Type == eConsumableType.AltSmoke || Type == eConsumableType.Snort || Type == eConsumableType.Inject;

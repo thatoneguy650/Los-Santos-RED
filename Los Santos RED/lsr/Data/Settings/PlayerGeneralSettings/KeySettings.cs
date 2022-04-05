@@ -40,6 +40,7 @@ public class KeySettings : ISettingsDefaultable
     public Keys ActivityKeyModifier { get; set; }
     public Keys CrouchKeyModifier { get; set; }
     public Keys CrouchKey { get; set; }
+    //public Keys SimplePhoneKey { get; set; }
 
     public KeySettings()
     {
@@ -49,6 +50,11 @@ public class KeySettings : ISettingsDefaultable
     {
         DebugMenuKey = Keys.F11;
         MenuKey = Keys.F10;
+
+
+//SimplePhoneKey = Keys.Down;
+
+
         SurrenderKey = Keys.E;
         SurrenderKeyModifier = Keys.LShiftKey;
         DropWeaponKey = Keys.G;

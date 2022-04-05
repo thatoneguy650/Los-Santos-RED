@@ -35,6 +35,7 @@ namespace LosSantosRED.lsr.Interface
         void AddGPSRoute(string name, Vector3 entrancePosition);
         void RemoveGPSRoute();
         void RemoveOwnershipOfVehicle(VehicleExt car);
+        void StopDynamicActivity();
         //void AddContact(Gang gang);
         //void AddContact(string contactName, string contactIcon);
         //void DisableContact(string contactName);

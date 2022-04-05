@@ -228,24 +228,12 @@ public class PedExt : IComplexTaskable
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {
-                    return 1000;
+                    return 750;//1000
                 }
                 else
                 {
-                    return 500;//150
+                    return 500;
                 }
-                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 300)
-                //{
-                //    return 2000;
-                //}
-                //if (PlayerPerception != null && PlayerPerception.DistanceToTarget >= 100f)
-                //{
-                //    return 750;
-                //}
-                //else
-                //{
-                //    return 250;//150
-                //}
             }
             else
             {
@@ -259,11 +247,11 @@ public class PedExt : IComplexTaskable
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {
-                    return 2000;
+                    return 1000;//2000
                 }
                 else
                 {
-                    return 750;//150
+                    return 750;
                 }
             }
         }

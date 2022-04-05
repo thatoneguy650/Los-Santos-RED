@@ -23,7 +23,7 @@ namespace LosSantosRED.lsr.Interface
         LocationData CurrentLocation { get; set; }
         string DebugLine2 { get; }
         string DebugLine7 { get; }
-        string DebugLine4 { get; }
+        string DebugLine4 { get; set; }
         string DebugLine5 { get; }
         string DebugLine6 { get; }
         string DebugLine3 { get; }

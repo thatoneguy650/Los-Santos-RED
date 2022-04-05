@@ -115,6 +115,14 @@ public class PoliceSettings : ISettingsDefaultable
     public int GeneralFineAmount { get; set; }
     public int DrivingWithoutLicenseFineAmount { get; set; }
 
+
+    public int InvestigationRespondingOfficers_Wanted1 { get; set; }
+    public int InvestigationRespondingOfficers_Wanted2 { get; set; }
+    public int InvestigationRespondingOfficers_Wanted3 { get; set; }
+    public int InvestigationRespondingOfficers_Wanted4 { get; set; }
+    public int InvestigationRespondingOfficers_Wanted5 { get; set; }
+    public int InvestigationRespondingOfficers_Wanted6 { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -221,5 +229,16 @@ public class PoliceSettings : ISettingsDefaultable
         KnowsShootingSourceLocation = true;
         UseFakeWantedLevelSystem = true;
         PedestrianSpawnPercentage = 50f;
+
+
+
+
+        InvestigationRespondingOfficers_Wanted1 = 1;
+        InvestigationRespondingOfficers_Wanted2 = 2;
+        InvestigationRespondingOfficers_Wanted3 = 4;
+        InvestigationRespondingOfficers_Wanted4 = 8;
+        InvestigationRespondingOfficers_Wanted5 = 10;
+        InvestigationRespondingOfficers_Wanted6 = 14;
+
     }
 }

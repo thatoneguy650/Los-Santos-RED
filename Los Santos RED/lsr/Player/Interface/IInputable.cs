@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsWanted { get; }
         bool CanWaveHands { get; }
+        bool CanPerformActivities { get; }
 
         void RaiseHands();
         void LowerHands();
@@ -60,5 +61,6 @@ namespace LosSantosRED.lsr.Interface
         void LootPed();
         void GrabPed();
         void Crouch();
+        void StartSimpleCellphoneActivity();
     }
 }

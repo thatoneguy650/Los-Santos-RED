@@ -809,6 +809,29 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run UI Logic 3");
+
+
+
+            //GameFiber.StartNew(delegate
+            //{
+            //    try
+            //    {
+            //        while (IsRunning)
+            //        {
+            //            VanillaManager.SupressVanillaGangPeds();
+            //            VanillaManager.TerminateScenarioGangs();
+            //            GameFiber.Yield();
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+            //        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+            //        Dispose();
+            //    }
+            //}, "Run UI Logic 4 TEST");
+
+
         }
         private class ModTask
         {

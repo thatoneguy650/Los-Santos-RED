@@ -26,13 +26,9 @@ namespace LosSantosRED.lsr
         private Blip LastSeenLocationBlip;
         private ISettingsProvideable Settings;
         private ITimeReportable Time;
+        private IEntityProvideable World;
 
-        public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time)
-        {
-            Player = player;
-            Settings = settings;
-            Time = time;
-        }
+
         private enum PoliceState
         {
             Normal = 0,
@@ -63,6 +59,13 @@ namespace LosSantosRED.lsr
         public bool PoliceHaveDescription { get; private set; }
         public bool HasShotAtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("FiringWeaponNearPolice") > 0;
         public bool HasHurtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("HurtingPolice") > 0;
+        public int PoliceKilled => InstancesOfCrime("KillingPolice");
+        public int PoliceHurt => InstancesOfCrime("HurtingPolice");
+
+        public int CiviliansKilled => InstancesOfCrime("KillingCivilians");
+
+
+
         public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
         private ResponsePriority CurrentResponse
@@ -106,6 +109,87 @@ namespace LosSantosRED.lsr
         }
 
         public bool PlayerSeenInVehicleDuringWanted { get; set; }
+
+
+        public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
+        {
+            Player = player;
+            Settings = settings;
+            Time = time;
+            World = world;
+        }
+        public void Update()
+        {
+            CurrentPoliceState = GetPoliceState();
+            if (PrevPoliceState != CurrentPoliceState)
+            {
+                PoliceStateChanged();
+            }
+            AssignCops();
+            if (Player.IsWanted)
+            {
+                if (!Player.IsDead && !Player.IsBusted)
+                {
+                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
+                    if (CurrentWantedCenter != Vector3.Zero)
+                    {
+                        LastWantedCenterPosition = CurrentWantedCenter;
+                    }
+                    if (Player.AnyPoliceCanSeePlayer)
+                    {
+                        PlayerSeenDuringCurrentWanted = true;
+                        PlayerSeenDuringWanted = true;
+                        if (Player.IsInVehicle)
+                        {
+                            PlayerSeenInVehicleDuringWanted = true;
+                        }
+                    }
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
+                    {
+                        GameTimeLastRequestedBackup = Game.GameTime;
+                        Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
+                        Player.OnRequestedBackUp();
+                    }
+                    if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
+                    {
+                        Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
+                    }
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
+                    {
+                        int PoliceKilled = InstancesOfCrime("KillingPolice");
+                        if (PoliceKilled > 0)
+                        {
+                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+                            {
+                                Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
+                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+                            {
+                                Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
+                            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
+                            {
+                                Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
+                                IsWeaponsFree = true;
+                                Player.OnWeaponsFree();
+                            }
+                        }
+                    }
+                }
+            }
+            UpdateBlip();
+        }
+        public void Dispose()
+        {
+            if (LastSeenLocationBlip.Exists())
+            {
+                LastSeenLocationBlip.Delete();
+            }
+        }
 
         public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer)
         {
@@ -179,13 +263,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void Dispose()
-        {
-            if(LastSeenLocationBlip.Exists())
-            {
-                LastSeenLocationBlip.Delete();
-            }
-        }
+
         public int InstancesOfCrime(string CrimeID)
         {
             CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == CrimeID).FirstOrDefault();
@@ -257,69 +335,37 @@ namespace LosSantosRED.lsr
             CrimesObserved.Clear();
             CrimesReported.Clear();
         }
-        public void Update()
+
+
+        private void AssignCops()
         {
-            CurrentPoliceState = GetPoliceState();
-            if (PrevPoliceState != CurrentPoliceState)
+            int RespondingPolice = 0;
+            if(Player.WantedLevel == 1)
             {
-                PoliceStateChanged();
+                RespondingPolice = 2;
             }
-            if (Player.IsWanted)
+            else if (Player.WantedLevel == 2)
             {
-                if (!Player.IsDead && !Player.IsBusted)
+                RespondingPolice = 4;
+            }
+            else if(Player.IsWanted)
+            {
+                RespondingPolice = 999;
+            }
+            int tasked = 0;
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+            {
+                if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
                 {
-                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
-                    if (CurrentWantedCenter != Vector3.Zero)
-                    {
-                        LastWantedCenterPosition = CurrentWantedCenter;
-                    }
-                    if (Player.AnyPoliceCanSeePlayer)
-                    {
-                        PlayerSeenDuringCurrentWanted = true;
-                        PlayerSeenDuringWanted = true;
-                        if(Player.IsInVehicle)
-                        {
-                            PlayerSeenInVehicleDuringWanted = true;
-                        }
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
-                    {
-                        GameTimeLastRequestedBackup = Game.GameTime;
-                        Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
-                        Player.OnRequestedBackUp();
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
-                    {
-                        Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
-                    {
-                        int PoliceKilled = InstancesOfCrime("KillingPolice");
-                        if (PoliceKilled > 0)
-                        {
-                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
-                            {
-                                Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
-                            {
-                                Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
-                            {
-                                Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                        }
-                    }
+                    cop.IsRespondingToWanted = true;
+                    tasked++;
+                }
+                else
+                {
+                    cop.IsRespondingToWanted = false;
                 }
             }
-            UpdateBlip();
+            EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
         }
         private PoliceState GetPoliceState()
         {

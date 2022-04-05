@@ -210,15 +210,15 @@ public class Agencies : IAgencies
                     new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//no body armor with glasses
 
 
-             new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_HWAYCOP_01_WHITE_FULL_01",
+             new DispatchablePerson("mp_m_freemode_01",0,50) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_HWAYCOP_01_WHITE_FULL_01",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)}, 
                     new List<PedPropComponent>()) },//body armor
-             new DispatchablePerson("mp_m_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_COP_01_WHITE_FULL_02",
+             new DispatchablePerson("mp_m_freemode_01",0,45) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_COP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 3, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(1,23,9) }) },//body armor with glasses
-             new DispatchablePerson("mp_m_freemode_01",0,30) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_COP_01_WHITE_FULL_01",
+             new DispatchablePerson("mp_m_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_COP_01_WHITE_FULL_01",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0),new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,124,15) }) },//body armor with riot hat
@@ -243,15 +243,15 @@ public class Agencies : IAgencies
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(1,25,9) })},//no body armor with glasses
 
-            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_BLACK_FULL_02",
+            new DispatchablePerson("mp_f_freemode_01",0,70) { RandomizeHead = true,MinWantedLevelSpawn = 2,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_BLACK_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() {  })},//body armor
-            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
+            new DispatchablePerson("mp_f_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 2, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,123,15) })},//body armor with riot hat
-            new DispatchablePerson("mp_f_freemode_01",0,20) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
+            new DispatchablePerson("mp_f_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() { new PedPropComponent(0,123,15),new PedPropComponent(1,25,9) })},//body armor with riot hat and glasses
@@ -270,7 +270,7 @@ public class Agencies : IAgencies
                 RequiredVariation = new PedVariation( 
                     new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), }, 
                     new List<PedPropComponent>() { new PedPropComponent(0,58,0)  }) },//body armor with hat
-            new DispatchablePerson("mp_m_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_HWAYCOP_01_WHITE_FULL_01",
+            new DispatchablePerson("mp_m_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_M_Y_HWAYCOP_01_WHITE_FULL_01",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(3, 11, 0, 0), new PedComponent(4, 47, 1, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(9, 7, 2, 0), new PedComponent(11, 319, 3, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 124, 3)  }) },//body armor with helmet
@@ -283,11 +283,11 @@ public class Agencies : IAgencies
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 58, 0), }) },//body armor with hat
-             new DispatchablePerson("mp_f_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_01",
+             new DispatchablePerson("mp_f_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_01",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 123, 3), }) },//body armor with helmet    
-            new DispatchablePerson("mp_f_freemode_01",0,75) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
+            new DispatchablePerson("mp_f_freemode_01",0,5) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 42, 0, 0),new PedComponent(3, 14, 0, 0),new PedComponent(4, 49, 1, 0),new PedComponent(6, 55, 0, 0),new PedComponent(7, 2, 0, 0),new PedComponent(8, 35, 0, 0),new PedComponent(9, 6, 2, 0),new PedComponent(11, 330, 3, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 123, 3),new PedPropComponent(1,25,9) }) },//body armor with helmet        and glasees    

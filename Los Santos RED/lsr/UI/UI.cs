@@ -41,7 +41,7 @@ public class UI : IMenuProvideable
     private string overrideTimeDisplay = "";
     private Fader PlayerFader;
     private bool playerIsInVehicle = false;
-    private PlayerInfoMenu ReportingMenu;
+    private PlayerInfoMenu PlayerInfoMenu;
     private ISettingsProvideable Settings;
     private Texture Sign10;
     private Texture Sign15;
@@ -68,6 +68,8 @@ public class UI : IMenuProvideable
     private Fader WeaponFader;
     private IEntityProvideable World;
     private Fader ZoneFader;
+    private SimplePhoneMenu SimplePhoneMenu;
+    private string debugString1;
 
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer)
     {
@@ -89,7 +91,11 @@ public class UI : IMenuProvideable
         VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
         WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
-        ReportingMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+
+        SimplePhoneMenu = new SimplePhoneMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+
+
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
     }
@@ -247,7 +253,8 @@ public class UI : IMenuProvideable
         Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
         Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
         Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
-        ReportingMenu.Setup();
+        PlayerInfoMenu.Setup();
+        SimplePhoneMenu.Setup();
         AboutMenu.Setup();
     }
     public void TertiaryTick()
@@ -283,8 +290,18 @@ public class UI : IMenuProvideable
     }
     public void ToggleReportingMenu()
     {
-        ReportingMenu.Toggle();
+        PlayerInfoMenu.Toggle();
     }
+
+    public void ToggleSimplePhoneMenu()
+    {
+        SimplePhoneMenu.Toggle();
+        //if (!menuPool.IsAnyMenuOpen())
+        //{
+            
+        //}
+    }
+
     public void Update()
     {
         if (DisplayablePlayer.IsAliveAndFree)
@@ -353,6 +370,10 @@ public class UI : IMenuProvideable
                     }
                 }
             }
+
+
+            debugString1 = $"Heading: {Math.Round(DisplayablePlayer.Character.Heading,1)}";
+            DisplayablePlayer.DebugLine4 = debugString1;
         }
     }
     private void DisplayButtonPrompts()
@@ -951,7 +972,8 @@ public class UI : IMenuProvideable
     private void MenuUpdate()
     {
         menuPool.ProcessMenus();
-        ReportingMenu.Update();
+        PlayerInfoMenu.Update();
+        SimplePhoneMenu.Update();
         AboutMenu.Update();
     }
     private void RadarUpdate()

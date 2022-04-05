@@ -114,7 +114,7 @@ public class PlayerPerception
                 {
                     return 1500;
                 }
-                if (DistanceToTarget >= 80f)
+                else if (DistanceToTarget >= 80f)
                 {
                     return 300;
                 }
@@ -130,13 +130,13 @@ public class PlayerPerception
                 {
                     return 2000;
                 }
-                if (DistanceToTarget >= 80f)
+                else if (DistanceToTarget >= 80f)
                 {
                     return 300;
                 }
                 else
                 {
-                    return 250;// 750;//500// 750;//500
+                    return 250;
                 }
             }
         }
@@ -149,13 +149,13 @@ public class PlayerPerception
             {
                 return 2000;
             }
-            if (DistanceToTarget >= 100f)
+            else if (DistanceToTarget >= 100f)
             {
-                return 750;
+                return 500;//750
             }
             else
             {
-                return 350;//500// 750;//500
+                return 350;
             }
         }
     }

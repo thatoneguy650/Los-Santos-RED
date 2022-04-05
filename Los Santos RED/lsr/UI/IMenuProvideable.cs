@@ -9,5 +9,6 @@ public interface IMenuProvideable
 {
     void ToggleMenu();
     void ToggleDebugMenu();
+    void ToggleSimplePhoneMenu();
 }
 

@@ -103,7 +103,10 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-            GameFiber.Sleep(5000);
+            if (ModItem?.CleanupItemImmediately == false)
+            {
+                GameFiber.Sleep(5000);
+            }
             if (Food.Exists())
             {
                 Food.Delete();
@@ -233,6 +236,21 @@ namespace LosSantosRED.lsr.Player
                 HandRotator = ModItem.ModelItem.AttachRotation;
                 PropModel = ModItem.ModelItem.ModelName;
             }
+
+            //works, but need to redo all the food attachments
+            //HandBoneID = 18905;
+            //AnimIdleDictionary = "mp_player_inteat@burger";
+            //AnimIdle = new List<string>() { "mp_player_int_eat_burger" };
+            //AnimBase = "mp_player_int_eat_burger_enter";
+            //AnimBaseDictionary = "mp_player_inteat@burger";
+            //AnimEnter = "mp_player_int_eat_burger_enter";
+            //AnimEnterDictionary = "mp_player_inteat@burger";
+
+
+
+
+
+
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);

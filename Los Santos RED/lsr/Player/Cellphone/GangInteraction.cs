@@ -130,7 +130,7 @@ public class GangInteraction
         }
         else if (selectedItem == PayoffDebt || selectedItem == PayoffGangFriendly || selectedItem == PayoffGangNeutral)
         {
-            Player.PlayerTasks.GangTasks.PayoffGangTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartPayoffGang(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTaskCancel)
@@ -140,32 +140,32 @@ public class GangInteraction
         }
         else if (selectedItem == GangMoneyPickup)
         {
-            Player.PlayerTasks.GangTasks.GangPickupTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangPickup(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangTheft)
         {
-            Player.PlayerTasks.GangTasks.RivalGangTheftTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangTheft(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangHit)
         {
-            Player.PlayerTasks.GangTasks.RivalGangHit.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangHit(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangDelivery)
         {
-            Player.PlayerTasks.GangTasks.GangDeliveryTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangDelivery(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangWheelman)
         {
-            Player.PlayerTasks.GangTasks.GangWheelmanTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangWheelman(ActiveGang);
             sender.Visible = false;
         }
         else if (selectedItem == GangPizza)
         {
-            Player.PlayerTasks.GangTasks.GangPizzaDeliveryTask.Start(ActiveGang);
+            Player.PlayerTasks.GangTasks.StartGangPizza(ActiveGang);
             sender.Visible = false;
         }
 

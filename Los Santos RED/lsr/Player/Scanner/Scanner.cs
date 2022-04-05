@@ -193,22 +193,7 @@ namespace LosSantosRED.lsr
         public void DebugPlayDispatch()
         {
             Reset();
-            if(Flipper)
-            {
-                if (RandomItems.RandomPercent(50))
-                {
-                    AddToQueue(RequestNooseUnitsAlt);
-                }
-                else
-                {
-                    AddToQueue(RequestNooseUnitsAlt2);
-                }
-            }
-            else
-            {
-                AddToQueue(RequestSwatAirSupport);
-            }
-            Flipper = !Flipper;
+            AddToQueue(ShotsFired);
         }
         public void OnAppliedWantedStats(int wantedLevel)
         {
@@ -992,7 +977,7 @@ namespace LosSantosRED.lsr
                 if (zoneAudio != null)
                 {
                     string ScannerAudio = zoneAudio.ScannerUnitValues.PickRandom();
-                    if (ScannerAudio != "")
+                    if (ScannerAudio != "" && ScannerAudio != null && ScannerAudio.Length > 2)
                     {
                         dispatchEvent.SoundsToPlay.Add(ScannerAudio);
                         AddedZoneUnits = true;
@@ -1080,6 +1065,9 @@ namespace LosSantosRED.lsr
                 EventToPlay.NotificationSubtitle = "~o~Crime Reported";
             }
             EventToPlay.NotificationText = DispatchToPlay.NotificationText;
+
+
+
             if (DispatchToPlay.IncludeAttentionAllUnits)
             {
                 AddAudioSet(EventToPlay, AttentionAllUnits.PickRandom());
@@ -1088,6 +1076,11 @@ namespace LosSantosRED.lsr
             {
                 AddAttentionUnits(EventToPlay);
             }
+
+
+
+
+
             if (DispatchToPlay.IncludeReportedBy)
             {
                 if (DispatchToPlay.LatestInformation.SeenByOfficers)
@@ -1107,6 +1100,11 @@ namespace LosSantosRED.lsr
             {
                 AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
             }
+
+
+
+
+
             if (DispatchToPlay.SecondaryAudioSet.Any())
             {
                 AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
@@ -1419,8 +1417,8 @@ namespace LosSantosRED.lsr
                 {
                     foreach (string audioname in soundsToPlayer)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname != ""}", 5);
-                        if (audioname != "")
+                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                        if (audioname != "" && audioname != null && audioname.Length > 2)
                         {
                             
                             if (Settings.SettingsManager.ScannerSettings.SetVolume)

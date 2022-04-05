@@ -20,6 +20,7 @@ public class CopTasker
     private IPlacesOfInterest PlacesOfInterest;
     private List<PedExt> PossibleTargets;
     private Cop ClosestCopToPlayer;
+    private int CopsTaskedToRespond = 0;
     public CopTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
@@ -68,30 +69,16 @@ public class CopTasker
             PedExt MainTarget = PedToAttack(Cop);
             GameFiber.Yield();
             if (MainTarget != null)
-            {  
-                if (Cop.CurrentTask?.Name != "AIApprehend")
-                {
-                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
-                    Cop.CurrentTask = new AIApprehend(Cop, Player) { OtherTarget = MainTarget };
-                    Cop.WeaponInventory.Reset();
-                    GameFiber.Yield();//TR Added back 4
-                    Cop.CurrentTask.Start();
-                }
+            {
+                SetAIApprehend(Cop, MainTarget);
             }
             else
             {
-                if (Player.IsWanted)
+                if (Player.IsWanted && Cop.IsRespondingToWanted)
                 {
                     if (Player.IsInSearchMode)
                     {
-                        if (Cop.CurrentTask?.Name != "Locate")
-                        {
-                            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
-                            Cop.CurrentTask = new Locate(Cop, Player);
-                            Cop.WeaponInventory.Reset();
-                            GameFiber.Yield();//TR Added back 4
-                            Cop.CurrentTask.Start();
-                        }
+                        SetLocate(Cop);
                     }
                     else
                     {
@@ -99,74 +86,32 @@ public class CopTasker
                         {
                             if (Player.PoliceResponse.IsDeadlyChase && !Player.IsAttemptingToSurrender)
                             {
-                                if (Cop.CurrentTask?.Name != "Kill")
-                                {
-                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
-                                    Cop.CurrentTask = new Kill(Cop, Player);
-                                    Cop.WeaponInventory.Reset();
-                                    GameFiber.Yield();//TR Added back 4
-                                    Cop.CurrentTask.Start();
-                                }
+                                SetKill(Cop);
                             }
                             else
                             {
-                                if (Cop.CurrentTask?.Name != "Chase")
-                                {
-                                    EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
-                                    Cop.CurrentTask = new Chase(Cop, Player, PedProvider, Cop);
-                                    Cop.WeaponInventory.Reset();
-                                    GameFiber.Yield();//TR Added back 4
-                                    Cop.CurrentTask.Start();
-                                }
+                                SetChase(Cop);
                             }
                         }
-                        else// if (Cop.DistanceToPlayer <= Player.ActiveDistance)//1000f
+                        else
                         {
-                            if (Cop.CurrentTask?.Name != "Locate")
-                            {
-                                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
-                                Cop.CurrentTask = new Locate(Cop, Player);
-                                Cop.WeaponInventory.Reset();
-                                GameFiber.Yield();//TR Added back 4
-                                Cop.CurrentTask.Start();
-                            }
+                            SetLocate(Cop);
                         }
                     }
                 }
-                else if (Player.Investigation.IsActive && Player.Investigation.RequiresPolice)// && Cop.IsIdleTaskable)
+                else if (Player.Investigation.IsActive && Player.Investigation.RequiresPolice && Cop.IsRespondingToInvestigation)// && Cop.IsIdleTaskable)
                 {
-                    if (Cop.CurrentTask?.Name != "Investigate")
-                    {
-                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
-                        Cop.CurrentTask = new Investigate(Cop, Player);
-                        Cop.WeaponInventory.Reset();
-                        GameFiber.Yield();//TR Added back 4
-                        Cop.CurrentTask.Start();
-                    }
+                    SetInvestigate(Cop);
                 }
                 else
                 {
-                    if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)// && Cop.WasModSpawned)
-                    {
-                        EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                        Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
-                        Cop.WeaponInventory.Reset();
-                        GameFiber.Yield();//TR Added back 4
-                        Cop.CurrentTask.Start();
-                    }
+                    SetIdle(Cop);
                 }
             }
         }
         else
         {
-            if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
-            {
-                EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-                Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
-                Cop.WeaponInventory.Reset();
-                GameFiber.Yield();//TR Added back 4
-                Cop.CurrentTask.Start();
-            }
+            SetIdle(Cop);
         }
         Cop.GameTimeLastUpdatedTask = Game.GameTime;
     }
@@ -289,17 +234,84 @@ public class CopTasker
             TotalList.AddRange(PedProvider.Pedestrians.CivilianList);
             TotalList.AddRange(PedProvider.Pedestrians.GangMemberList);
             TotalList.AddRange(PedProvider.Pedestrians.ZombieList);
-            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         else
         {
             List<PedExt> TotalList = new List<PedExt>();
             TotalList.AddRange(PedProvider.Pedestrians.CivilianList);
             TotalList.AddRange(PedProvider.Pedestrians.GangMemberList);
-            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
+            PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         ClosestCopToPlayer = PedProvider.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
+    private void SetInvestigate(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Investigate")
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+            Cop.CurrentTask = new Investigate(Cop, Player);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+    private void SetIdle(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
+            Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+    private void SetLocate(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Locate")
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
+            Cop.CurrentTask = new Locate(Cop, Player);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+    private void SetChase(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Chase")
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
+            Cop.CurrentTask = new Chase(Cop, Player, PedProvider, Cop);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+    private void SetKill(Cop Cop)
+    {
+        if (Cop.CurrentTask?.Name != "Kill")
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
+            Cop.CurrentTask = new Kill(Cop, Player);
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+    private void SetAIApprehend(Cop Cop, PedExt MainTarget)
+    {
+        if (Cop.CurrentTask?.Name != "AIApprehend")
+        {
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
+            Cop.CurrentTask = new AIApprehend(Cop, Player) { OtherTarget = MainTarget };
+            Cop.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            Cop.CurrentTask.Start();
+        }
+    }
+
     private class CopTarget
     {
         public CopTarget(PedExt target, float distanceToTarget)

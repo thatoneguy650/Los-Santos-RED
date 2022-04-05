@@ -407,7 +407,10 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
+        //Player.ResetScannerDebug();
+        //Player.ScannerPlayDebug();
         // NativeFunction.Natives.x48608C3464F58AB4(0f, 50f, 0f);
         //RelationshipGroup myRG = Game.LocalPlayer.Character.RelationshipGroup;
         //foreach (Gang gang in Gangs.AllGangs)
@@ -873,22 +876,29 @@ public class Debug
 
 
 
+        foreach(ModItem modItem in ModItems.Items)
+        {
+            Player.Inventory.Add(modItem, 5);
+        }
+
+
+
         //ArrestScene();
 
-         Game.LocalPlayer.Character.Health -= 25;
+         Game.LocalPlayer.Character.Health -= 5;
 
-        Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
-        Player.Inventory.Add(ModItems.Get("Heroin"), 4);
-        Player.Inventory.Add(ModItems.Get("Cocaine"), 4);
-        Player.Inventory.Add(ModItems.Get("Crack"), 4);
+        //Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
+        //Player.Inventory.Add(ModItems.Get("Heroin"), 4);
+        //Player.Inventory.Add(ModItems.Get("Cocaine"), 4);
+        //Player.Inventory.Add(ModItems.Get("Crack"), 4);
 
-        Player.Inventory.Add(ModItems.Get("Toilet Cleaner"), 4);
-        Player.Inventory.Add(ModItems.Get("SPANK"), 4);
-        Player.Inventory.Add(ModItems.Get("Marijuana"), 4);
-        Player.Inventory.Add(ModItems.Get("DIC Lighter"), 4);
-        Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
-        Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
-        Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
+        //Player.Inventory.Add(ModItems.Get("Toilet Cleaner"), 4);
+        //Player.Inventory.Add(ModItems.Get("SPANK"), 4);
+        //Player.Inventory.Add(ModItems.Get("Marijuana"), 4);
+        //Player.Inventory.Add(ModItems.Get("DIC Lighter"), 4);
+        //Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
+        //Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
+        //Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
         //PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
 
         //if (pc != null)
@@ -2263,13 +2273,13 @@ public class Debug
         }
         EntryPoint.WriteToConsole($"============================================ EMT END", 5);
         EntryPoint.WriteToConsole($"============================================ GANGS START", 5);
-        foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x=>x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))
         {
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
             EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
-            EntryPoint.WriteToConsole($"WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"        WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.ViolationWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
 
 
 
@@ -2337,13 +2347,13 @@ public class Debug
             uint coolHandle = 0;
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
 
             }
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
             }
             
         }

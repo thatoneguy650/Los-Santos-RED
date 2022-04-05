@@ -32,6 +32,14 @@ public class Respawning// : IRespawning
     private IEntityProvideable World;
     private List<string> BribedCopResponses;
     private List<string> CitationCopResponses;
+    private int RequiredBribeAmount;
+    private int BailDuration;
+    private DateTime BailPostingTime;
+    private string BailReport;
+    private DateTime HospitalDischargeDate;
+    private string HospitalStayReport;
+    private int HospitalFee;
+
     public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Time = time;
@@ -70,12 +78,13 @@ public class Respawning// : IRespawning
     }
     public bool BribePolice(int Amount)
     {
+        CalculateBribe();
         if (CurrentPlayer.Money < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
             return false;
         }
-        else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
+        else if (Amount < RequiredBribeAmount)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
@@ -156,7 +165,9 @@ public class Respawning// : IRespawning
         {
             CheckWeapons();
         }
+        CalculateHospitalStay();
         Respawn(true, true, true, false, true, false, true, false, false, false, false, false);//we are already removing the weapons above, done need to do it twice with the old bug
+        CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (PlaceToSpawn == null)
         {
             PlaceToSpawn = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
@@ -167,6 +178,7 @@ public class Respawning// : IRespawning
             RemoveIllicitInventoryItems();
         }
         World.ClearSpawned();
+        Time.SetDateTime(HospitalDischargeDate);
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
         {
@@ -181,9 +193,10 @@ public class Respawning// : IRespawning
         {
             CheckWeapons();
         }
-        BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        CalculateBail();
         CurrentPlayer.RaiseHands();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false);//if you pass clear weapons here it will just remover everything anwyays
+        CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
@@ -194,10 +207,11 @@ public class Respawning// : IRespawning
             RemoveIllicitInventoryItems();
         }
         World.ClearSpawned();
+        Time.SetDateTime(BailPostingTime);
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
         {
-            SetPoliceFee(PoliceStation.Name, BailFee);
+            SetBailFee(PoliceStation.Name, BailFee);
         }
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
@@ -222,7 +236,6 @@ public class Respawning// : IRespawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
     }
-
     private void RemoveIllicitInventoryItems()
     {
         foreach(InventoryItem ii in CurrentPlayer.Inventory.Items.ToList())
@@ -233,7 +246,49 @@ public class Respawning// : IRespawning
             }
         }
     }
+    private void CalculateHospitalStay()
+    {
+        int HighestWantedLevel = CurrentPlayer.WantedLevel;
+        HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalFee * (1 + HighestWantedLevel);
+        int DaysToStay = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
+        HospitalDischargeDate = Time.CurrentDateTime.AddDays(DaysToStay);
+        HospitalStayReport = $"~s~Hospitalized Days: ~g~{DaysToStay}~s~~n~Released: {HospitalDischargeDate:g}~s~";
+        EntryPoint.WriteToConsole($"CalculateHospitalStay(): HighestWantedLevel {HighestWantedLevel} HospitalFee {HospitalFee} HospitalDischargeDate {HospitalDischargeDate:g}");
+    }
+    private void CalculateBail()
+    {
+        int PoliceKilled = CurrentPlayer.PoliceResponse.PoliceKilled;
+        int PoliceInjured = CurrentPlayer.PoliceResponse.PoliceHurt;
+        int CiviliansKilled = CurrentPlayer.PoliceResponse.CiviliansKilled;
+        int HighestWantedLevel = CurrentPlayer.WantedLevel;
 
+        BailFee = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        BailFee += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;
+        BailFee += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier;
+        BailFee += CiviliansKilled * Settings.SettingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier;
+
+
+        BailDuration = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBailDurationWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        BailDuration += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationWantedLevelScale;
+        BailDuration += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailDurationPoliceInjuredMultiplier;
+        BailDuration += CiviliansKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier;
+
+        BailPostingTime = Time.CurrentDateTime.AddDays(BailDuration);
+        BailPostingTime = new DateTime(BailPostingTime.Year, BailPostingTime.Month, BailPostingTime.Day, 9, 0, 0);
+
+        BailReport = $"~s~Incarcerated Days: ~r~{BailDuration}~s~~n~Released: {BailPostingTime:g}~s~";
+        EntryPoint.WriteToConsole($"CalculateBail(): HighestWantedLevel {HighestWantedLevel} PoliceKilled {PoliceKilled} PoliceInjured {PoliceInjured} CiviliansKilled {CiviliansKilled} BailFee {BailFee} BailDuration {BailDuration} BailPostingTime {BailPostingTime:g}");
+    }
+    private void CalculateBribe()
+    {
+        int PoliceKilled = CurrentPlayer.PoliceResponse.PoliceKilled;
+        int PoliceInjured = CurrentPlayer.PoliceResponse.PoliceHurt;
+        int HighestWantedLevel = CurrentPlayer.WantedLevel;
+
+        RequiredBribeAmount = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        RequiredBribeAmount += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier;
+        RequiredBribeAmount += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier;
+    }
     private void RemoveIllegalWeapons()
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
@@ -333,8 +388,7 @@ public class Respawning// : IRespawning
         }
     }
     private void SetHospitalFee(string HospitalName)
-    {
-        int HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
+    {    
         int CurrentCash = CurrentPlayer.Money;
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
         int TodaysPayment;
@@ -348,7 +402,7 @@ public class Respawning// : IRespawning
             HospitalBillPastDue = 0;
             TodaysPayment = TotalNeededPayment;
         }
-        Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
+        Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
         CurrentPlayer.GiveMoney(-1 * TodaysPayment);
     }
     private void SetPlayerAtLocation(BasicLocation ToSet)
@@ -371,7 +425,7 @@ public class Respawning// : IRespawning
         //Game.LocalPlayer.Character.Tasks.ClearImmediately();
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }
-    private void SetPoliceFee(string PoliceStationName, int BailFee)
+    private void SetBailFee(string PoliceStationName, int BailFee)
     {
         int CurrentCash = CurrentPlayer.Money;
         int TotalNeededPayment = BailFee + BailFeePastDue;
@@ -386,10 +440,10 @@ public class Respawning// : IRespawning
             BailFeePastDue = 0;
             TodaysPayment = TotalNeededPayment;
         }
-        bool LesterHelp = RandomItems.RandomPercent(20);
+        bool LesterHelp = RandomItems.RandomPercent(1);
         if (!LesterHelp)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", BailFee, TodaysPayment, BailFeePastDue));
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", BailFee, TodaysPayment, BailFeePastDue, BailReport));
             CurrentPlayer.GiveMoney(-1 * TodaysPayment);
         }
         else

@@ -165,7 +165,7 @@ namespace Mod
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine4 { get; set; }
-        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed} CanGrabLookedAtPed {CanGrabLookedAtPed} DIstance {CurrentLookedAtPed.DistanceToPlayer}  {Violations.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
+        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed} CanGrabLookedAtPed {CanGrabLookedAtPed} DIstance {CurrentLookedAtPed?.DistanceToPlayer}  {Violations?.LawsViolatingDisplay}";//$"CurrentLookedAtPed {CurrentLookedAtPed?.Handle}";//CellPhone.CustomiFruit.DebugString;
         public string DebugLine6 => $"IntWantedLevel {WantedLevel} Cell: {CellX},{CellY} HasShotAtPolice {PoliceResponse.HasShotAtPolice} TIV: {TimeInCurrentVehicle} PolDist: {ClosestPoliceDistanceToPlayer}";
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
         public string DebugLine8 => SearchMode.DebugString;
@@ -419,7 +419,7 @@ namespace Mod
             Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
-            PoliceResponse = new PoliceResponse(this, Settings, TimeControllable);
+            PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
             Inventory = new Inventory(this);
             Sprinting = new Sprinting(this, Settings);
@@ -1304,11 +1304,8 @@ namespace Mod
             HealthState.Reset();
             IsPerformingActivity = false;
             CurrentVehicle = null;
-
             RemoveGPSRoute();
-
             // IsIntoxicated = false;
-
             if (resetWanted)
             {
                 PoliceResponse.Reset();
@@ -1335,7 +1332,6 @@ namespace Mod
             {
                 Inventory.Clear();
             }
-
             if (clearIntoxication)
             {
                 Intoxication.Dispose();
@@ -1344,7 +1340,6 @@ namespace Mod
             {
                 Intoxication.Restart();
             }
-
             if (resetGangRelationships)
             {
                 GangRelationships.ResetAllReputations();
@@ -1363,12 +1358,10 @@ namespace Mod
             {
                 ClearVehicleOwnership();
             }
-
             if (clearCellphone)
             {
                 CellPhone.Reset();
             }
-
             if (clearActiveTasks)
             {
                 PlayerTasks.Clear();
@@ -1583,6 +1576,20 @@ namespace Mod
                 NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Character, CurrentVehicle.Vehicle, 0);
             }
         }
+
+        public void StartSimpleCellphoneActivity()
+        {
+            //for now just have the mneu come up, it is supposed to be simple,,,,
+            //if (!IsPerformingActivity && CanPerformActivities)
+            //{
+            //    if (UpperBodyActivity != null)
+            //    {
+            //        UpperBodyActivity.Cancel();
+            //    }
+            //    UpperBodyActivity = new CellPhoneInteractionActivity(this, Settings, null, Intoxicants);
+            //    UpperBodyActivity?.Start();
+            //}
+        }
         public void StartConsumingActivity(ModItem modItem, bool performActivity)
         {
             if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) && modItem.CanConsume)// modItem.Type != eConsumableType.None)
@@ -1712,7 +1719,10 @@ namespace Mod
             //}
         }
 
+        public void StartSimplePhone()
+        {
 
+        }    
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)

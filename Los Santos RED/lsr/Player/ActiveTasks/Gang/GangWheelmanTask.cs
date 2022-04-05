@@ -57,7 +57,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Camera CutsceneCamera;
         private Vector3 EgressCamPosition;
         private float EgressCamFOV;
-
+        private bool hasAddedButtonPrompt;
+        private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
         public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus)
         {
@@ -163,7 +164,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
                     if(!isFadedOut)
                     {
-                        Game.FadeScreenOut(1000, true);
+                        Game.FadeScreenOut(500, true);
                     }
                     //Game.FadeScreenOut(1500, true);
 
@@ -171,7 +172,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     hasSpawnedRobbers = SpawnRobbers();
 
 
-                    GameFiber.Sleep(500);
+                    GameFiber.Sleep(100);
                     Game.FadeScreenIn(0);
 
                     //Game.FadeScreenIn(1500, true);
@@ -188,19 +189,24 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (distanceTo <= 35f && Player.Character.Speed <= 0.25f && !Time.IsFastForwarding)
                 {
-                    Player.ButtonPrompts.AddPrompt("RobberyStart", "Hold To Start Robbery", "RobberyStart", Settings.SettingsManager.KeySettings.InteractCancel, 99);
-                    if (Player.ButtonPrompts.IsHeld("RobberyStart"))
+                    hasAddedButtonPrompt = true;
+                    Player.ButtonPrompts.AddPrompt("RobberyStart", "Hold To Start Robbery", ButtonPromptIdentifier, Settings.SettingsManager.KeySettings.InteractCancel, 99);
+                    if (Player.ButtonPrompts.IsHeld(ButtonPromptIdentifier))
                     {
                         EntryPoint.WriteToConsole("RobberyStart You pressed fastforward to time");
                         Player.ButtonPrompts.RemovePrompts("RobberyStart");
                         Time.FastForward(RobberyTime);
-                        Game.FadeScreenOut(1000, true);
+                        Game.FadeScreenOut(500, true);
                         isFadedOut = true;
                     }
                 }
                 else
                 {
-                    Player.ButtonPrompts.RemovePrompts("RobberyStart");
+                    if (hasAddedButtonPrompt)
+                    {
+                        Player.ButtonPrompts.RemovePrompts("RobberyStart");
+                        hasAddedButtonPrompt = false;
+                    }
                 }          
             }
         }
@@ -303,11 +309,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 EntryPoint.WriteToConsole($"FAILED! ROBBER ISSUES!");
                 return false;
             }
-            if(!Player.IsAliveAndFree)
-            {
-                EntryPoint.WriteToConsole($"FAILED! You got busted or died!");
-                return false;
-            }
+            //if(!Player.IsAliveAndFree)//should handle on the respawn event, want to allow undie,,,,
+            //{
+            //    EntryPoint.WriteToConsole($"FAILED! You got busted or died!");
+            //    return false;
+            //}
             return true;
         }
         private void CheckRobberyReadyForPayment()
@@ -627,6 +633,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             EntryPoint.WriteToConsole($"You are hired to wheelman!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");
+            CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
+            CurrentTask.FailOnStandardRespawn = true;
         }
         private void SendInitialInstructionsMessage()
         {

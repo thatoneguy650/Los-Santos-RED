@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Drawing;
+using System.Linq;
 
 public class Investigation
 {
@@ -16,7 +17,35 @@ public class Investigation
     private IEntityProvideable World;
     private bool HavePlayerDescription = false;
     private uint GameTimeLastUpdatedInvestigation;
-
+    private int PoliceToRespond(int wantedLevel)
+    {
+        {
+            if(wantedLevel >= 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted6;
+            }
+            if(wantedLevel >= 5)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted5;
+            }
+            else if (wantedLevel >= 4)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted4;
+            }
+            else if (wantedLevel >= 3)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted3;
+            }
+            else if (wantedLevel >= 2)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted2;
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted1;
+            }
+        }
+    }
     private Color blipColor => RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
@@ -34,6 +63,7 @@ public class Investigation
     public bool RequiresPolice { get; set; }
     public bool RequiresEMS { get; set; }
     public bool RequiresFirefighters { get; set; }
+    public int RespondingPolice { get; private set; }
 
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
     public bool IsNearPosition { get; private set; }
@@ -116,7 +146,7 @@ public class Investigation
             //{
             //    RequiresPolice = false;
             //}
-
+            AssignCops();
             if ((IsTimedOut && (!RequiresPolice || !World.Pedestrians.AnyWantedPeopleNearPlayer) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
@@ -132,6 +162,42 @@ public class Investigation
             EntryPoint.WriteToConsole($"Investigation Update (Secondary Tasks) 250ms? Ran Time Since {Game.GameTime - GameTimeLastUpdatedInvestigation}", 5);
         }
         GameTimeLastUpdatedInvestigation = Game.GameTime;
+    }
+    private void AssignCops()
+    {
+        if (RequiresPolice)
+        {
+            CrimeEvent HighestCrimeEvent = Player.PoliceResponse.CrimesReported.OrderBy(x => x.AssociatedCrime?.Priority).FirstOrDefault();
+            if (HighestCrimeEvent != null)
+            {
+                RespondingPolice = PoliceToRespond(HighestCrimeEvent.AssociatedCrime.ResultingWantedLevel);
+            }
+            else
+            {
+                RespondingPolice = PoliceToRespond(1);
+            }
+            int tasked = 0;
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+            {
+                if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                {
+                    cop.IsRespondingToInvestigation = true;
+                    tasked++;
+                }
+                else
+                {
+                    cop.IsRespondingToInvestigation = false;
+                }
+            }
+            EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
+        }
+        else
+        {
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+            {
+                cop.IsRespondingToInvestigation = false;
+            }
+        }
     }
     private void UpdateBlip()
     {
@@ -177,6 +243,10 @@ public class Investigation
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();
+        }
+        foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+        {
+            cop.IsRespondingToInvestigation = false;
         }
         Player.OnInvestigationExpire();
     }

@@ -42,9 +42,16 @@ namespace LosSantosRED.lsr
         private bool isCellPhoneControlDisabled;
         private bool IsShowingActivityPrompts;
         private uint GameTimeLastPressedCrouch;
+        private uint GameTimeLastPressedSimplePhone;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
+
+
+
+      //  public bool IsPressingSimplePhoneKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.SimplePhoneKey);
+
+
         private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
         private bool IsPressingDropWeapon => IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKeyModifer);
         private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier);
@@ -73,6 +80,12 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
+
+
+        private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
+        
+
+
         public bool DisableCellPhoneControl { get; set; }
 
         public void Update()
@@ -405,6 +418,20 @@ namespace LosSantosRED.lsr
                 {
                     MenuProvider.ToggleDebugMenu();
                 }
+                //else if (IsPressingSimplePhoneKey)
+                //{
+                //    if(!RecentlyPressedSimplePhone)
+                //    {
+                //        if (!Player.IsPerformingActivity && Player.CanPerformActivities)
+                //        {
+                //            Player.StartSimpleCellphoneActivity();
+                //            MenuProvider.ToggleSimplePhoneMenu();
+                //            GameTimeLastPressedSimplePhone = Game.GameTime;
+                //        }
+                //    }
+                    
+                //}
+
             }
         }
         private bool IsKeyDownSafe(Keys key)

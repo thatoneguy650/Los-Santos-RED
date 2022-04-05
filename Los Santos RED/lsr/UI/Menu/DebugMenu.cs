@@ -336,6 +336,8 @@ public class DebugMenu : Menu
             Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
             Settings.SettingsManager.UISettings.ShowDebug = false;
             Settings.SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
+            Settings.SettingsManager.EMSSettings.ShowSpawnedBlips = false;
+            Settings.SettingsManager.FireSettings.ShowSpawnedBlips = false;
         }
         else if (selectedItem == FastForwardTime)
         {

@@ -58,6 +58,9 @@ public class Cop : PedExt, IWeaponIssuable
     public AssistManager AssistManager { get; private set;}
     public Voice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
+    public bool IsRespondingToInvestigation { get; set; }
+    public bool IsRespondingToWanted { get; set; }
+
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
