@@ -86,7 +86,7 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
         PedSwapUIMenu.AddItem(BecomeCustomPed);
-        PedSwapUIMenu.AddItem(BecomeRandomCop);
+        //PedSwapUIMenu.AddItem(BecomeRandomCop);
         // PedSwapUIMenu.AddItem(AddOffset);
         // PedSwapUIMenu.AddItem(RemoveOffset);
 

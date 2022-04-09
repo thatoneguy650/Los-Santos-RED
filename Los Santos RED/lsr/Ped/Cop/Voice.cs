@@ -49,7 +49,7 @@ public class Voice
 
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
-        if (CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted && currentPlayer.ArrestingCop.Handle == Cop.Handle)))
+        if (1==0 && CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted && currentPlayer.ClosestCopToPlayer.Handle == Cop.Handle)))
         {
             TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 25000);
             GameTimeLastRadioed = Game.GameTime;

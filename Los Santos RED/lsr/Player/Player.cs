@@ -113,7 +113,7 @@ namespace Mod
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public Rage.Object AttachedProp { get; set; }
-        public Cop ArrestingCop { get; set; }
+        public Cop ClosestCopToPlayer { get; set; }
         public bool BeingArrested { get; private set; }
         public ButtonPrompts ButtonPrompts { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
@@ -416,7 +416,7 @@ namespace Mod
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, World);
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
-            Violations.Setup();
+            //Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
@@ -426,30 +426,30 @@ namespace Mod
 
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            Respawning.Setup();
+            //Respawning.Setup();
             GangRelationships = new GangRelationships(gangs, this, Settings);
-            GangRelationships.Setup();
+            //GangRelationships.Setup();
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
             WeaponSelector = new WeaponSelector(this, Settings);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
-            CellPhone.Setup();
+            //CellPhone.Setup();
 
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
-            PlayerTasks.Setup();
+            //PlayerTasks.Setup();
 
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
-            GunDealerRelationship.Setup();
+            //GunDealerRelationship.Setup();
             OfficerFriendlyRelationship = new OfficerFriendlyRelationship(this, PlacesOfInterest);
-            OfficerFriendlyRelationship.Setup();
+            //OfficerFriendlyRelationship.Setup();
 
             Licenses = new Licenses(this);
 
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
-            Properties.Setup();
+            //Properties.Setup();
 
             ButtonPrompts = new ButtonPrompts(this, Settings);
-            ButtonPrompts.Setup();
+            //ButtonPrompts.Setup();
 
         }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
@@ -469,14 +469,20 @@ namespace Mod
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
-            if (AnnounceCrime)
-            {
-                Scanner.AnnounceCrime(crimeObserved, description);
-            }
+
             if (!isObservedByPolice && IsNotWanted)
             {
                 Investigation.Start(Location, PoliceResponse.PoliceHaveDescription,true,false,false);
             }
+
+
+
+            if (AnnounceCrime)
+            {
+                Scanner.AnnounceCrime(crimeObserved, description);
+            }
+
+
         }
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void AddGPSRoute(string Name, Vector3 position)
@@ -699,8 +705,6 @@ namespace Mod
                 }
             }
         }
-
-
         public void Crouch()
         {
             string CrouchSet = "move_crouch_proto";
@@ -731,7 +735,6 @@ namespace Mod
                 }
             }
         }
-
         public void CommitSuicide()
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
@@ -1463,6 +1466,17 @@ namespace Mod
         }
         public void Setup()
         {
+            Violations.Setup();
+            Respawning.Setup();
+            GangRelationships.Setup();
+            CellPhone.Setup();
+            PlayerTasks.Setup();
+            GunDealerRelationship.Setup();
+            OfficerFriendlyRelationship.Setup();
+            Properties.Setup();
+            ButtonPrompts.Setup();
+
+
             SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             SetUnarmed();

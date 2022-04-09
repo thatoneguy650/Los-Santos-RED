@@ -407,6 +407,7 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        Player.ResetScannerDebug();
         Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
         //Player.ResetScannerDebug();
@@ -617,24 +618,38 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+
+
+        GameFiber.StartNew(delegate
+        {
+            uint GameTimeStarted = Game.GameTime;
+            while (Game.GameTime - GameTimeStarted <= 5000)
+            {
+                Player.IsDoingSuspiciousActivity = true;
+                GameFiber.Sleep(1000);
+            }
+            Player.IsDoingSuspiciousActivity = false;
+        }, "Run Debug Logic");
+
+
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CellPhone.AddContact(myGang, true);
 
-        PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if (myPed != null && myPed.Pedestrian.Exists())
-        {
-            myPed.Pedestrian.Health = 125;
-            //if(RandomItems.RandomPercent(50))
-            //{
-            //    myPed.Pedestrian.Kill();
-            //}
-            
-            //else
-            //{
-            //    NativeFunction.Natives.TASK_WRITHE(myPed.Pedestrian, Player.Character, -1, false);
-            //}
-        }
+        //if (myPed != null && myPed.Pedestrian.Exists())
+        //{
+        //    myPed.Pedestrian.Health = 125;
+        //    //if(RandomItems.RandomPercent(50))
+        //    //{
+        //    //    myPed.Pedestrian.Kill();
+        //    //}
+
+        //    //else
+        //    //{
+        //    //    NativeFunction.Natives.TASK_WRITHE(myPed.Pedestrian, Player.Character, -1, false);
+        //    //}
+        //}
 
         //SpawnNoGunAttackers();
 
@@ -2230,12 +2245,12 @@ public class Debug
     private void WriteCivilianAndCopState()
     {
         EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle}", 5);
-        EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
-        foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
-        {
-            EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)} Gang? {veh.AssociatedGang?.ShortName} WasModSpawned {veh.WasModSpawned}", 5);
-        }
-        EntryPoint.WriteToConsole($"============================================ VEHICLES END", 5);
+        //EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
+        //foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
+        //{
+        //    EntryPoint.WriteToConsole($"veh {veh.Vehicle.Handle} {veh.Vehicle.Model.Name} IsCar {veh.Vehicle.IsCar} Engine.IsRunning {veh.Engine.IsRunning} IsDriveable {veh.Vehicle.IsDriveable} IsLockedForPlayer {veh.Vehicle.IsLockedForPlayer(Game.LocalPlayer)} Gang? {veh.AssociatedGang?.ShortName} WasModSpawned {veh.WasModSpawned}", 5);
+        //}
+        //EntryPoint.WriteToConsole($"============================================ VEHICLES END", 5);
         EntryPoint.WriteToConsole($"============================================ CIVIES START", 5);
         foreach (PedExt ped in World.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 200f).OrderBy(x => x.DistanceToPlayer))
         {
@@ -2324,6 +2339,9 @@ public class Debug
 
 
 
+        EntryPoint.WriteToConsole($"============================================ ClosestCop Handle {Player.ClosestCopToPlayer?.Handle}", 5);
+
+
 
         foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
@@ -2345,15 +2363,19 @@ public class Debug
             hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(cop.Pedestrian, out currentVehicleWeapon);
             string VehicleWeapon = $" VehicleWeapon: Has {hasVehicleWeapon} : {currentVehicleWeapon}";
             uint coolHandle = 0;
+
+
+
+
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
 
             }
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
             }
             
         }

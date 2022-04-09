@@ -49,7 +49,6 @@
 
 
 
-
     public int RequiredHelmetType { get; set; } = -1;
 
     public bool CanCurrentlySpawn(int WantedLevel)

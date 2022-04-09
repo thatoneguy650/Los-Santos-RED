@@ -116,6 +116,7 @@ namespace LosSantosRED.lsr
         private List<string> RadioStart;
         private List<AudioSet> LethalForce;
         private List<AudioSet> LicensePlateSet;
+        private List<AudioSet> UnitEnRouteSet;
         private List<AudioSet> OfficersReport;
         private List<AudioSet> AttentionAllUnits;
         private List<AudioSet> CiviliansReport;
@@ -129,6 +130,7 @@ namespace LosSantosRED.lsr
         private IEntityProvideable World;
         private ITimeReportable Time;
         private IPoliceRespondable Player;
+        private CallsignScannerAudio CallsignScannerAudio;
 
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
@@ -143,6 +145,11 @@ namespace LosSantosRED.lsr
             StreetScannerAudio.ReadConfig();
             ZoneScannerAudio = new ZoneScannerAudio();
             ZoneScannerAudio.ReadConfig();
+
+            CallsignScannerAudio = new CallsignScannerAudio();
+            CallsignScannerAudio.ReadConfig();
+
+
             DefaultConfig();
         }
         private enum LocationSpecificity
@@ -970,42 +977,63 @@ namespace LosSantosRED.lsr
                 return;
             }
             bool AddedZoneUnits = false;
-            Zone MyZone = Player.CurrentLocation.CurrentZone;
-            if (MyZone != null)
+            Cop UnitToCall = World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation || x.IsRespondingToWanted).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if(UnitToCall != null && UnitToCall.Division != -1)
             {
-                ZoneLookup zoneAudio = ZoneScannerAudio.GetLookup(MyZone.InternalGameName);
-                if (zoneAudio != null)
+                EntryPoint.WriteToConsole($"Scanner Calling Specific Unit {UnitToCall.Division}-{UnitToCall.UnityType}-{UnitToCall.BeatNumber}");
+                List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnityType, UnitToCall.BeatNumber);
+                if(CallsignAudio != null)
                 {
-                    string ScannerAudio = zoneAudio.ScannerUnitValues.PickRandom();
-                    if (ScannerAudio != "" && ScannerAudio != null && ScannerAudio.Length > 2)
+                    dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName,
+                                                                    attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
+                    dispatchEvent.SoundsToPlay.AddRange(CallsignAudio);
+                    AddedZoneUnits = true;
+                }
+            }
+            if (!AddedZoneUnits)
+            {
+                Zone MyZone = Player.CurrentLocation.CurrentZone;
+                if (MyZone != null)
+                {
+                    ZoneLookup zoneAudio = ZoneScannerAudio.GetLookup(MyZone.InternalGameName);
+                    if (zoneAudio != null)
                     {
-                        dispatchEvent.SoundsToPlay.Add(ScannerAudio);
-                        AddedZoneUnits = true;
+                        string ScannerAudio = zoneAudio.ScannerUnitValues.PickRandom();
+                        if (ScannerAudio != "" && ScannerAudio != null && ScannerAudio.Length > 2)
+                        {
+                            dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                            AddedZoneUnits = true;
+                        }
                     }
                 }
             }
-            if(!AddedZoneUnits)
-            {
-                dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName, 
-                                                                    attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
-                dispatchEvent.SoundsToPlay.Add(new List<string>() { car_code_composite.SevenEdwardSeven.FileName,
-                                                                    car_code_composite._1Adam13.FileName,
-                                                                    car_code_composite._1Adam5.FileName,
-                                                                    car_code_composite._1David4.FileName,
-                                                                    car_code_composite._2Edward5.FileName,
-                                                                    car_code_composite._2Edward6.FileName,
-                                                                    car_code_composite._2Lincoln8.FileName,
-                                                                    car_code_composite._3Lincoln12.FileName,
-                                                                    car_code_composite._3Lincoln2.FileName,
-                                                                    car_code_composite._4Mary5.FileName,
-                                                                    car_code_composite._6David6.FileName,
-                                                                    car_code_composite._7Edward14.FileName,
-                                                                    car_code_composite._8Lincoln5.FileName,
-                                                                    car_code_composite._8Mary7.FileName,
-                                                                    car_code_composite._9David1.FileName,
-                                                                    car_code_composite._9Lincoln15.FileName}.PickRandom());
-                AddedZoneUnits = true;
-            }
+            //if(!AddedZoneUnits)
+            //{
+            //    dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName, 
+            //                                                        attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
+
+                
+                
+                
+                
+            //    dispatchEvent.SoundsToPlay.Add(new List<string>() { car_code_composite.SevenEdwardSeven.FileName,
+            //                                                        car_code_composite._1Adam13.FileName,
+            //                                                        car_code_composite._1Adam5.FileName,
+            //                                                        car_code_composite._1David4.FileName,
+            //                                                        car_code_composite._2Edward5.FileName,
+            //                                                        car_code_composite._2Edward6.FileName,
+            //                                                        car_code_composite._2Lincoln8.FileName,
+            //                                                        car_code_composite._3Lincoln12.FileName,
+            //                                                        car_code_composite._3Lincoln2.FileName,
+            //                                                        car_code_composite._4Mary5.FileName,
+            //                                                        car_code_composite._6David6.FileName,
+            //                                                        car_code_composite._7Edward14.FileName,
+            //                                                        car_code_composite._8Lincoln5.FileName,
+            //                                                        car_code_composite._8Mary7.FileName,
+            //                                                        car_code_composite._9David1.FileName,
+            //                                                        car_code_composite._9Lincoln15.FileName}.PickRandom());
+            //    AddedZoneUnits = true;
+            //}
             if (AddedZoneUnits)
             {
                 dispatchEvent.HasUnitAudio = true;
@@ -1172,6 +1200,18 @@ namespace LosSantosRED.lsr
                 return;
             }
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+
+
+
+            if(EventToPlay.HasUnitAudio)
+            {
+                EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+                AddAudioSet(EventToPlay, UnitEnRouteSet.PickRandom());
+                EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+            }
+
+
+
             if (EventToPlay.Subtitles != "")
             {
                 EventToPlay.Subtitles = NativeHelper.FirstCharToUpper(EventToPlay.Subtitles);
@@ -1523,6 +1563,27 @@ namespace LosSantosRED.lsr
             new AudioSet(new List<string>() { suspect_license_plate.TargetsLicensePlate.FileName },"targets license plate"),
             new AudioSet(new List<string>() { suspect_license_plate.TargetVehicleLicensePlate.FileName },"target vehicle license plate"),
         };
+
+
+            UnitEnRouteSet = new List<AudioSet>()
+        {
+            new AudioSet(new List<string>() { s_m_y_cop_black_full_02.RogerEnRoute1.FileName},"Copy Dispatch."),
+            new AudioSet(new List<string>() { s_m_y_cop_black_mini_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+           // new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.RogerEnRoute1.FileName},"we are en route"),//victor 13
+            new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.RogerEnRoute1.FileName},"Acknowledged, on our way."),
+            //new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.RogerEnRoute1.FileName},"we are en route"),//ocean-1
+            new AudioSet(new List<string>() { s_m_y_cop_white_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+            new AudioSet(new List<string>() { s_m_y_cop_white_full_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
+            new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
+            //new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+            //new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+            new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+            //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+           // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+           // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+        };
+
+
             OfficerDown = new Dispatch()
             {
                 Name = "Officer Down",

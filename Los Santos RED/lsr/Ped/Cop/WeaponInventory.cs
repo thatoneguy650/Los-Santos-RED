@@ -102,7 +102,7 @@ public class WeaponInventory
                 {
                     if (WantedLevel == 0)
                     {
-                        if (!IsSetDefault)
+                        if (!IsSetDefault && !IsSetUnarmed)
                         {
                             SetDefault();
                             HasHeavyWeaponOnPerson = false;
@@ -235,7 +235,7 @@ public class WeaponInventory
             }
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
-            if (currentWeapon != 2725352035)
+            if (currentWeapon != 2725352035 && currentWeapon != 966099553)//unarmed and notepad
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, 2725352035, true);
             }

@@ -385,10 +385,18 @@ public class Idle : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
+
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_NORMAL_SCENARIO_EXIT(Ped.Pedestrian);
+
+
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+
+            
+
+
             if (resetAlertness)
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);

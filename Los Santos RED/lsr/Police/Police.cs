@@ -111,7 +111,13 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
 
-            Player.ArrestingCop = PrimaryPlayerCop;
+
+            if(Player.ClosestCopToPlayer?.Handle != PrimaryPlayerCop?.Handle)
+            {
+                EntryPoint.WriteToConsole($"Closeset Cop to Player Changed FROM {Player.ClosestCopToPlayer?.Handle} TO {PrimaryPlayerCop?.Handle}");
+            }
+
+            Player.ClosestCopToPlayer = PrimaryPlayerCop;
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()

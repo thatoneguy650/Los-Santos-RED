@@ -365,7 +365,7 @@ namespace LosSantosRED.lsr
                     cop.IsRespondingToWanted = false;
                 }
             }
-            EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
+            //EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
         }
         private PoliceState GetPoliceState()
         {

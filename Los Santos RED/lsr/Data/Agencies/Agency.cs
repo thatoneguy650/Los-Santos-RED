@@ -10,10 +10,11 @@ using System.Linq;
 [Serializable()]
 public class Agency
 {
+    private int beatNumber = 0;
     public Agency()
     {
     }
-    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
+    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string groupName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
@@ -24,7 +25,8 @@ public class Agency
         Classification = _AgencyClassification;
         LicensePlatePrefix = _LicensePlatePrefix;
         SideArms = sideArms;
-        LongGuns = longGuns;   
+        LongGuns = longGuns;
+        GroupName = groupName;
     }
     public Classification Classification { get; set; } = Classification.Other;
     public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : ResponseType.LawEnforcement;
@@ -52,6 +54,7 @@ public class Agency
             return ColorPrefix + ID;
         }
     }
+    public int Division { get; set; } = -1;
     public string ColorPrefix { get; set; } = "~s~";
     public string FullName { get; set; } = "Unknown";
     public bool HasMotorcycles => Vehicles.Any(x => x.IsMotorcycle);
@@ -61,6 +64,7 @@ public class Agency
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 99;
     public bool SpawnsOnHighway { get; set; } = false;
+    public string GroupName { get; set; } = "Cop";
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
@@ -171,7 +175,15 @@ public class Agency
     {
         return ID;
     }
-
+    public int GetNextBeatNumber()
+    {
+        beatNumber++;
+        if(beatNumber > 24)
+        {
+            beatNumber = 1;
+        }
+        return beatNumber;
+    }
 
 
 

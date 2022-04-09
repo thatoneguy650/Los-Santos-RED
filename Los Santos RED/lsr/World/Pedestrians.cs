@@ -860,7 +860,17 @@ public class Pedestrians
             myCop.TaserShootRate = tazerShootRate;
             myCop.VehicleAccuracy = vehicleAccuracy;
             myCop.VehicleShootRate = vehicleShootRate;
-
+            if (AssignedAgency.Division != -1)
+            {
+                myCop.Division = AssignedAgency.Division;
+                myCop.UnityType = "Lincoln";
+                myCop.BeatNumber = AssignedAgency.GetNextBeatNumber();
+                myCop.GroupName = $"{AssignedAgency.ID} {myCop.Division}-{myCop.UnityType}-{myCop.BeatNumber}";
+            }
+            else if (AssignedAgency.GroupName != "")
+            {
+                myCop.GroupName = AssignedAgency.GroupName;
+            }
             if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
             {
                 Police.Add(myCop);
@@ -870,14 +880,12 @@ public class Pedestrians
         }
         else
         {
-
             if (Pedestrian.IsPersistent)
             {
                 EntryPoint.PersistentPedsDeleted++;
             }
             Pedestrian.Delete();
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL, DELETING", 2);
-            
         }
     }
     public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped Cop, int WantedLevel)

@@ -54,20 +54,20 @@ namespace LosSantosRED.lsr
         private Settings Settings;
         private ShopMenus ShopMenus;
         private Streets Streets;
-        private StreetScannerAudio StreetScannerAudio;
+        //private StreetScannerAudio StreetScannerAudio;
         private Tasker Tasker;
         private List<ModTask> TertiaryTasks;
         private Mod.Time Time;
         private MovingAverage TimeMA;
         private UI UI;
         private VanillaManager VanillaManager;
-        private VehicleScannerAudio VehicleScannerAudio;
+       // private VehicleScannerAudio VehicleScannerAudio;
         private WavAudio WavAudio;
         private Weapons Weapons;
         private Weather Weather;
         private Mod.World World;
         private Zones Zones;
-        private ZoneScannerAudio ZoneScannerAudio;
+        //private ZoneScannerAudio ZoneScannerAudio;
         
         private object PrevLastRanSenaryTask;
         private object LastRanSenaryTask;
@@ -250,15 +250,15 @@ namespace LosSantosRED.lsr
             Names.ReadConfig();
             GameFiber.Yield();
 
-            VehicleScannerAudio = new VehicleScannerAudio();
-            VehicleScannerAudio.ReadConfig();
-            GameFiber.Yield();
-            ZoneScannerAudio = new ZoneScannerAudio();
-            ZoneScannerAudio.ReadConfig();
-            GameFiber.Yield();
-            StreetScannerAudio = new StreetScannerAudio();
-            StreetScannerAudio.ReadConfig();
-            GameFiber.Yield();
+            //VehicleScannerAudio = new VehicleScannerAudio();
+            //VehicleScannerAudio.ReadConfig();
+           // GameFiber.Yield();
+            //ZoneScannerAudio = new ZoneScannerAudio();
+            //ZoneScannerAudio.ReadConfig();
+            //GameFiber.Yield();
+            //StreetScannerAudio = new StreetScannerAudio();
+            //StreetScannerAudio.ReadConfig();
+            //GameFiber.Yield();
             Agencies = new Agencies();
             Agencies.ReadConfig();
             GameFiber.Yield();

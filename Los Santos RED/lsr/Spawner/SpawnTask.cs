@@ -33,6 +33,12 @@ public class SpawnTask
     private SpawnLocation SpawnLocation;
     //private List<RandomHeadData> RandomHeadList;
     private IEntityProvideable World;
+    private int NextBeatNumber;
+    private string UnitCode;
+    private int OccupantsToAdd;
+
+    private bool WillAddPassengers => VehicleType.MinOccupants > 1 || AddOptionalPassengers;
+
     public SpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world)
     {
         Agency = agency;
@@ -108,6 +114,8 @@ public class SpawnTask
     {
         try
         {
+
+
             if(Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position) && !AllowAnySpawn)
             {
                 EntryPoint.WriteToConsole($"SpawnTask: Too Close and in front to spawn", 5);
@@ -125,6 +133,15 @@ public class SpawnTask
                        // EntryPoint.WriteToConsole($"SPAWNTASK 11111111111", 3);
                         if (PersonType != null)
                         {
+
+
+                            OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+
+                            SetupCallSigns();
+
+
+                            
+
                             //EntryPoint.WriteToConsole($"SPAWNTASK 222222 {PersonType.ModelName}", 3);
                             PedExt Person = CreatePerson();
                             if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
@@ -136,9 +153,16 @@ public class SpawnTask
 
                                 Person.UpdateVehicleState();
 
-                                if (VehicleType.MinOccupants > 1 || AddOptionalPassengers)
+                                if (WillAddPassengers)
                                 {
-                                    int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                                    
+
+                                    
+
+
+                                    EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+
+
                                     for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                                     {
                                         string requiredGroup = "";
@@ -164,6 +188,10 @@ public class SpawnTask
                                                 Passenger.AssignedVehicle = Vehicle;
                                                 Passenger.AssignedSeat = SeatToAssign;
                                                 Passenger.UpdateVehicleState();
+
+
+                                                EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+
                                             }
                                             else
                                             {
@@ -225,6 +253,36 @@ public class SpawnTask
             }
         }
     }
+
+    private void SetupCallSigns()
+    {
+        if (Agency != null && Agency.Division != -1)
+        {
+            if (VehicleType?.IsMotorcycle == true)
+            {
+                UnitCode = "Mary";
+            }
+            else if (WillAddPassengers && OccupantsToAdd > 0 && VehicleType != null)
+            {
+                UnitCode = "Adam";
+            }
+            else if (VehicleType == null)
+            {
+                UnitCode = "Frank";
+            }
+            else
+            {
+                UnitCode = "Lincoln";
+            }
+            NextBeatNumber = Agency.GetNextBeatNumber();
+        }
+        else
+        {
+            UnitCode = "";
+            NextBeatNumber = 0;
+        }
+    }
+
     private PedExt CreatePerson()
     {
         try
@@ -309,8 +367,6 @@ public class SpawnTask
             {
                 isMale = ped.IsMale;
             }
-
-
             Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName);
             World.Pedestrians.AddEntity(PrimaryCop);
             PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
@@ -321,7 +377,17 @@ public class SpawnTask
             PrimaryCop.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
             PrimaryCop.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
             PrimaryCop.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
-
+            if (Agency.Division != -1)
+            {
+                PrimaryCop.Division = Agency.Division;
+                PrimaryCop.UnityType = UnitCode;
+                PrimaryCop.BeatNumber = NextBeatNumber;
+                PrimaryCop.GroupName = $"{Agency.ID} {PrimaryCop.Division}-{PrimaryCop.UnityType}-{PrimaryCop.BeatNumber}";
+            }
+            else if(Agency.GroupName != "")
+            {
+                PrimaryCop.GroupName = Agency.GroupName;
+            }
             if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
             {
                 int health = RandomItems.GetRandomNumberInt(PersonType.HealthMin, PersonType.HealthMax) + 100;
@@ -333,7 +399,6 @@ public class SpawnTask
                 int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
                 ped.Armor = armor;
             }
-
             return PrimaryCop;
         }
         else if (Agency.ResponseType == ResponseType.EMS)
@@ -374,13 +439,14 @@ public class SpawnTask
         }
 
 
-        if(ped.Exists())
-        {
-            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
-        }
+        //if(ped.Exists())
+        //{
+        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
+        //}
 
         return null;
     }
+
     private PedExt SetupGangMember(Ped ped)
     {
         if (AddBlip && ped.Exists())

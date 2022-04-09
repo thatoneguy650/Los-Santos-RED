@@ -61,6 +61,11 @@ public class Cop : PedExt, IWeaponIssuable
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
 
+
+    public int Division { get; set; } = -1;
+    public string UnityType { get; set; } = "Lincoln";
+    public int BeatNumber { get; set; } = 1;
+
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);

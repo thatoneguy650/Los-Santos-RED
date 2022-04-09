@@ -37,6 +37,7 @@ namespace LosSantosRED.lsr.Interface
         float ClosestPoliceDistanceToPlayer { get; }
         bool IsHoldingHostage { get; }
         bool IsCommitingSuicide { get; }
+        Cop ClosestCopToPlayer { get; }
 
         void AddDistressedPed(Vector3 positionLastSeenDistressedPed);
         //bool IsHostile(Gang gang);

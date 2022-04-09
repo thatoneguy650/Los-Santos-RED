@@ -189,7 +189,7 @@ public class Investigation
                     cop.IsRespondingToInvestigation = false;
                 }
             }
-            EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
+           // EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
         }
         else
         {
