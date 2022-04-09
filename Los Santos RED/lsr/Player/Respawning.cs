@@ -136,6 +136,7 @@ public class Respawning// : IRespawning
     }
     public void ResistArrest()
     {
+
         ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }

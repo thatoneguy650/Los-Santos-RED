@@ -442,6 +442,11 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
+
+            if(Player.RecentlyResistedArrest)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
+            }
             //GameFiber.Yield();//TR Yield RemovedTest 1
 
 

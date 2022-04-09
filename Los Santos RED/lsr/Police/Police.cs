@@ -116,8 +116,18 @@ namespace LosSantosRED.lsr
             {
                 EntryPoint.WriteToConsole($"Closeset Cop to Player Changed FROM {Player.ClosestCopToPlayer?.Handle} TO {PrimaryPlayerCop?.Handle}");
             }
-
-            Player.ClosestCopToPlayer = PrimaryPlayerCop;
+            if(Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
+            {
+                if(Math.Abs(Player.ClosestCopToPlayer.DistanceToPlayer - PrimaryPlayerCop.DistanceToPlayer) >= 2f)
+                {
+                    Player.ClosestCopToPlayer = PrimaryPlayerCop;
+                }
+            }
+            else
+            {
+                Player.ClosestCopToPlayer = PrimaryPlayerCop;
+            }
+            
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()

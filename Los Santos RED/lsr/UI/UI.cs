@@ -536,23 +536,24 @@ public class UI : IMenuProvideable
         {
             if (DisplayablePlayer.IsInSearchMode)
             {
-                PlayerDisplay += $"~o~ Attempting To Locate{CurrentDefaultTextColor}";
+                PlayerDisplay += $"~o~ Attempting To Locate";
             }
             else
             {
                 if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
                 {
-                    PlayerDisplay += $"~r~ Weapons Free{CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Weapons Free";
                 }
                 else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
                 {
-                    PlayerDisplay += $"~r~ Lethal Force Authorized{CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Lethal Force Authorized";
                 }
                 else
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit{CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Active Pursuit";
                 }
             }
+            PlayerDisplay += $" ({DisplayablePlayer.PoliceResponse.CurrentRespondingPoliceCount}) {CurrentDefaultTextColor}";
         }
         else if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
         {
@@ -560,12 +561,13 @@ public class UI : IMenuProvideable
             {
                 if (DisplayablePlayer.Investigation.IsSuspicious)
                 {
-                    PlayerDisplay += $"~r~ Police Responding with Description{CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~r~ Police Responding with Description";
                 }
                 else if (DisplayablePlayer.Investigation.IsNearPosition)
                 {
-                    PlayerDisplay += $"~o~ Police Responding{CurrentDefaultTextColor}";
+                    PlayerDisplay += $"~o~ Police Responding";
                 }
+                PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){CurrentDefaultTextColor}";
             }
             else if (DisplayablePlayer.Investigation.RequiresEMS || DisplayablePlayer.Investigation.RequiresFirefighters)
             {

@@ -67,6 +67,8 @@ public class Investigation
 
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
     public bool IsNearPosition { get; private set; }
+    public int CurrentRespondingPoliceCount { get; private set; }
+
     public void Dispose()
     {
         if (InvestigationBlip.Exists())
@@ -189,7 +191,8 @@ public class Investigation
                     cop.IsRespondingToInvestigation = false;
                 }
             }
-           // EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
+            CurrentRespondingPoliceCount = tasked;
+            // EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
         }
         else
         {
@@ -197,6 +200,7 @@ public class Investigation
             {
                 cop.IsRespondingToInvestigation = false;
             }
+            CurrentRespondingPoliceCount = 0;
         }
     }
     private void UpdateBlip()

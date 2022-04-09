@@ -168,7 +168,7 @@ public class WeaponInventory
                         }
                         else
                         {
-                            if (WeaponOwner.IsInVehicle)
+                            if (WeaponOwner.IsInVehicle || WantedLevel == 1)
                             {
                                 SetUnarmed();
                             }

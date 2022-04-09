@@ -74,17 +74,13 @@ public class Chase : ComplexTask
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
     private bool ShouldAim => Player.WantedLevel > 1;
-    private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
+    private bool ShouldCarJackPlayer => Player.WantedLevel > 1 && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
+    private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
-    private bool ShouldChaseRecklessly => Player.WantedLevel >= 2;//Player.PoliceResponse.IsDeadlyChase;
+    private bool ShouldChaseRecklessly => Player.WantedLevel >= 2;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
-    // && !Cop.Pedestrian.IsGettingIntoVehicle;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
-    //35f;//25f
     private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
-    //private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide;
-    //25f
-    // GameTimeChaseStarted != 0 &&  Game.GameTime - GameTimeChaseStarted <= 3000;
     private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
     public override void Start()
     {
@@ -357,6 +353,10 @@ public class Chase : ComplexTask
             {
                 return Task.CarJack;
             }
+            else if (ShouldGoToPlayerCar)
+            {
+                return Task.FootChase;
+            }
             else if (ShouldGetBackInCar)
             {
                 return Task.EnterVehicle;
@@ -376,7 +376,6 @@ public class Chase : ComplexTask
             {
                 return Task.FootChase;
             }
-            //return Task.FootChase;
         }
         else
         {
@@ -390,31 +389,32 @@ public class Chase : ComplexTask
         NeedsUpdates = true;
         if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            if (Player.WantedLevel == 1)
-            {
-                if (CurrentSubTask != SubTask.GoToVehicleDoor)
-                {
-                    EntryPoint.WriteToConsole($"GoToPlayersCar Write Ticket Started {Ped.Pedestrian.Handle}");
-                    Cop.WeaponInventory.Reset();
-                    IsChasingSlowly = true;
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 3f, 1.4f, 1073741824, 1);
-                        NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
-                        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
-                    CurrentSubTask = SubTask.GoToVehicleDoor;
-                }
-            }
-            else
-            {
+            //if (Player.WantedLevel == 1)
+            //{
+            //    if (CurrentSubTask != SubTask.GoToVehicleDoor)
+            //    {
+            //        EntryPoint.WriteToConsole($"GoToPlayersCar Write Ticket Started {Ped.Pedestrian.Handle}");
+            //        Cop.WeaponInventory.Reset();
+            //        IsChasingSlowly = true;
+            //        unsafe
+            //        {
+            //            int lol = 0;
+            //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 10f, 1.4f, 1073741824, 1);
+            //            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 3f, 1.0f, 1073741824, 1);
+            //            NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
+            //            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            //            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
+            //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //        }
+            //        CurrentSubTask = SubTask.GoToVehicleDoor;
+            //    }
+            //}
+            //else
+            //{
                 if (CurrentSubTask != SubTask.CarJackPlayer)
                 {
                     Cop.WeaponInventory.SetCompletelyUnarmed();
@@ -435,7 +435,7 @@ public class Chase : ComplexTask
                     }
                     CurrentSubTask = SubTask.CarJackPlayer;
                 }
-            }
+            //}
         }
     }
     private void SetSiren()

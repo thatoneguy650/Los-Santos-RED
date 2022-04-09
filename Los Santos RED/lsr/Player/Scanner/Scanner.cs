@@ -131,6 +131,7 @@ namespace LosSantosRED.lsr
         private ITimeReportable Time;
         private IPoliceRespondable Player;
         private CallsignScannerAudio CallsignScannerAudio;
+        private int CurrentUnitEnRouteID;
 
         public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
         {
@@ -977,17 +978,45 @@ namespace LosSantosRED.lsr
                 return;
             }
             bool AddedZoneUnits = false;
-            Cop UnitToCall = World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation || x.IsRespondingToWanted).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-            if(UnitToCall != null && UnitToCall.Division != -1)
+            bool AddedSingleUnit = false;
+            int totalAdded = 0;
+            int totalToAdd = Settings.SettingsManager.ScannerSettings.NumberOfUnitsToAnnounce;
+            List<string> CallSigns = new List<string>();
+            foreach (Cop UnitToCall in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation || x.IsRespondingToWanted).OrderBy(x => x.DistanceToPlayer))
             {
-                EntryPoint.WriteToConsole($"Scanner Calling Specific Unit {UnitToCall.Division}-{UnitToCall.UnityType}-{UnitToCall.BeatNumber}");
-                List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnityType, UnitToCall.BeatNumber);
-                if(CallsignAudio != null)
+                if (UnitToCall != null && UnitToCall.Division != -1)
                 {
-                    dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName,
-                                                                    attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName, }.PickRandom());
-                    dispatchEvent.SoundsToPlay.AddRange(CallsignAudio);
-                    AddedZoneUnits = true;
+                    string CallSign = $"{UnitToCall.Division}-{UnitToCall.UnityType}-{UnitToCall.BeatNumber}";
+                    if (!CallSigns.Contains(CallSign))
+                    {
+                        CallSigns.Add(CallSign);
+                        EntryPoint.WriteToConsole($"Scanner Calling Specific Unit {CallSign}");
+                        List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnityType, UnitToCall.BeatNumber);
+                        if (CallsignAudio != null)
+                        {
+                            if (!AddedSingleUnit)
+                            {
+                                dispatchEvent.SoundsToPlay.Add(new List<string>() { attention_unit_specific.Attentionunit.FileName, attention_unit_specific.Dispatchcallingunit.FileName, attention_unit_specific.Dispatchcallingunitumm.FileName,
+                                                                   // attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName,
+                                }.PickRandom());
+                                AddedSingleUnit = true;
+                            }
+                            else
+                            {
+                                dispatchEvent.SoundsToPlay.Add(new List<string>() { officer.Unituhh.FileName, officer.Unitumm.FileName }.PickRandom());
+                            }
+
+                            //dispatchEvent.NotificationText += $"{CallSign}";
+
+                            dispatchEvent.SoundsToPlay.AddRange(CallsignAudio);
+                            totalAdded++;
+                            AddedZoneUnits = true;
+                        }
+                    }
+                }
+                if(totalAdded >= totalToAdd)
+                {
+                    break;
                 }
             }
             if (!AddedZoneUnits)
@@ -1037,6 +1066,7 @@ namespace LosSantosRED.lsr
             if (AddedZoneUnits)
             {
                 dispatchEvent.HasUnitAudio = true;
+                dispatchEvent.UnitAudioAmount = totalAdded;
             }
         }
         private void AddAttentionRandomUnit(DispatchEvent dispatchEvent)
@@ -1202,12 +1232,16 @@ namespace LosSantosRED.lsr
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
 
 
+            
 
             if(EventToPlay.HasUnitAudio)
             {
-                EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
-                AddAudioSet(EventToPlay, UnitEnRouteSet.PickRandom());
-                EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+                foreach(AudioSet audioSet in UnitEnRouteSet.OrderBy(x => Guid.NewGuid()).Take(EventToPlay.UnitAudioAmount).ToList())
+                {
+                    EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+                    AddAudioSet(EventToPlay, audioSet);
+                    EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+                }
             }
 
 
@@ -3011,6 +3045,7 @@ namespace LosSantosRED.lsr
             public int Priority { get; set; } = 99;
             public List<string> SoundsToPlay { get; set; } = new List<string>();
             public string Subtitles { get; set; }
+            public int UnitAudioAmount { get; set; }
         }
     }
 }

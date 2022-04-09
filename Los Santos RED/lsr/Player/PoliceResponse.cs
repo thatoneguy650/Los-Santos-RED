@@ -57,6 +57,7 @@ namespace LosSantosRED.lsr
         public bool PlayerSeenDuringCurrentWanted { get; set; }
         public bool PlayerSeenDuringWanted { get; set; } = false;
         public bool PoliceHaveDescription { get; private set; }
+        public int CurrentRespondingPoliceCount { get; private set; }
         public bool HasShotAtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("FiringWeaponNearPolice") > 0;
         public bool HasHurtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("HurtingPolice") > 0;
         public int PoliceKilled => InstancesOfCrime("KillingPolice");
@@ -342,11 +343,25 @@ namespace LosSantosRED.lsr
             int RespondingPolice = 0;
             if(Player.WantedLevel == 1)
             {
-                RespondingPolice = 2;
+                if(Player.IsBusted)
+                {
+                    RespondingPolice = 2;
+                }
+                else
+                {
+                    RespondingPolice = 2;
+                }
             }
             else if (Player.WantedLevel == 2)
             {
-                RespondingPolice = 4;
+                if (Player.IsBusted)
+                {
+                    RespondingPolice = 2;
+                }
+                else
+                {
+                    RespondingPolice = 4;
+                }
             }
             else if(Player.IsWanted)
             {
@@ -365,6 +380,7 @@ namespace LosSantosRED.lsr
                     cop.IsRespondingToWanted = false;
                 }
             }
+            CurrentRespondingPoliceCount = tasked;
             //EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
         }
         private PoliceState GetPoliceState()

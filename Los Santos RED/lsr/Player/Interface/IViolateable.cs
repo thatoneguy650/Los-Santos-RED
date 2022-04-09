@@ -54,5 +54,6 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         bool IsDoingSuspiciousActivity { get; }
         bool IsHoldingHostage { get; }
+        bool RecentlyResistedArrest { get; }
     }
 }

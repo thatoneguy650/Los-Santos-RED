@@ -36,6 +36,8 @@ public class Voice
 
     private int TimeBetweenSpeaking;
     private int TimeBetweenRadioIn;
+    private uint GameTimeLastForcedRadioSpeech;
+
     public Voice(Cop cop, string modelName)
     {
         Cop = cop;
@@ -107,8 +109,13 @@ public class Voice
         }
     }
     public void Speak(IPoliceRespondable currentPlayer)
-    {
-        if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
+    {    
+        if(Game.GameTime - GameTimeLastForcedRadioSpeech >= 5000 && Cop.Pedestrian.Exists() && (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 3) || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "radio_chatter", 3)))
+        {
+            PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }.PickRandom(), false);
+            GameTimeLastForcedRadioSpeech = Game.GameTime;
+        }
+        else if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
         {
             if (Cop.CurrentTask.OtherTarget.WantedLevel > currentPlayer.WantedLevel || Cop.CurrentTask.OtherTarget.IsDeadlyChase && currentPlayer.PoliceResponse.IsDeadlyChase)
             {
@@ -157,7 +164,15 @@ public class Voice
                 {
                     if (currentPlayer.IsBusted)
                     {
-                        PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
+                        if(currentPlayer.WantedLevel == 1)
+                        {
+                            PlaySpeech(IdleSpeech.PickRandom(), Cop.IsInVehicle);
+                        }
+                        else
+                        {
+                            PlaySpeech(SuspectBusted.PickRandom(), Cop.IsInVehicle);
+                        }
+                        
                     }
                     else if (currentPlayer.IsDead)
                     {

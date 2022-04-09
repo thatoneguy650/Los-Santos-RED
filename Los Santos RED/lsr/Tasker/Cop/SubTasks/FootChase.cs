@@ -19,6 +19,7 @@ public class FootChase
     private object MoveRate;
     private float LocalDistance;
     private float GoToDistance;
+    private float prevRunSpeed;
 
     private enum SubTask
     {
@@ -31,6 +32,13 @@ public class FootChase
     }
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide;
     private bool ShouldAim => Player.WantedLevel > 1;
+
+
+    private bool CanRadioIn => !Cop.IsUnconscious && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
+
+
+
+
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop)
     {
         World = world;
@@ -48,32 +56,52 @@ public class FootChase
     {
         if (Player.WantedLevel == 1)
         {
-            RunSpeed = 3.0f;// 1.4f;
+            if(LocalDistance >= 15f)
+            {
+                RunSpeed = 3.0f;// 1.4f;
+            }
+            else
+            {
+                RunSpeed = 1.4f;// 1.4f;
+            }
         }
         else
         {
             RunSpeed = 500f;
             NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
         }
+
+
+        if(prevRunSpeed != RunSpeed)
+        {
+            CurrentSubTask = SubTask.None;
+            prevRunSpeed = RunSpeed;
+        }
+
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = false;
         LocalDistance = Ped.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character);
-        GoToDistance = 5f;//4f;
+
+        GoToDistance = 4f;//4f;
         if (Player.IsHoldingHostage || Player.IsCommitingSuicide)
         {
             GoToDistance = 10f;
         }
-        if (CurrentSubTask != SubTask.Shoot && ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+        else if(Player.IsInVehicle)
+        {
+            GoToDistance = 3f;
+        }
+        if (CurrentSubTask != SubTask.Shoot && LocalDistance < 10f && ShouldShoot && ShouldAim)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskShoot();
         }
-        else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && LocalDistance < 10f && ShouldAim)//7f
+        else if (CurrentSubTask != SubTask.Aim && LocalDistance < 10f && !ShouldShoot && ShouldAim)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAim();
         }
-        else if (!ShouldShoot && LocalDistance < 10f && !ShouldAim)
+        else if (LocalDistance < 10f && !ShouldShoot && !ShouldAim)
         {
             if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle)
             {
@@ -113,6 +141,7 @@ public class FootChase
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, Player.Character, 2000, (uint)FiringPattern.DelayFireByOneSecond);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -125,7 +154,8 @@ public class FootChase
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, Player.Character, -1, (uint)FiringPattern.DelayFireByOneSecond);
+                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, Player.Character, 2000, (uint)FiringPattern.DelayFireByOneSecond);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -136,6 +166,7 @@ public class FootChase
     private void TaskAim()
     {
         CurrentSubTask = SubTask.Aim;
+        AnimationDictionary.RequestAnimationDictionay("random@arrests");
         if (LocalDistance > 5f)
         {
             unsafe
@@ -143,7 +174,19 @@ public class FootChase
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, GoToDistance, 20f);
-                NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, -1, false);
+
+                if(RandomItems.RandomPercent(50) && (Cop.WeaponInventory.IsSetLessLethal || (Cop.WeaponInventory.IsSetDeadly && !Cop.WeaponInventory.HasHeavyWeaponOnPerson) || (Cop.WeaponInventory.IsSetDefault && !Cop.WeaponInventory.HasHeavyWeaponOnPerson)))
+                {
+                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, RandomItems.GetRandomNumberInt(20000, 45000), false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, -1, false);
+                }
+
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -156,7 +199,19 @@ public class FootChase
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, -1, false);
+
+                if (RandomItems.RandomPercent(50) && (Cop.WeaponInventory.IsSetLessLethal || (Cop.WeaponInventory.IsSetDeadly && !Cop.WeaponInventory.HasHeavyWeaponOnPerson) || (Cop.WeaponInventory.IsSetDefault && !Cop.WeaponInventory.HasHeavyWeaponOnPerson)))
+                {
+                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, RandomItems.GetRandomNumberInt(20000, 45000), false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Player.Character, -1, false);
+                }
+
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -167,6 +222,8 @@ public class FootChase
     private void TaskLookAt()
     {
         CurrentSubTask = SubTask.Look;
+        AnimationDictionary.RequestAnimationDictionay("random@arrests");
+        NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         if (LocalDistance > 5f)
         {
             unsafe
@@ -175,12 +232,28 @@ public class FootChase
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, GoToDistance, RunSpeed, 2f, 0);
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1000);
-                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+               // NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                if(RandomItems.RandomPercent(50))
+                {
+                    //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 2048, 3);//, 0, 2);
+                    //NativeFunction.CallByName<bool>("TASK_STAND_STILL", 0, RandomItems.GetRandomNumberInt(10000, 25000));
+                    //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_chatter", 2.0f, -2.0f, 2000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_exit", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                }
                // NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_b", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_c", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -194,11 +267,28 @@ public class FootChase
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1000);
-                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
-               // NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
+                //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                if (RandomItems.RandomPercent(50))
+                {
+                    //NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 2048, 3);// 0, 2);
+                    //NativeFunction.CallByName<bool>("TASK_STAND_STILL", 0, RandomItems.GetRandomNumberInt(10000, 25000));
+                    //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_chatter", 2.0f, -2.0f, 2000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "generic_radio_exit", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
+                }
+
+                // NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_b", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -210,11 +300,7 @@ public class FootChase
     {
         EntryPoint.WriteToConsole($"Foot Chase Write Ticket Started {Ped.Pedestrian.Handle} PrevSubTask = {CurrentSubTask}");
         CurrentSubTask = SubTask.WriteTicket;
-
-
-
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
-
         if (LocalDistance > 5f)
         {
             unsafe
@@ -225,6 +311,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1000);
                 NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
                 NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
+                NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_b", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -244,6 +331,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1000);
                 NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
                 NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "CODE_HUMAN_MEDIC_TIME_OF_DEATH", 0, true);
+                NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", 0, "WORLD_HUMAN_COP_IDLES", 0, true);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@enter", "enter", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_a", 8.0f, -8.0f, -1, 0, 0, false, false, false);
                 //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "amb@medic@standing@timeofdeath@idle_a", "idle_b", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -269,7 +357,5 @@ public class FootChase
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
     }
-
-
 }
 

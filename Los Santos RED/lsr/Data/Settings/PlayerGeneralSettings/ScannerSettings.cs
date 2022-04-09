@@ -27,11 +27,15 @@ public class ScannerSettings
     public bool AllowStatusAnnouncements { get; set; }
     [Description("Changes the grammer of the dispatcher a bit to be more realstic in some places. Disable to be more consistent.")]
     public bool UseNearForLocations { get; set; }
+
+
+    [Description("Number of units to include attention audio for during a citizen reported crime. Requires Call Signs.")]
+    public int NumberOfUnitsToAnnounce { get; set; }
     public ScannerSettings()
     {
         SetDefault();
-    #if DEBUG
-
+#if DEBUG
+        NumberOfUnitsToAnnounce = 3;
 #endif
     }
     public void SetDefault()
@@ -46,6 +50,7 @@ public class ScannerSettings
         DelayMaxTime = 2500;
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
+        NumberOfUnitsToAnnounce = 1;
     }
 
 }

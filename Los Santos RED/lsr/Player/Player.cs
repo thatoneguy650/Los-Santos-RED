@@ -178,7 +178,7 @@ namespace Mod
         public OfficerFriendlyRelationship OfficerFriendlyRelationship { get; private set; }
         public bool HandsAreUp { get; set; }
         public bool HasBeenMoving => GameTimeStartedMoving != 0 && Game.GameTime - GameTimeStartedMoving >= 5000;
-        public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 5000;
+        public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 2000;
         public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public bool HasCurrentActivity => UpperBodyActivity != null;
         public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
