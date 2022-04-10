@@ -47,7 +47,7 @@ public class SeatAssigner
         }
         else 
         {
-            VehicleExt LastVehicle = null;
+            VehicleExt LastVehicle = null;//
             if (Ped.Pedestrian.LastVehicle.Exists())
             {
                 LastVehicle = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
