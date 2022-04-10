@@ -27,9 +27,14 @@ public class LEDispatcher
     private Roadblock Roadblock;
     private Agency LastAgencySpawned;
     private IWeapons Weapons;
-   // private int World.TotalWantedLevel;
     private bool TotalIsWanted;
     private INameProvideable Names;
+
+    private SpawnLocation SpawnLocation;
+    private Agency Agency;
+    private DispatchableVehicle VehicleType;
+    private DispatchablePerson PersonType;
+
     public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
     {
         Player = player;
@@ -298,7 +303,6 @@ public class LEDispatcher
             }
         }
     }
-
     private int TimeBetweenRoadblocks
     {
         get
@@ -317,82 +321,13 @@ public class LEDispatcher
     {
         HasDispatchedThisTick = false;
         TotalIsWanted = World.TotalWantedLevel > 0;
-
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
-            HasDispatchedThisTick = true;//up here for now, might be better down low
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn IsWanted: {TotalIsWanted} WantedLevel:{World.TotalWantedLevel}", 3);
-            int timesTried = 0;
-            bool isValidSpawn = false;
-            SpawnLocation spawnLocation = new SpawnLocation();
-            do
+            HasDispatchedThisTick = true;
+            if (GetSpawnLocation() && GetSpawnTypes())
             {
-                spawnLocation.InitialPosition = GetPositionAroundPlayer();
-                spawnLocation.GetClosestStreet();
-                spawnLocation.GetClosestSidewalk();
-                GameFiber.Yield();
-                isValidSpawn = IsValidSpawn(spawnLocation);
-                timesTried++;
-                GameFiber.Yield();
-            }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
-            if (spawnLocation.HasSpawns && isValidSpawn)
-            {
-                Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);
-                GameFiber.Yield();
-                if (agency != null)
-                {
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn {agency.FullName}", 3);
-                    LastAgencySpawned = agency;
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-                    GameFiber.Yield();
-                    bool ShouldSpawnPedestrian = false;
-                    if(spawnLocation.HasSidewalk)
-                    {
-                       bool CanSpawnPedestrian = Jurisdictions.CanSpawnPedestrianAtZone(Zones.GetZoneName(spawnLocation.SidewalkPosition), agency.ID) && World.TotalWantedLevel <= 1;
-                        if(CanSpawnPedestrian && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.PedestrianSpawnPercentage))
-                        {
-                            ShouldSpawnPedestrian = true;
-                            VehicleType = null;
-                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn PEDESTRIAN", 3);
-                        }
-                        else
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn CanSpawnPedestrian {CanSpawnPedestrian} BUT IS NOT SPAWNING CUZ PERCENTAGES", 3);
-                        }
-                    }
-                    if (VehicleType != null || ShouldSpawnPedestrian)
-                    {
-                        string RequiredGroup = "";
-                        if (VehicleType != null)
-                        {
-                            RequiredGroup = VehicleType.RequiredPedGroup;
-                        }
-                        DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                        GameFiber.Yield();
-                        if (OfficerType != null)
-                        {
-                            try
-                            {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names,RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
-                                spawnTask.AttemptSpawn();
-                                GameFiber.Yield();
-                                spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
-                                HasDispatchedThisTick = true;
-                                Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
-                            }
-                            catch (Exception ex)
-                            {
-                                EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn LE Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 3);
+                LastAgencySpawned = Agency;
+                CallSpawnTask(false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -418,7 +353,7 @@ public class LEDispatcher
                 {
                     GameFiber.Yield();
                     Delete(DeleteableCop);
-                    
+
                 }
                 GameFiber.Yield();
             }
@@ -431,6 +366,86 @@ public class LEDispatcher
             }
             GameTimeAttemptedRecall = Game.GameTime;
         }
+    }
+    private void CallSpawnTask(bool allowAny)
+    {
+        try
+        {
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
+            if (allowAny)
+            {
+                spawnTask.AllowAnySpawn = true;
+            }
+            spawnTask.AttemptSpawn();
+            GameFiber.Yield();
+            spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
+            HasDispatchedThisTick = true;
+            Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+        }
+    }
+    private bool GetSpawnLocation()
+    {
+        int timesTried = 0;
+        bool isValidSpawn;
+        SpawnLocation = new SpawnLocation();
+        do
+        {
+            SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+            SpawnLocation.GetClosestStreet();
+            SpawnLocation.GetClosestSidewalk();
+            GameFiber.Yield();
+            isValidSpawn = IsValidSpawn(SpawnLocation);
+            timesTried++;
+            GameFiber.Yield();
+        }
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
+        return isValidSpawn && SpawnLocation.HasSpawns;
+    }
+    private bool GetSpawnTypes()
+    {
+        Agency = null;
+        VehicleType = null;
+        PersonType = null;
+        Agency = GetRandomAgency(SpawnLocation);
+        if (Agency != null)
+        {
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
+            //need to add back in the on foot spawns?
+            //bool ShouldSpawnPedestrian = false;
+            //if (SpawnLocation.HasSidewalk)
+            //{
+            //    bool CanSpawnPedestrian = Jurisdictions.CanSpawnPedestrianAtZone(Zones.GetZoneName(SpawnLocation.SidewalkPosition), Agency.ID) && World.TotalWantedLevel <= 1;
+            //    if (CanSpawnPedestrian && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.PedestrianSpawnPercentage))
+            //    {
+            //        ShouldSpawnPedestrian = true;
+            //        VehicleType = null;
+            //        EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn PEDESTRIAN", 3);
+            //    }
+            //    else
+            //    {
+            //        EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn CanSpawnPedestrian {CanSpawnPedestrian} BUT IS NOT SPAWNING CUZ PERCENTAGES", 3);
+            //    }
+            //}
+            if (VehicleType != null)
+            {
+                string RequiredGroup = "";
+                if (VehicleType != null)
+                {
+                    RequiredGroup = VehicleType.RequiredPedGroup;
+                }
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     private void Delete(PedExt Cop)
     {
@@ -478,23 +493,23 @@ public class LEDispatcher
             MyBlip.Delete();
         }
     }
-    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel, ResponseType responseType)
+    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
     {
         List<Agency> ToReturn = new List<Agency>();
         Street StreetAtPosition = Streets.GetStreet(Position);
         if (StreetAtPosition != null && StreetAtPosition.IsHighway) //Highway Patrol Jurisdiction
         {
-            ToReturn.AddRange(Agencies.GetSpawnableHighwayAgencies(WantedLevel, responseType));
+            ToReturn.AddRange(Agencies.GetSpawnableHighwayAgencies(WantedLevel, ResponseType.LawEnforcement));
         }
         Zone CurrentZone = Zones.GetZone(Position);
-        Agency ZoneAgency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel, responseType);
+        Agency ZoneAgency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel, ResponseType.LawEnforcement);
         if (ZoneAgency != null)
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
-            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, responseType));
+            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel, ResponseType.LawEnforcement));
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
         {
@@ -524,14 +539,14 @@ public class LEDispatcher
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }
-    private Agency GetRandomAgency(SpawnLocation spawnLocation, ResponseType responseType)
+    private Agency GetRandomAgency(SpawnLocation spawnLocation)
     {
         Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, World.TotalWantedLevel, responseType);
+        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, World.TotalWantedLevel);
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel,responseType).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
+            agency = GetAgencies(spawnLocation.InitialPosition, World.TotalWantedLevel).Where(x => x.Personnel.Any(y => y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         }
         if (agency == null)
         {
@@ -539,14 +554,14 @@ public class LEDispatcher
         }
         return agency;
     }
-    private Agency GetRandomAgency(Vector3 spawnLocation, ResponseType responseType)
+    private Agency GetRandomAgency(Vector3 spawnLocation)
     {
         Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation, World.TotalWantedLevel, responseType);
+        List<Agency> PossibleAgencies = GetAgencies(spawnLocation, World.TotalWantedLevel);
         agency = PossibleAgencies.PickRandom();
         if (agency == null)
         {
-            agency = GetAgencies(spawnLocation, World.TotalWantedLevel,responseType).PickRandom();
+            agency = GetAgencies(spawnLocation, World.TotalWantedLevel).PickRandom();
         }
         if (agency == null)
         {
@@ -611,11 +626,10 @@ public class LEDispatcher
         {      
             if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
             {
-                Agency ToSpawn = GetRandomAgency(CenterPosition, ResponseType.LawEnforcement);
+                Agency ToSpawn = GetRandomAgency(CenterPosition);
                 GameFiber.Yield();
                 if (ToSpawn != null)
                 {
-
                     DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false);
                     GameFiber.Yield();
                     if (VehicleToUse != null)
@@ -654,75 +668,34 @@ public class LEDispatcher
     }
     public void DebugSpawnCop(string agencyID, bool onFoot)
     {
-        EntryPoint.WriteToConsole($"DebugSpawnCop  1 agencyID {agencyID} onFoot {onFoot}");
-        int timesTried = 0;
-        bool isValidSpawn = false;
-        SpawnLocation spawnLocation = new SpawnLocation();
-        do
+        SpawnLocation = new SpawnLocation();
+        SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
+        if (agencyID == "")
         {
-            spawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);//GetPositionAroundPlayer();
-            spawnLocation.StreetPosition = spawnLocation.InitialPosition;
-            isValidSpawn = true;// IsValidSpawn(spawnLocation);
-            timesTried++;
-            GameFiber.Yield();
+            Agency = Agencies.GetRandomAgency(ResponseType.LawEnforcement);
         }
-        while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
-        if (spawnLocation.HasSpawns && isValidSpawn)
+        else
         {
-            Agency agency = null;
-            if (agencyID == "")
-            {
-                EntryPoint.WriteToConsole($"DebugSpawnCop  1.5 agencyID {agencyID} onFoot {onFoot}");
-                agency = Agencies.GetRandomAgency(ResponseType.LawEnforcement);
-            }
-            else
-            {
-                EntryPoint.WriteToConsole($"DebugSpawnCop  1.6 agencyID {agencyID} onFoot {onFoot}");
-                agency = Agencies.GetAgency(agencyID);//
-            }
-            GameFiber.Yield();
-            if (agency != null)
-            {
-                EntryPoint.WriteToConsole($"DebugSpawnCop  2 agency {agency.FullName} onFoot {onFoot}");
-                LastAgencySpawned = agency;
-
-                DispatchableVehicle VehicleType = null;
-                if (!onFoot)
-                {
-                    VehicleType = agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-                }
-                GameFiber.Yield();
-                if (VehicleType != null || onFoot)
-                {
-                    EntryPoint.WriteToConsole($"DebugSpawnCop  3 agency {agency.FullName} onFoot {onFoot}");
-
-                    string RequiredGroup = "";
-                    if(VehicleType != null)
-                    {
-                        RequiredGroup = VehicleType.RequiredPedGroup;
-                    }
-                    DispatchablePerson OfficerType = agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                    GameFiber.Yield();
-                    if (OfficerType != null)
-                    {
-                        try
-                        {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
-                            spawnTask.AllowAnySpawn = true;
-                            spawnTask.AttemptSpawn();
-                            GameFiber.Yield();
-                            spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-                            spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
-                            HasDispatchedThisTick = true;
-                            Player.OnLawEnforcementSpawn(agency, VehicleType, OfficerType);
-                        }
-                        catch (Exception ex)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
-                        }
-                    }
-                }
-            }
+            Agency = Agencies.GetAgency(agencyID);
         }
+        if (Agency == null)
+        {
+            return;
+        }
+        if (!onFoot)
+        {
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true);
+        }
+        if (VehicleType != null || onFoot)
+        {
+            string RequiredGroup = "";
+            if (VehicleType != null)
+            {
+                RequiredGroup = VehicleType.RequiredPedGroup;
+            }
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        }
+        CallSpawnTask(true);
     }
 }

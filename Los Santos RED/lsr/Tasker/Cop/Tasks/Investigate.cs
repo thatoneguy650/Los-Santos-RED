@@ -76,6 +76,12 @@ public class Investigate : ComplexTask
             }
             SetSiren();
         }
+
+        if(CurrentTaskedPosition != Vector3.Zero && CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+        {
+
+        }
+
     }
     public override void ReTask()
     {
@@ -150,7 +156,8 @@ public class Investigate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NeedsUpdates = true;
-            if (CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+
+            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
             {
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;
@@ -175,7 +182,7 @@ public class Investigate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NeedsUpdates = true;
-            if (CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
             {
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;

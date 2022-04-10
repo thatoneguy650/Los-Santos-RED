@@ -70,6 +70,7 @@ public class PlayerTasks
     public void Clear()
     {
         PlayerTaskList.Clear();
+        LastContactTask.Clear();
     }
     public void Dispose()
     {

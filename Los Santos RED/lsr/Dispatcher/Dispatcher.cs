@@ -110,11 +110,11 @@ public class Dispatcher
     }
     public void DebugSpawnGang()
     {
-        GangDispatcher.ForceDispatch("",false);
+        GangDispatcher.DebugSpawnGangMember("",false);
     }
     public void DebugSpawnGang(string agencyID, bool onFoot)
     {
-        GangDispatcher.ForceDispatch(agencyID, onFoot);
+        GangDispatcher.DebugSpawnGangMember(agencyID, onFoot);
     }
     public void DebugSpawnEMT(string agencyID, bool onFoot)
     {

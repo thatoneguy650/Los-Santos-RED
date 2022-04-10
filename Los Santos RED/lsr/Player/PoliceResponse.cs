@@ -360,7 +360,18 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
+                    RespondingPolice = 6;
+                }
+            }
+            else if (Player.WantedLevel == 3)
+            {
+                if (Player.IsBusted)
+                {
                     RespondingPolice = 4;
+                }
+                else
+                {
+                    RespondingPolice = 999;
                 }
             }
             else if(Player.IsWanted)

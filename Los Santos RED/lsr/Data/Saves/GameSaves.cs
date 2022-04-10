@@ -110,7 +110,7 @@ public class GameSaves : IGameSaves
 
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("coquette2", 4, 4, new LSR.Vehicles.LicensePlate("AZZ KIKR", 3, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f)
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleVariation>() { new VehicleVariation("asterope", 0, 0, new LSR.Vehicles.LicensePlate("JG234F1", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f)
                                                                                                                                                                 ,new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), new Vector3(-382.2991f, -301.4909f, 32.56747f), 287.2352f)});
         AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
         AlexisGameSave.PlayerHeading = 45f;
@@ -121,7 +121,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28),DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) {  });
-
+        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 2000, 0, 0, 0, 0, 0, 0, 0) };
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
             new PedComponent(0, 0, 0, 0),
@@ -163,8 +163,19 @@ public class GameSaves : IGameSaves
             new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
             new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave SawyerGameSave = new GameSave("Sawyer Ward", 45000, "MP_M_FREEMODE_01", true, SawyerVariation, SawyerWeapons, new List<VehicleVariation>() { new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), Vector3.Zero, 0f) });
+        GameSave SawyerGameSave = new GameSave("Sawyer Ward", 45000, "MP_M_FREEMODE_01", true, SawyerVariation, SawyerWeapons, new List<VehicleVariation>() { new VehicleVariation("asterope", 0, 0, new LSR.Vehicles.LicensePlate("JG234F1", 0, false), new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f)
+            ,new VehicleVariation("furoregt", 111, 111, new LSR.Vehicles.LicensePlate("125JK34", 0, false), new Vector3(-382.2991f, -301.4909f, 32.56747f), 287.2352f) });
 
+        SawyerGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
+        SawyerGameSave.PlayerHeading = 45f;
+        SawyerGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+
+        SawyerGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        SawyerGameSave.DriversLicense = new DriversLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
+        SawyerGameSave.CCWLicense = new CCWLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
+        SawyerGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = SawyerGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = SawyerGameSave.CurrentDateTime });
+        SawyerGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",2000,0,0,0,0,0,0,0) };
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,

@@ -29,6 +29,12 @@ public class GangDispatcher
     private ICrimes Crimes;
     private IShopMenus ShopMenus;
     private IPlacesOfInterest PlacesOfInterest;
+    private GangDen GangDen;
+    private bool IsDenSpawn;
+    private SpawnLocation SpawnLocation;
+    private Gang Gang;
+    private DispatchableVehicle VehicleType;
+    private DispatchablePerson PersonType;
     public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -63,114 +69,9 @@ public class GangDispatcher
         if (Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn", 3);
-            int timesTried = 0;
-            bool isValidSpawn = false;
-            GangDen gangDen = null;
-            bool IsDenSpawn = false;
-            SpawnLocation spawnLocation = new SpawnLocation();
-            do
+            if (GetSpawnLocation() && GetSpawnTypes())
             {
-                if (RandomItems.RandomPercent(LikelyHoodOfDenSpawnWhenNear))
-                {
-                    gangDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby).PickRandom();
-                }
-                if(gangDen != null)
-                {
-                    float DistanceTo = gangDen.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
-                    if(DistanceTo >= 45f)
-                    {
-                        IsDenSpawn = true;
-                        spawnLocation.InitialPosition = gangDen.EntrancePosition.Around2D(50f);
-                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn AROUND DEN", 3);
-                    }
-                    else
-                    {
-                        gangDen = null;
-                        spawnLocation.InitialPosition = GetPositionAroundPlayer();
-                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn DEN FOUND BUT NOT USING!", 3);
-                    }
-                }
-                else
-                {
-                    spawnLocation.InitialPosition = GetPositionAroundPlayer();
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn NO DEN FOUND!", 3);
-                }
-
-                spawnLocation.GetClosestStreet();
-                spawnLocation.GetClosestSidewalk();
-                GameFiber.Yield();
-                isValidSpawn = IsValidSpawn(spawnLocation);
-                timesTried++;
-            }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
-            if (spawnLocation.HasSpawns && isValidSpawn)
-            {
-                Gang gang = null;
-                if (IsDenSpawn && gangDen != null)
-                {
-                    gang = gangDen.AssociatedGang;
-                }
-                else
-                {
-                    gang = GetRandomGang(spawnLocation);
-                }
-                if (gang != null)
-                {
-                    int TotalGangMembers = World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == gang.ID);
-                    if(TotalGangMembers >= gang.SpawnLimit)
-                    {
-                        return true;
-                    }
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk} IsDenSpawn {IsDenSpawn}", 3);
-                    DispatchableVehicle VehicleType = null;
-                    //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                    bool SpawnVehicle = RandomItems.RandomPercent(gang.VehicleSpawnPercentage);
-                    if (IsDenSpawn && RandomItems.RandomPercent(80))
-                    {
-                        VehicleType = null;
-                    }
-                    else if (!spawnLocation.HasSidewalk || SpawnVehicle)
-                    {
-                         VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                    }
-
-                    if (VehicleType != null || spawnLocation.HasSidewalk || IsDenSpawn)
-                    {
-                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
-                        string RequiredGroup = "";
-                        if (VehicleType != null)
-                        {
-                            RequiredGroup = VehicleType.RequiredPedGroup;
-                        }
-                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
-                        if (PersonType != null)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
-                            try
-                            {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
-                                spawnTask.AttemptSpawn();
-                                foreach(PedExt created in spawnTask.CreatedPeople)
-                                {
-                                    World.Pedestrians.AddEntity(created);
-
-                                }
-                                //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
-                                HasDispatchedThisTick = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Gang Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+                CallSpawnTask(false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -193,6 +94,118 @@ public class GangDispatcher
                 }
             }
             GameTimeAttemptedRecall = Game.GameTime;
+        }
+    }
+    private bool GetSpawnLocation()
+    {
+        int timesTried = 0;
+        bool isValidSpawn;
+        GangDen = null;
+        IsDenSpawn = false;
+        SpawnLocation = new SpawnLocation();
+        do
+        {
+            if (RandomItems.RandomPercent(LikelyHoodOfDenSpawnWhenNear))
+            {
+                GangDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby).PickRandom();
+            }
+            if (GangDen != null)
+            {
+                float DistanceTo = GangDen.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+                if (DistanceTo >= 45f)
+                {
+                    IsDenSpawn = true;
+                    SpawnLocation.InitialPosition = GangDen.EntrancePosition.Around2D(50f);
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn AROUND DEN", 3);
+                }
+                else
+                {
+                    GangDen = null;
+                    SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn DEN FOUND BUT NOT USING!", 3);
+                }
+            }
+            else
+            {
+                SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+                EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn NO DEN FOUND!", 3);
+            }
+            SpawnLocation.GetClosestStreet();
+            SpawnLocation.GetClosestSidewalk();
+            GameFiber.Yield();
+            isValidSpawn = IsValidSpawn(SpawnLocation);
+            timesTried++;
+        }
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+        return isValidSpawn && SpawnLocation.HasSpawns;
+    }
+    private bool GetSpawnTypes()
+    {
+        Gang = null;
+        VehicleType = null;
+        PersonType = null;
+        if (IsDenSpawn && GangDen != null)
+        {
+            Gang = GangDen.AssociatedGang;
+        }
+        else
+        {
+            Gang = GetRandomGang(SpawnLocation);
+        }
+        if (Gang != null)
+        {
+            int TotalGangMembers = World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID);
+            if (TotalGangMembers >= Gang.SpawnLimit)
+            {
+                return true;
+            }
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {Gang.ID} spawnLocation.HasSidewalk {SpawnLocation.HasSidewalk} IsDenSpawn {IsDenSpawn}", 3);
+            VehicleType = null;
+            bool SpawnVehicle = RandomItems.RandomPercent(Gang.VehicleSpawnPercentage);
+            if (IsDenSpawn && RandomItems.RandomPercent(80))
+            {
+                VehicleType = null;
+            }
+            else if (!SpawnLocation.HasSidewalk || SpawnVehicle)
+            {
+                VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+            }
+            if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
+            {
+                string RequiredGroup = "";
+                if (VehicleType != null)
+                {
+                    RequiredGroup = VehicleType.RequiredPedGroup;
+                }
+                PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private void CallSpawnTask(bool allowAny)
+    {
+        try
+        {
+            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+            if (allowAny)
+            {
+                gangSpawnTask.AllowAnySpawn = true;
+            }
+            gangSpawnTask.AttemptSpawn();
+            foreach (PedExt created in gangSpawnTask.CreatedPeople)
+            {
+                World.Pedestrians.AddEntity(created);
+            }
+            gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            HasDispatchedThisTick = true;
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
         }
     }
     private bool ShouldBeRecalled(GangMember emt)
@@ -332,93 +345,38 @@ public class GangDispatcher
         }
         return true;
     }
-
-    public bool ForceDispatch(string gangID, bool onFoot)
+    public void DebugSpawnGangMember(string gangID, bool onFoot)
     {
-        HasDispatchedThisTick = false;
-        if (1==1)//Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
+        SpawnLocation = new SpawnLocation();
+        SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
+        if (gangID == "")
         {
-            HasDispatchedThisTick = true;//up here for now, might be better down low
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn", 3);
-            int timesTried = 0;
-            bool isValidSpawn = false;
-            SpawnLocation spawnLocation = new SpawnLocation();
-            do
-            {
-                spawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);//GetPositionAroundPlayer();
-                spawnLocation.StreetPosition = spawnLocation.InitialPosition;
-               //spawnLocation.GetClosestStreet();
-               // spawnLocation.GetClosestSidewalk();
-                isValidSpawn = true;// IsValidSpawn(spawnLocation);
-                timesTried++;
-            }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
-            if (spawnLocation.HasSpawns && isValidSpawn)
-            {
-                Gang gang = null;
-                if (gangID == "")
-                {
-                    gang = GetRandomGang(spawnLocation);
-                }
-                else
-                {
-                    gang = Gangs.GetGang(gangID);
-                }
-                if (gang != null)
-                {
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {gang.ID} spawnLocation.HasSidewalk {spawnLocation.HasSidewalk}", 3);
-                    DispatchableVehicle VehicleType = null;
-                    //VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-
-                    if (!onFoot)
-                    {
-
-                        if (!spawnLocation.HasSidewalk || RandomItems.RandomPercent(10))
-                        {
-                            VehicleType = gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-                        }
-                    }
-
-                    if (VehicleType != null || spawnLocation.HasSidewalk || onFoot)
-                    {
-                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Vehicle? {VehicleType?.ModelName}", 3);
-                        string RequiredGroup = "";
-                        if (VehicleType != null)
-                        {
-                            RequiredGroup = VehicleType.RequiredPedGroup;
-                        }
-                        DispatchablePerson PersonType = gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
-                        if (PersonType != null)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn Person {PersonType.ModelName}", 3);
-                            try
-                            {
-                                SpawnTask spawnTask = new SpawnTask(gang, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World) { AllowAnySpawn = true };// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
-                                spawnTask.AttemptSpawn();
-                                foreach (PedExt created in spawnTask.CreatedPeople)
-                                {
-                                    World.Pedestrians.AddEntity(created);
-
-                                }
-                                //spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
-                                HasDispatchedThisTick = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Gang Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
-            }
-            GameTimeAttemptedDispatch = Game.GameTime;
+            Gang = GetRandomGang(SpawnLocation);
         }
-        return HasDispatchedThisTick;
+        else
+        {
+            Gang = Gangs.GetGang(gangID);
+        }
+        if (Gang == null)
+        {
+            return;
+        }
+           
+        if (!onFoot)
+        {
+            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+        }
+        if (VehicleType != null || onFoot)
+        {
+            string RequiredGroup = "";
+            if (VehicleType != null)
+            {
+                RequiredGroup = VehicleType.RequiredPedGroup;
+            }
+            PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+        }
+        CallSpawnTask(true);
     }
     
 }

@@ -68,7 +68,7 @@ public class Idle : ComplexTask
         Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
         Cop = actualCop;
-        SeatAssigner = new SeatAssigner(Ped, Cop, Tasker, World);
+        SeatAssigner = new SeatAssigner(Ped, Tasker, World, World.Vehicles.PoliceVehicleList);
     }
     public override void Start()
     {

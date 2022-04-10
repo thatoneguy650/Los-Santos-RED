@@ -233,9 +233,9 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
-        InvestigationRespondingOfficers_Wanted1 = 1;
-        InvestigationRespondingOfficers_Wanted2 = 2;
-        InvestigationRespondingOfficers_Wanted3 = 4;
+        InvestigationRespondingOfficers_Wanted1 = 2;
+        InvestigationRespondingOfficers_Wanted2 = 4;
+        InvestigationRespondingOfficers_Wanted3 = 6;
         InvestigationRespondingOfficers_Wanted4 = 8;
         InvestigationRespondingOfficers_Wanted5 = 10;
         InvestigationRespondingOfficers_Wanted6 = 14;

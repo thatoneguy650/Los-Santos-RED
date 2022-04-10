@@ -25,6 +25,10 @@ public class FireDispatcher
     private uint GameTimeAttemptedRecall;
     private IWeapons Weapons;
     private INameProvideable Names;
+    private SpawnLocation SpawnLocation;
+    private Agency Agency;
+    private DispatchableVehicle VehicleType;
+    private DispatchablePerson PersonType;
     public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
     {
         Player = player;
@@ -53,53 +57,9 @@ public class FireDispatcher
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Fire Spawn", 3);
-            int timesTried = 0;
-            bool isValidSpawn = false;
-            SpawnLocation spawnLocation = new SpawnLocation();
-            do
+            if (GetSpawnLocation() && GetSpawnTypes())
             {
-                spawnLocation.InitialPosition = GetPositionAroundPlayer();
-                spawnLocation.GetClosestStreet();
-                isValidSpawn = IsValidSpawn(spawnLocation);
-                timesTried++;
-            }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
-            if (spawnLocation.HasSpawns && isValidSpawn)
-            {
-                Agency agency = GetRandomAgency(spawnLocation);
-                if (agency != null)
-                {
-                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
-                    if (VehicleType != null)
-                    {
-                        string RequiredGroup = "";
-                        if (VehicleType != null)
-                        {
-                            RequiredGroup = VehicleType.RequiredPedGroup;
-                        }
-                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
-                        if (PersonType != null)
-                        {
-                            try
-                            {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
-                                spawnTask.AttemptSpawn();
-                                spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-                                spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
-                                HasDispatchedThisTick = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn Fire ERROR {ex.Message} : {ex.StackTrace}", 0);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Fire Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+                CallSpawnTask(false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -124,6 +84,69 @@ public class FireDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
+    private void CallSpawnTask(bool allowAny)
+    {
+        try
+        {
+            FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
+            if (allowAny)
+            {
+                fireFighterSpawnTask.AllowAnySpawn = true;
+            }
+            fireFighterSpawnTask.AttemptSpawn();
+            fireFighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+        }
+    }
+
+    private bool GetSpawnLocation()
+    {
+        int timesTried = 0;
+        bool isValidSpawn;
+        SpawnLocation = new SpawnLocation();
+        do
+        {
+            SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+            SpawnLocation.GetClosestStreet();
+            isValidSpawn = IsValidSpawn(SpawnLocation);
+            timesTried++;
+        }
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+        return isValidSpawn && SpawnLocation.HasSpawns;
+    }
+    private bool GetSpawnTypes()
+    {
+        Agency = null;
+        VehicleType = null;
+        PersonType = null;
+        Agency = GetRandomAgency(SpawnLocation);
+        if (Agency != null)
+        {
+            VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+            if (VehicleType != null)
+            {
+                string RequiredGroup = "";
+                if (VehicleType != null)
+                {
+                    RequiredGroup = VehicleType.RequiredPedGroup;
+                }
+                PersonType = Agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
     private bool ShouldBeRecalled(Firefighter ff)
     {
         if (ff.IsInVehicle)

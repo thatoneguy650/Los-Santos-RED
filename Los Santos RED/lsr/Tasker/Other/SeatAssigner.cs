@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 public class SeatAssigner
 {
     private IComplexTaskable Ped;
-    private Cop Cop;
     private ITaskerReportable Tasker;
     private IEntityProvideable World;
+    private List<VehicleExt> VehiclesToTest = new List<VehicleExt>();
 
-    public SeatAssigner(IComplexTaskable ped, Cop cop, ITaskerReportable tasker, IEntityProvideable world)
+    public SeatAssigner(IComplexTaskable ped, ITaskerReportable tasker, IEntityProvideable world, List<VehicleExt> vehiclesToTest)
     {
         Ped = ped;
-        Cop = cop;
         Tasker = tasker;
         World = world;
+        VehiclesToTest = vehiclesToTest;
     }
 
     public VehicleExt VehicleTryingToEnter { get; set; }
@@ -69,21 +69,21 @@ public class SeatAssigner
             }
             else
             {
-                foreach (VehicleExt copCar in World.Vehicles.PoliceVehicleList)
+                foreach (VehicleExt possibleVehicle in VehiclesToTest)
                 {
-                    if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
+                    if (possibleVehicle.Vehicle.Exists() && possibleVehicle.Vehicle.Speed < 0.5f)
                     {
-                        float DistanceTo = copCar.Vehicle.DistanceTo2D(Ped.Pedestrian);
+                        float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
                         if (DistanceTo <= 75f)
                         {
-                            if(IsSeatAvailable(copCar, -1))
+                            if(IsSeatAvailable(possibleVehicle, -1))
                             {
-                                VehicleTryingToEnter = copCar;
+                                VehicleTryingToEnter = possibleVehicle;
                                 SeatTryingToEnter = -1;
                             }
-                            else if (IsSeatAvailable(copCar, 0))
+                            else if (IsSeatAvailable(possibleVehicle, 0))
                             {
-                                VehicleTryingToEnter = copCar;
+                                VehicleTryingToEnter = possibleVehicle;
                                 SeatTryingToEnter = 0;
                             }
                         }

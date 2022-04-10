@@ -61,6 +61,7 @@ public class DebugMenu : Menu
     private IAgencies Agencies;
     private UIMenuListScrollerItem<Gang> SpawnGangFoot;
     private UIMenuListScrollerItem<Gang> SpawnGangVehicle;
+    private UIMenuItem SpawnRockblock;
     private IGangs Gangs;
     private UIMenuListScrollerItem<Gang> SetGangRepDefault;
     private UIMenuListScrollerItem<Gang> SetGangRepFriendly;
@@ -123,7 +124,7 @@ public class DebugMenu : Menu
 
         SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
         SpawnGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Vehicle Spawn", "Spawn a random gang ped with a vehicle", Gangs.GetAllGangs());
-
+        SpawnRockblock = new UIMenuItem("Spawn Roadblock","Spawn roadblock");
 
         DispatcherMenu.AddItem(SpawnAgencyFoot);
         DispatcherMenu.AddItem(SpawnAgencyVehicle);
@@ -131,7 +132,7 @@ public class DebugMenu : Menu
 
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
-
+        DispatcherMenu.AddItem(SpawnRockblock);
 
 
         SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Default", "Sets the selected gang to the default reputation", Gangs.GetAllGangs());
@@ -321,6 +322,14 @@ public class DebugMenu : Menu
             EntryPoint.WriteToConsole($"SpawnGangVehicle SELECTED {SpawnGangVehicle.SelectedItem.ID}");
             Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
         }
+
+
+        else if(selectedItem == SpawnRockblock)
+        {
+            Dispatcher.SpawnRoadblock();
+        }
+
+
         sender.Visible = false;
     }
 
@@ -427,7 +436,7 @@ public class DebugMenu : Menu
 
         if(selectedItem == SetGangRepHostile)
         {
-            Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -2000, false);
+            Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -5000, false);
         }
         if (selectedItem == SetGangRepDefault)
         {
@@ -435,7 +444,7 @@ public class DebugMenu : Menu
         }
         if (selectedItem == SetGangRepFriendly)
         {
-            Player.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, 2000, false);
+            Player.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, 5000, false);
         }
         else if (selectedItem == RandomGangRep)
         {

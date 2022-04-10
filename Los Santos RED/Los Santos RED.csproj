@@ -270,20 +270,25 @@
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
-    <Compile Include="lsr\Tasker\Civilian\GetArrestedSimple.cs" />
-    <Compile Include="lsr\Tasker\Cop\SeatAssigner.cs" />
+    <Compile Include="lsr\Spawner\EMTSpawnTask.cs" />
+    <Compile Include="lsr\Spawner\FireFighterSpawnTask.cs" />
+    <Compile Include="lsr\Spawner\GangSpawnTask.cs" />
+    <Compile Include="lsr\Spawner\LESpawnTask.cs" />
+    <Compile Include="lsr\Spawner\SpawnTask.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\GetArrestedSimple.cs" />
+    <Compile Include="lsr\Tasker\Other\SeatAssigner.cs" />
     <Compile Include="lsr\Tasker\Cop\SubTasks\FootChase.cs" />
-    <Compile Include="lsr\Tasker\EMT\EMTFlee.cs" />
-    <Compile Include="lsr\Tasker\EMT\EMTIdle.cs" />
-    <Compile Include="lsr\Tasker\EMT\EMTRespond.cs" />
+    <Compile Include="lsr\Tasker\EMT\Tasks\EMTFlee.cs" />
+    <Compile Include="lsr\Tasker\EMT\Tasks\EMTIdle.cs" />
+    <Compile Include="lsr\Tasker\EMT\Tasks\EMTRespond.cs" />
     <Compile Include="lsr\Tasker\EMT\EMTTasker.cs" />
-    <Compile Include="lsr\Tasker\EMT\EMTTreat.cs" />
-    <Compile Include="lsr\Tasker\GangMember\GangIdle.cs" />
+    <Compile Include="lsr\Tasker\EMT\Tasks\EMTTreat.cs" />
+    <Compile Include="lsr\Tasker\Gang\Tasks\GangIdle.cs" />
     <Compile Include="lsr\Tasker\Civilian\CivilianTasker.cs" />
     <Compile Include="lsr\Tasker\Cop\CopTasker.cs" />
-    <Compile Include="lsr\Tasker\GangMember\GangFight.cs" />
-    <Compile Include="lsr\Tasker\GangMember\GangFlee.cs" />
-    <Compile Include="lsr\Tasker\GangMember\GangTasker.cs" />
+    <Compile Include="lsr\Tasker\Gang\Tasks\GangFight.cs" />
+    <Compile Include="lsr\Tasker\Gang\Tasks\GangFlee.cs" />
+    <Compile Include="lsr\Tasker\Gang\GangTasker.cs" />
     <Compile Include="lsr\UI\BarDisplay.cs" />
     <Compile Include="lsr\UI\Menu\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\HomeMenu.cs" />
@@ -299,7 +304,7 @@
     <Compile Include="lsr\Inventory\ItemCategory.cs" />
     <Compile Include="lsr\Inventory\eConsumableType.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
-    <Compile Include="lsr\Tasker\Cop\AIApprehend.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\AIApprehend.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
     <Compile Include="lsr\Audio\WavAudio.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />
@@ -357,17 +362,17 @@
     <Compile Include="lsr\Ped\Cop\Voice.cs" />
     <Compile Include="lsr\Ped\EMT\EMT.cs" />
     <Compile Include="lsr\Ped\Fire\Firefighter.cs" />
-    <Compile Include="lsr\Tasker\AssignedSeat.cs" />
-    <Compile Include="lsr\Tasker\Civilian\CalmCallIn.cs" />
-    <Compile Include="lsr\Tasker\Civilian\ScaredCallIn.cs" />
-    <Compile Include="lsr\Tasker\Civilian\CommitCrime.cs" />
-    <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
-    <Compile Include="lsr\Tasker\eComatAttributes.cs" />
-    <Compile Include="lsr\Tasker\Civilian\Fight.cs" />
-    <Compile Include="lsr\Tasker\Civilian\Flee.cs" />
-    <Compile Include="lsr\Tasker\Civilian\GetArrested.cs" />
-    <Compile Include="lsr\Tasker\ITaskerable.cs" />
-    <Compile Include="lsr\Tasker\ITaskerReportable.cs" />
+    <Compile Include="lsr\Tasker\Other\AssignedSeat.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\CalmCallIn.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\ScaredCallIn.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\CommitCrime.cs" />
+    <Compile Include="lsr\Tasker\Other\eChaseBehaviorFlag.cs" />
+    <Compile Include="lsr\Tasker\Other\eComatAttributes.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\Fight.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\Flee.cs" />
+    <Compile Include="lsr\Tasker\Civilian\Tasks\GetArrested.cs" />
+    <Compile Include="lsr\Tasker\Other\ITaskerable.cs" />
+    <Compile Include="lsr\Tasker\Other\ITaskerReportable.cs" />
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
@@ -398,7 +403,7 @@
     <Compile Include="lsr\Player\Activity\Data\DrinkingData.cs" />
     <Compile Include="lsr\Player\Activity\Data\SmokingData.cs" />
     <Compile Include="lsr\Ped\Cop\WeaponInventory.cs" />
-    <Compile Include="lsr\Tasker\eDrivingStyles.cs" />
+    <Compile Include="lsr\Tasker\Other\eDrivingStyles.cs" />
     <Compile Include="lsr\UI\Menu\ActionMenu.cs" />
     <Compile Include="lsr\UI\Menu\BustedMenu.cs" />
     <Compile Include="lsr\UI\Menu\DeathMenu.cs" />
@@ -412,10 +417,10 @@
     <Compile Include="lsr\Player\Interaction\HoldUp.cs" />
     <Compile Include="lsr\Player\Interface\IInventoryable.cs" />
     <Compile Include="lsr\Player\Inventory.cs" />
-    <Compile Include="lsr\Tasker\Cop\Idle.cs" />
-    <Compile Include="lsr\Tasker\Cop\Investigate.cs" />
-    <Compile Include="lsr\Tasker\Cop\Kill.cs" />
-    <Compile Include="lsr\Tasker\Cop\Locate.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\Idle.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\Investigate.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\Kill.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\Locate.cs" />
     <Compile Include="lsr\Time\ITimeReportable.cs" />
     <Compile Include="lsr\UI\Menu\Menu.cs" />
     <Compile Include="lsr\Other\ModTask.cs" />
@@ -440,10 +445,10 @@
     <Compile Include="lsr\Player\Interface\IViolateable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponDroppable.cs" />
     <Compile Include="lsr\Player\Interface\IRespawning.cs" />
-    <Compile Include="lsr\Spawner\SpawnTask.cs" />
-    <Compile Include="lsr\Tasker\AIDynamic.cs" />
-    <Compile Include="lsr\Tasker\Cop\Chase.cs" />
-    <Compile Include="lsr\Tasker\ComplexTask.cs" />
+    <Compile Include="lsr\Old\SpawnTask_Old.cs" />
+    <Compile Include="lsr\Tasker\Other\AIDynamic.cs" />
+    <Compile Include="lsr\Tasker\Cop\Tasks\Chase.cs" />
+    <Compile Include="lsr\Tasker\Other\ComplexTask.cs" />
     <Compile Include="lsr\Player\Interface\IComplexTaskable.cs" />
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />
     <Compile Include="lsr\Tasker\Tasker.cs" />
@@ -552,8 +557,6 @@
   <ItemGroup>
     <Content Include="lsr\iFruit\License.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lsr\Old\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

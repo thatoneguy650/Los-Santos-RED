@@ -219,6 +219,17 @@ public class Pedestrians
         }
         GangMembers.Clear();
     }
+    public void ClearGangMembers()
+    {
+        foreach (GangMember gangMember in GangMembers)
+        {
+            if (gangMember.Pedestrian.Exists() && gangMember.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                gangMember.Pedestrian.Delete();
+            }
+        }
+        GangMembers.Clear();
+    }
     public PedExt GetPedExt(uint Handle)
     {
         return PedExts.FirstOrDefault(x => x.Handle == Handle);
