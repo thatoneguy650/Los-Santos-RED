@@ -271,6 +271,7 @@
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
     <Compile Include="lsr\Tasker\Civilian\GetArrestedSimple.cs" />
+    <Compile Include="lsr\Tasker\Cop\SeatAssigner.cs" />
     <Compile Include="lsr\Tasker\Cop\SubTasks\FootChase.cs" />
     <Compile Include="lsr\Tasker\EMT\EMTFlee.cs" />
     <Compile Include="lsr\Tasker\EMT\EMTIdle.cs" />

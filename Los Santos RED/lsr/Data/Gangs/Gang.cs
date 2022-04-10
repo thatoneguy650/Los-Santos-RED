@@ -118,10 +118,23 @@ public class Gang
     public int AmbientMemberMoneyMin { get; set; } = 500;
     public int AmbientMemberMoneyMax { get; set; } = 5000;
     public float VehicleSpawnPercentage { get; set; } = 40f;
+
+
+
     public int CostToPayoffGangScalar { get; set; } = 5;
     public bool RemoveRepOnWantedInTerritory { get; set; } = true;
     public int RemoveRepoOnWantedInTerritoryScalar { get; set; } = 5;
     public bool AddAmbientRep { get; set; } = true;
+
+
+
+    public int MinimumRep { get; set; } = -2000;
+    public int MaximumRep { get; set; } = 2000;
+    public int StartingRep { get; set; } = 200;
+    public int NeutralRepLevel { get; set; } = 0;
+    public int FriendlyRepLevel { get; set; } = 500;
+
+
 
 
     public float PercentageTrustingOfPlayer { get; set; } = 60f;

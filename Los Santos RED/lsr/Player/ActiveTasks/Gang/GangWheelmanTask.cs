@@ -486,7 +486,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 DispatchablePerson RobberAccompliceInfo = HiringGang.Personnel.Where(x => x.CanCurrentlySpawn(0)).PickRandom();
                 if (RobberAccompliceInfo != null)
                 {
-                    Vector3 ToSpawn = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading, offset);
+                    Vector3 ToSpawn = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading, offset + 2f);
                     SpawnLocation toSpawn = new SpawnLocation(ToSpawn);
                     SpawnTask gmSpawn = new SpawnTask(HiringGang, toSpawn, null, RobberAccompliceInfo, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
                     gmSpawn.AllowAnySpawn = true;

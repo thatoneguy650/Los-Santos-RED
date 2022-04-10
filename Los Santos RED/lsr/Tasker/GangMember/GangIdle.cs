@@ -26,6 +26,7 @@ public class GangIdle : ComplexTask
     private Vector3 taskedPosition;
     private uint GameTimeLastStartedScenario;
     private uint GameTimeLastChangedWanderStuff;
+    private uint GameTimeBetweenWanderDecision = 60000;
 
     private enum Task
     {
@@ -53,7 +54,6 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            //EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}", 5);
             ClearTasks(true);
             Update();
         }
@@ -65,7 +65,6 @@ public class GangIdle : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //EntryPoint.WriteToConsole($"      Idle SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask(true);
             }
             else if (NeedsUpdates)
@@ -110,70 +109,44 @@ public class GangIdle : ComplexTask
         {
             if (IsFirstRun)
             {
-                //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
                 NeedsUpdates = true;
                 ClearTasks(true);
-                WanderTask(IsFirstRun);
+                WanderTask();
             }
             else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
             {
-                WanderTask(IsFirstRun);
+                WanderTask();
                 EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
             }
-            else if (GameTimeLastChangedWanderStuff != 0 && Game.GameTime - GameTimeLastChangedWanderStuff >= 60000 && !Ped.IsInVehicle)
+            else if (GameTimeLastChangedWanderStuff != 0 && Game.GameTime - GameTimeLastChangedWanderStuff >= GameTimeBetweenWanderDecision && !Ped.IsInVehicle)
             {
                 WanderDecisionTask();
             }
         }
     }
-    private void WanderTask(bool IsFirstRun)
+    private void WanderTask()
     {
         if (Ped.Pedestrian.Exists())
         {
-            //Ped.Pedestrian.BlockPermanentEvents = true;
-            //Ped.Pedestrian.KeepTasks = true;
             if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
                 {
-                    if (Ped.IsInHelicopter)
+                    unsafe
                     {
-                        NativeFunction.CallByName<bool>("TASK_HELI_MISSION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
-                    else
-                    {
-                        unsafe
-                        {
-                            int lol = 0;
-                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
-                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                        }
-                    }
-
                 }
             }
             else
             {
-
                 WanderDecisionTask();
-
-                ////Ped.Pedestrian.Tasks.Wander();
-                //Vector3 pedPos = Ped.Pedestrian.Position;
-                //if (IsFirstRun && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 5f, true))
-                //{
-                //    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 20000);
-                //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
-                //}
-                //else
-                //{
-                //    NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-                //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
-                //}
             }
             
         }
@@ -182,20 +155,16 @@ public class GangIdle : ComplexTask
     {
         Vector3 pedPos = Ped.Pedestrian.Position;
         float ForceScenarioPercent = 30f;
-        if(Ped.HasMenu)
+        if (Ped.HasMenu || RandomItems.RandomPercent(ForceScenarioPercent))
         {
-            ForceScenarioPercent = 80f;
-        }
-        if (RandomItems.RandomPercent(ForceScenarioPercent))
-        {
-            string Scenario = "";
+            string Scenario;
             if (Ped.HasMenu)
             {
-                Scenario = new List<string>() { "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_DRUG_DEALER_HARD","WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" }.PickRandom();
+                Scenario = new List<string>() { "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_DRUG_DEALER_HARD" }.PickRandom();
             }
             else
             {
-                Scenario = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" }.PickRandom();
+                Scenario = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" }.PickRandom();
             }
             NativeFunction.Natives.TASK_START_SCENARIO_IN_PLACE(Ped.Pedestrian, Scenario, 0, true);
             EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario FORCED! {Scenario}", 5);
@@ -207,10 +176,10 @@ public class GangIdle : ComplexTask
         }
         else
         {
-            //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 100f, 5f, 5f);
             NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
         }
+        GameTimeBetweenWanderDecision = RandomItems.GetRandomNumber(30000, 80000);
         GameTimeLastChangedWanderStuff = Game.GameTime;
     }
     private void GetInCar(bool IsFirstRun)
@@ -239,7 +208,6 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
-            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Get in Car TASK START", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
@@ -249,7 +217,6 @@ public class GangIdle : ComplexTask
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                 NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-                //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(8000, 16000));
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -301,13 +268,4 @@ public class GangIdle : ComplexTask
             }
         }
     }
-    private void SetSiren()
-    {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
-        {
-            Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
-            Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
-        }
-    }
-
 }

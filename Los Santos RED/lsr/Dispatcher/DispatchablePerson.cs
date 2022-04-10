@@ -48,7 +48,7 @@
     public int VehicleShootRateMax { get; set; } = 20;
 
 
-
+    public string UnitCode { get; set; } = "";
     public int RequiredHelmetType { get; set; } = -1;
 
     public bool CanCurrentlySpawn(int WantedLevel)

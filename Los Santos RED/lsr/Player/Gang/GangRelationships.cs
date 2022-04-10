@@ -183,7 +183,7 @@ public class GangRelationships
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(RandomItems.GetRandomNumberInt(-2000, 2000),false);
+            rg.SetRepuation(RandomItems.GetRandomNumberInt(rg.RepMinimum, rg.RepMaximum),false);
         }
     }
     public string PrintRelationships()
@@ -284,7 +284,12 @@ public class GangRelationships
 
     public void SetSingleRandomReputation()
     {
-        GangReputations.PickRandom()?.SetRepuation(RandomItems.GetRandomNumberInt(-2000, 2000), false);
+        GangReputation gr = GangReputations.PickRandom();
+        if(gr != null)
+        {
+            GangReputations.PickRandom()?.SetRepuation(RandomItems.GetRandomNumberInt(gr.RepMinimum, gr.RepMaximum), false);
+        }
+        
     }
 }
 

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 public enum eCustomDrivingStyles
 {
     RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | (int)VehicleDrivingFlags.RespectIntersections | 8,
+
+    SlowEmergency = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects,
+
+
     FakeEmergency = (int)eCustomDrivingStyles.FastEmergency,
     FastEmergency = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
     FastEmergencyClose = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,// | (int)VehicleDrivingFlags.DriveBySight,

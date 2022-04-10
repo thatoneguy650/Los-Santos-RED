@@ -14,10 +14,13 @@ public class Investigate : ComplexTask
     private Vector3 CurrentTaskedPosition;
     private Task CurrentTask = Task.Nothing;
     private bool HasReachedReportedPosition;
+    private bool IsRespondingCode3 => Player.Investigation.InvestigationWantedLevel > 1;
     private enum Task
     {
-        Wander,
-        GoTo,
+        WanderCode3,
+        WanderCode2,
+        GoToCode3,
+        GoToCode2,
         Nothing,
     }
     private Task CurrentTaskDynamic
@@ -26,11 +29,22 @@ public class Investigate : ComplexTask
         {
             if (HasReachedReportedPosition)
             {
-                return Task.Wander;
+                if(IsRespondingCode3)
+                {
+                    return Task.WanderCode3;
+                }
+                else
+                {
+                    return Task.WanderCode2;
+                }
+            }
+            else if(IsRespondingCode3)
+            {
+                return Task.GoToCode3;
             }
             else
             {
-                return Task.GoTo;
+                return Task.GoToCode2;
             }
         }
     }
@@ -43,13 +57,7 @@ public class Investigate : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            //EntryPoint.WriteToConsole($"TASKER: Investigate Start: {Ped.Pedestrian.Handle}",5);
-            //Ped.Pedestrian.BlockPermanentEvents = false;
-
-            //Ped.Pedestrian.BlockPermanentEvents = true;
-            //Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-
             Update();
         }
     }
@@ -60,7 +68,6 @@ public class Investigate : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //EntryPoint.WriteToConsole($"TASKER:      Investigate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask}",5);
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -76,56 +83,78 @@ public class Investigate : ComplexTask
     }
     private void ExecuteCurrentSubTask()
     {
-        if (CurrentTask == Task.Wander)
+        if (CurrentTask == Task.WanderCode3)
         {
-            SubTaskName = "Wander";
-            Wander();
+            SubTaskName = "WanderCode3";
+            WanderCode3();
         }
-        else if (CurrentTask == Task.GoTo)
+        else if (CurrentTask == Task.WanderCode2)
         {
-            SubTaskName = "GoTo";
-            GoTo();
+            SubTaskName = "WanderCode2";
+            WanderCode2();
+        }
+        else if (CurrentTask == Task.GoToCode3)
+        {
+            SubTaskName = "GoToCode3";
+            GoToCode3();
+        }
+        else if (CurrentTask == Task.GoToCode2)
+        {
+            SubTaskName = "GoToCode2";
+            GoToCode2();
         }
         GameTimeLastRan = Game.GameTime;
     }
-    private void Wander()
+    private void WanderCode3()
     {
-
         if (Ped.Pedestrian.Exists())
         {
-
             NeedsUpdates = false;
             if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
-                //4 | 16 | 32 | 262144
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.FastEmergency, 10f);
             }
             else
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
-                //Ped.Pedestrian.Tasks.Wander();
-                //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
                 Vector3 Pos = Ped.Pedestrian.Position;
                 NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Pos.X, Pos.Y, Pos.Z, 45f, 0f, 0f);
             }
-            //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
         }
     }
-    private void GoTo()
+    private void WanderCode2()
     {
         if (Ped.Pedestrian.Exists())
         {
-            //Ped.Pedestrian.BlockPermanentEvents = true;
-            //Ped.Pedestrian.KeepTasks = true;
+            NeedsUpdates = false;
+            if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.SlowEmergency, 10f);
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+                Vector3 Pos = Ped.Pedestrian.Position;
+                NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Pos.X, Pos.Y, Pos.Z, 45f, 0f, 0f);
+            }
+        }
+    }
+    private void GoToCode3()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
             NeedsUpdates = true;
             if (CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
             {
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;
-                UpdateGoTo();
+                UpdateGoTo(true);
                 EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
@@ -136,19 +165,37 @@ public class Investigate : ComplexTask
             }
             else if (DistanceTo < 50f)
             {
-                UpdateGoTo();
+                UpdateGoTo(true);
                 EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
-
-
-            //if(Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None || Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-            //{
-            //    EntryPoint.WriteToConsole(string.Format("TASKER: Investigation TASK ISSUES {0} {1}", Ped.Pedestrian.Handle, Ped.Pedestrian.Tasks.CurrentTaskStatus), 5);
-            //}
-            //EntryPoint.WriteToConsole(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
         }
     }
-    private void UpdateGoTo()
+    private void GoToCode2()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            NeedsUpdates = true;
+            if (CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+            {
+                HasReachedReportedPosition = false;
+                CurrentTaskedPosition = Player.Investigation.Position;
+                UpdateGoTo(false);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+            }
+            float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
+            if (DistanceTo <= 25f)
+            {
+                HasReachedReportedPosition = true;
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+            }
+            else if (DistanceTo < 50f)
+            {
+                UpdateGoTo(false);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
+            }
+        }
+    }
+    private void UpdateGoTo(bool isCode3)
     {
         if (Ped.Pedestrian.Exists())
         {
@@ -156,19 +203,24 @@ public class Investigate : ComplexTask
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())// && Ped.Pedestrian.SeatIndex == -1)
                 {
+                    int DrivingStyle = (int)eCustomDrivingStyles.SlowEmergency;
+                    float DrivingSpeed = 12f;
+                    if(isCode3)
+                    {
+                        DrivingStyle = (int)eCustomDrivingStyles.FastEmergency;
+                        DrivingSpeed = 20f;
+                    }
                     Ped.Pedestrian.BlockPermanentEvents = true;
                     Ped.Pedestrian.KeepTasks = true;
                     if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) >= 50f)
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 20f, (int)eCustomDrivingStyles.FastEmergency, 20f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, DrivingSpeed, DrivingStyle, 20f);
                     }
                     else
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)eCustomDrivingStyles.FastEmergency, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, DrivingStyle, 20f);
                     }
                     EntryPoint.WriteToConsole(string.Format("TASKER: Investigation UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
-                    //4 | 16 | 32 | 262144
-                    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 }
             }
             else
@@ -176,16 +228,30 @@ public class Investigate : ComplexTask
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 2.0f, -1, 5f, true, 0f);
-                //NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 500f, -1, 0f, 2f);
             }
         }
     }
     private void SetSiren()
     {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren)
         {
-            Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
-            Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+            if(IsRespondingCode3)
+            {
+                if (!Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+                {
+                    Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
+                    Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+                }
+            }
+            else
+            {
+                if (Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+                {
+                    Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
+                    Ped.Pedestrian.CurrentVehicle.IsSirenSilent = true;
+                }
+            }
+
         }
     }
     public override void Stop()

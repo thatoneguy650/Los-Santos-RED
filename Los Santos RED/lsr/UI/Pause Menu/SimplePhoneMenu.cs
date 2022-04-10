@@ -349,6 +349,48 @@ public class SimplePhoneMenu
         interactiveListItem.BackingMenu.OnItemSelect += BackingMenu_OnItemSelect;
         tabView.AddTab(interactiveListItem);
     }
+
+    private void AddMessages()
+    {
+        List<TabItem> items = new List<TabItem>();
+
+        List<DateTime> MessageTimes = new List<DateTime>();
+
+        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => x.TimeReceived));
+        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => x.TimeReceived));
+
+        foreach(DateTime dateTime in MessageTimes.OrderByDescending(x=> x).Take(15))
+        {
+            PhoneResponse pr = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
+            if(pr != null)
+            {
+                string TimeReceived = pr.TimeReceived.ToString("HH:mm");
+                string DescriptionText = "";
+                DescriptionText += $"~n~Received At: {TimeReceived}";
+                DescriptionText += $"~n~{pr.Message}";
+                string ListEntryItem = $"{pr.ContactName} {TimeReceived}";
+                string DescriptionHeaderText = $"{pr.ContactName}";
+                TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
+                items.Add(tItem);
+            }
+            iFruitText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
+            if (text != null)
+            {
+                string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
+                string DescriptionText = "";
+                DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
+                DescriptionText += $"~n~{text.Message}";
+                string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
+                string DescriptionHeaderText = $"{text.Name}";
+                TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
+                items.Add(tItem);
+            }
+        }
+        PhoneRepliesSubMenu = new TabSubmenuItem("Recent", items);
+        tabView.AddTab(PhoneRepliesSubMenu);
+    }
+
+
     private void AddPhoneRepliesMessages()
     {
         List<TabItem> items = new List<TabItem>();
@@ -497,6 +539,7 @@ public class SimplePhoneMenu
         tabView.Money = Time.CurrentTime;
 
         tabView.Tabs.Clear();
+        AddMessages();
         AddContacts();
         AddPhoneRepliesMessages();
         AddTextMessages();

@@ -1736,7 +1736,6 @@ public class ShopMenus : IShopMenus
             new ShopMenu("DrugCustomerMenu", "Heroin Customer 4", new List<MenuItem>() {
                     new MenuItem("Heroin", 0, 156) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
 
-
             new ShopMenu("GunVendorMenu", "Gun Vendor", new List<MenuItem>() {
                 new MenuItem("Shrewsbury 420 Sawed-Off",340) { IsIllicilt = true },
                 new MenuItem("Hawk & Little PTF092F",680) { IsIllicilt = true },

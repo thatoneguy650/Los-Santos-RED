@@ -51,7 +51,7 @@ public class ViolationSettings : ISettingsDefaultable
         RecentlyDrivingOnPavementTime = 1000;
         RecentlyHitPedTime = 1500;
         RecentlyHitVehicleTime = 1500;
-        ResistingArrestFastTriggerTime = 5000;
+        ResistingArrestFastTriggerTime = 2000;
         ResistingArrestMediumTriggerTime = 10000;
         ResistingArrestSlowTriggerTime = 25000;
     }

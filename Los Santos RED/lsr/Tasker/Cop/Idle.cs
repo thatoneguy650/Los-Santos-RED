@@ -26,6 +26,7 @@ public class Idle : ComplexTask
     private Vector3 taskedPosition;
     private Cop Cop;
     private uint GameTimeLastStartedScenario;
+    private SeatAssigner SeatAssigner;
 
     private enum Task
     {
@@ -67,13 +68,12 @@ public class Idle : ComplexTask
         Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
         Cop = actualCop;
+        SeatAssigner = new SeatAssigner(Ped, Cop, Tasker, World);
     }
     public override void Start()
     {
         if (Ped.Pedestrian.Exists())
         {
-            //EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}", 5);
-           // NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
             ClearTasks(true);
             GetClosesetPoliceVehicle();
             Update();
@@ -86,7 +86,6 @@ public class Idle : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //EntryPoint.WriteToConsole($"      Idle SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask(true);
             }
             else if (NeedsUpdates)
@@ -133,7 +132,6 @@ public class Idle : ComplexTask
         {
             if (IsFirstRun)
             {
-                //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
                 NeedsUpdates = true;
                 ClearTasks(true);
                 if (Ped.Pedestrian.CurrentVehicle.Exists())
@@ -155,11 +153,6 @@ public class Idle : ComplexTask
                 }
                 WanderTask();
             }
-            //else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
-            //{
-            //    WanderTask();
-            //    EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
-            //}
             if (IsReturningToStation && Ped.Pedestrian.DistanceTo2D(taskedPosition) < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 1.0f)//arrived, wait then drive away
             {
                 IsReturningToStation = false;
@@ -225,9 +218,6 @@ public class Idle : ComplexTask
             }
             else
             {
-                //Ped.Pedestrian.Tasks.Wander();
-                //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-
                 Vector3 pedPos = Ped.Pedestrian.Position;
                 if (Game.GameTime - GameTimeLastStartedScenario >= 60000 && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
                 {
@@ -297,79 +287,82 @@ public class Idle : ComplexTask
     }
     private void GetClosesetPoliceVehicle()
     {
-        if (Ped.AssignedVehicle != null)
-        {
-            VehicleExt ClosestAvailablePoliceVehicle = null;
-            int OpenSeatInClosestAvailablePoliceVehicle = 9;
-            float ClosestAvailablePoliceVehicleDistance = 999f;
-            if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(Cop.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, Cop.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, Cop.AssignedSeat, false, true))
-            {
-                OpenSeatInClosestAvailablePoliceVehicle = Cop.AssignedSeat;
-                ClosestAvailablePoliceVehicle = Ped.AssignedVehicle;
-            }
-            else if (Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
-            {
-                VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
-                if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
-                {
-                    OpenSeatInClosestAvailablePoliceVehicle = Ped.LastSeatIndex;
-                    ClosestAvailablePoliceVehicle = myCopCar;
-                }
-            }
-            VehicleTryingToEnter = ClosestAvailablePoliceVehicle;
-            SeatTryingToEnter = OpenSeatInClosestAvailablePoliceVehicle;
-            if (ClosestAvailablePoliceVehicle != null && ClosestAvailablePoliceVehicle.Vehicle.Exists())
-            {
-                Tasker.RemoveSeatAssignment(Ped);
-                Tasker.AddSeatAssignment(Ped, ClosestAvailablePoliceVehicle, OpenSeatInClosestAvailablePoliceVehicle);
-                //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-            }
-            else
-            {
-                foreach (VehicleExt copCar in World.Vehicles.PoliceVehicleList)
-                {
-                    if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
-                    {
-                        float DistanceTo = copCar.Vehicle.DistanceTo2D(Ped.Pedestrian);
-                        if (DistanceTo <= 50f)
-                        {
-                            if (copCar.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, copCar, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, copCar.Vehicle, -1, false, true))
-                            {
-                                if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
-                                {
-                                    OpenSeatInClosestAvailablePoliceVehicle = -1;
-                                    ClosestAvailablePoliceVehicle = copCar;
-                                    ClosestAvailablePoliceVehicleDistance = DistanceTo;
-                                }
+        SeatAssigner.AssignSeat();
+        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
+        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
+        //if (Ped.AssignedVehicle != null)
+        //{
+        //    VehicleExt ClosestAvailablePoliceVehicle = null;
+        //    int OpenSeatInClosestAvailablePoliceVehicle = 9;
+        //    float ClosestAvailablePoliceVehicleDistance = 999f;
+        //    if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(Cop.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, Cop.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, Cop.AssignedSeat, false, true))
+        //    {
+        //        OpenSeatInClosestAvailablePoliceVehicle = Cop.AssignedSeat;
+        //        ClosestAvailablePoliceVehicle = Ped.AssignedVehicle;
+        //    }
+        //    else if (Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
+        //    {
+        //        VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+        //        if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
+        //        {
+        //            OpenSeatInClosestAvailablePoliceVehicle = Ped.LastSeatIndex;
+        //            ClosestAvailablePoliceVehicle = myCopCar;
+        //        }
+        //    }
+        //    VehicleTryingToEnter = ClosestAvailablePoliceVehicle;
+        //    SeatTryingToEnter = OpenSeatInClosestAvailablePoliceVehicle;
+        //    if (ClosestAvailablePoliceVehicle != null && ClosestAvailablePoliceVehicle.Vehicle.Exists())
+        //    {
+        //        Tasker.RemoveSeatAssignment(Ped);
+        //        Tasker.AddSeatAssignment(Ped, ClosestAvailablePoliceVehicle, OpenSeatInClosestAvailablePoliceVehicle);
+        //        //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
+        //    }
+        //    else
+        //    {
+        //        foreach (VehicleExt copCar in World.Vehicles.PoliceVehicleList)
+        //        {
+        //            if (copCar.Vehicle.Exists() && copCar.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
+        //            {
+        //                float DistanceTo = copCar.Vehicle.DistanceTo2D(Ped.Pedestrian);
+        //                if (DistanceTo <= 50f)
+        //                {
+        //                    if (copCar.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, copCar, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, copCar.Vehicle, -1, false, true))
+        //                    {
+        //                        if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
+        //                        {
+        //                            OpenSeatInClosestAvailablePoliceVehicle = -1;
+        //                            ClosestAvailablePoliceVehicle = copCar;
+        //                            ClosestAvailablePoliceVehicleDistance = DistanceTo;
+        //                        }
 
-                            }
-                            else if (copCar.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, copCar, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, copCar.Vehicle, 0, false, true))
-                            {
-                                if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
-                                {
-                                    OpenSeatInClosestAvailablePoliceVehicle = 0;
-                                    ClosestAvailablePoliceVehicle = copCar;
-                                    ClosestAvailablePoliceVehicleDistance = DistanceTo;
-                                }
-                            }
-                        }
-                    }
-                }
-                VehicleTryingToEnter = ClosestAvailablePoliceVehicle;
-                SeatTryingToEnter = OpenSeatInClosestAvailablePoliceVehicle;
-                if (ClosestAvailablePoliceVehicle != null && ClosestAvailablePoliceVehicle.Vehicle.Exists())
-                {
-                    Tasker.RemoveSeatAssignment(Ped);
-                    Tasker.AddSeatAssignment(Ped, ClosestAvailablePoliceVehicle, OpenSeatInClosestAvailablePoliceVehicle);
-                    //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-                }
-                else
-                {
-                    //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
-                }
-            }
-            
-        }
+        //                    }
+        //                    else if (copCar.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, copCar, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, copCar.Vehicle, 0, false, true))
+        //                    {
+        //                        if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
+        //                        {
+        //                            OpenSeatInClosestAvailablePoliceVehicle = 0;
+        //                            ClosestAvailablePoliceVehicle = copCar;
+        //                            ClosestAvailablePoliceVehicleDistance = DistanceTo;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        VehicleTryingToEnter = ClosestAvailablePoliceVehicle;
+        //        SeatTryingToEnter = OpenSeatInClosestAvailablePoliceVehicle;
+        //        if (ClosestAvailablePoliceVehicle != null && ClosestAvailablePoliceVehicle.Vehicle.Exists())
+        //        {
+        //            Tasker.RemoveSeatAssignment(Ped);
+        //            Tasker.AddSeatAssignment(Ped, ClosestAvailablePoliceVehicle, OpenSeatInClosestAvailablePoliceVehicle);
+        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
+        //        }
+        //        else
+        //        {
+        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
+        //        }
+        //    }
+
+        //}
         //Tasker.PrintAllSeatAssignments();
     }
     private void ClearTasks(bool resetAlertness)//temp public

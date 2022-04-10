@@ -46,7 +46,7 @@ public class Investigation
             }
         }
     }
-    private Color blipColor => RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
+    private Color blipColor => World.TotalWantedLevel > 0 ? Color.DarkOrange : RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
@@ -59,6 +59,9 @@ public class Investigation
     public bool IsSuspicious => IsActive && IsNearPosition && HavePlayerDescription;
     public Vector3 Position { get; private set; }
     private bool IsOutsideInvestigationRange { get; set; }
+
+
+    public int InvestigationWantedLevel { get; private set; }
 
     public bool RequiresPolice { get; set; }
     public bool RequiresEMS { get; set; }
@@ -85,6 +88,13 @@ public class Investigation
         RequiresPolice = false;
         RequiresEMS = false;
         RequiresFirefighters = false;
+        IsNearPosition = false;
+        foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+        {
+            cop.IsRespondingToInvestigation = false;
+        }
+        CurrentRespondingPoliceCount = 0;
+        InvestigationWantedLevel = 0;
         if (InvestigationBlip.Exists())
         {
             InvestigationBlip.Delete();
@@ -140,14 +150,6 @@ public class Investigation
         IsOutsideInvestigationRange = Position == Vector3.Zero || Game.LocalPlayer.Character.DistanceTo2D(Position) > Settings.SettingsManager.InvestigationSettings.MaxDistance;
         if (IsActive && Player.IsNotWanted)
         {
-            //if(!World.Pedestrians.AnyInjuredPeopleNearPlayer)
-            //{
-            //    RequiresEMS = false;
-            //}
-            //if(!World.Pedestrians.AnyWantedPeopleNearPlayer)
-            //{
-            //    RequiresPolice = false;
-            //}
             AssignCops();
             if ((IsTimedOut && (!RequiresPolice || !World.Pedestrians.AnyWantedPeopleNearPlayer) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
@@ -172,10 +174,12 @@ public class Investigation
             CrimeEvent HighestCrimeEvent = Player.PoliceResponse.CrimesReported.OrderBy(x => x.AssociatedCrime?.Priority).FirstOrDefault();
             if (HighestCrimeEvent != null)
             {
+                InvestigationWantedLevel = HighestCrimeEvent.AssociatedCrime.ResultingWantedLevel;
                 RespondingPolice = PoliceToRespond(HighestCrimeEvent.AssociatedCrime.ResultingWantedLevel);
             }
             else
             {
+                InvestigationWantedLevel = 1;
                 RespondingPolice = PoliceToRespond(1);
             }
             int tasked = 0;
@@ -201,6 +205,7 @@ public class Investigation
                 cop.IsRespondingToInvestigation = false;
             }
             CurrentRespondingPoliceCount = 0;
+            InvestigationWantedLevel = 0;
         }
     }
     private void UpdateBlip()
@@ -252,6 +257,9 @@ public class Investigation
         {
             cop.IsRespondingToInvestigation = false;
         }
+        InvestigationWantedLevel = 0;
+        CurrentRespondingPoliceCount = 0;
+        RespondingPolice = 0;
         Player.OnInvestigationExpire();
     }
 }

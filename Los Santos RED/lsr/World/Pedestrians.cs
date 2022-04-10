@@ -433,20 +433,20 @@ public class Pedestrians
                     if(gang.EnemyGangs.Contains(otherGang.ID))
                     {
                         RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Dislike);
-                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Dislike);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
                     }
                     else
                     {
                         RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Like);
                     }
 
                 }
             }
-            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
-            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
+            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Like);
+            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
         }
         NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
     }
@@ -778,7 +778,18 @@ public class Pedestrians
                 gm.Money = gm.Money;
                 gm.Pedestrian.Money = 0;// gm.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+
+                //if (Settings.SettingsManager.GangSettings.MakeVanillaSpawnedGangMembersPersistent)
+                //{
+                //    gm.Pedestrian.IsPersistent = true;
+                //}
+
                 gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns));
+
+
+
+
+
             }
             bool withPerson = false;
             if (gangPerson != null)

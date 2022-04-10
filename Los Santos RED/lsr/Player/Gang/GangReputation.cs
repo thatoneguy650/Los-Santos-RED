@@ -6,50 +6,40 @@ using System;
 [Serializable]
 public class GangReputation
 {
-    private int reputationLevel = 200;
+
     private GangRespect PreviousGangRelationship = GangRespect.Neutral;
-    public readonly int DefaultRepAmount = 200;
-    public readonly int RepMaximum = 2000;
-    public readonly int RepMinimum = -2000;
+
+
+
+
+    private int reputationLevel = 200;
+    public int DefaultRepAmount = 200;
+    public int RepMaximum = 2000;
+    public int RepMinimum = -2000;
+
+    public int NeutralRepLevel = 0;
+    public int FriendlyRepLevel = 500;
+
     private IGangRelateable Player;
     public int ReputationLevel
     {
         get => reputationLevel;
-        //set
-        //{
-        //    if (reputationLevel != value)
-        //    {
-        //        if(value > RepMaximum)
-        //        {
-        //            reputationLevel = RepMaximum;
-        //        }
-        //        else if (value < RepMinimum)
-        //        {
-        //            reputationLevel = RepMinimum;
-        //        }
-        //        else
-        //        {
-        //            reputationLevel = value;
-        //        }
-        //        OnReputationChanged();
-        //    }
-        //}
-    } 
+    }
     public int CostToPayoff
     {
         get
         {
-            if (ReputationLevel < 0)
+            if (ReputationLevel < NeutralRepLevel)
             {
-                return ((0 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+                return ((NeutralRepLevel - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
             }
-            else if (ReputationLevel >= 500)
+            else if (ReputationLevel >= FriendlyRepLevel)
             {
                 return 0;
             }
             else
             {
-                return ((500 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+                return ((FriendlyRepLevel - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
             }
         }
     }
@@ -57,20 +47,56 @@ public class GangReputation
     {
         get
         {
-            if (ReputationLevel < 0)
+            if (ReputationLevel < NeutralRepLevel)
             {
-                return 0 - ReputationLevel;
+                return NeutralRepLevel - ReputationLevel;
             }
-            else if (ReputationLevel >= 500)
+            else if (ReputationLevel >= FriendlyRepLevel)
             {
                 return 0;
             }
             else
             {
-                return 500 - ReputationLevel;
+                return FriendlyRepLevel - ReputationLevel;
             }
         }
     }
+    //public int CostToPayoff
+    //{
+    //    get
+    //    {
+    //        if (ReputationLevel < 0)
+    //        {
+    //            return ((0 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+    //        }
+    //        else if (ReputationLevel >= 500)
+    //        {
+    //            return 0;
+    //        }
+    //        else
+    //        {
+    //            return ((500 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
+    //        }
+    //    }
+    //}
+    //public int RepToNextLevel
+    //{
+    //    get
+    //    {
+    //        if (ReputationLevel < 0)
+    //        {
+    //            return 0 - ReputationLevel;
+    //        }
+    //        else if (ReputationLevel >= 500)
+    //        {
+    //            return 0;
+    //        }
+    //        else
+    //        {
+    //            return 500 - ReputationLevel;
+    //        }
+    //    }
+    //}
 
     public GangReputation()
     {
@@ -80,17 +106,24 @@ public class GangReputation
     {
         Gang = gang;
         Player = player;
+
+        RepMinimum = Gang.MinimumRep;
+        RepMaximum = Gang.MaximumRep;
+        DefaultRepAmount = Gang.StartingRep;
+        reputationLevel = Gang.StartingRep;
+        NeutralRepLevel = Gang.NeutralRepLevel;
+        FriendlyRepLevel = Gang.FriendlyRepLevel;
     }
     public Gang Gang { get; set; }
     public GangRespect GangRelationship
     {
         get
         {
-            if(ReputationLevel < 0)
+            if(ReputationLevel < NeutralRepLevel)
             {
                 return GangRespect.Hostile;
             }
-            else if(ReputationLevel >= 0 && ReputationLevel < 500)
+            else if(ReputationLevel >= NeutralRepLevel && ReputationLevel < FriendlyRepLevel)
             {
                 return GangRespect.Neutral;
             }
@@ -101,7 +134,6 @@ public class GangReputation
         }
     }
     public bool RecentlyAttacked => GameTimeLastAttacked > 0 && Game.GameTime - GameTimeLastAttacked <= 30000;
-   // public bool HasActiveTask { get; set; }
     public int MembersHurt { get; set; }
     public int MembersKilled { get; set; }
     public int MembersCarJacked { get; set; }
@@ -152,7 +184,6 @@ public class GangReputation
     }
     public uint GameTimeLastAddedAmbientRep { get; set; }
     public uint GameTimeLastAttacked { get; set; }
-
     private void OnReputationChanged(bool sendText)
     {
         if(PreviousGangRelationship != GangRelationship)

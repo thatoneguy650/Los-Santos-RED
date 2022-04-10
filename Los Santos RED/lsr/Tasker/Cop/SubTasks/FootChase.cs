@@ -32,13 +32,6 @@ public class FootChase
     }
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide;
     private bool ShouldAim => Player.WantedLevel > 1;
-
-
-    private bool CanRadioIn => !Cop.IsUnconscious && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
-
-
-
-
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop)
     {
         World = world;
@@ -54,30 +47,7 @@ public class FootChase
     }
     public void Update()
     {
-        if (Player.WantedLevel == 1)
-        {
-            if(LocalDistance >= 15f)
-            {
-                RunSpeed = 3.0f;// 1.4f;
-            }
-            else
-            {
-                RunSpeed = 1.4f;// 1.4f;
-            }
-        }
-        else
-        {
-            RunSpeed = 500f;
-            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
-        }
-
-
-        if(prevRunSpeed != RunSpeed)
-        {
-            CurrentSubTask = SubTask.None;
-            prevRunSpeed = RunSpeed;
-        }
-
+        SetRunSpeed();
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = false;
         LocalDistance = Ped.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character);
@@ -130,6 +100,30 @@ public class FootChase
     public void Dispose()
     {
 
+    }
+    private void SetRunSpeed()
+    {
+        if (Player.WantedLevel == 1)
+        {
+            if (LocalDistance >= 15f)
+            {
+                RunSpeed = 3.0f;// 1.4f;
+            }
+            else
+            {
+                RunSpeed = 1.4f;// 1.4f;
+            }
+        }
+        else
+        {
+            RunSpeed = 500f;
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
+        }
+        if (prevRunSpeed != RunSpeed)
+        {
+            CurrentSubTask = SubTask.None;
+            prevRunSpeed = RunSpeed;
+        }
     }
     private void TaskShoot()
     {

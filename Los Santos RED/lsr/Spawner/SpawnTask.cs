@@ -256,11 +256,20 @@ public class SpawnTask
 
     private void SetupCallSigns()
     {
+        if(PersonType.UnitCode != "")
+        {
+            UnitCode = PersonType.UnitCode;
+            NextBeatNumber = Agency.GetNextBeatNumber();
+        }
         if (Agency != null && Agency.Division != -1)
         {
             if (VehicleType?.IsMotorcycle == true)
             {
                 UnitCode = "Mary";
+            }
+            else if (VehicleType?.IsHelicopter == true)
+            {
+                UnitCode = "David";
             }
             else if (WillAddPassengers && OccupantsToAdd > 0 && VehicleType != null)
             {

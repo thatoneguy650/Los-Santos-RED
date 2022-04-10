@@ -116,6 +116,8 @@ namespace LosSantosRED.lsr
         private List<string> RadioStart;
         private List<AudioSet> LethalForce;
         private List<AudioSet> LicensePlateSet;
+        private List<AudioSet> RespondCode3Set;
+        private List<AudioSet> RespondCode2Set;
         private List<AudioSet> UnitEnRouteSet;
         private List<AudioSet> OfficersReport;
         private List<AudioSet> AttentionAllUnits;
@@ -1000,13 +1002,14 @@ namespace LosSantosRED.lsr
                                                                    // attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName,
                                 }.PickRandom());
                                 AddedSingleUnit = true;
+                                dispatchEvent.NotificationText += $"~n~~s~Units Responding:";
                             }
                             else
                             {
                                 dispatchEvent.SoundsToPlay.Add(new List<string>() { officer.Unituhh.FileName, officer.Unitumm.FileName }.PickRandom());
                             }
 
-                            //dispatchEvent.NotificationText += $"{CallSign}";
+                            dispatchEvent.NotificationText += $" ~p~{CallSign}~s~";
 
                             dispatchEvent.SoundsToPlay.AddRange(CallsignAudio);
                             totalAdded++;
@@ -1229,6 +1232,26 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
+
+
+
+            if(EventToPlay.HasUnitAudio)
+            {
+                if(Player.Investigation.InvestigationWantedLevel == 1)
+                {
+                    EventToPlay.NotificationText += "~n~~o~Responding Code-2~s~";
+                    AddAudioSet(EventToPlay, RespondCode2Set.PickRandom());
+                }
+                else if(Player.Investigation.InvestigationWantedLevel > 1)
+                {
+                    EventToPlay.NotificationText += "~n~~r~Responding Code-3~s~";
+                    AddAudioSet(EventToPlay, RespondCode3Set.PickRandom());
+                }
+                
+            }
+
+
+
             EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
 
 
@@ -1236,6 +1259,12 @@ namespace LosSantosRED.lsr
 
             if(EventToPlay.HasUnitAudio)
             {
+
+
+
+
+
+
                 foreach(AudioSet audioSet in UnitEnRouteSet.OrderBy(x => Guid.NewGuid()).Take(EventToPlay.UnitAudioAmount).ToList())
                 {
                     EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
@@ -1562,60 +1591,72 @@ namespace LosSantosRED.lsr
             RadioStart = new List<string>() { AudioBeeps.Radio_Start_1.FileName };
             RadioEnd = new List<string>() { AudioBeeps.Radio_End_1.FileName };
             AttentionAllUnits = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits.FileName},"attention all units"),
-            new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits1.FileName },"attention all units"),
-            new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits3.FileName },"attention all units"),
-        };
+            {
+                new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits.FileName},"attention all units"),
+                new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits1.FileName },"attention all units"),
+                new AudioSet(new List<string>() { attention_all_units_gen.Attentionallunits3.FileName },"attention all units"),
+            };
             OfficersReport = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { we_have.OfficersReport_1.FileName},"officers report"),
-            new AudioSet(new List<string>() { we_have.OfficersReport_2.FileName },"officers report"),
-            new AudioSet(new List<string>() { we_have.UnitsReport_1.FileName },"units report"),
-        };
+            {
+                new AudioSet(new List<string>() { we_have.OfficersReport_1.FileName},"officers report"),
+                new AudioSet(new List<string>() { we_have.OfficersReport_2.FileName },"officers report"),
+                new AudioSet(new List<string>() { we_have.UnitsReport_1.FileName },"units report"),
+            };
             CiviliansReport = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { we_have.CitizensReport_1.FileName },"citizens report"),
-            new AudioSet(new List<string>() { we_have.CitizensReport_2.FileName },"citizens report"),
-            new AudioSet(new List<string>() { we_have.CitizensReport_3.FileName },"citizens report"),
-            new AudioSet(new List<string>() { we_have.CitizensReport_4.FileName },"citizens report"),
-        };
+            {
+                new AudioSet(new List<string>() { we_have.CitizensReport_1.FileName },"citizens report"),
+                new AudioSet(new List<string>() { we_have.CitizensReport_2.FileName },"citizens report"),
+                new AudioSet(new List<string>() { we_have.CitizensReport_3.FileName },"citizens report"),
+                new AudioSet(new List<string>() { we_have.CitizensReport_4.FileName },"citizens report"),
+            };
             LethalForce = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName},"use of deadly force authorized"),
-            new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceisauthorized.FileName },"use of deadly force is authorized"),
-            new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceisauthorized1.FileName },"use of deadly force is authorized"),
-            new AudioSet(new List<string>() { lethal_force.Useoflethalforceisauthorized.FileName },"use of lethal force is authorized"),
-            new AudioSet(new List<string>() { lethal_force.Useofdeadlyforcepermitted1.FileName },"use of deadly force permitted"),
-        };
+            {
+                new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName},"use of deadly force authorized"),
+                new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceisauthorized.FileName },"use of deadly force is authorized"),
+                new AudioSet(new List<string>() { lethal_force.Useofdeadlyforceisauthorized1.FileName },"use of deadly force is authorized"),
+                new AudioSet(new List<string>() { lethal_force.Useoflethalforceisauthorized.FileName },"use of lethal force is authorized"),
+                new AudioSet(new List<string>() { lethal_force.Useofdeadlyforcepermitted1.FileName },"use of deadly force permitted"),
+            };
             LicensePlateSet = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { suspect_license_plate.SuspectLicensePlate.FileName},"suspect license plate"),
-            new AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate01.FileName },"suspects license plate"),
-            new AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate02.FileName },"suspects license plate"),
-            new AudioSet(new List<string>() { suspect_license_plate.TargetLicensePlate.FileName },"target license plate"),
-            new AudioSet(new List<string>() { suspect_license_plate.TargetsLicensePlate.FileName },"targets license plate"),
-            new AudioSet(new List<string>() { suspect_license_plate.TargetVehicleLicensePlate.FileName },"target vehicle license plate"),
-        };
+            {
+                new AudioSet(new List<string>() { suspect_license_plate.SuspectLicensePlate.FileName},"suspect license plate"),
+                new AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate01.FileName },"suspects license plate"),
+                new AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate02.FileName },"suspects license plate"),
+                new AudioSet(new List<string>() { suspect_license_plate.TargetLicensePlate.FileName },"target license plate"),
+                new AudioSet(new List<string>() { suspect_license_plate.TargetsLicensePlate.FileName },"targets license plate"),
+                new AudioSet(new List<string>() { suspect_license_plate.TargetVehicleLicensePlate.FileName },"target vehicle license plate"),
+            };
+            RespondCode3Set = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { dispatch_respond_code.UnitsrespondCode3.FileName },"units respond code-3"),
+                new AudioSet(new List<string>() { dispatch_respond_code.RespondCode3.FileName },"units respond code-3"),
+                new AudioSet(new List<string>() { dispatch_respond_code.UnitrespondCode3.FileName },"units respond code-3"),
+            };
+            RespondCode2Set = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { dispatch_respond_code.RespondCode2.FileName },"units respond code-2"),
+                new AudioSet(new List<string>() { dispatch_respond_code.UnitrespondCode2.FileName },"units respond code-2"),
+                new AudioSet(new List<string>() { dispatch_respond_code.UnitsrespondCode2.FileName },"units respond code-2"),
+            };
 
 
             UnitEnRouteSet = new List<AudioSet>()
-        {
-            new AudioSet(new List<string>() { s_m_y_cop_black_full_02.RogerEnRoute1.FileName},"Copy Dispatch."),
-            new AudioSet(new List<string>() { s_m_y_cop_black_mini_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
-           // new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.RogerEnRoute1.FileName},"we are en route"),//victor 13
-            new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.RogerEnRoute1.FileName},"Acknowledged, on our way."),
-            //new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.RogerEnRoute1.FileName},"we are en route"),//ocean-1
-            new AudioSet(new List<string>() { s_m_y_cop_white_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
-            new AudioSet(new List<string>() { s_m_y_cop_white_full_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
-            new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
-            //new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.RogerEnRoute1.FileName},"we are en route"),//Specific unit
-            //new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.RogerEnRoute1.FileName},"we are en route"),//Specific unit
-            new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
-            //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
-           // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.RogerEnRoute1.FileName},"we are en route"),//Specific unit
-           // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
-        };
+            {
+                new AudioSet(new List<string>() { s_m_y_cop_black_full_02.RogerEnRoute1.FileName},"Copy Dispatch."),
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+               // new AudioSet(new List<string>() { s_m_y_cop_black_mini_02.RogerEnRoute1.FileName},"we are en route"),//victor 13
+                new AudioSet(new List<string>() { s_m_y_cop_black_mini_03.RogerEnRoute1.FileName},"Acknowledged, on our way."),
+                //new AudioSet(new List<string>() { s_m_y_cop_black_mini_04.RogerEnRoute1.FileName},"we are en route"),//ocean-1
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+                new AudioSet(new List<string>() { s_m_y_cop_white_full_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
+                new AudioSet(new List<string>() { s_m_y_cop_white_mini_02.RogerEnRoute1.FileName},"Copy that we are on our way."),
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_03.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+                //new AudioSet(new List<string>() { s_m_y_cop_white_mini_04.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+                new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_01.RogerEnRoute1.FileName},"Copy that we are on our way."),
+                //new AudioSet(new List<string>() { s_m_y_hwaycop_black_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+               // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_01.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+               // new AudioSet(new List<string>() { s_m_y_hwaycop_white_full_02.RogerEnRoute1.FileName},"we are en route"),//Specific unit
+            };
 
 
             OfficerDown = new Dispatch()
