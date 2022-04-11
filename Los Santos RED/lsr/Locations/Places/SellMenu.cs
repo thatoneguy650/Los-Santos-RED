@@ -349,7 +349,7 @@ public class SellMenu : Menu
             string description = modItem.Description;
             description += "~n~~s~";
             description += $"~n~Price: ~g~{formattedPurchasePrice}~s~";
-            description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
+            description += $"~n~Type: ~p~{modItem.ItemType}~s~" + (modItem.ItemSubType != ItemSubType.None ? $" - ~p~{modItem.ItemSubType}~s~" : "");
             description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
             if (modItem.AmountPerPackage > 1)
             {

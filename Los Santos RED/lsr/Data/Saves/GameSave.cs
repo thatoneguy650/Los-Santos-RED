@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr.Data
             InventoryItems.Clear();
             foreach (InventoryItem cii in player.Inventory.Items)
             {
-                InventoryItems.Add(new InventoryItem(cii.ModItem, cii.Amount));
+                InventoryItems.Add(new InventorySave(cii.ModItem.Name, cii.RemainingPercent.ToList()));
             }
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
@@ -166,7 +166,7 @@ namespace LosSantosRED.lsr.Data
         public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
-        public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+        public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
         public List<VehicleVariation> OwnedVehicleVariations { get; set; } = new List<VehicleVariation>();
 
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr.Data
         public int OfficerFriendlyDebt { get; set; }
         public int OfficerFriendlyReputation { get; set; }
 
-        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+        public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             Game.FadeScreenOut(2500, true);
             time.SetDateTime(CurrentDateTime);
@@ -197,9 +197,9 @@ namespace LosSantosRED.lsr.Data
                 }
             }
             player.Inventory.Clear();
-            foreach (InventoryItem cii in InventoryItems)
+            foreach (InventorySave cii in InventoryItems)
             {
-                player.Inventory.Add(cii.ModItem, cii.Amount);
+                player.Inventory.Add(modItems.Get(cii.ModItemName), cii.RemainingPercent.Count());
             }
             player.ClearVehicleOwnership();
             foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)

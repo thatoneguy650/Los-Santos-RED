@@ -36,9 +36,9 @@ public class GameSaves : IGameSaves
         mySave.Save(player, weapons, time, placesOfInterest);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
-    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {       
-        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time, placesOfInterest);
+        gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time, placesOfInterest, modItems);
     }
     public GameSave GetSave(ISaveable player)
     {
@@ -116,12 +116,20 @@ public class GameSaves : IGameSaves
         AlexisGameSave.PlayerHeading = 45f;
         AlexisGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
 
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f }));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("DIC Lighter", new List<float>() { 1.0f }));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Can of eCola", new List<float>() { 1.0f, 1.0f}));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f }));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", new List<float>() { 1.0f }));
+
+
         AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30,"CHAR_BLANK_ENTRY"));
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28),DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) {  });
-        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 2000, 0, 0, 0, 0, 0, 0, 0) };
+        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0) };
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
             new PedComponent(0, 0, 0, 0),
@@ -175,7 +183,7 @@ public class GameSaves : IGameSaves
         SawyerGameSave.CCWLicense = new CCWLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
         SawyerGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = SawyerGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = SawyerGameSave.CurrentDateTime });
         SawyerGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",2000,0,0,0,0,0,0,0) };
+        SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",3000,0,0,0,0,0,0,0) };
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,

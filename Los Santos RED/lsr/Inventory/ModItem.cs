@@ -7,43 +7,49 @@ public class ModItem
     {
 
     }
-    public ModItem(string name)
+    public ModItem(string name, ItemType itemType)
     {
         Name = name;
+        ItemType = itemType;
     }
-    public ModItem(string name, bool requiresDLC)
+    public ModItem(string name, bool requiresDLC, ItemType itemType)
     {
         Name = name;
         RequiresDLC = requiresDLC;
+        ItemType = itemType;
     }
-    public ModItem(string name, string description)
+    public ModItem(string name, string description, ItemType itemType)
     {
         Name = name;
         Description = description;
+        ItemType = itemType;
     }
-    public ModItem(string name, string description, bool requiresDLC)
+    public ModItem(string name, string description, bool requiresDLC, ItemType itemType)
     {
         Name = name;
         Description = description;
         RequiresDLC = requiresDLC;
+        ItemType = itemType;
     }
-    public ModItem(string name, eConsumableType type)
+    public ModItem(string name, eConsumableType type, ItemType itemType)
     {
         Name = name;
         Type = type;
+        ItemType = itemType;
     }
-    public ModItem(string name, string description, eConsumableType type)
+    public ModItem(string name, string description, eConsumableType type, ItemType itemType)
     {
         Name = name;
         Description = description;
         Type = type;
+        ItemType = itemType;
     }
     public PhysicalItem ModelItem { get; set; }
     public PhysicalItem PackageItem { get; set; }
     public string Name { get; set; }
     public string Description { get; set; } = "";
-
-
+    public ItemType ItemType { get; set; } = ItemType.None;
+    public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
     public string MeasurementName { get; set; } = "Item";
 
 
@@ -73,52 +79,52 @@ public class ModItem
 
 
 
-    public string FormattedItemType
-    {
-        get
-        {
-            if(IsTool)
-            {
-                return "Tool - " + ToolType.ToString();
-            }
-            if(Type == eConsumableType.Drink)
-            {
-                return "Drinkable";
-            }
-            else if (Type == eConsumableType.Eat)
-            {
-                return "Edible";
-            }
-            else if (Type == eConsumableType.Smoke)
-            {
-                return "Smokable";
-            }
-            else if (Type == eConsumableType.AltSmoke)
-            {
-                return "Smokable";
-            }
-            else if (Type == eConsumableType.Ingest || Type == eConsumableType.Snort)
-            {
-                return "Ingestable";
-            }
-            else if (Type == eConsumableType.Inject)
-            {
-                return "Injectable";
-            }
-            else if (Type == eConsumableType.Service)
-            {
-                return "Service";
-            }
-            else if (Type == eConsumableType.None)
-            {
-                return "Other";
-            }
-            else
-            {
-                return Type.ToString();
-            }
-        }
-    }
+    //public string FormattedItemType
+    //{
+    //    get
+    //    {
+    //        if(IsTool)
+    //        {
+    //            return "Tool - " + ToolType.ToString();
+    //        }
+    //        if(Type == eConsumableType.Drink)
+    //        {
+    //            return "Drinkable";
+    //        }
+    //        else if (Type == eConsumableType.Eat)
+    //        {
+    //            return "Edible";
+    //        }
+    //        else if (Type == eConsumableType.Smoke)
+    //        {
+    //            return "Smokable";
+    //        }
+    //        else if (Type == eConsumableType.AltSmoke)
+    //        {
+    //            return "Smokable";
+    //        }
+    //        else if (Type == eConsumableType.Ingest || Type == eConsumableType.Snort)
+    //        {
+    //            return "Ingestable";
+    //        }
+    //        else if (Type == eConsumableType.Inject)
+    //        {
+    //            return "Injectable";
+    //        }
+    //        else if (Type == eConsumableType.Service)
+    //        {
+    //            return "Service";
+    //        }
+    //        else if (Type == eConsumableType.None)
+    //        {
+    //            return "Other";
+    //        }
+    //        else
+    //        {
+    //            return Type.ToString();
+    //        }
+    //    }
+    //}
 
     public bool IsPossessionIllicit { get; set; } = false;
 }

@@ -37,7 +37,7 @@ public class MainMenu : Menu
         Main.OnItemSelect += OnItemSelect;
         Main.OnListChange += OnListChange;
         SettingsMenu = new SettingsMenu(menuPool, Main, Settings);
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time, placesOfInterest);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time, placesOfInterest, modItems);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
         InventoryMenu = new InventoryMenu(menuPool, Main, player, modItems, false);

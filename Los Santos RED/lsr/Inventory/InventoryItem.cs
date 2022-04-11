@@ -24,7 +24,7 @@ public class InventoryItem
     {
 
     }
-    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{ModItem.FormattedItemType}~s~"
+    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{ModItem.ItemType}~s~" + (ModItem.ItemSubType != ItemSubType.None ? $" - ~p~{ModItem.ItemSubType}~s~" : "") 
                                                     + (ModItem.ChangesHealth ? $"~n~{ModItem.HealthChangeDescription}" : "")
                                                     + $"~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent.Sum(),0)}%~s~)" : "") 
                                                     + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "") 

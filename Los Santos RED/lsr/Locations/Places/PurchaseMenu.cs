@@ -535,6 +535,7 @@ public class PurchaseMenu : Menu
         List<string> VehicleClasses = new List<string>();
         int TotalWeapons = ShopMenu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Weapon).Count();
         int TotalVehicles = ShopMenu.Items.Where(x => x.Purchaseable && ModItems.Get(x.ModItemName)?.ModelItem?.Type == ePhysicalItemType.Vehicle).Count();
+
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable))
         {
             ModItem myItem = ModItems.Get(cii.ModItemName);
@@ -690,7 +691,7 @@ public class PurchaseMenu : Menu
 
             description += $"~n~Price: ~r~{formattedPurchasePrice}~s~";
 
-            description += $"~n~Type: ~p~{modItem.FormattedItemType}~s~";
+            description += $"~n~Type: ~p~{modItem.ItemType}~s~" + (modItem.ItemSubType != ItemSubType.None ? $" - ~p~{modItem.ItemSubType}~s~" : "");
             description += $"~n~~b~{modItem.AmountPerPackage}~s~ Item(s) per Package";
             if (modItem.AmountPerPackage > 1)
             {

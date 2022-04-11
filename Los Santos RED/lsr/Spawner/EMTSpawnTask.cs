@@ -232,7 +232,7 @@ public class EMTSpawnTask :SpawnTask
     }
     private void PutPedInVehicle(PedExt Person, int seat)
     {
-        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, -1);
+        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = seat;
         Person.UpdateVehicleState();

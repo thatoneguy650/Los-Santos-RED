@@ -12,18 +12,20 @@ public class InventoryMenu : Menu
     private IActivityPerformable ActivityPerformablePlayer;
     private IModItems ModItems;
     private bool IsInside;
-
+    private MenuPool MenuPool;
+    private List<UIMenu> CategoryMenus = new List<UIMenu>();
     public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, ILocationInteractable player, IModItems modItems, bool isInside)
     {
         ActionablePlayer = player;
         ModItems = modItems;
         IsInside = isInside;
+        MenuPool = menuPool;
         inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Access purchased items.";
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
         inventoryMenu.SetBannerType(EntryPoint.LSRedColor);
         inventoryMenu.OnItemSelect += OnActionItemSelect;
-        CreateInventoryMenu();
+        //CreateInventoryMenu();
     }
     public int SelectedPlateIndex { get; set; }
 
@@ -56,65 +58,134 @@ public class InventoryMenu : Menu
     private void CreateInventoryMenu()
     {
         inventoryMenu.Clear();
-        foreach(InventoryItem cii in ActionablePlayer.Inventory.Items)
+        CategoryMenus.Clear();
+        foreach (ItemType itemType in (ItemType[])Enum.GetValues(typeof(ItemType)))
+        {
+            int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == itemType && x.ModItem?.CanConsume == true);
+            if (totalItems > 0)
+            {
+                UIMenu itemsubMenu = MenuPool.AddSubMenu(inventoryMenu, itemType.ToString());
+                inventoryMenu.MenuItems[inventoryMenu.MenuItems.Count() - 1].Description = itemType.ToString();
+                //inventoryMenu.MenuItems[inventoryMenu.MenuItems.Count() - 1].RightLabel = $"{totalItems} Item(s)";
+                itemsubMenu.SetBannerType(EntryPoint.LSRedColor);
+                itemsubMenu.OnItemSelect += OnActionItemSelect;
+                CategoryMenus.Add(itemsubMenu);
+            }
+        }
+        foreach (InventoryItem cii in ActionablePlayer.Inventory.Items)
         {
             if(cii.ModItem != null)
             {
-               // inventoryMenu.AddItem(new UIMenuListScrollerItem<string>(cii.ModItem?.Name, cii.Description, new List<string>() { "Use", "Drop" }) { Enabled = Player.CanPerformActivities });
-
-
-                if(IsInside)
+                // inventoryMenu.AddItem(new UIMenuListScrollerItem<string>(cii.ModItem?.Name, cii.Description, new List<string>() { "Use", "Drop" }) { Enabled = Player.CanPerformActivities });
+                UIMenu SubMenu = CategoryMenus.FirstOrDefault(x => x.SubtitleText == cii.ModItem.ItemType.ToString());
+                if (SubMenu != null)
                 {
-                    inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                    if (IsInside)
+                    {
+                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                    }
+                    else
+                    {
+                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                    }
                 }
                 else
                 {
-                    inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                    if (IsInside)
+                    {
+                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                    }
+                    else
+                    {
+                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                    }
                 }
-
                 
             }
         }        
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ModItem selectedStuff = ModItems.Get(selectedItem.Text);
-        if (selectedStuff != null)
+
+        EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
+        ModItem selectedModItem = ModItems.Get(selectedItem.Text);
+        if (selectedModItem != null)
         {
-            if (selectedStuff.CanConsume)
+            if (selectedModItem.CanConsume)
             {
                 if(IsInside)
                 {
-                    ActionablePlayer.StartConsumingActivity(selectedStuff, false);
-                    InventoryItem ii = ActionablePlayer.Inventory.Get(selectedStuff);
-                    if (ii != null)
+                    ActionablePlayer.StartConsumingActivity(selectedModItem, false);
+                    
+                }
+                else
+                {
+                    ActionablePlayer.StartConsumingActivity(selectedModItem, true);
+                   // inventoryMenu.Visible = false;
+                }
+
+                InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
+                if (ii != null)
+                {
+                    if (ii.Amount > 0)
                     {
-                        if(ii.Amount > 0)
-                        {
-                            selectedItem.Description = ii.Description;
-                            selectedItem.RightLabel = ii.RightLabel;
-                        }
-                        else
-                        {
-                            sender.RemoveItemAt(index);
-                            sender.RefreshIndex();
-                        }
-                        
+                        selectedItem.Description = ii.Description;
+                        selectedItem.RightLabel = ii.RightLabel;
                     }
                     else
                     {
                         selectedItem.Enabled = false;
+                        selectedItem.RightLabel = "None";
                     }
-                    
-
                 }
                 else
                 {
-                    ActionablePlayer.StartConsumingActivity(selectedStuff, true);
-                    inventoryMenu.Visible = false;
+                    //    sender.RemoveItemAt(index);
+                    //    sender.RefreshIndex();
+                    selectedItem.Enabled = false;
+                    selectedItem.RightLabel = "None";
+                    selectedItem.Description = "";
+
+
+                    //if(index == 0 && sender.MenuItems.Count() == 1)
+                    //{
+                    //   // sender.Clear();
+                    //}
+                    //else
+                    //{
+                    //    sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
+                    //    sender.RefreshIndex();
+                    //}
+
+                    //sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
+                    //sender.RefreshIndex();
+                    //selectedItem.Enabled = false;
+                    //selectedItem.RightLabel = "None";
+
+                    //if (index != 0)
+                    //{
+                    //    sender.RemoveItemAt(index);
+                    //    sender.RefreshIndex();
+                    //}
+                    //int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == selectedStuff.ItemType);
+                    //UIMenu SubMenu = MenuPool.FirstOrDefault(x => x.SubtitleText == selectedStuff.ItemType.ToString());
+                    //if (SubMenu != null)
+                    //{
+                    //    UIMenuItem subItem = inventoryMenu.MenuItems.FirstOrDefault(x => x.Text == SubMenu.SubtitleText);
+                    //    if (subItem != null)
+                    //    {
+                    //        if (totalItems > 0)
+                    //        {
+                    //            subItem.RightLabel = $"{totalItems} Item(s)";
+                    //        }
+                    //        else
+                    //        {
+                    //            //MenuPool.Remove(SubMenu);
+                    //        }
+                    //    }
+                    //}
                 }
-              // Player.RemoveFromInventory(selectedStuff, 1);
-                EntryPoint.WriteToConsole($"Removed {selectedStuff.Name} ", 3);  
+                EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);  
             }
         }
         

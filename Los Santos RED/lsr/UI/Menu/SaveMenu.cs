@@ -23,7 +23,8 @@ public class SaveMenu : Menu
     private IGangs Gangs;
     private ITimeControllable Time;
     private IPlacesOfInterest PlacesOfInterest;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    private IModItems ModItems;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         PlayerSave = playersave;
         GameSaves = gameSaves;
@@ -34,6 +35,7 @@ public class SaveMenu : Menu
         World = world;
         Gangs = gangs;
         Time = time;
+        ModItems = modItems;
         PlacesOfInterest = placesOfInterest;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
@@ -80,7 +82,7 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time, PlacesOfInterest);
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
         }
         else if (selectedItem == SaveGameItem)
         {

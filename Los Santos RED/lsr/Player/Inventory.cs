@@ -48,6 +48,24 @@ namespace LosSantosRED.lsr.Player
                 }
             }
         }
+
+        public void Set(ModItem modItem, List<float> remainingPercent)
+        {
+            if (modItem != null)
+            {
+                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                if (ExistingItem == null)
+                {
+                    ItemsList.Add(new InventoryItem(modItem) { RemainingPercent = remainingPercent });
+                }
+                else
+                {
+                    ExistingItem.RemainingPercent = remainingPercent;//ExistingItem.Amount += amount;
+                }
+            }
+        }
+
+
         public bool Remove(ModItem modItem)
         {
             if (modItem != null)
