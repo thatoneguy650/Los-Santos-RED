@@ -16,10 +16,10 @@ public class UISettings : ISettingsDefaultable
     public float CrimesViolatingScale { get; set; }
     public int CrimesViolatingJustificationID { get; set; }
     public GTAFont CrimesViolatingFont { get; set; }
-    public bool ShowSpeedLimitDisplay { get; set; }
-    public float SpeedLimitPositionX { get; set; }
-    public float SpeedLimitPositionY { get; set; }
-    public float SpeedLimitScale { get; set; }
+    //public bool ShowSpeedLimitDisplay { get; set; }
+    //public float SpeedLimitPositionX { get; set; }
+    //public float SpeedLimitPositionY { get; set; }
+    //public float SpeedLimitScale { get; set; }
     public bool ShowVehicleStatusDisplay { get; set; }
     public bool FadeVehicleStatusDisplay { get; set; }
     public bool FadeVehicleStatusDisplayDuringWantedAndInvestigation { get; set; }
@@ -119,6 +119,9 @@ public class UISettings : ISettingsDefaultable
         FadeZoneDisplay = false;
         ZoneDisplayShowPrimaryAgency = false;
         ZoneDisplayShowSecondaryAgency = false;
+
+
+        AlwaysShowCash = false;
 #endif
     }
     public void SetDefault()
@@ -130,10 +133,19 @@ public class UISettings : ISettingsDefaultable
         CrimesViolatingScale = 0.4f;
         CrimesViolatingJustificationID = 2;
         CrimesViolatingFont = GTAFont.FontChaletComprimeCologne;
-        ShowSpeedLimitDisplay = true;
-        SpeedLimitPositionX = 0.75f;//0.78f
-        SpeedLimitPositionY = 0.98f;
-        SpeedLimitScale = 0.2f;
+        //ShowSpeedLimitDisplay = true;
+        //SpeedLimitPositionX = 0.75f;//0.78f
+        //SpeedLimitPositionY = 0.98f;
+        //SpeedLimitScale = 0.2f;
+
+
+        //SpeedLimitPositionX = 0.75f;//0.78f
+        //SpeedLimitPositionY = 0.98f;
+        //SpeedLimitScale = 0.2f;
+
+
+
+
         ShowVehicleStatusDisplay = true;
         FadeVehicleStatusDisplay = true;
         FadeVehicleStatusDisplayDuringWantedAndInvestigation = false;
@@ -144,7 +156,7 @@ public class UISettings : ISettingsDefaultable
         VehicleStatusScale = 0.52f;
         VehicleStatusJustificationID = 2;
         VehicleStatusFont = GTAFont.FontHouseScript;
-        VehicleStatusIncludeTextSpeedLimit = false;
+        VehicleStatusIncludeTextSpeedLimit = true;
         VehicleStatusIncludeCurrentSpeed = true;
         VehicleStatusIncludeCompass = true;
         ShowPlayerDisplay = true;
@@ -182,7 +194,7 @@ public class UISettings : ISettingsDefaultable
         ZoneDisplayShowPrimaryAgency = true;
         ZoneDisplayShowSecondaryAgency = false;
         ZoneDisplayShowPrimaryGang = true;
-        AlwaysShowCash = true;
+        AlwaysShowCash = false;
         AlwaysShowRadar = true;
         AlwaysShowHUD = true;
         ShowDebug = false;

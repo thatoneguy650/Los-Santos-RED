@@ -46,7 +46,7 @@ public class GasStation : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
@@ -67,6 +67,7 @@ public class GasStation : InteractableLocation
 
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
+                Player.IsTransacting = false;
             }, "GasStationInteract");
         }
     }

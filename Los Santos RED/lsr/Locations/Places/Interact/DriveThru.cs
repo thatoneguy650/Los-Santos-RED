@@ -46,7 +46,7 @@ public class DriveThru : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 //StoreCamera = new LocationCamera(this, Player);
@@ -76,6 +76,7 @@ public class DriveThru : InteractableLocation
 
 
                 Player.IsInteractingWithLocation = false;
+                Player.IsTransacting = false;
                 CanInteract = true;
             }, "DriveThruInteract");
         }

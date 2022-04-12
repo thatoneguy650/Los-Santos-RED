@@ -100,6 +100,10 @@ public class PedExt : IComplexTaskable
     public ComplexTask CurrentTask { get; set; }
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {PlayerPerception.DistanceToTarget} See {PlayerPerception.CanSeeTarget} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
     public float DistanceToPlayer => PlayerPerception.DistanceToTarget;
+
+    public float HeightToPlayer => PlayerPerception.HeightToTarget;
+
+
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
 
 

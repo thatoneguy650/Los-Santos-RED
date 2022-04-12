@@ -192,6 +192,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         Player.ButtonPrompts.RemovePrompts("RobberyStart");
                         Time.FastForward(RobberyTime);
                         Game.FadeScreenOut(1000, true);
+                        Time.SetDateTime(RobberyTime);
                         isFadedOut = true;
                     }
                 }
@@ -535,6 +536,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             EntryPoint.WriteToConsole("Gang Wheelman FAILED");
             //CleanupRobbers();
+
+            foreach(GangMember gm in SpawnedRobbers)
+            {
+                if(gm.IsBusted)
+                {
+                    gm.CanBeTasked = true;
+                    gm.CanBeAmbientTasked = true;
+                }
+            }
+
+
             SendFailMessage();
             PlayerTasks.FailTask(HiringGang.ContactName);
         }

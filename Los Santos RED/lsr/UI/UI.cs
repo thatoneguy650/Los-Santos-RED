@@ -71,6 +71,15 @@ public class UI : IMenuProvideable
     private SimplePhoneMenu SimplePhoneMenu;
     private string debugString1;
 
+
+    private uint SpriteUint;
+    private uint SpriteUintCounter;
+    private uint PreviousGameTime;
+    private bool TimeOutSprite;
+    private bool IsDisposed = false;
+
+    private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
+
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer)
     {
         DisplayablePlayer = displayablePlayer;
@@ -134,23 +143,54 @@ public class UI : IMenuProvideable
     };
     public void Dispose()
     {
-        Game.RawFrameRender -= DrawSprites;
+        IsDisposed = true;
+        //GameFiber.Sleep(50);
+        //Game.RawFrameRender -= DrawSprites;
     }
     public void DrawSprites(object sender, GraphicsEventArgs args)
     {
         try
         {
-            if (DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !Game.IsPaused)
-            {
-                if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
-                {
-                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-                    float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
-                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
-                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
-                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
-                }
-            }
+
+            //    if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
+            //{
+            //    if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
+            //    {
+            //        float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+            //        float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
+            //        float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
+            //        float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
+            //        args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
+            //    }
+            //}
+
+
+                //works but crashes the game on unload:(
+                //if (PreviousGameTime == Game.GameTime)
+                //{
+                //    SpriteUintCounter++;
+                //}
+                //else if (Game.GameTime > PreviousGameTime)
+                //{
+                //    SpriteUintCounter = 0;
+                //}
+
+
+
+
+
+                //if (SpriteUintCounter >= 10)
+                //{
+                //    TimeOutSprite = true;
+                //}
+                //else
+                //{
+                //    TimeOutSprite = false;
+                //}
+
+
+                //PreviousGameTime = Game.GameTime;
+
         }
         catch (Exception ex)
         {
@@ -237,22 +277,23 @@ public class UI : IMenuProvideable
     }
     public void Setup()
     {
-        Game.RawFrameRender += DrawSprites;
-        Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
-        Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
-        Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
-        Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
-        Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
-        Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
-        Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
-        Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
-        Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
-        Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
-        Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
-        Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
-        Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
-        Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
-        Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+        //Game.RawFrameRender += DrawSprites;
+        IsDisposed = false;
+        //Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
+        //Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
+        //Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
+        //Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
+        //Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
+        //Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
+        //Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
+        //Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
+        //Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
+        //Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
+        //Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
+        //Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
+        //Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
+        //Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
+        //Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
         PlayerInfoMenu.Setup();
         SimplePhoneMenu.Setup();
         AboutMenu.Setup();
@@ -318,10 +359,10 @@ public class UI : IMenuProvideable
             {
                 lastCrimesDisplay = GetViolationsText();
             }
-            if (Settings.SettingsManager.UISettings.ShowSpeedLimitDisplay)
-            {
-                GetSpeedLimitSign();
-            }
+            //if (Settings.SettingsManager.UISettings.ShowSpeedLimitDisplay)
+            //{
+            //    GetSpeedLimitSign();
+            //}
             if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
             {
                 lastVehicleStatusDisplay = GetVehicleStatusDisplay();
@@ -501,6 +542,10 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
         if (Settings.SettingsManager.UISettings.AlwaysShowCash)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        }
+        else if (DisplayablePlayer.IsTransacting)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
@@ -694,7 +739,7 @@ public class UI : IMenuProvideable
     }
     private void GetSpeedLimitSign()
     {
-        if (DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree)
+        if (ShouldShowSpeedLimitSign)
         {
             float speedLimit = 60f;
             if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,26 @@ public class BarDisplay
             DrawBar1(bar1Percent);
             DrawBar2(bar2Percent);
             DrawBar3(bar3Percent);
+
+
+
+            //DrawSpeed();
+
+
         }
     }
+    //private void DrawSpeed()
+    //{
+    //    float width = 0.025f;
+    //    float height = 0.05f;
+
+
+        
+    //    NativeFunction.Natives.DRAW_RECT(Settings.SettingsManager.UISettings.SpeedLimitPositionY, Settings.SettingsManager.UISettings.SpeedLimitPositionX, width + 0.001f, height + 0.001f, 0, 0, 0, 255, false);
+    //    NativeFunction.Natives.DRAW_RECT(Settings.SettingsManager.UISettings.SpeedLimitPositionY, Settings.SettingsManager.UISettings.SpeedLimitPositionX, width, height, 255, 255, 255, 255, false);
+
+
+    //}
     private void DrawBar1(float percentage)
     {
         float BackWidth = 0.07f;

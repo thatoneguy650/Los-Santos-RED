@@ -334,7 +334,7 @@ public class PedCrimes
                             fullVehicle = null;
                             fullWeapon = null;
                         }
-                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))//60f
+                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, criminal.Pedestrian))//60f
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
                             {
@@ -354,7 +354,7 @@ public class PedCrimes
                     }
                     else
                     {
-                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian))//60f
+                        if (distanceToCriminal <= 40f && criminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, criminal.Pedestrian))//60f
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
                             {

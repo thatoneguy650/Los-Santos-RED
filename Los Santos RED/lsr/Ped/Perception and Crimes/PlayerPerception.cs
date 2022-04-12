@@ -49,6 +49,10 @@ public class PlayerPerception
     public bool CanSeeTarget { get; private set; } = false;
     public float ClosestDistanceToTarget { get; private set; } = 2000f;
     public float DistanceToTarget { get; private set; } = 999f;
+
+
+    public float HeightToTarget { get; private set; } = 999f;
+
     public float DistanceToTargetLastSeen { get; private set; } = 999f;
     public bool EverSeenTarget => CanSeeTarget || GameTimeLastSeenTarget > 0;
     public bool HasSpokenWithTarget { get; set; }
@@ -332,6 +336,11 @@ public class PlayerPerception
             //    DistanceToTarget = maxCellsAway * 70f;
             //}
         }
+
+        HeightToTarget = Math.Abs(Originator.Pedestrian.Position.Z - PositionToCheck.Z);//is new
+
+
+
         if (Originator.IsCop && Originator.Pedestrian.Exists())
         {
             DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
@@ -372,7 +381,7 @@ public class PlayerPerception
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
     {
-        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible)//this is new
+        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible || Originator.IsDead)//this is new
         {
             SetTargetUnseen();
             return false;
@@ -381,19 +390,139 @@ public class PlayerPerception
         {     
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
-            if(TargetInVehicle && DistanceToTarget <= 20f && !Originator.Pedestrian.IsDead)//this is new...., cops should be able to see behind themselves a short distance
+
+            bool isInFront = IsInFrontOf(Target.Character);
+
+            //if (TargetInVehicle && DistanceToTarget <= 20f)//this is new...., cops should be able to see behind themselves a short distance
+            //{
+            //    SetTargetSeen();
+            //}
+            //else if (!TargetInVehicle && DistanceToTarget <= 8f)//this is new...., cops should be able to see behind themselves a short distance
+            //{
+            //    SetTargetSeen();
+            //}
+            //else 
+               
+            if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
+            {
+                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && isInFront)//55f
+                {
+                    if(NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
+                }
+                else
+                {
+                    if(!isInFront && ((TargetInVehicle && DistanceToTarget <= 20f) || (!TargetInVehicle && DistanceToTarget <= 8f)))
+                    {
+                        if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                        {
+                            SetTargetSeen();
+                        }
+                        else
+                        {
+                            SetTargetUnseen();
+                        }
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                }
+            }
+            else if (Originator.Pedestrian.IsInHelicopter)
+            {
+                float DistanceToSee = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
+                if (IsWanted)
+                {
+                    DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
+                }
+                if (DistanceToTarget <= DistanceToSee)
+                {
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
+                }
+                else
+                {
+                    SetTargetUnseen();
+                }
+            }
+            else
+            {
+                if (DistanceToTarget <= Settings.SettingsManager.CivilianSettings.SightDistance && isInFront)//55f
+                {
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    {
+                        SetTargetSeen();
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                    GameFiber.Yield();//TR New 8 Test 1
+                }
+                else
+                {
+                    if (!isInFront && ((TargetInVehicle && DistanceToTarget <= 20f) || (!TargetInVehicle && DistanceToTarget <= 8f)))
+                    {
+                        if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
+                        {
+                            SetTargetSeen();
+                        }
+                        else
+                        {
+                            SetTargetUnseen();
+                        }
+                    }
+                    else
+                    {
+                        SetTargetUnseen();
+                    }
+                }
+            }
+            GameTimeLastLOSCheck = Game.GameTime;
+            //GameFiber.Yield();//TR Yield RemovedTest 2
+            return true;
+        }
+        return false;
+    }
+    private bool UpdateTargetLineOfSight_Old(bool IsWanted)
+    {
+        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible)//this is new
+        {
+            SetTargetUnseen();
+            return false;
+        }
+        if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
+        {
+            bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
+            Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
+            if (TargetInVehicle && DistanceToTarget <= 20f && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//this is new...., cops should be able to see behind themselves a short distance
             {
                 SetTargetSeen();
             }
-            else if (!TargetInVehicle && DistanceToTarget <= 8f && !Originator.Pedestrian.IsDead)//this is new...., cops should be able to see behind themselves a short distance
+            else if (!TargetInVehicle && DistanceToTarget <= 8f && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//this is new...., cops should be able to see behind themselves a short distance
             {
                 SetTargetSeen();
             }
             else if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
             {
-                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead)//55f
+                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//55f
                 {
-                    if(NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
+                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
                     {
                         SetTargetSeen();
                     }
@@ -415,7 +544,7 @@ public class PlayerPerception
                 {
                     DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
                 }
-                if (DistanceToTarget <= DistanceToSee && !Originator.Pedestrian.IsDead)
+                if (DistanceToTarget <= DistanceToSee && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)
                 {
                     if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
                     {

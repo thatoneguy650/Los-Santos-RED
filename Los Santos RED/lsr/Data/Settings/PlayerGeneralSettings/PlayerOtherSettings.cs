@@ -50,8 +50,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         SetDefault();
 #if DEBUG
         MeleeDamageModifier = 1.0f;
-        SetSlowMoOnBusted = false;
-        SetSlowMoOnDeath = false;
+        //SetSlowMoOnBusted = false;
+        //SetSlowMoOnDeath = false;
     #endif
     }
     public void SetDefault()

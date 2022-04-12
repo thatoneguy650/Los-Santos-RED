@@ -95,6 +95,7 @@ public class GangDen : InteractableLocation
                 {
                     RemoveLayLow();
                     KeepInteractionGoing = false;
+                    Player.IsTransacting = true;
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
                     PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
@@ -126,6 +127,7 @@ public class GangDen : InteractableLocation
                     EntryPoint.WriteToConsole($"PLAYER EVENT: Gang Den LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
                     //Transaction.ProcessTransactionMenu();
                     Transaction.DisposeTransactionMenu();
+                    Player.IsTransacting = false;
                 }
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();

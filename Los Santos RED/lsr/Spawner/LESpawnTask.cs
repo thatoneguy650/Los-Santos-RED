@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
 
 public class LESpawnTask : SpawnTask
 {
@@ -340,7 +341,24 @@ public class LESpawnTask : SpawnTask
             }
             else
             {
-                UnitCode = "Lincoln";
+                if (RandomItems.RandomPercent(80))
+                {
+                    UnitCode = "Lincoln";
+                }
+                else
+                {
+                    UnitCode = new List<string>() {
+                        "Henry"//H: Detective ("Henry")
+                        ,"Tom"//T: Traffic investigator ("Tom")
+                        , "Edward"//E: Ticket-writing unit
+                        ,"George"//G: Gang enforcement unit ("George")
+                        , "Robert"//R: Metro Unit
+                        ,"William"//W: Detective ("William")
+                        ,"Victor"//V: Vice ("Victor")
+                        ,"XRay"//X: Extra patrol ("X-ray")
+                        ,"Nora"//N: Narcotics
+                    }.PickRandom();
+                }
             }
             NextBeatNumber = Agency.GetNextBeatNumber();
         }

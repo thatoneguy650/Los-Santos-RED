@@ -56,7 +56,7 @@ public class GunStore : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
@@ -86,6 +86,7 @@ public class GunStore : InteractableLocation
                 StoreCamera.Dispose();
 
                 Player.IsInteractingWithLocation = false;
+                Player.IsTransacting = false;
                 CanInteract = true;
             }, "GangDenInteract");
         }

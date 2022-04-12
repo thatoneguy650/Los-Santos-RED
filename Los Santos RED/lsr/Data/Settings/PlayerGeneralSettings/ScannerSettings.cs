@@ -35,7 +35,7 @@ public class ScannerSettings
     {
         SetDefault();
 #if DEBUG
-        NumberOfUnitsToAnnounce = 3;
+        NumberOfUnitsToAnnounce = 2;
 #endif
     }
     public void SetDefault()

@@ -63,5 +63,6 @@ namespace LosSantosRED.lsr.Interface
         int CellY { get; }
         Ped Character { get; }
         Sprinting Sprinting { get; }
+        bool IsTransacting { get; }
     }
 }

@@ -46,6 +46,7 @@ public class Bar : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
+            Player.IsTransacting = true;
 
             GameFiber.StartNew(delegate
             {
@@ -64,7 +65,7 @@ public class Bar : InteractableLocation
                 DisposeInteractionMenu();
 
                 StoreCamera.Dispose();
-
+                Player.IsTransacting = false;
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "BarInteract");

@@ -28,12 +28,12 @@ namespace LosSantosRED.lsr
         {
             UpdateCops();
             UpdateRecognition();
-            if (Player.IsBustable && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
                 GameFiber.Yield();
                 Player.Arrest();
             }
-            if (Player.IsBustable && Player.IsAttemptingToSurrender && World.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 10f))
+            if (Player.IsBustable && Player.IsAttemptingToSurrender && World.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 10f && x.HeightToPlayer <= 5f))
             {
                 GameFiber.Yield();
                 Player.Arrest();
@@ -66,24 +66,17 @@ namespace LosSantosRED.lsr
                             localRan++;
                         }
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
-
-
-
-
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
                             Cop.WeaponInventory.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
-                            //GameFiber.Yield();//TR this is new
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
                             Cop.UpdateSpeech(Player);
-                            //GameFiber.Yield();
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
                         {
                             Cop.AssistManager.UpdateCollision(Player.IsWanted);
-                            //GameFiber.Yield();
                         }
                         if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {
@@ -94,7 +87,6 @@ namespace LosSantosRED.lsr
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
                         }
-
                         if (yield && localRan == 1)
                         {
                             GameFiber.Yield();
@@ -110,12 +102,6 @@ namespace LosSantosRED.lsr
                 }
                 GameFiber.Yield();
             }
-
-
-            if(Player.ClosestCopToPlayer?.Handle != PrimaryPlayerCop?.Handle)
-            {
-                EntryPoint.WriteToConsole($"Closeset Cop to Player Changed FROM {Player.ClosestCopToPlayer?.Handle} TO {PrimaryPlayerCop?.Handle}");
-            }
             if(Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
             {
                 if(Math.Abs(Player.ClosestCopToPlayer.DistanceToPlayer - PrimaryPlayerCop.DistanceToPlayer) >= 2f)
@@ -126,8 +112,7 @@ namespace LosSantosRED.lsr
             else
             {
                 Player.ClosestCopToPlayer = PrimaryPlayerCop;
-            }
-            
+            } 
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()

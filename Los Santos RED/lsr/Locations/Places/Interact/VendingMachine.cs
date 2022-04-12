@@ -62,7 +62,7 @@ public class VendingMachine : InteractableLocation
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
+            Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
 
@@ -94,6 +94,7 @@ public class VendingMachine : InteractableLocation
                 //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
                 Player.IsInteractingWithLocation = false;
+                Player.IsTransacting = false;
                 CanInteract = true;
             }, "GangDenInteract");
         }

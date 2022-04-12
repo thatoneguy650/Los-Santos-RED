@@ -386,7 +386,7 @@ namespace LosSantosRED.lsr
                     cop.IsRespondingToWanted = true;
                     tasked++;
                 }
-                else if (!cop.IsDead && !cop.IsUnconscious && Player.WantedLevel == 2 && cop.DistanceToPlayer <= 75f)
+                else if (!cop.IsDead && !cop.IsUnconscious && Player.WantedLevel == 2 && !Player.IsBusted && cop.DistanceToPlayer <= 75f)
                 {
                     cop.IsRespondingToWanted = true;
                     tasked++;

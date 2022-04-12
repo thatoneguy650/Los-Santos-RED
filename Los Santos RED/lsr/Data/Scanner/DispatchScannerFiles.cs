@@ -1958,10 +1958,10 @@
         public static ScannerFile HASH1DF45254 { get { return new ScannerFile("01_lp_numbers\\0x1DF45254.wav", "0x1DF45254", "lp_numbers"); } }
         public static ScannerFile HASH1E1EA590 { get { return new ScannerFile("01_lp_numbers\\0x1E1EA590.wav", "0x1E1EA590", "lp_numbers"); } }
         public static ScannerFile HASH1E3F03C2 { get { return new ScannerFile("01_lp_numbers\\0x1E3F03C2.wav", "0x1E3F03C2", "lp_numbers"); } }
-        public static ScannerFile HASH1E7FA242 { get { return new ScannerFile("01_lp_numbers\\0x1E7FA242.wav", "0x1E7FA242", "lp_numbers"); } }
+        public static ScannerFile HASH1E7FA2425 { get { return new ScannerFile("01_lp_numbers\\0x1E7FA242.wav", "0x1E7FA242", "lp_numbers"); } }
         public static ScannerFile HASH1EF897F4 { get { return new ScannerFile("01_lp_numbers\\0x1EF897F4.wav", "0x1EF897F4", "lp_numbers"); } }
-        public static ScannerFile HASH1F858981 { get { return new ScannerFile("01_lp_numbers\\0x1F858981.wav", "0x1F858981", "lp_numbers"); } }
-        public static ScannerFile HASH1F869BAC { get { return new ScannerFile("01_lp_numbers\\0x1F869BAC.wav", "0x1F869BAC", "lp_numbers"); } }
+        public static ScannerFile Seven5 { get { return new ScannerFile("01_lp_numbers\\0x1F858981.wav", "0x1F858981", "lp_numbers"); } }
+        public static ScannerFile Six5 { get { return new ScannerFile("01_lp_numbers\\0x1F869BAC.wav", "0x1F869BAC", "lp_numbers"); } }
     }
     public class manufacturer
     {

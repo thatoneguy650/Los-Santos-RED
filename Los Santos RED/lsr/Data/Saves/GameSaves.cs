@@ -132,13 +132,29 @@ public class GameSaves : IGameSaves
         AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0) };
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
+            //original
+            //new PedComponent(0, 0, 0, 0),
+            //new PedComponent(1, 0, 0, 0),
+            //new PedComponent(2, 38, 0, 0) ,
+            //new PedComponent(3, 14, 0, 0) ,
+            //new PedComponent(4, 25, 0, 0) ,
+            //new PedComponent(5, 0, 0, 0) ,
+            //new PedComponent(6, 3, 2, 0) ,
+            //new PedComponent(7, 0, 0, 0) ,
+            //new PedComponent(8, 11, 5, 0) ,
+            //new PedComponent(9, 0, 0, 0) ,
+            //new PedComponent(10, 0, 0, 0) ,
+            //new PedComponent(11, 122, 8, 0)
+
+
+            //likealexis
             new PedComponent(0, 0, 0, 0),
             new PedComponent(1, 0, 0, 0),
             new PedComponent(2, 38, 0, 0) ,
             new PedComponent(3, 14, 0, 0) ,
             new PedComponent(4, 25, 0, 0) ,
             new PedComponent(5, 0, 0, 0) ,
-            new PedComponent(6, 3, 2, 0) ,
+            new PedComponent(6, 29, 2, 0) ,
             new PedComponent(7, 0, 0, 0) ,
             new PedComponent(8, 11, 5, 0) ,
             new PedComponent(9, 0, 0, 0) ,
