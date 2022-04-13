@@ -64,5 +64,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         Sprinting Sprinting { get; }
         bool IsTransacting { get; }
+        bool RecentlyChangedMoney { get; }
     }
 }

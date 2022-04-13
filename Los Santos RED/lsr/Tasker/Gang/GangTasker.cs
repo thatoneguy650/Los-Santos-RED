@@ -82,43 +82,62 @@ public class GangTasker
         }
         else if (GangMember.DistanceToPlayer <= 175f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
-            WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-
+            //WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
-            //bool SeenReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians) || GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
+
+
+
+            WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            //Crime HighestPriorityPlayer = Civilian.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
+
+
+            int PlayerCrimePriority = 99;
+            foreach (Crime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.CanBeReportedByCivilians))
+            {
+                if (playerCrime.Priority < PlayerCrimePriority)
+                {
+                    PlayerCrimePriority = playerCrime.Priority;
+                }
+            }
+            if (PlayerCrimePriority < HighestPriorityOtherCrime?.Crime?.Priority)
+            {
+                HighestPriorityOtherCrime = null;
+            }
+            else if (PlayerCrimePriority == HighestPriorityOtherCrime?.Crime?.Priority && GangMember.DistanceToPlayer <= 30f)
+            {
+                HighestPriorityOtherCrime = null;
+            }
+
+
+
+
+
+
             if (SeenPlayerReactiveCrime)
             {
-                if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
+                if (GangMember.WillFight && !arePoliceNearby && (isHostile || (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))) //if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
                 {
-                    SetFight(GangMember, HighestPriority);
+                    SetFight(GangMember, HighestPriorityOtherCrime);
                 }
                 else
                 {
-                    SetFlee(GangMember, HighestPriority);
+                    SetFlee(GangMember, HighestPriorityOtherCrime);
                 }
             }
             else if (SeenOtherReactiveCrime)
             {
-                if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted)
+                if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && !Player.Investigation.IsActive)
                 {
-                    SetFight(GangMember, HighestPriority);
+                    SetFight(GangMember, HighestPriorityOtherCrime);
                 }
                 else
                 {
-                    SetFlee(GangMember, HighestPriority);
+                    SetFlee(GangMember, HighestPriorityOtherCrime);
                 }
             }
-
-
             else
             {
-                //if (Player.IsWanted && (GangMember.CurrentlyViolatingWantedLevel > 0 || GangMember.DistanceToPlayer <= 60f) && !isHostile)
-                //{
-                //    SetFlee(GangMember, HighestPriority);
-                //}
-                //else 
-                
                 if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
                 {
                     SetIdle(GangMember);

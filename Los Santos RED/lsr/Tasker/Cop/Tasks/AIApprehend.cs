@@ -32,6 +32,7 @@ public class AIApprehend : ComplexTask
     private bool IsChasingSlowly;
     private bool prevIsChasingSlowly;
 
+
     private enum Task
     {
         VehicleChase,
@@ -417,6 +418,7 @@ public class AIApprehend : ComplexTask
         Ped.IsRunningOwnFiber = true;
         float MoveRate = 1.25f;//(float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
         float RunSpeed = 500f;
+        float PrevRunSpeed = 500f;
         bool prevIsChasingSlowly = IsChasingSlowly;
         CurrentSubTask = SubTask.None;
         GameFiber.StartNew(delegate
@@ -450,7 +452,6 @@ public class AIApprehend : ComplexTask
                     {
                         RunSpeed = 1.0f;// 1.4f;
                     }
-                    
                 }
                 else if (OtherTarget.WantedLevel == 1)
                 {
@@ -463,6 +464,18 @@ public class AIApprehend : ComplexTask
                     RunSpeed = 500f;
                     NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
                 }
+
+
+
+                if(PrevRunSpeed != RunSpeed)
+                {
+                    if(Math.Abs(PrevRunSpeed - RunSpeed) >= 0.1f)//if speed changes, retask?
+                    {
+                        CurrentSubTask = SubTask.None;
+                    }
+                    PrevRunSpeed = RunSpeed;
+                }
+
 
 
 

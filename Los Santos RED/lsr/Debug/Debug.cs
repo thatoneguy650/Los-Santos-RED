@@ -407,8 +407,8 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        Player.ResetScannerDebug();
-        Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
+       // Player.ResetScannerDebug();
+      //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
         //Player.ResetScannerDebug();
         //Player.ScannerPlayDebug();
@@ -424,21 +424,27 @@ public class Debug
         //}
         //Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
 
-        PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if(myPed != null)
-        {
-            //if(RandomItems.RandomPercent(50))
-            //{
-                myPed.ShopMenu = ShopMenus.GetRandomDrugDealerMenu();
-            //}
-            //else
-            //{
-            //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
-            //}
+        //if(myPed != null)
+        //{
 
-        }
 
+        //    myPed.IsDealingDrugs = true;
+
+
+
+        //    //if(RandomItems.RandomPercent(50))
+        //    //{
+        //        myPed.ShopMenu = ShopMenus.GetRandomDrugDealerMenu();
+        //    //}
+        //    //else
+        //    //{
+        //    //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+        //    //}
+
+        //}
+        SpawnNoGunAttackers();
 
         //SpawnGunAttackers();
 
@@ -565,7 +571,7 @@ public class Debug
         //        GameFiber.Yield();
         //    }
 
-      //  }
+        //  }
         //// Player.ScannerPlayDebug();
 
         //SetInRandomInterior();
@@ -618,18 +624,18 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        SpawnGunAttackers();
 
-
-        GameFiber.StartNew(delegate
-        {
-            uint GameTimeStarted = Game.GameTime;
-            while (Game.GameTime - GameTimeStarted <= 5000)
-            {
-                Player.IsDoingSuspiciousActivity = true;
-                GameFiber.Sleep(1000);
-            }
-            Player.IsDoingSuspiciousActivity = false;
-        }, "Run Debug Logic");
+        //GameFiber.StartNew(delegate
+        //{
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStarted <= 5000)
+        //    {
+        //        Player.IsDoingSuspiciousActivity = true;
+        //        GameFiber.Sleep(1000);
+        //    }
+        //    Player.IsDoingSuspiciousActivity = false;
+        //}, "Run Debug Logic");
 
 
         //Gang myGang = Gangs.AllGangs.PickRandom();
@@ -882,25 +888,25 @@ public class Debug
     {
 
 
-        Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if (myPed != null)
-        {
-            myPed.ForceSpeech(Player);
-        }
+        //if (myPed != null)
+        //{
+        //    myPed.ForceSpeech(Player);
+        //}
 
 
 
-        foreach(ModItem modItem in ModItems.Items)
-        {
-            Player.Inventory.Add(modItem, 5);
-        }
+        //foreach (ModItem modItem in ModItems.Items)
+        //{
+        //    Player.Inventory.Add(modItem, 5);
+        //}
 
 
 
         //ArrestScene();
 
-         Game.LocalPlayer.Character.Health -= 5;
+        Game.LocalPlayer.Character.Health -= 5;
 
         //Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         //Player.Inventory.Add(ModItems.Get("Heroin"), 4);

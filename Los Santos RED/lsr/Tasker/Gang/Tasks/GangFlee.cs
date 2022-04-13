@@ -21,7 +21,7 @@ public class GangFlee : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
+            EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
 

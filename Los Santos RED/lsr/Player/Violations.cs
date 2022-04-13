@@ -359,6 +359,10 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
             }
+            if (!TreatAsCop && Player.IsInVehicle && Player.IsDriver && Player.CurrentVehicle != null && Player.AnyPoliceCanRecognizePlayer && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.IsPoliceVehicle )
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
+            }
             if (Player.IsHoldingUp)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Mugging"));//.IsCurrentlyViolating = true;

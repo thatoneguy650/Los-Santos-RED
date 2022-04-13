@@ -8,14 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Intoxication
+public class Injuries
 {
     private IIntoxicatable Player;
-    private List<Intoxicator> CurrentIntoxicators = new List<Intoxicator>();
-    private Intoxicator PrimaryIntoxicator;
-    public Intoxication(IIntoxicatable player)
+    private ISettingsProvideable Settings;
+    public Injuries(IIntoxicatable player, ISettingsProvideable settings)
     {
         Player = player;
+        Settings = settings;
     }
     private uint GameTimeStartedSwerving;
     private uint GameTimeToStopSwerving;
@@ -23,6 +23,8 @@ public class Intoxication
     private float SteeringBias;
     private string CurrentClipset;
     private string OverLayEffect;
+    public bool IsInjured { get; private set; }
+
     public string DebugString { get; set; }
     private string ClipsetAtCurrentIntensity
     {
@@ -34,15 +36,15 @@ public class Intoxication
             }
             else if (CurrentIntensity >= 3)
             {
-                return "move_m@drunk@verydrunk";
+                return "move_m@drunk@verydrunk";//"move_m @drunk@verydrunk";
             }
             else if (CurrentIntensity >= 2)
             {
-                return "move_m@drunk@moderatedrunk";
+                return "move_m@injured"; //"move_m@drunk@moderatedrunk";
             }
             else
             {
-                return "move_m@drunk@slightlydrunk";
+                return "move_m@injured"; //"move_m@drunk@slightlydrunk";
             }
         }
     }
@@ -160,104 +162,73 @@ public class Intoxication
     public float CurrentIntensity { get; private set; }
     public void Dispose()
     {
-        CurrentIntoxicators.Clear();
-        PrimaryIntoxicator = null;
-        if (Player.IsIntoxicated)
+        if (IsInjured)
         {
-            SetSober(true);
+            SetHealthy(true);
         }
     }
     public void Restart()
     {
         Update();
-        if (CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
+        if (CurrentIntensity >= 0.25f)// 0.25f)
         {
-            SetIntoxicated();
+            SetInjured();
             Update();
         }
     }
-    public void StartIngesting(Intoxicant intoxicant)
-    {
-        if(intoxicant == null)
-        {
-            return;
-        }
-        Intoxicator existing = CurrentIntoxicators.FirstOrDefault(x => x.Intoxicant.Name == intoxicant.Name);
-        if (existing != null)
-        {
-            existing.StartConsuming();
-        }
-        else
-        {
-            Intoxicator toAdd = new Intoxicator(Player, intoxicant);
-            toAdd.StartConsuming();
-            CurrentIntoxicators.Add(toAdd);
-        }
-        EntryPoint.WriteToConsole($"Intoxication Started Ingesting {intoxicant.Name}", 5);
-    }
-    public void StopIngesting(Intoxicant intoxicant)
-    {
-        if (intoxicant == null)
-        {
-            return;
-        }
-        Intoxicator existing = CurrentIntoxicators.FirstOrDefault(x => x.Intoxicant.Name == intoxicant.Name);
-        if (existing != null)
-        {
-            existing.StopConsuming();
-        }
-        EntryPoint.WriteToConsole($"Intoxication Stopped Ingesting {intoxicant.Name}", 5);
-    }
     public void Update()
     {
-        CurrentIntoxicators.RemoveAll(x => x.CurrentIntensity == 0.0f && !x.IsConsuming);
-        float HighestIntensity = 0.0f;
-        PrimaryIntoxicator = null;
-        foreach(Intoxicator intox in CurrentIntoxicators)
+        if (Settings.SettingsManager.DamageSettings.AllowInjuryEffects)
         {
-            if(intox.CurrentIntensity > HighestIntensity)
+            int Health = Player.Character.Health - 100;
+            int MaxHealth = Player.Character.MaxHealth - 100;
+            if (Health < 0)
             {
-                PrimaryIntoxicator = intox;
-                HighestIntensity = intox.CurrentIntensity;
+                Health = 0;
             }
-            if(intox.Intoxicant.ContinuesWithoutCurrentUse)
+            if (MaxHealth < 0)
             {
-                if(intox.CurrentIntensity == intox.Intoxicant.MaxEffectAllowed && intox.IsConsuming)
+                MaxHealth = 1;
+            }
+            if (Health <= MaxHealth - Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart && !Player.IsIntoxicated)
+            {
+                OverLayEffect = "dying";
+                float Percentage = (float)Health / (float)(MaxHealth- Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart);
+                Percentage = 1f - Percentage;
+
+                float coolpercent = Percentage;
+
+
+                Percentage *= 5f;
+                CurrentIntensity = Percentage;
+                UpdateInjuredStatus();
+
+
+                //EntryPoint.WriteToConsole($"Injuries Intensity {CurrentIntensity} CurrentClipset {CurrentClipset} MaxHealth {MaxHealth} Health {Health} coolpercent {coolpercent}");
+            }
+            else
+            {
+                if (IsInjured)
                 {
-                    intox.StopConsuming();
-                    EntryPoint.WriteToConsole($"Intoxication Intoxicant.ContinuesWithoutCurrentUse, Reached Max, Stopping {intox.Intoxicant?.Name}", 5);
+                    SetHealthy(true);
                 }
             }
         }
-        if (PrimaryIntoxicator != null)
-        {
-            OverLayEffect = PrimaryIntoxicator.Intoxicant?.OverLayEffect;
-            CurrentIntensity = PrimaryIntoxicator.CurrentIntensity;
-            UpdateDrunkStatus();
-        }
-        else
-        {
-            if (Player.IsIntoxicated)
-            {
-                SetSober(true);
-            }
-        }
-        DebugString = $" PName: {PrimaryIntoxicator?.Intoxicant?.Name} Int: {PrimaryIntoxicator?.CurrentIntensity} int2 {CurrentIntensity} Total: {CurrentIntoxicators.Count()} IsIntoxicated {Player.IsIntoxicated}  EffectLimit {PrimaryIntoxicator?.Intoxicant?.EffectIntoxicationLimit}";
         //EntryPoint.WriteToConsole(DebugString, 5);
     }
-    private void UpdateDrunkStatus()
+    private void UpdateInjuredStatus()
     {
-        if (!Player.IsIntoxicated && CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
+        if (!IsInjured && CurrentIntensity >= 0.1f)// 0.25f)
         {
-            SetIntoxicated();
+            SetInjured();
         }
-        else if (Player.IsIntoxicated && CurrentIntensity <= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)//0.25f)
+        else if (IsInjured && CurrentIntensity <= 0.1f)//0.25f)
         {
-            SetSober(true);
+            SetHealthy(true);
         }
-        if (Player.IsIntoxicated)
+        if (IsInjured)
         {
-            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE" && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
+            if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE")
             {
                 CurrentClipset = ClipsetAtCurrentIntensity;
                 if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
@@ -266,38 +237,16 @@ public class Intoxication
                 }
                 NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
             }
-
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
+
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
-            Player.IntoxicatedIntensity = CurrentIntensity;
-            Player.IntoxicatedIntensityPercent = CurrentIntensity / PrimaryIntoxicator.Intoxicant.MaxEffectAllowed;
-            if (Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesDriving))
+            //NativeFunction.Natives.x2C328AF17210F009(CurrentIntensity / 5.0f);
+
+
+
+            if (Player.IsInVehicle)
             {
                 UpdateSwerving();
-            }
-            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.InfiniteStamina))
-            {
-                Player.Sprinting.InfiniteStamina = true;
-            }
-            else
-            {
-                Player.Sprinting.InfiniteStamina = false;
-            }
-            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.FastSpeed))
-            {
-                Player.Sprinting.TurboSpeed = true;
-            }
-            else
-            {
-                Player.Sprinting.TurboSpeed = false;
-            }
-            if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.RelaxesMuscles))
-            {
-                Player.IsOnMuscleRelaxants = true;
-            }
-            else
-            {
-                Player.IsOnMuscleRelaxants = false;
             }
         }
     }
@@ -327,12 +276,12 @@ public class Intoxication
             NativeFunction.Natives.SET_VEHICLE_STEER_BIAS(Player.CurrentVehicle.Vehicle, SteeringBias);
         }
     }
-    private void SetIntoxicated()
+    private void SetInjured()
     {
-        Player.IsIntoxicated = true;
+        IsInjured = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
+        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle)
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {
@@ -341,53 +290,34 @@ public class Intoxication
             NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
         }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
+
+
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
+        //NativeFunction.Natives.x5096FD9CCB49056D(OverLayEffect);
+        //NativeFunction.Natives.x2C328AF17210F009(CurrentIntensity / 5.0f);
+
+
+
         NativeFunction.Natives.x80C8B1846639BB19(1);
         NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
-        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.InfiniteStamina))
-        {
-            Player.Sprinting.InfiniteStamina = true;
-        }
-        else
-        {
-            Player.Sprinting.InfiniteStamina = false;
-        }
-        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.FastSpeed))
-        {
-            Player.Sprinting.TurboSpeed = true;
-        }
-        else
-        {
-            Player.Sprinting.TurboSpeed = false;
-        }
-        if (PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.RelaxesMuscles))
-        {
-            Player.IsOnMuscleRelaxants = true;
-        }
-        else
-        {
-            Player.IsOnMuscleRelaxants = false;
-        }
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
     }
-    private void SetSober(bool ResetClipset)
+    private void SetHealthy(bool ResetClipset)
     {
-        Player.IsIntoxicated = false;
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
-        if (ResetClipset)
+        IsInjured = false;
+        if (!Player.IsIntoxicated)
         {
-            NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+            NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
+            if (ResetClipset)
+            {
+                NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+            }
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+            NativeFunction.Natives.x80C8B1846639BB19(0);
+            NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
         }
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
-        NativeFunction.Natives.x80C8B1846639BB19(0);
-        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-        Player.IntoxicatedIntensityPercent = 0.0f;
-        Player.IntoxicatedIntensity = 0.0f;
-        Player.Sprinting.InfiniteStamina = false;
-        Player.Sprinting.TurboSpeed = false;
-        Player.IsOnMuscleRelaxants = false;
         //EntryPoint.WriteToConsole("Player Made Sober");
     }
 }

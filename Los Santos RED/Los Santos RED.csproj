@@ -222,6 +222,7 @@
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
+    <Compile Include="lsr\Player\Injuries.cs" />
     <Compile Include="lsr\Player\Interaction\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />

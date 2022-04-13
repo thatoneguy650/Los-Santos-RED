@@ -5,6 +5,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 
 [Serializable()]
@@ -77,7 +78,27 @@ public class Agency
         {
             return null;
         }
-        List<DispatchablePerson> ToPickFrom = Personnel.Where(b => b.ModelName.ToLower() == ped.Model.Name.ToLower()).ToList();
+
+        uint modelHash;
+        var hex = ped.Model.Name.ToLower();
+        if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
+        {
+            hex = hex.Substring(2);
+        }
+        bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
+
+        List<DispatchablePerson> ToPickFrom = new List<DispatchablePerson>();
+        if (parsedSuccessfully)//is not actualy a model name
+        {
+            ToPickFrom = Personnel.Where(b => Game.GetHashKey(b.ModelName.ToLower()) == modelHash).ToList();
+        }
+
+        if(!ToPickFrom.Any())
+        {
+            ToPickFrom = Personnel.Where(b => b.ModelName.ToLower() == ped.Model.Name.ToLower()).ToList();
+        }
+
+      
         if (ToPickFrom.Any())
         {
             return ToPickFrom.PickRandom();

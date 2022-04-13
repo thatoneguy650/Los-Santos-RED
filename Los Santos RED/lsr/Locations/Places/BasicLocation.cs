@@ -158,7 +158,7 @@ public class BasicLocation
         {
             if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
             {
-                distanceToPlayer = EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+                distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
                 GameTimeLastCheckedDistance = Game.GameTime;
             }
         }

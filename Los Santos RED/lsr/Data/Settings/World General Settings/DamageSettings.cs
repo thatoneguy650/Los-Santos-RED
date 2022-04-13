@@ -39,9 +39,20 @@ public class DamageSettings : ISettingsDefaultable
     public bool AllowRagdoll { get; set; }
 
 
+    [Description("Allow injury effects (movement/overlays/etc) to play on the play when they get too injured")]
+    public bool AllowInjuryEffects { get; set; }
+    [Description("Health lost level at which the effects will start")]
+    public int InjuryEffectHealthLostStart { get; set; }
+
+
     public DamageSettings()
     {
         SetDefault();
+
+
+#if DEBUG
+        AllowInjuryEffects = true;
+#endif
     }
     public void SetDefault()
     {
@@ -74,6 +85,12 @@ public class DamageSettings : ISettingsDefaultable
         GrazeDamagePercent = 10f;
         CriticalDamagePercent = 15;
         FatalDamagePercent = 5f;
+
+
+
+
+        AllowInjuryEffects = false;
+        InjuryEffectHealthLostStart = 20;
     }
 
 }

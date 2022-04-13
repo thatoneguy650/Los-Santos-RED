@@ -108,6 +108,7 @@ public class UISettings : ISettingsDefaultable
     public bool WeaponDisplaySimpleSelector { get; set; }
     public bool ShowWantedMessageOnStart { get; set; }
     public bool NeverShowRadar { get; set; }
+    public bool ShowRadarInVehicleOnly { get; set; }
 
     public UISettings()
     {
@@ -115,8 +116,8 @@ public class UISettings : ISettingsDefaultable
         #if DEBUG
             SetRadarZoomDistance = false;
             ShowDebug = false;
-        FadeStreetDisplay = false;
-        FadeZoneDisplay = false;
+        //FadeStreetDisplay = false;
+        //FadeZoneDisplay = false;
         ZoneDisplayShowPrimaryAgency = false;
         ZoneDisplayShowSecondaryAgency = false;
 
@@ -236,5 +237,6 @@ public class UISettings : ISettingsDefaultable
 
 
         NeverShowRadar = false;
+        ShowRadarInVehicleOnly = false;
     }
 }

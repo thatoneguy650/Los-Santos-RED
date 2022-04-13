@@ -131,7 +131,7 @@ public class CivilianTasker
     {
         if (Civilian.IsBusted)
         {
-            if (Civilian.DistanceToPlayer <= 75f)
+            if (Civilian.DistanceToPlayer <= 175f)//75f
             {
                 if (Civilian.CurrentTask?.Name != "GetArrested")
                 {
@@ -143,10 +143,55 @@ public class CivilianTasker
         }
         else if (Civilian.DistanceToPlayer <= 75f)//50f
         {
-            WitnessedCrime HighestPriority = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-            bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
-            bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
-            bool SeenMundaneCrime = Civilian.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+
+
+            WitnessedCrime HighestPriorityOtherCrime = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            //Crime HighestPriorityPlayer = Civilian.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
+
+
+
+
+
+
+            bool SeenScaryCrime = false;
+            bool SeenAngryCrime = false;
+            bool SeenMundaneCrime = false;
+            int PlayerCrimePriority = 99;
+            foreach (Crime crime in Civilian.PlayerCrimesWitnessed.Where(x=> x.CanBeReportedByCivilians))
+            {
+                if(crime.AngersCivilians)
+                {
+                    SeenAngryCrime = true;
+                }
+                if(crime.ScaresCivilians)
+                {
+                    SeenScaryCrime = true;
+                }
+                if(!crime.ScaresCivilians && !crime.AngersCivilians)
+                {
+                    SeenMundaneCrime = true;
+                }
+                if(crime.Priority < PlayerCrimePriority)
+                {
+                    PlayerCrimePriority = crime.Priority;
+                }
+            }
+            if(PlayerCrimePriority < HighestPriorityOtherCrime?.Crime?.Priority)
+            {
+                HighestPriorityOtherCrime = null;
+            }
+            else if (PlayerCrimePriority == HighestPriorityOtherCrime?.Crime?.Priority && Civilian.DistanceToPlayer <= 30f)
+            {
+                HighestPriorityOtherCrime = null;
+            }
+
+
+
+
+           // WitnessedCrime HighestPriority = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            //bool SeenScaryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            //bool SeenAngryCrime = Civilian.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
+            //bool SeenMundaneCrime = Civilian.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || Civilian.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
 
             if (!SeenAngryCrime && !SeenScaryCrime && Civilian.HasSeenDistressedPed)
             {
@@ -160,7 +205,7 @@ public class CivilianTasker
                 {
                     if (Civilian.CurrentTask?.Name != "ScaredCallIn")
                     {
-                        Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
                         Civilian.CurrentTask.Start();
 
@@ -172,7 +217,7 @@ public class CivilianTasker
                     {
                         if (Civilian.CurrentTask?.Name != "Fight")
                         {
-                            Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };
+                            Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                             GameFiber.Yield();//TR Added back 7
                             Civilian.CurrentTask.Start();
                         }
@@ -181,7 +226,7 @@ public class CivilianTasker
                     {
                         if (Civilian.CurrentTask?.Name != "Flee")
                         {
-                            Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                            Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                             GameFiber.Yield();//TR Added back 7
                             Civilian.CurrentTask.Start();
                         }
@@ -191,7 +236,7 @@ public class CivilianTasker
                 {
                     if (Civilian.CurrentTask?.Name != "Flee")
                     {
-                        Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriority?.Perpetrator };
+                        Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
                         Civilian.CurrentTask.Start();
                     }
@@ -201,7 +246,7 @@ public class CivilianTasker
             {
                 if (Civilian.CurrentTask?.Name != "Fight")
                 {
-                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriority?.Perpetrator };//gang memebrs already have guns
+                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };//gang memebrs already have guns
                     GameFiber.Yield();//TR Added back 7
                     Civilian.CurrentTask.Start();
                 }

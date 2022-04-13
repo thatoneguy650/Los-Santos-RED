@@ -1002,7 +1002,7 @@ namespace LosSantosRED.lsr
                                                                    // attention_specific.Attentioncaruhh.FileName, attention_specific.Attentioncaruhh1.FileName, attention_specific.Attentioncaruhhorof.FileName, attention_specific.Dispatchtocarumm.FileName, attention_specific.Dispatchtocarumm1.FileName,
                                 }.PickRandom());
                                 AddedSingleUnit = true;
-                                dispatchEvent.NotificationText += $"~n~~s~Units Responding:";
+                                dispatchEvent.NotificationText += $"~n~~s~Responding:";
                             }
                             else
                             {

@@ -26,7 +26,7 @@ public class SeatAssigner
     public VehicleExt VehicleTryingToEnter { get; set; }
     public int SeatTryingToEnter { get; set; }
 
-    public void AssignSeat()
+    public void AssignFrontSeat()
     {
         VehicleTryingToEnter = null;
         SeatTryingToEnter = -99;
@@ -91,12 +91,53 @@ public class SeatAssigner
                 }
             }
         }
+        if(VehicleTryingToEnter != null && SeatTryingToEnter != -1)
+        {
+            if(!Tasker.IsSeatAssignedToAnyone(VehicleTryingToEnter, -1) && IsSeatAvailable(VehicleTryingToEnter, -1))
+            {
+                VehicleTryingToEnter = VehicleTryingToEnter;
+                SeatTryingToEnter = -1;
+            }
+        }
         if(VehicleTryingToEnter != null && SeatTryingToEnter != -99)
         {
             Tasker.RemoveSeatAssignment(Ped);
             Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
         }
     }
+
+    public void AssignPrisonerSeat()
+    {
+        VehicleTryingToEnter = null;
+        SeatTryingToEnter = -99;
+        foreach (VehicleExt possibleVehicle in VehiclesToTest)
+        {
+            if (possibleVehicle.Vehicle.Exists() && possibleVehicle.Vehicle.Model.NumberOfSeats >= 4 && possibleVehicle.Vehicle.Speed < 0.5f)
+            {
+                float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
+                if (DistanceTo <= 75f)
+                {
+                    if (IsSeatAvailable(possibleVehicle, 1))
+                    {
+                        VehicleTryingToEnter = possibleVehicle;
+                        SeatTryingToEnter = 1;
+                    }
+                    else if (IsSeatAvailable(possibleVehicle, 2))
+                    {
+                        VehicleTryingToEnter = possibleVehicle;
+                        SeatTryingToEnter = 2;
+                    }
+                }
+            }
+        }
+        if (VehicleTryingToEnter != null && SeatTryingToEnter != -99)
+        {
+            Tasker.RemoveSeatAssignment(Ped);
+            Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
+        }
+    }
+
+
 
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
     {

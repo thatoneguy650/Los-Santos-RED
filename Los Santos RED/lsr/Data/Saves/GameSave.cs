@@ -63,7 +63,6 @@ namespace LosSantosRED.lsr.Data
 
                     uint modelHash;
                     var hex = car.VehicleModelName.ToLower();
-
                     if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
                     {
                         hex = hex.Substring(2);
@@ -180,7 +179,7 @@ namespace LosSantosRED.lsr.Data
 
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
-            Game.FadeScreenOut(2500, true);
+            Game.FadeScreenOut(1500, true);
             time.SetDateTime(CurrentDateTime);
             pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
@@ -321,7 +320,7 @@ namespace LosSantosRED.lsr.Data
 
 
 
-            Game.FadeScreenIn(2500, true);
+            Game.FadeScreenIn(1500, true);
             player.DisplayPlayerNotification();
         }
 

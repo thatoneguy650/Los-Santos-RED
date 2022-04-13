@@ -147,7 +147,7 @@ public class Voice
             {
                 TimeBetweenSpeaking = 18000 + RandomItems.GetRandomNumberInt(0, 7000);
             }
-            if (currentPlayer.IsWanted)
+            if (currentPlayer.IsWanted && Cop.CanSeePlayer)
             {
                 if (Cop.IsInVehicle)
                 {

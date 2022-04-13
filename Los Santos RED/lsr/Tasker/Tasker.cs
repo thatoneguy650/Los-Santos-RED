@@ -150,6 +150,7 @@ public class Tasker : ITaskerable, ITaskerReportable
             //EntryPoint.WriteToConsole("TASKER: GENERATED CRIME", 5);
         }
     }
+    public bool IsSeatAssignedToAnyone(VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null);
     public bool IsSeatAssigned(IComplexTaskable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);
     public bool AddSeatAssignment(IComplexTaskable ped, VehicleExt vehicle, int seat)
     {

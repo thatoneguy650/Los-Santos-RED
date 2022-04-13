@@ -25,6 +25,7 @@ public class EMTIdle : ComplexTask
     private IPlacesOfInterest PlacesOfInterest;
     private Vector3 taskedPosition;
     private EMT EMT;
+    private SeatAssigner SeatAssigner;
     private uint GameTimeLastStartedScenario;
 
     private enum Task
@@ -67,6 +68,7 @@ public class EMTIdle : ComplexTask
         Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
         EMT = emt;
+        SeatAssigner = new SeatAssigner(Ped, Tasker, World, new List<VehicleExt>());
     }
     public override void Start()
     {
@@ -294,82 +296,91 @@ public class EMTIdle : ComplexTask
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        else if (Ped.Pedestrian.Exists())
+        {
+            NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+        }
     }
     private void GetClosesetAmbulanceVehicle()
     {
-        if (Ped.AssignedVehicle != null)
-        {
-            VehicleExt ClosestAvailableEMSVehicle = null;
-            int OpenSeatInClosestAvailableEMSVehicle = 9;
-            float ClosestAvailableEMSVehicleDistance = 999f;
-            if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(EMT.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, EMT.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, EMT.AssignedSeat, false, true))
-            {
-                OpenSeatInClosestAvailableEMSVehicle = EMT.AssignedSeat;
-                ClosestAvailableEMSVehicle = Ped.AssignedVehicle;
-            }
-            else if (Ped.Pedestrian.LastVehicle.Exists())// && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
-            {
-                VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
-                if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
-                {
-                    OpenSeatInClosestAvailableEMSVehicle = Ped.LastSeatIndex;
-                    ClosestAvailableEMSVehicle = myCopCar;
-                }
-            }
-            VehicleTryingToEnter = ClosestAvailableEMSVehicle;
-            SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
-            if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
-            {
-                Tasker.RemoveSeatAssignment(Ped);
-                Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
-                //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-            }
-            else
-            {
-                foreach (VehicleExt ambulance in World.Vehicles.EMSVehicleList)
-                {
-                    if (ambulance.Vehicle.Exists() && ambulance.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
-                    {
-                        float DistanceTo = ambulance.Vehicle.DistanceTo2D(Ped.Pedestrian);
-                        if (DistanceTo <= 50f)
-                        {
-                            if (ambulance.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, ambulance, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, -1, false, true))
-                            {
-                                if (DistanceTo < ClosestAvailableEMSVehicleDistance)
-                                {
-                                    OpenSeatInClosestAvailableEMSVehicle = -1;
-                                    ClosestAvailableEMSVehicle = ambulance;
-                                    ClosestAvailableEMSVehicleDistance = DistanceTo;
-                                }
+        SeatAssigner.AssignFrontSeat();
+        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
+        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
 
-                            }
-                            else if (ambulance.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, ambulance, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, 0, false, true))
-                            {
-                                if (DistanceTo < ClosestAvailableEMSVehicleDistance)
-                                {
-                                    OpenSeatInClosestAvailableEMSVehicle = 0;
-                                    ClosestAvailableEMSVehicle = ambulance;
-                                    ClosestAvailableEMSVehicleDistance = DistanceTo;
-                                }
-                            }
-                        }
-                    }
-                }
-                VehicleTryingToEnter = ClosestAvailableEMSVehicle;
-                SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
-                if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
-                {
-                    Tasker.RemoveSeatAssignment(Ped);
-                    Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
-                    //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-                }
-                else
-                {
-                    //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
-                }
-            }
 
-        }
+        //if (Ped.AssignedVehicle != null)
+        //{
+        //    VehicleExt ClosestAvailableEMSVehicle = null;
+        //    int OpenSeatInClosestAvailableEMSVehicle = 9;
+        //    float ClosestAvailableEMSVehicleDistance = 999f;
+        //    if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(EMT.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, EMT.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, EMT.AssignedSeat, false, true))
+        //    {
+        //        OpenSeatInClosestAvailableEMSVehicle = EMT.AssignedSeat;
+        //        ClosestAvailableEMSVehicle = Ped.AssignedVehicle;
+        //    }
+        //    else if (Ped.Pedestrian.LastVehicle.Exists())// && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
+        //    {
+        //        VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+        //        if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
+        //        {
+        //            OpenSeatInClosestAvailableEMSVehicle = Ped.LastSeatIndex;
+        //            ClosestAvailableEMSVehicle = myCopCar;
+        //        }
+        //    }
+        //    VehicleTryingToEnter = ClosestAvailableEMSVehicle;
+        //    SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
+        //    if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
+        //    {
+        //        Tasker.RemoveSeatAssignment(Ped);
+        //        Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
+        //        //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
+        //    }
+        //    else
+        //    {
+        //        foreach (VehicleExt ambulance in World.Vehicles.EMSVehicleList)
+        //        {
+        //            if (ambulance.Vehicle.Exists() && ambulance.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
+        //            {
+        //                float DistanceTo = ambulance.Vehicle.DistanceTo2D(Ped.Pedestrian);
+        //                if (DistanceTo <= 50f)
+        //                {
+        //                    if (ambulance.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, ambulance, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, -1, false, true))
+        //                    {
+        //                        if (DistanceTo < ClosestAvailableEMSVehicleDistance)
+        //                        {
+        //                            OpenSeatInClosestAvailableEMSVehicle = -1;
+        //                            ClosestAvailableEMSVehicle = ambulance;
+        //                            ClosestAvailableEMSVehicleDistance = DistanceTo;
+        //                        }
+
+        //                    }
+        //                    else if (ambulance.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, ambulance, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, 0, false, true))
+        //                    {
+        //                        if (DistanceTo < ClosestAvailableEMSVehicleDistance)
+        //                        {
+        //                            OpenSeatInClosestAvailableEMSVehicle = 0;
+        //                            ClosestAvailableEMSVehicle = ambulance;
+        //                            ClosestAvailableEMSVehicleDistance = DistanceTo;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        VehicleTryingToEnter = ClosestAvailableEMSVehicle;
+        //        SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
+        //        if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
+        //        {
+        //            Tasker.RemoveSeatAssignment(Ped);
+        //            Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
+        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
+        //        }
+        //        else
+        //        {
+        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
+        //        }
+        //    }
+
+        //}
         //Tasker.PrintAllSeatAssignments();
     }
     private void ClearTasks(bool resetAlertness)//temp public

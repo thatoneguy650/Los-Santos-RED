@@ -48,6 +48,7 @@ namespace Mod
         private uint GameTimeStartedMovingFast;
         private uint GameTimeStartedPlaying;
         private uint GameTimeWantedLevelStarted;
+        private uint GameTimeLastChangedMoney;
         private uint GangNotificationID = 0;
         private IGangTerritories GangTerritories;
         private bool HasThrownGotOffFreeway;
@@ -185,6 +186,7 @@ namespace Mod
         public bool HasOnBodyArmor { get; private set; }
         public Interaction Interaction { get; private set; }
         public Intoxication Intoxication { get; private set; }
+        public Injuries Injuries { get; private set; }
         public float IntoxicatedIntensity { get; set; }
         public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
         public Inventory Inventory { get; set; }
@@ -334,6 +336,7 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool ReleasedFireWeapon { get; set; }
+        public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 5000;
         public bool RecentlyCrashedVehicle => GameTimeLastCrashedVehicle != 0 && Game.GameTime - GameTimeLastCrashedVehicle <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
@@ -449,6 +452,8 @@ namespace Mod
             //Properties.Setup();
 
             ButtonPrompts = new ButtonPrompts(this, Settings);
+
+            Injuries = new Injuries(this, Settings);
             //ButtonPrompts.Setup();
 
         }
@@ -857,6 +862,8 @@ namespace Mod
             PlayerTasks.Dispose();
             Properties.Dispose();
             ButtonPrompts.Dispose();
+            Intoxication.Dispose();
+            Injuries.Dispose();
 
             GunDealerRelationship.Dispose();
             OfficerFriendlyRelationship.Dispose();
@@ -1067,6 +1074,10 @@ namespace Mod
         }
         public void GiveMoney(int Amount)
         {
+            if(Amount != 0)
+            {
+                GameTimeLastChangedMoney = Game.GameTime;
+            }
             int CurrentCash;
             uint PlayerCashHash;
             if (CharacterModelIsPrimaryCharacter)
@@ -1298,7 +1309,7 @@ namespace Mod
                 UpperBodyActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth)
         {
             IsDead = false;
             IsBusted = false;
@@ -1372,6 +1383,16 @@ namespace Mod
             if(clearProperties)
             {
                 Properties.Dispose();
+            }
+            if(resetHealth)
+            {
+                Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+                NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
+                Injuries.Dispose();
+            }
+            else if (Injuries.IsInjured)
+            {
+                Injuries.Restart();
             }
         }
         public void ResetScanner() => Scanner.Reset();
@@ -2807,6 +2828,8 @@ namespace Mod
             UpdateStateData();
             GameFiber.Yield();
             Intoxication.Update();
+            GameFiber.Yield();//TR Yield RemovedTest 1
+            Injuries.Update();
             GameFiber.Yield();//TR Yield RemovedTest 1
         }
         private void UpdateLookedAtPed()

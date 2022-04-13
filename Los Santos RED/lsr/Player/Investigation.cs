@@ -183,7 +183,7 @@ public class Investigation
                 RespondingPolice = PoliceToRespond(1);
             }
             int tasked = 0;
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && (InvestigationWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))//first pass, only want my police and whatever units?
             {
                 if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
                 {
@@ -195,6 +195,19 @@ public class Investigation
                     cop.IsRespondingToInvestigation = false;
                 }
             }
+            if(tasked < RespondingPolice)
+            {
+                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+                {
+                    if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                    {
+                        cop.IsRespondingToInvestigation = true;
+                        tasked++;
+                    }
+                }
+            }
+
+
             CurrentRespondingPoliceCount = tasked;
             // EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
         }

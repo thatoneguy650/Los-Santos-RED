@@ -66,8 +66,9 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Gang> SetGangRepDefault;
     private UIMenuListScrollerItem<Gang> SetGangRepFriendly;
     private UIMenuListScrollerItem<Gang> SetGangRepHostile;
-
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs)
+    private UIMenuItem GetAllItems;
+    private IModItems ModItems;
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -81,6 +82,7 @@ public class DebugMenu : Menu
         Time = time;
         World = world;
         Tasker = tasker;
+        ModItems = modItems;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);
@@ -151,7 +153,7 @@ public class DebugMenu : Menu
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         SetMoney = new UIMenuItem("Set Money", "Sets your cash");
-
+        GetAllItems = new UIMenuItem("Get All Items", "Gets 5 of every item");
 
         FillHealth = new UIMenuItem("Fill Health", "Refill health only");
         FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
@@ -190,6 +192,7 @@ public class DebugMenu : Menu
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GiveMoney);
         Debug.AddItem(SetMoney);
+        Debug.AddItem(GetAllItems);
         Debug.AddItem(FillHealth);
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(FastForwardTime);
@@ -432,6 +435,15 @@ public class DebugMenu : Menu
         else if (selectedItem == LoadSPMap)
         {
             World.LoadSPMap();
+        }
+
+        else if (selectedItem == GetAllItems)
+        {
+
+            foreach (ModItem modItem in ModItems.Items)
+            {
+                Player.Inventory.Add(modItem, 5);
+            }
         }
 
         if(selectedItem == SetGangRepHostile)

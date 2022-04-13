@@ -69,9 +69,44 @@ public class EMTTasker
         if (emt.DistanceToPlayer <= 150f)
         {
             WitnessedCrime HighestPriority = emt.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-            bool SeenScaryCrime = emt.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
-            bool SeenAngryCrime = emt.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
-            bool SeenMundaneCrime = emt.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            //bool SeenScaryCrime = emt.PlayerCrimesWitnessed.Any(x => x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+            //bool SeenAngryCrime = emt.PlayerCrimesWitnessed.Any(x => x.AngersCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => x.Crime.AngersCivilians && x.Crime.CanBeReportedByCivilians);
+            //bool SeenMundaneCrime = emt.PlayerCrimesWitnessed.Any(x => !x.AngersCivilians && !x.ScaresCivilians && x.CanBeReportedByCivilians) || emt.OtherCrimesWitnessed.Any(x => !x.Crime.AngersCivilians && !x.Crime.ScaresCivilians && x.Crime.CanBeReportedByCivilians);
+
+
+            bool SeenScaryCrime = false;
+            bool SeenAngryCrime = false;
+            bool SeenMundaneCrime = false;
+            int PlayerCrimePriority = 99;
+            foreach (Crime crime in emt.PlayerCrimesWitnessed.Where(x => x.CanBeReportedByCivilians))
+            {
+                if (crime.AngersCivilians)
+                {
+                    SeenAngryCrime = true;
+                }
+                if (crime.ScaresCivilians)
+                {
+                    SeenScaryCrime = true;
+                }
+                if (!crime.ScaresCivilians && !crime.AngersCivilians)
+                {
+                    SeenMundaneCrime = true;
+                }
+                if (crime.Priority < PlayerCrimePriority)
+                {
+                    PlayerCrimePriority = crime.Priority;
+                }
+            }
+            if (PlayerCrimePriority < HighestPriority?.Crime?.Priority)
+            {
+                HighestPriority = null;
+            }
+            else if (PlayerCrimePriority == HighestPriority?.Crime?.Priority && emt.DistanceToPlayer <= 30f)
+            {
+                HighestPriority = null;
+            }
+
+
 
             PedExt MainTarget = PedToGoTo(emt);
 

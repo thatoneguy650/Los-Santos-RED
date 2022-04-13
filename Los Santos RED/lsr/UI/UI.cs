@@ -77,6 +77,7 @@ public class UI : IMenuProvideable
     private uint PreviousGameTime;
     private bool TimeOutSprite;
     private bool IsDisposed = false;
+    private uint GameTimeStartedLowHealthUI;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
 
@@ -93,7 +94,7 @@ public class UI : IMenuProvideable
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
         MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest);
-        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs);
+        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");
@@ -529,10 +530,24 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         }
-        if (Settings.SettingsManager.UISettings.NeverShowRadar)
+        else if (Settings.SettingsManager.UISettings.NeverShowRadar)
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
         }
+
+        else if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+        {
+            if(DisplayablePlayer.IsInVehicle)
+            {
+                NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+            }
+            else
+            {
+                NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+            }
+        }
+
+
         if (Settings.SettingsManager.PoliceSettings.ShowVanillaBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
@@ -545,7 +560,7 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        else if (DisplayablePlayer.IsTransacting)
+        else if (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
@@ -607,12 +622,14 @@ public class UI : IMenuProvideable
                 if (DisplayablePlayer.Investigation.IsSuspicious)
                 {
                     PlayerDisplay += $"~r~ Police Responding with Description";
+                    PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){CurrentDefaultTextColor}";
                 }
                 else if (DisplayablePlayer.Investigation.IsNearPosition)
                 {
                     PlayerDisplay += $"~o~ Police Responding";
+                    PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){CurrentDefaultTextColor}";
                 }
-                PlayerDisplay += $" ({DisplayablePlayer.Investigation.CurrentRespondingPoliceCount}){CurrentDefaultTextColor}";
+                
             }
             else if (DisplayablePlayer.Investigation.RequiresEMS || DisplayablePlayer.Investigation.RequiresFirefighters)
             {
@@ -1098,6 +1115,16 @@ public class UI : IMenuProvideable
                 Show(BustedMenu);
             }
         }
+        //else if (DisplayablePlayer.Character.Health <= 130)
+        //{
+        //    if(Game.GameTime - GameTimeStartedLowHealthUI >= 5000)
+        //    {
+        //        NativeFunction.Natives.x80C8B1846639BB19(1);
+        //        NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
+        //        IsShowingCustomOverlay = true;
+        //        GameTimeStartedLowHealthUI = Game.GameTime;
+        //    }
+        //}
         else
         {
             GameTimeLastDied = 0;

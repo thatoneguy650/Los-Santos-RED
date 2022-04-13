@@ -23,7 +23,7 @@ public class GangFight : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: GangFight Start: {Ped.Pedestrian.Handle}", 3);
+            EntryPoint.WriteToConsole($"TASKER: GangFight Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
             //Ped.Pedestrian.BlockPermanentEvents = true;//tr3
             //Ped.Pedestrian.KeepTasks = true;
             //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
