@@ -52,6 +52,30 @@ public class Places
     {
         foreach (Zone zone in Zones.ZoneList)
         {
+            zone.Gangs = new List<Gang>();
+            List<Gang> GangStuff = GangTerritories.GetGangs(zone.InternalGameName, 0);
+            if(GangStuff != null)
+            {
+                zone.Gangs.AddRange(GangStuff);
+            }
+            
+            zone.Agencies = new List<Agency>();
+            List<Agency> LEAgency = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.LawEnforcement);
+            if (LEAgency != null)
+            {
+                zone.Agencies.AddRange(LEAgency);
+            }
+            List<Agency> EMSAgencies = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.EMS);
+            if (EMSAgencies != null)
+            {
+                zone.Agencies.AddRange(EMSAgencies);
+            }
+            List<Agency> FireAgencies = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.Fire);
+            if (FireAgencies != null)
+            {
+                zone.Agencies.AddRange(FireAgencies);
+            }
+
             zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName, ResponseType.LawEnforcement)?.ColorInitials;
             Gang mainGang = GangTerritories.GetMainGang(zone.InternalGameName);
             if (mainGang != null)

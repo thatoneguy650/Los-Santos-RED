@@ -155,7 +155,8 @@ public class GangIdle : ComplexTask
     {
         Vector3 pedPos = Ped.Pedestrian.Position;
         float ForceScenarioPercent = 30f;
-        if (Ped.HasMenu || RandomItems.RandomPercent(ForceScenarioPercent))
+        bool ScenarioInArea = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true);
+        if (ScenarioInArea && (Ped.HasMenu || RandomItems.RandomPercent(ForceScenarioPercent)))
         {
             string Scenario;
             if (Ped.HasMenu)
@@ -169,7 +170,7 @@ public class GangIdle : ComplexTask
             NativeFunction.Natives.TASK_START_SCENARIO_IN_PLACE(Ped.Pedestrian, Scenario, 0, true);
             EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario FORCED! {Scenario}", 5);
         }
-        else if (NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
+        else if (ScenarioInArea)
         {
             NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
             EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion NEARBY", 5);

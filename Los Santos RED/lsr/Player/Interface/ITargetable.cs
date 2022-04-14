@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,10 @@ namespace LosSantosRED.lsr.Interface
         Cop ClosestCopToPlayer { get; }
 
         void AddDistressedPed(Vector3 positionLastSeenDistressedPed);
+
+        LocationData CurrentLocation { get; }
+
+
         //bool IsHostile(Gang gang);
     }
 }

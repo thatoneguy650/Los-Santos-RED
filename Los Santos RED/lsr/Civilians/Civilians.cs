@@ -46,7 +46,7 @@ public class Civilians
         UpdateGangMembers();
         UpdateEMTs();
 
-        PedExt worstPed = World.Pedestrians.Citizens.OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        PedExt worstPed = World.Pedestrians.Citizens.Where(x=>!x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
         {
             World.TotalWantedLevel = worstPed.WantedLevel;

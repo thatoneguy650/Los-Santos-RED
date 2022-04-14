@@ -70,6 +70,7 @@ public class UI : IMenuProvideable
     private Fader ZoneFader;
     private SimplePhoneMenu SimplePhoneMenu;
     private string debugString1;
+    private bool ShowRadar;
 
 
     private uint SpriteUint;
@@ -153,44 +154,44 @@ public class UI : IMenuProvideable
         try
         {
 
-            //    if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
+            if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
+            {
+                if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
+                {
+                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+                    float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
+                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
+                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
+                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
+                }
+            }
+
+
+            //works but crashes the game on unload:(
+            //if (PreviousGameTime == Game.GameTime)
             //{
-            //    if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
-            //    {
-            //        float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-            //        float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
-            //        float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
-            //        float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
-            //        args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
-            //    }
+            //    SpriteUintCounter++;
+            //}
+            //else if (Game.GameTime > PreviousGameTime)
+            //{
+            //    SpriteUintCounter = 0;
             //}
 
 
-                //works but crashes the game on unload:(
-                //if (PreviousGameTime == Game.GameTime)
-                //{
-                //    SpriteUintCounter++;
-                //}
-                //else if (Game.GameTime > PreviousGameTime)
-                //{
-                //    SpriteUintCounter = 0;
-                //}
 
 
 
+            //if (SpriteUintCounter >= 10)
+            //{
+            //    TimeOutSprite = true;
+            //}
+            //else
+            //{
+            //    TimeOutSprite = false;
+            //}
 
 
-                //if (SpriteUintCounter >= 10)
-                //{
-                //    TimeOutSprite = true;
-                //}
-                //else
-                //{
-                //    TimeOutSprite = false;
-                //}
-
-
-                //PreviousGameTime = Game.GameTime;
+            //PreviousGameTime = Game.GameTime;
 
         }
         catch (Exception ex)
@@ -266,7 +267,14 @@ public class UI : IMenuProvideable
         if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
         {
             DrawText();
-            BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
+
+
+
+
+            if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.IntoxicatedIntensityPercent > 0.0f)
+            {
+                BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
+            }
             DrawDebug();
         }
         MenuUpdate();
@@ -526,26 +534,92 @@ public class UI : IMenuProvideable
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
+        //if (Settings.SettingsManager.UISettings.AlwaysShowRadar)
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        //}
+        //else if (Settings.SettingsManager.UISettings.NeverShowRadar)
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+        //}
+        //else if (DisplayablePlayer.IsInVehicle)
+        //{
+        //    if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+        //    {
+        //        if (DisplayablePlayer.IsInVehicle)
+        //        {
+        //            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        //        }
+        //        else
+        //        {
+        //            NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+        //        }
+        //    }
+        //}
+        //else if (!DisplayablePlayer.IsInVehicle)
+        //{
+        //    if (Settings.SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly)
+        //    {
+        //        if (DisplayablePlayer.CellPhone.IsActive)
+        //        {
+        //            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        //        }
+        //        else
+        //        {
+        //            NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+        //        }
+        //    }
+        //    else if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+        //    {
+        //        NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+        //    }
+        //}
+
+
+
+
         if (Settings.SettingsManager.UISettings.AlwaysShowRadar)
         {
-            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+            ShowRadar = true;
         }
         else if (Settings.SettingsManager.UISettings.NeverShowRadar)
         {
-            NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+            ShowRadar = false;
+        }
+        else if (DisplayablePlayer.IsInVehicle)
+        {
+            if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+            {
+                if (DisplayablePlayer.IsInVehicle)
+                {
+                    ShowRadar = true;
+                }
+                else
+                {
+                    ShowRadar = false;
+                }
+            }
+        }
+        else if (!DisplayablePlayer.IsInVehicle)
+        {
+            if (Settings.SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly)
+            {
+                if (DisplayablePlayer.CellPhone.IsActive)
+                {
+                    ShowRadar = true;
+                }
+                else
+                {
+                    ShowRadar = false;
+                }
+            }
+            else if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+            {
+                ShowRadar = false;
+            }
         }
 
-        else if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
-        {
-            if(DisplayablePlayer.IsInVehicle)
-            {
-                NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
-            }
-        }
+        NativeFunction.CallByName<bool>("DISPLAY_RADAR", ShowRadar);
 
 
         if (Settings.SettingsManager.PoliceSettings.ShowVanillaBlips)

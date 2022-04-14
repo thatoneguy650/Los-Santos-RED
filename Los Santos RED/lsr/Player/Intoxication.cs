@@ -23,6 +23,7 @@ public class Intoxication
     private float SteeringBias;
     private string CurrentClipset;
     private string OverLayEffect;
+    private bool IsPrimary;
     public string DebugString { get; set; }
     private string ClipsetAtCurrentIntensity
     {
@@ -169,11 +170,11 @@ public class Intoxication
     }
     public void Restart()
     {
-        Update();
+        Update(IsPrimary);
         if (CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
         {
             SetIntoxicated();
-            Update();
+            Update(IsPrimary);
         }
     }
     public void StartIngesting(Intoxicant intoxicant)
@@ -208,8 +209,9 @@ public class Intoxication
         }
         EntryPoint.WriteToConsole($"Intoxication Stopped Ingesting {intoxicant.Name}", 5);
     }
-    public void Update()
+    public void Update(bool isPrimary)
     {
+        IsPrimary = isPrimary;
         CurrentIntoxicators.RemoveAll(x => x.CurrentIntensity == 0.0f && !x.IsConsuming);
         float HighestIntensity = 0.0f;
         PrimaryIntoxicator = null;
@@ -237,7 +239,7 @@ public class Intoxication
         }
         else
         {
-            if (Player.IsIntoxicated)
+            if (Player.IsIntoxicated && IsPrimary)
             {
                 SetSober(true);
             }
@@ -247,15 +249,15 @@ public class Intoxication
     }
     private void UpdateDrunkStatus()
     {
-        if (!Player.IsIntoxicated && CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
+        if (!Player.IsIntoxicated && IsPrimary && CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
         {
             SetIntoxicated();
         }
-        else if (Player.IsIntoxicated && CurrentIntensity <= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)//0.25f)
+        else if (Player.IsIntoxicated && IsPrimary && CurrentIntensity <= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)//0.25f)
         {
             SetSober(true);
         }
-        if (Player.IsIntoxicated)
+        if (Player.IsIntoxicated && IsPrimary)
         {
             if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE" && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
             {

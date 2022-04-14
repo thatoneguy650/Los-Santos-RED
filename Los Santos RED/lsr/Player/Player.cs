@@ -118,7 +118,7 @@ namespace Mod
         public bool BeingArrested { get; private set; }
         public ButtonPrompts ButtonPrompts { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
-        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && !IsMovingFast; // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
+        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && (IsInVehicle || !IsMovingFast); // && !IsBreakingIntoCar //&& !IsGettingIntoAVehicle
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
 
 
@@ -2720,11 +2720,6 @@ namespace Mod
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
-
-                    if (Settings.SettingsManager.UISettings.ShowWantedMessageOnStart)
-                    {
-                       // BigMessage.ShowColoredShard("WANTED", "", HudColor.Gold, HudColor.InGameBackground, 1500);
-                    }
                 }
             }
             else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
@@ -2827,10 +2822,23 @@ namespace Mod
             GameFiber.Yield();
             UpdateStateData();
             GameFiber.Yield();
-            Intoxication.Update();
+
+            bool IntoxicationIsPrimary = false;
+            if(Intoxication.CurrentIntensity > Injuries.CurrentIntensity)
+            {
+                IntoxicationIsPrimary = true;
+            }
+
+
+            Intoxication.Update(IntoxicationIsPrimary);
             GameFiber.Yield();//TR Yield RemovedTest 1
-            Injuries.Update();
+            Injuries.Update(!IntoxicationIsPrimary);
             GameFiber.Yield();//TR Yield RemovedTest 1
+
+
+
+
+
         }
         private void UpdateLookedAtPed()
         {

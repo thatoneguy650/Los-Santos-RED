@@ -40,7 +40,7 @@ public class CellPhone
     private CorruptCopInteraction CorruptCopInteraction;
     private EmergencyServicesInteraction EmergencyServicesInteraction;
 
-
+    public bool IsActive => CustomiFruit?.IsActive == true;
     public CustomiFruit CustomiFruit { get; private set; }
     public List<iFruitText> TextList => AddedTexts;
     public List<iFruitContact> ContactList => AddedContacts;

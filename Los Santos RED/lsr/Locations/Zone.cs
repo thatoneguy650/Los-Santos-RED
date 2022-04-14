@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class Zone
@@ -65,9 +66,21 @@ public class Zone
             return DisplayName + ", " + CountyName;
         }
     }
+    [XmlIgnore]
     public string AssignedLEAgencyInitials { get; set; }
+    [XmlIgnore]
     public string AssignedSecondLEAgencyInitials { get; set; }
+    [XmlIgnore]
     public string AssignedGangInitials { get; set; }
+
+
+    [XmlIgnore]
+    public List<Gang> Gangs { get; set; }
+
+    [XmlIgnore]
+    public List<Agency> Agencies { get; set; }
+
+
 
     public bool IsSpecificLocation { get; set; } = false;
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;

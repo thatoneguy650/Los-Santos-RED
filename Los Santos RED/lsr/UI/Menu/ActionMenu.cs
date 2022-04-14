@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ public class ActionMenu : Menu
     private List<GestureData> GestureLookups;
     private UIMenuListScrollerItem<GestureData> GestureMenu;
     private UIMenuItem HotwireVehicle;
+    private UIMenuItem ToggleActionMode;
+    private UIMenuItem ToggleStealthMode;
     private UIMenuItem IntimidateDriver;
     private UIMenuListScrollerItem<string> LayDown;
     private MenuPool MenuPool;
@@ -145,12 +148,19 @@ public class ActionMenu : Menu
         IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
         HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
 
+        ToggleActionMode = new UIMenuItem("Toggle Action Mode", "Toggle action mode on or off");
+        ToggleStealthMode = new UIMenuItem("Toggle Stealth Mode", "Toggle stealth mode on or off");
+
         ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
         ToggleBodyArmor.Value = 0;
 
         Actions.AddItem(CurrentActivityMenu);
         Actions.AddItem(GestureMenu);
         Actions.AddItem(SitDown);
+
+        Actions.AddItem(ToggleActionMode);
+        Actions.AddItem(ToggleStealthMode);
+
 #if DEBUG
         Actions.AddItem(LayDown);
 #endif
@@ -255,6 +265,17 @@ public class ActionMenu : Menu
         else if (selectedItem == HotwireVehicle)
         {
             Player.StartHotwiring();
+        }
+
+        else if (selectedItem == ToggleActionMode)
+        {
+            bool isUsingActionMode = NativeFunction.Natives.IS_PED_USING_ACTION_MODE<bool>(Player.Character);
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Player.Character, !isUsingActionMode, -1, "DEFAULT_ACTION");
+        }
+        else if (selectedItem == ToggleStealthMode)
+        {
+            bool isUsingStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Player.Character);
+            NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, !isUsingStealthMode, "DEFAULT_ACTION");
         }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;

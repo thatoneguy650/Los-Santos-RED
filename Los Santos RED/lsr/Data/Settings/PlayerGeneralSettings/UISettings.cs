@@ -10,16 +10,49 @@ public class UISettings : ISettingsDefaultable
 {
     public bool UIEnabled { get; set; }
     public bool ShowDebug { get; set; }
+
+    public bool AlwaysShowRadar { get; set; }
+    public bool NeverShowRadar { get; set; }
+    public bool ShowRadarInVehicleOnly { get; set; }
+    public bool ShowRadarOnFootWhenCellPhoneActiveOnly { get; set; }
+
+    public bool AlwaysShowCash { get; set; }
+    public bool AlwaysShowHUD { get; set; }
+    public bool ShowVanillaVehicleUI { get; set; }
+    public bool ShowVanillaAreaUI { get; set; }
+
+    public bool DisplayWastedMessage { get; set; }
+    public string WastedMessageText { get; set; }
+    public bool PlayWastedSounds { get; set; }
+    public bool SetDeathEffect { get; set; }
+
+    public bool DisplayBustedMessage { get; set; }
+    public string BustedMessageText { get; set; }
+    public bool SetBustedEffect { get; set; }
+
+    public bool GreyOutWhiteFontAtNight { get; set; }
+    public bool AllowScreenEffectReset { get; set; }
+
+    public bool SetRadarZoomDistance { get; set; }
+    public float RadarZoomDistance_Wanted { get; set; }
+    public float RadarZoomDistance_Investigation { get; set; }
+    public float RadarZoomDistance_Default { get; set; }
+
+    public bool DisplayButtonPrompts { get; set; }
+
     public bool ShowCrimesDisplay { get; set; }
     public float CrimesViolatingPositionX { get; set; }
     public float CrimesViolatingPositionY { get; set; }
     public float CrimesViolatingScale { get; set; }
     public int CrimesViolatingJustificationID { get; set; }
     public GTAFont CrimesViolatingFont { get; set; }
-    //public bool ShowSpeedLimitDisplay { get; set; }
-    //public float SpeedLimitPositionX { get; set; }
-    //public float SpeedLimitPositionY { get; set; }
-    //public float SpeedLimitScale { get; set; }
+
+    public bool ShowSpeedLimitDisplay { get; set; }
+    public float SpeedLimitPositionX { get; set; }
+    public float SpeedLimitPositionY { get; set; }
+    public float SpeedLimitScale { get; set; }
+    public string SpeedDisplayUnits { get; set; }
+
     public bool ShowVehicleStatusDisplay { get; set; }
     public bool FadeVehicleStatusDisplay { get; set; }
     public bool FadeVehicleStatusDisplayDuringWantedAndInvestigation { get; set; }
@@ -33,6 +66,7 @@ public class UISettings : ISettingsDefaultable
     public bool VehicleStatusIncludeTextSpeedLimit { get; set; }
     public bool VehicleStatusIncludeCurrentSpeed { get; set; }
     public bool VehicleStatusIncludeCompass { get; set; }
+
     public bool ShowPlayerDisplay { get; set; }
     public bool FadePlayerDisplay { get; set; }
     public bool FadePlayerDisplayDuringWantedAndInvestigation { get; set; }
@@ -45,6 +79,7 @@ public class UISettings : ISettingsDefaultable
     public GTAFont PlayerStatusFont { get; set; }
     public bool PlayerStatusIncludeTime { get; set; }
     public bool PlayerStatusSimpleTime { get; set; }
+
     public bool ShowStreetDisplay { get; set; }
     public bool FadeStreetDisplay { get; set; }
     public bool FadeStreetDisplayDuringWantedAndInvestigation { get; set; }
@@ -55,6 +90,7 @@ public class UISettings : ISettingsDefaultable
     public float StreetScale { get; set; }
     public int StreetJustificationID { get; set; }
     public GTAFont StreetFont { get; set; }
+
     public bool ShowZoneDisplay { get; set; }
     public bool FadeZoneDisplay { get; set; }
     public bool FadeZoneDisplayDuringWantedAndInvestigation { get; set; }
@@ -68,27 +104,7 @@ public class UISettings : ISettingsDefaultable
     public bool ZoneDisplayShowPrimaryAgency { get; set; }
     public bool ZoneDisplayShowSecondaryAgency { get; set; }
     public bool ZoneDisplayShowPrimaryGang { get; set; }
-    public bool AlwaysShowCash { get; set; }
-    public bool AlwaysShowRadar { get; set; }
-    public bool AlwaysShowHUD { get; set; }
 
-    public bool ShowVanillaVehicleUI { get; set; }
-    public bool ShowVanillaAreaUI { get; set; }
-    public bool SetBustedEffect { get; set; }
-    public bool PlayWastedSounds { get; set; }
-    public bool DisplayBustedMessage { get; set; }
-    public bool SetDeathEffect { get; set; }
-    public bool DisplayWastedMessage { get; set; }
-    public string WastedMessageText { get; set; }
-    public string BustedMessageText { get; set; }
-    public bool AllowScreenEffectReset { get; set; }
-    public string SpeedDisplayUnits { get; set; }
-    public bool DisplayButtonPrompts { get; set; }
-    public bool SetRadarZoomDistance { get; set; }
-    public float RadarZoomDistance_Wanted { get; set; }
-    public float RadarZoomDistance_Investigation { get; set; }
-    public float RadarZoomDistance_Default { get; set; }
-    public bool GreyOutWhiteFontAtNight { get; set; }
     public bool ShowStaminaBar { get; set; }
     public float StaminaBarPositionX { get; set; }
     public float StaminaBarPositionY { get; set; }
@@ -106,23 +122,20 @@ public class UISettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToShow { get; set; }
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
-    public bool ShowWantedMessageOnStart { get; set; }
-    public bool NeverShowRadar { get; set; }
-    public bool ShowRadarInVehicleOnly { get; set; }
 
     public UISettings()
     {
         SetDefault();
         #if DEBUG
-            SetRadarZoomDistance = false;
             ShowDebug = false;
-        //FadeStreetDisplay = false;
-        //FadeZoneDisplay = false;
-        ZoneDisplayShowPrimaryAgency = false;
-        ZoneDisplayShowSecondaryAgency = false;
+            ZoneDisplayShowPrimaryAgency = false;
+
+        AlwaysShowRadar = false;
+        NeverShowRadar = false;
+        ShowRadarInVehicleOnly = true;
+        ShowRadarOnFootWhenCellPhoneActiveOnly = true;
 
 
-        AlwaysShowCash = false;
 #endif
     }
     public void SetDefault()
@@ -134,15 +147,11 @@ public class UISettings : ISettingsDefaultable
         CrimesViolatingScale = 0.4f;
         CrimesViolatingJustificationID = 2;
         CrimesViolatingFont = GTAFont.FontChaletComprimeCologne;
-        //ShowSpeedLimitDisplay = true;
-        //SpeedLimitPositionX = 0.75f;//0.78f
-        //SpeedLimitPositionY = 0.98f;
-        //SpeedLimitScale = 0.2f;
+        ShowSpeedLimitDisplay = true;
+        SpeedLimitPositionX = 0.75f;//0.78f
+        SpeedLimitPositionY = 0.98f;
+        SpeedLimitScale = 0.2f;
 
-
-        //SpeedLimitPositionX = 0.75f;//0.78f
-        //SpeedLimitPositionY = 0.98f;
-        //SpeedLimitScale = 0.2f;
 
 
 
@@ -196,7 +205,7 @@ public class UISettings : ISettingsDefaultable
         ZoneDisplayShowSecondaryAgency = false;
         ZoneDisplayShowPrimaryGang = true;
         AlwaysShowCash = false;
-        AlwaysShowRadar = true;
+        
         AlwaysShowHUD = true;
         ShowDebug = false;
         ShowVanillaVehicleUI = false;
@@ -233,10 +242,10 @@ public class UISettings : ISettingsDefaultable
         WeaponDisplayJustificationID = 2;
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
-        ShowWantedMessageOnStart = true;
 
-
+        AlwaysShowRadar = true;
         NeverShowRadar = false;
         ShowRadarInVehicleOnly = false;
+        ShowRadarOnFootWhenCellPhoneActiveOnly = false;
     }
 }

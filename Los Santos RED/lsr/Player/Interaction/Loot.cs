@@ -193,7 +193,7 @@ public class Loot : DynamicActivity
 
 
         //calcHeading = -(90 - calcHeading);
-        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 2000);
+        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1000);
 
 
         EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}", 5);
@@ -204,7 +204,7 @@ public class Loot : DynamicActivity
 
 
 
-        GameFiber.Sleep(2000);
+        GameFiber.Sleep(1000);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
             EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);

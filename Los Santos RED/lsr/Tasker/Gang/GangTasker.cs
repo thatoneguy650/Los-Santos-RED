@@ -37,6 +37,7 @@ public class GangTasker
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
             Tasker.ExpireSeatAssignments();
+
            //bool anyCopsNearPosition = PedProvider.Pedestrians.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
             foreach (GangMember gangMember in PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
@@ -73,14 +74,21 @@ public class GangTasker
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
         bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 350f;
 
+        bool isNearHomeTerritory = false;
+        if(Player.CurrentLocation.CurrentZone?.Gangs?.Any(x=>x.ID == GangMember.Gang?.ID) == true)
+        {
+            isNearHomeTerritory = true;
+        }
+
+       
         if (GangMember.IsBusted)
         {
-            if (GangMember.DistanceToPlayer <= 175f)
+            if (GangMember.DistanceToPlayer <= 275f)
             {
                 SetArrested(GangMember);
             }
         }
-        else if (GangMember.DistanceToPlayer <= 175f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
+        else if (GangMember.DistanceToPlayer <= 275f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
             //WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);
@@ -116,7 +124,7 @@ public class GangTasker
 
             if (SeenPlayerReactiveCrime)
             {
-                if (GangMember.WillFight && !arePoliceNearby && (isHostile || (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))) //if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
+                if (GangMember.WillFight && !arePoliceNearby && ((isHostile && isNearHomeTerritory) || GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked)) //if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
                 {
                     SetFight(GangMember, HighestPriorityOtherCrime);
                 }

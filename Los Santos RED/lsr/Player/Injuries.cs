@@ -23,6 +23,7 @@ public class Injuries
     private float SteeringBias;
     private string CurrentClipset;
     private string OverLayEffect;
+    private bool IsPrimary;
     public bool IsInjured { get; private set; }
 
     public string DebugString { get; set; }
@@ -169,17 +170,18 @@ public class Injuries
     }
     public void Restart()
     {
-        Update();
+        Update(IsPrimary);
         if (CurrentIntensity >= 0.25f)// 0.25f)
         {
             SetInjured();
-            Update();
+            Update(IsPrimary);
         }
     }
-    public void Update()
+    public void Update(bool isPrimary)
     {
         if (Settings.SettingsManager.DamageSettings.AllowInjuryEffects)
         {
+            IsPrimary = isPrimary;
             int Health = Player.Character.Health - 100;
             int MaxHealth = Player.Character.MaxHealth - 100;
             if (Health < 0)
@@ -190,25 +192,21 @@ public class Injuries
             {
                 MaxHealth = 1;
             }
-            if (Health <= MaxHealth - Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart && !Player.IsIntoxicated)
+            if (Health <= MaxHealth - Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart)
             {
                 OverLayEffect = "dying";
                 float Percentage = (float)Health / (float)(MaxHealth- Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart);
                 Percentage = 1f - Percentage;
 
                 float coolpercent = Percentage;
-
-
                 Percentage *= 5f;
                 CurrentIntensity = Percentage;
                 UpdateInjuredStatus();
-
-
                 //EntryPoint.WriteToConsole($"Injuries Intensity {CurrentIntensity} CurrentClipset {CurrentClipset} MaxHealth {MaxHealth} Health {Health} coolpercent {coolpercent}");
             }
             else
             {
-                if (IsInjured)
+                if (IsInjured && IsPrimary)
                 {
                     SetHealthy(true);
                 }
@@ -218,15 +216,15 @@ public class Injuries
     }
     private void UpdateInjuredStatus()
     {
-        if (!IsInjured && CurrentIntensity >= 0.1f)// 0.25f)
+        if (!IsInjured && IsPrimary && CurrentIntensity >= 0.1f)// 0.25f)
         {
             SetInjured();
         }
-        else if (IsInjured && CurrentIntensity <= 0.1f)//0.25f)
+        else if (IsInjured && IsPrimary && CurrentIntensity <= 0.1f)//0.25f)
         {
             SetHealthy(true);
         }
-        if (IsInjured)
+        if (IsInjured && IsPrimary)
         {
             if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE")
             {

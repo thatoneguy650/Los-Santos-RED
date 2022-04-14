@@ -65,5 +65,6 @@ namespace LosSantosRED.lsr.Interface
         Sprinting Sprinting { get; }
         bool IsTransacting { get; }
         bool RecentlyChangedMoney { get; }
+        CellPhone CellPhone { get; }
     }
 }

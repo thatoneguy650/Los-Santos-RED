@@ -69,6 +69,7 @@ namespace iFruitAddon2
             get { return _texts; }
             set { _texts = value; }
         }
+        public bool IsActive => IsScriptHashRunning;
 
         public CustomiFruit() : this(new iFruitContactCollection(), new iFruitTextCollection())
         { 

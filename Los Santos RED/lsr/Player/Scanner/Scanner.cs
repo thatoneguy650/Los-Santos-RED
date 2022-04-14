@@ -1443,7 +1443,15 @@ namespace LosSantosRED.lsr
             ,TamperingWithVehicle
             ,VehicleCrashed
             ,VehicleStartedFire
-        };
+
+
+            ,ArmedRobbery
+
+
+            ,MedicalServicesRequired
+        ,FirefightingServicesRequired
+
+    };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {
