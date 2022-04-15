@@ -49,65 +49,65 @@ public class Voice
     public bool CanRadioIn => !Cop.IsUnconscious && !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
     public bool CanSpeak => !Cop.IsUnconscious && !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
 
-    public void RadioIn(IPoliceRespondable currentPlayer)
-    {
-        if (1==0 && CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted && currentPlayer.ClosestCopToPlayer.Handle == Cop.Handle)))
-        {
-            TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 25000);
-            GameTimeLastRadioed = Game.GameTime;
+    //public void RadioIn(IPoliceRespondable currentPlayer)
+    //{
+    //    if (1==0 && CanRadioIn && !IsInFiber && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted && currentPlayer.ClosestCopToPlayer.Handle == Cop.Handle)))
+    //    {
+    //        TimeBetweenRadioIn = 10000 + RandomItems.GetRandomNumberInt(0, 25000);
+    //        GameTimeLastRadioed = Game.GameTime;
 
-            if (Cop.WeaponInventory.IsSetLessLethal || (Cop.WeaponInventory.IsSetDeadly && !Cop.WeaponInventory.HasHeavyWeaponOnPerson) || (Cop.WeaponInventory.IsSetDefault && !Cop.WeaponInventory.HasHeavyWeaponOnPerson))//or just check the weapon here is a pistol and tazer.....
-            {
-                GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
-                {
-                    IsInFiber = true;
-                    AnimationDictionary.RequestAnimationDictionay("random@arrests");
-                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_enter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                    GameFiber.Wait(1000);
-                    if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
-                    {
-                        PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }.PickRandom(), false);
-                        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_chatter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                        GameFiber.Wait(2000);
-                    }
+    //        if (Cop.WeaponInventory.IsSetLessLethal || (Cop.WeaponInventory.IsSetDeadly && !Cop.WeaponInventory.HasHeavyWeaponOnPerson) || (Cop.WeaponInventory.IsSetDefault && !Cop.WeaponInventory.HasHeavyWeaponOnPerson))//or just check the weapon here is a pistol and tazer.....
+    //        {
+    //            GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+    //            {
+    //                IsInFiber = true;
+    //                AnimationDictionary.RequestAnimationDictionay("random@arrests");
+    //                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_enter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                GameFiber.Wait(1000);
+    //                if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
+    //                {
+    //                    PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }.PickRandom(), false);
+    //                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_chatter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                    GameFiber.Wait(2000);
+    //                }
 
-                    if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
-                    {
-                        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_exit", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                        GameFiber.Wait(1000);
-                    }
-                    IsInFiber = false;
-                    Cop.CurrentTask?.ReTask();//will this work to reset the task stuff?
-                GameTimeLastRadioed = Game.GameTime;
-                }, "SetArrestedAnimation");
-            }
-            else if (Cop.WeaponInventory.IsSetUnarmed)//or just check the weapon here is a pistol and tazer.....
-            {
-                GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
-                {
-                    IsInFiber = true;
-                    AnimationDictionary.RequestAnimationDictionay("random@arrests");
-                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                    GameFiber.Wait(1000);
-                    if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
-                    {
-                        PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }.PickRandom(), false);
-                        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                        GameFiber.Wait(2000);
-                    }
+    //                if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
+    //                {
+    //                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "radio_exit", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                    GameFiber.Wait(1000);
+    //                }
+    //                IsInFiber = false;
+    //                Cop.CurrentTask?.ReTask();//will this work to reset the task stuff?
+    //            GameTimeLastRadioed = Game.GameTime;
+    //            }, "SetArrestedAnimation");
+    //        }
+    //        else if (Cop.WeaponInventory.IsSetUnarmed)//or just check the weapon here is a pistol and tazer.....
+    //        {
+    //            GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
+    //            {
+    //                IsInFiber = true;
+    //                AnimationDictionary.RequestAnimationDictionay("random@arrests");
+    //                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                GameFiber.Wait(1000);
+    //                if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
+    //                {
+    //                    PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }.PickRandom(), false);
+    //                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                    GameFiber.Wait(2000);
+    //                }
 
-                    if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
-                    {
-                        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_exit", 2.0f, -2.0f, -1, 0, 0, false, false, false);
-                        GameFiber.Wait(1000);
-                    }
-                    IsInFiber = false;
-                    Cop.CurrentTask?.ReTask();//will this work to reset the task stuff?
-                    GameTimeLastRadioed = Game.GameTime;
-                }, "SetArrestedAnimation");
-            }
-        }
-    }
+    //                if (Cop.Pedestrian.Exists() && ((Cop.CurrentTask?.OtherTarget?.IsBusted == true && Cop.CurrentTask?.OtherTarget?.ArrestingPedHandle == Cop.Handle) || (Cop.CurrentTask?.OtherTarget == null && currentPlayer.IsBusted)))
+    //                {
+    //                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", "generic_radio_exit", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+    //                    GameFiber.Wait(1000);
+    //                }
+    //                IsInFiber = false;
+    //                Cop.CurrentTask?.ReTask();//will this work to reset the task stuff?
+    //                GameTimeLastRadioed = Game.GameTime;
+    //            }, "SetArrestedAnimation");
+    //        }
+    //    }
+    //}
     public void Speak(IPoliceRespondable currentPlayer)
     {    
         if(Game.GameTime - GameTimeLastForcedRadioSpeech >= 5000 && Cop.Pedestrian.Exists() && (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 3) || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "radio_chatter", 3)))

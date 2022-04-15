@@ -130,10 +130,10 @@ public class UISettings : ISettingsDefaultable
             ShowDebug = false;
             ZoneDisplayShowPrimaryAgency = false;
 
-        AlwaysShowRadar = false;
+        AlwaysShowRadar = true;
         NeverShowRadar = false;
-        ShowRadarInVehicleOnly = true;
-        ShowRadarOnFootWhenCellPhoneActiveOnly = true;
+        //ShowRadarInVehicleOnly = true;
+        //ShowRadarOnFootWhenCellPhoneActiveOnly = true;
 
 
 #endif

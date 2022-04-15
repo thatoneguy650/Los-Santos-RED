@@ -158,7 +158,7 @@ public class Intoxication
         }
     }
     public bool IsSwerving { get; private set; }
-    public float CurrentIntensity { get; private set; }
+    public float CurrentIntensity { get; private set; } = 0f;
     public void Dispose()
     {
         CurrentIntoxicators.Clear();
@@ -171,7 +171,7 @@ public class Intoxication
     public void Restart()
     {
         Update(IsPrimary);
-        if (CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
+        if (IsPrimary && CurrentIntensity >= PrimaryIntoxicator.Intoxicant.EffectIntoxicationLimit)// 0.25f)
         {
             SetIntoxicated();
             Update(IsPrimary);
@@ -239,7 +239,7 @@ public class Intoxication
         }
         else
         {
-            if (Player.IsIntoxicated && IsPrimary)
+            if (Player.IsIntoxicated)
             {
                 SetSober(true);
             }

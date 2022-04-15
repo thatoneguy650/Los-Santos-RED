@@ -22,7 +22,7 @@ public class PoliceSettings : ISettingsDefaultable
     public bool ManageLoadout { get; set; }
     public bool AllowAmbientSpeech { get; set; }
     public bool AllowChaseAssists { get; set; }
-    public bool AllowRadioInAnimations { get; set; }
+   // public bool AllowRadioInAnimations { get; set; }
 
 
 
@@ -130,7 +130,7 @@ public class PoliceSettings : ISettingsDefaultable
                 ShowSpawnedBlips = true;
                 ShowVanillaBlips = false;
        // ManageDispatching = false;
-        AllowRadioInAnimations = true;
+       // AllowRadioInAnimations = true;
 #else
                        // ShowSpawnedBlips = false;
 #endif
@@ -178,7 +178,7 @@ public class PoliceSettings : ISettingsDefaultable
         AllowChaseAssists = true;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
-        AllowRadioInAnimations = false;
+        //AllowRadioInAnimations = false;
         OverrideHealth = true;
         //MinHealth = 85;
         //MaxHealth = 125;

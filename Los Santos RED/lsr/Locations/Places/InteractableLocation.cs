@@ -48,7 +48,8 @@ public class InteractableLocation : BasicLocation
     public MenuPool MenuPool { get; private set; }
 
     public virtual string ButtonPromptText { get; set; }
-    
+    [XmlIgnore]
+    public bool VendorAbandoned { get; set; } = false;
 
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

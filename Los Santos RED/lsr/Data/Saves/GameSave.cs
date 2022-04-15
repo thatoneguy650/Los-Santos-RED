@@ -179,149 +179,157 @@ namespace LosSantosRED.lsr.Data
 
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
-            Game.FadeScreenOut(1500, true);
-            time.SetDateTime(CurrentDateTime);
-            pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
-            WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
-            foreach (StoredWeapon MyOldGuns in WeaponInventory)
+            try
             {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyOldGuns.WeaponHash, (short)MyOldGuns.Ammo, false);
-                if (PlayerWeapons.Contains(MyOldGuns.WeaponHash))
+                Game.FadeScreenOut(1500, true);
+                time.SetDateTime(CurrentDateTime);
+                pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+                WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+                foreach (StoredWeapon MyOldGuns in WeaponInventory)
                 {
-                    WeaponInformation Gun2 = weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
-                    if (Gun2 != null)
+                    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyOldGuns.WeaponHash, (short)MyOldGuns.Ammo, false);
+                    if (PlayerWeapons.Contains(MyOldGuns.WeaponHash))
                     {
-                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
+                        WeaponInformation Gun2 = weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
+                        if (Gun2 != null)
+                        {
+                            Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
+                        }
                     }
                 }
-            }
-            player.Inventory.Clear();
-            foreach (InventorySave cii in InventoryItems)
-            {
-                player.Inventory.Add(modItems.Get(cii.ModItemName), cii.RemainingPercent.Count());
-            }
-            player.ClearVehicleOwnership();
-            foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)
-            {
-                NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
-                if (SpawnPos != Vector3.Zero)
+                player.Inventory.Clear();
+                foreach (InventorySave cii in InventoryItems)
                 {
-                    Vehicle NewVehicle = null;
-                    if (OwnedVehicleVariation.ModelName != "")
+                    player.Inventory.Add(modItems.Get(cii.ModItemName), cii.RemainingPercent.Count());
+                }
+                player.ClearVehicleOwnership();
+                foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)
+                {
+                    NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
+                    if (SpawnPos != Vector3.Zero)
                     {
-                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
-                    }
-                    else if(OwnedVehicleVariation.ModelHash != 0)
-                    {
-                        NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, SpawnPos, Heading);
-                    }
+                        Vehicle NewVehicle = null;
+                        if (OwnedVehicleVariation.ModelName != "")
+                        {
+                            NewVehicle = new Vehicle(OwnedVehicleVariation.ModelName, SpawnPos, Heading);
+                        }
+                        else if(OwnedVehicleVariation.ModelHash != 0)
+                        {
+                            NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, SpawnPos, Heading);
+                        }
 
-                    if (NewVehicle.Exists())
-                    {
-                        NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
-                        NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
-                        if (OwnedVehicleVariation.PrimaryColor != -1)
+                        if (NewVehicle.Exists())
                         {
-                            NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
-                        }
-                        NewVehicle.Wash();
-                        VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
-                        if (MyVeh == null)
-                        {
-                            MyVeh = new VehicleExt(NewVehicle, settings);
-                            MyVeh.HasUpdatedPlateType = true;
-                            World.Vehicles.AddEntity(MyVeh, ResponseType.None);
-                        }
-                        //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
-                        player.TakeOwnershipOfVehicle(MyVeh,false);
-                        if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
-                        {
-                            NewVehicle.Position = OwnedVehicleVariation.LastPosition;
-                            NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
+                            NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
+                            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
+                            if (OwnedVehicleVariation.PrimaryColor != -1)
+                            {
+                                NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+                            }
+                            NewVehicle.Wash();
+                            VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
+                            if (MyVeh == null)
+                            {
+                                MyVeh = new VehicleExt(NewVehicle, settings);
+                                MyVeh.HasUpdatedPlateType = true;
+                                World.Vehicles.AddEntity(MyVeh, ResponseType.None);
+                            }
+                            //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
+                            player.TakeOwnershipOfVehicle(MyVeh,false);
+                            if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
+                            {
+                                NewVehicle.Position = OwnedVehicleVariation.LastPosition;
+                                NewVehicle.Heading = OwnedVehicleVariation.LastHeading;
+                            }
                         }
                     }
                 }
-            }
 
-            foreach(GangRepSave tuple in GangReputations)
-            {
-                Gang myGang = gangs.GetGang(tuple.GangID);
-                if (myGang != null)
+                foreach(GangRepSave tuple in GangReputations)
                 {
-                    player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
-                    player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt);
+                    Gang myGang = gangs.GetGang(tuple.GangID);
+                    if (myGang != null)
+                    {
+                        player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
+                        player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt);
+                    }
                 }
-            }
-            foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
-            {
-                Gang gang = gangs.GetGangByContact(ifc.Name);
-                if (ifc.Name == EntryPoint.UndergroundGunsContactName)
+                foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
                 {
-                    player.CellPhone.AddGunDealerContact(false);
-                }
-                else if (gang != null)
-                {
-                    player.CellPhone.AddContact(gang, false);
-                }
-                else
-                {
-                    player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
-                }
+                    Gang gang = gangs.GetGangByContact(ifc.Name);
+                    if (ifc.Name == EntryPoint.UndergroundGunsContactName)
+                    {
+                        player.CellPhone.AddGunDealerContact(false);
+                    }
+                    else if (gang != null)
+                    {
+                        player.CellPhone.AddContact(gang, false);
+                    }
+                    else
+                    {
+                        player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
+                    }
                 
-            }
+                }
 
-            foreach (SavedTextMessage ifc in TextMessages)
-            {
-                player.CellPhone.AddText(ifc.Name,ifc.IconName,ifc.Message,ifc.HourSent,ifc.MinuteSent, ifc.IsRead);
-            }
-
-            if (PlayerPosition != Vector3.Zero)
-            {
-                player.Character.Position = PlayerPosition;
-                player.Character.Heading = PlayerHeading;
-            }
-
-            player.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
-            player.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
-            player.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
-
-
-            player.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
-            player.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
-            player.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
-
-
-
-            if (DriversLicense != null)
-            {
-                player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };
-            }
-            if (CCWLicense != null)
-            {
-                player.Licenses.CCWLicense = new CCWLicense() { ExpirationDate = CCWLicense.ExpirationDate, IssueDate = CCWLicense.IssueDate };
-            }
-
-            foreach (SavedResidence res in SavedResidences)
-            {
-                if (res.IsOwnedByPlayer || res.IsRentedByPlayer)
+                foreach (SavedTextMessage ifc in TextMessages)
                 {
-                    Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == res.Name).FirstOrDefault();
-                    if(savedPlace != null)
+                    player.CellPhone.AddText(ifc.Name,ifc.IconName,ifc.Message,ifc.HourSent,ifc.MinuteSent, ifc.IsRead);
+                }
+
+                if (PlayerPosition != Vector3.Zero)
+                {
+                    player.Character.Position = PlayerPosition;
+                    player.Character.Heading = PlayerHeading;
+                }
+
+                player.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
+                player.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
+                player.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
+
+
+                player.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
+                player.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
+                player.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
+
+
+
+                if (DriversLicense != null)
+                {
+                    player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };
+                }
+                if (CCWLicense != null)
+                {
+                    player.Licenses.CCWLicense = new CCWLicense() { ExpirationDate = CCWLicense.ExpirationDate, IssueDate = CCWLicense.IssueDate };
+                }
+
+                foreach (SavedResidence res in SavedResidences)
+                {
+                    if (res.IsOwnedByPlayer || res.IsRentedByPlayer)
                     {
-                        player.Properties.AddResidence(savedPlace);
-                        savedPlace.IsOwned = res.IsOwnedByPlayer;
-                        savedPlace.IsRented = res.IsRentedByPlayer;
-                        savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
-                        savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
-                        savedPlace.RefreshUI();
+                        Residence savedPlace = placesOfInterest.PossibleLocations.Residences.Where(x => x.Name == res.Name).FirstOrDefault();
+                        if(savedPlace != null)
+                        {
+                            player.Properties.AddResidence(savedPlace);
+                            savedPlace.IsOwned = res.IsOwnedByPlayer;
+                            savedPlace.IsRented = res.IsRentedByPlayer;
+                            savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
+                            savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
+                            savedPlace.RefreshUI();
+                        }
                     }
                 }
+
+
+
+                Game.FadeScreenIn(1500, true);
+                player.DisplayPlayerNotification();
             }
-
-
-
-            Game.FadeScreenIn(1500, true);
-            player.DisplayPlayerNotification();
+            catch (Exception e)
+            {
+                Game.FadeScreenIn(0);
+                Game.DisplayNotification("Error Loading Save");
+            }
         }
 
         public override string ToString()

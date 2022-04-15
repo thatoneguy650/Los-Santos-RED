@@ -47,6 +47,8 @@ public class VehicleSettings : ISettingsDefaultable
     public bool AllowLockMissionVehicles { get;  set; }
     [Description("Stops the player ped from automatically putting on a helmet when on a motorcycle.")]
     public bool DisableAutoHelmet { get; set; }
+    [Description("Stops the auto rollover assistance feature")]
+    public bool DisableRolloverFlip { get; set; }
 
     public VehicleSettings()
     {
@@ -78,5 +80,6 @@ public class VehicleSettings : ISettingsDefaultable
         RequireScrewdriverForHotwire = false;
         AllowLockMissionVehicles = false;
         DisableAutoHelmet = true;
+        DisableRolloverFlip = true;
     }
 }

@@ -45,6 +45,10 @@ public class Transaction
             if (Store != null)
             {
                 PurchaseMenu = new PurchaseMenu(MenuPool, ParentMenu, ShopMenu, this, modItems, player, world, settings, weapons, time, Store.BannerImage, Store.HasBannerImage, Store.RemoveBanner, Store.Name);
+                if(Store.VendorAbandoned)
+                {
+                    PurchaseMenu.IsStealing = true;
+                }
             }
             else
             {
@@ -52,7 +56,7 @@ public class Transaction
             }
             PurchaseMenu.Setup();
         }
-        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Sellable))
+        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Sellable) && Store?.VendorAbandoned == false)
         {
             if (Store != null)
             {

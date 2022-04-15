@@ -171,7 +171,7 @@ public class Injuries
     public void Restart()
     {
         Update(IsPrimary);
-        if (CurrentIntensity >= 0.25f)// 0.25f)
+        if (IsPrimary && CurrentIntensity >= 0.25f)// 0.25f)
         {
             SetInjured();
             Update(IsPrimary);
@@ -206,7 +206,7 @@ public class Injuries
             }
             else
             {
-                if (IsInjured && IsPrimary)
+                if (IsInjured)
                 {
                     SetHealthy(true);
                 }
@@ -220,7 +220,7 @@ public class Injuries
         {
             SetInjured();
         }
-        else if (IsInjured && IsPrimary && CurrentIntensity <= 0.1f)//0.25f)
+        else if (IsInjured && CurrentIntensity <= 0.1f)//0.25f)
         {
             SetHealthy(true);
         }

@@ -116,6 +116,9 @@ namespace LosSantosRED.lsr
 
 
 
+
+
+
         }
 
         private void StanceCheck()
@@ -404,6 +407,20 @@ namespace LosSantosRED.lsr
                         GameTimeLastPressedDoorClose = Game.GameTime;
                     }
                 }
+
+
+                if (Player.IsInVehicle && (Player.CurrentVehicleIsRolledOver || Player.CurrentVehicleIsInAir) && Settings.SettingsManager.VehicleSettings.DisableRolloverFlip)
+                {
+                    Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, true);
+                    Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
+                }
+                else
+                {
+                    //Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, false);
+                    //Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, false);
+                }
+
+
             }
         }
         private void MenuCheck()

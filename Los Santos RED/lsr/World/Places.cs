@@ -254,8 +254,8 @@ public class Places
                         {
                             ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
                             VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
-                            
-                            
+
+                            newVend.CanInteractWhenWanted = true;
                             // GameLocation newVend = new GameLocation(position, heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
                             newVend.Setup(Interiors, Settings, Crimes, Weapons);
                             World.AddBlip(newVend.Blip);
@@ -308,5 +308,4 @@ public class Places
             gl.IsEnabled = v;
         }
     }
-
 }

@@ -40,6 +40,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool CanWaveHands { get; }
         bool CanPerformActivities { get; }
+        bool CurrentVehicleIsRolledOver { get; }
+        bool CurrentVehicleIsInAir { get; }
 
         void RaiseHands();
         void LowerHands();

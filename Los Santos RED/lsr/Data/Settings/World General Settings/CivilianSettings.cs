@@ -108,7 +108,7 @@ public class CivilianSettings : ISettingsDefaultable
         TaskMissionPeds = false;
         AllowMissionPedsToInteract = false;
         AllowRandomCrimes = true;
-        MinimumTimeBetweenRandomCrimes = 900000;
+        MinimumTimeBetweenRandomCrimes = 1200000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         ShowRandomCriminalBlips = false;

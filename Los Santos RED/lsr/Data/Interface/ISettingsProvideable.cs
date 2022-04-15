@@ -11,5 +11,7 @@ namespace LosSantosRED.lsr.Interface
         SettingsManager SettingsManager { get; }
 
         void SerializeAllSettings();
+        void SetReleaseSettings();
+        void SetHardcoreSettings();
     }
 }

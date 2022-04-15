@@ -69,10 +69,10 @@ public class Cop : PedExt, IWeaponIssuable
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
-        if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimations)
-        {
-            Voice.RadioIn(currentPlayer);
-        }
+        //if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimations)
+        //{
+        //    Voice.RadioIn(currentPlayer);
+        //}
     }
     public void ForceSpeech(IPoliceRespondable currentPlayer)
     {

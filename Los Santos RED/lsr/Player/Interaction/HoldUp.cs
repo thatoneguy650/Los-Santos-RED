@@ -18,12 +18,13 @@ public class HoldUp : Interaction
     private bool IsActivelyOrdering;
     private ISettingsProvideable Settings;
     private bool Fleed;
-
-    public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings)
+    private IModItems ModItems;
+    public HoldUp(IInteractionable player, PedExt target, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
         Target = target;
         Settings = settings;
+        ModItems = modItems;
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
     private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1000;
@@ -140,7 +141,7 @@ public class HoldUp : Interaction
                 {
                     if (!Target.HasBeenMugged && !Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash"))
                     {
-                        Player.ButtonPromptList.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                        Player.ButtonPromptList.Add(new ButtonPrompt("Demand Cash/Items", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
                     }
                     if (!Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown"))
                     {
@@ -211,8 +212,58 @@ public class HoldUp : Interaction
         GameFiber.Sleep(2000);
         NativeFunction.CallByName<bool>("SET_PED_MONEY", Target.Pedestrian, 0);
         Vector3 MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
-        NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true);
+        NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_WALLET"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true); //NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, Target.Money, 1, false, true);
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+
+
+
+        bool hasAddedItem = false;
+        string ItemsFound = "";
+        Target.HasBeenLooted = true;
+        if (Target.HasMenu)
+        {
+            foreach (MenuItem mi in Target.ShopMenu.Items.Where(x => x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0))
+            {
+                ModItem localModItem = ModItems.Get(mi.ModItemName);
+                if (localModItem != null && localModItem.ModelItem?.Type == ePhysicalItemType.Prop)
+                {
+                    hasAddedItem = true;
+                    Player.Inventory.Add(localModItem, mi.NumberOfItemsToSellToPlayer);
+                    ItemsFound += $"~n~~p~{localModItem.Name}~s~ - {mi.NumberOfItemsToSellToPlayer} {localModItem.MeasurementName}(s)";
+                }
+            }
+        }
+        if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
+        {
+            if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
+            {
+                int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
+                for (int i = 0; i < ItemsToGet; i++)
+                {
+                    ModItem toGet = ModItems.GetRandomItem();
+                    int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
+                    if (toGet != null)
+                    {
+                        hasAddedItem = true;
+                        ItemsFound += $"~n~~p~{toGet.Name}~s~ - {AmountToGet} {toGet.MeasurementName}(s)";
+                        Player.Inventory.Add(toGet, AmountToGet);
+                    }
+                }
+            }
+        }
+
+
+        string Description = "";
+        if (hasAddedItem)
+        {  
+            Description += $"Items Stolen:";
+            Description += ItemsFound;
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~r~Ped Mugged", $"~y~{Target.Name}", Description);
+        }
+
+
+
+
         IsActivelyOrdering = false;
     }
     private void ForceCower()

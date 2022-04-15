@@ -94,6 +94,9 @@ public class PurchaseMenu : Menu
 
     public int MoneySpent { get; private set; } = 0;
     private bool CanContinueConversation => Player.CanConverse;
+
+    public bool IsStealing { get; set; }
+
     public void ClearPreviews()
     {
         if (SellingProp.Exists())
@@ -682,6 +685,15 @@ public class PurchaseMenu : Menu
             }
 
             string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
+
+
+
+
+            if(IsStealing)
+            {
+                formattedPurchasePrice = "FREE";
+            }
+
             string description = modItem.Description;
             //if (description == "")
             //{
@@ -1369,7 +1381,7 @@ public class PurchaseMenu : Menu
     {
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
         CurrentTotalPrice = TotalPrice;
-        if (Player.Money >= TotalPrice)
+        if (Player.Money >= TotalPrice || IsStealing)
         {
             Transaction.OnItemPurchased(modItem, menuItem, TotalItems);
             menuItem.ItemsSoldToPlayer += TotalItems;
@@ -1381,8 +1393,11 @@ public class PurchaseMenu : Menu
             {
                 Player.Inventory.Add(modItem, TotalItems * modItem.AmountPerPackage);
             }
-            Player.GiveMoney(-1 * TotalPrice);
-            MoneySpent += TotalPrice;
+            if (!IsStealing)
+            {
+                Player.GiveMoney(-1 * TotalPrice);
+                MoneySpent += TotalPrice;
+            }
             return true;
         }
         return false;

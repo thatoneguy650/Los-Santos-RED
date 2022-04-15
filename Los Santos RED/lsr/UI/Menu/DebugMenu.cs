@@ -26,6 +26,7 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
     private UIMenuNumericScrollerItem<int> FastForwardTime;
     private UIMenuItem GoToReleaseSettings;
+    private UIMenuItem GoToHardCoreSettings;
     private UIMenuItem StartRandomCrime;
     private UIMenuItem KillPlayer;
     private UIMenuItem LogCameraPositionMenu;
@@ -148,6 +149,9 @@ public class DebugMenu : Menu
         GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
 
 
+        GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
+
+
         StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
@@ -197,6 +201,7 @@ public class DebugMenu : Menu
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(FastForwardTime);
         Debug.AddItem(GoToReleaseSettings);
+        Debug.AddItem(GoToHardCoreSettings);
 
         Debug.AddItem(ForceSober);
 
@@ -344,12 +349,12 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == GoToReleaseSettings)
         {
-            Settings.SettingsManager.GangSettings.ShowSpawnedBlip = false;
-            Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
-            Settings.SettingsManager.UISettings.ShowDebug = false;
-            Settings.SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
-            Settings.SettingsManager.EMSSettings.ShowSpawnedBlips = false;
-            Settings.SettingsManager.FireSettings.ShowSpawnedBlips = false;
+            Settings.SetReleaseSettings();
+            
+        }
+        else if (selectedItem == GoToHardCoreSettings)
+        {
+            Settings.SetHardcoreSettings();
         }
         else if (selectedItem == FastForwardTime)
         {

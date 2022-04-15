@@ -90,7 +90,7 @@ public class DamageSettings : ISettingsDefaultable
 
 
         AllowInjuryEffects = false;
-        InjuryEffectHealthLostStart = 20;
+        InjuryEffectHealthLostStart = 30;
     }
 
 }
