@@ -259,6 +259,10 @@ namespace LosSantosRED.lsr
             {
                 Player.LootPed();
             }
+            else if (Player.ButtonPromptList.Any(x => x.Group == "Drag" && x.IsPressedNow))//string for now...
+            {
+                Player.DragPed();
+            }
             else if (Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
             {
                 Player.GrabPed();

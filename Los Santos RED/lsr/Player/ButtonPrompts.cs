@@ -35,15 +35,30 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
 
-        if (!addedPromptGroup && Player.CanLootLookedAtPed)
+
+        if(!addedPromptGroup)
         {
-            PersonLootingPrompts();
-            addedPromptGroup = true;
+            if (Player.CanLootLookedAtPed)
+            {
+                PersonLootingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
+            }
+            if (Player.CanDragLookedAtPed)
+            {
+                PersonDraggingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Player.ButtonPromptList.RemoveAll(x => x.Group == "Drag");
+            }
+
         }
-        else
-        {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
-        }
+        
         if (Player.CanGrabLookedAtPed)
         {
             PersonGrabPrompts();
@@ -148,6 +163,20 @@ public class ButtonPrompts
         {
             Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
             Player.ButtonPromptList.Add(new ButtonPrompt($"Search {Player.CurrentLookedAtPed.FormattedName}", "Search", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
+        }
+        //else
+        //{
+        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
+        //}
+    }
+    private void PersonDraggingPrompts()
+    {
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
+        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Drag {Player.CurrentLookedAtPed.Handle}"))
+        {
+            Player.ButtonPromptList.RemoveAll(x => x.Group == "Drag");
+            Player.ButtonPromptList.Add(new ButtonPrompt($"Drag {Player.CurrentLookedAtPed.FormattedName}", "Drag", $"Drag {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
         }
         //else
         //{

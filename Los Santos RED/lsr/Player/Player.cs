@@ -184,8 +184,15 @@ namespace Mod
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;
-        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody;
+        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
+
+
+
+        public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody;
+        public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
+
+
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
@@ -330,6 +337,7 @@ namespace Mod
         }
         public bool IsLockPicking { get; set; }
         public bool IsLootingBody { get; set; }
+        public bool IsDraggingBody { get; set; }
         public bool IsMakingInsultingGesture { get; set; }
         public bool IsMale { get; set; }
         public bool IsMobileRadioEnabled { get; private set; }
@@ -1107,8 +1115,6 @@ namespace Mod
         }
         public void LootPed()
         {
-
-
             if (!IsPerformingActivity && CanPerformActivities && CanLootLookedAtPed && !IsInVehicle)
             {
                 if (UpperBodyActivity != null)
@@ -1122,19 +1128,22 @@ namespace Mod
                 LowerBodyActivity = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
                 LowerBodyActivity.Start();
             }
-
-
-
-
-            //if (!IsInteracting && CanLootLookedAtPed)
-            //{
-            //    if (Interaction != null)
-            //    {
-            //        Interaction.Dispose();
-            //    }
-            //    Interaction = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
-            //    Interaction.Start();
-            //}
+        }
+        public void DragPed()
+        {
+            if (!IsPerformingActivity && CanPerformActivities && CanDragLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new Drag(this, CurrentLookedAtPed, Settings, Crimes, ModItems, World);
+                LowerBodyActivity.Start();
+            }
         }
         public void LowerHands() => Surrendering.LowerHands();
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);

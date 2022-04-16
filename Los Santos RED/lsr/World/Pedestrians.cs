@@ -535,7 +535,12 @@ public class Pedestrians
                 continue;
             }
             uint localHandle = Pedestrian.Handle;
-            if (Pedestrian.IsPoliceArmy())
+
+            if (DeadPeds.Any(x => x.Handle == localHandle))
+            {
+                continue;
+            }
+            else if (Pedestrian.IsPoliceArmy())
             {
                 if (!Police.Any(x => x.Handle == localHandle))
                 {
@@ -577,6 +582,18 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
         }
         GameTimeLastCreatedPeds = Game.GameTime;
+    }
+
+
+    public void MarkPedAsRevived(PedExt pedExt)
+    {
+        if(pedExt.IsDead)
+        {
+            DeadPeds.Remove(pedExt);
+            pedExt.IsDead = false;
+            AddEntity(pedExt);
+        }
+
     }
     private ShopMenu GetIllicitMenu()
     {

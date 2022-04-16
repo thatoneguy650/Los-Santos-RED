@@ -64,5 +64,6 @@ namespace LosSantosRED.lsr.Interface
         void GrabPed();
         void Crouch();
         void StartSimpleCellphoneActivity();
+        void DragPed();
     }
 }

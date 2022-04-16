@@ -116,7 +116,7 @@ public class HealthState
                 {
                     SetUnconscious();
                 }
-                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(10))
+                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(30))
                 {
                     SetUnconscious();
                 }

@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         WeaponHash LastWeaponHash { get; set; }
         bool IsHoldingHostage { get; set; }
+        bool IsDraggingBody { get; set; }
 
         void SetUnarmed();
         void SetPlayerToLastWeapon();
