@@ -178,13 +178,13 @@ namespace Mod
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public ButtonPrompts ButtonPrompts { get; private set; }
-        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && (IsInVehicle || !IsMovingFast);
+        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && (IsInVehicle || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;
-        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody;
+        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
 
 
@@ -2046,7 +2046,7 @@ namespace Mod
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
             Sprinting.Update();
-            if (Settings.SettingsManager.PlayerOtherSettings.AllowStartRandomScenario && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
+            if (Settings.SettingsManager.ActivitySettings.AllowStartingScenarios && IsNotWanted && !IsInVehicle)//works fine, just turned off by default, needs some work
             {
                 IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
                 ClosestScenario = new Scenario("", "Unknown");

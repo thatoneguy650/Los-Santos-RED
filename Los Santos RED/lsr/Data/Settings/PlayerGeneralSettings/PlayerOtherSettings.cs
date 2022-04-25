@@ -15,8 +15,6 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint Recognize_VehiclePenalty { get; set; }
     [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
     public uint SearchMode_SearchTimeMultiplier { get; set; }
-    [Description("Enable random scenario start where available. Scenarios are the random things peds can do, sit down, smoke, chat, etc.")]
-    public bool AllowStartRandomScenario { get; set; }
     [Description("Set slow mo when you are wasted and using the wasted menu.")]
     public bool SetSlowMoOnDeath { get; set; }
     [Description("Set slow mo when you are busted and using the busted menu.")]
@@ -29,12 +27,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public string FemaleFreeModeVoice { get; set; }
     [Description("If enabled the stores will give you a preview of the item you are about to buy.")]
     public bool GenerateStoreItemPreviews { get; set; }
-
     [Description("Modifier to melee damage on the player. If set Less than 1 the melee damage the player do will be reduced by that percent (0.1 = 10% damage). If set higher than 1 the melee damage will be scaled by that about (2.5 = 250% damage). Set at 1 for default.")]
-
-
-
-
     public float MeleeDamageModifier { get; set; }
     [Description("Cost to remove an investigation using the corrupt cop interaction.")]
     public int CorruptCopInvestigationClearCost { get; set; }
@@ -60,7 +53,6 @@ public class PlayerOtherSettings : ISettingsDefaultable
         Recognize_NightPenalty = 3500;
         Recognize_VehiclePenalty = 750;
         SearchMode_SearchTimeMultiplier = 30000;
-        AllowStartRandomScenario = false;
         SetSlowMoOnDeath = true;
         SetSlowMoOnBusted = true;
         AllowWeaponDropping = true;

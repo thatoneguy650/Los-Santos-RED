@@ -56,16 +56,15 @@ public class Transaction
             }
             PurchaseMenu.Setup();
         }
-        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Sellable) && Store?.VendorAbandoned == false)
+        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Sellable))
         {
-            if (Store != null)
+            if (Store != null && !Store.VendorAbandoned)
             {
                 SellMenu = new SellMenu(MenuPool, ParentMenu, ShopMenu, this, modItems, player, world, settings, weapons, time, Store.BannerImage, Store.HasBannerImage, Store.RemoveBanner, Store.Name);//was IsUsingCustomCam before
             }
             else
             {
                 SellMenu = new SellMenu(MenuPool, ParentMenu, ShopMenu, this, modItems, player, world, settings, weapons, time, null,false, true, "");//was IsUsingCustomCam before
-
             }
             SellMenu.Setup();
         }

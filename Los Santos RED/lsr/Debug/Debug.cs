@@ -407,8 +407,8 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-       // Player.ResetScannerDebug();
-      //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
+        // Player.ResetScannerDebug();
+        //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
         //Player.ResetScannerDebug();
         //Player.ScannerPlayDebug();
@@ -424,27 +424,72 @@ public class Debug
         //}
         //Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
 
-        //PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        //if(myPed != null)
-        //{
-
-
-        //    myPed.IsDealingDrugs = true;
+        if (myPed != null)
+        {
 
 
+            // myPed.IsDealingDrugs = true;
 
-        //    //if(RandomItems.RandomPercent(50))
-        //    //{
-        //        myPed.ShopMenu = ShopMenus.GetRandomDrugDealerMenu();
-        //    //}
-        //    //else
-        //    //{
-        //    //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
-        //    //}
 
-        //}
-        SpawnNoGunAttackers();
+
+            //if(RandomItems.RandomPercent(50))
+            //{
+            myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+            //}
+            //else
+            //{
+            //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+            //}
+
+            //}
+        }
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            Player.CurrentVehicle.HasUpdatedPlateType = true;
+
+
+            int CurrentPlateStyleIndex = NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle);
+            EntryPoint.WriteToConsole($"Plate 1: CurrentPlateStyleIndex {CurrentPlateStyleIndex}");
+
+            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int newPlateStyleIndex))
+            {
+
+
+
+                PlateType CurrentType = PlateTypes.GetPlateType(CurrentPlateStyleIndex);
+                if (CurrentType != null && Player.CurrentVehicle.CanUpdatePlate)
+                {
+                    EntryPoint.WriteToConsole($"Plate 2: newPlateStyleIndex {newPlateStyleIndex}");
+                    PlateType NewType = PlateTypes.GetPlateType(newPlateStyleIndex);//PlateTypes.GetRandomPlateType();
+                    if (NewType != null)
+                    {
+                        EntryPoint.WriteToConsole("Plate 3");
+                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                        if (NewPlateNumber != "")
+                        {
+                            EntryPoint.WriteToConsole("Plate 4");
+                            Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
+                            Player.CurrentVehicle.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                            Player.CurrentVehicle.CarPlate.PlateNumber = NewPlateNumber;
+                        }
+                        if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
+                        {
+                            EntryPoint.WriteToConsole($"OldPlateType {CurrentType.Index} {CurrentType.State} {CurrentType.Description}");
+                            int test = NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES");
+                            EntryPoint.WriteToConsole($"Total Plates: {test} NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
+                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
+                            Player.CurrentVehicle.OriginalLicensePlate.PlateType = NewType.Index;
+                            Player.CurrentVehicle.CarPlate.PlateType = NewType.Index;
+                        }
+                        // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    }
+                }
+            }
+        }
+
+        //SpawnNoGunAttackers();
 
         //SpawnGunAttackers();
 

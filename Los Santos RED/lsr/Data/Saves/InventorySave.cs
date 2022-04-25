@@ -11,12 +11,12 @@ public class InventorySave
     {
 
     }
-    public InventorySave(string modItemName, List<float> remainingPercent)
+    public InventorySave(string modItemName, float remainingPercent)
     {
         ModItemName = modItemName;
         RemainingPercent = remainingPercent;
     }
 
     public string ModItemName { get; set; }
-    public List<float> RemainingPercent { get; set; } = new List<float>() { 0.0f };
+    public float RemainingPercent { get; set; } = 0.0f;
 }

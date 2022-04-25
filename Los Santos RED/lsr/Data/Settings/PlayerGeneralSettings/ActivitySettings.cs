@@ -14,14 +14,40 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("If disabled, the gesture menu will stay open for you to continually use gestures.")]
     public bool CloseMenuOnGesture { get; set; }
 
+
+    [Description("Allow the player to start converstaions with random peds.")]
+    public bool AllowPedConversations { get; set; }
+    [Description("Allow the player to loot dead or unconscious peds.")]
+    public bool AllowPedLooting { get; set; }
+    [Description("Allow the player to drag dead or unconscious peds.")]
+    public bool AllowDraggingOtherPeds { get; set; }
+    [Description("Allow the player to hold a ped hostage at gunpoint.")]
+    public bool AllowTakingOtherPedsHostage { get; set; }
+    [Description("Allow the player to start random scenarios around the world.")]
+    public bool AllowStartingScenarios { get; set; }
+    [Description("Allow the player to go into crouch mode.")]
+    public bool AllowPlayerCrouching { get; set; }
+
     public ActivitySettings()
     {
         SetDefault();
+#if DEBUG
+        AllowDraggingOtherPeds = true;
+        AllowTakingOtherPedsHostage = true;
+#endif
     }
     public void SetDefault()
     {
         TeleportWhenSitting = false;
         SetNoTableCollisionWhenSitting = true;
         CloseMenuOnGesture = false;
+
+        AllowPedConversations = true;
+        AllowPedLooting = true;
+        AllowDraggingOtherPeds = false;
+        AllowTakingOtherPedsHostage = false;
+        AllowStartingScenarios = false;
+        AllowPlayerCrouching = false;
+
     }
 }

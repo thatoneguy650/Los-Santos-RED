@@ -22,34 +22,18 @@ namespace LosSantosRED.lsr.Player
         }
         public bool UseTool(ToolTypes tool)
         {
-            foreach(InventoryItem ii in ItemsList.Where(x=> x.ModItem.ToolType == tool).OrderBy(x=> x.RemainingPercent.Sum()))
+            foreach(InventoryItem ii in ItemsList.Where(x=> x.ModItem.ToolType == tool).OrderBy(x=> x.RemainingPercent))
             {
                 if(Use(ii.ModItem))
                 {
-                    ItemsList.RemoveAll(x => x.RemainingPercent.Sum() <= 0.005f);
+                    ItemsList.RemoveAll(x => x.RemainingPercent <= 0.005f);
                     return true;
                 }
             }
             return false;
         }
         public bool HasTool(ToolTypes tool) => ItemsList.Any(x => x.ModItem.ToolType == tool);
-        public void Add(ModItem modItem, int amount)
-        {
-            if (modItem != null)
-            {
-                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-                if (ExistingItem == null)
-                {
-                    ItemsList.Add(new InventoryItem(modItem, amount));
-                }
-                else
-                {
-                    ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
-                }
-            }
-        }
-
-        public void Set(ModItem modItem, List<float> remainingPercent)
+        public void Add(ModItem modItem, float remainingPercent)
         {
             if (modItem != null)
             {
@@ -60,10 +44,41 @@ namespace LosSantosRED.lsr.Player
                 }
                 else
                 {
-                    ExistingItem.RemainingPercent = remainingPercent;//ExistingItem.Amount += amount;
+                    ExistingItem.RemainingPercent += remainingPercent;//ExistingItem.Amount += amount;
                 }
             }
         }
+        //public void Add(ModItem modItem, int amount)
+        //{
+        //    if (modItem != null)
+        //    {
+        //        InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+        //        if (ExistingItem == null)
+        //        {
+        //            ItemsList.Add(new InventoryItem(modItem, amount));
+        //        }
+        //        else
+        //        {
+        //            ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
+        //        }
+        //    }
+        //}
+
+        //public void Set(ModItem modItem, float remainingPercent)
+        //{
+        //    if (modItem != null)
+        //    {
+        //        InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+        //        if (ExistingItem == null)
+        //        {
+        //            ItemsList.Add(new InventoryItem(modItem) { RemainingPercent = remainingPercent });
+        //        }
+        //        else
+        //        {
+        //            ExistingItem.RemainingPercent = remainingPercent;//ExistingItem.Amount += amount;
+        //        }
+        //    }
+        //}
 
 
         public bool Remove(ModItem modItem)
@@ -92,7 +107,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (ExistingItem.Amount > amount)
                     {
-                        ExistingItem.RemoveAmount(amount);//ExistingItem.Amount -= amount;
+                        ExistingItem.RemovePercent(amount);//ExistingItem.Amount -= amount;
                     }
                     else
                     {

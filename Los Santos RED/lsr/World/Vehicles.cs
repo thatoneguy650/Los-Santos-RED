@@ -404,9 +404,10 @@ public class Vehicles
                         vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                         vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                     }
-                    if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                    if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                     {
-                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                        //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
+                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                         vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                         vehicleExt.CarPlate.PlateType = NewType.Index;
                     }
@@ -427,8 +428,9 @@ public class Vehicles
                         vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                         vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                     }
-                    if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                    if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                     {
+                        //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
                         NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                         vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                         vehicleExt.CarPlate.PlateType = NewType.Index;
@@ -438,7 +440,7 @@ public class Vehicles
             }
             else
             {
-                if (RandomItems.RandomPercent(15) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
+                if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
                 {
                     PlateType NewType = PlateTypes.GetRandomPlateType();
                     if (NewType != null)
@@ -450,9 +452,10 @@ public class Vehicles
                             vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                             vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                         }
-                        if (NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES") <= NewType.Index)
+                        if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                         {
-                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                            //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
+                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                             vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                             vehicleExt.CarPlate.PlateType = NewType.Index;
                         }

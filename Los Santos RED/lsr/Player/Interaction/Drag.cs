@@ -35,6 +35,7 @@ public class Drag : DynamicActivity
     private VehicleExt ClosestVehicle;
     private Vector3 TrunkPosition;
     private bool LoadBody;
+    private bool isBackingUp;
 
     public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world)
     {
@@ -87,7 +88,7 @@ public class Drag : DynamicActivity
             AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
             
             //AttachPeds();
-            bool hasCompletedTasks = DoDragAnimation();
+            bool hasCompletedTasks = StartDrag();
             Player.ButtonPromptList.RemoveAll(x => x.Group == "Drop");
             Player.ButtonPromptList.RemoveAll(x => x.Group == "Load");
             if (hasCompletedTasks)
@@ -212,7 +213,7 @@ public class Drag : DynamicActivity
 
         return angle;
     }
-    private bool DoDragAnimation()
+    private bool StartDrag()
     {
         
         if (Player.CurrentWeapon != null)
@@ -265,7 +266,7 @@ public class Drag : DynamicActivity
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.5f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
-            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+            //NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
         }
         if (PlayAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false))
         {
@@ -278,7 +279,10 @@ public class Drag : DynamicActivity
     }
     private bool PlayAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels)
     {
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 2.0f, -2.0f, -1, flag, 0, false, false, false);
+        if (!repeat)
+        {
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 2.0f, -2.0f, -1, flag, 0, false, false, false);
+        }
         uint GameTimeStartedAnimation = Game.GameTime;
         float AnimationTime = 0.0f;
         uint GameTimeLastCheckedVehicle = 0;
@@ -297,7 +301,7 @@ public class Drag : DynamicActivity
             if(repeat)
             {
                 HeadingLoop();
-
+                DirectionLoop();
                 if (GameTimeLastCheckedVehicle == 0 || Game.GameTime - GameTimeLastCheckedVehicle >= 500)
                 {
                     ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
@@ -318,7 +322,7 @@ public class Drag : DynamicActivity
                 }
 
 
-                if (1==0 &&                                                 ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())//turned off for now
+                if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())//turned off for now
                 {
                     if (!Player.ButtonPromptList.Any(x => x.Identifier == "Load"))
                     {
@@ -397,7 +401,7 @@ public class Drag : DynamicActivity
                     NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
 
-                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 0.9f);
+                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 0.99f);
                 }
                 GameFiber.Wait(1000);
                 if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())
@@ -409,7 +413,62 @@ public class Drag : DynamicActivity
         Cancel();
     }
 
+    private void DirectionLoop()
+    {
+        bool isMoveUpPressed = false;
+        bool isMoveDownPressed = false;
 
+        if (Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveDown))
+        {
+            isMoveDownPressed = true;
+        }
+        if (Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveUp))
+        {
+            isMoveUpPressed = true;
+        }
+        if (isMoveDownPressed)
+        {
+            EntryPoint.WriteToConsole("DRAG DOWN PRESSED");
+            if (!isBackingUp)
+            {
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                if (Ped.Pedestrian.Exists())
+                {
+                    NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                }
+                isBackingUp = true;
+            }
+        }
+        else
+        {
+            if (isBackingUp)
+            {
+
+
+                float AnimationTime = 1.0f;// NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "combat@drag_ped@", "injured_drag_plyr");
+                if (AnimationTime >= 0.95f)
+                {
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_putdown_plyr", 8.0f, -8.0f, -1, 2, 0, true, true, true);
+                    // NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, "combat@drag_ped@", "injured_pickup_back_plyr", 0.1f);
+                    // NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                    if (Ped.Pedestrian.Exists())
+                    {
+                        NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                    }
+                    isBackingUp = false;
+                }
+            }
+            else if(!isBackingUp)
+            {
+                NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, "combat@drag_ped@", "injured_putdown_plyr", 0.0f);
+                if (Ped.Pedestrian.Exists())
+                {
+                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 0.0f);
+                }
+            }
+        }
+    }
     private void HeadingLoop()
     {
         bool isLeftPressed = false;

@@ -24,7 +24,7 @@ public class ButtonPrompts
     public void Update()
     {
         bool addedPromptGroup = false;
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed)
+        if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
         {
             PersonInteractingPrompts();
             addedPromptGroup = true;
@@ -34,11 +34,9 @@ public class ButtonPrompts
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
         }
-
-
         if(!addedPromptGroup)
         {
-            if (Player.CanLootLookedAtPed)
+            if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
             {
                 PersonLootingPrompts();
                 addedPromptGroup = true;
@@ -47,7 +45,7 @@ public class ButtonPrompts
             {
                 Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
             }
-            if (Player.CanDragLookedAtPed)
+            if (Player.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {
                 PersonDraggingPrompts();
                 addedPromptGroup = true;
@@ -56,10 +54,8 @@ public class ButtonPrompts
             {
                 Player.ButtonPromptList.RemoveAll(x => x.Group == "Drag");
             }
-
         }
-        
-        if (Player.CanGrabLookedAtPed)
+        if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;
@@ -77,7 +73,7 @@ public class ButtonPrompts
         {
             Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
         }
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario)//currently isnearscenario is turned off
+        if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();
             addedPromptGroup = true;

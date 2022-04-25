@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr.Data
             InventoryItems.Clear();
             foreach (InventoryItem cii in player.Inventory.Items)
             {
-                InventoryItems.Add(new InventorySave(cii.ModItem.Name, cii.RemainingPercent.ToList()));
+                InventoryItems.Add(new InventorySave(cii.ModItem.Name, cii.RemainingPercent));
             }
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
@@ -200,7 +200,7 @@ namespace LosSantosRED.lsr.Data
                 player.Inventory.Clear();
                 foreach (InventorySave cii in InventoryItems)
                 {
-                    player.Inventory.Add(modItems.Get(cii.ModItemName), cii.RemainingPercent.Count());
+                    player.Inventory.Add(modItems.Get(cii.ModItemName), (int)cii.RemainingPercent);
                 }
                 player.ClearVehicleOwnership();
                 foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)

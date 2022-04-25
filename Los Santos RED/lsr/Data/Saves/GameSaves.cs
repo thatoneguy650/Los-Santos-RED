@@ -116,12 +116,12 @@ public class GameSaves : IGameSaves
         AlexisGameSave.PlayerHeading = 45f;
         AlexisGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
 
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f }));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("DIC Lighter", new List<float>() { 1.0f }));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Can of eCola", new List<float>() { 1.0f, 1.0f}));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", new List<float>() { 1.0f, 1.0f, 1.0f, 1.0f }));
-        AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", new List<float>() { 1.0f }));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("DIC Lighter", 1.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Can of eCola", 2.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", 15.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", 1.0f));
 
 
         AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30,"CHAR_BLANK_ENTRY"));

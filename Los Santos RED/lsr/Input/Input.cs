@@ -123,7 +123,7 @@ namespace LosSantosRED.lsr
 
         private void StanceCheck()
         {
-            if(!Player.IsInVehicle)
+            if(Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
             {
                 if (!RecentlyPressedCrouch)
                 {

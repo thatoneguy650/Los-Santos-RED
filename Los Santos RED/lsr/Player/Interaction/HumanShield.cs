@@ -27,6 +27,7 @@ public class HumanShield : DynamicActivity
 
     private bool isAnimationPaused = false;
     private int storedViewMode;
+    private bool isBackingUp;
 
     //private WeaponInformation previousWeapon;
 
@@ -64,12 +65,16 @@ public class HumanShield : DynamicActivity
         Ped.Pedestrian.KeepTasks = true;
         Ped.Pedestrian.IsPersistent = true;
         AnimationDictionary.RequestAnimationDictionay("anim@gangops@hostage@");
+
+
+        AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
+
     }
     private void TakHostage()
     {
         SetCloseCamera();
         EntryPoint.WriteToConsole("Taking Hostage");
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1//NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
         Ped.Pedestrian.AttachTo(Player.Character, 0, new Vector3(-0.31f, 0.12f, 0.04f), new Rotator(0, 0, 0));
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1, 0, false, false, false);//-1
         uint GameTimeStarted = Game.GameTime;
@@ -84,6 +89,8 @@ public class HumanShield : DynamicActivity
         }
         while (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && Player.IsAliveAndFree)
         {
+            HeadingLoop();
+            DirectionLoop();
             if (Player.ButtonPromptList.Any(x => x.Identifier == "Execute" && x.IsPressedNow))//demand cash?
             {
                 Player.ButtonPromptList.RemoveAll(x => x.Group == "Hostage");
@@ -96,8 +103,6 @@ public class HumanShield : DynamicActivity
                 ReleaseHostage();
                 break;
             }
-
-
             if(Player.Character.IsAiming)
             {
                 if (!isAnimationPaused)
@@ -105,16 +110,15 @@ public class HumanShield : DynamicActivity
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
                     isAnimationPaused = true;
                 }
-                //Player.Character.IsArmIkEnabled = true;
             }
             else
             {
                 if(isAnimationPaused)
                 {
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 50, 0, false, false, false);
+                   // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
                     isAnimationPaused = false;
                 }
-                //Player.Character.IsArmIkEnabled = false;
             }
 
             NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, 0.75f);
@@ -125,6 +129,71 @@ public class HumanShield : DynamicActivity
 
         SetRegularCamera();
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Player.Character, (int)PedConfigFlags.PED_FLAG_NO_PLAYER_MELEE, false);
+    }
+    private void DirectionLoop()
+    {
+        bool isMoveUpPressed = false;
+        bool isMoveDownPressed = false;
+
+        if (Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveDown))
+        {
+            isMoveDownPressed = true;
+        }
+        if (Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveUp))
+        {
+            isMoveUpPressed = true;
+        }
+        if (isMoveDownPressed)
+        {
+            EntryPoint.WriteToConsole("SHIELD DOWN PRESSED");
+            if(!isBackingUp)
+            {
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                isBackingUp = true;
+            }
+        }
+        //else if (isMoveUpPressed)
+        //{
+        //    EntryPoint.WriteToConsole("SHIELD UP PRESSED");
+        //}
+        else
+        {
+            if (isBackingUp)
+            {
+
+                float AnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "anim@gangops@hostage@", "perp_idle");
+
+
+
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
+                NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, "anim@gangops@hostage@", "perp_idle", AnimTime);
+                isBackingUp = false;
+            }
+        }
+    }
+
+    private void HeadingLoop()
+    {
+        bool isLeftPressed = false;
+        bool isRightPressed = false;
+
+        if (Game.IsControlPressed(2, GameControl.MoveRightOnly) || Game.IsControlPressed(2, GameControl.MoveRight))
+        {
+            isRightPressed = true;
+        }
+        if (Game.IsControlPressed(2, GameControl.MoveLeftOnly) || Game.IsControlPressed(2, GameControl.MoveLeft))
+        {
+            isLeftPressed = true;
+        }
+        if (isRightPressed)
+        {
+            Player.Character.Heading -= 0.7f;
+        }
+        else if (isLeftPressed)
+        {
+            Player.Character.Heading += 0.7f;
+        }
     }
 
     private void ReleaseHostage()

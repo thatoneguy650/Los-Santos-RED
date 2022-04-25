@@ -83,7 +83,7 @@ public class Pedestrians
         }
     }
     public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
-    public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && x.DistanceToPlayer <= 150f);
+    public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned
     {
@@ -583,8 +583,6 @@ public class Pedestrians
         }
         GameTimeLastCreatedPeds = Game.GameTime;
     }
-
-
     public void MarkPedAsRevived(PedExt pedExt)
     {
         if(pedExt.IsDead)
@@ -593,7 +591,6 @@ public class Pedestrians
             pedExt.IsDead = false;
             AddEntity(pedExt);
         }
-
     }
     private ShopMenu GetIllicitMenu()
     {
