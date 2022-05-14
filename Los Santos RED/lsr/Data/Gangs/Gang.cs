@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class Gang
@@ -23,36 +24,36 @@ public class Gang
         ContactIcon = "CHAR_DEFAULT";
         MemberName = _MemberName;
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _MemberName)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, string peopleID, string vehiclesID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string _MemberName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
         ShortName = _ShortName;
-        Personnel = _CopModels;
+        PersonnelID = peopleID;
         ColorString = _AgencyColorString;
-        Vehicles = _Vehicles;
+        VehiclesID = vehiclesID;
         LicensePlatePrefix = _LicensePlatePrefix;
-        MeleeWeapons = meleeWeapons;
-        SideArms = sideArms;
-        LongGuns = longGuns;
+        MeleeWeaponsID = meleeWeaponsID;
+        SideArmsID = sideArmsID;
+        LongGunsID = longGunsID;
         ContactName = _ShortName;
         ContactIcon = "CHAR_DEFAULT";
         MemberName = _MemberName;
     }
-    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> meleeWeapons, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string _ContactName, string contactIcon, string _MemberName)
+    public Gang(string _ColorPrefix, string _ID, string _FullName, string _ShortName, string _AgencyColorString, string peopleID, string vehiclesID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string _ContactName, string contactIcon, string _MemberName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
         ShortName = _ShortName;
-        Personnel = _CopModels;
+        PersonnelID = peopleID;
         ColorString = _AgencyColorString;
-        Vehicles = _Vehicles;
+        VehiclesID = vehiclesID;
         LicensePlatePrefix = _LicensePlatePrefix;
-        MeleeWeapons = meleeWeapons;
-        SideArms = sideArms;
-        LongGuns = longGuns;
+        MeleeWeaponsID = meleeWeaponsID;
+        SideArmsID = sideArmsID;
+        LongGunsID = longGunsID;
         ContactName = _ContactName;
         ContactIcon = contactIcon;
         MemberName = _MemberName;
@@ -139,14 +140,48 @@ public class Gang
 
     public float PercentageTrustingOfPlayer { get; set; } = 60f;
 
-    public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
+
     public List<string> EnemyGangs = new List<string>();
     public bool IsFedUpWithPlayer { get; set; } = false;
+
+
+
+
+    [XmlIgnore]
+    public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
+    public string HeadDataGroupID { get; set; }
+    [XmlIgnore]
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
+    public string PersonnelID { get; set; }
+    [XmlIgnore]
     public List<IssuableWeapon> MeleeWeapons { get; set; } = new List<IssuableWeapon>();
+    public string MeleeWeaponsID { get; set; }
+    [XmlIgnore]
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
+    public string SideArmsID { get; set; }
+    [XmlIgnore]
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
+    public string LongGunsID { get; set; }
+    [XmlIgnore]
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
+    public string VehiclesID { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public string MemberName { get; set; }
 
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;

@@ -61,6 +61,10 @@ public class WeaponSway
             {
                 return;
             }
+            if(Player.IsInFirstPerson && !Settings.SettingsManager.SwaySettings.ApplySwayInFirstPerson)
+            {
+                return;
+            }
             ApplySway();
         }
     }
@@ -81,6 +85,11 @@ public class WeaponSway
         }
         CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
         AdjustHeading();
+
+
+
+
+
         if (Math.Abs(AdjustedHeading) > 0f)
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
@@ -144,6 +153,14 @@ public class WeaponSway
         {
             AdjustedPitch *= -1.0f;
         }
+
+        if(Player.IsInFirstPerson)
+        {
+            AdjustedPitch *= 0.000000001f;
+            AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalFirstPersonSwayAdjuster;
+        }
+
+
         if (Player.IsInVehicle)
         {       
             AdjustedPitch *= 0.1f;
@@ -185,6 +202,13 @@ public class WeaponSway
         {
             AdjustedHeading *= -1.0f;
         }
+
+        if(Player.IsInFirstPerson)
+        {
+            AdjustedHeading *= 0.000000001f;
+            AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalFirstPersonSwayAdjuster;
+        }
+
         if (Player.IsInVehicle)
         {
             AdjustedHeading *= 3.0f;

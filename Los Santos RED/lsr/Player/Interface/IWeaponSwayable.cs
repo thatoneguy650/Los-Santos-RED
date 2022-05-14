@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         string DebugLine4 { get; set; }
         bool IsRagdoll { get; }
         bool IsStunned { get; }
+        bool IsInFirstPerson { get; }
     }
 }

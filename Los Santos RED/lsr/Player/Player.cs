@@ -462,6 +462,8 @@ namespace Mod
         private bool CanYell => !IsYellingTimeOut;
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
 
+        public bool IsInFirstPerson { get; private set; }
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -2115,6 +2117,36 @@ namespace Mod
                 }
 
             }
+
+
+
+            if(IsInVehicle)
+            {
+                int VehicleViewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
+                if (VehicleViewMode == 4)
+                {
+                    IsInFirstPerson = true;
+                }
+                else
+                {
+                    IsInFirstPerson = false;
+                }
+            }
+            else
+            {
+                int ViewMode = NativeFunction.Natives.GET_FOLLOW_PED_CAM_VIEW_MODE<int>();
+                if (ViewMode == 4)
+                {
+                    IsInFirstPerson = true;
+                }
+                else
+                {
+                    IsInFirstPerson = false;
+                }
+            }
+
+
+
             PlayerTasks.Update();
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }

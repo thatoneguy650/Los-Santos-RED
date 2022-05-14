@@ -72,6 +72,12 @@ namespace LosSantosRED.lsr
         private object PrevLastRanSenaryTask;
         private object LastRanSenaryTask;
 
+
+        private Heads Heads;
+        private DispatchableVehicles DispatchableVehicles;
+        private DispatchablePeople DispatchablePeople;
+        private IssueableWeapons IssueableWeapons;
+
         public ModController()
         {
         }
@@ -252,19 +258,48 @@ namespace LosSantosRED.lsr
 
             //VehicleScannerAudio = new VehicleScannerAudio();
             //VehicleScannerAudio.ReadConfig();
-           // GameFiber.Yield();
+            // GameFiber.Yield();
             //ZoneScannerAudio = new ZoneScannerAudio();
             //ZoneScannerAudio.ReadConfig();
             //GameFiber.Yield();
             //StreetScannerAudio = new StreetScannerAudio();
             //StreetScannerAudio.ReadConfig();
             //GameFiber.Yield();
+
+
+
+            Heads = new Heads();
+            Heads.ReadConfig();
+            GameFiber.Yield();
+
+            DispatchableVehicles = new DispatchableVehicles();
+            DispatchableVehicles.ReadConfig();
+            GameFiber.Yield();
+
+
+            DispatchablePeople = new DispatchablePeople();
+            DispatchablePeople.ReadConfig();
+            GameFiber.Yield();
+
+            IssueableWeapons = new IssueableWeapons();
+            IssueableWeapons.ReadConfig();
+            GameFiber.Yield();
+
+
             Agencies = new Agencies();
             Agencies.ReadConfig();
+
+
+            Agencies.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+
+
             GameFiber.Yield();
 
             Gangs = new Gangs();
             Gangs.ReadConfig();
+
+            Gangs.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+
             GameFiber.Yield();
 
             PlacesOfInterest = new PlacesOfInterest(ShopMenus, Gangs);
@@ -301,6 +336,17 @@ namespace LosSantosRED.lsr
             Intoxicants.ReadConfig();
 
             GameFiber.Yield();
+
+
+
+
+
+
+
+
+
+
+
         }
         private void SetupModTasks()
         {

@@ -36,7 +36,7 @@ public class Jurisdictions : IJurisdictions
         }
         else
         {
-            DefaultZoneConfig_Simple();
+            //DefaultZoneConfig_Simple();
             DefaultZoneConfig();
         }
 
@@ -54,7 +54,7 @@ public class Jurisdictions : IJurisdictions
         }
         else
         {
-            DefaultCountyConfig_Simple();
+            //DefaultCountyConfig_Simple();
             DefaultCountyConfig();
         }
     }

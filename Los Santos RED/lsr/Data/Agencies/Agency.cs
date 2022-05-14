@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class Agency
@@ -15,18 +16,18 @@ public class Agency
     public Agency()
     {
     }
-    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<DispatchablePerson> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns, string groupName)
+    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string sideArmsID, string longGunsID, string groupName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
-        Personnel = _CopModels;
+        PersonnelID = _DispatchablePeropleGroupID;
         ColorString = _AgencyColorString;
-        Vehicles = _Vehicles;
+        VehiclesID = _DispatchableVehicleGroupID;
         Classification = _AgencyClassification;
         LicensePlatePrefix = _LicensePlatePrefix;
-        SideArms = sideArms;
-        LongGuns = longGuns;
+        SideArmsID = sideArmsID;
+        LongGunsID = longGunsID;
         GroupName = groupName;
     }
     public Classification Classification { get; set; } = Classification.Other;
@@ -66,11 +67,21 @@ public class Agency
     public int SpawnLimit { get; set; } = 99;
     public bool SpawnsOnHighway { get; set; } = false;
     public string GroupName { get; set; } = "Cop";
+    [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
+    public string HeadDataGroupID { get; set; }
+    [XmlIgnore]
     public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
+    public string PersonnelID { get; set; }
+    [XmlIgnore]
     public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
+    public string SideArmsID { get; set; }
+    [XmlIgnore]
     public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
+    public string LongGunsID { get; set; }
+    [XmlIgnore]
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
+    public string VehiclesID { get; set; }
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
     {

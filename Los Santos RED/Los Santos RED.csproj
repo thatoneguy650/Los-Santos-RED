@@ -104,10 +104,14 @@
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IDispatchablePeople.cs" />
+    <Compile Include="lsr\Data\Interface\IDispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Interface\IGangs.cs" />
     <Compile Include="lsr\Data\Interface\IGangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IHeads.cs" />
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
+    <Compile Include="lsr\Data\Interface\IIssuableWeapons.cs" />
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Intoxicants.cs" />
@@ -120,6 +124,9 @@
     <Compile Include="lsr\Data\Location\PossibleLocations.cs" />
     <Compile Include="lsr\Data\Items\ShopMenus.cs" />
     <Compile Include="lsr\Data\Items\ModItems.cs" />
+    <Compile Include="lsr\Data\Peds\DispatchablePersonGroup.cs" />
+    <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
+    <Compile Include="lsr\Data\Peds\Heads.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Saves\InventorySave.cs" />
     <Compile Include="lsr\Data\Saves\SavedContact.cs" />
@@ -141,6 +148,11 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ScannerSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherReportingSettings.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicleGroup.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
+    <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
+    <Compile Include="lsr\Data\Weapons\IssuableWeaponsGroup.cs" />
+    <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
@@ -526,7 +538,7 @@
     <Compile Include="lsr\Weapon\WeaponVariation.cs" />
     <Compile Include="lsr\Locations\Zone.cs" />
     <Compile Include="lsr\Data\Agencies\Agencies.cs" />
-    <Compile Include="lsr\Data\Weapons.cs" />
+    <Compile Include="lsr\Data\Weapons\Weapons.cs" />
     <Compile Include="lsr\Data\Peds\Names.cs" />
     <Compile Include="lsr\Data\Location\Streets.cs" />
     <Compile Include="lsr\Weapon\StoredWeapon.cs" />
