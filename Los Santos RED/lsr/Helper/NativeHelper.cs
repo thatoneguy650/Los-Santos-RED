@@ -2,6 +2,7 @@
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -248,6 +249,14 @@ namespace LosSantosRED.lsr.Helper
                 {
                     myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
+
+
+                NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
+                if(structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
+                {
+                    myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
+                }
+
                 return myPedVariation;
             }
             catch (Exception e)
@@ -256,6 +265,146 @@ namespace LosSantosRED.lsr.Helper
                 return null;
             }
         }
+
+
+
+
+        public static VehicleVariation GetVehicleVariation(Vehicle vehicle)
+        {
+
+            try
+            {
+
+                VehicleVariation vehicleVariation = new VehicleVariation();
+
+                int primaryColor;
+                int secondaryColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", vehicle, &primaryColor, &secondaryColor);
+                }
+                vehicleVariation.PrimaryColor = primaryColor;
+                vehicleVariation.SecondaryColor = secondaryColor;
+
+
+
+
+                vehicleVariation.IsPrimaryColorCustom = NativeFunction.Natives.GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM<bool>(vehicle);
+                if(vehicleVariation.IsPrimaryColorCustom)
+                {
+                    int r1;
+                    int g1;
+                    int b1;
+                    unsafe
+                    {
+                        NativeFunction.CallByName<int>("GET_VEHICLE_CUSTOM_PRIMARY_COLOUR", vehicle, &r1, &g1, &b1);
+                    }
+                    vehicleVariation.CustomPrimaryColor = Color.FromArgb(r1, g1, b1);
+                }
+
+
+                vehicleVariation.IsSecondaryColorCustom = NativeFunction.Natives.GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM<bool>(vehicle);
+                if (vehicleVariation.IsSecondaryColorCustom)
+                {
+                    int r2;
+                    int g2;
+                    int b2;
+                    unsafe
+                    {
+                        NativeFunction.CallByName<int>("GET_VEHICLE_CUSTOM_SECONDARY_COLOUR", vehicle, &r2, &g2, &b2);
+                    }
+                    vehicleVariation.CustomSecondaryColor = Color.FromArgb(r2, g2, b2);
+                }
+
+
+
+
+                int pearlescentColor;
+                int wheelColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOURS", vehicle, &pearlescentColor, &wheelColor);
+                }
+                vehicleVariation.PearlescentColor = pearlescentColor;
+                vehicleVariation.WheelColor = wheelColor;
+
+                int mod1paintType;
+                int mod1color;
+                int mod1PearlescentColor;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_MOD_COLOR_1", vehicle, &mod1paintType, &mod1color, &mod1PearlescentColor);
+                }
+                vehicleVariation.Mod1PaintType = mod1paintType;
+                vehicleVariation.Mod1Color = mod1color;
+                vehicleVariation.Mod1PearlescentColor = mod1PearlescentColor;
+
+                int mod2paintType;
+                int mod2color;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_MOD_COLOR_2", vehicle, &mod2paintType, &mod2color);
+                }
+                vehicleVariation.Mod2PaintType = mod2paintType;
+                vehicleVariation.Mod2Color = mod2color;
+                vehicleVariation.Livery = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(vehicle);
+                vehicleVariation.LicensePlate = new LSR.Vehicles.LicensePlate();
+                vehicleVariation.LicensePlate.PlateNumber = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT<string>(vehicle);
+                vehicleVariation.LicensePlate.PlateType = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(vehicle);
+                vehicleVariation.WheelType = NativeFunction.Natives.GET_VEHICLE_WHEEL_TYPE<int>(vehicle);
+
+
+
+
+                vehicleVariation.WindowTint = NativeFunction.Natives.GET_VEHICLE_WINDOW_TINT<int>(vehicle);
+
+
+                int customWheelID = 23;
+                if(vehicle.IsBike)
+                {
+                    customWheelID = 24;
+                }
+                vehicleVariation.HasCustomWheels = NativeFunction.Natives.GET_VEHICLE_MOD_VARIATION<bool>(vehicle, customWheelID);
+                vehicleVariation.VehicleExtras = new List<VehicleExtra>();
+                for (int i = 0; i < 10; i++)
+                {
+                    if (!NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(vehicle, i))
+                    {
+                        vehicleVariation.VehicleExtras.Add(new VehicleExtra(i, false));
+                    }
+                    else
+                    {
+                        vehicleVariation.VehicleExtras.Add(new VehicleExtra(i, NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(vehicle,i)));
+                    }
+                }
+                vehicleVariation.VehicleToggles = new List<VehicleToggle>();
+                vehicleVariation.VehicleMods = new List<VehicleMod>();
+                for (int i = 0; i < 50; i++)
+                {
+                    if (i >= 17 && i <= 22)
+                    {
+                        bool isToggledOn = NativeFunction.Natives.IS_TOGGLE_MOD_ON<bool>(vehicle, i);
+                        vehicleVariation.VehicleToggles.Add(new VehicleToggle(i, isToggledOn));
+                    }
+                    else
+                    {
+                        int vehicleMod = NativeFunction.Natives.GET_VEHICLE_MOD<int>(vehicle, i);
+                        if(vehicleMod != -1)
+                        {
+                            vehicleVariation.VehicleMods.Add(new VehicleMod(i, vehicleMod));
+                        }
+                    }
+                }
+                return vehicleVariation;
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("GetVehicleVariation! GetVehicleVariation Error; " + e.Message + " " + e.StackTrace, 0);
+                return null;
+            }
+        }
+
+
         public static void ChangeModel(string ModelRequested)
         {
             Model characterModel = new Model(ModelRequested);
@@ -402,5 +551,29 @@ namespace LosSantosRED.lsr.Helper
                     return "";
             }
         }
+    }
+    [StructLayout(LayoutKind.Explicit, Size = 80)]
+    public struct HeadBlendDataStruct
+    {
+        [FieldOffset(0)]
+        public int shapeFirstID;
+        [FieldOffset(8)]
+        public int shapeSecondID;
+        [FieldOffset(16)]
+        public int shapeThirdID;
+        [FieldOffset(24)]
+        public int skinFirstID;
+        [FieldOffset(32)]
+        public int skinSecondID;
+        [FieldOffset(40)]
+        public int skinThirdID;
+        [FieldOffset(48)]
+        public float shapeMix;
+        [FieldOffset(56)]
+        public float skinMix;
+        [FieldOffset(64)]
+        public float thirdMix;
+        [FieldOffset(75)]
+        public bool isParent;
     }
 }

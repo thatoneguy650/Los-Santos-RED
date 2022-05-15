@@ -205,6 +205,7 @@
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
+    <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Variation\RandomHeadData.cs" />
     <Compile Include="lsr\Ped\Variation\RandomRegularHeadData.cs" />
@@ -410,7 +411,11 @@
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
-    <Compile Include="lsr\Vehicle\VehicleVariation.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleMod.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleSaveStatus.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleToggle.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleVariation.cs" />
     <Compile Include="lsr\Weapon\ComponentSlot.cs" />
     <Compile Include="lsr\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Weapon\SelectorOptions.cs" />

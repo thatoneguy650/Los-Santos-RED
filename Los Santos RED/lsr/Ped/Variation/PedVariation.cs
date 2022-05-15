@@ -42,6 +42,7 @@ public class PedVariation
     public HeadBlendData HeadBlendData { get; set; } = new HeadBlendData();
     public int PrimaryHairColor { get; set; } = -1;
     public int SecondaryHairColor { get; set; } = -1;
+    public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
     public void ApplyToPed(Ped ped)
     {
         try
@@ -68,6 +69,10 @@ public class PedVariation
                 {
                     NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
                     NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
+                }
+                foreach(FaceFeature faceFeature in FaceFeatures)
+                {
+                    NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
                 }
             }
         }
@@ -134,6 +139,16 @@ public class PedVariation
                                     {
                                         NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
                                         NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
+
+
+
+                                        foreach (FaceFeature faceFeature in FaceFeatures)
+                                        {
+                                            NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
+                                        }
+
+
+
                                     }
                                     else
                                     {

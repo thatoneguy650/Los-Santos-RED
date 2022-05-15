@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Data
         {
 
         }
-        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, List<VehicleVariation> vehicleVariations)
+        public GameSave(string playerName, int money, string modelName,bool isMale, PedVariation currentModelVariation, List<StoredWeapon> weaponInventory, List<VehicleSaveStatus> vehicleVariations)
         {
             PlayerName = playerName;
             Money = money;
@@ -53,12 +53,12 @@ namespace LosSantosRED.lsr.Data
             {
                 if (car.Vehicle.Exists())
                 {
-                    int primaryColor;
-                    int secondaryColor;
-                    unsafe
-                    {
-                        NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
-                    }
+                    //int primaryColor;
+                    //int secondaryColor;
+                    //unsafe
+                    //{
+                    //    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
+                    //}
 
 
                     uint modelHash;
@@ -69,15 +69,28 @@ namespace LosSantosRED.lsr.Data
                     }
                     bool parsedSuccessfully = uint.TryParse(hex,NumberStyles.HexNumber,CultureInfo.CurrentCulture, out modelHash);
 
+
+
+
+
+
+
                     EntryPoint.WriteToConsole($"STRIPPED NAME {parsedSuccessfully} hex {hex} {modelHash}");
+
+
+                    VehicleSaveStatus vss;
                     if (parsedSuccessfully)//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
                     {
-                        OwnedVehicleVariations.Add(new VehicleVariation(modelHash, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
+                        vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
                     }
                     else
                     {
-                        OwnedVehicleVariations.Add(new VehicleVariation(car.VehicleModelName, primaryColor, secondaryColor, new LicensePlate(car.CarPlate.PlateNumber, car.CarPlate.PlateType, car.CarPlate.IsWanted), car.Vehicle.Position, car.Vehicle.Heading));
+                        vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading); 
                     }
+                    vss.VehicleVariation = NativeHelper.GetVehicleVariation(car.Vehicle);
+                    OwnedVehicleVariations.Add(vss);
+                    
+
                 }
             }
 
@@ -166,7 +179,7 @@ namespace LosSantosRED.lsr.Data
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
-        public List<VehicleVariation> OwnedVehicleVariations { get; set; } = new List<VehicleVariation>();
+        public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
 
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
         public int UndergroundGunsMoneySpent { get; set; }
@@ -203,7 +216,7 @@ namespace LosSantosRED.lsr.Data
                     player.Inventory.Add(modItems.Get(cii.ModItemName), (int)cii.RemainingPercent);
                 }
                 player.ClearVehicleOwnership();
-                foreach (VehicleVariation OwnedVehicleVariation in OwnedVehicleVariations)
+                foreach (VehicleSaveStatus OwnedVehicleVariation in OwnedVehicleVariations)
                 {
                     NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
                     if (SpawnPos != Vector3.Zero)
@@ -220,12 +233,15 @@ namespace LosSantosRED.lsr.Data
 
                         if (NewVehicle.Exists())
                         {
-                            NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
-                            NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
-                            if (OwnedVehicleVariation.PrimaryColor != -1)
-                            {
-                                NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
-                            }
+                            //NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
+                            //NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
+                            //if (OwnedVehicleVariation.PrimaryColor != -1)
+                            //{
+                            //    NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
+                            //}
+
+
+
                             NewVehicle.Wash();
                             VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
                             if (MyVeh == null)
@@ -233,6 +249,12 @@ namespace LosSantosRED.lsr.Data
                                 MyVeh = new VehicleExt(NewVehicle, settings);
                                 MyVeh.HasUpdatedPlateType = true;
                                 World.Vehicles.AddEntity(MyVeh, ResponseType.None);
+
+                                OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
+
+
+
+
                             }
                             //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
                             player.TakeOwnershipOfVehicle(MyVeh,false);
@@ -328,6 +350,7 @@ namespace LosSantosRED.lsr.Data
             catch (Exception e)
             {
                 Game.FadeScreenIn(0);
+                EntryPoint.WriteToConsole("GetVehicleVariation! GetVehicleVariation Error; " + e.Message + " " + e.StackTrace, 0);
                 Game.DisplayNotification("Error Loading Save");
             }
         }
