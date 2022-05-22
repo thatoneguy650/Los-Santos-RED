@@ -68,7 +68,7 @@ public class LESpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
-        EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+        EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -86,6 +86,7 @@ public class LESpawnTask : SpawnTask
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
+                    EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
                 }
                 else
                 {
@@ -152,7 +153,7 @@ public class LESpawnTask : SpawnTask
             }
             else
             {
-                createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
+                createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 20f), SpawnLocation.Heading);//createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
             }
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
@@ -193,13 +194,14 @@ public class LESpawnTask : SpawnTask
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 }
                 CreatedVehicle.WasModSpawned = true;
+                CreatedVehicle.IsPolice = true;
                 if (Agency != null)
                 {
                     World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
                 }
                 if (SpawnedVehicle.Exists())
                 {
-                    if(VehicleType.IsHelicopter)
+                    if (VehicleType.IsHelicopter)
                     {
                         NativeFunction.Natives.SET_HELI_BLADES_FULL_SPEED(SpawnedVehicle);
                     }
@@ -237,6 +239,25 @@ public class LESpawnTask : SpawnTask
     }
     private void PutPedInVehicle(PedExt Person, int seat)
     {
+
+        //if (seat != -1)
+        //{
+
+
+        //    int? FreeSeat = LastCreatedVehicle.Vehicle.GetFreePassengerSeatIndex();
+        //    if (FreeSeat != null)
+        //    {
+        //        seat = FreeSeat.Value;
+        //        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
+        //        Person.AssignedVehicle = LastCreatedVehicle;
+        //        Person.AssignedSeat = seat;
+        //        Person.UpdateVehicleState();
+        //    }
+        //}
+        //else
+        //{
+
+        //}
         Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = seat;

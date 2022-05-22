@@ -192,6 +192,7 @@ public class EMTSpawnTask :SpawnTask
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 }
                 CreatedVehicle.WasModSpawned = true;
+                CreatedVehicle.IsEMT = true;
                 if (Agency != null)
                 {
                     World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);

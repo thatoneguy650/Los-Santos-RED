@@ -82,6 +82,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Dispose()
         {
+            if(RobberyLocation != null)
+            {
+                RobberyLocation.IsPlayerInterestedInLocation = false;
+            }
             Player.ButtonPrompts.RemovePrompts("RobberyStart");
             CleanupRobbers();
         }
@@ -611,9 +615,37 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.PawnShops);
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Pharmacies);
             //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
-            RobberyLocation = PossibleSpots.PickRandom();
-         //   RobberyLocation = PlacesOfInterest.PossibleLocations.ConvenienceStores.FirstOrDefault(x => x.Name == "24/7 Chumash");
+            //RobberyLocation = PossibleSpots.Where(x=> x..PickRandom();
 
+            List<BasicLocation> AvailableSpots = new List<BasicLocation>();
+
+            foreach (BasicLocation possibleSpot in PossibleSpots)
+            {
+                bool isNear = false;
+
+
+
+                foreach(BasicLocation policeStation in PlacesOfInterest.PossibleLocations.PoliceStations)//do not want to do robberies outside the police stations.....
+                {
+                    if(possibleSpot.CheckIsNearby(policeStation.CellX,policeStation.CellY,2))
+                    {
+                        isNear = true;
+                        break;
+                    }
+                }
+
+
+
+                if(!isNear)
+                {
+                    AvailableSpots.Add(possibleSpot);
+                }
+
+
+
+            }
+            //   RobberyLocation = PlacesOfInterest.PossibleLocations.ConvenienceStores.FirstOrDefault(x => x.Name == "24/7 Chumash");
+            RobberyLocation = AvailableSpots.PickRandom();
 
 
             HiringGangDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == HiringGang.ID);
@@ -649,6 +681,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             hasAddedArmedRobberyCrime = false;
             isFadedOut = false;
             SpawnedRobbers.Clear();
+
+
+            if(RobberyLocation != null)
+            {
+                RobberyLocation.IsPlayerInterestedInLocation = true;
+            }
 
             EntryPoint.WriteToConsole($"You are hired to wheelman!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");

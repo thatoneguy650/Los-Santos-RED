@@ -24,6 +24,13 @@ namespace LSR.Vehicles
 
         private bool IsOnFire;
 
+
+
+        public bool IsPolice { get; set; } = false;
+        public bool IsEMT { get; set; } = false;
+        public bool IsFire { get; set; } = false;
+
+
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public Vehicle Vehicle { get; set; } = null;

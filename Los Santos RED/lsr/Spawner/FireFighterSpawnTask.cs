@@ -190,6 +190,7 @@ public class FireFighterSpawnTask : SpawnTask
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
                 }
                 CreatedVehicle.WasModSpawned = true;
+                CreatedVehicle.IsFire = true;
                 if (Agency != null)
                 {
                     World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);

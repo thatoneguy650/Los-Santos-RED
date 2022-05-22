@@ -291,5 +291,21 @@ public class GangRelationships
         }
         
     }
+
+    public void OnLostWanted()
+    {
+        foreach (GangReputation gangRep in GangReputations)
+        {
+            gangRep.ResetRelationshipGroups();
+        }
+    }
+
+    public void OnBecameWanted()
+    {
+        foreach (GangReputation gangRep in GangReputations)
+        {
+            gangRep.SetRelationshipGroupNeutral();
+        }      
+    }  
 }
 

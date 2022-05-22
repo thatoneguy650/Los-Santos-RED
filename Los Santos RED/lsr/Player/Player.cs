@@ -1189,7 +1189,7 @@ namespace Mod
                 {
                     Scanner.OnNooseDeployed();
                 }
-                else if (agency?.ID == "FIB" && WantedLevel >= 5)
+                else if (agency?.ID == "FIB" && WantedLevel >= 4)
                 {
                     Scanner.OnFIBHRTDeployed();
                 }
@@ -2811,6 +2811,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnLostWanted();
                     GameFiber.Yield();
+                    GangRelationships.OnLostWanted();
                     World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
                 }
@@ -2831,6 +2832,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
+                    GangRelationships.OnBecameWanted();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
             }

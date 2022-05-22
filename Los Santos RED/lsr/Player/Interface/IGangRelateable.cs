@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Interface
         PlayerTasks PlayerTasks { get; }
         Ped Character { get; }
         Licenses Licenses { get; }
+        bool IsNotWanted { get; }
 
         void SetDenStatus(Gang gang, bool v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

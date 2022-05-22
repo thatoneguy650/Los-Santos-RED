@@ -302,6 +302,7 @@ public class Vehicles
                 if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
+                    Car.IsPolice = true;
                     PoliceVehicles.Add(Car);
                     return true;
                 }
@@ -342,13 +343,16 @@ public class Vehicles
             {
                 if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
                 {
+                    vehicleExt.IsPolice = true;
                     PoliceVehicles.Add(vehicleExt);
+
                 }
             }
             else if (responseType == ResponseType.EMS)
             {
                 if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
                 {
+                    vehicleExt.IsEMT = true;
                     EMSVehicles.Add(vehicleExt);
                 }
             }
@@ -356,6 +360,7 @@ public class Vehicles
             {
                 if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
                 {
+                    vehicleExt.IsFire = true;
                     FireVehicles.Add(vehicleExt);
                 }
             }

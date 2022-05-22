@@ -755,59 +755,87 @@ namespace LosSantosRED.lsr
                 //dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
                 //dispatchEvent.Subtitles += " suspect is driving a ~s~";
 
-                Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
-                string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
-                int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
-                string ClassName = VehicleScannerAudio.ClassName(ClassInt);
-                string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
-                string ColorAudio = VehicleScannerAudio.GetColorAudio(CarColor);
-                string MakeAudio = VehicleScannerAudio.GetMakeAudio(MakeName);
-                string ClassAudio = VehicleScannerAudio.GetClassAudio(ClassInt);
-                string ModelAudio = VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
 
-                //if(VehicleToDescribe.IsStolen)
-                //{
-                //    dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
-                //    dispatchEvent.SoundsToPlay.Add(conjunctives.In.FileName);
-                //    dispatchEvent.Subtitles += " suspect is in a stolen vehicle, a ~s~";
-                //    dispatchEvent.SoundsToPlay.Add(crime_10_851.Astolenvehicle.FileName);
-                //    dispatchEvent.SoundsToPlay.Add(conjunctives.A01.FileName);
-                //}
-                //else
-                //{
+
+                if (VehicleToDescribe.IsPolice)
+                {
+                    dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+                    if(VehicleToDescribe.Vehicle.IsBike)
+                    {
+                        dispatchEvent.SoundsToPlay.Add(conjunctives.Onuh.FileName);
+                    }
+                    else
+                    {
+                        dispatchEvent.SoundsToPlay.Add(conjunctives.DrivingAUmmm.FileName);
+                    }
+
+                    
+                    if (RandomItems.RandomPercent(50))
+                    {
+                        dispatchEvent.SoundsToPlay.Add(crime_stolen_cop_car.Astolenpolicevehicle1.FileName);
+                    }
+                    else
+                    {
+                        dispatchEvent.SoundsToPlay.Add(crime_stolen_cop_car.Astolenpolicevehicle.FileName);
+                    }
+                    dispatchEvent.Subtitles += " suspect is driving a stolen police vehicle ~s~";
+                }
+                else
+                {
+                    Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
+                    string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
+                    int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
+                    string ClassName = VehicleScannerAudio.ClassName(ClassInt);
+                    string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
+
+                    string ColorAudio = VehicleScannerAudio.GetColorAudio(CarColor);
+                    string MakeAudio = VehicleScannerAudio.GetMakeAudio(MakeName);
+                    string ClassAudio = VehicleScannerAudio.GetClassAudio(ClassInt);
+                    string ModelAudio = VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
+
+                    //if(VehicleToDescribe.IsStolen)
+                    //{
+                    //    dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+                    //    dispatchEvent.SoundsToPlay.Add(conjunctives.In.FileName);
+                    //    dispatchEvent.Subtitles += " suspect is in a stolen vehicle, a ~s~";
+                    //    dispatchEvent.SoundsToPlay.Add(crime_10_851.Astolenvehicle.FileName);
+                    //    dispatchEvent.SoundsToPlay.Add(conjunctives.A01.FileName);
+                    //}
+                    //else
+                    //{
                     dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
                     dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
                     dispatchEvent.Subtitles += " suspect is driving a ~s~";
-                    
-                //}
 
-                if (ColorAudio != "")
-                {
-                    dispatchEvent.SoundsToPlay.Add(ColorAudio);
-                    dispatchEvent.Subtitles += " ~s~" + CarColor.Name + "~s~";
-                    dispatchEvent.NotificationText += " ~s~" + CarColor.Name + "~s~";
-                }
-                if (MakeAudio != "")
-                {
-                    dispatchEvent.SoundsToPlay.Add(MakeAudio);
-                    dispatchEvent.Subtitles += " ~s~" + MakeName + "~s~";
-                    dispatchEvent.NotificationText += " ~s~" + MakeName + "~s~";
-                }
+                    //}
 
-                if (ModelAudio != "")
-                {
-                    dispatchEvent.SoundsToPlay.Add(ModelAudio);
-                    dispatchEvent.Subtitles += " ~s~" + ModelName + "~s~";
-                    dispatchEvent.NotificationText += " ~s~" + ModelName + "~s~";
-                }
-                else if (ClassAudio != "")
-                {
-                    dispatchEvent.SoundsToPlay.Add(ClassAudio);
-                    dispatchEvent.Subtitles += " ~s~" + ClassName + "~s~";
-                    dispatchEvent.NotificationText += " ~s~" + ClassName + "~s~";
-                }
+                    if (ColorAudio != "")
+                    {
+                        dispatchEvent.SoundsToPlay.Add(ColorAudio);
+                        dispatchEvent.Subtitles += " ~s~" + CarColor.Name + "~s~";
+                        dispatchEvent.NotificationText += " ~s~" + CarColor.Name + "~s~";
+                    }
+                    if (MakeAudio != "")
+                    {
+                        dispatchEvent.SoundsToPlay.Add(MakeAudio);
+                        dispatchEvent.Subtitles += " ~s~" + MakeName + "~s~";
+                        dispatchEvent.NotificationText += " ~s~" + MakeName + "~s~";
+                    }
 
+                    if (ModelAudio != "")
+                    {
+                        dispatchEvent.SoundsToPlay.Add(ModelAudio);
+                        dispatchEvent.Subtitles += " ~s~" + ModelName + "~s~";
+                        dispatchEvent.NotificationText += " ~s~" + ModelName + "~s~";
+                    }
+                    else if (ClassAudio != "")
+                    {
+                        dispatchEvent.SoundsToPlay.Add(ClassAudio);
+                        dispatchEvent.Subtitles += " ~s~" + ClassName + "~s~";
+                        dispatchEvent.NotificationText += " ~s~" + ClassName + "~s~";
+                    }
+                }
                 if (IncludeLicensePlate)
                 {
                     AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());

@@ -95,6 +95,9 @@ public class BasicLocation
     public Interior Interior => interior;
 
 
+    public bool IsPlayerInterestedInLocation { get; set; } = false;
+
+
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
@@ -209,8 +212,14 @@ public class BasicLocation
             {
                 MyLocationBlip.Sprite = (BlipSprite)MapIcon;
             }
-
-            MyLocationBlip.Color = MapIconColor;
+            if(IsPlayerInterestedInLocation)
+            {
+                MyLocationBlip.Color = Color.Blue;
+            }
+            else
+            {
+                MyLocationBlip.Color = MapIconColor;
+            }
             MyLocationBlip.Scale = MapIconScale;
             MyLocationBlip.Alpha = MapIconAlpha;
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);

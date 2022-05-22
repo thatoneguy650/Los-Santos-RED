@@ -58,7 +58,7 @@ public class AssistManager
 
     public void ClearFront(bool isWanted)
     {
-        if(Cop.IsDriver && Cop.DistanceToPlayer <= 200f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
+        if(Cop.IsDriver && Cop.DistanceToPlayer <= 500f && isWanted && !Cop.IsInHelicopter && Cop.Pedestrian.Exists())
         {
             Vehicle copCar = Cop.Pedestrian.CurrentVehicle;
             if(copCar.Exists())
@@ -73,16 +73,19 @@ public class AssistManager
                         range = 10f;
                     }
                     Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + 3f), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
-                    if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen)
+                    if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
                     {
                         Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
                         foreach (Ped carOccupant in ClosestCar.Occupants.ToList())
                         {
                             if(carOccupant.Exists())
                             {
+                                if(carOccupant.IsPersistent)
+                                {
+                                    return;
+                                }
                                 carOccupant.Delete();
                             }
-                            
                         }
                         if(ClosestCar.Exists())
                         {

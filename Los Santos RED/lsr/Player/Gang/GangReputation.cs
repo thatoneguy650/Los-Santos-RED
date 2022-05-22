@@ -143,7 +143,31 @@ public class GangReputation
     public int MembersCarJackedInTerritory { get; set; }
 
     public int PlayerDebt { get; set; } = 0;
-
+    public void ResetRelationshipGroups()
+    {
+        RelationshipGroup rg = new RelationshipGroup(Gang.ID);
+        if (GangRelationship == GangRespect.Hostile)
+        {
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+        }
+        else if (GangRelationship == GangRespect.Friendly)
+        {
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);      
+        }
+        else if (GangRelationship == GangRespect.Neutral)
+        {
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
+        }
+    }
+    public void SetRelationshipGroupNeutral()
+    {
+        RelationshipGroup rg = new RelationshipGroup(Gang.ID);
+        rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+        RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
+    }
     public void SetRepuation(int value, bool sendText)
     {
         if(reputationLevel != value)
@@ -191,8 +215,11 @@ public class GangReputation
             RelationshipGroup rg = new RelationshipGroup(Gang.ID);
             if (GangRelationship == GangRespect.Hostile)
             {
-                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
-                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+                if (Player.IsNotWanted)//handled on the became/lost wanted events
+                {
+                    rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+                    RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+                }
                 Player.SetDenStatus(Gang, false);
                 if (sendText)
                 {
