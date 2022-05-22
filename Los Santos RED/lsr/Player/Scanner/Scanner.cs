@@ -58,6 +58,9 @@ namespace LosSantosRED.lsr
         private Dispatch RequestNOOSEUnits;
         private Dispatch RequestNooseUnitsAlt;
         private Dispatch RequestNooseUnitsAlt2;
+
+        private Dispatch RequestFIBUnits;
+
         private Dispatch ResistingArrest;
         private Dispatch ResumePatrol;
         private Dispatch RunningARedLight;
@@ -338,6 +341,16 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+
+        public void OnFIBHRTDeployed()
+        {
+            if (Player.IsWanted && !RequestFIBUnits.HasBeenPlayedThisWanted)
+            {
+                 AddToQueue(RequestFIBUnits);
+            }
+        }
+
         public void OnPaidFine()
         {
             if (!ResumePatrol.HasRecentlyBeenPlayed)
@@ -1296,6 +1309,9 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
         }
+
+
+
         private void CheckDispatch()
         {
             if (Player.RecentlyStartedPlaying)
@@ -1434,6 +1450,7 @@ namespace LosSantosRED.lsr
             ,WantedSuspectSpotted
             ,RequestNooseUnitsAlt
             ,RequestNooseUnitsAlt2
+            ,RequestFIBUnits
             ,RequestSwatAirSupport
             ,AimingWeaponAtPolice
             ,OnFoot
@@ -2228,11 +2245,22 @@ namespace LosSantosRED.lsr
                 Name = "Military Units Requested",
                 IsStatus = true,
                 IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
+                LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { custom_wanted_level_line.Code13militaryunitsrequested.FileName },"code-13 military units requested"),
+
+
+
+
+
             },
+
+                SecondaryAudioSet = new List<AudioSet>()
+                {
+                    new AudioSet(new List<string>() {dispatch_units_full.DispatchingunitsfromKazanskyAirForceBase.FileName },"dispatching units from Kazansky Air Force Base"),
+                    new AudioSet(new List<string>() {dispatch_units_full.ScramblingmilitaryaircraftfromKazanskyAirForceBase.FileName },"scrambling military aircraft from Kazansky Air Force Base"),
+                }
             };
             RequestNOOSEUnits = new Dispatch()
             {
@@ -2258,11 +2286,25 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.hitandrun.FileName, SWAT3.respondcode3.FileName},"dispatching swat units"),
+                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.hitandrun.FileName, SWAT3.respondcode3.FileName},"dispatching NOOSE units"),
 
             },
             };
 
+            RequestFIBUnits = new Dispatch()
+            {
+                IncludeAttentionAllUnits = false,
+                Name = "FIB Units Requested",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                CanAddExtras = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { dispatch_units_full.FIBteamdispatchingfromstation.FileName},"dispatching FIB units"),
+
+            },
+            };
 
             //RequestNooseUnitsAlt = new Dispatch()
             //{
@@ -2301,7 +2343,7 @@ namespace LosSantosRED.lsr
 
                // new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
 
-                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, SWAT3.swat10minuteeta.FileName, SWAT3.suspectarmedusecaution.FileName },"dispatching swat units"),
+                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, SWAT3.swat10minuteeta.FileName, SWAT3.suspectarmedusecaution.FileName },"dispatching NOOSE units"),
 
             },
             };

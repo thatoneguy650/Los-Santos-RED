@@ -263,7 +263,14 @@ public class PlateTypes : IPlateTypes
         //FullPlateTypeList.Add(new PlateType(51, "Nothing", "None", 0));
         //FullPlateTypeList.Add(new PlateType(52, "Nothing", "None", 0));
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
+
+#if DEBUG
+        Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\PlateTypes_Full.xml");
+#else
         Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\AlternateConfigs\\PlateTypes_Full.xml");
+#endif
+
+
 
     }
 }

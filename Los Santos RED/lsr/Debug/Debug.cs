@@ -1044,8 +1044,10 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-
-
+        if (Player.WantedLevel <= 5)
+        {
+            Player.SetWantedLevel(Player.WantedLevel + 1, "Debug", true);
+        }
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");

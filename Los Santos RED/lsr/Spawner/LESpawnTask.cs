@@ -199,6 +199,10 @@ public class LESpawnTask : SpawnTask
                 }
                 if (SpawnedVehicle.Exists())
                 {
+                    if(VehicleType.IsHelicopter)
+                    {
+                        NativeFunction.Natives.SET_HELI_BLADES_FULL_SPEED(SpawnedVehicle);
+                    }
                     CreatedVehicle.WasModSpawned = true;
                     SpawnedVehicle.IsPersistent = true;
                     EntryPoint.PersistentVehiclesCreated++;

@@ -76,7 +76,18 @@ namespace LosSantosRED.lsr
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
                         {
-                            Cop.AssistManager.UpdateCollision(Player.IsWanted);
+                            if (Settings.SettingsManager.PoliceSettings.AllowReducedCollisionPenaltyAssist)
+                            {
+                                Cop.AssistManager.UpdateCollision(Player.IsWanted);
+                            }
+                            if (Settings.SettingsManager.PoliceSettings.AllowFrontVehicleClearAssist)
+                            {
+                                Cop.AssistManager.ClearFront(Player.IsWanted);
+                            }
+                            if (Settings.SettingsManager.PoliceSettings.AllowPowerAssist)
+                            {
+                                Cop.AssistManager.PowerAssist(Player.IsWanted);
+                            }
                         }
                         if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {

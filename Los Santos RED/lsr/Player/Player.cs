@@ -10,6 +10,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -314,6 +315,7 @@ namespace Mod
         public bool IsHotWiring { get; private set; }
 
         private float CurrentVehicleRoll;
+
 
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
@@ -1186,6 +1188,10 @@ namespace Mod
                 else if (agency?.ID == "NOOSE")
                 {
                     Scanner.OnNooseDeployed();
+                }
+                else if (agency?.ID == "FIB" && WantedLevel >= 5)
+                {
+                    Scanner.OnFIBHRTDeployed();
                 }
                 else if (vehicleType?.IsHelicopter == true)
                 {
@@ -2181,8 +2187,16 @@ namespace Mod
 
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
+                    
+
+
+
+
                     IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
 
+
+
+       
                     CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
                     if (CurrentVehicleRoll >= 80f || CurrentVehicleRoll <= -80f)
                     {
@@ -2381,7 +2395,20 @@ namespace Mod
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
             UpdateOwnedBlips();
+
+
+
+
+
+
+            //if(IsHotWiring && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && Game.GameTime - GameTimeStartedHotwiring <= 15000)
+            //{
+            //    CurrentVehicle.Vehicle.MustBeHotwired = true;
+            //}
         }
+
+
+
         public void UpdateWeaponData()
         {
             if (Game.LocalPlayer.Character.IsShooting)

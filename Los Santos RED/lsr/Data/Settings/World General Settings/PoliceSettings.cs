@@ -22,7 +22,9 @@ public class PoliceSettings : ISettingsDefaultable
     public bool ManageLoadout { get; set; }
     public bool AllowAmbientSpeech { get; set; }
     public bool AllowChaseAssists { get; set; }
-   // public bool AllowRadioInAnimations { get; set; }
+    public bool AllowFrontVehicleClearAssist { get; set; }
+    public bool AllowReducedCollisionPenaltyAssist { get; set; }
+    public bool AllowPowerAssist { get; set; }
 
 
 
@@ -123,6 +125,7 @@ public class PoliceSettings : ISettingsDefaultable
     public int InvestigationRespondingOfficers_Wanted5 { get; set; }
     public int InvestigationRespondingOfficers_Wanted6 { get; set; }
 
+
     public PoliceSettings()
     {
         SetDefault();
@@ -176,6 +179,9 @@ public class PoliceSettings : ISettingsDefaultable
         RecentlySeenTime = 15000;
         AllowAmbientSpeech = true;
         AllowChaseAssists = true;
+        AllowFrontVehicleClearAssist = true;
+        AllowReducedCollisionPenaltyAssist = true;
+        AllowPowerAssist = false;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         //AllowRadioInAnimations = false;
@@ -206,7 +212,7 @@ public class PoliceSettings : ISettingsDefaultable
         KillLimit_Wanted5 = 10;
         KillLimit_Wanted6 = 20;
         WantedLevelIncreasesOverTime = true;
-        WantedLevelIncreaseTime = 240000;
+        WantedLevelIncreaseTime = 150000;//240000
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
         SightDistance_Helicopter = 175f;
