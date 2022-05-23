@@ -293,7 +293,7 @@ public class Drag : DynamicActivity
             {
                 IsCancelled = true;
             }
-            if (!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree)
+            if (!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree || Player.IsIncapacitated)
             {
                 IsCancelled = true;
                 break;

@@ -67,7 +67,7 @@ public class AssistManager
                 float speed = copCar.Speed;
                 if(speed >= 18f)//~40mph
                 {
-                    float range = 3f;
+                    float range = 4f;
                     if(speed >= 27f)//~60mph
                     {
                         range = 10f;

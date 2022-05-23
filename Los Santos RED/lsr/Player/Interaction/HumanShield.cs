@@ -87,7 +87,7 @@ public class HumanShield : DynamicActivity
         {
             Player.ButtonPromptList.Add(new ButtonPrompt("Release", "Hostage", "Release", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
         }
-        while (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && Player.IsAliveAndFree)
+        while (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && Player.IsAliveAndFree && !Player.IsIncapacitated)
         {
             HeadingLoop();
             DirectionLoop();

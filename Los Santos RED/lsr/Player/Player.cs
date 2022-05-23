@@ -179,7 +179,7 @@ namespace Mod
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public ButtonPrompts ButtonPrompts { get; private set; }
-        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && (IsInVehicle || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage;
+        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 15f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
