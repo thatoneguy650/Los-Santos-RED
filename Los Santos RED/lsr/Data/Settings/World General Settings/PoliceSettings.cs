@@ -212,7 +212,7 @@ public class PoliceSettings : ISettingsDefaultable
         KillLimit_Wanted5 = 10;
         KillLimit_Wanted6 = 20;
         WantedLevelIncreasesOverTime = true;
-        WantedLevelIncreaseTime = 150000;//240000
+        WantedLevelIncreaseTime = 180000;//240000
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
         SightDistance_Helicopter = 175f;

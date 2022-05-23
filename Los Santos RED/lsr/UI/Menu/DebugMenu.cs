@@ -34,6 +34,7 @@ public class DebugMenu : Menu
     private UIMenuItem LogLocationMenu;
     private UIMenuItem LogLocationSimpleMenu;
     private UIMenuListItem GetRandomWeapon;
+    private UIMenuListItem GetRandomUpgradedWeapon;
     private UIMenuListItem TeleportToPOI;
     private UIMenuItem DefaultGangRep;
     private UIMenuItem RandomGangRep;
@@ -69,6 +70,8 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Gang> SetGangRepHostile;
     private UIMenuItem GetAllItems;
     private IModItems ModItems;
+    private int RandomUpgradedWeaponCategory;
+
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems)
     {
         Gangs = gangs;
@@ -155,6 +158,10 @@ public class DebugMenu : Menu
         StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
         KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
+
+        GetRandomUpgradedWeapon = new UIMenuListItem("Get Random Upgraded Weapon", "Gives the Player a random upgraded weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
+
+
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         SetMoney = new UIMenuItem("Set Money", "Sets your cash");
         GetAllItems = new UIMenuItem("Get All Items", "Gets 5 of every item");
@@ -194,6 +201,7 @@ public class DebugMenu : Menu
 
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
+        Debug.AddItem(GetRandomUpgradedWeapon);
         Debug.AddItem(GiveMoney);
         Debug.AddItem(SetMoney);
         Debug.AddItem(GetAllItems);
@@ -368,6 +376,19 @@ public class DebugMenu : Menu
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
             }
         }
+        else if (selectedItem == GetRandomUpgradedWeapon)
+        {
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon((WeaponCategory)RandomUpgradedWeaponCategory);
+            if (myGun != null)
+            {
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Magazine).OrderBy(x=> x.Name == "Box Magazine" ? 1 : x.Name == "Drum Magazine" ? 2 : x.Name == "Extended Clip" ? 3: 4).FirstOrDefault();
+                if (bestMagazineUpgrade != null)
+                {
+                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
+                }
+            }
+        }
         //else if (selectedItem == TeleportToPOI)
         //{
         //    GameLocation ToTeleportTo = PlacesOfInterest.GetAllPlaces()[PlaceOfInterestSelected];
@@ -518,6 +539,10 @@ public class DebugMenu : Menu
         if (list == TeleportToPOI)
         {
             PlaceOfInterestSelected = index;
+        }
+        if(list == GetRandomUpgradedWeapon)
+        {
+            RandomUpgradedWeaponCategory = index;
         }
     }
 
