@@ -85,6 +85,7 @@ namespace LosSantosRED.lsr
 
 
         private Dispatch ArmedRobbery;
+        private Dispatch PublicNuisance;
 
 
         private Dispatch MedicalServicesRequired;
@@ -1419,6 +1420,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("DealingGuns",DealingGuns),
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
             new CrimeDispatch("ArmedRobbery",ArmedRobbery),
+            new CrimeDispatch("PublicNuisance",PublicNuisance),
 
 
         };
@@ -1495,7 +1497,7 @@ namespace LosSantosRED.lsr
 
             ,MedicalServicesRequired
         ,FirefightingServicesRequired
-
+        ,PublicNuisance
     };
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -1981,7 +1983,15 @@ namespace LosSantosRED.lsr
             },
             };
 
-
+            PublicNuisance = new Dispatch()
+            {
+                Name = "Public Nuisance",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_07.Apublicnuisance.FileName },"a public nuisance"),
+            },
+            };
 
 
             SuspiciousVehicle = new Dispatch()

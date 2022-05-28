@@ -60,6 +60,13 @@ public class Crimes : ICrimes
             new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true, true, true),
             new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false),
             new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false),
+
+
+            new Crime("PublicNuisance", "Public Nuisance", 2, false, 25, true, false, true),
+
+
+
+
             new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, false, false) { IsTrafficViolation = true },
             new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, true, false, false),
             new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, true, false, false),

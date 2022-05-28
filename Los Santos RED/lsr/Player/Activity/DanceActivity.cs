@@ -56,7 +56,12 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
+#if DEBUG
+            RadioStation = RadioStations.RadioStationList.Where(x => x.Name == "Self Radio").PickRandom();
+#else
             RadioStation = RadioStations.RadioStationList.Where(x => x.Name != "OFF" && x.Name != "NONE").PickRandom();
+
+#endif
             if (RadioStation != null)
             {
                 NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(true);
@@ -68,6 +73,7 @@ namespace LosSantosRED.lsr.Player
             Player.SetUnarmed();
             Player.IsPerformingActivity = true;
             Player.IsDancing = true;
+          
             if (DanceData.IsInsulting)
             {
                 Player.IsMakingInsultingGesture = true;

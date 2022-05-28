@@ -470,6 +470,7 @@ namespace Mod
 
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
+        public bool IsThreatening { get; set; }
 
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {

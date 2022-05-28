@@ -492,7 +492,10 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));
             }
-
+            if(Player.IsThreatening)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicNuisance"));//.IsCurrentlyViolating = true;
+            }
 
         }
         private void CheckTrafficViolations()

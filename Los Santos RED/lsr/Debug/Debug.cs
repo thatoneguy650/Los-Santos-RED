@@ -939,7 +939,8 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-
+        Player.IsThreatening = !Player.IsThreatening;
+        GameFiber.Sleep(1000);
 
         //Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
@@ -959,7 +960,7 @@ public class Debug
 
         //ArrestScene();
 
-        Game.LocalPlayer.Character.Health -= 5;
+        //Game.LocalPlayer.Character.Health -= 5;
 
         //Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
         //Player.Inventory.Add(ModItems.Get("Heroin"), 4);
