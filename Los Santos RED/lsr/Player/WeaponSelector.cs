@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 
 public class WeaponSelector
 {
+    private uint GameTimeLastToggledSelector;
     private bool canShoot;
     private bool isControlDisabled = false;
     private IWeaponSelectable Player;
@@ -75,28 +77,32 @@ public class WeaponSelector
     {
         if (Player.CurrentWeapon != null)
         {
-            EntryPoint.WriteToConsole($"ToggleSelector Initial Setting {CurrentSelectorSetting}", 5);
-            bool found1 = false;
-            bool found2 = false;
-            foreach (SelectorOptions x in Enum.GetValues(typeof(SelectorOptions)))
+            if (Game.GameTime - GameTimeLastToggledSelector >= 200)//delayso it doesnt get toggled like crazy
             {
-                if (CurrentSelectorSetting == x)
+                EntryPoint.WriteToConsole($"ToggleSelector Initial Setting {CurrentSelectorSetting}", 5);
+                bool found1 = false;
+                bool found2 = false;
+                foreach (SelectorOptions x in Enum.GetValues(typeof(SelectorOptions)))
                 {
-                    found1 = true;
+                    if (CurrentSelectorSetting == x)
+                    {
+                        found1 = true;
+                    }
+                    else if (found1 && Player.CurrentWeapon.SelectorOptions.HasFlag(x))
+                    {
+                        found2 = true;
+                        SetSelectorSetting(x);
+                        break;
+                    }
                 }
-                else if (found1 && Player.CurrentWeapon.SelectorOptions.HasFlag(x))
+                if (!found2)
                 {
-                    found2 = true;
-                    SetSelectorSetting(x);
-                    break;
+                    SetSelectorSetting(SelectorOptions.Safe);
                 }
+                EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}", 5);
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(0, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+                GameTimeLastToggledSelector = Game.GameTime;
             }
-            if (!found2)
-            {
-                SetSelectorSetting(SelectorOptions.Safe);
-            }
-            EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}", 5);
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(0, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
         }
     }
     public void Update()

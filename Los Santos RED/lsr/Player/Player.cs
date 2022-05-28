@@ -182,7 +182,7 @@ namespace Mod
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPromptList { get; private set; } = new List<ButtonPrompt>();
         public ButtonPrompts ButtonPrompts { get; private set; }
-        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 15f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage;
+        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 15f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanExitCurrentInterior { get; set; } = false;
@@ -318,7 +318,7 @@ namespace Mod
         public bool IsHotWiring { get; private set; }
 
         private float CurrentVehicleRoll;
-
+        private uint GameTimeLastClosedDoor;
 
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
@@ -469,6 +469,7 @@ namespace Mod
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
 
         public bool IsInFirstPerson { get; private set; }
+        public bool IsDancing { get; set; }
 
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -694,45 +695,79 @@ namespace Mod
         }
         public void CloseDriverDoor()
         {
-            if (!IsPerformingActivity && IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
+            if (Game.GameTime - GameTimeLastClosedDoor >= 1500)
             {
-                bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
-                if (isValid)
+                if (!IsPerformingActivity && IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
                 {
-                    float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
-
-                    if (DoorAngle > 0.0f)
+                    bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
+                    if (isValid)
                     {
-                        string toPlay = "";
-                        int TimeToWait = 250;
-                        if (DoorAngle >= 0.7)
+                        float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
+
+                        if (DoorAngle > 0.0f)
                         {
-                            toPlay = "d_close_in";
-                            TimeToWait = 500;
-                        }
-                        else
-                        {
-                            toPlay = "d_close_in_near";
-                        }
-                        EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
-                        AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
-                        GameFiber DoorWatcher = GameFiber.StartNew(delegate
-                        {
-                            GameFiber.Sleep(TimeToWait);
-                            if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                            string toPlay = "";
+                            int TimeToWait = 250;
+                            if (DoorAngle >= 0.7)
                             {
-                                NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
-                                GameFiber.Sleep(250);
-                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                toPlay = "d_close_in";
+                                TimeToWait = 500;
                             }
                             else
                             {
-                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                toPlay = "d_close_in_near";
                             }
-                        }, "DoorWatcher");
+                            EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+                            AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
+                            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
+                            GameFiber DoorWatcher = GameFiber.StartNew(delegate
+                            {
+                                GameFiber.Sleep(TimeToWait);
+                                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                                {
+                                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+                                    GameFiber.Sleep(250);
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                }
+                                else
+                                {
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                }
+                            }, "DoorWatcher");
+                        }
+                        GameTimeLastClosedDoor = Game.GameTime;
                     }
                 }
+            }
+        }
+
+
+        public void ToggleLeftIndicator()
+        {
+            if(CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleLeft();
+            }
+        }
+        public void ToggleHazards()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleHazards();
+            }
+        }
+        public void ToggleRightIndicator()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleRight();
+            }
+        }
+        public void ToggleVehicleEngine()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Engine.Toggle();
             }
         }
         public void CommitSuicide()
@@ -924,7 +959,13 @@ namespace Mod
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
             //Game.DisableControlAction(0, GameControl.Attack, false);
         }
-        public void DropWeapon() => WeaponDropping.DropWeapon();
+        public void DropWeapon()
+        {
+            if (CanDropWeapon)
+            {
+                WeaponDropping.DropWeapon();
+            }
+        }
         public void EnterLocation()
         {
             //if (ClosestTeleportEntrance != null)
@@ -1326,6 +1367,33 @@ namespace Mod
         }
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void RaiseHands() => Surrendering.RaiseHands();
+
+
+        public void ToggleSurrender()
+        {
+            if (HandsAreUp)
+            {
+                if (!IsBusted)
+                {
+                    Surrendering.LowerHands();
+                }
+            }
+            else if (IsWavingHands)
+            {
+                Surrendering.LowerHands();
+            }
+            else
+            {
+                if (CanSurrender)
+                {
+                    Surrendering.RaiseHands();
+                }
+                else if (CanWaveHands)
+                {
+                    Surrendering.WaveHands();
+                }
+            }
+        }
         public void RemoveGPSRoute()
         {
             if (CurrentGPSBlip.Exists())

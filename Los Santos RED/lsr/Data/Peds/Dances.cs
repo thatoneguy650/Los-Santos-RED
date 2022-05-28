@@ -5,6 +5,7 @@ using System.Linq;
 
     public class Dances : IDances
     {
+
         public List<DanceData> DanceLookups { get; set; } = new List<DanceData>();
         public Dances()
         {

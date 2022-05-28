@@ -19,6 +19,8 @@ public class Engine
     private float Health = 1000f;
     private VehicleExt VehicleToMonitor;
     private ISettingsProvideable Settings;
+    private uint GameTimeLastToggleEngine;
+
     public bool IsRunning { get; private set; }
     private bool CanToggle => VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.Speed < 4f && !VehicleToMonitor.Vehicle.MustBeHotwired;
     public Engine(VehicleExt vehicleToMonitor, ISettingsProvideable settings)
@@ -38,7 +40,11 @@ public class Engine
     }
     public void Toggle()
     {
-        Toggle(!IsRunning);
+        if (Game.GameTime - GameTimeLastToggleEngine >= 1500)
+        {
+            Toggle(!IsRunning);
+            GameTimeLastToggleEngine = Game.GameTime;
+        }
     }
     public void Toggle(bool DesiredStatus)
     {     

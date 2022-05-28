@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,6 +123,26 @@ public class UISettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToShow { get; set; }
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
+
+
+
+
+
+    public float ActionPopUpItemWidth { get; set; }
+    public float ActionPopUpItemHeight { get; set; }
+    public float ActionPopUpItemSpacingX { get; set; }
+    public float ActionPopUpItemSpacingY { get; set; }
+    public float ActionPopUpItemScale { get; set; }
+    public float ActionPopUpTextScale { get; set; }
+    //public int ActionPopUpRows { get; set; }
+    //public int ActionPopUpColumns { get; set; }
+    public GTAFont ActionPopUpTextFont { get; set; }
+    //public Color ActionPopUpTextColor { get; set; }
+    //public Color ActionPopUpItemColor { get; set; }
+
+
+
+
 
     public UISettings()
     {
@@ -247,5 +268,22 @@ public class UISettings : ISettingsDefaultable
         NeverShowRadar = false;
         ShowRadarInVehicleOnly = false;
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
+
+
+
+        ActionPopUpItemWidth = 0.07f;
+        ActionPopUpItemHeight = 0.07f;
+        ActionPopUpItemSpacingX = 0.04f;
+        ActionPopUpItemSpacingY = 0.04f;
+        ActionPopUpItemScale = 1.0f;
+        ActionPopUpTextScale = 0.3f;
+        //ActionPopUpRows = 3;
+        //ActionPopUpColumns = 3;
+        ActionPopUpTextFont = GTAFont.FontMonospace;
+        //ActionPopUpTextColor = Color.White;
+        //ActionPopUpItemColor = Color.FromArgb(181, 48, 48, 255);
+
+
+
     }
 }

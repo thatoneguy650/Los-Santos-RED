@@ -414,7 +414,8 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
-    <Compile Include="lsr\UI\WheelMenu.cs" />
+    <Compile Include="lsr\UI\PopUpMenu.cs" />
+    <Compile Include="lsr\UI\PopUpMenuMap.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />

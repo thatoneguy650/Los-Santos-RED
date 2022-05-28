@@ -33,11 +33,13 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
+            Player.IsDancing = false;
         }
         public override void Pause()
         {
             IsCancelled = true;
             Player.IsPerformingActivity = false;
+            Player.IsDancing = false;
         }
         public override void Continue()
         {
@@ -65,6 +67,7 @@ namespace LosSantosRED.lsr.Player
 
             Player.SetUnarmed();
             Player.IsPerformingActivity = true;
+            Player.IsDancing = true;
             if (DanceData.IsInsulting)
             {
                 Player.IsMakingInsultingGesture = true;
@@ -153,7 +156,7 @@ namespace LosSantosRED.lsr.Player
                 Game.DisplayNotification("FAIL");
             }
             Player.IsPerformingActivity = false;
-
+            Player.IsDancing = false;
             if (RadioStation != null)
             {
                 NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);

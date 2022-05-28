@@ -42,68 +42,44 @@ namespace LosSantosRED.lsr
         private bool isCellPhoneControlDisabled;
         private bool IsShowingActivityPrompts;
         private uint GameTimeLastPressedCrouch;
-        private uint GameTimeLastPressedSimplePhone;
-
+        //private uint GameTimeLastPressedSimplePhone;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
-
-
-
-      //  public bool IsPressingSimplePhoneKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.SimplePhoneKey);
-
-
-        private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
-        private bool IsPressingDropWeapon => IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKeyModifer);
+      //  private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
+     //   private bool IsPressingDropWeapon => IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKeyModifer);
         private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier);
-        private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer);
-        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);// Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);// Game.IsControlKeyDownRightNow;
-        private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
-        private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
-        private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
-
-
+     //   private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer);
+      //  public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);// Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
+       // private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);// Game.IsControlKeyDownRightNow;
+       // private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
+      //  private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
+       // private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
         private bool IsPressingStopActivity => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKeyModifier);
-
         private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier);
-
-
-
-
-        private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier);
-
+       // private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier);
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
-        private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 1500;
-        private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
-        private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
-        private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
-
-
-        private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
-
-
-
-        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Keys.XButton1);
-
-
-
-
+        //private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 1500;
+        //private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
+        //private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
+        //private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
+        //private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
+        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey);
         public bool DisableCellPhoneControl { get; set; }
 
         public void Update()
         {
-            SurrenderCheck();
-            WeaponDropCheck();
+           // SurrenderCheck();
+            WeaponCheck();
             VehicleCheck();
             ButtonPromptCheck();
             ConversationCheck();
             ScenarioCheck();
             ControlCheck();
-            KeyBindCheck();
+           // KeyBindCheck();
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
             Player.IsPressingFireWeapon = IsPressingFireWeapon;
@@ -112,52 +88,15 @@ namespace LosSantosRED.lsr
             MenuCheck();
             CellPhoneCheck();
             ActivityCheck();
-
-
-
             Game.DisableControlAction(0, GameControl.Duck, true);
-
-            StanceCheck();
-
+            //StanceCheck();
             WheelMenuCheck();
-
-
-
-
-
         }
         private void WheelMenuCheck()
         {
             MenuProvider.UpdateWheelMenu(IsPressingActionWheelMenu);
 
-
-
-
-            //if(Player.IsAliveAndFree && IsPressingActionWheelMenu)
-            //{
-            //    MenuProvider.DrawWheelMenu();
-            //}
-            //else
-            //{
-            //    MenuProvider.DisposeWheelMenu();
-            //}
-
         }
-        private void StanceCheck()
-        {
-            if(Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
-            {
-                if (!RecentlyPressedCrouch)
-                {
-                    if (IsPressingCrouchToggle)
-                    {
-                        Player.Crouch();
-                        GameTimeLastPressedCrouch = Game.GameTime;
-                    }
-                }
-            }
-        }
-
         private void ActivityCheck()
         {
             if(Player.IsPerformingActivity)
@@ -181,7 +120,6 @@ namespace LosSantosRED.lsr
                 Player.PauseDynamicActivity();
             }
         }
-
         private void CellPhoneCheck()
         {
             if (DisableCellPhoneControl)
@@ -208,59 +146,6 @@ namespace LosSantosRED.lsr
                     NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
                     isCellPhoneControlDisabled = false;
                 }
-            }
-
-
-
-
-            //if(DisableCellPhoneControl)
-            //{
-            //    Game.DisableControlAction(0, GameControl.CellphoneCameraDOF, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneCameraExpression, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneCameraFocusLock, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneCameraGrid, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneCameraSelfie, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneCancel, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneUp, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneExtraOption, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneLeft, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneOption, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneRight, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneScrollBackward, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneScrollForward, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneSelect, true);
-            //    Game.DisableControlAction(0, GameControl.CellphoneDown, true);
-            //    isCellPhoneControlDisabled = true;
-            //}
-            //else
-            //{
-            //    if(isCellPhoneControlDisabled)
-            //    {
-            //        Game.DisableControlAction(0, GameControl.CellphoneCameraDOF, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneCameraExpression, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneCameraFocusLock, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneCameraGrid, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneCameraSelfie, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneCancel, false);
-             //      Game.DisableControlAction(0, GameControl.CellphoneDown, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneExtraOption, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneLeft, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneOption, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneRight, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneScrollBackward, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneScrollForward, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneSelect, false);
-            //        Game.DisableControlAction(0, GameControl.CellphoneUp, false);
-            //        isCellPhoneControlDisabled = false;
-            //    }
-            //}
-        }
-        private void KeyBindCheck()
-        {
-            if(IsPressingGesture)
-            {
-                EntryPoint.WriteToConsole("Gesture Start Hotkey");
-                Player.Gesture();
             }
         }
         private void ConversationCheck()
@@ -304,37 +189,10 @@ namespace LosSantosRED.lsr
                 if(IsPressingSprint)
                 {
                     Player.Sprinting.Start();
-
-
                 }
                 else
                 {
                     Player.Sprinting.Stop();
-                }
-            }
-        }
-        private void SurrenderCheck()
-        {
-            if (IsPressingSurrender)
-            {
-                if (Player.CanSurrender)
-                {
-                    Player.RaiseHands();
-                }
-                else if(Player.CanWaveHands)
-                {
-                    Player.WaveHands();
-                }
-            }
-            else
-            {
-                if (Player.HandsAreUp && !Player.IsBusted)
-                {
-                    Player.LowerHands();
-                }
-                else if (Player.IsWavingHands)
-                {
-                    Player.LowerHands();
                 }
             }
         }
@@ -379,76 +237,52 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void WeaponDropCheck()
-        {
-            if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
-            {
-                Player.DropWeapon();
-            }
-            if(IsPressingSelectorToggle)
-            {
-                if (Game.GameTime - GameTimeLastPressedSelectorToggle >= 200)
-                {
-                    Player.ToggleSelector();
-                    GameTimeLastPressedSelectorToggle = Game.GameTime;
-                }
-            }
-        }
         private void VehicleCheck()
         {
             if (Player.CurrentVehicle != null)
             {
-                if(!RecentlyPressedEngineToggle)
-                {
-                    if(IsPressingEngineToggle && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
-                    {
-                        Player.CurrentVehicle.Engine.Toggle();
-                        GameTimeLastPressedEngineToggle = Game.GameTime;
-                    }
-                }
-                if (!RecentlyPressedIndicators)
-                {
-                    if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
-                    {
-                        if (IsPressingHazards)
-                        {
-                            Player.CurrentVehicle.Indicators.ToggleHazards();
-                            GameTimeLastPressedIndicators = Game.GameTime;
-                        }
-                        if (IsPressingLeftIndicator)
-                        {
-                            Player.CurrentVehicle.Indicators.ToggleLeft();
-                            GameTimeLastPressedIndicators = Game.GameTime;
-                        }
-                        if (IsPressingRightIndicator)
-                        {
-                            Player.CurrentVehicle.Indicators.ToggleRight();
-                            GameTimeLastPressedIndicators = Game.GameTime;
-                        }
-                    }
-                }
-                if(!RecentlyPressedDoorClose)
-                {
-                    if (IsPressingDoorClose)
-                    {
-                        Player.CloseDriverDoor();
-                        GameTimeLastPressedDoorClose = Game.GameTime;
-                    }
-                }
-
-
+                //if(!RecentlyPressedEngineToggle)
+                //{
+                //    if(IsPressingEngineToggle && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
+                //    {
+                //        Player.CurrentVehicle.Engine.Toggle();
+                //        GameTimeLastPressedEngineToggle = Game.GameTime;
+                //    }
+                //}
+                //if (!RecentlyPressedIndicators)
+                //{
+                //    if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
+                //    {
+                //        if (IsPressingHazards)
+                //        {
+                //            Player.CurrentVehicle.Indicators.ToggleHazards();
+                //            GameTimeLastPressedIndicators = Game.GameTime;
+                //        }
+                //        if (IsPressingLeftIndicator)
+                //        {
+                //            Player.CurrentVehicle.Indicators.ToggleLeft();
+                //            GameTimeLastPressedIndicators = Game.GameTime;
+                //        }
+                //        if (IsPressingRightIndicator)
+                //        {
+                //            Player.CurrentVehicle.Indicators.ToggleRight();
+                //            GameTimeLastPressedIndicators = Game.GameTime;
+                //        }
+                //    }
+                //}
+                //if(!RecentlyPressedDoorClose)
+                //{
+                //    if (IsPressingDoorClose)
+                //    {
+                //        Player.CloseDriverDoor();
+                //        GameTimeLastPressedDoorClose = Game.GameTime;
+                //    }
+                //}
                 if (Player.IsInVehicle && (Player.CurrentVehicleIsRolledOver || Player.CurrentVehicleIsInAir) && Settings.SettingsManager.VehicleSettings.DisableRolloverFlip)
                 {
                     Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, true);
                     Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
                 }
-                else
-                {
-                    //Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, false);
-                    //Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, false);
-                }
-
-
             }
         }
         private void MenuCheck()
@@ -463,22 +297,68 @@ namespace LosSantosRED.lsr
                 {
                     MenuProvider.ToggleDebugMenu();
                 }
-                //else if (IsPressingSimplePhoneKey)
-                //{
-                //    if(!RecentlyPressedSimplePhone)
-                //    {
-                //        if (!Player.IsPerformingActivity && Player.CanPerformActivities)
-                //        {
-                //            Player.StartSimpleCellphoneActivity();
-                //            MenuProvider.ToggleSimplePhoneMenu();
-                //            GameTimeLastPressedSimplePhone = Game.GameTime;
-                //        }
-                //    }
-                    
-                //}
-
             }
         }
+        private void WeaponCheck()
+        {
+            //if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
+            //{
+            //    Player.DropWeapon();
+            //}
+            if (IsPressingSelectorToggle)
+            {
+                Player.ToggleSelector();
+            }
+        }
+
+        private void StanceCheck()
+        {
+            //if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
+            //{
+            //    if (!RecentlyPressedCrouch)
+            //    {
+            //        if (IsPressingCrouchToggle)
+            //        {
+            //            Player.Crouch();
+            //            GameTimeLastPressedCrouch = Game.GameTime;
+            //        }
+            //    }
+            //}
+        }
+        private void SurrenderCheck()
+        {
+            //if (IsPressingSurrender)
+            //{
+            //    if (Player.CanSurrender)
+            //    {
+            //        Player.RaiseHands();
+            //    }
+            //    else if (Player.CanWaveHands)
+            //    {
+            //        Player.WaveHands();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Player.HandsAreUp && !Player.IsBusted)
+            //    {
+            //        Player.LowerHands();
+            //    }
+            //    else if (Player.IsWavingHands)
+            //    {
+            //        Player.LowerHands();
+            //    }
+            //}
+        }
+        private void KeyBindCheck()
+        {
+            //if (IsPressingGesture)
+            //{
+            //    EntryPoint.WriteToConsole("Gesture Start Hotkey");
+            //    Player.Gesture();
+            //}
+        }
+
         private bool IsKeyDownSafe(Keys key)
         {
             if(key == Keys.None)

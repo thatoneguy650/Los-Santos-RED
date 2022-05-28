@@ -42,6 +42,9 @@ public class KeySettings : ISettingsDefaultable
     public Keys CrouchKey { get; set; }
     //public Keys SimplePhoneKey { get; set; }
 
+
+    public Keys ActionPopUpDisplayKey { get; set; }
+    public Keys ActionPopUpSelectKey { get; set; }
     public KeySettings()
     {
         SetDefault();
@@ -91,6 +94,12 @@ public class KeySettings : ISettingsDefaultable
 
         GestureKey = Keys.X;
         GestureKeyModifier = Keys.Z;
+
+        ActionPopUpDisplayKey = Keys.XButton1;//mouse4
+        ActionPopUpSelectKey = Keys.LButton;
+
+
+
 
     }
 }

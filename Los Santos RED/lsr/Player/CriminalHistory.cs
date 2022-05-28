@@ -44,7 +44,10 @@ namespace LosSantosRED.lsr
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
             bool isDeadly = CrimesAssociated.Any(x => x.ResultsInLethalForce);
-            CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x=> x.ResultingWantedLevel));
+            if (CrimesAssociated != null)
+            {
+                CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x => x.ResultingWantedLevel));
+            }
             if(isDeadly)
             {
                // Player.BigMessage.ShowColoredShard("APB Issued", "", HudColor.Gold, HudColor.InGameBackground, 2500);

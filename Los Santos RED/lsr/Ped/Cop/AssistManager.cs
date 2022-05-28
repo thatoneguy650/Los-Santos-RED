@@ -65,14 +65,16 @@ public class AssistManager
             {
                 float length = copCar.Model.Dimensions.Y;
                 float speed = copCar.Speed;
+                float distanceInFront = 3f;
                 if(speed >= 18f)//~40mph
                 {
-                    float range = 4f;
+                    float range = 6f;// 4f;
                     if(speed >= 27f)//~60mph
                     {
+                        distanceInFront = 5f;
                         range = 10f;
                     }
-                    Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + 3f), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
+                    Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
                     if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
                     {
                         Vehicle ClosestCar = (Vehicle)ClosestCarEntity;

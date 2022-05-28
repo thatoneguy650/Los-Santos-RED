@@ -57,6 +57,11 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
         Intoxication Intoxication { get; }
+        bool IsDancing { get; set; }
+        VehicleExt CurrentVehicle { get; }
+
+
+        //Action DropWeapon { get; }
 
         void RemoveOwnershipOfNearestCar();
         void SetMoney(int bribeAmount);
@@ -67,5 +72,12 @@ namespace LosSantosRED.lsr.Interface
         void Crouch();
         void Dance(DanceData selectedItem);
         void Dance();
+        void ToggleSurrender();
+        void DropWeapon();
+        void CloseDriverDoor();
+        void ToggleRightIndicator();
+        void ToggleLeftIndicator();
+        void ToggleHazards();
+        void ToggleVehicleEngine();
     }
 }

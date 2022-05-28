@@ -79,14 +79,17 @@ public class UI : IMenuProvideable
     private bool TimeOutSprite;
     private bool IsDisposed = false;
     private uint GameTimeStartedLowHealthUI;
-    private WheelMenu WheelMenu;
+    private PopUpMenu ActionPopUpMenu;
     private bool IsDrawingWheelMenu;
+    private IActionable ActionablePlayer;
+    private List<PopUpMenuMap> ActionMenuMap;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
 
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances)
     {
         DisplayablePlayer = displayablePlayer;
+        ActionablePlayer = actionablePlayer;
         Settings = settings;
         Jurisdictions = jurisdictions;
         Time = time;
@@ -111,7 +114,28 @@ public class UI : IMenuProvideable
 
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
-        WheelMenu = new WheelMenu(actionablePlayer, Settings, this);
+
+
+
+
+
+
+
+        ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, 
+            Settings.SettingsManager.UISettings.ActionPopUpItemWidth, 
+            Settings.SettingsManager.UISettings.ActionPopUpItemHeight, 
+            Settings.SettingsManager.UISettings.ActionPopUpItemSpacingX, 
+            Settings.SettingsManager.UISettings.ActionPopUpItemSpacingY, 
+            Settings.SettingsManager.UISettings.ActionPopUpItemScale, 
+            Color.Red,
+            Settings.SettingsManager.UISettings.ActionPopUpTextScale, 
+            Settings.SettingsManager.UISettings.ActionPopUpTextFont, 
+            Color.White,
+            Settings.SettingsManager.KeySettings.ActionPopUpSelectKey
+            );
+
+
+
     }
     private enum GTAHudComponent
     {
@@ -265,7 +289,7 @@ public class UI : IMenuProvideable
             }
             if (IsDrawingWheelMenu)
             {
-                WheelMenu.Draw();
+                ActionPopUpMenu.Draw();
             }
         }
     }
@@ -313,6 +337,10 @@ public class UI : IMenuProvideable
         PlayerInfoMenu.Setup();
         SimplePhoneMenu.Setup();
         AboutMenu.Setup();
+
+
+
+       
     }
     public void TertiaryTick()
     {
@@ -349,7 +377,6 @@ public class UI : IMenuProvideable
     {
         PlayerInfoMenu.Toggle();
     }
-
     public void ToggleSimplePhoneMenu()
     {
         SimplePhoneMenu.Toggle();
@@ -358,7 +385,6 @@ public class UI : IMenuProvideable
             
         //}
     }
-
     public void Update()
     {
         if (DisplayablePlayer.IsAliveAndFree)
@@ -1242,46 +1268,11 @@ public class UI : IMenuProvideable
         }
         toToggle.Toggle();
     }
-
-    //public void DrawWheelMenu()
-    //{
-    //    if (WheelMenu.RecentlyRanItem)
-    //    {
-    //        IsDrawingWheelMenu = false;
-    //    }
-    //    else if(WheelMenu.HasRanItem)
-    //    {
-    //        IsDrawingWheelMenu = false;
-    //    }
-    //    else
-    //    { 
-    //        if (!IsDrawingWheelMenu)
-    //        {
-    //            Game.TimeScale = 0.2f;
-
-
-
-    //        }
-
-    //        IsDrawingWheelMenu = true;
-    //    }
-    //}
-
-    public void DisposeWheelMenu()
-    {
-        if (IsDrawingWheelMenu)
-        {
-            Game.TimeScale = 1.0f;
-            WheelMenu.Dispose();
-        }
-        IsDrawingWheelMenu = false;
-    }
-
     public void UpdateWheelMenu(bool isPressingActionWheelMenu)
     {
         if(isPressingActionWheelMenu)
         {
-            if(WheelMenu.HasRanItem)
+            if(ActionPopUpMenu.HasRanItem)
             {
                 IsDrawingWheelMenu = false;
             }
@@ -1300,10 +1291,10 @@ public class UI : IMenuProvideable
             if (IsDrawingWheelMenu)
             {
                 Game.TimeScale = 1.0f;
-                WheelMenu.Dispose();
+                ActionPopUpMenu.Dispose();
             }
             IsDrawingWheelMenu = false;
-            WheelMenu.Reset();
+            ActionPopUpMenu.Reset();
         }
     }
 }
