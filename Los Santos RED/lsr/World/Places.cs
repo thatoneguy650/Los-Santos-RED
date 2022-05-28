@@ -27,8 +27,16 @@ public class Places
     private IEntityProvideable World;
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
 
-    private List<string> VendingMachines = new List<string>();
-    private List<uint> VendingMachinesHash;
+
+    private List<GasStation> ActiveGasStations = new List<GasStation>();
+
+    private List<string> VendingMachinesModelNames = new List<string>();
+    private List<uint> VendingMachinessModelHashes = new List<uint>();
+
+    private List<GasPump> ActiveGasPumps = new List<GasPump>();
+
+    private List<string> GasPumpsModelNames = new List<string>();
+    private List<uint> GasPumpsModelHashes = new List<uint>();
 
     public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets)
     {
@@ -98,11 +106,32 @@ public class Places
             GameFiber.Yield();
         }
 
-        VendingMachines = new List<string>()
+        VendingMachinesModelNames = new List<string>()
             { "prop_vend_soda_01","prop_vend_soda_02","prop_vend_coffe_01","prop_vend_condom_01","prop_vend_fags_01","prop_vend_snak_01","prop_vend_water_01"};
 
-        VendingMachinesHash = new List<uint>()
+        VendingMachinessModelHashes = new List<uint>()
             {0x3b21c5e7,0x426a547c,0x418f055a};
+
+
+        GasPumpsModelNames = new List<string>()
+        { "prop_gas_pump_1a", //ron pump
+        "prop_gas_pump_1b",// globe oil
+        "prop_gas_pump_1c",// ltd
+        "prop_gas_pump_1d",// xero
+        "prop_gas_pump_old2",//old xero
+        "prop_gas_pump_old3",//old LTD
+        };
+
+        GasPumpsModelHashes = new List<uint>()
+        {
+            0x7339e883,//ltd new
+            0xf62c2b4b, //ltd old
+            0x4fd621bc, //ron new
+            0x885c12c7, //xero new
+            0xe40106f5, //xero old
+            0xe469f8b3, //globe old
+            0x64ff4c0e ///globe new
+        };
 
 
         foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllLocations())
@@ -224,7 +253,7 @@ public class Places
         }
 
         GameFiber.Yield();
-        UpdateVendingMachines();
+        UpdateGeneratedLocations();
     }
     public void UpdateNearLocations()
     {
@@ -234,7 +263,7 @@ public class Places
             GameFiber.Yield();
         }
     }
-    private void UpdateVendingMachines()
+    private void UpdateGeneratedLocations()
     {
         List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
         foreach (Rage.Object obj in Objects)
@@ -245,38 +274,75 @@ public class Places
                 Vector3 position = obj.Position;
                 float heading = obj.Heading;
                 uint hash = obj.Model.Hash;
-                if (VendingMachines.Contains(modelName) || VendingMachinesHash.Contains(hash))
+                if (VendingMachinesModelNames.Contains(modelName) || VendingMachinessModelHashes.Contains(hash))
                 {
-                    float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-                    if (distanceTo <= 50f)
-                    {
-                        if (!ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
-                        {
-                            ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
-                            VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
-
-                            newVend.CanInteractWhenWanted = true;
-                            // GameLocation newVend = new GameLocation(position, heading, LocationType.VendingMachine, toBuy.Name, toBuy.Name, obj) { OpenTime = 0, CloseTime = 24, Menu = toBuy.Items, BannerImage = toBuy.BannerOverride };
-                            newVend.Setup(Interiors, Settings, Crimes, Weapons);
-                            World.AddBlip(newVend.Blip);
-
-                            ActiveInteractableLocations.Add(newVend);
-                            ActiveVendingMachines.Add(newVend);
-                            //ActiveLocations.Add(newVend);
-                            EntryPoint.WriteToConsole($"Nearby Vending {vendingMenu.Name} ADDED Props FOUND {modelName}", 5);
-                        }
-                    }
+                    ActivateVendingMachine(obj, modelName, position, heading);
+                    GameFiber.Yield();
+                }
+                else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
+                {
+                    ActivateGasPump(obj, modelName, position, heading);
                     GameFiber.Yield();
                 }
             }
         }
         GameFiber.Yield();
+        RemoveInactiveVendingMachines();
+        RemoveInactiveGasPumps();
+    }
+    private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
+    {
+        float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+        if (distanceTo <= 50f)
+        {
+            if (!ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+            {
+                ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
+                VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
+                newVend.CanInteractWhenWanted = true;
+                newVend.Setup(Interiors, Settings, Crimes, Weapons);
+                World.AddBlip(newVend.Blip);
+                ActiveInteractableLocations.Add(newVend);
+                ActiveVendingMachines.Add(newVend);
+                EntryPoint.WriteToConsole($"Nearby Vending {vendingMenu.Name} ADDED Props FOUND {modelName}", 5);
+            }
+        }
+    }
+    private void ActivateGasPump(Rage.Object obj, string modelName, Vector3 position, float heading)
+    {
+        float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
+        if (distanceTo <= 50f)
+        {
+            if (!ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
+            {
+                //ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
+                GasStation ClosestStation = (GasStation)ActiveInteractableLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+                GasPump newGasPump;
+                if (ClosestStation != null)
+                {
+                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath };
+                }
+                else
+                {
+                    newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { };
+                }
+                newGasPump.CanInteractWhenWanted = true;
+                newGasPump.Setup(Interiors, Settings, Crimes, Weapons);
+                World.AddBlip(newGasPump.Blip);
+                ActiveInteractableLocations.Add(newGasPump);
+                ActiveGasPumps.Add(newGasPump);
+                EntryPoint.WriteToConsole($"Nearby gas pump ADDED Props FOUND {modelName}", 5);
+            }
+        }
+    }
+    private void RemoveInactiveVendingMachines()
+    {
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
         {
             VendingMachine gl = ActiveVendingMachines[i];
             if (gl.DistanceToPlayer >= 100f)
             {
-                if(ActiveInteractableLocations.Contains(gl))
+                if (ActiveInteractableLocations.Contains(gl))
                 {
                     ActiveInteractableLocations.Remove(gl);
                 }
@@ -290,6 +356,28 @@ public class Places
             }
         }
     }
+    private void RemoveInactiveGasPumps()
+    {
+        for (int i = ActiveGasPumps.Count - 1; i >= 0; i--)
+        {
+            GasPump gl = ActiveGasPumps[i];
+            if (gl.DistanceToPlayer >= 100f)
+            {
+                if (ActiveInteractableLocations.Contains(gl))
+                {
+                    ActiveInteractableLocations.Remove(gl);
+                }
+                if (ActiveGasPumps.Contains(gl))
+                {
+                    EntryPoint.WriteToConsole($"Nearby gas pump {gl.Name} REMOVED", 5);
+                    ActiveGasPumps.Remove(gl);
+                    gl.Dispose();
+                    GameFiber.Yield();
+                }
+            }
+        }
+    }
+
     public void ActivateBasicLocation(BasicLocation gl)
     {
         if (!ActiveBasicLocations.Contains(gl))

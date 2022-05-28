@@ -144,6 +144,7 @@ public class Agencies : IAgencies
     {
         foreach(Agency agency in AgenciesList)
         {
+            //EntryPoint.WriteToConsole($"AGENCY NAME {agency.FullName} LongGunsID {agency.LongGunsID} SideArmsID {agency.SideArmsID} PersonnelID {agency.PersonnelID} VehiclesID {agency.VehiclesID} HeadDataGroupID {agency.HeadDataGroupID}");
             agency.LongGuns = issuableWeapons.GetWeaponData(agency.LongGunsID);
             agency.SideArms = issuableWeapons.GetWeaponData(agency.SideArmsID);
             agency.Personnel = dispatchablePeople.GetPersonData(agency.PersonnelID);

@@ -37,6 +37,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public double HoursBetweenTasksWhenCompleted { get; set; }
     [Description("Hours needed to wait between contact tasks after failing the previous task.")]
     public double HoursBetweenTasksWhenFailed { get; set; }
+    [Description("Allows mobile radio when on foot.")]
+    public bool AllowMobileRadioOnFoot { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -67,6 +69,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         CorruptCopWantedClearCostScalar = 5000;
         HoursBetweenTasksWhenCompleted = 6;
         HoursBetweenTasksWhenFailed = 24;
+        AllowMobileRadioOnFoot = true;
     }
 
 }

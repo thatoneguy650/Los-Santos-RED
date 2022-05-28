@@ -10,5 +10,8 @@ public interface IMenuProvideable
     void ToggleMenu();
     void ToggleDebugMenu();
     void ToggleSimplePhoneMenu();
+    //void DrawWheelMenu();
+    //void DisposeWheelMenu();
+    void UpdateWheelMenu(bool isPressingActionWheelMenu);
 }
 

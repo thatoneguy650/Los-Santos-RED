@@ -18,6 +18,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsPerformingActivity { get; set; }
         bool CanPerformActivities { get; }
+        DanceData LastDance { get; set; }
         List<LicensePlate> SpareLicensePlates { get; }
         bool IsCop { get; }
         LocationData CurrentLocation { get; }
@@ -59,5 +60,12 @@ namespace LosSantosRED.lsr.Interface
 
         void RemoveOwnershipOfNearestCar();
         void SetMoney(int bribeAmount);
+        void Gesture();
+        void ToggleActionMode();
+        void ToggleStealthMode();
+        void ToggleSelector();
+        void Crouch();
+        void Dance(DanceData selectedItem);
+        void Dance();
     }
 }

@@ -24,7 +24,7 @@ public class MainMenu : Menu
     private UIMenu VehicleItems;
     private UIMenuItem ShowSimplePhoneMenu;
 
-    public MainMenu(MenuPool menuPool, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public MainMenu(MenuPool menuPool, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances)
     {
         MenuPool = menuPool;
         Player = player;
@@ -39,7 +39,7 @@ public class MainMenu : Menu
         SettingsMenu = new SettingsMenu(menuPool, Main, Settings);
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time, placesOfInterest, modItems);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
-        ActionMenu = new ActionMenu(menuPool, Main, Player, Settings);
+        ActionMenu = new ActionMenu(menuPool, Main, Player, Settings, dances);
         InventoryMenu = new InventoryMenu(menuPool, Main, player, modItems, false);
         CreateMainMenu();
     }

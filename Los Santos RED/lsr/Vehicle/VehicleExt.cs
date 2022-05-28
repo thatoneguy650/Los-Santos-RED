@@ -152,6 +152,58 @@ namespace LSR.Vehicles
                 return false;
             }
         }
+        public int FuelTankCapacity(string vehicleClassName)
+        {
+            switch (vehicleClassName)
+            {
+                case "Compact":
+                    return 18;
+                case "Sedan":
+                    return 20;
+                case "SUV":
+                    return 30;
+                case "Coupe":
+                    return 20;
+                case "Muscle":
+                    return 25;
+                case "Sports Classic":
+                    return 25;
+                case "Sports Car":
+                    return 20;
+                case "Super":
+                    return 20;
+                case "Motorcycle":
+                    return 5;
+                case "Off Road":
+                    return 35;
+                case "Industrial":
+                    return 50;
+                case "Utility":
+                    return 35;
+                case "Van":
+                    return 30;
+                case "Bicycle":
+                    return 0;
+                case "Boat":
+                    return 40;
+                case "Helicopter":
+                    return 100;
+                case "Plane":
+                    return 100;
+                case "Service":
+                    return 40;
+                case "Emergency":
+                    return 30;
+                case "Military":
+                    return 60;
+                case "Commercial":
+                    return 40;
+                case "Train":
+                    return 100;
+                default:
+                    return 20;
+            }
+        }
         public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
         public VehicleExt(Vehicle vehicle, ISettingsProvideable settings)
         {

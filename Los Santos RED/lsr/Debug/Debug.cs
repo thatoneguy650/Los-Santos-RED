@@ -407,6 +407,14 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+
+
+
+
+        StuffTwo();
+
+
+        return;
         // Player.ResetScannerDebug();
         //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
@@ -1197,6 +1205,48 @@ public class Debug
         //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         //}
     }
+    private void HighlightObject()
+    {
+        //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        //if (ClosestEntity.Exists())
+        //{
+
+
+        //    Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+        //    DesiredPos = new Vector3(DesiredPos.X, DesiredPos.Y, Game.LocalPlayer.Character.Position.Z);
+        //    float DesiredHeading = Math.Abs(ClosestEntity.Heading + 180f);
+        //    float ObjectHeading = ClosestEntity.Heading;
+        //    if (ClosestEntity.Heading >= 180f)
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading - 180f;
+        //    }
+        //    else
+        //    {
+        //        DesiredHeading = ClosestEntity.Heading + 180f;
+        //    }
+
+
+
+
+        //    EntryPoint.WriteToConsole($"Sitting Closest = {ClosestEntity.Model.Name}", 5);
+        //    EntryPoint.WriteToConsole($"Sitting Activity ClosestSittableEntity X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+
+
+        //    if (ClosestEntity.Model.Dimensions.X >= 2f)
+        //    {
+
+        //    }
+
+        //    uint GameTimeStartedDisplaying = Game.GameTime;
+        //    while (Game.GameTime - GameTimeStartedDisplaying <= 3000)
+        //    {
+
+        //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //        GameFiber.Yield();
+        //    }
+
+        //  }
+    }
 
     //private void AddGPSRoute()
     //{
@@ -1325,7 +1375,7 @@ public class Debug
                         {
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f";
                             Game.DisplayNotification(Text);
-
+                            EntryPoint.WriteToConsole(Text);
 
                             GameFiber.StartNew(delegate
                             {
@@ -1355,7 +1405,7 @@ public class Debug
                             string description = "Literally";
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, ";
 
-
+                            EntryPoint.WriteToConsole(Text);
 
                             string Text2 = $"new DeadDrop(new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, \"{name}\", \"{text1}\" )";// { OpenTime = 0, CloseTime = 24, IsEnabled = false },";
                             Text2 += " { OpenTime = 0,CloseTime = 24, IsEnabled = false },";

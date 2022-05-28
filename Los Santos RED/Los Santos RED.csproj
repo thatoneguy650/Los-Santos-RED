@@ -104,6 +104,7 @@
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IDances.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchablePeople.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Interface\IGangs.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="lsr\Data\Location\PossibleLocations.cs" />
     <Compile Include="lsr\Data\Items\ShopMenus.cs" />
     <Compile Include="lsr\Data\Items\ModItems.cs" />
+    <Compile Include="lsr\Data\Peds\Dances.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePersonGroup.cs" />
     <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
     <Compile Include="lsr\Data\Peds\Heads.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="lsr\Locations\Places\Interact\DriveThru.cs" />
     <Compile Include="lsr\Locations\Places\Interact\FoodStand.cs" />
     <Compile Include="lsr\Locations\Places\Interact\GangDen.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\GasPump.cs" />
     <Compile Include="lsr\Locations\Places\Interact\GasStation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\GunStore.cs" />
     <Compile Include="lsr\Locations\Places\Interact\HardwareStore.cs" />
@@ -226,6 +229,8 @@
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\UndergroundGunsTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\WitnessEliminationTask.cs" />
     <Compile Include="lsr\Player\Activity\CellPhoneInteractionActivity.cs" />
+    <Compile Include="lsr\Player\Activity\DanceActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Data\DanceData.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
@@ -409,6 +414,7 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
+    <Compile Include="lsr\UI\WheelMenu.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />

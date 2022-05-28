@@ -480,7 +480,17 @@ public class IssueableWeapons : IIssuableWeapons
     }
     public List<IssuableWeapon> GetWeaponData(string issuableWeaponsID)
     {
-        return IssuableWeaponsGroupLookup.FirstOrDefault(x => x.IssuableWeaponsID == issuableWeaponsID)?.IssuableWeapons;
+        IssuableWeaponsGroup weaponsGroup = IssuableWeaponsGroupLookup.FirstOrDefault(x => x.IssuableWeaponsID == issuableWeaponsID);
+        if(weaponsGroup == null)
+        {
+            EntryPoint.WriteToConsole($"GetWeaponData NULL {issuableWeaponsID}");
+            return null;
+        }
+        else
+        {
+            return weaponsGroup.IssuableWeapons;
+        }
+
     }
 }
 

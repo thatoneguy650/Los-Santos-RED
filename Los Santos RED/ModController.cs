@@ -77,6 +77,7 @@ namespace LosSantosRED.lsr
         private DispatchableVehicles DispatchableVehicles;
         private DispatchablePeople DispatchablePeople;
         private IssueableWeapons IssueableWeapons;
+        private Dances DanceList;
 
         public ModController()
         {
@@ -140,7 +141,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories, Streets);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus, RelationshipGroups);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus, RelationshipGroups, DanceList);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -155,7 +156,7 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus, PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies, Player);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies, Player, DanceList);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, Settings, UI, PedSwap);
@@ -336,6 +337,9 @@ namespace LosSantosRED.lsr
             Intoxicants.ReadConfig();
 
             GameFiber.Yield();
+
+
+            DanceList = new Dances();
 
 
 

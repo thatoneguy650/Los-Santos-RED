@@ -96,8 +96,9 @@ namespace Mod
         private WeaponSway WeaponSway;
         private IEntityProvideable World;
         private IZones Zones;
+        private IDances Dances;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -163,6 +164,8 @@ namespace Mod
 
             Injuries = new Injuries(this, Settings);
             //ButtonPrompts.Setup();
+
+            Dances = dances;
 
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
@@ -366,6 +369,7 @@ namespace Mod
         public bool IsWavingHands { get; set; }
         public Vehicle LastFriendlyVehicle { get; set; }
         public GestureData LastGesture { get; set; }
+        public DanceData LastDance { get; set; }
         public WeaponHash LastWeaponHash { get; set; }
         public Licenses Licenses { get; private set; }
         public int MaxWantedLastLife { get; set; }
@@ -1037,6 +1041,33 @@ namespace Mod
         {
             Gesture(LastGesture);
         }
+
+
+        public void Dance(DanceData danceData)
+        {
+            EntryPoint.WriteToConsole($"Dance Start 2 NO DATA?: {danceData == null}");
+            if (!IsPerformingActivity && CanPerformActivities && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                LastDance = danceData;
+                UpperBodyActivity = new DanceActivity(this, danceData, RadioStations);
+                UpperBodyActivity.Start();
+            }
+        }
+        public void Dance()
+        {
+            StopDynamicActivity();
+            LastDance = Dances.DanceLookups.PickRandom();
+            Dance(LastDance);
+        }
+
+
+
+
         public void GiveMoney(int Amount)
         {
             if (Amount != 0)
@@ -1918,6 +1949,16 @@ namespace Mod
             }
         }
         public void ToggleSelector() => WeaponSelector.ToggleSelector();
+        public void ToggleActionMode()
+        {
+            bool isUsingActionMode = NativeFunction.Natives.IS_PED_USING_ACTION_MODE<bool>(Character);
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Character, !isUsingActionMode, -1, "DEFAULT_ACTION");
+        }
+        public void ToggleStealthMode()
+        {
+            bool isUsingStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Character);
+            NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Character, !isUsingStealthMode, "DEFAULT_ACTION");
+        }
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
         public void UnSetArrestedAnimation() => Surrendering.UnSetArrestedAnimation();
         public void Update()
@@ -2377,7 +2418,11 @@ namespace Mod
                 {
                     GameTimeStartedMoving = 0;
                 }
-                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+
+                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot)
+                {
+                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+                }
                 isJacking = Character.IsJacking;
             }
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());

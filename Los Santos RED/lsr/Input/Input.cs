@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedCrouch;
         private uint GameTimeLastPressedSimplePhone;
 
+
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
 
@@ -83,7 +84,12 @@ namespace LosSantosRED.lsr
 
 
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
-        
+
+
+
+        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Keys.XButton1);
+
+
 
 
         public bool DisableCellPhoneControl { get; set; }
@@ -113,14 +119,30 @@ namespace LosSantosRED.lsr
 
             StanceCheck();
 
-
+            WheelMenuCheck();
 
 
 
 
 
         }
+        private void WheelMenuCheck()
+        {
+            MenuProvider.UpdateWheelMenu(IsPressingActionWheelMenu);
 
+
+
+
+            //if(Player.IsAliveAndFree && IsPressingActionWheelMenu)
+            //{
+            //    MenuProvider.DrawWheelMenu();
+            //}
+            //else
+            //{
+            //    MenuProvider.DisposeWheelMenu();
+            //}
+
+        }
         private void StanceCheck()
         {
             if(Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
@@ -282,6 +304,8 @@ namespace LosSantosRED.lsr
                 if(IsPressingSprint)
                 {
                     Player.Sprinting.Start();
+
+
                 }
                 else
                 {

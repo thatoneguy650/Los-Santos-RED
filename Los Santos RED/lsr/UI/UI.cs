@@ -79,10 +79,12 @@ public class UI : IMenuProvideable
     private bool TimeOutSprite;
     private bool IsDisposed = false;
     private uint GameTimeStartedLowHealthUI;
+    private WheelMenu WheelMenu;
+    private bool IsDrawingWheelMenu;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances)
     {
         DisplayablePlayer = displayablePlayer;
         Settings = settings;
@@ -94,7 +96,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest);
+        MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
@@ -109,6 +111,7 @@ public class UI : IMenuProvideable
 
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
+        WheelMenu = new WheelMenu(actionablePlayer, Settings, this);
     }
     private enum GTAHudComponent
     {
@@ -259,6 +262,10 @@ public class UI : IMenuProvideable
                 {
                     DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
                 }
+            }
+            if (IsDrawingWheelMenu)
+            {
+                WheelMenu.Draw();
             }
         }
     }
@@ -1234,5 +1241,69 @@ public class UI : IMenuProvideable
             }
         }
         toToggle.Toggle();
+    }
+
+    //public void DrawWheelMenu()
+    //{
+    //    if (WheelMenu.RecentlyRanItem)
+    //    {
+    //        IsDrawingWheelMenu = false;
+    //    }
+    //    else if(WheelMenu.HasRanItem)
+    //    {
+    //        IsDrawingWheelMenu = false;
+    //    }
+    //    else
+    //    { 
+    //        if (!IsDrawingWheelMenu)
+    //        {
+    //            Game.TimeScale = 0.2f;
+
+
+
+    //        }
+
+    //        IsDrawingWheelMenu = true;
+    //    }
+    //}
+
+    public void DisposeWheelMenu()
+    {
+        if (IsDrawingWheelMenu)
+        {
+            Game.TimeScale = 1.0f;
+            WheelMenu.Dispose();
+        }
+        IsDrawingWheelMenu = false;
+    }
+
+    public void UpdateWheelMenu(bool isPressingActionWheelMenu)
+    {
+        if(isPressingActionWheelMenu)
+        {
+            if(WheelMenu.HasRanItem)
+            {
+                IsDrawingWheelMenu = false;
+            }
+            else
+            {
+                if (!IsDrawingWheelMenu)
+                {
+                    Game.TimeScale = 0.2f;
+                }
+                IsDrawingWheelMenu = true;
+            }
+
+        }
+        else
+        {
+            if (IsDrawingWheelMenu)
+            {
+                Game.TimeScale = 1.0f;
+                WheelMenu.Dispose();
+            }
+            IsDrawingWheelMenu = false;
+            WheelMenu.Reset();
+        }
     }
 }
