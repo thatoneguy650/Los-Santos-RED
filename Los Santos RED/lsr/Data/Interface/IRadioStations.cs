@@ -9,5 +9,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IRadioStations
     {
         List<RadioStation> RadioStationList { get; }
+
+        RadioStation GetDanceStation();
     }
 }

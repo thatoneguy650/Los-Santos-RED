@@ -120,9 +120,9 @@ public class CivilianSettings : ISettingsDefaultable
         DrugCustomerPercentageMiddleZones = 7f;
         DrugCustomerPercentagePoorZones = 10f;
 
-        CallPolicePercentageRichZones = 55f;
-        CallPolicePercentageMiddleZones = 25f;
-        CallPolicePercentagePoorZones = 10f;
+        CallPolicePercentageRichZones = 50f;
+        CallPolicePercentageMiddleZones = 30f;
+        CallPolicePercentagePoorZones = 20f;
 
         FightPercentageRichZones = 0f;
         FightPercentageMiddleZones = 1f;
@@ -134,7 +134,7 @@ public class CivilianSettings : ISettingsDefaultable
         MoneyMin = 15;
         MoneyMax = 550;
         PercentageTrustingOfPlayer = 85f;
-        PercentageToGetRandomItems = 80;
+        PercentageToGetRandomItems = 80f;
         MaxRandomItemsToGet = 5;
         MaxRandomItemsAmount = 3;
     }

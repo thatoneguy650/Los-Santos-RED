@@ -24,6 +24,7 @@ public class SurrenderActivity : DynamicActivity
     public bool CanWaveHands => !Player.HandsAreUp && !Player.IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
+    public override bool CanPause { get; set; } = false;
     public bool IsCommitingSuicide { get; set; }
     public override void Cancel()
     {

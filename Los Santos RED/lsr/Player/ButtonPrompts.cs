@@ -91,7 +91,8 @@ public class ButtonPrompts
     {
         if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+            //Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+            //Player.ButtonPromptList.RemoveAll(x => x.Identifier == identifier);
             Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }

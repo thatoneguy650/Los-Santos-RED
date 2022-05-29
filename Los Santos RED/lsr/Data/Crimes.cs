@@ -62,7 +62,7 @@ public class Crimes : ICrimes
             new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false),
 
 
-            new Crime("PublicNuisance", "Public Nuisance", 2, false, 25, true, false, true),
+            
 
 
 
@@ -79,6 +79,9 @@ public class Crimes : ICrimes
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false,false,false),
             new Crime("InsultingOfficer", "Insulting a Police Officer", 2, false, 40, false, false, true),
             new Crime("Harassment", "Harassment", 1, false, 41, true, false, false),
+
+            new Crime("PublicNuisance", "Public Nuisance", 1, false, 50, true, false, false),
+
             new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false, false,false),
 
         };

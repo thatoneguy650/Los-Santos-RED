@@ -16,6 +16,7 @@ public class RadioStation
     public string InternalName { get; set; }
     public string Name { get; set; }
     public int Index { get; set; }
+    public bool CanDanceTo { get; set; } = true;
     public override string ToString()
     {
         return Name.ToString();

@@ -61,6 +61,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override ModItem ModItem { get; set; }
+        public override bool CanPause { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;

@@ -59,6 +59,7 @@ namespace LosSantosRED.lsr.Interface
         Intoxication Intoxication { get; }
         bool IsDancing { get; set; }
         VehicleExt CurrentVehicle { get; }
+        ButtonPrompts ButtonPrompts { get; }
 
 
         //Action DropWeapon { get; }
@@ -79,5 +80,6 @@ namespace LosSantosRED.lsr.Interface
         void ToggleLeftIndicator();
         void ToggleHazards();
         void ToggleVehicleEngine();
+        void ToggleDriverWindow();
     }
 }

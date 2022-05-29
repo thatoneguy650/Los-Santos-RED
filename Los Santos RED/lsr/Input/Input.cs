@@ -99,7 +99,7 @@ namespace LosSantosRED.lsr
         }
         private void ActivityCheck()
         {
-            if(Player.IsPerformingActivity)
+            if(Player.IsPerformingActivity && Player.CanPauseCurrentActivity)
             {
                 if (!IsShowingActivityPrompts || !Player.ButtonPromptList.Any(x=> x.Group == "Activity"))
                 {

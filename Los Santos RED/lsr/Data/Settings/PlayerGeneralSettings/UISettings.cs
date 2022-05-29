@@ -137,6 +137,8 @@ public class UISettings : ISettingsDefaultable
     //public int ActionPopUpRows { get; set; }
     //public int ActionPopUpColumns { get; set; }
     public GTAFont ActionPopUpTextFont { get; set; }
+    public bool ActionPopUpShowCursor { get; set; }
+
     //public Color ActionPopUpTextColor { get; set; }
     //public Color ActionPopUpItemColor { get; set; }
 
@@ -282,6 +284,7 @@ public class UISettings : ISettingsDefaultable
         ActionPopUpTextFont = GTAFont.FontMonospace;
         //ActionPopUpTextColor = Color.White;
         //ActionPopUpItemColor = Color.FromArgb(181, 48, 48, 255);
+        ActionPopUpShowCursor = false;
 
 
 

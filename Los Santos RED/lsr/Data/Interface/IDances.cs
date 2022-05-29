@@ -6,5 +6,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IDances
     {
         List<DanceData> DanceLookups { get; }
+
+        DanceData GetRandomDance();
     }
 }

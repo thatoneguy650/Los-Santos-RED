@@ -188,20 +188,23 @@ namespace Mod
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;
-        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing;
+        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing && !IsDancing;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
 
 
 
-        public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody;
+        public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsDancing;
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
 
 
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
         public bool CanSurrender => Surrendering.CanSurrender;
-        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
+        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
         public bool CanUndie => Respawning.CanUndie;
         public bool CanWaveHands => Surrendering.CanWaveHands;
+
+
+        public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
         public CellPhone CellPhone { get; private set; }
         public int CellX { get; private set; }
         public int CellY { get; private set; }
@@ -319,6 +322,7 @@ namespace Mod
 
         private float CurrentVehicleRoll;
         private uint GameTimeLastClosedDoor;
+        private uint GameTimeLastToggledSurrender;
 
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
@@ -470,7 +474,7 @@ namespace Mod
 
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
-        public bool IsThreatening { get; set; }
+        public bool IsBeingANuisance { get; set; }
 
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -769,6 +773,13 @@ namespace Mod
             if (CurrentVehicle != null)
             {
                 CurrentVehicle.Engine.Toggle();
+            }
+        }
+        public void ToggleDriverWindow()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.SetDriverWindow(!CurrentVehicle.ManuallyRolledDriverWindowDown);
             }
         }
         public void CommitSuicide()
@@ -1096,7 +1107,7 @@ namespace Mod
                 }
                 IsPerformingActivity = true;
                 LastDance = danceData;
-                UpperBodyActivity = new DanceActivity(this, danceData, RadioStations);
+                UpperBodyActivity = new DanceActivity(this, danceData, RadioStations, Settings, Dances);
                 UpperBodyActivity.Start();
             }
         }
@@ -1372,27 +1383,31 @@ namespace Mod
 
         public void ToggleSurrender()
         {
-            if (HandsAreUp)
+            if (Game.GameTime - GameTimeLastToggledSurrender >= 1000)
             {
-                if (!IsBusted)
+                if (HandsAreUp)
+                {
+                    if (!IsBusted)
+                    {
+                        Surrendering.LowerHands();
+                    }
+                }
+                else if (IsWavingHands)
                 {
                     Surrendering.LowerHands();
                 }
-            }
-            else if (IsWavingHands)
-            {
-                Surrendering.LowerHands();
-            }
-            else
-            {
-                if (CanSurrender)
+                else
                 {
-                    Surrendering.RaiseHands();
+                    if (CanSurrender)
+                    {
+                        Surrendering.RaiseHands();
+                    }
+                    else if (CanWaveHands)
+                    {
+                        Surrendering.WaveHands();
+                    }
                 }
-                else if (CanWaveHands)
-                {
-                    Surrendering.WaveHands();
-                }
+                GameTimeLastToggledSurrender = Game.GameTime;
             }
         }
         public void RemoveGPSRoute()
@@ -2648,10 +2663,10 @@ namespace Mod
         {
             if (IsAimingInVehicle)
             {
-                if (CurrentVehicle != null)
-                {
-                    CurrentVehicle.SetDriverWindow(true);
-                }
+                //if (CurrentVehicle != null)
+                //{
+                //    CurrentVehicle.SetDriverWindow(true);
+                //}
 
                 if (CurrentWeapon == null)
                 {
@@ -2664,10 +2679,10 @@ namespace Mod
             }
             else
             {
-                if (CurrentVehicle != null)
-                {
-                    CurrentVehicle.SetDriverWindow(false);
-                }
+                //if (CurrentVehicle != null)
+                //{
+                //    CurrentVehicle.SetDriverWindow(false);
+                //}
 
                 IsMakingInsultingGesture = false;
             }

@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr.Player
         }
         public abstract ModItem ModItem { get; set; }
         public abstract string DebugString { get; }
+        public abstract bool CanPause { get; set; }
         public abstract void Start();
         public abstract void Continue();
         public abstract void Cancel();

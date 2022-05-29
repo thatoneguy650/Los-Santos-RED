@@ -1274,15 +1274,19 @@ public class UI : IMenuProvideable
         {
             if(ActionPopUpMenu.HasRanItem)
             {
-                IsDrawingWheelMenu = false;
+                if(IsDrawingWheelMenu)
+                {
+                    ActionPopUpMenu.OnStopDisplaying();
+                    IsDrawingWheelMenu = false;
+                }   
             }
             else
             {
                 if (!IsDrawingWheelMenu)
                 {
-                    Game.TimeScale = 0.2f;
+                    ActionPopUpMenu.OnStartDisplaying();
+                    IsDrawingWheelMenu = true;
                 }
-                IsDrawingWheelMenu = true;
             }
 
         }
@@ -1290,10 +1294,10 @@ public class UI : IMenuProvideable
         {
             if (IsDrawingWheelMenu)
             {
-                Game.TimeScale = 1.0f;
+                ActionPopUpMenu.OnStopDisplaying();
                 ActionPopUpMenu.Dispose();
+                IsDrawingWheelMenu = false;
             }
-            IsDrawingWheelMenu = false;
             ActionPopUpMenu.Reset();
         }
     }

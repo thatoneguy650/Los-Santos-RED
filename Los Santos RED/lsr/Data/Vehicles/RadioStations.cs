@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,14 @@ public class RadioStations : IRadioStations
     {
         RadioStationList = new List<RadioStation>()
         {
-            new RadioStation("NONE","Random",0),
-            new RadioStation("OFF","Off",0),
+            new RadioStation("NONE","Random",0) {CanDanceTo  = false },
+            new RadioStation("OFF","Off",0) {CanDanceTo  = false },
             new RadioStation("RADIO_01_CLASS_ROCK","Los Santos Rock Radio",0),
             new RadioStation("RADIO_02_POP","Non-Stop-Pop FM",0),
             new RadioStation("RADIO_03_HIPHOP_NEW","Radio Los Santos",0),
             new RadioStation("RADIO_04_PUNK","Channel X",0),
-            new RadioStation("RADIO_05_TALK_01","West Coast Talk Radio",0),
-            new RadioStation("RADIO_06_COUNTRY","Rebel Radio",0),
+            new RadioStation("RADIO_05_TALK_01","West Coast Talk Radio",0) {CanDanceTo  = false },
+            new RadioStation("RADIO_06_COUNTRY","Rebel Radio",0) {CanDanceTo  = false },
             new RadioStation("RADIO_07_DANCE_01","Soulwax FM",0),
             new RadioStation("RADIO_08_MEXICAN","East Los FM",0),
             new RadioStation("RADIO_09_HIPHOP_OLD","West Coast Classics",0),
@@ -49,6 +50,10 @@ public class RadioStations : IRadioStations
             //new RadioStation("RADIO_34_DLC_HEI4_KULT","RADIO_34_DLC_HEI4_KULT",0),
             //new RadioStation("RADIO_35_DLC_HEI4_MLR","RADIO_35_DLC_HEI4_MLR",0),
         };
+    }
+    public RadioStation GetDanceStation()
+    {
+        return RadioStationList.Where(x => x.CanDanceTo).PickRandom();
     }
 
 }

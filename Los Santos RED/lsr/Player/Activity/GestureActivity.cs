@@ -25,6 +25,7 @@ namespace LosSantosRED.lsr.Player
 
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
+        public override bool CanPause { get; set; } = false;
         public override void Cancel()
         {
             IsCancelled = true;

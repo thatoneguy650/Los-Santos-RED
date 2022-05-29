@@ -33,6 +33,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override ModItem ModItem { get; set; }
+        public override bool CanPause { get; set; } = false;
         public override void Cancel()
         {
             IsCancelled = true;
