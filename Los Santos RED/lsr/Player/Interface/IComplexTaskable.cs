@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr.Interface
         string VoiceName { get; }
         bool HasSeenDistressedPed { get; set; }
         Vector3 PositionLastSeenDistressedPed { get; }
+        bool IsOnBike { get; }
 
         void SetWantedLevel(int v);
     }

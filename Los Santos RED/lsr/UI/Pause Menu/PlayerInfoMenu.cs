@@ -50,6 +50,7 @@ public class PlayerInfoMenu
     {
         tabView = new TabView("Los Santos ~r~RED~s~ Information");
         tabView.Tabs.Clear();
+        tabView.AddTab(new TabItem("Test"));
         tabView.OnMenuClose += TabView_OnMenuClose;
     }
     public void Toggle()
@@ -117,6 +118,7 @@ public class PlayerInfoMenu
     private void AddCrimes()
     {
         List<UIMenuItem> menuItems2 = new List<UIMenuItem>();
+        bool addedItems = false;
         if (Player.IsWanted)
         {
             foreach (CrimeEvent crime in Player.PoliceResponse.CrimesObserved.OrderByDescending(x => x.AssociatedCrime?.ResultingWantedLevel))
@@ -124,6 +126,7 @@ public class PlayerInfoMenu
                 string crimeText = crime.AssociatedCrime.Name;
                 crimeText += $" Instances: ({crime.Instances})";
                 menuItems2.Add(new UIMenuItem(crimeText, "") { RightLabel = $"Wanted Level: {crime.AssociatedCrime.ResultingWantedLevel}" });
+                addedItems = true;
             }
             TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
             tabView.AddTab(interactiveListItem2);
@@ -133,21 +136,26 @@ public class PlayerInfoMenu
             foreach (Crime crime in Player.WantedCrimes.OrderByDescending(x => x.ResultingWantedLevel))
             {
                 menuItems2.Add(new UIMenuItem(crime.Name, "") { RightLabel = $"Wanted Level: {crime.ResultingWantedLevel}" });
+                addedItems = true;
             }
             TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
             tabView.AddTab(interactiveListItem2);
         }
         else
         {
-            TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
-            tabView.AddTab(interactiveListItem2);
+            tabView.AddTab(new TabItem("Crimes"));
         }
+        //else
+        //{
+        //    TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
+        //    tabView.AddTab(interactiveListItem2);
+        //}
         //menuItems2[0].Activated += (m, s) => Game.DisplaySubtitle("Activated first item!");
     }
     private void AddGangItems()
     {
         List<TabItem> items = new List<TabItem>();
-
+        bool addedItems = false;
         foreach (GangReputation gr in Player.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
         {
             string DescriptionText = "";
@@ -214,8 +222,12 @@ public class PlayerInfoMenu
             TabItem tabItem = new TabTextItem($"{gr.Gang.ShortName} {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
             //tabItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + GangsSubMenu.Index, 5000);
             items.Add(tabItem);
+            addedItems = true;
         }
-        tabView.AddTab(GangsSubMenu = new TabSubmenuItem("Gangs", items));
+        if (addedItems)
+        {
+            tabView.AddTab(GangsSubMenu = new TabSubmenuItem("Gangs", items));
+        }
     }
     private void AddLocations()
     {
@@ -533,6 +545,7 @@ public class PlayerInfoMenu
     private void AddVehicles()
     {
         List<TabItem> items = new List<TabItem>();
+        bool addedItems = false;
         foreach (VehicleExt car in Player.OwnedVehicles)
         {
             Color carColor = car.VehicleColor();
@@ -599,8 +612,16 @@ public class PlayerInfoMenu
 
             //tItem.Activated += (s, e) => Game.DisplaySubtitle("Activated Submenu Item #" + submenuTab.Index, 5000);
             items.Add(tItem);
+            addedItems = true;
         }
-        tabView.AddTab(VehiclesSubMenu = new TabSubmenuItem("Vehicles", items));
+        if(addedItems)
+        {
+            tabView.AddTab(VehiclesSubMenu = new TabSubmenuItem("Vehicles", items));
+        }
+        else
+        {
+            tabView.AddTab(new TabItem("Vehicles"));
+        }
     }
     private void AddOther()
     {
@@ -644,6 +665,7 @@ public class PlayerInfoMenu
         List<TabItem> items = new List<TabItem>();
         string dldesc = "";
         string ccwdesc = "";
+        
         if (Player.Licenses.HasDriversLicense)
         {
             dldesc = "State: ~y~San Andreas~s~~n~";
@@ -757,18 +779,12 @@ public class PlayerInfoMenu
         tabView.Money = Time.CurrentTime;
 
         tabView.Tabs.Clear();
+        //tabView.AddTab(new TabItem("Test"));
         AddVehicles();
         AddLicenses();
         AddCrimes();
         AddGangItems();
-        
-
-
-        //AddContacts();
-        //AddPhoneRepliesMessages();
-        //AddTextMessages();
         AddLocations();
-       //AddOther();
         tabView.RefreshIndex();
     }
 }

@@ -75,6 +75,7 @@ public class SimplePhoneMenu
     private void AddContacts()
     {
         List<TabItem> items = new List<TabItem>();
+        bool addedItems = false;
         foreach (iFruitContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Name))
         {
             string DescriptionText = "Select to ~o~Call~s~ the contact";
@@ -111,8 +112,16 @@ public class SimplePhoneMenu
                 Player.CellPhone.ContactAnswered(contact);
             };
             items.Add(tabItem);
+            addedItems = true;
         }
-        tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Contacts", items));
+        if (addedItems)
+        {
+            tabView.AddTab(ContactsSubMenu = new TabSubmenuItem("Contacts", items));
+        }
+        else
+        {
+            tabView.AddTab(new TabItem("Contacts"));
+        }
     }
     private void AddLocations()
     {
@@ -353,6 +362,7 @@ public class SimplePhoneMenu
     private void AddMessages()
     {
         List<TabItem> items = new List<TabItem>();
+        bool addedItems = false;
 
         List<DateTime> MessageTimes = new List<DateTime>();
 
@@ -372,6 +382,7 @@ public class SimplePhoneMenu
                 string DescriptionHeaderText = $"{pr.ContactName}";
                 TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
                 items.Add(tItem);
+                addedItems = true;
             }
             iFruitText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
             if (text != null)
@@ -384,16 +395,25 @@ public class SimplePhoneMenu
                 string DescriptionHeaderText = $"{text.Name}";
                 TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
                 items.Add(tItem);
+                addedItems = true;
             }
         }
         PhoneRepliesSubMenu = new TabSubmenuItem("Recent", items);
-        tabView.AddTab(PhoneRepliesSubMenu);
+        if (addedItems)
+        {
+            tabView.AddTab(PhoneRepliesSubMenu);
+        }
+        else
+        {
+            tabView.AddTab(new TabItem("Recent"));
+        }
     }
 
 
     private void AddPhoneRepliesMessages()
     {
         List<TabItem> items = new List<TabItem>();
+        bool addedItems = false;
         foreach (PhoneResponse text in Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(15))
         {
             string TimeReceived = text.TimeReceived.ToString("HH:mm");// text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
@@ -415,6 +435,7 @@ public class SimplePhoneMenu
                 }
             };
             items.Add(tItem);
+            addedItems = true;
         }
         TabItem ClearPhoneResponses = new TabTextItem("Clear Phone Responses", "Clear Phone Responses", "Select to clear all ~o~Phone Responses~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
         ClearPhoneResponses.Activated += (s, e) =>
@@ -426,11 +447,20 @@ public class SimplePhoneMenu
         items.Add(ClearPhoneResponses);
 
         PhoneRepliesSubMenu = new TabSubmenuItem("Replies", items);
-        tabView.AddTab(PhoneRepliesSubMenu);
+
+        if (addedItems)
+        {
+            tabView.AddTab(PhoneRepliesSubMenu);
+        }
+        else
+        {
+            tabView.AddTab(new TabItem("Replies"));
+        }
     }
     private void AddTextMessages()
     {
         List<TabItem> items = new List<TabItem>();
+        bool addedItems = false;
         foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
         {
             string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
@@ -453,6 +483,7 @@ public class SimplePhoneMenu
                 }
             };
             items.Add(tItem);
+            addedItems = true;
         }
 
         TabItem ClearTexts = new TabTextItem("Clear Text Messages", "Clear Text Messages", "Select to clear all ~o~Text Messages~s~");//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
@@ -467,7 +498,15 @@ public class SimplePhoneMenu
 
 
         TextMessagesSubMenu = new TabSubmenuItem("Texts", items);
-        tabView.AddTab(TextMessagesSubMenu);
+
+        if (addedItems)
+        {
+            tabView.AddTab(TextMessagesSubMenu);
+        }
+        else
+        {
+            tabView.AddTab(new TabItem("Texts"));
+        }
     }
     private void BackingMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
