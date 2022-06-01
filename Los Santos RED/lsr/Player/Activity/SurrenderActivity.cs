@@ -219,7 +219,11 @@ public class SurrenderActivity : DynamicActivity
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 }
             }
-            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3))
+            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            }
+            else
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }

@@ -50,6 +50,7 @@ public class SimplePhoneMenu
     {
         tabView = new TabView("Los Santos ~r~RED~s~ Phone & Replies");
         tabView.Tabs.Clear();
+        tabView.ScrollTabs = true;
         tabView.OnMenuClose += TabView_OnMenuClose;
     }
     public void Toggle()

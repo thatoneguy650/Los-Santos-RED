@@ -97,6 +97,12 @@ namespace Mod
         private IEntityProvideable World;
         private IZones Zones;
         private IDances Dances;
+        private float CurrentVehicleRoll;
+        private uint GameTimeLastClosedDoor;
+        private uint GameTimeLastToggledSurrender;
+        private bool isCheckingExcessSpeed;
+        private bool isShooting;
+
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances)
         {
@@ -320,9 +326,7 @@ namespace Mod
         public bool IsHoldingUp { get; set; }
         public bool IsHotWiring { get; private set; }
 
-        private float CurrentVehicleRoll;
-        private uint GameTimeLastClosedDoor;
-        private uint GameTimeLastToggledSurrender;
+
 
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
@@ -364,6 +368,19 @@ namespace Mod
         public bool IsRagdoll { get; private set; }
         public bool IsRidingBus { get; set; }
         public bool IsSitting { get; set; } = false;
+
+        public bool IsShooting
+        {
+            get => isShooting;
+            private set
+            {
+                if (isShooting != value)
+                {
+                    isShooting = value;
+                    OnIsShootingChanged();
+                }
+            }
+        }
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
@@ -471,11 +488,9 @@ namespace Mod
         public int WantedLevel => wantedLevel;
         private bool CanYell => !IsYellingTimeOut;
         private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
-
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
-
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -745,8 +760,6 @@ namespace Mod
                 }
             }
         }
-
-
         public void ToggleLeftIndicator()
         {
             if(CurrentVehicle != null)
@@ -1094,8 +1107,6 @@ namespace Mod
         {
             Gesture(LastGesture);
         }
-
-
         public void Dance(DanceData danceData)
         {
             EntryPoint.WriteToConsole($"Dance Start 2 NO DATA?: {danceData == null}");
@@ -1117,10 +1128,6 @@ namespace Mod
             LastDance = Dances.DanceLookups.PickRandom();
             Dance(LastDance);
         }
-
-
-
-
         public void GiveMoney(int Amount)
         {
             if (Amount != 0)
@@ -1379,8 +1386,6 @@ namespace Mod
         }
         public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
         public void RaiseHands() => Surrendering.RaiseHands();
-
-
         public void ToggleSurrender()
         {
             if (Game.GameTime - GameTimeLastToggledSurrender >= 1000)
@@ -2044,7 +2049,13 @@ namespace Mod
             NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Character, !isUsingStealthMode, "DEFAULT_ACTION");
         }
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
-        public void UnSetArrestedAnimation() => Surrendering.UnSetArrestedAnimation();
+        public void UnSetArrestedAnimation()
+        {
+            if (HandsAreUp)
+            {
+                Surrendering.UnSetArrestedAnimation();
+            }
+        }
         public void Update()
         {
             UpdateData();
@@ -2304,24 +2315,14 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
 
-
-
-
                 UpdateCurrentVehicle();
                 GameFiber.Yield();
 
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
-                    
-
-
-
-
+                   
                     IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
 
-
-
-       
                     CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
                     if (CurrentVehicleRoll >= 80f || CurrentVehicleRoll <= -80f)
                     {
@@ -2535,9 +2536,6 @@ namespace Mod
             //    CurrentVehicle.Vehicle.MustBeHotwired = true;
             //}
         }
-
-
-
         public void UpdateWeaponData()
         {
             if (Game.LocalPlayer.Character.IsShooting)
@@ -2597,6 +2595,11 @@ namespace Mod
             GameFiber.Yield();
             UpdateLookedAtPed();
             GameFiber.Yield();
+
+
+            IsShooting = RecentlyShot;
+
+
         }
         public bool UseInventoryItem(ModItem modItem) => Inventory.Use(modItem);
         public void ViolationsUpdate() => Violations.Update();
@@ -2691,15 +2694,17 @@ namespace Mod
         private void OnExcessiveSpeed()
         {
             GameFiber.Yield();
-            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
+            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed)
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
+                    isCheckingExcessSpeed = true;
                     GameFiber.Sleep(5000);
                     if (isExcessiveSpeed)
                     {
                         Scanner.OnExcessiveSpeed();
                     }
+                    isCheckingExcessSpeed = false;
                 }, "FastForwardWatcher");
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);
@@ -2878,6 +2883,24 @@ namespace Mod
             Scanner.OnSuspectWasted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
         }
+
+
+        private void OnIsShootingChanged()
+        {
+            if (IsShooting)
+            {
+                if (IsWanted && WantedLevel <= 4 && AnyPoliceRecentlySeenPlayer)
+                {
+                    Scanner.OnSuspectShooting();
+                }
+                EntryPoint.WriteToConsole("PLAYER EVENT: Starting Shooting");
+            }
+            else
+            {
+                EntryPoint.WriteToConsole("PLAYER EVENT: Stopped Shooting");
+            }
+        }
+
         private void OnStartedDuckingInVehicle()
         {
             if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)

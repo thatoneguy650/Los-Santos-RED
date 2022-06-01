@@ -319,7 +319,7 @@ public class Respawning// : IRespawning
     private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties)
     {
         CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth);
-        CurrentPlayer.UnSetArrestedAnimation();
+       // CurrentPlayer.UnSetArrestedAnimation();
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING
@@ -344,6 +344,11 @@ public class Respawning// : IRespawning
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
+
+
+        CurrentPlayer.UnSetArrestedAnimation();
+
+
     }
     private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool resetCellphone, bool clearActiveTasks, bool clearProperties)
     {

@@ -26,8 +26,8 @@
     public int AccuracyMax { get; set; } = 20;//40
 
 
-    public int ShootRateMin { get; set; } = 400;
-    public int ShootRateMax { get; set; } = 400;
+    public int ShootRateMin { get; set; } = 200;//400
+    public int ShootRateMax { get; set; } = 300;//400
 
 
     public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
@@ -42,10 +42,10 @@
     public int TaserShootRateMax { get; set; } = 100;
 
 
-    public int VehicleAccuracyMin { get; set; } = 5;
-    public int VehicleAccuracyMax { get; set; } = 5;
-    public int VehicleShootRateMin { get; set; } = 20;
-    public int VehicleShootRateMax { get; set; } = 20;
+    public int VehicleAccuracyMin { get; set; } = 2;//5
+    public int VehicleAccuracyMax { get; set; } = 4;//5
+    public int VehicleShootRateMin { get; set; } = 10;//20
+    public int VehicleShootRateMax { get; set; } = 15;//20
 
 
     public string UnitCode { get; set; } = "";

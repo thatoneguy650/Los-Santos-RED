@@ -148,7 +148,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSettings.KillLimit_Wanted5 = 5;
         SettingsManager.PoliceSettings.KillLimit_Wanted6 = 8;
         SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime = true;
-        SettingsManager.PoliceSettings.WantedLevelIncreaseTime = 180000;
+
         SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted = 200f;
         SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen = 500f;
         SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedUnseen = 300f;

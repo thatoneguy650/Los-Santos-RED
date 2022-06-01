@@ -76,8 +76,8 @@ public class Chase : ComplexTask
     private bool ShouldCarJackPlayer => Player.WantedLevel > 1 && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
-    private bool ShouldChaseRecklessly => Player.WantedLevel >= 2 && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 60000;
-    private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= 3;
+    private bool ShouldChaseRecklessly => Player.WantedLevel >= 3 && !Player.PoliceResponse.LethalForceAuthorized;
+    private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= 3 && Player.PoliceResponse.LethalForceAuthorized;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;

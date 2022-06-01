@@ -111,6 +111,36 @@ namespace LosSantosRED.lsr
 
         public bool PlayerSeenInVehicleDuringWanted { get; set; }
 
+        private uint CurrentWantedLevelIncreaseTime
+        {
+            get
+            {
+                if(Player.WantedLevel == 1)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted1;
+                }
+                else if (Player.WantedLevel == 2)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted2;
+                }
+                else if (Player.WantedLevel == 3)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted3;
+                }
+                else if (Player.WantedLevel == 4)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted4;
+                }
+                else if (Player.WantedLevel == 5)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted5;
+                }
+                else 
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted5;
+                }
+            }
+        }
 
         public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
         {
@@ -145,7 +175,7 @@ namespace LosSantosRED.lsr
                             PlayerSeenInVehicleDuringWanted = true;
                         }
                     }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
+                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);

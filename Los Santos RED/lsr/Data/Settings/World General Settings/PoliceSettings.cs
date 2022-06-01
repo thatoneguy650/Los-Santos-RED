@@ -58,7 +58,16 @@ public class PoliceSettings : ISettingsDefaultable
     public int KillLimit_Wanted5 { get; set; }
     public int KillLimit_Wanted6 { get; set; }
     public bool WantedLevelIncreasesOverTime { get; set; }
-    public uint WantedLevelIncreaseTime { get; set; }
+   // public uint WantedLevelIncreaseTime { get; set; }
+
+
+    public uint WantedLevelIncreaseTime_FromWanted1 { get; set; }
+    public uint WantedLevelIncreaseTime_FromWanted2 { get; set; }
+    public uint WantedLevelIncreaseTime_FromWanted3 { get; set; }
+    public uint WantedLevelIncreaseTime_FromWanted4 { get; set; }
+    public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
+
+
     public bool DeadlyChaseRequiresThreeStars { get; set; }
     public int MaxWantedLevel { get; set; }
 
@@ -212,7 +221,17 @@ public class PoliceSettings : ISettingsDefaultable
         KillLimit_Wanted5 = 10;
         KillLimit_Wanted6 = 20;
         WantedLevelIncreasesOverTime = true;
-        WantedLevelIncreaseTime = 180000;//240000
+        //WantedLevelIncreaseTime = 180000;//240000
+
+        WantedLevelIncreaseTime_FromWanted1 = 60000;//1 min
+        WantedLevelIncreaseTime_FromWanted2 = 120000;//2 mins
+        WantedLevelIncreaseTime_FromWanted3 = 210000;//3.5 mins
+        WantedLevelIncreaseTime_FromWanted4 = 240000;//4 minutes
+        WantedLevelIncreaseTime_FromWanted5 = 240000;//4 minutes
+
+
+
+
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
         SightDistance_Helicopter = 175f;
