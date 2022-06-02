@@ -112,7 +112,7 @@ public class MainMenu : Menu
 
         UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
-        Main.AddItem(AboutMenu);
+        //Main.AddItem(AboutMenu);
         Main.AddItem(ShowReportingMenu);
         Main.AddItem(ShowSimplePhoneMenu);
 

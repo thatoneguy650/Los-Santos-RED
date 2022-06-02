@@ -134,17 +134,15 @@ public class UISettings : ISettingsDefaultable
     public float ActionPopUpItemSpacingY { get; set; }
     public float ActionPopUpItemScale { get; set; }
     public float ActionPopUpTextScale { get; set; }
-    //public int ActionPopUpRows { get; set; }
-    //public int ActionPopUpColumns { get; set; }
+
     public GTAFont ActionPopUpTextFont { get; set; }
     public bool ActionPopUpShowCursor { get; set; }
-
-    //public Color ActionPopUpTextColor { get; set; }
-    //public Color ActionPopUpItemColor { get; set; }
-
-
-
-
+    public string ActionPopUpTextColor { get; set; }
+    public string ActionPopUpItemColor { get; set; }
+    public string ActionPopUpItemSelectedColor { get; set; }
+    public float ActionPopUpItemCenterX { get; set; }
+    public float ActionPopUpItemCenterY { get; set; }
+    public float ActionPopUpItemDistanceFromCenter { get; set; }
 
     public UISettings()
     {
@@ -273,18 +271,20 @@ public class UISettings : ISettingsDefaultable
 
 
 
-        ActionPopUpItemWidth = 0.07f;
-        ActionPopUpItemHeight = 0.07f;
+        ActionPopUpItemWidth = 0.08f;
+        ActionPopUpItemHeight = 0.08f;
         ActionPopUpItemSpacingX = 0.04f;
         ActionPopUpItemSpacingY = 0.04f;
-        ActionPopUpItemScale = 1.0f;
+        ActionPopUpItemScale = 1.2f;
         ActionPopUpTextScale = 0.3f;
-        //ActionPopUpRows = 3;
-        //ActionPopUpColumns = 3;
         ActionPopUpTextFont = GTAFont.FontMonospace;
-        //ActionPopUpTextColor = Color.White;
-        //ActionPopUpItemColor = Color.FromArgb(181, 48, 48, 255);
+        ActionPopUpTextColor = "White";
+        ActionPopUpItemColor = "Black";
+        ActionPopUpItemSelectedColor = "Red";
         ActionPopUpShowCursor = false;
+        ActionPopUpItemCenterX = 0.5f;
+        ActionPopUpItemCenterY = 0.5f;
+        ActionPopUpItemDistanceFromCenter = 0.3f;
 
 
 

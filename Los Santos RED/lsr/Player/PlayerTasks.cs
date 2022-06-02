@@ -136,6 +136,7 @@ public class PlayerTasks
             myTask.WasCompleted = true;
             myTask.CompletionTime = Time.CurrentDateTime;
             EntryPoint.WriteToConsole($"Task Completed for {contactName}");
+            Game.DisplayHelp($"'{myTask.Name}' Completed for {contactName}");
             LastContactTask.RemoveAll(x => x.ContactName == contactName);
             if (addToLast)
             {
@@ -188,6 +189,7 @@ public class PlayerTasks
             myTask.WasFailed = true;
             myTask.FailedTime = Time.CurrentDateTime;
             EntryPoint.WriteToConsole($"Task Failed for {contactName}");
+            Game.DisplayHelp($"'{myTask.Name}' Failed for {contactName}");
             LastContactTask.RemoveAll(x => x.ContactName == contactName);
             LastContactTask.Add(myTask);
         }

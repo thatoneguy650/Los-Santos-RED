@@ -359,7 +359,6 @@ public class SimplePhoneMenu
         interactiveListItem.BackingMenu.OnItemSelect += BackingMenu_OnItemSelect;
         tabView.AddTab(interactiveListItem);
     }
-
     private void AddMessages()
     {
         List<TabItem> items = new List<TabItem>();
@@ -409,8 +408,6 @@ public class SimplePhoneMenu
             tabView.AddTab(new TabItem("Recent"));
         }
     }
-
-
     private void AddPhoneRepliesMessages()
     {
         List<TabItem> items = new List<TabItem>();
@@ -421,20 +418,20 @@ public class SimplePhoneMenu
             string DescriptionText = "";
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
-            DescriptionText += $"~n~~n~Select to ~r~Delete Response~s~";
+            //DescriptionText += $"~n~~n~Select to ~r~Delete Response~s~";
             string ListEntryItem = $"{text.ContactName} {TimeReceived}";
             string DescriptionHeaderText = $"{text.ContactName}";
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
-            tItem.Activated += (s, e) =>
-            {
-                if (text != null)
-                {
-                    Player.CellPhone.DeletePhoneRespone(text);
-                    PhoneRepliesSubMenu.Items.Remove(tItem);
-                    PhoneRepliesSubMenu.RefreshIndex();
-                    EntryPoint.WriteToConsole($"Phone Reply deleted {text.ContactName} {text.Message}");
-                }
-            };
+            //tItem.Activated += (s, e) =>
+            //{
+            //    if (text != null)
+            //    {
+            //        Player.CellPhone.DeletePhoneRespone(text);
+            //        PhoneRepliesSubMenu.Items.Remove(tItem);
+            //        PhoneRepliesSubMenu.RefreshIndex();
+            //        EntryPoint.WriteToConsole($"Phone Reply deleted {text.ContactName} {text.Message}");
+            //    }
+            //};
             items.Add(tItem);
             addedItems = true;
         }
@@ -469,20 +466,20 @@ public class SimplePhoneMenu
             string DescriptionText = "";
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
-            DescriptionText += $"~n~~n~Select to ~r~Delete Message~s~";
+            //DescriptionText += $"~n~~n~Select to ~r~Delete Message~s~";
             string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
             string DescriptionHeaderText = $"{text.Name}";
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
-            tItem.Activated += (s, e) =>
-            {
-                if (text != null)
-                {
-                    Player.CellPhone.DeleteText(text);
-                    TextMessagesSubMenu.Items.Remove(tItem);
-                    TextMessagesSubMenu.RefreshIndex();
-                    EntryPoint.WriteToConsole($"Text Message deleted {text.Name} {text.Message}");
-                }
-            };
+            //tItem.Activated += (s, e) =>
+            //{
+            //    if (text != null)
+            //    {
+            //        Player.CellPhone.DeleteText(text);
+            //        TextMessagesSubMenu.Items.Remove(tItem);
+            //        TextMessagesSubMenu.RefreshIndex();
+            //        EntryPoint.WriteToConsole($"Text Message deleted {text.Name} {text.Message}");
+            //    }
+            //};
             items.Add(tItem);
             addedItems = true;
         }

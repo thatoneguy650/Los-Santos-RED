@@ -939,8 +939,11 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        Player.IsBeingANuisance = !Player.IsBeingANuisance;
-        GameFiber.Sleep(1000);
+        Game.LocalPlayer.Character.KeepTasks = true;
+        NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
+        Game.LocalPlayer.Character.KeepTasks = true;
+        //Player.IsBeingANuisance = !Player.IsBeingANuisance;
+        //GameFiber.Sleep(1000);
 
         //Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 

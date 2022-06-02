@@ -10,20 +10,20 @@ public class KeySettings : ISettingsDefaultable
 {
     public Keys DebugMenuKey { get; set; }
     public Keys MenuKey { get; set; }
-    public Keys SurrenderKey { get; set; }
+    //public Keys SurrenderKey { get; set; }
     public Keys SurrenderKeyModifier { get; set; }
     public Keys DropWeaponKey { get; set; }
     public Keys DropWeaponKeyModifer { get; set; }
-    public Keys RightIndicatorKey { get; set; }
-    public Keys RightIndicatorKeyModifer { get; set; }
-    public Keys LeftIndicatorKey { get; set; }
-    public Keys LeftIndicatorKeyModifer { get; set; }
-    public Keys HazardKey { get; set; }
-    public Keys HazardKeyModifer { get; set; }
-    public Keys EngineToggle { get; set; }
-    public Keys EngineToggleModifier { get; set; }
-    public Keys ManualDriverDoorClose { get; set; }
-    public Keys ManualDriverDoorCloseModifier { get; set; }
+    //public Keys RightIndicatorKey { get; set; }
+    //public Keys RightIndicatorKeyModifer { get; set; }
+    //public Keys LeftIndicatorKey { get; set; }
+    //public Keys LeftIndicatorKeyModifer { get; set; }
+    //public Keys HazardKey { get; set; }
+    //public Keys HazardKeyModifer { get; set; }
+    //public Keys EngineToggle { get; set; }
+    //public Keys EngineToggleModifier { get; set; }
+    //public Keys ManualDriverDoorClose { get; set; }
+    //public Keys ManualDriverDoorCloseModifier { get; set; }
     public Keys SprintKey { get; set; }
     public Keys SprintKeyModifier { get; set; }
     public Keys InteractStart { get; set; }
@@ -33,13 +33,13 @@ public class KeySettings : ISettingsDefaultable
     public Keys ScenarioStart { get; set; }
     public Keys SelectorKey { get; set; }
     public Keys SelectorKeyModifier { get; set; }
-    public Keys GestureKey { get; set; }
-    public Keys GestureKeyModifier { get; set; }
+    //public Keys GestureKey { get; set; }
+    //public Keys GestureKeyModifier { get; set; }
 
     public Keys ActivityKey { get; set; }
     public Keys ActivityKeyModifier { get; set; }
-    public Keys CrouchKeyModifier { get; set; }
-    public Keys CrouchKey { get; set; }
+    //public Keys CrouchKeyModifier { get; set; }
+    //public Keys CrouchKey { get; set; }
     //public Keys SimplePhoneKey { get; set; }
 
 
@@ -58,24 +58,24 @@ public class KeySettings : ISettingsDefaultable
 //SimplePhoneKey = Keys.Down;
 
 
-        SurrenderKey = Keys.E;
-        SurrenderKeyModifier = Keys.LShiftKey;
-        DropWeaponKey = Keys.G;
-        DropWeaponKeyModifer = Keys.None;
-        RightIndicatorKey = Keys.E;
-        RightIndicatorKeyModifer = Keys.LShiftKey;
-        LeftIndicatorKey = Keys.Q;
-        LeftIndicatorKeyModifer = Keys.LShiftKey;
-        HazardKey = Keys.Space;
-        HazardKeyModifer = Keys.LShiftKey;
-        EngineToggle = Keys.Z;
-        EngineToggleModifier = Keys.LShiftKey;
-        ManualDriverDoorClose = Keys.None;
-        ManualDriverDoorCloseModifier = Keys.LControlKey;
+        //SurrenderKey = Keys.E;
+        //SurrenderKeyModifier = Keys.LShiftKey;
+        //DropWeaponKey = Keys.G;
+        //DropWeaponKeyModifer = Keys.None;
+        //RightIndicatorKey = Keys.E;
+        //RightIndicatorKeyModifer = Keys.LShiftKey;
+        //LeftIndicatorKey = Keys.Q;
+        //LeftIndicatorKeyModifer = Keys.LShiftKey;
+        //HazardKey = Keys.Space;
+        //HazardKeyModifer = Keys.LShiftKey;
+        //EngineToggle = Keys.Z;
+        //EngineToggleModifier = Keys.LShiftKey;
+        //ManualDriverDoorClose = Keys.None;
+        //ManualDriverDoorCloseModifier = Keys.LControlKey;
 
 
-        CrouchKey = Keys.None;
-        CrouchKeyModifier = Keys.LControlKey;
+        //CrouchKey = Keys.None;
+        //CrouchKeyModifier = Keys.LControlKey;
 
 
         SprintKey = Keys.Z;
@@ -92,8 +92,8 @@ public class KeySettings : ISettingsDefaultable
         ActivityKey = Keys.O;
         ActivityKeyModifier = Keys.LShiftKey;
 
-        GestureKey = Keys.X;
-        GestureKeyModifier = Keys.Z;
+        //GestureKey = Keys.X;
+        //GestureKeyModifier = Keys.Z;
 
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpSelectKey = Keys.LButton;

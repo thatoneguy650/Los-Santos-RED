@@ -2051,10 +2051,10 @@ namespace Mod
         public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
         public void UnSetArrestedAnimation()
         {
-            if (HandsAreUp)
-            {
+            //if (HandsAreUp)
+            //{
                 Surrendering.UnSetArrestedAnimation();
-            }
+            //}
         }
         public void Update()
         {

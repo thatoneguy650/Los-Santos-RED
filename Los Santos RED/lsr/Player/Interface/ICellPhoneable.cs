@@ -27,6 +27,8 @@ namespace LosSantosRED.lsr.Interface
 
         string PlayerName { get; }
         CellPhone CellPhone { get; }
+        Rage.Ped Character { get; }
+        string ModelName { get; }
 
         void GiveMoney(int v);
         void AddGPSRoute(string name, Vector3 entrancePosition);

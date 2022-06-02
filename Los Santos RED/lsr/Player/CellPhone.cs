@@ -39,7 +39,29 @@ public class CellPhone
     private IContactInteractable ContactInteractable;
     private CorruptCopInteraction CorruptCopInteraction;
     private EmergencyServicesInteraction EmergencyServicesInteraction;
-
+    private bool isRunningForcedMobileTask;
+    private int PhoneTypeID
+    {
+        get
+        {
+            if(Player.ModelName.ToLower() == "player_zero")
+            {
+                return 0;
+            }
+            else if (Player.ModelName.ToLower() == "player_one")
+            {
+                return 2;
+            }
+            else if (Player.ModelName.ToLower() == "player_two")
+            {
+                return 1;
+            }
+            else 
+            {
+                return 0;
+            }
+        }
+    }
     public bool IsActive => CustomiFruit?.IsActive == true;
     public CustomiFruit CustomiFruit { get; private set; }
     public List<iFruitText> TextList => AddedTexts;
@@ -240,6 +262,18 @@ public class CellPhone
     }
     public void ContactAnswered(iFruitContact contact)
     {
+        if(!NativeFunction.Natives.IS_PED_RUNNING_MOBILE_PHONE_TASK<bool>(Player.Character))
+        {
+            NativeFunction.Natives.CREATE_MOBILE_PHONE(PhoneTypeID);
+            isRunningForcedMobileTask = true;
+            NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
+            Player.Character.KeepTasks = true;
+        }
+        else
+        {
+            isRunningForcedMobileTask = false;
+        }
+
         Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
         if (myGang != null)
         {
@@ -268,7 +302,6 @@ public class CellPhone
         }
 
     }
-
     public void DeleteText(iFruitText text)
     {
         AddedTexts.Remove(text);
@@ -327,6 +360,13 @@ public class CellPhone
     }
     public void Close(int time)
     {
+        EntryPoint.WriteToConsole("Mobile Phone Closed");
+        if(isRunningForcedMobileTask)
+        {
+            NativeFunction.Natives.DESTROY_MOBILE_PHONE();
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        }
+        isRunningForcedMobileTask = false;
         CustomiFruit.Close(time);
     }
     private void CheckScheduledItems()

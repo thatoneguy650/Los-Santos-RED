@@ -380,7 +380,7 @@ public class PlayerInfoMenu
             menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Police Stations", $"List of all Police Stations", PoliceStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
         }
         List<BasicLocation> FireStations = new List<BasicLocation>();
-        if (PlacesOfInterest.PossibleLocations.PoliceStations.Any())
+        if (PlacesOfInterest.PossibleLocations.FireStations.Any())
         {
             foreach (FireStation sy in PlacesOfInterest.PossibleLocations.FireStations.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
             {
@@ -404,7 +404,17 @@ public class PlayerInfoMenu
             {
                 Restaurants.Add(sy);
             }
+
+
+
             menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Restaurants", $"List of all Restaurants", Restaurants) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+
+
+
+
+
+
+
         }
         List<BasicLocation> LiquorStores = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Restaurants.Any())
@@ -464,6 +474,67 @@ public class PlayerInfoMenu
         interactiveListItem.BackingMenu.OnItemSelect += BackingMenu_OnItemSelect;
         tabView.AddTab(interactiveListItem);
     }
+    private void AddLocations2()
+    {
+        List<UIMenuItem> menuItems = new List<UIMenuItem>();
+
+
+
+
+        List<TabItem> items = new List<TabItem>();
+
+
+        
+            //{
+            //    new MissionInformation("Mission One", "I have description!", new Tuple<string, string>[] { Tuple.Create("Objective", "Mission One Objective") }),
+            //    new MissionInformation("Mission Two", new Tuple<string, string>[] { new Tuple<string, string>("This the second info", "Random Info"), new Tuple<string, string>("This the second info", "Random Info #2") }) { Logo = new MissionLogo(Game.CreateTextureFromFile("DefaultSkin.png")) },
+            //    new MissionInformation("Mission Three", "This has a description and a full texture", new Tuple<string, string>[] { Tuple.Create("Objective", "Mission Two Objective"), Tuple.Create("Some more details", "Mission Two Details") }) { Logo = new MissionLogo("candc_chopper", "banner_4") },
+            //    new MissionInformation("Mission Four") { Logo = new MissionLogo("candc_default", "dump") },
+            //    new MissionInformation("Unreasonably long mission name which really ought to be cut off because it's so stupidly long", "Long description with a~n~very very~n~very very~n~very very~n~very very~n~very very very very very very very very very very long string", new Tuple<string, string>[] { Tuple.Create("Objective", "Mission Two Objective"), Tuple.Create("Some more details", "Mission Two Details") }) { Logo = new MissionLogo("candc_casinoheist", "stockade_b") },
+            //    new MissionInformation("Skipped Mission") { Skipped = true },
+            //    new MissionInformation("Mission Item", "Mission with a very tall texture", new Tuple<string, string>[] { Tuple.Create("Info 1", "#1"), Tuple.Create("Info 2", "#2"), Tuple.Create("Info 3", "#3") }) { Logo = new MissionLogo("helicopterhud", "hud_vert") },
+            //};
+
+
+        
+
+
+
+        //List<BasicLocation> Restaurants = new List<BasicLocation>();
+        if (PlacesOfInterest.PossibleLocations.Restaurants.Any())
+        {
+            List<MissionInformation> restaurantMissionInfoList = new List<MissionInformation>();
+            foreach (Restaurant sy in PlacesOfInterest.PossibleLocations.Restaurants.OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)))
+            {
+                restaurantMissionInfoList.Add(new MissionInformation(sy.Name, sy.Description, new Tuple<string, string>[] { Tuple.Create(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~", ""), Tuple.Create(sy.StreetAddress, ""), Tuple.Create("Menu", "") }));// , sy.StreetAddress));
+            }
+            TabMissionSelectItem test = new TabMissionSelectItem("Restaurants", restaurantMissionInfoList);
+            test.OnItemSelect += Test_OnItemSelect;
+            items.Add(test);
+
+            // menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Restaurants", $"List of all Restaurants", Restaurants) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+        }
+
+
+
+
+
+        TabSubmenuItem interactiveListItem = new TabSubmenuItem("Locations", items);
+        interactiveListItem.OnItemSelect += InteractiveListItem_OnItemSelect; ; //+= BackingMenu_OnItemSelect;
+        tabView.AddTab(interactiveListItem);
+    }
+
+    private void Test_OnItemSelect(MissionInformation selectedItem)
+    {
+        Game.DisplaySubtitle(selectedItem.Name);
+    }
+
+    private void InteractiveListItem_OnItemSelect(TabItem selectedSubemnu)
+    {
+        
+    }
+
+
     private void AddPhoneRepliesMessages()
     {
         List<TabItem> items = new List<TabItem>();
@@ -604,8 +675,11 @@ public class PlayerInfoMenu
             TabItem tItem = new TabTextItem(ListEntryText, DescriptionHeaderText, DescriptionText);
             tItem.Activated += (s, e) =>
             {
-                VehiclesSubMenu.Items.Remove(tItem);
-                VehiclesSubMenu.RefreshIndex();
+                tabView.Visible = false;
+                Game.IsPaused = false;
+                //VehiclesSubMenu.Items.Remove(tItem);
+                //VehiclesSubMenu.RefreshIndex();
+                // Game.DisplaySubtitle("Ownership Cleared");
                 Player.RemoveOwnershipOfVehicle(car);
             };
 
@@ -785,6 +859,11 @@ public class PlayerInfoMenu
         AddCrimes();
         AddGangItems();
         AddLocations();
+
+#if DEBUG
+        AddLocations2();
+
+#endif
         tabView.RefreshIndex();
     }
 }

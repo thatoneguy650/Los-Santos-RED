@@ -107,7 +107,7 @@ public class CivilianSettings : ISettingsDefaultable
         GunshotHearingDistance = 125f;//100f
         TaskMissionPeds = false;
         AllowMissionPedsToInteract = false;
-        AllowRandomCrimes = true;
+        AllowRandomCrimes = false;
         MinimumTimeBetweenRandomCrimes = 1200000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;

@@ -131,7 +131,7 @@ public class UI : IMenuProvideable
             Settings.SettingsManager.UISettings.ActionPopUpTextScale, 
             Settings.SettingsManager.UISettings.ActionPopUpTextFont, 
             Color.White,
-            Settings.SettingsManager.KeySettings.ActionPopUpSelectKey
+            Settings.SettingsManager.KeySettings.ActionPopUpSelectKey, this
             );
 
 
@@ -242,7 +242,7 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
             {
                 WeaponFader.Update(lastWeaponDisplay);
-                if (Settings.SettingsManager.UISettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeWeaponDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.UISettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeWeaponDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
                 {
                     DisplayTextOnScreen(WeaponFader.TextToShow, Settings.SettingsManager.UISettings.WeaponDisplayPositionX, Settings.SettingsManager.UISettings.WeaponDisplayPositionY, Settings.SettingsManager.UISettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.UISettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.UISettings.WeaponDisplayJustificationID, WeaponFader.AlphaValue);
                 }
@@ -254,7 +254,7 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
             {
                 PlayerFader.Update(lastPlayerDisplay);
-                if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
                 {
                     DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID, PlayerFader.AlphaValue);
                 }
@@ -266,7 +266,7 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
             {
                 StreetFader.Update(lastStreetDisplay);
-                if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
                 {
                     DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, StreetFader.AlphaValue);
                 }
@@ -278,7 +278,7 @@ public class UI : IMenuProvideable
             if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
             {
                 ZoneFader.Update(lastZoneDisplay);
-                if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
                 {
                     DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, ZoneFader.AlphaValue);
                 }

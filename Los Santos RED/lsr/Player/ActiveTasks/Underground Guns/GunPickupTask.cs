@@ -180,6 +180,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Player.LastFriendlyVehicle = null;
             SpawnedVehicle.SetLock((VehicleLockStatus)10);
             EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");
+            Game.DisplayHelp($"You have arrived, leave the vehicle");
         }
         private void OnGotInCar()
         {
