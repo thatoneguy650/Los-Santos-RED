@@ -40,6 +40,7 @@ public class PurchaseMenu : Menu
     private ITimeControllable Time;
     private IWeapons Weapons;
     private IEntityProvideable World;
+    private uint NotificationHandle;
 
 
     private Transaction Transaction;
@@ -783,6 +784,7 @@ public class PurchaseMenu : Menu
                 }
                 CurrentWeapon = null;
                 CurrentWeaponVariation = new WeaponVariation();
+
                 PurchaseItem(CurrentModItem, CurrentMenuItem, TotalItems);
                 Transaction.OnAmountChanged(CurrentModItem);
                 //UpdatePropEntryData(CurrentModItem, CurrentMenuItem, scrollerItem);
@@ -825,7 +827,7 @@ public class PurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
                 if (Player.Money < menuItem.PurchasePrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    DisplayInsufficientFundsMessage();
                     return;
                 }
                 if (!PurchaseVehicle(CurrentModItem))
@@ -885,7 +887,7 @@ public class PurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice}", 5);
                 if (Player.Money < TotalPrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    DisplayInsufficientFundsMessage();
                     return;
                 }
                 if (!PurchaseWeapon())
@@ -895,10 +897,6 @@ public class PurchaseMenu : Menu
                 Player.GiveMoney(-1 * TotalPrice);
                 MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
-                //if (CurrentWeapon.Category != WeaponCategory.Melee && CurrentWeapon.Category != WeaponCategory.Throwable)
-                //{
-                //    selectedItem.Enabled = false;
-                //}
             }
         }
         else if (selectedItem.Text == "Purchase Ammo" && CurrentModItem != null)
@@ -915,7 +913,7 @@ public class PurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {1}", 5);
                 if (Player.Money < TotalPrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    DisplayInsufficientFundsMessage();
                     return;
                 }
                 if (!PurchaseAmmo(TotalItems))
@@ -954,7 +952,7 @@ public class PurchaseMenu : Menu
                 EntryPoint.WriteToConsole($"Weapon Component Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice} myComponent {myComponent.Name}", 5);
                 if (Player.Money < myItem.SelectedItem.PurchasePrice)
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                    DisplayInsufficientFundsMessage();
                     return;
                 }
                 if (CurrentWeapon.HasComponent(Player.Character, myComponent))
@@ -1186,6 +1184,11 @@ public class PurchaseMenu : Menu
             }
         }
     }
+
+
+
+
+
     private void PreviewPed(ModItem itemToShow)
     {
         //GameFiber.Yield();
@@ -1342,6 +1345,9 @@ public class PurchaseMenu : Menu
         }
         //GameFiber.Yield();
     }
+
+
+
     private bool PurchaseAmmo(int TotalItems)
     {
         if (CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
@@ -1400,6 +1406,7 @@ public class PurchaseMenu : Menu
             }
             return true;
         }
+        DisplayInsufficientFundsMessage();
         return false;
     }
     private bool PurchaseVehicle(ModItem modItem)
@@ -1426,7 +1433,7 @@ public class PurchaseMenu : Menu
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Delivery Failed", "We are sorry, we are unable to complete this transation");
                 return false;
             }
         }
@@ -1452,9 +1459,17 @@ public class PurchaseMenu : Menu
                 return true;
             }
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
+
+
+    private void DisplayInsufficientFundsMessage()
+    {
+        Game.RemoveNotification(NotificationHandle);
+        NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+    }
+
+
     private class ColorLookup
     {
         public ColorLookup()

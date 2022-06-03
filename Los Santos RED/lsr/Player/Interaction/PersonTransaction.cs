@@ -50,7 +50,9 @@ public class PersonTransaction : Interaction
     public InteractableLocation AssociatedStore { get; set; }
 
 
-    private bool CanContinueConversation => Player.CanConverse && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
+    private bool CanContinueConversation => Player.IsAliveAndFree && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
+    //was Player.CanConverse
+    
     public override string DebugString => "";
 
     public PersonTransaction(IActivityPerformable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
@@ -162,9 +164,11 @@ public class PersonTransaction : Interaction
                 }
                 else
                 {
+                    EntryPoint.WriteToConsole("Person Transaction Dispose 1");
                     Dispose();
                 }
             }
+            EntryPoint.WriteToConsole("Person Transaction Dispose 2");
             Dispose();
 
         }, "PersonTransaction");
@@ -195,7 +199,10 @@ public class PersonTransaction : Interaction
             if (Ped != null && Ped.Pedestrian.Exists())
             {
                // Ped.Pedestrian.CanBePulledOutOfVehicles = true;
-
+               if(!PedWasPersistent)
+                {
+                    Ped.Pedestrian.IsPersistent = false;
+                }
                 if(PanickedByPlayer)
                 {
                     
@@ -615,7 +622,7 @@ public class PersonTransaction : Interaction
 
             if (!Ped.IsFedUpWithPlayer)
             {
-                //Ped.Pedestrian.IsPersistent = true;
+                Ped.Pedestrian.IsPersistent = true;
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);

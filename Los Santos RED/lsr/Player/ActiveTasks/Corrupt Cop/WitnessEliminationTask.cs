@@ -382,6 +382,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         if (WillFlee)//flee
                         {
                             Witness.WillCallPolice = true;
+                            Witness.WillCallPoliceIntense = true;
                             Witness.WillFight = false;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFlee, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
@@ -391,6 +392,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         {
                             Witness.WillFight = true;
                             Witness.WillCallPolice = false;
+                            Witness.WillCallPoliceIntense = false;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFight, true);
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 0, false);

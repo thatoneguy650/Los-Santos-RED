@@ -76,7 +76,7 @@ public class Gang
     public string LicensePlatePrefix { get; set; } = "";
     public uint MaxWantedLevelSpawn { get; set; } = 6;
     public uint MinWantedLevelSpawn { get; set; } = 0;
-    public int SpawnLimit { get; set; } = 5;
+    public int SpawnLimit { get; set; } = 10;
     public bool SpawnsOnHighway { get; set; } = false;
 
     public string ContactName { get; set; } = "Unknown";

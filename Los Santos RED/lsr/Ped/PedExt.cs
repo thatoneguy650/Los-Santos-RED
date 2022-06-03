@@ -213,6 +213,7 @@ public class PedExt : IComplexTaskable
     public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = false;//true;
+    public bool WillCallPoliceIntense { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";

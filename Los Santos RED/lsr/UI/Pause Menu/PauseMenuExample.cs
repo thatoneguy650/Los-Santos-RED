@@ -244,7 +244,7 @@
         }
 
         // a command that simulates loading the plugin
-        [ConsoleCommand]
-        private static void RunPauseMenuExample() => GameFiber.StartNew(Main);
+        //[ConsoleCommand]
+        //private static void RunPauseMenuExample() => GameFiber.StartNew(Main);
     }
 }

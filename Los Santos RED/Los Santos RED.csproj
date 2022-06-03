@@ -414,8 +414,10 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
-    <Compile Include="lsr\UI\PopUpMenu.cs" />
-    <Compile Include="lsr\UI\PopUpMenuMap.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\PopUpMenu.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\PopUpMenuConfig.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\PopUpMenuMap.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\PositionMap.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />

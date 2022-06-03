@@ -58,6 +58,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         bool IsWanted { get; }
         bool IsNotWanted { get; }
+        bool IsAliveAndFree { get; }
 
         void SetWantedLevel(int v1, string v2, bool v3);
     }

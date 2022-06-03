@@ -296,7 +296,7 @@ public class PedCrimes
                     }
 
                     float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
-                    if (!PedExt.IsGangMember && PedExt.WillCallPolice)
+                    if (!PedExt.IsGangMember && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && criminal.WantedLevel >= 3)))
                     {
 
                        
@@ -572,6 +572,7 @@ public class PedCrimes
                     {
                         EverCommittedCrime = true;
                         PedExt.WillCallPolice = false;
+                        PedExt.WillCallPoliceIntense = false;
                         EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
                     }
                 }

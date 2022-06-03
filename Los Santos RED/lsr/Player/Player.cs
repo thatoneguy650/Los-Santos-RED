@@ -1055,6 +1055,7 @@ namespace Mod
                     {
                         DriverExt.CanBeAmbientTasked = false;
                         DriverExt.WillCallPolice = false;
+                        DriverExt.WillCallPoliceIntense = false;
                         DriverExt.WillFight = false;
                         DriverExt.CanBeTasked = false;
                     }

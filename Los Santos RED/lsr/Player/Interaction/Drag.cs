@@ -61,6 +61,8 @@ public class Drag : DynamicActivity
 
             Ped.CanBeTasked = false;
             Ped.CanBeAmbientTasked = false;
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             LoadBody = false;
             // NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             GameFiber.StartNew(delegate
@@ -125,6 +127,8 @@ public class Drag : DynamicActivity
                 NativeFunction.Natives.REVIVE_INJURED_PED(Ped.Pedestrian);
                 NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
                 NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
             }
             IsAttached = true;
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
@@ -141,6 +145,8 @@ public class Drag : DynamicActivity
             }
             Ped.Pedestrian.Detach();
             NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
+            Ped.Pedestrian.BlockPermanentEvents = false;
+            Ped.Pedestrian.KeepTasks = false;
         }
         IsAttached = false;
     }

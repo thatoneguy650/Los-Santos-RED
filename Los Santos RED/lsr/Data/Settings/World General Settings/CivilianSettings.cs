@@ -53,12 +53,32 @@ public class CivilianSettings : ISettingsDefaultable
     public float DrugCustomerPercentageMiddleZones { get; set; }
     [Description("Percentage of civilians that will have illicit items to buy in the poor zones (See Zones.xml). Maximum value of 100.")]
     public float DrugCustomerPercentagePoorZones { get; set; }
+
+
+
+
+
     [Description("Percentage of civilians that will call the police on criminals in the rich zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentageRichZones { get; set; }
     [Description("Percentage of civilians that will call the police on criminals in the middle income zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentageMiddleZones { get; set; }
     [Description("Percentage of civilians that will call the police on criminals in the poor zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentagePoorZones { get; set; }
+
+
+
+    [Description("Percentage of civilians that will call the police on intense criminal activity (shooting, killing, etc.) in the rich zones (See Zones.xml). Maximum value of 100.")]
+    public float CallPoliceForSeriousCrimesPercentageRichZones { get; set; }
+    [Description("Percentage of civilians that will call the police on intense criminal activity (shooting, killing, etc.) in the middle income zones (See Zones.xml). Maximum value of 100.")]
+    public float CallPoliceForSeriousCrimesPercentageMiddleZones { get; set; }
+    [Description("Percentage of civilians that will call the police on intense criminal activity (shooting, killing, etc.) in the poor zones (See Zones.xml). Maximum value of 100.")]
+    public float CallPoliceForSeriousCrimesPercentagePoorZones { get; set; }
+
+
+
+
+
+
     [Description("Percentage of civilians that will attack criminals in the rich zones (See Zones.xml). Maximum value of 100.")]
     public float FightPercentageRichZones { get; set; }
     [Description("Percentage of civilians that will attack criminals in the middle income zones (See Zones.xml). Maximum value of 100.")]
@@ -123,6 +143,13 @@ public class CivilianSettings : ISettingsDefaultable
         CallPolicePercentageRichZones = 50f;
         CallPolicePercentageMiddleZones = 30f;
         CallPolicePercentagePoorZones = 20f;
+
+
+        CallPoliceForSeriousCrimesPercentageRichZones = 80f;
+        CallPoliceForSeriousCrimesPercentageMiddleZones = 70f;
+        CallPoliceForSeriousCrimesPercentagePoorZones = 50f;
+
+
 
         FightPercentageRichZones = 0f;
         FightPercentageMiddleZones = 1f;

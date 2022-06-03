@@ -157,6 +157,7 @@ public class CivilianTasker
             bool SeenAngryCrime = false;
             bool SeenMundaneCrime = false;
             int PlayerCrimePriority = 99;
+            int PlayerCrimeWantedLevel = 0;
             foreach (Crime crime in Civilian.PlayerCrimesWitnessed.Where(x=> x.CanBeReportedByCivilians))
             {
                 if(crime.AngersCivilians)
@@ -175,6 +176,10 @@ public class CivilianTasker
                 {
                     PlayerCrimePriority = crime.Priority;
                 }
+                if(crime.ResultingWantedLevel >= PlayerCrimeWantedLevel)
+                {
+                    PlayerCrimeWantedLevel = crime.ResultingWantedLevel;
+                }
             }
             if(PlayerCrimePriority < HighestPriorityOtherCrime?.Crime?.Priority)
             {
@@ -185,6 +190,11 @@ public class CivilianTasker
                 HighestPriorityOtherCrime = null;
             }
 
+            bool hasSeenIntenseCrime = false;
+            if(HighestPriorityOtherCrime?.Crime?.ResultingWantedLevel >= 3 || PlayerCrimeWantedLevel >= 3)
+            {
+                hasSeenIntenseCrime = true;
+            }
 
 
 
@@ -202,6 +212,16 @@ public class CivilianTasker
             if (SeenScaryCrime || SeenAngryCrime)
             {
                 if (Civilian.WillCallPolice)
+                {
+                    if (Civilian.CurrentTask?.Name != "ScaredCallIn")
+                    {
+                        Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
+                        GameFiber.Yield();//TR Added back 7
+                        Civilian.CurrentTask.Start();
+
+                    }
+                }
+                else if (Civilian.WillCallPoliceIntense && hasSeenIntenseCrime)
                 {
                     if (Civilian.CurrentTask?.Name != "ScaredCallIn")
                     {

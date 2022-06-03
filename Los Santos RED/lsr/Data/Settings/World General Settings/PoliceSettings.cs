@@ -223,11 +223,18 @@ public class PoliceSettings : ISettingsDefaultable
         WantedLevelIncreasesOverTime = true;
         //WantedLevelIncreaseTime = 180000;//240000
 
-        WantedLevelIncreaseTime_FromWanted1 = 60000;//1 min
-        WantedLevelIncreaseTime_FromWanted2 = 120000;//2 mins
-        WantedLevelIncreaseTime_FromWanted3 = 210000;//3.5 mins
-        WantedLevelIncreaseTime_FromWanted4 = 240000;//4 minutes
-        WantedLevelIncreaseTime_FromWanted5 = 240000;//4 minutes
+        //WantedLevelIncreaseTime_FromWanted1 = 60000;//1 min
+        //WantedLevelIncreaseTime_FromWanted2 = 120000;//2 mins
+        //WantedLevelIncreaseTime_FromWanted3 = 210000;//3.5 mins
+        //WantedLevelIncreaseTime_FromWanted4 = 240000;//4 minutes
+        //WantedLevelIncreaseTime_FromWanted5 = 240000;//4 minutes
+
+        WantedLevelIncreaseTime_FromWanted1 = 90000;//1.5 min
+        WantedLevelIncreaseTime_FromWanted2 = 180000;//3 mins
+        WantedLevelIncreaseTime_FromWanted3 = 270000;//4.5 mins
+        WantedLevelIncreaseTime_FromWanted4 = 360000;//6 minutes
+        WantedLevelIncreaseTime_FromWanted5 = 600000;//10 minutes
+
 
 
 

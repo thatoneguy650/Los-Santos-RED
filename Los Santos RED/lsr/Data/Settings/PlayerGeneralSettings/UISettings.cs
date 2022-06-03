@@ -143,6 +143,7 @@ public class UISettings : ISettingsDefaultable
     public float ActionPopUpItemCenterX { get; set; }
     public float ActionPopUpItemCenterY { get; set; }
     public float ActionPopUpItemDistanceFromCenter { get; set; }
+    public bool HideLSRUIUnlessActionPopUpActive { get; set; }
 
     public UISettings()
     {
@@ -286,7 +287,7 @@ public class UISettings : ISettingsDefaultable
         ActionPopUpItemCenterY = 0.5f;
         ActionPopUpItemDistanceFromCenter = 0.3f;
 
-
+        HideLSRUIUnlessActionPopUpActive = false;
 
     }
 }

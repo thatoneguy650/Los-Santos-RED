@@ -402,7 +402,7 @@ public class PedSwap : IPedSwap
         {
             return;
         }
-        CurrentPed.IsPersistent = false;
+        
         if (CurrentPedIsDead && CurrentPed.Exists() && CurrentPed.IsAlive)
         {
             CurrentPed.Kill();
@@ -415,7 +415,15 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            PedExt toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons, CurrentPedName,"Person");
+            if (!CurrentPedIsDead)
+            {
+                CurrentPed.IsPersistent = true;
+            }
+            PedExt toCreate = Entities.Pedestrians.GetPedExt(CurrentPed.Handle);
+            if (toCreate == null)
+            {
+                toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons, CurrentPedName, "Person");
+            }
             int WantedToSet = Player.WantedLevel;
             if (Player.WantedLevel == 3)
             {
@@ -426,6 +434,9 @@ public class PedSwap : IPedSwap
             {
                 toCreate.SetBusted();
             }
+
+            CurrentPed.RelationshipGroup = new RelationshipGroup("FORMERPLAYER");
+
             Entities.Pedestrians.AddEntity(toCreate);
             //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
             TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
@@ -726,9 +737,9 @@ public class PedSwap : IPedSwap
 
         if (isWanted)
         {
-            FormerPlayer.RelationshipGroup = "CRIMINALS";
-            Game.SetRelationshipBetweenRelationshipGroups("CRIMINALS", "COP", Relationship.Hate);
-            Game.SetRelationshipBetweenRelationshipGroups("COP", "CRIMINALS", Relationship.Hate);
+            FormerPlayer.RelationshipGroup = new RelationshipGroup("FORMERPLAYER");
+            Game.SetRelationshipBetweenRelationshipGroups("FORMERPLAYER", "COP", Relationship.Hate);
+            Game.SetRelationshipBetweenRelationshipGroups("COP", "FORMERPLAYER", Relationship.Hate);
         }
 
         if (FormerPlayer.IsInAnyVehicle(false) && FormerPlayer.CurrentVehicle.Exists())

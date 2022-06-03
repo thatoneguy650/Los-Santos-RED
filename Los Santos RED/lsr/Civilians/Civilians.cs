@@ -81,6 +81,7 @@ public class Civilians
                 {
                     ped.CanBeAmbientTasked = false;
                     ped.WillCallPolice = false;
+                    ped.WillCallPoliceIntense = false;
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
@@ -117,6 +118,7 @@ public class Civilians
                 {
                     ped.CanBeAmbientTasked = false;
                     ped.WillCallPolice = false;
+                    ped.WillCallPoliceIntense = false;
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
@@ -189,6 +191,7 @@ public class Civilians
                 {
                     ped.CanBeAmbientTasked = false;
                     ped.WillCallPolice = false;
+                    ped.WillCallPoliceIntense = false;
                     ped.WillFight = true;
                     ped.WasEverSetPersistent = true;
                 }

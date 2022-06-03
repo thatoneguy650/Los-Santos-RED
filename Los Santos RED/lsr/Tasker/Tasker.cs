@@ -142,6 +142,7 @@ public class Tasker : ITaskerable, ITaskerReportable
             Criminal.CanBeAmbientTasked = false;
             Criminal.WasSetCriminal = true;
             Criminal.WillCallPolice = false;
+            Criminal.WillCallPoliceIntense = false;
             Criminal.Pedestrian.RelationshipGroup = CriminalsRG;
             Criminal.CurrentTask = new CommitCrime(Criminal, Player, Weapons, PedProvider);
             Criminal.CurrentTask.Start();
