@@ -192,12 +192,12 @@ public class GangInteraction
         {
             Player.AddGPSRoute(myDen.Name, myDen.EntrancePosition);
             List<string> Replies = new List<string>() {
-                    $"Our {ActiveGang.DenName} is located on {myDen.StreetAddress} come see us.",
-                    $"Come check out our {ActiveGang.DenName} on {myDen.StreetAddress}.",
-                    $"You can find our {ActiveGang.DenName} on {myDen.StreetAddress}.",
-                    $"{myDen.StreetAddress}.",
-                    $"It's on {myDen.StreetAddress} come see us.",
-                    $"The {ActiveGang.DenName}? It's on {myDen.StreetAddress}.",
+                    $"Our {ActiveGang.DenName} is located on {myDen.FullStreetAddress} come see us.",
+                    $"Come check out our {ActiveGang.DenName} on {myDen.FullStreetAddress}.",
+                    $"You can find our {ActiveGang.DenName} on {myDen.FullStreetAddress}.",
+                    $"{myDen.FullStreetAddress}.",
+                    $"It's on {myDen.FullStreetAddress} come see us.",
+                    $"The {ActiveGang.DenName}? It's on {myDen.FullStreetAddress}.",
 
                     };
             Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());

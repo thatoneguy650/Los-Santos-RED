@@ -528,7 +528,7 @@ namespace Mod
         {
             if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
             {
-                Scanner.Reset();
+                //Scanner.Reset();
                 Investigation.Start(position, false, false, true, false);
                 Scanner.OnMedicalServicesRequested();
             }
@@ -605,7 +605,7 @@ namespace Mod
         public void CallPolice()
         {
             Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
-            PedExt violatingCiv = World.Pedestrians.CivilianList.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+            PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
             CrimeSceneDescription description;
             if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
             {

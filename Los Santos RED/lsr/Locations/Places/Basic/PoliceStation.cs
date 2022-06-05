@@ -16,6 +16,7 @@ public class PoliceStation : BasicLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Police Station";
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

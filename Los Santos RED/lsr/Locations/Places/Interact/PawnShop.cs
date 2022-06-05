@@ -25,7 +25,7 @@ public class PawnShop : InteractableLocation
     }
 
 
-
+    public override string TypeName { get; set; } = "Pawn Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

@@ -31,7 +31,7 @@ public class Restaurant : InteractableLocation
 
     public FoodType FoodType { get; set; } = FoodType.Generic;
 
-
+    public override string TypeName { get; set; } = "Restaurant";
     public override int MapIcon { get; set; } = 621;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
@@ -93,6 +93,12 @@ public class Restaurant : InteractableLocation
             Transaction?.SellMenu?.Show();
         }
     }
+    public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
+    {
+        List<Tuple<string, string>> BaseList = base.DirectoryInfo(currentHour, distanceTo).ToList();
+        BaseList.Add(Tuple.Create(FoodType.ToString(), ""));
+        return BaseList;
 
+    }
 }
 

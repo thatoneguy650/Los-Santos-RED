@@ -53,6 +53,7 @@ public class Residence : InteractableLocation
     public int RentalDays { get; set; }
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
+    public override string TypeName { get; set; } = "Residence";
 
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override Color MapIconColor { get; set; } = Color.White;

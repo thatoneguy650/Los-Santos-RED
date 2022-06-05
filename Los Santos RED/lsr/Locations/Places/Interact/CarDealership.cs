@@ -24,6 +24,7 @@ public class CarDealership : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Car Dealership";
     public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

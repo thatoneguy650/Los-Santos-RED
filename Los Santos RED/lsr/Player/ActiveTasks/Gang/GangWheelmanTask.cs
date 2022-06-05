@@ -706,12 +706,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             
             List<string> Replies = new List<string>() {
-                $"We need a wheelman for a score that is going down. Location is the {RobberyLocation.Name} {RobberyLocation.StreetAddress} in {HoursToRobbery} hours. {NumberToSpawnString}. Once you are done come back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. ${MoneyToRecieve} to you",
-                $"Get a car and head to the {RobberyLocation.Name} {RobberyLocation.StreetAddress}. It will go down in {HoursToRobbery} hours. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
-                $"We need a driver for a job that we got planned. Get to the {RobberyLocation.Name} {RobberyLocation.StreetAddress}. Scheduled for {HoursToRobbery} hours. {NumberToSpawnString}. Afterwards, come back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                $"Sombody said you can drive, we'll see. Need you at the {RobberyLocation.Name} {RobberyLocation.StreetAddress}. We get going in {HoursToRobbery} hours. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                $"Need someone good behind the wheel. Location is {RobberyLocation.Name} {RobberyLocation.StreetAddress}. The fun starts in {HoursToRobbery} hours. {NumberToSpawnString}. Afterwards, come back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                $"Need a quick taxi service for a job. Get your ass to the {RobberyLocation.Name} {RobberyLocation.StreetAddress}. You have {HoursToRobbery} hours before the job. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
+                $"We need a wheelman for a score that is going down. Location is the {RobberyLocation.Name} {RobberyLocation.FullStreetAddress} in {HoursToRobbery} hours. {NumberToSpawnString}. Once you are done come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} to you",
+                $"Get a car and head to the {RobberyLocation.Name} {RobberyLocation.FullStreetAddress}. It will go down in {HoursToRobbery} hours. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
+                $"We need a driver for a job that we got planned. Get to the {RobberyLocation.Name} {RobberyLocation.FullStreetAddress}. Scheduled for {HoursToRobbery} hours. {NumberToSpawnString}. Afterwards, come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                $"Sombody said you can drive, we'll see. Need you at the {RobberyLocation.Name} {RobberyLocation.FullStreetAddress}. We get going in {HoursToRobbery} hours. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                $"Need someone good behind the wheel. Location is {RobberyLocation.Name} {RobberyLocation.FullStreetAddress}. The fun starts in {HoursToRobbery} hours. {NumberToSpawnString}. Afterwards, come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                $"Need a quick taxi service for a job. Get your ass to the {RobberyLocation.Name} {RobberyLocation.FullStreetAddress}. You have {HoursToRobbery} hours before the job. {NumberToSpawnString}. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
 
 
             };
@@ -720,11 +720,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendMoneyPickupMessage()
         {
             List<string> Replies = new List<string>() {
-                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.StreetAddress} to collect the ${MoneyToRecieve}",
-                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"{HiringGangDen.StreetAddress} for ${MoneyToRecieve}",
-                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. We owe you ${MoneyToRecieve}",
+                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} to collect the ${MoneyToRecieve}",
+                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
+                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
             Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 3);
         }

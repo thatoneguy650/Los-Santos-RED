@@ -284,9 +284,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendDropoffInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"Take the van to the shop on {DropOffStore.StreetAddress}.",
-                $"Get to {DropOffStore.StreetAddress}.",
-                $"Bring the van to {DropOffStore.StreetAddress}, don't loiter.",
+                $"Take the van to the shop on {DropOffStore.FullStreetAddress}.",
+                $"Get to {DropOffStore.FullStreetAddress}.",
+                $"Bring the van to {DropOffStore.FullStreetAddress}, don't loiter.",
                     };
             Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
         }
@@ -304,9 +304,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"Need you to pickup some guns from our shop on {PickUpStore.StreetAddress} and bring them to the shop on {DropOffStore.StreetAddress}. They are loaded in the ~p~Burrito Van~s~ out front. ${MoneyToRecieve} when you are done",
-                $"Go get the van from {PickUpStore.StreetAddress} and take it to {DropOffStore.StreetAddress}. ${MoneyToRecieve} on completion",
-                $"There is a van in front of {PickUpStore.StreetAddress}, go get it and bring it to {DropOffStore.StreetAddress}. Some sensitive stuff in the back, don't draw attention. Payment is ${MoneyToRecieve}",
+                $"Need you to pickup some guns from our shop on {PickUpStore.FullStreetAddress} and bring them to the shop on {DropOffStore.FullStreetAddress}. They are loaded in the ~p~Burrito Van~s~ out front. ${MoneyToRecieve} when you are done",
+                $"Go get the van from {PickUpStore.FullStreetAddress} and take it to {DropOffStore.FullStreetAddress}. ${MoneyToRecieve} on completion",
+                $"There is a van in front of {PickUpStore.FullStreetAddress}, go get it and bring it to {DropOffStore.FullStreetAddress}. Some sensitive stuff in the back, don't draw attention. Payment is ${MoneyToRecieve}",
                     };
             Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
         }

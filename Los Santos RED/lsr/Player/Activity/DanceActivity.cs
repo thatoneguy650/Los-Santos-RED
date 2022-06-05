@@ -16,10 +16,10 @@ namespace LosSantosRED.lsr.Player
     {
         private bool IsCancelled;
         private IActionable Player;
-        private uint GameTimeStartedGesturing;
+        private uint GameTimeStartedDancing;
         private DanceData DanceData;
-        private int AnimationFlag = 50;
-        private float AnimationBlendOutTime = -1.0f;
+        //private int AnimationFlag = 50;
+        private float AnimationBlendOutTime = -4.0f;
         private IRadioStations RadioStations;
         private RadioStation RadioStation;
         private ISettingsProvideable Settings;
@@ -27,6 +27,11 @@ namespace LosSantosRED.lsr.Player
         private UIMenu DanceMenu;
         private IDances Dances;
         private UIMenuListScrollerItem<DanceData> DanceScrollerMenu;
+        private string PlayingAnimation;
+        private string PlayingDictionary;
+        private int AnimationFlagRepeat => 1;
+        private int AnimationFlagNormal => 0;
+        private bool DisplayedDanceName;
 
         public DanceActivity(IActionable player, DanceData danceData, IRadioStations radioStations, ISettingsProvideable settings, IDances dances) : base()
         {
@@ -58,7 +63,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Gesture Start: {DanceData.Name}", 5);
+            EntryPoint.WriteToConsole($"Dance Start: {DanceData.Name}", 5);
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
                 Setup();
@@ -67,7 +72,172 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
+            DisplayedDanceName = false;
+            if (DanceData.AnimationEnter != "")
+            {
+                AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
+                EntryPoint.WriteToConsole($"Dance Enter: {DanceData.AnimationEnter}", 5);
+                GameTimeStartedDancing = Game.GameTime;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlagNormal, 0, false, false, false);//-1
 
+                if (!DisplayedDanceName)
+                {
+                    Game.DisplayNotification($"Dance Name: ~r~{DanceData.Name}~s~");
+                    DisplayedDanceName = true;
+                }
+
+
+                //if (DanceData.FacialAnimationEnter != "")
+                //{
+                //    NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationEnter, DanceData.AnimationDictionary);
+                //}
+                while (Player.CanPerformActivities && !IsCancelled)
+                {
+                    Player.SetUnarmed();
+                    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter);
+                    if (AnimationTime >= 0.99f)
+                    {
+                        break;
+                    }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            Idle();
+        }
+        private void Idle()
+        {
+            bool shouldExit = true;
+            bool shouldStop = false;
+            if (DanceData.AnimationIdle != "" && !IsCancelled)
+            {
+                Player.ButtonPrompts.AddPrompt("DanceActivity","Pick Dance","PickDance", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                Player.ButtonPrompts.AddPrompt("DanceActivity", "Random Dance", "RandomDance", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                Player.ButtonPrompts.AddPrompt("DanceActivity", "Stop Dancing", "StopDance", Settings.SettingsManager.KeySettings.InteractCancel, 3);
+                PlayingAnimation = DanceData.AnimationIdle;
+                PlayingDictionary = DanceData.AnimationDictionary;
+                EntryPoint.WriteToConsole($"Dance Idle: {DanceData.AnimationIdle}", 5);
+                GameTimeStartedDancing = Game.GameTime;
+
+                if (!Player.IsMoveControlPressed)
+                {
+                    AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
+                    if (!DisplayedDanceName)
+                    {
+                        Game.DisplayNotification($"Dance Name: ~r~{DanceData.Name}~s~");
+                        DisplayedDanceName = true;
+                    }
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle, 4.0f, AnimationBlendOutTime, -1, AnimationFlagRepeat, 0, false, false, false);//-1
+
+                    if(DanceData.FacialAnimationIdle != "")
+                    {
+                        NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationIdle, DanceData.AnimationDictionary);
+                    }
+                }
+                while (Player.CanPerformActivities && !IsCancelled)
+                {
+                    Player.SetUnarmed();
+                    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle);
+                    if (AnimationTime >= 0.99f && shouldStop)
+                    {
+                        break;
+                    }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                        break;
+                    }
+                    if(PlayingAnimation != DanceData.AnimationIdle || PlayingDictionary != DanceData.AnimationDictionary)//changed the dance, restart it baby!
+                    {
+                        shouldExit = false;
+                        break;
+
+                        //AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
+                        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
+                        //PlayingAnimation = DanceData.AnimationIdle;
+                        //PlayingDictionary = DanceData.AnimationDictionary;
+                        //EntryPoint.WriteToConsole("Dancing, Changed Dance!");
+                        //Game.DisplayNotification($"Dance Name: ~r~{DanceData.Name}~s~");
+                    }
+                    if(Player.ButtonPrompts.IsPressed("PickDance"))
+                    {
+                        DanceMenu.Visible = true;
+                    }
+                    if (Player.ButtonPrompts.IsPressed("RandomDance"))
+                    {
+                        SetRandomDanceData();
+                    }
+                    if (Player.ButtonPrompts.IsPressed("StopDance"))
+                    {
+                        Player.ButtonPrompts.RemovePrompts("DanceActivity");
+                        shouldStop = true;
+                        shouldExit = true;
+                    }
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+                Player.ButtonPrompts.RemovePrompts("DanceActivity");
+            }
+            if (shouldExit ||IsCancelled)
+            {
+                Exit();
+            }
+            else
+            {
+                Enter();
+            }
+        }
+        private void Exit()
+        {
+            if (DanceData.AnimationExit != "" && !IsCancelled)
+            {
+                EntryPoint.WriteToConsole($"Dance Exit: {DanceData.AnimationExit}", 5);
+                GameTimeStartedDancing = Game.GameTime;
+                AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlagNormal, 0, false, false, false);//-1
+                if (DanceData.FacialAnimationExit != "")
+                {
+                    NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationExit, DanceData.AnimationDictionary);
+                }
+                while (Player.CanPerformActivities && !IsCancelled)
+                {
+                    Player.SetUnarmed();
+                    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit);
+                    if (AnimationTime >= 0.99f)
+                    {
+                        break;
+                    }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+            }
+
+            UnSetup();
+        }
+        private void Setup()
+        {
+            //AnimationFlag = 0;
+            AnimationBlendOutTime = -4.0f;
+            EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {DanceData.AnimationDictionary} AnimationEnter: {DanceData.AnimationEnter} AnimationName: {DanceData.AnimationIdle} AnimationExit: {DanceData.AnimationExit}", 5);
+            AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
+
+            MenuPool = new MenuPool();
+            DanceMenu = new UIMenu("Dances", "Select a Dance");
+            DanceMenu.RemoveBanner();
+            MenuPool.Add(DanceMenu);
+            DanceMenu.OnItemSelect += OnDanceMenuSelect;
+            DanceScrollerMenu = new UIMenuListScrollerItem<DanceData>("Dances","Select a new dance",Dances.DanceLookups);
+            DanceMenu.AddItem(DanceScrollerMenu);
+
+            //below was in Enter()
             RadioStation = RadioStations.GetDanceStation();
 
             if (RadioStation != null)
@@ -81,149 +251,27 @@ namespace LosSantosRED.lsr.Player
             Player.SetUnarmed();
             Player.IsPerformingActivity = true;
             Player.IsDancing = true;
-          
+
             if (DanceData.IsInsulting)
             {
                 Player.IsMakingInsultingGesture = true;
             }
-            if (DanceData.AnimationEnter != "")
-            {
-                EntryPoint.WriteToConsole($"Gesture Enter: {DanceData.AnimationEnter}", 5);
-                GameTimeStartedGesturing = Game.GameTime;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                while (Player.CanPerformActivities && !IsCancelled)
-                {
-                    Player.SetUnarmed();
-                    //float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter);
-                    //if (AnimationTime >= 1.0f)
-                    //{
-                    //    break;
-                    //}
-                    if(Player.IsMoveControlPressed)
-                    {
-                        IsCancelled = true;
-                        break;
-                    }
-                    GameFiber.Yield();
-                }
-            }
-            Idle();
+            
         }
-        private void Idle()
+        private void UnSetup()
         {
-            if (DanceData.AnimationName != "" && !IsCancelled)
+            if (DanceData.IsInsulting)
             {
-                Player.ButtonPrompts.AddPrompt("DanceActivity","Pick Dance","PickDance", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
-                Player.ButtonPrompts.AddPrompt("DanceActivity", "Random Dance", "RandomDance", Settings.SettingsManager.KeySettings.InteractCancel, 2);
-
-
-
-                string PlayingAnimation = DanceData.AnimationName;
-                string PlayingDictionary = DanceData.AnimationDictionary;
-                EntryPoint.WriteToConsole($"Gesture Idle: {DanceData.AnimationName}", 5);
-                GameTimeStartedGesturing = Game.GameTime;
-
-                if (!Player.IsMoveControlPressed)
-                {
-                    Game.DisplayNotification($"Dance Name: ~r~{DanceData.Name}~s~");
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationName, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                }
-                while (Player.CanPerformActivities && !IsCancelled)
-                {
-                    Player.SetUnarmed();
-                    //float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationName);
-                    //if (AnimationTime >= 1.0f)
-                    //{
-                    //    break;
-                    //}
-                    if (Player.IsMoveControlPressed)
-                    {
-                        IsCancelled = true;
-                        break;
-                    }
-
-
-                    if(PlayingAnimation != DanceData.AnimationName || PlayingDictionary != DanceData.AnimationDictionary)//changed the dance, restart it baby!
-                    {
-                        AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationName, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                        PlayingAnimation = DanceData.AnimationName;
-                        PlayingDictionary = DanceData.AnimationDictionary;
-                        EntryPoint.WriteToConsole("Dancing, Changed Dance!");
-                        Game.DisplayNotification($"Dance Name: ~r~{DanceData.Name}~s~");
-
-
-
-                    }
-
-
-
-                    if(Player.ButtonPrompts.IsPressed("PickDance"))
-                    {
-                        DanceMenu.Visible = true;
-                    }
-                    if (Player.ButtonPrompts.IsPressed("RandomDance"))
-                    {
-                        DanceData newDanceData = Dances.GetRandomDance();
-                        if(newDanceData != null)
-                        {
-                            DanceData = newDanceData;
-                            GameFiber.Sleep(200);
-                        }
-                    }
-                    //button pop up to start menu, when selected, change the animation name
-
-
-
-                    MenuPool.ProcessMenus();
-
-                    GameFiber.Yield();
-                }
-                Player.ButtonPrompts.RemovePrompts("DanceActivity");
+                Player.IsMakingInsultingGesture = false;
             }
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
-            Exit();
-        }
-        private void Exit()
-        {
-            try
-            {
-                if (DanceData.AnimationExit != "" && !IsCancelled)
-                {
-                    EntryPoint.WriteToConsole($"Gesture Exit: {DanceData.AnimationExit}", 5);
-                    GameTimeStartedGesturing = Game.GameTime;
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                    while (Player.CanPerformActivities && !IsCancelled)
-                    {
-                        Player.SetUnarmed();
-                        //float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit);
-                        //if (AnimationTime >= 1.0f)
-                        //{
-                        //    break;
-                        //}
-                        if (Player.IsMoveControlPressed)
-                        {
-                            IsCancelled = true;
-                            break;
-                        }
-                        GameFiber.Yield();
-                    }
-                }
-                if (DanceData.IsInsulting)
-                {
-                    Player.IsMakingInsultingGesture = false;
-                }
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            }
-            catch
-            {
-                Game.DisplayNotification("FAIL");
-            }
             Player.IsPerformingActivity = false;
             Player.IsDancing = false;
 
 
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            NativeFunction.Natives.CLEAR_FACIAL_IDLE_ANIM_OVERRIDE(Player.Character);
 
             if (RadioStation != null)
             {
@@ -231,30 +279,8 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.Natives.SET_MOBILE_PHONE_RADIO_STATE(false);
                 NativeFunction.Natives.SET_RADIO_STATION_MUSIC_ONLY(RadioStation.InternalName, false);
             }
+            DisplayedDanceName = false;
         }
-        private void Setup()
-        {
-            AnimationFlag = 1;
-            AnimationBlendOutTime = -4.0f;
-            EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {DanceData.AnimationDictionary} AnimationEnter: {DanceData.AnimationEnter} AnimationName: {DanceData.AnimationName} AnimationExit: {DanceData.AnimationExit}", 5);
-            AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
-
-            MenuPool = new MenuPool();
-            DanceMenu = new UIMenu("Dances", "Select a Dance");
-            DanceMenu.RemoveBanner();
-            MenuPool.Add(DanceMenu);
-            DanceMenu.OnItemSelect += OnDanceMenuSelect;
-            DanceScrollerMenu = new UIMenuListScrollerItem<DanceData>("Dances","Select a new dance",Dances.DanceLookups);
-            DanceMenu.AddItem(DanceScrollerMenu);
-
-
-
-            //
-           // DanceMenu.Visible = true;
-
-
-        }
-
         private void OnDanceMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
         {
             if(selectedItem == DanceScrollerMenu)
@@ -265,6 +291,15 @@ namespace LosSantosRED.lsr.Player
                     DanceData = newDanceData;
                 }
                 DanceMenu.Visible = false;
+            }
+        }
+        private void SetRandomDanceData()
+        {
+            DanceData newDanceData = Dances.GetRandomDance();
+            if (newDanceData != null)
+            {
+                DanceData = newDanceData;
+                GameFiber.Sleep(200);
             }
         }
     }

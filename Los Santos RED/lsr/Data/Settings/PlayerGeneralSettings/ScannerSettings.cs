@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ScannerSettings
+public class ScannerSettings : ISettingsDefaultable
 {
     [Description("Global enable disable for the entire scanner system.")]
     public bool IsEnabled { get; set; }
@@ -27,7 +27,6 @@ public class ScannerSettings
     public bool AllowStatusAnnouncements { get; set; }
     [Description("Changes the grammer of the dispatcher a bit to be more realstic in some places. Disable to be more consistent.")]
     public bool UseNearForLocations { get; set; }
-
 
     [Description("Number of units to include attention audio for during a citizen reported crime. Requires Call Signs.")]
     public int NumberOfUnitsToAnnounce { get; set; }

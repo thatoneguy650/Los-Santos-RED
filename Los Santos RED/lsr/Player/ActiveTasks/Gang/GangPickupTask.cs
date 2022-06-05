@@ -163,9 +163,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Pickup ${MoneyToPickup} from {DeadDrop.StreetAddress}, its {DeadDrop.Description}. Bring it to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. You get 10% on completion",
-                    $"Go get ${MoneyToPickup} from {DeadDrop.Description}, address is {DeadDrop.StreetAddress}. Bring it to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. 10% to you when you drop it off",
-                    $"Make a pickup of ${MoneyToPickup} from {DeadDrop.Description} on {DeadDrop.StreetAddress}. Take it to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. You'll get 10% when I get my money.",
+                    $"Pickup ${MoneyToPickup} from {DeadDrop.FullStreetAddress}, its {DeadDrop.Description}. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. You get 10% on completion",
+                    $"Go get ${MoneyToPickup} from {DeadDrop.Description}, address is {DeadDrop.FullStreetAddress}. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. 10% to you when you drop it off",
+                    $"Make a pickup of ${MoneyToPickup} from {DeadDrop.Description} on {DeadDrop.FullStreetAddress}. Take it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. You'll get 10% when I get my money.",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }

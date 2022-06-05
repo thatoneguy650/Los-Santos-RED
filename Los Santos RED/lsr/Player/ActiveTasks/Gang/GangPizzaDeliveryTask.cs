@@ -137,9 +137,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Go pickup {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. Make it quick. Bring it to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} in less than an hour. ${MoneyToRecieve}.",
-                    $"Go get {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. Don't take long. Get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} in less than an hour. ${MoneyToRecieve}.",
-                    $"Need you to pickup {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. We need it quick. Take it to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} in less than an hour. ${MoneyToRecieve}.",
+                    $"Go pickup {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. Make it quick. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} in less than an hour. ${MoneyToRecieve}.",
+                    $"Go get {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. Don't take long. Get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} in less than an hour. ${MoneyToRecieve}.",
+                    $"Need you to pickup {(NumberOfItemsToDeliver == 1 ? "a" : "1" )} {ItemToDeliver.Name}{(NumberOfItemsToDeliver == 1 ? "" : "s" )}. We need it quick. Take it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} in less than an hour. ${MoneyToRecieve}.",
                     };
             string reply = Replies.PickRandom();
             if (ClosestPlace != null)

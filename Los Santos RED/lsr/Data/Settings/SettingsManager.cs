@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -12,6 +13,15 @@ using System.Xml.Serialization;
 [Serializable()]
 public class SettingsManager
 {
+    private List<ISettingsDefaultable> AllDefaultableSettings;
+    public SettingsManager()
+    {
+        AllDefaultableSettings = new List<ISettingsDefaultable>()
+        {RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, UISettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
+        PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings
+        };
+    }
+
     [Category("Player")]
     public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
     [Category("Player")]
@@ -72,5 +82,14 @@ public class SettingsManager
 
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
+
+    public void SetDefault()
+    {
+        foreach(ISettingsDefaultable settingsDefaultable in AllDefaultableSettings)
+        {
+            settingsDefaultable.SetDefault();
+        }
+    }
+
 
 }

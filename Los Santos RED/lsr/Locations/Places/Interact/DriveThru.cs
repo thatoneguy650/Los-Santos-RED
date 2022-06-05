@@ -24,6 +24,7 @@ public class DriveThru : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Drive-Thru";
     public override int MapIcon { get; set; } = 523;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

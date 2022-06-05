@@ -191,9 +191,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"Drop ${CostToPayoff} on {DeadDrop.StreetAddress}, its {DeadDrop.Description}. My guy won't pick it up if you are around.",
-                $"Place ${CostToPayoff} in {DeadDrop.Description}, address is {DeadDrop.StreetAddress}. Don't hang around either, drop it off and leave.",
-                $"Drop off ${CostToPayoff} to {DeadDrop.Description} on {DeadDrop.StreetAddress}. Once you drop the cash off, get out of the area.",
+                $"Drop ${CostToPayoff} on {DeadDrop.FullStreetAddress}, its {DeadDrop.Description}. My guy won't pick it up if you are around.",
+                $"Place ${CostToPayoff} in {DeadDrop.Description}, address is {DeadDrop.FullStreetAddress}. Don't hang around either, drop it off and leave.",
+                $"Drop off ${CostToPayoff} to {DeadDrop.Description} on {DeadDrop.FullStreetAddress}. Once you drop the cash off, get out of the area.",
                 };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }

@@ -27,7 +27,7 @@ public class HeadShop : InteractableLocation
     //[XmlIgnore]
     //public ShopMenu Menu { get; set; }
     //public string MenuID { get; set; }
-
+    public override string TypeName { get; set; } = "Head Shop";
     public override int MapIcon { get; set; } = 96;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

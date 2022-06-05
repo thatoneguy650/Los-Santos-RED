@@ -214,8 +214,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendDeadDropStartMessage()
         {
             List<string> Replies = new List<string>() {
-                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.StreetAddress}, its {myDrop.Description}.",
-                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.StreetAddress}.",
+                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.FullStreetAddress}, its {myDrop.Description}.",
+                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
             Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 2);

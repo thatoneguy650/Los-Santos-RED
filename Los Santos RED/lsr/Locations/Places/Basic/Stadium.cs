@@ -16,6 +16,7 @@ public class Stadium : BasicLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Stadium";
     public override int MapIcon { get; set; } = 459;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

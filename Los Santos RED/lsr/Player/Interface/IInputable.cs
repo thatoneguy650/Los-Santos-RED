@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr.Interface
         bool CurrentVehicleIsInAir { get; }
         bool IsAliveAndFree { get; }
         bool CanPauseCurrentActivity { get; }
+        CellPhone CellPhone { get; }
 
         void RaiseHands();
         void LowerHands();

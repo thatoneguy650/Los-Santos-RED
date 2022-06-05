@@ -33,6 +33,8 @@ public class GunStore : InteractableLocation
 
     public Vector3 ParkingSpot { get; set; }
     public float ParkingHeading { get; set; }
+    public override bool ShowsOnDirectory { get; set; } = false;
+    public override string TypeName { get; set; } = "Gun Store";
     public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

@@ -13,6 +13,9 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private MenuPool MenuPool;
     private UIMenuItem ReloadSettingsFromFile;
     private UIMenuItem SaveSettingsToFile;
+    private UIMenuItem DefaultSettings;
+    private UIMenuItem EasySettings;
+    private UIMenuItem HardSettings;
     private ISettingsProvideable SettingsProvider;
     private UIMenu SettingsUIMenu;
     public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable)
@@ -52,20 +55,32 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private void CreateSettingsMenu()
     {
         SettingsUIMenu.Clear();
-        ReloadSettingsFromFile = new UIMenuItem("Reload Settings", "Reloads the Settings XML");
-        SaveSettingsToFile = new UIMenuItem("Save Settings", "Saves the Settings to XML");
+        ReloadSettingsFromFile = new UIMenuItem("Reload Settings From File", "Reloads the Settings XML");
+        SaveSettingsToFile = new UIMenuItem("Save Settings To File", "Saves the Settings to XML");
+
+        DefaultSettings = new UIMenuItem("Set Default Settings", "Set all values back to default settings");
+        EasySettings = new UIMenuItem("Set Easy Settings", "Use the easy preset for settings");
+        HardSettings = new UIMenuItem("Set Hard Settings", "Use the hard preset for settings");
+
         SettingsUIMenu.AddItem(ReloadSettingsFromFile);
         SettingsUIMenu.AddItem(SaveSettingsToFile);
+
+
+        SettingsUIMenu.AddItem(DefaultSettings);
+        SettingsUIMenu.AddItem(EasySettings);
+        SettingsUIMenu.AddItem(HardSettings);
+
+
         SettingsUIMenu.OnItemSelect += OnItemSelect;
         SettingsUIMenu.OnListChange += OnListChange;
 
-        UIMenu playerSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Player Settings SubMenu");
+        UIMenu playerSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Player Settings SubMenu");
         playerSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
-        UIMenu worldSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "World Settings SubMenu");
+        UIMenu worldSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change World Settings SubMenu");
         worldSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
-        UIMenu otherSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Other Settings SubMenu");
+        UIMenu otherSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Other Settings SubMenu");
         otherSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
         PropertyInfo[] properties = SettingsProvider.SettingsManager.GetType().GetProperties();
@@ -126,11 +141,23 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     {
         if (selectedItem == ReloadSettingsFromFile)
         {
-            EntryPoint.ModController.ReloadSettingsFromFile();
+            SettingsProvider.ReadConfig();
         }
         else if (selectedItem == SaveSettingsToFile)
         {
-            EntryPoint.ModController.SaveSettingsToFile();
+            SettingsProvider.SerializeAllSettings();
+        }
+        else if (selectedItem == EasySettings)
+        {
+            SettingsProvider.SetEasy();
+        }
+        else if (selectedItem == DefaultSettings)
+        {
+            SettingsProvider.SetDefault();
+        }
+        else if (selectedItem == HardSettings)
+        {
+            SettingsProvider.SetHard();
         }
         SettingsUIMenu.Visible = false;
     }

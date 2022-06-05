@@ -56,7 +56,7 @@ public class GunDealerInteraction
         {
             if (gl.ContactName == EntryPoint.UndergroundGunsContactName && gl.IsEnabled)
             {
-                GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.StreetAddress));
+                GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.FullStreetAddress));
             }
         }
         GunDealerMenu.Visible = true;
@@ -99,12 +99,12 @@ public class GunDealerInteraction
         {
             Player.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);
             List<string> Replies = new List<string>() {
-                    $"Our shop is located on {gunStore.StreetAddress} come see us.",
-                    $"Come check out our shop on {gunStore.StreetAddress}.",
-                    $"You can find our shop on {gunStore.StreetAddress}.",
-                    $"{gunStore.StreetAddress}.",
-                    $"It's on {gunStore.StreetAddress} come see us.",
-                    $"The shop? It's on {gunStore.StreetAddress}.",
+                    $"Our shop is located on {gunStore.FullStreetAddress} come see us.",
+                    $"Come check out our shop on {gunStore.FullStreetAddress}.",
+                    $"You can find our shop on {gunStore.FullStreetAddress}.",
+                    $"{gunStore.FullStreetAddress}.",
+                    $"It's on {gunStore.FullStreetAddress} come see us.",
+                    $"The shop? It's on {gunStore.FullStreetAddress}.",
 
                     };
             Player.CellPhone.AddPhoneResponse(AnsweredContact.Name, AnsweredContact.IconName, Replies.PickRandom());

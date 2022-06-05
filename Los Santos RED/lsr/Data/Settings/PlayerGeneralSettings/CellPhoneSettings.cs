@@ -17,10 +17,21 @@ public class CellphoneSettings : ISettingsDefaultable
     public bool OverwriteVanillaTextMessages { get; set; }
     [Description("Adds contacts in your phone from the mod. If disabled, you can still see the contacts in the ~r~Player Information~s~ menu.")]
     public bool OverwriteVanillaContacts { get; set; }
+    public float BurnerCellPositionZ { get; set; }
+    public float BurnerCellPositionY { get; set; }
+    public float BurnerCellPositionX { get; set; }
+    public float BurnerCellScale { get; set; }
 
     public CellphoneSettings()
     {
+
         SetDefault();
+
+#if DEBUG
+        EmergencyServicesContactID = 1;
+        CustomContactStartingID = 2;
+#endif
+
     }
     public void SetDefault()
     {
@@ -30,5 +41,15 @@ public class CellphoneSettings : ISettingsDefaultable
 
         OverwriteVanillaTextMessages = true;
         OverwriteVanillaContacts = true;
+
+        //BurnerCellPositionX = 50f;
+        //BurnerCellPositionY = -25f;
+        //BurnerCellPositionZ = -60f;
+        //BurnerCellScale = 250f;
+
+        BurnerCellPositionX = 99.62f;
+        BurnerCellPositionY = -45.305f;
+        BurnerCellPositionZ = -113f;
+        BurnerCellScale = 500f;
     }
 }

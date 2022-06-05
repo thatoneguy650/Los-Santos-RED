@@ -159,19 +159,19 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Go steal a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {HiringGang.DenName} on {HiringGangDen.StreetAddress}. ${MoneyToRecieve} on completion",
-                    $"Go get me a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. Payment ${MoneyToRecieve}",
+                    $"Go steal a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ from those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ assholes. Once you are done come back to {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} on completion",
+                    $"Go get me a ~p~{VehicleToStealMakeName} {VehicleToStealModelName}~s~ with {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ gang colors. Bring it back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. Payment ${MoneyToRecieve}",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }
         private void SendMoneyPickupMessage()
         {
             List<string> Replies = new List<string>() {
-                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.StreetAddress} to collect the ${MoneyToRecieve}",
-                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.StreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"{HiringGangDen.StreetAddress} for ${MoneyToRecieve}",
-                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.StreetAddress}. We owe you ${MoneyToRecieve}",
+                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} to collect the ${MoneyToRecieve}",
+                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                                $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
+                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
             Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 2);
         }

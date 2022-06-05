@@ -408,10 +408,12 @@ public class Debug
     private void DebugNumpad4()
     {
 
+        Player.CellPhone.OpenBurner();
+        GameFiber.Sleep(1000);
 
+        return;
 
-
-        StuffTwo();
+       // StuffTwo();
 
 
         return;
@@ -677,7 +679,9 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnGunAttackers();
+        Player.CellPhone.CloseBurner();
+        GameFiber.Sleep(1000);
+     //   SpawnGunAttackers();
 
         //GameFiber.StartNew(delegate
         //{
@@ -1032,11 +1036,12 @@ public class Debug
 
 
         //string Name, string IconName, string MessageToSend, DateTime timeToAd
-        //Gang myGang = Gangs.GetGang("AMBIENT_GANG_LOST");
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
+        EntryPoint.WriteToConsole($"ADDED Text RANDOM GANG", 5);
 
 
-        //Player.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(3));
-        //EntryPoint.WriteToConsole($"ADDED Text LOST", 5);
+
         //PauseMenuExample.Main();
         // SpawnNoGunAttackers();
         //NodeChekcer();
@@ -1056,10 +1061,10 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        if (Player.WantedLevel <= 5)
-        {
-            Player.SetWantedLevel(Player.WantedLevel + 1, "Debug", true);
-        }
+        //if (Player.WantedLevel <= 5)
+        //{
+        //    Player.SetWantedLevel(Player.WantedLevel + 1, "Debug", true);
+        //}
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
         //AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");

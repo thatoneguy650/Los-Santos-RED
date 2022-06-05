@@ -39,6 +39,8 @@ public class VendingMachine : InteractableLocation
     //public string MenuID { get; set; }
     [XmlIgnore]
     public Rage.Object MachineProp { get; set; }
+    public override bool ShowsOnDirectory { get; set; } = false;
+    public override string TypeName { get; set; } = "Vending Machine";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;

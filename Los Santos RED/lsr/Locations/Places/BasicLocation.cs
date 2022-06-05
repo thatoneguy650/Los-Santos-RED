@@ -98,6 +98,8 @@ public class BasicLocation
     public bool IsPlayerInterestedInLocation { get; set; } = false;
 
 
+    public virtual string TypeName { get; set; } = "Location";
+    public virtual bool ShowsOnDirectory { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
@@ -111,7 +113,11 @@ public class BasicLocation
     //[XmlIgnore]
     public int CellY { get; set; }
     [XmlIgnore]
+    public string FullStreetAddress { get; set; }
+    [XmlIgnore]
     public string StreetAddress { get; set; }
+    [XmlIgnore]
+    public string ZoneName { get; set; }
     [XmlIgnore]
     public bool IsNearby { get; private set; } = false;
     public BasicLocation()
@@ -251,6 +257,17 @@ public class BasicLocation
     public void SetNearby()
     {
         IsNearby = true;
+    }
+    public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
+    {
+        return new List<Tuple<string, string>>       
+        {
+        Tuple.Create(IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~", ""),
+        Tuple.Create(Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime-12}{(CloseTime <= 11 ? " am" : " pm")}", ""),
+        Tuple.Create(StreetAddress, ""),
+        Tuple.Create("~p~" + ZoneName + "~s~", ""),
+        Tuple.Create(Math.Round(distanceTo * 0.000621371,2).ToString() + " Miles away", ""),
+        };
     }
 
 }

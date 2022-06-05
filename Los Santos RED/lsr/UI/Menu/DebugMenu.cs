@@ -357,12 +357,12 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == GoToReleaseSettings)
         {
-            Settings.SetReleaseSettings();
+            Settings.SetRelease();
             
         }
         else if (selectedItem == GoToHardCoreSettings)
         {
-            Settings.SetHardcoreSettings();
+            Settings.SetHard();
         }
         else if (selectedItem == FastForwardTime)
         {

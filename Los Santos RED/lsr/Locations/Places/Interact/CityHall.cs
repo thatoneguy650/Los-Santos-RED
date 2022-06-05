@@ -33,6 +33,7 @@ public class CityHall : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "City Hall";
     public override int MapIcon { get; set; } = (int)BlipSprite.GangAttackPackage;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

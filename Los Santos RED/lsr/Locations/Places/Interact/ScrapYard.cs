@@ -30,6 +30,7 @@ public class ScrapYard : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Scrap Yard";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

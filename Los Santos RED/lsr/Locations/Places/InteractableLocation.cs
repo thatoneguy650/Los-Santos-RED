@@ -183,7 +183,5 @@ public class InteractableLocation : BasicLocation
             }
         }
     }
-
-
 }
 

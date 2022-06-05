@@ -163,7 +163,10 @@ public class Places
                 StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
             }
             string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
-            basicLocation.StreetAddress = LocationName;
+            string ShortLocationName = $"{StreetNumber} {streetName}".Trim();
+            basicLocation.FullStreetAddress = LocationName;
+            basicLocation.StreetAddress = ShortLocationName;
+            basicLocation.ZoneName = zoneString;
         }
         foreach(GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
         {

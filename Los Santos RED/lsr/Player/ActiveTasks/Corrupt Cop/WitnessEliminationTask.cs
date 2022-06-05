@@ -520,21 +520,21 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (WitnessIsAtHome)
             {
                 Replies = new List<string>() {
-                    $"Got a witness that needs to disappear. Home address is ~p~{WitnessLocation.StreetAddress}~s~. Name ~y~{WitnessName}~s~. ${MoneyToRecieve}",
-                    $"Get to the house at ~p~{WitnessLocation.StreetAddress}~s~ and get rid of ~y~{WitnessName}~s~. ${MoneyToRecieve} on complation",
-                    $"We need to you shut this guy up before he squeals. He lives at ~p~{WitnessLocation.StreetAddress}~s~. The name is ~y~{WitnessName}~s~. Payment of ${MoneyToRecieve}",
-                    $"~y~{WitnessName}~s~ is living at ~p~{WitnessLocation.StreetAddress}~s~. They should be home. You know what to do. ${MoneyToRecieve}",
-                    $"Need you to make sure ~y~{WitnessName}~s~ doesn't make it to the deposition, they live at ~p~{WitnessLocation.StreetAddress}~s~. ${MoneyToRecieve}",
+                    $"Got a witness that needs to disappear. Home address is ~p~{WitnessLocation.FullStreetAddress}~s~. Name ~y~{WitnessName}~s~. ${MoneyToRecieve}",
+                    $"Get to the house at ~p~{WitnessLocation.FullStreetAddress}~s~ and get rid of ~y~{WitnessName}~s~. ${MoneyToRecieve} on complation",
+                    $"We need to you shut this guy up before he squeals. He lives at ~p~{WitnessLocation.FullStreetAddress}~s~. The name is ~y~{WitnessName}~s~. Payment of ${MoneyToRecieve}",
+                    $"~y~{WitnessName}~s~ is living at ~p~{WitnessLocation.FullStreetAddress}~s~. They should be home. You know what to do. ${MoneyToRecieve}",
+                    $"Need you to make sure ~y~{WitnessName}~s~ doesn't make it to the deposition, they live at ~p~{WitnessLocation.FullStreetAddress}~s~. ${MoneyToRecieve}",
                      };
             }
             else
             {
                 Replies = new List<string>() {
-                    $"Got a witness that needs to disappear. They hang around ~p~{WitnessLocation.Name}~s~. Address is ~p~{WitnessLocation.StreetAddress}~s~. Name ~y~{WitnessName}~s~. ${MoneyToRecieve}",
-                    $"Get to ~p~{WitnessLocation.Name}~s~ on ~p~{WitnessLocation.StreetAddress}~s~ and get rid of ~y~{WitnessName}~s~. ${MoneyToRecieve} on complation",
-                    $"We need to you shut this guy up before he squeals. He's at ~p~{WitnessLocation.Name}~s~ ~p~{WitnessLocation.StreetAddress}~s~. The name is ~y~{WitnessName}~s~. Payment of ${MoneyToRecieve}",
-                    $"~y~{WitnessName}~s~ is at ~p~{WitnessLocation.Name}~s~, address is ~p~{WitnessLocation.StreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
-                    $"Need you to make sure ~y~{WitnessName}~s~ doesn't make it to the deposition, they are currently at ~p~{WitnessLocation.Name}~s~ on ~p~{WitnessLocation.StreetAddress}~s~. ${MoneyToRecieve}",
+                    $"Got a witness that needs to disappear. They hang around ~p~{WitnessLocation.Name}~s~. Address is ~p~{WitnessLocation.FullStreetAddress}~s~. Name ~y~{WitnessName}~s~. ${MoneyToRecieve}",
+                    $"Get to ~p~{WitnessLocation.Name}~s~ on ~p~{WitnessLocation.FullStreetAddress}~s~ and get rid of ~y~{WitnessName}~s~. ${MoneyToRecieve} on complation",
+                    $"We need to you shut this guy up before he squeals. He's at ~p~{WitnessLocation.Name}~s~ ~p~{WitnessLocation.FullStreetAddress}~s~. The name is ~y~{WitnessName}~s~. Payment of ${MoneyToRecieve}",
+                    $"~y~{WitnessName}~s~ is at ~p~{WitnessLocation.Name}~s~, address is ~p~{WitnessLocation.FullStreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
+                    $"Need you to make sure ~y~{WitnessName}~s~ doesn't make it to the deposition, they are currently at ~p~{WitnessLocation.Name}~s~ on ~p~{WitnessLocation.FullStreetAddress}~s~. ${MoneyToRecieve}",
                      };
             }
             
@@ -554,8 +554,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendDeadDropStartMessage()
         {
             List<string> Replies = new List<string>() {
-                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.StreetAddress}, its {myDrop.Description}.",
-                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.StreetAddress}.",
+                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.FullStreetAddress}, its {myDrop.Description}.",
+                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
             Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 2);

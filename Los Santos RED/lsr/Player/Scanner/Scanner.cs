@@ -320,7 +320,7 @@ namespace LosSantosRED.lsr
         }
         public void OnMedicalServicesRequested()
         {
-            if (!MedicalServicesRequired.HasRecentlyBeenPlayed)
+            if (!MedicalServicesRequired.HasRecentlyBeenPlayed && MedicalServicesRequired.TimesPlayed <= 2)
             {
                 AddToQueue(MedicalServicesRequired);
             }
@@ -2263,14 +2263,14 @@ namespace LosSantosRED.lsr
             RequestFIBUnits = new Dispatch()
             {
                 IncludeAttentionAllUnits = false,
-                Name = "FIB Units Requested",
+                Name = "FIB-HRT Units Requested",
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAddExtras = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { dispatch_units_full.FIBteamdispatchingfromstation.FileName},"dispatching FIB units"),
+                new AudioSet(new List<string>() { dispatch_units_full.FIBteamdispatchingfromstation.FileName},"dispatching FIB-HRT units"),
             },
             };
 
@@ -2345,6 +2345,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = true,
                 CanBeReportedMultipleTimes = true,
+                CanAddExtras = false,
                 LocationDescription = LocationSpecificity.Zone,
                 MainAudioSet = new List<AudioSet>()
             {

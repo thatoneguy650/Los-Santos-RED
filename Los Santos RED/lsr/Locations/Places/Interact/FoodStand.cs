@@ -24,6 +24,7 @@ public class FoodStand : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Food Stand";
     public override int MapIcon { get; set; } = 480;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

@@ -130,7 +130,7 @@ public class SimplePhoneMenu
         menuItems.Add(new UIMenuItem("Remove GPS Route", "Remove any enabled GPS Blip"));
         SearchLocationByName = new UIMenuItem("Search For Location", "Search for a location");
         menuItems.Add(SearchLocationByName);
-        LocationResults = new UIMenuListScrollerItem<BasicLocation>("Search Results", "Results of the search", SearchResultLocations) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() };
+        LocationResults = new UIMenuListScrollerItem<BasicLocation>("Search Results", "Results of the search", SearchResultLocations) { Formatter = sy => $"{sy.Name} - " + $"{sy.FullStreetAddress}".Trim() };
         menuItems.Add(LocationResults);
         List<BasicLocation> Residences = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Residences.Any(x => x.IsOwnedOrRented))
@@ -143,7 +143,7 @@ public class SimplePhoneMenu
                 }
 
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Residences", $"List of all owned or rented residences", Residences) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Residences", $"List of all owned or rented residences", Residences) { Formatter = sy => $"{sy.Name} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> ForSaleResidences = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Residences.Any(x => !x.IsOwnedOrRented))
@@ -155,7 +155,7 @@ public class SimplePhoneMenu
                     ForSaleResidences.Add(residence);
                 }
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("For Sale/Rental", $"List of all residences that are for sale or rental", ForSaleResidences) { Formatter = sy => $"{sy.Name} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("For Sale/Rental", $"List of all residences that are for sale or rental", ForSaleResidences) { Formatter = sy => $"{sy.Name} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Hotels = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Hotels.Any())
@@ -164,7 +164,7 @@ public class SimplePhoneMenu
             {
                 Hotels.Add(hotel);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hotels", $"List of all Hotels", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hotels", $"List of all Hotels", Hotels) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Banks = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Banks.Any())
@@ -173,7 +173,7 @@ public class SimplePhoneMenu
             {
                 Banks.Add(Bank);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Banks", $"List of all Banks", Banks) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Banks", $"List of all Banks", Banks) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> BeautyShops = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.BeautyShops.Any())
@@ -182,7 +182,7 @@ public class SimplePhoneMenu
             {
                 BeautyShops.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Beauty Shops", $"List of all BeautyShops", BeautyShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Beauty Shops", $"List of all BeautyShops", BeautyShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Dispensaries = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Dispensaries.Any())
@@ -191,7 +191,7 @@ public class SimplePhoneMenu
             {
                 Dispensaries.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Dispensaries", $"List of all Dispensaries", Dispensaries) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Dispensaries", $"List of all Dispensaries", Dispensaries) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> HardwareStores = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.HardwareStores.Any())
@@ -200,7 +200,7 @@ public class SimplePhoneMenu
             {
                 HardwareStores.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hardward Stores", $"List of all Hardward Stores", HardwareStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hardward Stores", $"List of all Hardward Stores", HardwareStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> HeadShops = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.HeadShops.Any())
@@ -209,7 +209,7 @@ public class SimplePhoneMenu
             {
                 HeadShops.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Head Shops", $"List of all Head Shops", HeadShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Head Shops", $"List of all Head Shops", HeadShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> PawnShops = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.PawnShops.Any())
@@ -218,7 +218,7 @@ public class SimplePhoneMenu
             {
                 PawnShops.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pawn Shops", $"List of all Pawn Shops", PawnShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pawn Shops", $"List of all Pawn Shops", PawnShops) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Pharmacies = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Pharmacies.Any())
@@ -227,7 +227,7 @@ public class SimplePhoneMenu
             {
                 Pharmacies.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pharmacies", $"List of all Pharmacies", Pharmacies) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Pharmacies", $"List of all Pharmacies", Pharmacies) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Stadiums = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Stadiums.Any())
@@ -236,7 +236,7 @@ public class SimplePhoneMenu
             {
                 Stadiums.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Stadiums", $"List of all Stadiums", Stadiums) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Stadiums", $"List of all Stadiums", Stadiums) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> ConvenienceStores = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ConvenienceStores.Any())
@@ -245,7 +245,7 @@ public class SimplePhoneMenu
             {
                 ConvenienceStores.Add(shop);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Convenience Stores", $"List of all Convenience Stores", ConvenienceStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Convenience Stores", $"List of all Convenience Stores", ConvenienceStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> ScrapYards = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
@@ -254,7 +254,7 @@ public class SimplePhoneMenu
             {
                 ScrapYards.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Scrap Yards", $"List of all Scrap Yards", ScrapYards) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Scrap Yards", $"List of all Scrap Yards", ScrapYards) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> CityHalls = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.ScrapYards.Any())
@@ -263,7 +263,7 @@ public class SimplePhoneMenu
             {
                 CityHalls.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("City Halls", $"List of all City Halls", CityHalls) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("City Halls", $"List of all City Halls", CityHalls) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> PoliceStations = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.PoliceStations.Any())
@@ -272,7 +272,7 @@ public class SimplePhoneMenu
             {
                 PoliceStations.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Police Stations", $"List of all Police Stations", PoliceStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Police Stations", $"List of all Police Stations", PoliceStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> FireStations = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.PoliceStations.Any())
@@ -281,7 +281,7 @@ public class SimplePhoneMenu
             {
                 FireStations.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Fire Stations", $"List of all Fire Stations", FireStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Fire Stations", $"List of all Fire Stations", FireStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Hospitals = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Hospitals.Any())
@@ -290,7 +290,7 @@ public class SimplePhoneMenu
             {
                 Hospitals.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hospitals", $"List of all Hospitals", Hospitals) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Hospitals", $"List of all Hospitals", Hospitals) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Restaurants = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Restaurants.Any())
@@ -299,7 +299,7 @@ public class SimplePhoneMenu
             {
                 Restaurants.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Restaurants", $"List of all Restaurants", Restaurants) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Restaurants", $"List of all Restaurants", Restaurants) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> LiquorStores = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Restaurants.Any())
@@ -308,7 +308,7 @@ public class SimplePhoneMenu
             {
                 LiquorStores.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("LiquorStores", $"List of all LiquorStores", LiquorStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("LiquorStores", $"List of all LiquorStores", LiquorStores) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> GasStations = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.GasStations.Any())
@@ -317,7 +317,7 @@ public class SimplePhoneMenu
             {
                 GasStations.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("GasStations", $"List of all GasStations", GasStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("GasStations", $"List of all GasStations", GasStations) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> Bars = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.Bars.Any())
@@ -326,7 +326,7 @@ public class SimplePhoneMenu
             {
                 Bars.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Bars", $"List of all Bars", Bars) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("Bars", $"List of all Bars", Bars) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> FoodStands = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.FoodStands.Any())
@@ -335,7 +335,7 @@ public class SimplePhoneMenu
             {
                 FoodStands.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("FoodStands", $"List of all FoodStands", FoodStands) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("FoodStands", $"List of all FoodStands", FoodStands) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> CarDealerships = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.CarDealerships.Any())
@@ -344,7 +344,7 @@ public class SimplePhoneMenu
             {
                 CarDealerships.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("CarDealerships", $"List of all CarDealerships", CarDealerships) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("CarDealerships", $"List of all CarDealerships", CarDealerships) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         List<BasicLocation> DriveThrus = new List<BasicLocation>();
         if (PlacesOfInterest.PossibleLocations.DriveThrus.Any())
@@ -353,7 +353,7 @@ public class SimplePhoneMenu
             {
                 DriveThrus.Add(sy);
             }
-            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("DriveThrus", $"List of all DriveThrus", DriveThrus) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.StreetAddress}".Trim() });
+            menuItems.Add(new UIMenuListScrollerItem<BasicLocation>("DriveThrus", $"List of all DriveThrus", DriveThrus) { Formatter = sy => $"{sy.Name} - {(sy.IsOpen(Time.CurrentHour) ? "~s~Open~s~" : "~m~Closed~s~")} - " + $"{sy.FullStreetAddress}".Trim() });
         }
         TabInteractiveListItem interactiveListItem = new TabInteractiveListItem("Locations", menuItems);
         interactiveListItem.BackingMenu.OnItemSelect += BackingMenu_OnItemSelect;

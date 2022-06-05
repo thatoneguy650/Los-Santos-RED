@@ -24,7 +24,7 @@ public class Settings : ISettingsProvideable
     }
 
 
-    public void SetReleaseSettings()
+    public void SetRelease()
     {
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
@@ -33,8 +33,23 @@ public class Settings : ISettingsProvideable
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
         SettingsManager.FireSettings.ShowSpawnedBlips = false;
     }
-    public void SetHardcoreSettings()
+    public void SetEasy()
     {
+        SettingsManager.SetDefault();
+
+        SettingsManager.GangSettings.ShowSpawnedBlip = true;
+        SettingsManager.PoliceSettings.ShowSpawnedBlips = true;
+        SettingsManager.EMSSettings.ShowSpawnedBlips = true;
+    }
+    public void SetDefault()
+    {
+        SettingsManager.SetDefault();
+    }
+    public void SetHard()
+    {
+        SettingsManager.SetDefault();
+
+
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
         SettingsManager.UISettings.ShowDebug = false;
@@ -88,6 +103,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.SwaySettings.VeritcalInVehicleSwayAdjuster = 1.5f;
         SettingsManager.SwaySettings.HorizontalInVehicleSwayAdjuster = 1.5f;
 
+        SettingsManager.SwaySettings.ApplySwayInVehicle = true;
+
 
         SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency = false;
 
@@ -95,6 +112,9 @@ public class Settings : ISettingsProvideable
         SettingsManager.UISettings.NeverShowRadar = false;
         SettingsManager.UISettings.ShowRadarInVehicleOnly = true;
         SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = true;
+
+
+        SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive = true;
 
 
         SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
@@ -155,7 +175,4 @@ public class Settings : ISettingsProvideable
 
 
     }
-
-
-
 }

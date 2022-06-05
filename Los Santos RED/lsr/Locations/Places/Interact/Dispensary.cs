@@ -24,7 +24,7 @@ public class Dispensary : InteractableLocation
 
     }
 
-
+    public override string TypeName { get; set; } = "Dispensary";
     public override int MapIcon { get; set; } = (int)BlipSprite.Stash;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

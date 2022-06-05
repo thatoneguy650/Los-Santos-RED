@@ -19,6 +19,8 @@ public class DeadDrop : InteractableLocation
     {
         
     }
+    public override bool ShowsOnDirectory { get; set; } = false;
+    public override string TypeName { get; set; } = "Dead Drop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Destination;
     public override Color MapIconColor { get; set; } = Color.Blue;
     public override string ButtonPromptText { get; set; }

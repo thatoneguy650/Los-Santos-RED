@@ -82,16 +82,16 @@ public class GunDealerRelationship
 
                 List<string> Replies = new List<string>()
                 {
-                    $"Thanks for the business, come check out our other store on {gs.StreetAddress}",
-                    $"Come check out our other location on {gs.StreetAddress}",
-                    $"We have some other items available at our store on {gs.StreetAddress}",
-                    $"You seem legit, come check out our store located on {gs.StreetAddress}",
-                    $"Come do some business at the shop on {gs.StreetAddress}",
-                    $"Got some things you might be interested in, its on {gs.StreetAddress}",
-                    $"{gs.StreetAddress}, keep it on the down-low",
-                    $"{gs.StreetAddress}",
-                    $"Need some extra hardware? {gs.StreetAddress}",
-                    $"Got some other things at the shop on {gs.StreetAddress}",
+                    $"Thanks for the business, come check out our other store on {gs.FullStreetAddress}",
+                    $"Come check out our other location on {gs.FullStreetAddress}",
+                    $"We have some other items available at our store on {gs.FullStreetAddress}",
+                    $"You seem legit, come check out our store located on {gs.FullStreetAddress}",
+                    $"Come do some business at the shop on {gs.FullStreetAddress}",
+                    $"Got some things you might be interested in, its on {gs.FullStreetAddress}",
+                    $"{gs.FullStreetAddress}, keep it on the down-low",
+                    $"{gs.FullStreetAddress}",
+                    $"Need some extra hardware? {gs.FullStreetAddress}",
+                    $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
 
                 Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
@@ -120,16 +120,16 @@ public class GunDealerRelationship
                         {
                             List<string> Replies = new List<string>()
                             {
-                                $"Thanks for the business, come check out our other store on {gs.StreetAddress}",
-                                $"Come check out our other location on {gs.StreetAddress}",
-                                $"We have some other items available at our store on {gs.StreetAddress}",
-                                $"You seem legit, come check out our store located on {gs.StreetAddress}",
-                                $"Come do some business at the shop on {gs.StreetAddress}",
-                                $"Got some things you might be interested in, its on {gs.StreetAddress}",
-                                $"{gs.StreetAddress}, keep it on the down-low",
-                                $"{gs.StreetAddress}",
-                                $"Need some extra hardware? {gs.StreetAddress}",
-                                $"Got some other things at the shop on {gs.StreetAddress}",
+                                $"Thanks for the business, come check out our other store on {gs.FullStreetAddress}",
+                                $"Come check out our other location on {gs.FullStreetAddress}",
+                                $"We have some other items available at our store on {gs.FullStreetAddress}",
+                                $"You seem legit, come check out our store located on {gs.FullStreetAddress}",
+                                $"Come do some business at the shop on {gs.FullStreetAddress}",
+                                $"Got some things you might be interested in, its on {gs.FullStreetAddress}",
+                                $"{gs.FullStreetAddress}, keep it on the down-low",
+                                $"{gs.FullStreetAddress}",
+                                $"Need some extra hardware? {gs.FullStreetAddress}",
+                                $"Got some other things at the shop on {gs.FullStreetAddress}",
                             };
 
                             Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());

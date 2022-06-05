@@ -31,11 +31,11 @@ using System.Linq;
 
 
 
-            new DanceData("Nightclub A-A","anim@amb@nightclub@mini@dance@dance_paired@dance_a@","ped_a_dance_idle"),
-            new DanceData("Nightclub A-B","anim@amb@nightclub@mini@dance@dance_paired@dance_a@","ped_b_dance_idle"),
-            new DanceData("Nightclub B-A","anim@amb@nightclub@mini@dance@dance_paired@dance_b@","ped_a_dance_idle"),
-            new DanceData("Nightclub B-B","anim@amb@nightclub@mini@dance@dance_paired@dance_b@","ped_b_dance_idle"),
-            new DanceData("Nightclub D-A","anim@amb@nightclub@mini@dance@dance_paired@dance_d@","ped_a_dance_idle"),
+            new DanceData("Nightclub A-A","anim@amb@nightclub@mini@dance@dance_paired@dance_a@","ped_a_dance_idle","ped_a_dance_intro","ped_a_dance_exit") { FacialAnimationEnter = "ped_a_dance_intro_facial", FacialAnimationIdle = "ped_a_dance_idle_facial", FacialAnimationExit = "ped_a_dance_exit_facial" },
+            new DanceData("Nightclub A-B","anim@amb@nightclub@mini@dance@dance_paired@dance_a@","ped_b_dance_idle","ped_b_dance_intro","ped_b_dance_exit") { FacialAnimationEnter = "ped_b_dance_intro_facial", FacialAnimationIdle = "ped_b_dance_idle_facial", FacialAnimationExit = "ped_b_dance_exit_facial" },
+            new DanceData("Nightclub B-A","anim@amb@nightclub@mini@dance@dance_paired@dance_b@","ped_a_dance_idle","ped_a_dance_intro","ped_a_dance_exit") { FacialAnimationEnter = "ped_a_dance_intro_facial", FacialAnimationIdle = "ped_a_dance_idle_facial", FacialAnimationExit = "ped_a_dance_exit_facial" },
+            new DanceData("Nightclub B-B","anim@amb@nightclub@mini@dance@dance_paired@dance_b@","ped_b_dance_idle","ped_b_dance_intro","ped_b_dance_exit"){ FacialAnimationEnter = "ped_b_dance_intro_facial", FacialAnimationIdle = "ped_b_dance_idle_facial", FacialAnimationExit = "ped_b_dance_exit_facial" },
+            new DanceData("Nightclub D-A","anim@amb@nightclub@mini@dance@dance_paired@dance_d@","ped_a_dance_idle","ped_a_dance_intro","ped_a_dance_exit") { FacialAnimationEnter = "ped_a_dance_intro_facial", FacialAnimationIdle = "ped_a_dance_idle_facial", FacialAnimationExit = "ped_a_dance_exit_facial" },
 
 
 

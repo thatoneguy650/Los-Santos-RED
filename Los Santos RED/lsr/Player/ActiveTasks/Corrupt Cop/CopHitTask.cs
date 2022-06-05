@@ -304,11 +304,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"Got a witness that needs to disappear. Address is ~p~{TargetCopResidence.StreetAddress}~s~. Name ~y~{TargetCopName}~s~. ${MoneyToRecieve}",
-                    $"Get to ~p~{TargetCopResidence.StreetAddress}~s~ and get rid of ~y~{TargetCopName}~s~. ${MoneyToRecieve} on complation",
-                    $"We need to you shut this guy up before he squeals. He's at ~p~{TargetCopResidence.StreetAddress}~s~. The name is ~y~{TargetCopName}~s~. Payment of ${MoneyToRecieve}",
-                    $"~y~{TargetCopName}~s~ is at ~p~{TargetCopResidence.StreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
-                    $"Need you to make sure ~y~{TargetCopName}~s~ doesn't make it to the deposition, they live at ~p~{TargetCopResidence.StreetAddress}~s~. ${MoneyToRecieve}",
+                    $"Got a witness that needs to disappear. Address is ~p~{TargetCopResidence.FullStreetAddress}~s~. Name ~y~{TargetCopName}~s~. ${MoneyToRecieve}",
+                    $"Get to ~p~{TargetCopResidence.FullStreetAddress}~s~ and get rid of ~y~{TargetCopName}~s~. ${MoneyToRecieve} on complation",
+                    $"We need to you shut this guy up before he squeals. He's at ~p~{TargetCopResidence.FullStreetAddress}~s~. The name is ~y~{TargetCopName}~s~. Payment of ${MoneyToRecieve}",
+                    $"~y~{TargetCopName}~s~ is at ~p~{TargetCopResidence.FullStreetAddress}~s~. You know what to do. ${MoneyToRecieve}",
+                    $"Need you to make sure ~y~{TargetCopName}~s~ doesn't make it to the deposition, they live at ~p~{TargetCopResidence.FullStreetAddress}~s~. ${MoneyToRecieve}",
                      };
 
             Player.CellPhone.AddPhoneResponse(EntryPoint.OfficerFriendlyContactName, Replies.PickRandom());
@@ -327,8 +327,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendDeadDropStartMessage()
         {
             List<string> Replies = new List<string>() {
-                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.StreetAddress}, its {myDrop.Description}.",
-                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.StreetAddress}.",
+                            $"Pickup your payment of ${MoneyToRecieve} from {myDrop.FullStreetAddress}, its {myDrop.Description}.",
+                            $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
             Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 2);

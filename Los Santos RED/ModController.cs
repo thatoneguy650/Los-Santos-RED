@@ -117,14 +117,14 @@ namespace LosSantosRED.lsr
             Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true);
             Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
         }
-        public void ReloadSettingsFromFile()
-        {
-            Settings.ReadConfig();
-        }
-        public void SaveSettingsToFile()
-        {
-            Settings.SerializeAllSettings();
-        }
+        //public void ReloadSettingsFromFile()
+        //{
+        //    Settings.ReadConfig();
+        //}
+        //public void SaveSettingsToFile()
+        //{
+        //    Settings.SerializeAllSettings();
+        //}
         public void Start()
         {
             IsRunning = true;

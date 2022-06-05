@@ -27,7 +27,7 @@ public class Pharmacy : InteractableLocation
     //[XmlIgnore]
     //public ShopMenu Menu { get; set; }
     //public string MenuID { get; set; }
-
+    public override string TypeName { get; set; } = "Pharmacy";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalDrugs;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

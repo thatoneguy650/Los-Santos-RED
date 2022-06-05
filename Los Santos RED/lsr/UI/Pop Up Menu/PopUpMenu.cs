@@ -45,7 +45,7 @@ public class PopUpMenu
             new PopUpMenuMap(4,"Dance",Player.Dance,"Dance in place"),
             new PopUpMenuMap(5,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
             new PopUpMenuMap(6,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
-            new PopUpMenuMap(7,"Hands Up",Player.ToggleSurrender,"Toggle hands-up mode"),
+            new PopUpMenuMap(7,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
             new PopUpMenuMap(8,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
 
             new PopUpMenuMap(9,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
@@ -66,7 +66,7 @@ public class PopUpMenu
             new PopUpMenuMap(6,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
             new PopUpMenuMap(7,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
             new PopUpMenuMap(8,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-            new PopUpMenuMap(9,"Driver Door",Player.CloseDriverDoor,"Close the dirver door (if open)"),
+            new PopUpMenuMap(9,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
            // new PopUpMenuMap(10,"None",Player.CloseDriverDoor),
            // new PopUpMenuMap(11,"None 2",Player.CloseDriverDoor),
         };

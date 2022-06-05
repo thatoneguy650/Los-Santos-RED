@@ -24,6 +24,7 @@ public class ConvenienceStore : InteractableLocation
     {
 
     }
+    public override string TypeName { get; set; } = "Convenience Store";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalHoldups;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;

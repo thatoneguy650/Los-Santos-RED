@@ -40,6 +40,7 @@ public class CellPhone
     private CorruptCopInteraction CorruptCopInteraction;
     private EmergencyServicesInteraction EmergencyServicesInteraction;
     private bool isRunningForcedMobileTask;
+    private BurnerPhone BurnerPhone;
     private int PhoneTypeID
     {
         get
@@ -78,16 +79,23 @@ public class CellPhone
         Gangs = gangs;
         Zones = zones;
         Streets = streets;
-        ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
+
+
+#if DEBUG
+        ContactIndex = 0;
+#else
+ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
+#endif
         PlacesOfInterest = placesOfInterest;
         GangTerritories = gangTerritories;
         ContactInteractable = gangInteractable;
+        BurnerPhone = new BurnerPhone(Player, Time, Settings);
     }
     public void Setup()
     {
         if (Settings.SettingsManager.CellphoneSettings.OverwriteVanillaEmergencyServicesContact)
         {
-            AddEmergencyServicesCustomContact();
+            AddEmergencyServicesCustomContact(false);
         }
         ContactLookups = new List<ContactLookup>()
         {
@@ -259,6 +267,8 @@ public class CellPhone
              new ContactLookup(ContactIcon.Wade,"CHAR_WADE"),
              new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
         };
+
+        BurnerPhone.Setup();
     }
     public void ContactAnswered(iFruitContact contact)
     {
@@ -323,6 +333,7 @@ public class CellPhone
         GunDealerInteraction?.Update();
         CorruptCopInteraction?.Update();
         EmergencyServicesInteraction?.Update();
+        BurnerPhone.Update();
     }
     public void Reset()
     {
@@ -336,7 +347,7 @@ public class CellPhone
         ScheduledTexts = new List<ScheduledText>();
         if (Settings.SettingsManager.CellphoneSettings.OverwriteVanillaEmergencyServicesContact)
         {
-            AddEmergencyServicesCustomContact();
+            AddEmergencyServicesCustomContact(false);
         }
     }
     public void ClearTextMessages()
@@ -368,6 +379,16 @@ public class CellPhone
         }
         isRunningForcedMobileTask = false;
         CustomiFruit.Close(time);
+    }
+
+
+    public void OpenBurner()
+    {
+        BurnerPhone.OpenPhone();
+    }
+    public void CloseBurner()
+    {
+        BurnerPhone.ClosePhone();
     }
     private void CheckScheduledItems()
     {
@@ -553,16 +574,26 @@ public class CellPhone
             }
         }
     }
-    public void AddEmergencyServicesCustomContact()
+    public void AddEmergencyServicesCustomContact(bool displayNotification)
     {
+        string Name = EntryPoint.UndergroundGunsContactName;
+        string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == EntryPoint.EmergencyServicesContactName))
         {
-            iFruitContact contactA = new iFruitContact(EntryPoint.EmergencyServicesContactName, Settings.SettingsManager.CellphoneSettings.EmergencyServicesContactID);
+            iFruitContact contactA = new iFruitContact(EntryPoint.EmergencyServicesContactName, ContactIndex);
             contactA.Answered += ContactAnswered;
             contactA.DialTimeout = 3000;
             contactA.Active = true;
             contactA.Icon = ContactIcon.Emergency;
             CustomiFruit.Contacts.Add(contactA);
+
+            ContactIndex++;
+            AddedContacts.Add(contactA);
+            if (displayNotification)
+            {
+                NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+            }
         }
     }
     public void AddGangText(Gang gang, bool isPositive)
