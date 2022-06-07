@@ -48,14 +48,14 @@ public class AboutMenu
     private void AddActions()
     {
         List<TabItem> items = new List<TabItem>();
-        items.Add(new TabTextItem($"About", $"About", $"Many new actions have been added to allow the player to interact with the world in a variety of new ways. The majority of these actions are accessed either through the ~r~Main Menu~s~ -> ~r~Actions~s~ (general activites) or through ~r~Main Menu~s~ -> ~r~Inventory~s~ (consumable items)."));
-        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpSelectKey)} to select an item");
+        items.Add(new TabTextItem($"About", $"About", $"Many new actions have been added to allow the player to interact with the world in a variety of new ways. The majority of these actions are accessed either through the ~r~Main Menu~s~ -> ~r~Actions~s~ (general activites), through ~r~Main Menu~s~ -> ~r~Inventory~s~ (consumable items) or through the Action Wheel (quick access)."));
+        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel based on the radio/weapon wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpSelectKey)} to select an item");
         items.Add(ActionWheel);
 
         TabItem LootBody = new TabTextItem($"Search Bodies", $"Search Bodies", $"You can now search the bodies of dead or unconscious peds. They can have items and cash. A prompt will appear when looking at a searchable dbody");
         items.Add(LootBody);
 
-        TabItem DragBody = new TabTextItem($"Drag Bodies", $"Drag Bodies", $"You can now drag the bodies of dead or unconscious peds.. A prompt will appear when looking at a draggable dbody");
+        TabItem DragBody = new TabTextItem($"Drag Bodies", $"Drag Bodies", $"You can now drag the bodies of dead or unconscious peds. A prompt will appear when looking at a draggable dbody");
         items.Add(DragBody);
 
         TabItem Suicide = new TabTextItem($"Suicide", $"Suicide", "You now have the ability to commit suicide to quickly end a chase. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Suicide~s~ to commit suicide. If you have a pistol out, you will use the pistol, otherwise you will take a suicide pill.");
@@ -72,8 +72,8 @@ public class AboutMenu
             $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
             $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
             $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
-            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}"));
-        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}"));
+            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}. It can also be opened using the Action Wheel."));
+        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}. It can also be opened using the Action Wheel."));
         items.Add(PlateStealing);
         items.Add(Carjack);
         items.Add(CarLockPick);
@@ -94,12 +94,13 @@ public class AboutMenu
     private void AddContacts()
     {
         List<TabItem> items = new List<TabItem>();
+        TabItem About = new TabTextItem($"About", $"About", "To interact with NPCs around the world, you will need to use your burner phone. Contacts will be automatically added as they are discovered. Try interacting with Cop, Gang Members, and Shops to discover possible contacts.");
         TabItem One = new TabTextItem($"Burner Phone", $"Burner Phone", $"You can interact with people in the world using your burner cellphone. It can be activated with {FormatControls(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, Settings.SettingsManager.KeySettings.SimplePhoneKey)}. It can also be opened using the Action Wheel.");
-        TabItem Three = new TabTextItem($"Pause Menu", $"Pause Menu", "There is a pause menu that allows you to interact with contacts and view messages you have received. It is accessed withthe Action Wheel menu.");
-        TabItem Four = new TabTextItem($"", $"", "");
+        TabItem Three = new TabTextItem($"Pause Menu", $"Pause Menu", "There is a pause menu that allows you to interact with contacts and view messages you have received. It is accessed with the Action Wheel menu.");
+        items.Add(About);
         items.Add(One);
         items.Add(Three);
-        items.Add(Four);
+        //
         tabView.AddTab(new TabSubmenuItem("Contacts", items));
     }
     private void AddGangs()

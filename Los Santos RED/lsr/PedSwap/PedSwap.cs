@@ -747,7 +747,7 @@ public class PedSwap : IPedSwap
             if (isWanted)
             {
                 NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
-                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(FormerPlayer, (int)eCustomDrivingStyles.CrazyEmergency);
+                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(FormerPlayer, (int)eCustomDrivingStyles.Code3);
                 EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Escape", 5);
             }
             else

@@ -23,6 +23,9 @@ public class PopUpMenu
     private int ActionSoundID;
     private UI UI;
     private float ConsistencyScale;
+    private int TransitionInSound;
+    private int TransitionOutSound;
+
     public bool HasRanItem { get; private set; }
     private enum GTATextJustification
     {
@@ -93,8 +96,20 @@ public class PopUpMenu
         //NativeFunction.Natives.RELEASE_SOUND_ID(SelectionSoundID);
         NativeFunction.Natives.RELEASE_SOUND_ID(ActionSoundID);
         Game.DisplaySubtitle("");//clear the subtitles out
-        NativeFunction.Natives.x068E835A1D0DC0E3("MinigameTransitionIn");
+        NativeFunction.Natives.x068E835A1D0DC0E3(Settings.SettingsManager.UISettings.ActionPopUpTransitionInEffect);
+        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.UISettings.ActionPopUpTransitionOutEffect, 0, false);
+
+        //NativeFunction.Natives.x068E835A1D0DC0E3("MinigameTransitionIn");
         Game.TimeScale = 1.0f;
+
+
+        NativeFunction.Natives.STOP_SOUND(TransitionInSound);
+        NativeFunction.Natives.RELEASE_SOUND_ID(TransitionInSound);
+
+
+        //TransitionOutSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionOutSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
+
     }
     public void OnStartDisplaying()
     {      
@@ -102,7 +117,18 @@ public class PopUpMenu
         ActionSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
         Game.TimeScale = 0.2f;
-        NativeFunction.Natives.x2206bf9a37b7f724("MinigameTransitionIn", 0, true);
+        
+        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.UISettings.ActionPopUpTransitionInEffect, 0, true);
+
+        NativeFunction.Natives.STOP_SOUND(TransitionOutSound);
+        NativeFunction.Natives.RELEASE_SOUND_ID(TransitionOutSound);
+
+
+        TransitionInSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionInSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
+
+
+
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
     {

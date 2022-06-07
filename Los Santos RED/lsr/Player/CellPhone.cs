@@ -248,7 +248,7 @@ public class CellPhone
         //{
         if (!BurnerPhone.IsActive)
         {
-            NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerPhoneTypeID);
+            NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
             isRunningForcedMobileTask = true;
             NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
             Player.Character.KeepTasks = true;

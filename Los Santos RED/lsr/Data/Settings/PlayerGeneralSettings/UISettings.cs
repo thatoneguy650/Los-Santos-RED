@@ -145,6 +145,9 @@ public class UISettings : ISettingsDefaultable
     public float ActionPopUpItemDistanceFromCenter { get; set; }
     public bool HideLSRUIUnlessActionPopUpActive { get; set; }
 
+
+    public string ActionPopUpTransitionInEffect { get; set; }
+    public string ActionPopUpTransitionOutEffect { get; set; }
     public UISettings()
     {
         SetDefault();
@@ -288,6 +291,9 @@ public class UISettings : ISettingsDefaultable
         ActionPopUpItemDistanceFromCenter = 0.3f;
 
         HideLSRUIUnlessActionPopUpActive = false;
+
+        ActionPopUpTransitionInEffect = "SwitchHUDIn";
+        ActionPopUpTransitionOutEffect = "SwitchHUDOut";
 
     }
 }

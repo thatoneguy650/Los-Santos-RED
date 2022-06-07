@@ -120,7 +120,7 @@ public class Investigate : ComplexTask
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.FastEmergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code3, 10f);
             }
             else
             {
@@ -140,7 +140,7 @@ public class Investigate : ComplexTask
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.SlowEmergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code2, 10f);
             }
             else
             {
@@ -210,11 +210,11 @@ public class Investigate : ComplexTask
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())// && Ped.Pedestrian.SeatIndex == -1)
                 {
-                    int DrivingStyle = (int)eCustomDrivingStyles.SlowEmergency;
+                    int DrivingStyle = (int)eCustomDrivingStyles.Code2;
                     float DrivingSpeed = 12f;
                     if(isCode3)
                     {
-                        DrivingStyle = (int)eCustomDrivingStyles.FastEmergency;
+                        DrivingStyle = (int)eCustomDrivingStyles.Code3;
                         DrivingSpeed = 20f;
                     }
                     Ped.Pedestrian.BlockPermanentEvents = true;

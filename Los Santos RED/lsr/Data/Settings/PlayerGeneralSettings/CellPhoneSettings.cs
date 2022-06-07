@@ -30,12 +30,13 @@ public class CellphoneSettings : ISettingsDefaultable
     [Description("Burner cell scale.")]
     public float BurnerCellScale { get; set; }
     [Description("Type of phone to use as the burner. Choose 0-4. 0 - Default phone / Michael's phone, 1 - Trevor's phone, 2 - Franklin's phone, 3 - Unused police phone, 4 - Prologue phone.")]
-    public int BurnerPhoneTypeID { get; set; }
-
+    public int BurnerCellPhoneTypeID { get; set; }
     [Description("Choose burner phone scaleform. Choices: cellphone_ifruit, cellphone_facade, or cellphone_badget")]
-    public string BurnerPhoneScaleformName { get; set; }
-    [Description("Choose burner phone scaleform. Choices: cellphone_ifruit, cellphone_facade, or cellphone_badget")]
-
+    public string BurnerCellScaleformName { get; set; }
+    [Description("Choose burner phone theme (1-8)")]
+    public int BurnerCellThemeID { get; set; }
+    [Description("Choose burner phone background (0-17)")]
+    public int BurnerCellBackgroundID { get; set; }
 
     public CellphoneSettings()
     {
@@ -56,9 +57,11 @@ public class CellphoneSettings : ISettingsDefaultable
         BurnerCellPositionZ = -113f;
         BurnerCellScale = 500f;
 
-        BurnerPhoneTypeID = 0;
+        BurnerCellPhoneTypeID = 0;
         AllowTerminateVanillaCellphoneScripts = true;
-        BurnerPhoneScaleformName = "cellphone_ifruit";
+        BurnerCellScaleformName = "cellphone_ifruit";
         TerminateVanillaCellphone = true;
+        BurnerCellThemeID = 1;
+        BurnerCellBackgroundID = 0;
     }
 }

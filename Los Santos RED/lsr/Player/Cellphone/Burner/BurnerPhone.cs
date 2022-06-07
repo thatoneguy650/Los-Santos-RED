@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -47,7 +48,7 @@ public class BurnerPhone
     public void Setup()
     {
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
-        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerPhoneScaleformName);
+        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName);
         while(!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
         {
             GameFiber.Yield();
@@ -137,7 +138,7 @@ public class BurnerPhone
         CurrentIndex = 0;
         DisplayingTextMessage = false;
 
-        NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerPhoneTypeID);
+        NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
 
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(Settings.SettingsManager.CellphoneSettings.BurnerCellPositionX, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionY, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionZ);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
@@ -210,7 +211,11 @@ public class BurnerPhone
     private void SetHomeScreen()
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_THEME");
-        NativeFunction.Natives.xC3D0841A0CC546A6(1);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellThemeID);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_BACKGROUND_IMAGE");
+        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellBackgroundID);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SLEEP_MODE");
@@ -279,6 +284,16 @@ public class BurnerPhone
         CurrentColumn = CurrentColumn % 2;
         CurrentRow = CurrentRow % 1;
         CurrentIndex = GetCurrentIndex(CurrentColumn + 1, CurrentRow + 1);
+
+
+        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
+        SetSoftKeyColor((int)SoftKey.Left, Color.FromArgb(46, 204, 113));
+
+        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
 
 
         //CurrentIndex = GetSelectedIndex();
@@ -403,6 +418,14 @@ public class BurnerPhone
                 CurrentApp = 1;
             }
         }
+        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Delete);
+        SetSoftKeyColor((int)SoftKey.Left, Color.LightBlue);
+
+        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
     }
     private void DrawMessage(PhoneText text)
     {
@@ -586,7 +609,47 @@ public class BurnerPhone
             CurrentIndex = 1;
             CurrentApp = 1;
         }
+        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Call);
+        SetSoftKeyColor((int)SoftKey.Left, Color.LightBlue);
+
+        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
     }
+
+    private void SetSoftKeys()
+    {
+        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
+        SetSoftKeyColor((int)SoftKey.Left, Color.FromArgb(46,204,113));
+
+        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
+    }
+
+
+    public void SetSoftKeyIcon(int buttonID, SoftKeyIcon icon)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS");
+        NativeFunction.Natives.xC3D0841A0CC546A6(buttonID);
+        NativeFunction.Natives.xC58424BA936EB458(true);
+        NativeFunction.Natives.xC3D0841A0CC546A6((int)icon);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+    }
+    public void SetSoftKeyColor(int buttonID, Color color)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS_COLOUR");
+        NativeFunction.Natives.xC3D0841A0CC546A6(buttonID);
+        NativeFunction.Natives.xC3D0841A0CC546A6(color.R);
+        NativeFunction.Natives.xC3D0841A0CC546A6(color.G);
+        NativeFunction.Natives.xC3D0841A0CC546A6(color.B);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+    }
+
     private void DrawContact(PhoneContact contact)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
@@ -753,6 +816,37 @@ public class BurnerPhone
     {
         NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
     }
+    public enum SoftKey
+    {
+        Left = 1,
+        Middle,
+        Right
+    }
+
+    public enum SoftkeyIcon
+    {
+        Blank = 1,
+        Select = 2,
+        Pages = 3,
+        Back = 4,
+        Call = 5,
+        Hangup = 6,
+        Hangup_Human = 7,
+        Hide_Phone = 8,
+        Keypad = 9,
+        Open = 10,
+        Reply = 11,
+        Delete = 12,
+        Yes = 13,
+        No = 14,
+        Sort = 15,
+        Website = 16,
+        Police = 17,
+        Ambulance = 18,
+        Fire = 19,
+        Pages2 = 20
+    }
+
 
 }
 

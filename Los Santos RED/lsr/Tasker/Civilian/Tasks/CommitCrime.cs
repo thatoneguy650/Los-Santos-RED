@@ -74,7 +74,7 @@ public class CommitCrime : ComplexTask
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, TargetVehicle, -1, -1, 15.0f, 9);
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, TargetVehicle, 25f, (int)eCustomDrivingStyles.FastEmergency, 25f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, TargetVehicle, 25f, (int)eCustomDrivingStyles.Code3, 25f);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -152,7 +152,7 @@ public class CommitCrime : ComplexTask
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Ped.Pedestrian, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
             if (Ped.Pedestrian.CurrentVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.FastEmergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.Code3, 10f);
             }
         }
     }

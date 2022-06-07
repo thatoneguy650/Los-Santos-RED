@@ -87,6 +87,9 @@ public class PersonTransaction : Interaction
             if (Ped != null && Ped.Pedestrian.Exists())
             {
                 PedWasPersistent = Ped.WasEverSetPersistent;
+
+
+                Ped.Pedestrian.IsPersistent = true;
                 Player.IsConversing = true;
                 Player.IsTransacting = true;
 

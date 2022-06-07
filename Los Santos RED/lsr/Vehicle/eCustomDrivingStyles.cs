@@ -8,21 +8,14 @@ using System.Threading.Tasks;
 
 public enum eCustomDrivingStyles
 {
-    RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | (int)VehicleDrivingFlags.RespectIntersections | 8,
+    RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians  | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
 
-    SlowEmergency = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects          | (int)VehicleDrivingFlags.AllowWrongWay,  //20220531 allowwrongway and median crossing is new
+    Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,  //20220531 allowwrongway and median crossing is new
 
+    Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8  | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
 
-    FakeEmergency = (int)eCustomDrivingStyles.FastEmergency,
-    FastEmergency = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
-    FastEmergencyClose = (int)VehicleDrivingFlags.DriveAroundVehicles | 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
-    CrazyEmergency = 8 | (int)VehicleDrivingFlags.DriveAroundPeds | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing                 | (int)VehicleDrivingFlags.DriveAroundVehicles, //20220531 drivearoundvehicles is now
-
-
-
-    CrazyEmergencyClose = 8  | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,
     //8 = avoid empty vehicles
+    //256 use blinkers
+    //AllowMedianCrossing is mostly called take shortest path
 
-
-    //i removed the drive by sight ones in here
 }
