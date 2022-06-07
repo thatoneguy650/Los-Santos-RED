@@ -111,12 +111,12 @@ namespace LosSantosRED.lsr.Data
             }
 
             Contacts = new List<SavedContact>();
-            foreach (iFruitContact ifc in player.CellPhone.ContactList)
+            foreach (PhoneContact ifc in player.CellPhone.ContactList)
             {
                 Contacts.Add(new SavedContact(ifc.Name, ifc.Index, ""));
             }
             TextMessages = new List<SavedTextMessage>();
-            foreach (iFruitText ifc in player.CellPhone.TextList)
+            foreach (PhoneText ifc in player.CellPhone.TextList)
             {
                 TextMessages.Add(new SavedTextMessage(ifc.Name, ifc.Message,ifc.HourSent,ifc.MinuteSent,ifc.IsRead,ifc.Index, ""));
             }

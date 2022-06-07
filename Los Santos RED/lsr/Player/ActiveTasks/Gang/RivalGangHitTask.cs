@@ -89,6 +89,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     CurrentTask.IsReadyForPayment = true;
                     EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
+
+                    Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
+
                     break;
                 }
                 GameFiber.Sleep(1000);

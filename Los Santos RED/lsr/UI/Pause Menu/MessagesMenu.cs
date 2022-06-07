@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-public class SimplePhoneMenu
+public class MessagesMenu
 {
     private TabSubmenuItem ContactsSubMenu;
     private IGangs Gangs;
@@ -34,7 +34,7 @@ public class SimplePhoneMenu
     private UIMenuItem SearchLocationByName;
     private UIMenuListScrollerItem<BasicLocation> LocationResults;
 
-    public SimplePhoneMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
+    public MessagesMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
     {
         Player = player;
         Time = time;
@@ -77,7 +77,7 @@ public class SimplePhoneMenu
     {
         List<TabItem> items = new List<TabItem>();
         bool addedItems = false;
-        foreach (iFruitContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Name))
+        foreach (PhoneContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Name))
         {
             string DescriptionText = "Select to ~o~Call~s~ the contact";
             string Title = contact.Name;
@@ -384,7 +384,7 @@ public class SimplePhoneMenu
                 items.Add(tItem);
                 addedItems = true;
             }
-            iFruitText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
+            PhoneText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
             if (text != null)
             {
                 string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
@@ -459,7 +459,7 @@ public class SimplePhoneMenu
     {
         List<TabItem> items = new List<TabItem>();
         bool addedItems = false;
-        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
+        foreach (PhoneText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
         {
             string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
 

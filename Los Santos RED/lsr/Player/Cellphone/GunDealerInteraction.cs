@@ -21,7 +21,7 @@ public class GunDealerInteraction
     private UIMenuItem RequestLocation;
     private UIMenuItem RequestWork;
     private UIMenu LocationSubMenu;
-    private iFruitContact AnsweredContact;
+    private PhoneContact AnsweredContact;
     private UIMenuItem TaskCancel;
     private UIMenuItem GunPickup;
     private ISettingsProvideable Settings;
@@ -34,7 +34,7 @@ public class GunDealerInteraction
         Settings = settings;
         MenuPool = new MenuPool();
     }
-    public void Start(iFruitContact contact)
+    public void Start(PhoneContact contact)
     {
         AnsweredContact = contact;
         GunDealerMenu = new UIMenu("", "Select an Option");
@@ -43,15 +43,17 @@ public class GunDealerInteraction
         GunDealerMenu.OnItemSelect += OnTopItemSelect;
 
 
-        GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
+        GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
 
         if (Player.PlayerTasks.HasTask(EntryPoint.UndergroundGunsContactName))
         {
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
             GunDealerMenu.AddItem(TaskCancel);
         }
-        GunDealerMenu.AddItem(GunPickup);
-
+        else
+        {
+            GunDealerMenu.AddItem(GunPickup);
+        }
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
             if (gl.ContactName == EntryPoint.UndergroundGunsContactName && gl.IsEnabled)

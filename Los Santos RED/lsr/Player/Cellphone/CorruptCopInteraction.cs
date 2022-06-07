@@ -17,7 +17,7 @@ public class CorruptCopInteraction
 
     private MenuPool MenuPool;
     private UIMenu CopMenu;
-    private iFruitContact LastAnsweredContact;
+    private PhoneContact LastAnsweredContact;
     private UIMenuItem PayoffCops;
     private UIMenuItem PayoffCopsInvestigation;
    // private UIMenuItem RequestCopWork;
@@ -51,7 +51,7 @@ public class CorruptCopInteraction
         Settings = settings;
         MenuPool = new MenuPool();
     }
-    public void Start(iFruitContact contact)
+    public void Start(PhoneContact contact)
     {
         CopMenu = new UIMenu("", "Select an Option");
         CopMenu.RemoveBanner();
@@ -63,9 +63,9 @@ public class CorruptCopInteraction
         PayoffCops = new UIMenuItem("Clear Wanted", "Ask your contact to have the cops forget about you") { RightLabel = "~r~" + CostToClearWanted.ToString("C0") + "~s~" };
         PayoffCopsInvestigation = new UIMenuItem("Stop Investigation", "Ask your contact to have the cops forget about the current investigation") { RightLabel = "~r~" + CostToClearInvestigation.ToString("C0") + "~s~" };
 
-        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
-        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
-        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
+        GangHit = new UIMenuItem("Gang Hit", "Do a hit on a gang for the cops. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyGangHitPaymentMax:C0}~s~" };
+        WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
+        CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
 
         if (Player.PlayerTasks.HasTask(EntryPoint.OfficerFriendlyContactName))
         {
@@ -140,7 +140,7 @@ public class CorruptCopInteraction
             sender.Visible = false;
         }
     }
-    private void PayoffCop(iFruitContact contact)
+    private void PayoffCop(PhoneContact contact)
     {
 
         EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearWanted {CostToClearWanted}");
@@ -210,7 +210,7 @@ public class CorruptCopInteraction
             Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
     }
-    private void PayoffCopInvestigation(iFruitContact contact)
+    private void PayoffCopInvestigation(PhoneContact contact)
     {
 
         EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearInvestigation {CostToClearInvestigation}");

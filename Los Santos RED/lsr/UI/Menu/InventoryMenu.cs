@@ -86,7 +86,7 @@ public class InventoryMenu : Menu
                     }
                     else
                     {
-                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = true });
                     }
                 }
                 else
@@ -97,7 +97,7 @@ public class InventoryMenu : Menu
                     }
                     else
                     {
-                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = ActionablePlayer.CanPerformActivities });
+                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = true });
                     }
                 }
                 
@@ -106,88 +106,89 @@ public class InventoryMenu : Menu
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-
-        EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
-        ModItem selectedModItem = ModItems.Get(selectedItem.Text);
-        if (selectedModItem != null)
+        if (ActionablePlayer.CanPerformActivities)
         {
-            if (selectedModItem.CanConsume)
+            EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
+            ModItem selectedModItem = ModItems.Get(selectedItem.Text);
+            if (selectedModItem != null)
             {
-                if(IsInside)
+                if (selectedModItem.CanConsume)
                 {
-                    ActionablePlayer.StartConsumingActivity(selectedModItem, false);
-                    
-                }
-                else
-                {
-                    ActionablePlayer.StartConsumingActivity(selectedModItem, true);
-                   // inventoryMenu.Visible = false;
-                }
-
-                InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
-                if (ii != null)
-                {
-                    if (ii.Amount > 0)
+                    if (IsInside)
                     {
-                        selectedItem.Description = ii.Description;
-                        selectedItem.RightLabel = ii.RightLabel;
+                        ActionablePlayer.StartConsumingActivity(selectedModItem, false);
+
                     }
                     else
                     {
+                        ActionablePlayer.StartConsumingActivity(selectedModItem, true);
+                        // inventoryMenu.Visible = false;
+                    }
+
+                    InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
+                    if (ii != null)
+                    {
+                        if (ii.Amount > 0)
+                        {
+                            selectedItem.Description = ii.Description;
+                            selectedItem.RightLabel = ii.RightLabel;
+                        }
+                        else
+                        {
+                            selectedItem.Enabled = false;
+                            selectedItem.RightLabel = "None";
+                        }
+                    }
+                    else
+                    {
+                        //    sender.RemoveItemAt(index);
+                        //    sender.RefreshIndex();
                         selectedItem.Enabled = false;
                         selectedItem.RightLabel = "None";
+                        selectedItem.Description = "";
+
+
+                        //if(index == 0 && sender.MenuItems.Count() == 1)
+                        //{
+                        //   // sender.Clear();
+                        //}
+                        //else
+                        //{
+                        //    sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
+                        //    sender.RefreshIndex();
+                        //}
+
+                        //sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
+                        //sender.RefreshIndex();
+                        //selectedItem.Enabled = false;
+                        //selectedItem.RightLabel = "None";
+
+                        //if (index != 0)
+                        //{
+                        //    sender.RemoveItemAt(index);
+                        //    sender.RefreshIndex();
+                        //}
+                        //int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == selectedStuff.ItemType);
+                        //UIMenu SubMenu = MenuPool.FirstOrDefault(x => x.SubtitleText == selectedStuff.ItemType.ToString());
+                        //if (SubMenu != null)
+                        //{
+                        //    UIMenuItem subItem = inventoryMenu.MenuItems.FirstOrDefault(x => x.Text == SubMenu.SubtitleText);
+                        //    if (subItem != null)
+                        //    {
+                        //        if (totalItems > 0)
+                        //        {
+                        //            subItem.RightLabel = $"{totalItems} Item(s)";
+                        //        }
+                        //        else
+                        //        {
+                        //            //MenuPool.Remove(SubMenu);
+                        //        }
+                        //    }
+                        //}
                     }
+                    EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);
                 }
-                else
-                {
-                    //    sender.RemoveItemAt(index);
-                    //    sender.RefreshIndex();
-                    selectedItem.Enabled = false;
-                    selectedItem.RightLabel = "None";
-                    selectedItem.Description = "";
-
-
-                    //if(index == 0 && sender.MenuItems.Count() == 1)
-                    //{
-                    //   // sender.Clear();
-                    //}
-                    //else
-                    //{
-                    //    sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
-                    //    sender.RefreshIndex();
-                    //}
-
-                    //sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
-                    //sender.RefreshIndex();
-                    //selectedItem.Enabled = false;
-                    //selectedItem.RightLabel = "None";
-
-                    //if (index != 0)
-                    //{
-                    //    sender.RemoveItemAt(index);
-                    //    sender.RefreshIndex();
-                    //}
-                    //int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == selectedStuff.ItemType);
-                    //UIMenu SubMenu = MenuPool.FirstOrDefault(x => x.SubtitleText == selectedStuff.ItemType.ToString());
-                    //if (SubMenu != null)
-                    //{
-                    //    UIMenuItem subItem = inventoryMenu.MenuItems.FirstOrDefault(x => x.Text == SubMenu.SubtitleText);
-                    //    if (subItem != null)
-                    //    {
-                    //        if (totalItems > 0)
-                    //        {
-                    //            subItem.RightLabel = $"{totalItems} Item(s)";
-                    //        }
-                    //        else
-                    //        {
-                    //            //MenuPool.Remove(SubMenu);
-                    //        }
-                    //    }
-                    //}
-                }
-                EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);  
             }
         }
-        
     }
 }

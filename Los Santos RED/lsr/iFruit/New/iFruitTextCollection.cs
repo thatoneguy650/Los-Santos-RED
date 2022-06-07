@@ -89,7 +89,7 @@ namespace iFruitAddon2
 
                     if (ShowingTextMessage != null)
                     {
-                        player.CellPhone.DeleteText(ShowingTextMessage);
+                        //player.CellPhone.DeleteText(ShowingTextMessage);
                         ShowingTextMessage = null;
                         NativeFunction.Natives.xE8A25867FBA3B05E(0, (int)GameControl.CellphoneCancel, 1.0f);
                         EntryPoint.WriteToConsole("Text Messages GameControl.CellphoneOption PRESSED DELETING MESSAGE!");//DELETE KEY !!!

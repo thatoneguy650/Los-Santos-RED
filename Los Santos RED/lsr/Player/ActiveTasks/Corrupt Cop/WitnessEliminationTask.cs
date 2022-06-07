@@ -191,7 +191,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     if(Witness.HasSeenPlayerCommitCrime)
                     {
                         EntryPoint.WriteToConsole("Witness Elimination WITNESS FLED");
-                        Game.DisplayHelp($"The witness fled");
+                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} The witness fled");
+                        //Game.DisplayHelp($"The witness fled");
                         break;
                     }
                 }
@@ -205,7 +206,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     CurrentTask.IsReadyForPayment = true;
                     EntryPoint.WriteToConsole("Witness Elimination WITNESS WAS KILLED");
-                    Game.DisplayHelp($"The witness was killed");
+
+                    Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} The witness was killed");
+
+                    //Game.DisplayHelp($"The witness was killed");
                     break;
                 }
                 if(IsWitnessSpawned && Witness != null && !Witness.Pedestrian.Exists())//somehow it got removed, set it as despawned
@@ -263,6 +267,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     if (myDrop.InteractionComplete)
                     {
                         EntryPoint.WriteToConsole($"Picked up money for Witness Elimination for {EntryPoint.OfficerFriendlyContactName}");
+                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Money Picked Up");
                         break;
                     }
                     GameFiber.Sleep(1000);

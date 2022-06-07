@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 
 public class BurnerPhone
 {
+    private bool _dialActive, _busyActive;
+    private int _dialSoundID = -1;
+    private int _busySoundID = -1;
+    private int _callTimer, _busyTimer;
+
+
     private ICellPhoneable Player;
     private ITimeReportable Time;
     private int globalScaleformID;
@@ -28,7 +34,9 @@ public class BurnerPhone
     private bool DisplayingTextMessage = false;
     private ISettingsProvideable Settings;
     private bool IsDisplayingCall;
+    private PhoneContact LastCalledContact;
 
+    public bool IsActive => isPhoneActive;
     public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
@@ -39,7 +47,7 @@ public class BurnerPhone
     public void Setup()
     {
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
-        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("cellphone_ifruit");
+        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerPhoneScaleformName);
         while(!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
         {
             GameFiber.Yield();
@@ -65,67 +73,71 @@ public class BurnerPhone
             UpdatePhone();
 
 
-            if(prevCurrentRow != CurrentRow)
+            if (prevCurrentRow != CurrentRow)
             {
                 EntryPoint.WriteToConsole($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
-                Game.DisplaySubtitle($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
+                //Game.DisplaySubtitle($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
                 prevCurrentRow = CurrentRow;
             }
             if (prevCurrentColumn != CurrentColumn)
             {
                 EntryPoint.WriteToConsole($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
-                Game.DisplaySubtitle($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
+                //Game.DisplaySubtitle($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
                 prevCurrentColumn = CurrentColumn;
             }
             if (prevCurrentApp != CurrentApp)
             {
                 EntryPoint.WriteToConsole($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
-                Game.DisplaySubtitle($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
+                //Game.DisplaySubtitle($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
                 prevCurrentApp = CurrentApp;
             }
             if (prevCurrentIndex != CurrentIndex)
             {
                 EntryPoint.WriteToConsole($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
-                Game.DisplaySubtitle($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
+               // Game.DisplaySubtitle($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
                 prevCurrentIndex = CurrentIndex;
             }
         }
+
+        UpdateMessagesApp();
+        UpdateContactsApp();
+
     }
     public void ClosePhone()
     {
+
+        if(isPhoneActive)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Put_Away", "Phone_SoundSet_Michael", 1);
+        }
+
+        OnLeftCall();
+
+
         isPhoneActive = false;
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
-
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Put_Away", "Phone_SoundSet_Michael", 1);
-
         Game.DisableControlAction(0, GameControl.Sprint, false);
 
-
-        Tools.Scripts.StartScript("cellphone_flashhand", 1424);
-        Tools.Scripts.StartScript("cellphone_controller", 1424);
+        if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts && !Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
+        {
+            Tools.Scripts.StartScript("cellphone_flashhand", 1424);
+            Tools.Scripts.StartScript("cellphone_controller", 1424);
+        }
 
     }
     public void OpenPhone()
     {
-
         SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
         SetHomeMenuApp(globalScaleformID, 1, 5, "Contacts", 0, 100);
 
-
         isPhoneActive = true;
-
         CurrentApp = 1;
         CurrentColumn = 0;
         CurrentRow = 0;
         CurrentIndex = 0;
         DisplayingTextMessage = false;
 
-        NativeFunction.Natives.CREATE_MOBILE_PHONE(0);
-
-        //NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(0f, 5f, -60f);
-        //NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f,0f,0f);
-        //NativeFunction.Natives.SET_MOBILE_PHONE_SCALE(250f);
-
+        NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerPhoneTypeID);
 
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(Settings.SettingsManager.CellphoneSettings.BurnerCellPositionX, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionY, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionZ);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
@@ -136,19 +148,74 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(0);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-        //CurrentIndex = GetSelectedIndex();
-
-
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Pull_Out", "Phone_SoundSet_Michael", 1);
 
         Game.DisableControlAction(0, GameControl.Sprint, true);
 
 
         isVanillaPhoneDisabled = true;
-        Tools.Scripts.TerminateScript("cellphone_flashhand");
-        Tools.Scripts.TerminateScript("cellphone_controller");
+
+        if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts)
+        {
+            Tools.Scripts.TerminateScript("cellphone_flashhand");
+            Tools.Scripts.TerminateScript("cellphone_controller");
+        }
+    }
+    private void UpdatePhone()
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_TITLEBAR_TIME");
+        NativeFunction.Natives.xC3D0841A0CC546A6(Time.CurrentHour);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Time.CurrentMinute);
+
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Time.CurrentDateTime.ToString("ddd"));
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SIGNAL_STRENGTH");
+        NativeFunction.Natives.xC3D0841A0CC546A6(5);//1-5
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("GET_MOBILE_PHONE_RENDER_ID", &lol);
+            NativeFunction.Natives.SET_TEXT_RENDER_ID(lol);
+        }
 
 
+        NativeFunction.Natives.DRAW_SCALEFORM_MOVIE(globalScaleformID, 0.1f, 0.18f, 0.2f, 0.35f, 255, 255, 255, 255, 0);
+        NativeFunction.Natives.SET_TEXT_RENDER_ID(1);
+    }
+    private void SetHomeMenuApp(int scaleform, int index, int icon, string name, int notifications, int opactiy)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "SET_DATA_SLOT");
+        NativeFunction.Natives.xC3D0841A0CC546A6(1);
+
+        NativeFunction.Natives.xC3D0841A0CC546A6(index);
+
+        NativeFunction.Natives.xC3D0841A0CC546A6(icon);
+
+        NativeFunction.Natives.xC3D0841A0CC546A6(notifications);
+
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(name);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+        NativeFunction.Natives.xC3D0841A0CC546A6(opactiy);
+
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+    }
+    private void SetHomeScreen()
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_THEME");
+        NativeFunction.Natives.xC3D0841A0CC546A6(1);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SLEEP_MODE");
+        NativeFunction.Natives.xC3D0841A0CC546A6(0);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
     private void DetectInput()
     {
@@ -161,8 +228,8 @@ public class BurnerPhone
         {
             HandleMessagesInput();
         }
-        else if(CurrentApp == 3)
-        {
+        else if (CurrentApp == 3)
+        {  
             HandleContactsInput();
         }
     }
@@ -229,6 +296,37 @@ public class BurnerPhone
             ClosePhone();
         }
     }
+    private void OpenApp(int Index)
+    {
+        CurrentApp = Index;
+        if(Index == 2)//Messages
+        {
+            OpenMessagesApp();
+        }
+        else if (Index == 3)//Contacts
+        {
+            OpenContactsApp();
+        }
+    }
+    private void UpdateMessagesApp()
+    {
+
+    }
+    private void OpenMessagesApp()
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT_EMPTY");
+        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+        foreach (PhoneText text in Player.CellPhone.TextList.OrderBy(x => x.Index))
+        {
+            EntryPoint.WriteToConsole($"Adding Message {text.Name} {text.Index}");
+            DrawMessage(text);
+        }
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
+        NativeFunction.Natives.xC3D0841A0CC546A6(6);
+        NativeFunction.Natives.xC3D0841A0CC546A6(CurrentRow);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+    }
     private void HandleMessagesInput()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !DisplayingTextMessage)//UP
@@ -266,8 +364,14 @@ public class BurnerPhone
             MoveFinger(5);
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1);
             DisplayingTextMessage = true;
+
+
             DisplayTextUI(Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault());
-            Game.DisplaySubtitle($"SELECTED {CurrentRow}");
+
+
+
+
+            //Game.DisplaySubtitle($"SELECTED {CurrentRow}");
         }
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
@@ -300,6 +404,107 @@ public class BurnerPhone
             }
         }
     }
+    private void DrawMessage(PhoneText text)
+    {
+
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
+        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
+        NativeFunction.Natives.xC3D0841A0CC546A6(text.Index);
+        NativeFunction.Natives.xC3D0841A0CC546A6(text.HourSent);
+        NativeFunction.Natives.xC3D0841A0CC546A6(text.MinuteSent);
+
+        if (text.IsRead)
+        {
+            NativeFunction.Natives.xC3D0841A0CC546A6(34);
+        }
+        else
+        {
+            NativeFunction.Natives.xC3D0841A0CC546A6(33);
+        }
+
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Name);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+    }
+    public void DisplayTextUI(PhoneText text)
+    {
+        if (text != null)
+        {
+            text.IsRead = true;
+            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
+            NativeFunction.Natives.xC3D0841A0CC546A6(7);
+            NativeFunction.Natives.xC3D0841A0CC546A6(0);
+
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Name);       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
+            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
+            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("CHAR_BLANK_ENTRY");       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
+            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+
+            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
+            NativeFunction.Natives.xC3D0841A0CC546A6(7);
+            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+            SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
+        }
+    }
+
+    public void SetOffScreen()
+    {
+        NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(0f, 0f, 0f);
+        NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
+        NativeFunction.Natives.SET_MOBILE_PHONE_SCALE(Settings.SettingsManager.CellphoneSettings.BurnerCellScale);
+    }
+
+    private void OnLeftCall()
+    {
+        LastCalledContact = null;
+        _dialActive = false;
+        _busyActive = false;
+        NativeFunction.Natives.STOP_SOUND(_busySoundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(_busySoundID);
+
+        NativeFunction.Natives.STOP_SOUND(_dialSoundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(_dialSoundID);
+    }
+    private void UpdateContactsApp()
+    {
+        if (LastCalledContact != null)
+        {
+            UpdateContact(LastCalledContact);
+        }
+    }
+    private void OpenContactsApp()
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT_EMPTY");
+        NativeFunction.Natives.xC3D0841A0CC546A6(2);//2
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+        foreach (PhoneContact contact in Player.CellPhone.ContactList.OrderBy(x=>x.Index))
+        {
+            EntryPoint.WriteToConsole($"Adding Contact {contact.Name} {contact.Index}");
+            DrawContact(contact);
+        }
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
+        NativeFunction.Natives.xC3D0841A0CC546A6(2);
+        NativeFunction.Natives.xC3D0841A0CC546A6(0);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+    }
     private void HandleContactsInput()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !IsDisplayingCall)//UP
@@ -323,20 +528,35 @@ public class BurnerPhone
             EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT CurrentIndex {CurrentIndex} OpenApp {CurrentIndex + 1}");
             MoveFinger(5);
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1);
-            Game.DisplaySubtitle($"SELECTED {CurrentRow}");
-            iFruitContact contact = Player.CellPhone.ContactList.Where(x => x.Index == CurrentRow).FirstOrDefault();
+            //Game.DisplaySubtitle($"SELECTED {CurrentRow}");
+            PhoneContact contact = Player.CellPhone.ContactList.Where(x => x.Index == CurrentRow).FirstOrDefault();
             if (contact != null)
             {
-                IsDisplayingCall = true;
-                contact.Call();
-                DisplayCallUI(contact.Name, "CELL_211", contact.Icon.Name.SetBold(contact.Bold));
-            }
 
+                LastCalledContact = contact;
+
+
+
+                if (contact.RandomizeDialTimeout)
+                {
+                    contact.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
+                }
+                IsDisplayingCall = true;
+                Call(contact);
+                DisplayCallUI(contact.Name, "CELL_211", contact.IconName.ToUpper());
+
+
+
+
+
+
+
+            }
         }
         int TotalContacts = Player.CellPhone.ContactList.Count();
         if (TotalContacts > 0)
         {
-            if(CurrentRow > TotalContacts-1)
+            if (CurrentRow > TotalContacts - 1)
             {
                 CurrentRow = 0;
             }
@@ -359,11 +579,100 @@ public class BurnerPhone
             NativeFunction.Natives.xC3D0841A0CC546A6(1);
             NativeFunction.Natives.xC3D0841A0CC546A6(1);
             NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+            OnLeftCall();
             GameFiber.Sleep(200);
             CurrentColumn = 1;
             CurrentRow = 0;
             CurrentIndex = 1;
             CurrentApp = 1;
+        }
+    }
+    private void DrawContact(PhoneContact contact)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
+        NativeFunction.Natives.xC3D0841A0CC546A6(2);
+        NativeFunction.Natives.xC3D0841A0CC546A6(contact.Index);
+        NativeFunction.Natives.xC3D0841A0CC546A6(0);
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(contact.Name);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_999");
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_2000");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(contact.IconName);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();    
+    }
+    private void UpdateContact(PhoneContact contact)
+    {
+        // Contact was busy and busytimer has ended
+        if (_busyActive && Game.GameTime > _busyTimer)
+        {
+            //Game.LocalPlayer.Character.Task.PutAwayMobilePhone();
+            NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, false);
+            NativeFunction.Natives.STOP_SOUND(_busySoundID);
+            NativeFunction.Natives.RELEASE_SOUND_ID(_busySoundID);
+            _busySoundID = -1;
+            _busyActive = false;
+        }
+
+        // We are calling the contact
+        if (_dialActive && Game.GameTime > _callTimer)
+        {
+            NativeFunction.Natives.STOP_SOUND(_dialSoundID);
+            NativeFunction.Natives.RELEASE_SOUND_ID(_dialSoundID);
+            _dialSoundID = -1;
+
+            if (!contact.Active)
+            {
+                // Contact is busy, play the busy sound until the busytimer runs off
+                DisplayCallUI(contact.Name, "CELL_220", contact.IconName.ToUpper()); // Displays "BUSY"
+                _busySoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(_busySoundID, "Remote_Engaged", "Phone_SoundSet_Default", 1);
+                _busyTimer = (int)Game.GameTime + 5000;
+                _busyActive = true;
+            }
+            else
+            {
+                if (isPhoneActive && CurrentApp == 3)
+                {
+                    DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper()); // Displays "CONNECTED"
+                    Player.CellPhone.ContactAnswered(contact);
+                    EntryPoint.WriteToConsole("BURNER PHONE UPDATE CALL CALLED!!!!");
+                }
+                //OnAnswered(this); // Answer the phone
+            }
+
+            _dialActive = false;
+        }
+    }
+    public void Call(PhoneContact contact)
+    {
+        // Cannot call if already on call or contact is busy (Active == false)
+        if (_dialActive || _busyActive)
+        {
+            return;
+        }
+
+        NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
+        // Do we have to wait before the contact pickup the phone?
+        if (contact.DialTimeout > 0)
+        {
+            // Play the Dial sound
+            DisplayCallUI(contact.Name, "CELL_220", contact.IconName.ToUpper()); // Displays "BUSY"
+            _dialSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(_dialSoundID, "Dial_and_Remote_Ring", "Phone_SoundSet_Default", 1);
+            _callTimer = (int)Game.GameTime + contact.DialTimeout;
+            _dialActive = true;
+
+
+            EntryPoint.WriteToConsole("BURNER PHONE CALL CALLED!!!!");
+        }
+        else
+        {
+            DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper()); // Displays "CONNECTED"
+            Player.CellPhone.ContactAnswered(contact);
+            //OnAnswered(this); // Answer the phone instantly
         }
     }
     public void DisplayCallUI(string contactName, string statusText = "CELL_211", string picName = "CELL_300")
@@ -398,94 +707,7 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(4);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-    private void OpenApp(int Index)
-    {
-        CurrentApp = Index;
-        if(Index == 2)//Messages
-        {
-            OpenMessagesApp();
-        }
-        else if (Index == 3)//Contacts
-        {
-            OpenContactsApp();
-        }
-    }
-    private void OpenContactsApp()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT_EMPTY");
-        NativeFunction.Natives.xC3D0841A0CC546A6(2);//2
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        foreach (iFruitContact contact in Player.CellPhone.ContactList)
-        {
-            EntryPoint.WriteToConsole($"Adding Contact {contact.Name} {contact.Index}");
-            DrawContact(contact);
-        }
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
-        NativeFunction.Natives.xC3D0841A0CC546A6(2);
-        NativeFunction.Natives.xC3D0841A0CC546A6(0);
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-    }
-    private void DrawContact(iFruitContact contact)
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
-        NativeFunction.Natives.xC3D0841A0CC546A6(2);
-        NativeFunction.Natives.xC3D0841A0CC546A6(contact.Index);
-        NativeFunction.Natives.xC3D0841A0CC546A6(0);
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(contact.Name);
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_999");
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("CELL_2000");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(contact.Icon.Name.SetBold(true));
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();    
-    }
-    private void OpenMessagesApp()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT_EMPTY");
-        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        foreach (iFruitText text in Player.CellPhone.TextList)
-        {
-            EntryPoint.WriteToConsole($"Adding Message {text.Name} {text.Index}");
-            DrawMessage(text);
-        }
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
-        NativeFunction.Natives.xC3D0841A0CC546A6(6);
-        NativeFunction.Natives.xC3D0841A0CC546A6(CurrentRow);
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-    }
-    private void DrawMessage(iFruitText text)
-    {
-
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
-        NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
-        NativeFunction.Natives.xC3D0841A0CC546A6(text.Index);
-        NativeFunction.Natives.xC3D0841A0CC546A6(text.HourSent);
-        NativeFunction.Natives.xC3D0841A0CC546A6(text.MinuteSent);
-
-        if (text.IsRead)
-        {
-            NativeFunction.Natives.xC3D0841A0CC546A6(34);
-        }
-        else
-        {
-            NativeFunction.Natives.xC3D0841A0CC546A6(33);
-        }
-
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Name);
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        
-    }
     private int GetCurrentIndex(int column, int row)
     {
         if (row == 1 && column == 1)
@@ -531,93 +753,6 @@ public class BurnerPhone
     {
         NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
     }
-    private void UpdatePhone()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_TITLEBAR_TIME");
-        NativeFunction.Natives.xC3D0841A0CC546A6(Time.CurrentHour);
-        NativeFunction.Natives.xC3D0841A0CC546A6(Time.CurrentMinute);
-
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Time.CurrentDateTime.ToString("ddd"));
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SIGNAL_STRENGTH");
-        NativeFunction.Natives.xC3D0841A0CC546A6(5);//1-5
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-        unsafe
-        {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("GET_MOBILE_PHONE_RENDER_ID", &lol);
-            NativeFunction.Natives.SET_TEXT_RENDER_ID(lol);
-        }
-
-
-        NativeFunction.Natives.DRAW_SCALEFORM_MOVIE(globalScaleformID, 0.1f, 0.18f, 0.2f, 0.35f, 255, 255, 255, 255, 0);
-        NativeFunction.Natives.SET_TEXT_RENDER_ID(1);
-    }
-    private void SetHomeMenuApp(int scaleform, int index, int icon, string name, int notifications, int opactiy)
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "SET_DATA_SLOT");
-        NativeFunction.Natives.xC3D0841A0CC546A6(1);
-
-        NativeFunction.Natives.xC3D0841A0CC546A6(index);
-
-        NativeFunction.Natives.xC3D0841A0CC546A6(icon);
-
-        NativeFunction.Natives.xC3D0841A0CC546A6(notifications);
-
-        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(name);
-        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-        NativeFunction.Natives.xC3D0841A0CC546A6(opactiy);
-
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-    }
-    private void SetHomeScreen()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_THEME");
-        NativeFunction.Natives.xC3D0841A0CC546A6(1);
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SLEEP_MODE");
-        NativeFunction.Natives.xC3D0841A0CC546A6(0);
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-    }
-    public void DisplayTextUI(iFruitText text)
-    {
-        if (text != null)
-        {
-            text.IsRead = true;
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
-            NativeFunction.Natives.xC3D0841A0CC546A6(7);
-            NativeFunction.Natives.xC3D0841A0CC546A6(0);
-
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Name);       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
-            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.Message);       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
-            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("CHAR_BLANK_ENTRY");       //UI::_ADD_TEXT_COMPONENT_APP_TITLE
-            NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
-
-            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
-            NativeFunction.Natives.xC3D0841A0CC546A6(7);
-            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
-            SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
-        }
-    }
-
 
 }
 

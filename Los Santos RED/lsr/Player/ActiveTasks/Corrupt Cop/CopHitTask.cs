@@ -154,6 +154,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 else if (IsTargetCopSpawned && TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.IsDead)
                 {
                     CurrentTask.IsReadyForPayment = true;
+                    Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Ready for Payment");
                     EntryPoint.WriteToConsole("COP HIT, COP WAS KILLED");
                     break;
                 }
@@ -199,6 +200,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     if (myDrop.InteractionComplete)
                     {
+                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Money Picked Up");
                         EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {EntryPoint.OfficerFriendlyContactName}");
                         break;
                     }

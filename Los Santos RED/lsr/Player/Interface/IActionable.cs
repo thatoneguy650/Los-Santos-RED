@@ -60,6 +60,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDancing { get; set; }
         VehicleExt CurrentVehicle { get; }
         ButtonPrompts ButtonPrompts { get; }
+        CellPhone CellPhone { get; }
 
 
         //Action DropWeapon { get; }

@@ -49,6 +49,15 @@ public class AboutMenu
     {
         List<TabItem> items = new List<TabItem>();
         items.Add(new TabTextItem($"About", $"About", $"Many new actions have been added to allow the player to interact with the world in a variety of new ways. The majority of these actions are accessed either through the ~r~Main Menu~s~ -> ~r~Actions~s~ (general activites) or through ~r~Main Menu~s~ -> ~r~Inventory~s~ (consumable items)."));
+        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpSelectKey)} to select an item");
+        items.Add(ActionWheel);
+
+        TabItem LootBody = new TabTextItem($"Search Bodies", $"Search Bodies", $"You can now search the bodies of dead or unconscious peds. They can have items and cash. A prompt will appear when looking at a searchable dbody");
+        items.Add(LootBody);
+
+        TabItem DragBody = new TabTextItem($"Drag Bodies", $"Drag Bodies", $"You can now drag the bodies of dead or unconscious peds.. A prompt will appear when looking at a draggable dbody");
+        items.Add(DragBody);
+
         TabItem Suicide = new TabTextItem($"Suicide", $"Suicide", "You now have the ability to commit suicide to quickly end a chase. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Suicide~s~ to commit suicide. If you have a pistol out, you will use the pistol, otherwise you will take a suicide pill.");
         TabItem Sitting = new TabTextItem($"Sitting", $"Sitting", "You now have the ability to sit in chairs/benches. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Sit Down~s~ when near a chair or bench. To sit anywhere use ~o~Here Backwards~s~ when you are not facing the place to sit or ~o~Here Forwards~s~ when you are.");
         TabItem Smoking = new TabTextItem($"Consuming Items", $"Consuming Items", "You now have the ability to smoke/eat/drink purchased items. Open the ~r~Main Menu~s~ -> ~r~Inventory~s~ and select a smokable/edible/drinkable item. The character will start consuming the item. Certain items will cause intoxication, others will regain health. Intoxication is displayed in the added ~b~blue bar~s~ under the armor.");
@@ -58,12 +67,12 @@ public class AboutMenu
         TabItem CarLockPick = new TabTextItem($"Car Lock Picking", $"Car Lock Picking", "You can pick a vehicles lock instead of smashing the window by tapping ~o~Vehicle Entry~s~ instead of holding ~o~Vehicle Entry~s~. This will keep the vehicle from looking suspicious to law enforcement with the downside of taking longer. Optional setting to require you to purchase a screwdriver before allowing. Can do the regular smash enter by holding ~o~Vehicle Entry~s~.");
         TabItem PlateStealing = new TabTextItem($"Plate Swapping", $"Plate Swapping", "You now have the ability to change or remove a license plate from a vehicle. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Change Plate~s~/~r~Remove Plate~s~ when near a vehicle. Can be used to place clean plates on wanted vehicles.");
         items.Add(new TabTextItem($"Sprinting", $"Sprinting", $"The player can get an extra speed boost while jogging by pressing {FormatControls(Settings.SettingsManager.KeySettings.SprintKeyModifier, Settings.SettingsManager.KeySettings.SprintKey)}. The added ~r~red bar~s~ under the health shows the current sprint stamina level."));
-        //items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey)}"));
-        //items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier, Settings.SettingsManager.KeySettings.EngineToggle)}." +
-        //    $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
-        //    $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
-        //    $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
-        //    $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}"));
+        items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey)}"));
+        items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier, Settings.SettingsManager.KeySettings.EngineToggle)}." +
+            $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
+            $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
+            $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
+            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}"));
         items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}"));
         items.Add(PlateStealing);
         items.Add(Carjack);
@@ -81,6 +90,17 @@ public class AboutMenu
         items.Add(Three);
         items.Add(Four);
         tabView.AddTab(new TabSubmenuItem("Civilians", items));
+    }
+    private void AddContacts()
+    {
+        List<TabItem> items = new List<TabItem>();
+        TabItem One = new TabTextItem($"Burner Phone", $"Burner Phone", $"You can interact with people in the world using your burner cellphone. It can be activated with {FormatControls(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, Settings.SettingsManager.KeySettings.SimplePhoneKey)}. It can also be opened using the Action Wheel.");
+        TabItem Three = new TabTextItem($"Pause Menu", $"Pause Menu", "There is a pause menu that allows you to interact with contacts and view messages you have received. It is accessed withthe Action Wheel menu.");
+        TabItem Four = new TabTextItem($"", $"", "");
+        items.Add(One);
+        items.Add(Three);
+        items.Add(Four);
+        tabView.AddTab(new TabSubmenuItem("Contacts", items));
     }
     private void AddGangs()
     {
@@ -189,8 +209,10 @@ public class AboutMenu
         tabView.Name = Player.PlayerName;
         tabView.Money = Time.CurrentTime;
         tabView.Tabs.Clear();
+        tabView.ScrollTabs = true;
 
         AddActions();
+        AddContacts();
         AddPedSwap();
         AddGangs();
         AddRespawn();

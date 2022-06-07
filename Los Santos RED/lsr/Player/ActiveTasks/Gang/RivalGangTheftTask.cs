@@ -94,6 +94,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (IsInStolenGangCar)
                 {
                     CurrentTask.IsReadyForPayment = true;
+                    Game.DisplayHelp($"{HiringGang.ContactName} In Vehicle");
                     EntryPoint.WriteToConsole($"You stole a car so it is now ready for payment!");
                     break;
                 }

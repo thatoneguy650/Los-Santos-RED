@@ -1724,7 +1724,11 @@ namespace Mod
             AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
 
 
-
+            if(Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
+            {
+                Tools.Scripts.TerminateScript("cellphone_flashhand");
+                Tools.Scripts.TerminateScript("cellphone_controller");
+            }
 
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)

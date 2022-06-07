@@ -17,7 +17,7 @@ public class EmergencyServicesInteraction
 
     private MenuPool MenuPool;
     private UIMenu CopMenu;
-    private iFruitContact LastAnsweredContact;
+    private PhoneContact LastAnsweredContact;
     private UIMenuItem RequestPolice;
     private UIMenuItem RequestFire;
     private UIMenuItem RequestEMS;
@@ -43,7 +43,7 @@ public class EmergencyServicesInteraction
         MenuPool = new MenuPool();
         Jurisdictions = jurisdictions;
     }
-    public void Start(iFruitContact contact)
+    public void Start(PhoneContact contact)
     {
         EmergencyServicesMenu = new UIMenu(EntryPoint.EmergencyServicesContactName, "Select an Option");
         EmergencyServicesMenu.RemoveBanner();
@@ -53,7 +53,7 @@ public class EmergencyServicesInteraction
         RequestFire = new UIMenuItem("Fire Assistance");
         RequestEMS = new UIMenuItem("Medical Service");
         EmergencyServicesMenu.AddItem(RequestPolice);
-        EmergencyServicesMenu.AddItem(RequestFire);
+        //EmergencyServicesMenu.AddItem(RequestFire);
         EmergencyServicesMenu.AddItem(RequestEMS);
         EmergencyServicesMenu.Visible = true;
 

@@ -37,36 +37,37 @@ public class PopUpMenu
         UI = uI;
         OnFootMenuMaps = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", UI.ToggleReportingMenu,"Display the Player Info Menu"),
-            new PopUpMenuMap(1, "Cell", UI.ToggleSimplePhoneMenu,"Display the Cell Phone Menu"),
+            new PopUpMenuMap(0, "Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
+            new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
+            new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
 
-            new PopUpMenuMap(2,"Last Gesture",Player.Gesture,"Perform last gesture"),
-            new PopUpMenuMap(3,"Suicide",Player.CommitSuicide,"Commit suicide"),
-            new PopUpMenuMap(4,"Dance",Player.Dance,"Dance in place"),
-            new PopUpMenuMap(5,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
-            new PopUpMenuMap(6,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
-            new PopUpMenuMap(7,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
-            new PopUpMenuMap(8,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
+            new PopUpMenuMap(3,"Last Gesture",Player.Gesture,"Perform last gesture"),
+            new PopUpMenuMap(4,"Suicide",Player.CommitSuicide,"Commit suicide"),
+            new PopUpMenuMap(5,"Dance",Player.Dance,"Dance in place"),
+            new PopUpMenuMap(6,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
+            new PopUpMenuMap(7,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
+            new PopUpMenuMap(8,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
+            new PopUpMenuMap(9,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
 
-            new PopUpMenuMap(9,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
-            new PopUpMenuMap(10,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
+            new PopUpMenuMap(10,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
+            new PopUpMenuMap(11,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
             //new PopUpMenuMap(11,"Drop Weapon 2",Player.DropWeapon),
         };
 
         InVehicleMenuMaps = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", UI.ToggleReportingMenu,"Display the Player Info Menu"),
-            new PopUpMenuMap(1, "Cell", UI.ToggleSimplePhoneMenu,"Display the Cell Phone Menu"),
+            new PopUpMenuMap(0, "Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
+            new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
+            new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
 
-
-            new PopUpMenuMap(2,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
-            new PopUpMenuMap(3,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
-            new PopUpMenuMap(4,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
-            new PopUpMenuMap(5,"Last Gesture",Player.Gesture,"Perform last gesture"),
-            new PopUpMenuMap(6,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
-            new PopUpMenuMap(7,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
-            new PopUpMenuMap(8,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-            new PopUpMenuMap(9,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
+            new PopUpMenuMap(3,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
+            new PopUpMenuMap(4,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
+            new PopUpMenuMap(5,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
+            new PopUpMenuMap(6,"Last Gesture",Player.Gesture,"Perform last gesture"),
+            new PopUpMenuMap(7,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
+            new PopUpMenuMap(8,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
+            new PopUpMenuMap(9,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
+            new PopUpMenuMap(10,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
            // new PopUpMenuMap(10,"None",Player.CloseDriverDoor),
            // new PopUpMenuMap(11,"None 2",Player.CloseDriverDoor),
         };

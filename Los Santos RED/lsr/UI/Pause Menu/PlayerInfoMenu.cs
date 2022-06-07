@@ -76,7 +76,7 @@ public class PlayerInfoMenu
     private void AddContacts()
     {
         List<TabItem> items = new List<TabItem>();
-        foreach (iFruitContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Name))
+        foreach (PhoneContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Name))
         {
             string DescriptionText = "Select to ~o~Call~s~ the contact";
             string Title = contact.Name;
@@ -477,6 +477,24 @@ public class PlayerInfoMenu
     private void AddLocations2()
     {
         List<TabItem> items = new List<TabItem>();
+
+
+        //menuItems.Add(new UIMenuItem("Remove GPS Route", "Remove any enabled GPS Blip"));
+        //SearchLocationByName = new UIMenuItem("Search For Location", "Search for a location");
+        //menuItems.Add(SearchLocationByName);
+        //LocationResults = new UIMenuListScrollerItem<BasicLocation>("Search Results", "Results of the search", SearchResultLocations) { Formatter = sy => $"{sy.Name} - " + $"{sy.FullStreetAddress}".Trim() };
+        //menuItems.Add(LocationResults);
+
+
+        List<MissionInformation> RemoveGPSMissionInfo = new List<MissionInformation>() { new MissionInformation("Remove GPS", "Remove the GPS Blip", new List<Tuple<string, string>> { Tuple.Create("", "")} ) };
+        TabMissionSelectItem RemoveGPS = new TabMissionSelectItem("Remove GPS", RemoveGPSMissionInfo);
+        items.Add(RemoveGPS);
+
+        List<MissionInformation> SearchMissionInfo = new List<MissionInformation>() { new MissionInformation("Search For Location", "Search for a location", new List<Tuple<string, string>> { Tuple.Create("", "") }) };
+        TabMissionSelectItem Search = new TabMissionSelectItem("Search For Location", SearchMissionInfo);
+        items.Add(Search);
+
+
         List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().Where(x => x.ShowsOnDirectory).ToList();
         foreach(string typeName in DirectoryLocations.OrderBy(x=>x.TypeName).Select(x=> x.TypeName).Distinct())
         {
@@ -545,7 +563,7 @@ public class PlayerInfoMenu
     private void AddTextMessages()
     {
         List<TabItem> items = new List<TabItem>();
-        foreach (iFruitText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
+        foreach (PhoneText text in Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15))
         {
             string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
 
@@ -830,10 +848,10 @@ public class PlayerInfoMenu
         AddGangItems();
         AddLocations();
 
-#if DEBUG
-        AddLocations2();
+//#if DEBUG
+//        AddLocations2();
 
-#endif
+//#endif
         tabView.RefreshIndex();
     }
 }

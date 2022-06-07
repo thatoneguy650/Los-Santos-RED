@@ -68,7 +68,7 @@ public class UI : IMenuProvideable
     private Fader WeaponFader;
     private IEntityProvideable World;
     private Fader ZoneFader;
-    private SimplePhoneMenu SimplePhoneMenu;
+    private MessagesMenu MessagesMenu;
     private string debugString1;
     private bool ShowRadar;
 
@@ -109,7 +109,7 @@ public class UI : IMenuProvideable
         WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
 
-        SimplePhoneMenu = new SimplePhoneMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+        MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
 
 
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
@@ -343,7 +343,7 @@ public class UI : IMenuProvideable
         //Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
         //Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
         PlayerInfoMenu.Setup();
-        SimplePhoneMenu.Setup();
+        MessagesMenu.Setup();
         AboutMenu.Setup();
 
 
@@ -381,17 +381,13 @@ public class UI : IMenuProvideable
             Toggle(MainMenu);
         }
     }
-    public void ToggleReportingMenu()
+    public void TogglePlayerInfoMenu()
     {
         PlayerInfoMenu.Toggle();
     }
-    public void ToggleSimplePhoneMenu()
+    public void ToggleMessagesMenu()
     {
-        SimplePhoneMenu.Toggle();
-        //if (!menuPool.IsAnyMenuOpen())
-        //{
-            
-        //}
+        MessagesMenu.Toggle();
     }
     public void Update()
     {
@@ -1108,7 +1104,7 @@ public class UI : IMenuProvideable
     {
         menuPool.ProcessMenus();
         PlayerInfoMenu.Update();
-        SimplePhoneMenu.Update();
+        MessagesMenu.Update();
         AboutMenu.Update();
     }
     private void RadarUpdate()

@@ -16,15 +16,16 @@ public class CellPhone
 {
     private ICellPhoneable Player;
     private int ContactIndex = 40;
+    private int BurnerContactIndex = 0;
     private int TextIndex = 0;
     private MenuPool MenuPool;
     private IJurisdictions Jurisdictions;
-    private List<iFruitContact> AddedContacts = new List<iFruitContact>();
+    private List<PhoneContact> AddedContacts = new List<PhoneContact>();
     private List<ContactLookup> ContactLookups = new List<ContactLookup>();
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
-    private List<iFruitText> AddedTexts = new List<iFruitText>();
+    private List<PhoneText> AddedTexts = new List<PhoneText>();
     private Gang ActiveGang;
     private IPlacesOfInterest PlacesOfInterest;
     private IZones Zones;
@@ -41,37 +42,14 @@ public class CellPhone
     private EmergencyServicesInteraction EmergencyServicesInteraction;
     private bool isRunningForcedMobileTask;
     private BurnerPhone BurnerPhone;
-    private int PhoneTypeID
-    {
-        get
-        {
-            if(Player.ModelName.ToLower() == "player_zero")
-            {
-                return 0;
-            }
-            else if (Player.ModelName.ToLower() == "player_one")
-            {
-                return 2;
-            }
-            else if (Player.ModelName.ToLower() == "player_two")
-            {
-                return 1;
-            }
-            else 
-            {
-                return 0;
-            }
-        }
-    }
-    public bool IsActive => CustomiFruit?.IsActive == true;
-    public CustomiFruit CustomiFruit { get; private set; }
-    public List<iFruitText> TextList => AddedTexts;
-    public List<iFruitContact> ContactList => AddedContacts;
+    public bool IsActive => BurnerPhone?.IsActive == true;
+   // public CustomiFruit CustomiFruit { get; private set; }
+    public List<PhoneText> TextList => AddedTexts;
+    public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
     public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories)
     {
         Player = player;
-        CustomiFruit = new CustomiFruit();
         MenuPool = new MenuPool();
         Jurisdictions = jurisdictions;
         Settings = settings;
@@ -79,13 +57,7 @@ public class CellPhone
         Gangs = gangs;
         Zones = zones;
         Streets = streets;
-
-
-#if DEBUG
         ContactIndex = 0;
-#else
-ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
-#endif
         PlacesOfInterest = placesOfInterest;
         GangTerritories = gangTerritories;
         ContactInteractable = gangInteractable;
@@ -93,197 +65,211 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     }
     public void Setup()
     {
-        if (Settings.SettingsManager.CellphoneSettings.OverwriteVanillaEmergencyServicesContact)
-        {
+        //if (Settings.SettingsManager.CellphoneSettings.OverwriteVanillaEmergencyServicesContact)
+        //{
             AddEmergencyServicesCustomContact(false);
-        }
-        ContactLookups = new List<ContactLookup>()
-        {
-             new ContactLookup(ContactIcon.Generic,"CHAR_DEFAULT"),
-             new ContactLookup(ContactIcon.Abigail,"CHAR_ABIGAIL"),
-             new ContactLookup(ContactIcon.AllCharacters,"CHAR_ALL_PLAYERS_CONF"),
-             new ContactLookup(ContactIcon.Amanda,"CHAR_AMANDA"),
-             new ContactLookup(ContactIcon.Ammunation,"CHAR_AMMUNATION"),
-             new ContactLookup(ContactIcon.Andreas,"CHAR_ANDREAS"),
-             new ContactLookup(ContactIcon.Antonia,"CHAR_ANTONIA"),
-             new ContactLookup(ContactIcon.Arthur,"CHAR_ARTHUR"),
-             new ContactLookup(ContactIcon.Ashley,"CHAR_ASHLEY"),
-             new ContactLookup(ContactIcon.BankOfLiberty,"CHAR_BANK_BOL"),
-             new ContactLookup(ContactIcon.FleecaBank,"CHAR_BANK_FLEECA"),
-             new ContactLookup(ContactIcon.MazeBank,"CHAR_BANK_MAZE"),
-             new ContactLookup(ContactIcon.Barry,"CHAR_BARRY"),
-             new ContactLookup(ContactIcon.Beverly,"CHAR_BEVERLY"),
-             new ContactLookup(ContactIcon.Bikesite,"CHAR_BIKESITE"),
-             new ContactLookup(ContactIcon.Blank,"CHAR_BLANK_ENTRY"),
-             new ContactLookup(ContactIcon.Blimp,"CHAR_BLIMP"),
-             new ContactLookup(ContactIcon.Blocked,"CHAR_BLOCKED"),
-             new ContactLookup(ContactIcon.Boatsite,"CHAR_BOATSITE"),
-             new ContactLookup(ContactIcon.BrokenDownGirl,"CHAR_BROKEN_DOWN_GIRL"),
-             new ContactLookup(ContactIcon.Bugstars,"CHAR_BUGSTARS"),
-             new ContactLookup(ContactIcon.Emergency,"CHAR_CALL911"),
-             new ContactLookup(ContactIcon.LegendaryMotorsport,"CHAR_CARSITE"),
-             new ContactLookup(ContactIcon.SSASuperAutos,"CHAR_CARSITE2"),
-             new ContactLookup(ContactIcon.Castro,"CHAR_CASTRO"),
-             new ContactLookup(ContactIcon.ChatIcon,"CHAR_CHAT_CALL"),
-             new ContactLookup(ContactIcon.Chef,"CHAR_CHEF"),
-             new ContactLookup(ContactIcon.Cheng,"CHAR_CHENG"),
-             new ContactLookup(ContactIcon.ChengSr,"CHAR_CHENGSR"),
-             new ContactLookup(ContactIcon.Chop,"CHAR_CHOP"),
-             new ContactLookup(ContactIcon.CreatorPortraits,"CHAR_CREATOR_PORTRAITS"),
-             new ContactLookup(ContactIcon.Cris,"CHAR_CRIS"),
-             new ContactLookup(ContactIcon.Dave,"CHAR_DAVE"),
-             new ContactLookup(ContactIcon.Denise,"CHAR_DENISE"),
-             new ContactLookup(ContactIcon.DetonateBomb,"CHAR_DETONATEBOMB"),
-             new ContactLookup(ContactIcon.DetonatePhone,"CHAR_DETONATEPHONE"),
-             new ContactLookup(ContactIcon.Devin,"CHAR_DEVIN"),
-             new ContactLookup(ContactIcon.DialASub,"CHAR_DIAL_A_SUB"),
-             new ContactLookup(ContactIcon.Dom,"CHAR_DOM"),
-             new ContactLookup(ContactIcon.DomesticGirl,"CHAR_DOMESTIC_GIRL"),
-             new ContactLookup(ContactIcon.Dreyfuss,"CHAR_DREYFUSS"),
-             new ContactLookup(ContactIcon.DrFriedlander,"CHAR_DR_FRIEDLANDER"),
-             new ContactLookup(ContactIcon.Epsilon,"CHAR_EPSILON"),
-             new ContactLookup(ContactIcon.EstateAgent,"CHAR_ESTATE_AGENT"),
-             new ContactLookup(ContactIcon.Facebook,"CHAR_FACEBOOK"),
-             new ContactLookup(ContactIcon.Filmnoir,"CHAR_FILMNOIR"),
-             new ContactLookup(ContactIcon.Floyd,"CHAR_FLOYD"),
-             new ContactLookup(ContactIcon.Franklin,"CHAR_FRANKLIN"),
-             new ContactLookup(ContactIcon.FranklinTrevor,"CHAR_FRANK_TREV_CONF"),
-             new ContactLookup(ContactIcon.GayMilitary,"CHAR_GAYMILITARY"),
-             new ContactLookup(ContactIcon.Hao,"CHAR_HAO"),
-             new ContactLookup(ContactIcon.HitcherGirl,"CHAR_HITCHER_GIRL"),
-             new ContactLookup(ContactIcon.Human,"CHAR_HUMANDEFAULT"),
-             new ContactLookup(ContactIcon.Hunter,"CHAR_HUNTER"),
-             new ContactLookup(ContactIcon.Jimmy,"CHAR_JIMMY"),
-             new ContactLookup(ContactIcon.JimmyBoston,"CHAR_JIMMY_BOSTON"),
-             new ContactLookup(ContactIcon.Joe,"CHAR_JOE"),
-             new ContactLookup(ContactIcon.Josef,"CHAR_JOSEF"),
-             new ContactLookup(ContactIcon.Josh,"CHAR_JOSH"),
-             new ContactLookup(ContactIcon.Lamar,"CHAR_LAMAR"),
-             new ContactLookup(ContactIcon.Lazlow,"CHAR_LAZLOW"),
-             new ContactLookup(ContactIcon.Lester,"CHAR_LESTER"),
-             new ContactLookup(ContactIcon.Skull,"CHAR_LESTER_DEATHWISH"),
-             new ContactLookup(ContactIcon.LesterFranklin,"CHAR_LEST_FRANK_CONF"),
-             new ContactLookup(ContactIcon.LesterMichael,"CHAR_LEST_MIKE_CONF"),
-             new ContactLookup(ContactIcon.Lifeinvader,"CHAR_LIFEINVADER"),
-             new ContactLookup(ContactIcon.LSCustoms,"CHAR_LS_CUSTOMS"),
-             new ContactLookup(ContactIcon.LSTouristBoard,"CHAR_LS_TOURIST_BOARD"),
-             new ContactLookup(ContactIcon.Manuel,"CHAR_MANUEL"),
-             new ContactLookup(ContactIcon.Marnie,"CHAR_MARNIE"),
-             new ContactLookup(ContactIcon.Martin,"CHAR_MARTIN"),
-             new ContactLookup(ContactIcon.MaryAnn,"CHAR_MARY_ANN"),
-             new ContactLookup(ContactIcon.Maude,"CHAR_MAUDE"),
-             new ContactLookup(ContactIcon.Mechanic,"CHAR_MECHANIC"),
-             new ContactLookup(ContactIcon.Michael,"CHAR_MICHAEL"),
-             new ContactLookup(ContactIcon.MichaelFranklin,"CHAR_MIKE_FRANK_CONF"),
-             new ContactLookup(ContactIcon.MichaelTrevor,"CHAR_MIKE_TREV_CONF"),
-             new ContactLookup(ContactIcon.Milsite,"CHAR_MILSITE"),
-             new ContactLookup(ContactIcon.Minotaur,"CHAR_MINOTAUR"),
-             new ContactLookup(ContactIcon.Molly,"CHAR_MOLLY"),
-             new ContactLookup(ContactIcon.MP_ArmyContact,"CHAR_MP_ARMY_CONTACT"),
-             new ContactLookup(ContactIcon.MP_BikerBoss,"CHAR_MP_BIKER_BOSS"),
-             new ContactLookup(ContactIcon.MP_BikerMechanic,"CHAR_MP_BIKER_MECHANIC"),
-             new ContactLookup(ContactIcon.MP_Brucie,"CHAR_MP_BRUCIE"),
-             new ContactLookup(ContactIcon.MP_Detonatephone,"CHAR_MP_DETONATEPHONE"),
-             new ContactLookup(ContactIcon.MP_FamBoss,"CHAR_MP_FAM_BOSS"),
-             new ContactLookup(ContactIcon.MP_FibContact,"CHAR_MP_FIB_CONTACT"),
-             new ContactLookup(ContactIcon.MP_FmContact,"CHAR_MP_FM_CONTACT"),
-             new ContactLookup(ContactIcon.MP_Gerald,"CHAR_MP_GERALD"),
-             new ContactLookup(ContactIcon.MP_Julio,"CHAR_MP_JULIO"),
-             new ContactLookup(ContactIcon.MP_Mechanic,"CHAR_MP_MECHANIC"),
-             new ContactLookup(ContactIcon.MP_Merryweather,"CHAR_MP_MERRYWEATHER"),
-             new ContactLookup(ContactIcon.MP_MexBoss,"CHAR_MP_MEX_BOSS"),
-             new ContactLookup(ContactIcon.MP_MexDocks,"CHAR_MP_MEX_DOCKS"),
-             new ContactLookup(ContactIcon.MP_MexLt,"CHAR_MP_MEX_LT"),
-             new ContactLookup(ContactIcon.MP_MorsMutual,"CHAR_MP_MORS_MUTUAL"),
-             new ContactLookup(ContactIcon.MP_ProfBoss,"CHAR_MP_PROF_BOSS"),
-             new ContactLookup(ContactIcon.MP_RayLavoy,"CHAR_MP_RAY_LAVOY"),
-             new ContactLookup(ContactIcon.MP_Roberto,"CHAR_MP_ROBERTO"),
-             new ContactLookup(ContactIcon.MP_Snitch,"CHAR_MP_SNITCH"),
-             new ContactLookup(ContactIcon.MP_Stretch,"CHAR_MP_STRETCH"),
-             new ContactLookup(ContactIcon.MP_StripclubPr,"CHAR_MP_STRIPCLUB_PR"),
-             new ContactLookup(ContactIcon.MrsThornhill,"CHAR_MRS_THORNHILL"),
-             new ContactLookup(ContactIcon.Multiplayer,"CHAR_MULTIPLAYER"),
-             new ContactLookup(ContactIcon.Nigel,"CHAR_NIGEL"),
-             new ContactLookup(ContactIcon.Omega,"CHAR_OMEGA"),
-             new ContactLookup(ContactIcon.Oneil,"CHAR_ONEIL"),
-             new ContactLookup(ContactIcon.Ortega,"CHAR_ORTEGA"),
-             new ContactLookup(ContactIcon.Oscar,"CHAR_OSCAR"),
-             new ContactLookup(ContactIcon.Patricia,"CHAR_PATRICIA"),
-             new ContactLookup(ContactIcon.Pegasus,"CHAR_PEGASUS_DELIVERY"),
-             new ContactLookup(ContactIcon.Planesite,"CHAR_PLANESITE"),
-             new ContactLookup(ContactIcon.Property_ArmsTrafficking,"CHAR_PROPERTY_ARMS_TRAFFICKING"),
-             new ContactLookup(ContactIcon.Property_BarAirport,"CHAR_PROPERTY_BAR_AIRPORT"),
-             new ContactLookup(ContactIcon.Property_BarBayview,"CHAR_PROPERTY_BAR_BAYVIEW"),
-             new ContactLookup(ContactIcon.Property_BarCafeRojo,"CHAR_PROPERTY_BAR_CAFE_ROJO"),
-             new ContactLookup(ContactIcon.Property_BarCockotoos,"CHAR_PROPERTY_BAR_COCKOTOOS"),
-             new ContactLookup(ContactIcon.Property_BarEclipse,"CHAR_PROPERTY_BAR_ECLIPSE"),
-             new ContactLookup(ContactIcon.Property_BarFes,"CHAR_PROPERTY_BAR_FES"),
-             new ContactLookup(ContactIcon.Property_BarHenHouse,"CHAR_PROPERTY_BAR_HEN_HOUSE"),
-             new ContactLookup(ContactIcon.Property_BarHiMen,"CHAR_PROPERTY_BAR_HI_MEN"),
-             new ContactLookup(ContactIcon.Property_BarHookies,"CHAR_PROPERTY_BAR_HOOKIES"),
-             new ContactLookup(ContactIcon.Property_BarIrish,"CHAR_PROPERTY_BAR_IRISH"),
-             new ContactLookup(ContactIcon.Property_BarLesBianco,"CHAR_PROPERTY_BAR_LES_BIANCO"),
-             new ContactLookup(ContactIcon.Property_BarMirrorPark,"CHAR_PROPERTY_BAR_MIRROR_PARK"),
-             new ContactLookup(ContactIcon.Property_BarPitchers,"CHAR_PROPERTY_BAR_PITCHERS"),
-             new ContactLookup(ContactIcon.Property_BarSingletons,"CHAR_PROPERTY_BAR_SINGLETONS"),
-             new ContactLookup(ContactIcon.Property_BarTequilala,"CHAR_PROPERTY_BAR_TEQUILALA"),
-             new ContactLookup(ContactIcon.Property_BarUnbranded,"CHAR_PROPERTY_BAR_UNBRANDED"),
-             new ContactLookup(ContactIcon.Property_CarModShop,"CHAR_PROPERTY_CAR_MOD_SHOP"),
-             new ContactLookup(ContactIcon.Property_CarScrapYard,"CHAR_PROPERTY_CAR_SCRAP_YARD"),
-             new ContactLookup(ContactIcon.Property_CinemaDowntown,"CHAR_PROPERTY_CINEMA_DOWNTOWN"),
-             new ContactLookup(ContactIcon.Property_CinemaMorningwood,"CHAR_PROPERTY_CINEMA_MORNINGWOOD"),
-             new ContactLookup(ContactIcon.Property_CinemaVinewood,"CHAR_PROPERTY_CINEMA_VINEWOOD"),
-             new ContactLookup(ContactIcon.Property_GolfClub,"CHAR_PROPERTY_GOLF_CLUB"),
-             new ContactLookup(ContactIcon.Property_PlaneScrapYard,"CHAR_PROPERTY_PLANE_SCRAP_YARD"),
-             new ContactLookup(ContactIcon.Property_SonarCollections,"CHAR_PROPERTY_SONAR_COLLECTIONS"),
-             new ContactLookup(ContactIcon.Property_TaxiLot,"CHAR_PROPERTY_TAXI_LOT"),
-             new ContactLookup(ContactIcon.Property_TowingImpound,"CHAR_PROPERTY_TOWING_IMPOUND"),
-             new ContactLookup(ContactIcon.Property_WeedShop,"CHAR_PROPERTY_WEED_SHOP"),
-             new ContactLookup(ContactIcon.Ron,"CHAR_RON"),
-             new ContactLookup(ContactIcon.Saeeda,"CHAR_SAEEDA"),
-             new ContactLookup(ContactIcon.Sasquatch,"CHAR_SASQUATCH"),
-             new ContactLookup(ContactIcon.Simeon,"CHAR_SIMEON"),
-             new ContactLookup(ContactIcon.SocialClub,"CHAR_SOCIAL_CLUB"),
-             new ContactLookup(ContactIcon.Solomon,"CHAR_SOLOMON"),
-             new ContactLookup(ContactIcon.Steve,"CHAR_STEVE"),
-             new ContactLookup(ContactIcon.SteveMichael,"CHAR_STEVE_MIKE_CONF"),
-             new ContactLookup(ContactIcon.SteveTrevor,"CHAR_STEVE_TREV_CONF"),
-             new ContactLookup(ContactIcon.Stretch,"CHAR_STRETCH"),
-             new ContactLookup(ContactIcon.StripperChastity,"CHAR_STRIPPER_CHASTITY"),
-             new ContactLookup(ContactIcon.StripperCheetah,"CHAR_STRIPPER_CHEETAH"),
-             new ContactLookup(ContactIcon.StripperFufu,"CHAR_STRIPPER_FUFU"),
-             new ContactLookup(ContactIcon.StripperInfernus,"CHAR_STRIPPER_INFERNUS"),
-             new ContactLookup(ContactIcon.StripperJuliet,"CHAR_STRIPPER_JULIET"),
-             new ContactLookup(ContactIcon.StripperNikki,"CHAR_STRIPPER_NIKKI"),
-             new ContactLookup(ContactIcon.StripperPeach,"CHAR_STRIPPER_PEACH"),
-             new ContactLookup(ContactIcon.StripperSapphire,"CHAR_STRIPPER_SAPPHIRE"),
-             new ContactLookup(ContactIcon.Tanisha,"CHAR_TANISHA"),
-             new ContactLookup(ContactIcon.Taxi,"CHAR_TAXI"),
-             new ContactLookup(ContactIcon.TaxiLiz,"CHAR_TAXI_LIZ"),
-             new ContactLookup(ContactIcon.TennisCoach,"CHAR_TENNIS_COACH"),
-             new ContactLookup(ContactIcon.Tonya,"CHAR_TOW_TONYA"),
-             new ContactLookup(ContactIcon.Tracey,"CHAR_TRACEY"),
-             new ContactLookup(ContactIcon.Trevor,"CHAR_TREVOR"),
-             new ContactLookup(ContactIcon.Wade,"CHAR_WADE"),
-             new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
-        };
+       // }
+        //ContactLookups = new List<ContactLookup>()
+        //{
+        //     new ContactLookup(ContactIcon.Generic,"CHAR_DEFAULT"),
+        //     new ContactLookup(ContactIcon.Abigail,"CHAR_ABIGAIL"),
+        //     new ContactLookup(ContactIcon.AllCharacters,"CHAR_ALL_PLAYERS_CONF"),
+        //     new ContactLookup(ContactIcon.Amanda,"CHAR_AMANDA"),
+        //     new ContactLookup(ContactIcon.Ammunation,"CHAR_AMMUNATION"),
+        //     new ContactLookup(ContactIcon.Andreas,"CHAR_ANDREAS"),
+        //     new ContactLookup(ContactIcon.Antonia,"CHAR_ANTONIA"),
+        //     new ContactLookup(ContactIcon.Arthur,"CHAR_ARTHUR"),
+        //     new ContactLookup(ContactIcon.Ashley,"CHAR_ASHLEY"),
+        //     new ContactLookup(ContactIcon.BankOfLiberty,"CHAR_BANK_BOL"),
+        //     new ContactLookup(ContactIcon.FleecaBank,"CHAR_BANK_FLEECA"),
+        //     new ContactLookup(ContactIcon.MazeBank,"CHAR_BANK_MAZE"),
+        //     new ContactLookup(ContactIcon.Barry,"CHAR_BARRY"),
+        //     new ContactLookup(ContactIcon.Beverly,"CHAR_BEVERLY"),
+        //     new ContactLookup(ContactIcon.Bikesite,"CHAR_BIKESITE"),
+        //     new ContactLookup(ContactIcon.Blank,"CHAR_BLANK_ENTRY"),
+        //     new ContactLookup(ContactIcon.Blimp,"CHAR_BLIMP"),
+        //     new ContactLookup(ContactIcon.Blocked,"CHAR_BLOCKED"),
+        //     new ContactLookup(ContactIcon.Boatsite,"CHAR_BOATSITE"),
+        //     new ContactLookup(ContactIcon.BrokenDownGirl,"CHAR_BROKEN_DOWN_GIRL"),
+        //     new ContactLookup(ContactIcon.Bugstars,"CHAR_BUGSTARS"),
+        //     new ContactLookup(ContactIcon.Emergency,"CHAR_CALL911"),
+        //     new ContactLookup(ContactIcon.LegendaryMotorsport,"CHAR_CARSITE"),
+        //     new ContactLookup(ContactIcon.SSASuperAutos,"CHAR_CARSITE2"),
+        //     new ContactLookup(ContactIcon.Castro,"CHAR_CASTRO"),
+        //     new ContactLookup(ContactIcon.ChatIcon,"CHAR_CHAT_CALL"),
+        //     new ContactLookup(ContactIcon.Chef,"CHAR_CHEF"),
+        //     new ContactLookup(ContactIcon.Cheng,"CHAR_CHENG"),
+        //     new ContactLookup(ContactIcon.ChengSr,"CHAR_CHENGSR"),
+        //     new ContactLookup(ContactIcon.Chop,"CHAR_CHOP"),
+        //     new ContactLookup(ContactIcon.CreatorPortraits,"CHAR_CREATOR_PORTRAITS"),
+        //     new ContactLookup(ContactIcon.Cris,"CHAR_CRIS"),
+        //     new ContactLookup(ContactIcon.Dave,"CHAR_DAVE"),
+        //     new ContactLookup(ContactIcon.Denise,"CHAR_DENISE"),
+        //     new ContactLookup(ContactIcon.DetonateBomb,"CHAR_DETONATEBOMB"),
+        //     new ContactLookup(ContactIcon.DetonatePhone,"CHAR_DETONATEPHONE"),
+        //     new ContactLookup(ContactIcon.Devin,"CHAR_DEVIN"),
+        //     new ContactLookup(ContactIcon.DialASub,"CHAR_DIAL_A_SUB"),
+        //     new ContactLookup(ContactIcon.Dom,"CHAR_DOM"),
+        //     new ContactLookup(ContactIcon.DomesticGirl,"CHAR_DOMESTIC_GIRL"),
+        //     new ContactLookup(ContactIcon.Dreyfuss,"CHAR_DREYFUSS"),
+        //     new ContactLookup(ContactIcon.DrFriedlander,"CHAR_DR_FRIEDLANDER"),
+        //     new ContactLookup(ContactIcon.Epsilon,"CHAR_EPSILON"),
+        //     new ContactLookup(ContactIcon.EstateAgent,"CHAR_ESTATE_AGENT"),
+        //     new ContactLookup(ContactIcon.Facebook,"CHAR_FACEBOOK"),
+        //     new ContactLookup(ContactIcon.Filmnoir,"CHAR_FILMNOIR"),
+        //     new ContactLookup(ContactIcon.Floyd,"CHAR_FLOYD"),
+        //     new ContactLookup(ContactIcon.Franklin,"CHAR_FRANKLIN"),
+        //     new ContactLookup(ContactIcon.FranklinTrevor,"CHAR_FRANK_TREV_CONF"),
+        //     new ContactLookup(ContactIcon.GayMilitary,"CHAR_GAYMILITARY"),
+        //     new ContactLookup(ContactIcon.Hao,"CHAR_HAO"),
+        //     new ContactLookup(ContactIcon.HitcherGirl,"CHAR_HITCHER_GIRL"),
+        //     new ContactLookup(ContactIcon.Human,"CHAR_HUMANDEFAULT"),
+        //     new ContactLookup(ContactIcon.Hunter,"CHAR_HUNTER"),
+        //     new ContactLookup(ContactIcon.Jimmy,"CHAR_JIMMY"),
+        //     new ContactLookup(ContactIcon.JimmyBoston,"CHAR_JIMMY_BOSTON"),
+        //     new ContactLookup(ContactIcon.Joe,"CHAR_JOE"),
+        //     new ContactLookup(ContactIcon.Josef,"CHAR_JOSEF"),
+        //     new ContactLookup(ContactIcon.Josh,"CHAR_JOSH"),
+        //     new ContactLookup(ContactIcon.Lamar,"CHAR_LAMAR"),
+        //     new ContactLookup(ContactIcon.Lazlow,"CHAR_LAZLOW"),
+        //     new ContactLookup(ContactIcon.Lester,"CHAR_LESTER"),
+        //     new ContactLookup(ContactIcon.Skull,"CHAR_LESTER_DEATHWISH"),
+        //     new ContactLookup(ContactIcon.LesterFranklin,"CHAR_LEST_FRANK_CONF"),
+        //     new ContactLookup(ContactIcon.LesterMichael,"CHAR_LEST_MIKE_CONF"),
+        //     new ContactLookup(ContactIcon.Lifeinvader,"CHAR_LIFEINVADER"),
+        //     new ContactLookup(ContactIcon.LSCustoms,"CHAR_LS_CUSTOMS"),
+        //     new ContactLookup(ContactIcon.LSTouristBoard,"CHAR_LS_TOURIST_BOARD"),
+        //     new ContactLookup(ContactIcon.Manuel,"CHAR_MANUEL"),
+        //     new ContactLookup(ContactIcon.Marnie,"CHAR_MARNIE"),
+        //     new ContactLookup(ContactIcon.Martin,"CHAR_MARTIN"),
+        //     new ContactLookup(ContactIcon.MaryAnn,"CHAR_MARY_ANN"),
+        //     new ContactLookup(ContactIcon.Maude,"CHAR_MAUDE"),
+        //     new ContactLookup(ContactIcon.Mechanic,"CHAR_MECHANIC"),
+        //     new ContactLookup(ContactIcon.Michael,"CHAR_MICHAEL"),
+        //     new ContactLookup(ContactIcon.MichaelFranklin,"CHAR_MIKE_FRANK_CONF"),
+        //     new ContactLookup(ContactIcon.MichaelTrevor,"CHAR_MIKE_TREV_CONF"),
+        //     new ContactLookup(ContactIcon.Milsite,"CHAR_MILSITE"),
+        //     new ContactLookup(ContactIcon.Minotaur,"CHAR_MINOTAUR"),
+        //     new ContactLookup(ContactIcon.Molly,"CHAR_MOLLY"),
+        //     new ContactLookup(ContactIcon.MP_ArmyContact,"CHAR_MP_ARMY_CONTACT"),
+        //     new ContactLookup(ContactIcon.MP_BikerBoss,"CHAR_MP_BIKER_BOSS"),
+        //     new ContactLookup(ContactIcon.MP_BikerMechanic,"CHAR_MP_BIKER_MECHANIC"),
+        //     new ContactLookup(ContactIcon.MP_Brucie,"CHAR_MP_BRUCIE"),
+        //     new ContactLookup(ContactIcon.MP_Detonatephone,"CHAR_MP_DETONATEPHONE"),
+        //     new ContactLookup(ContactIcon.MP_FamBoss,"CHAR_MP_FAM_BOSS"),
+        //     new ContactLookup(ContactIcon.MP_FibContact,"CHAR_MP_FIB_CONTACT"),
+        //     new ContactLookup(ContactIcon.MP_FmContact,"CHAR_MP_FM_CONTACT"),
+        //     new ContactLookup(ContactIcon.MP_Gerald,"CHAR_MP_GERALD"),
+        //     new ContactLookup(ContactIcon.MP_Julio,"CHAR_MP_JULIO"),
+        //     new ContactLookup(ContactIcon.MP_Mechanic,"CHAR_MP_MECHANIC"),
+        //     new ContactLookup(ContactIcon.MP_Merryweather,"CHAR_MP_MERRYWEATHER"),
+        //     new ContactLookup(ContactIcon.MP_MexBoss,"CHAR_MP_MEX_BOSS"),
+        //     new ContactLookup(ContactIcon.MP_MexDocks,"CHAR_MP_MEX_DOCKS"),
+        //     new ContactLookup(ContactIcon.MP_MexLt,"CHAR_MP_MEX_LT"),
+        //     new ContactLookup(ContactIcon.MP_MorsMutual,"CHAR_MP_MORS_MUTUAL"),
+        //     new ContactLookup(ContactIcon.MP_ProfBoss,"CHAR_MP_PROF_BOSS"),
+        //     new ContactLookup(ContactIcon.MP_RayLavoy,"CHAR_MP_RAY_LAVOY"),
+        //     new ContactLookup(ContactIcon.MP_Roberto,"CHAR_MP_ROBERTO"),
+        //     new ContactLookup(ContactIcon.MP_Snitch,"CHAR_MP_SNITCH"),
+        //     new ContactLookup(ContactIcon.MP_Stretch,"CHAR_MP_STRETCH"),
+        //     new ContactLookup(ContactIcon.MP_StripclubPr,"CHAR_MP_STRIPCLUB_PR"),
+        //     new ContactLookup(ContactIcon.MrsThornhill,"CHAR_MRS_THORNHILL"),
+        //     new ContactLookup(ContactIcon.Multiplayer,"CHAR_MULTIPLAYER"),
+        //     new ContactLookup(ContactIcon.Nigel,"CHAR_NIGEL"),
+        //     new ContactLookup(ContactIcon.Omega,"CHAR_OMEGA"),
+        //     new ContactLookup(ContactIcon.Oneil,"CHAR_ONEIL"),
+        //     new ContactLookup(ContactIcon.Ortega,"CHAR_ORTEGA"),
+        //     new ContactLookup(ContactIcon.Oscar,"CHAR_OSCAR"),
+        //     new ContactLookup(ContactIcon.Patricia,"CHAR_PATRICIA"),
+        //     new ContactLookup(ContactIcon.Pegasus,"CHAR_PEGASUS_DELIVERY"),
+        //     new ContactLookup(ContactIcon.Planesite,"CHAR_PLANESITE"),
+        //     new ContactLookup(ContactIcon.Property_ArmsTrafficking,"CHAR_PROPERTY_ARMS_TRAFFICKING"),
+        //     new ContactLookup(ContactIcon.Property_BarAirport,"CHAR_PROPERTY_BAR_AIRPORT"),
+        //     new ContactLookup(ContactIcon.Property_BarBayview,"CHAR_PROPERTY_BAR_BAYVIEW"),
+        //     new ContactLookup(ContactIcon.Property_BarCafeRojo,"CHAR_PROPERTY_BAR_CAFE_ROJO"),
+        //     new ContactLookup(ContactIcon.Property_BarCockotoos,"CHAR_PROPERTY_BAR_COCKOTOOS"),
+        //     new ContactLookup(ContactIcon.Property_BarEclipse,"CHAR_PROPERTY_BAR_ECLIPSE"),
+        //     new ContactLookup(ContactIcon.Property_BarFes,"CHAR_PROPERTY_BAR_FES"),
+        //     new ContactLookup(ContactIcon.Property_BarHenHouse,"CHAR_PROPERTY_BAR_HEN_HOUSE"),
+        //     new ContactLookup(ContactIcon.Property_BarHiMen,"CHAR_PROPERTY_BAR_HI_MEN"),
+        //     new ContactLookup(ContactIcon.Property_BarHookies,"CHAR_PROPERTY_BAR_HOOKIES"),
+        //     new ContactLookup(ContactIcon.Property_BarIrish,"CHAR_PROPERTY_BAR_IRISH"),
+        //     new ContactLookup(ContactIcon.Property_BarLesBianco,"CHAR_PROPERTY_BAR_LES_BIANCO"),
+        //     new ContactLookup(ContactIcon.Property_BarMirrorPark,"CHAR_PROPERTY_BAR_MIRROR_PARK"),
+        //     new ContactLookup(ContactIcon.Property_BarPitchers,"CHAR_PROPERTY_BAR_PITCHERS"),
+        //     new ContactLookup(ContactIcon.Property_BarSingletons,"CHAR_PROPERTY_BAR_SINGLETONS"),
+        //     new ContactLookup(ContactIcon.Property_BarTequilala,"CHAR_PROPERTY_BAR_TEQUILALA"),
+        //     new ContactLookup(ContactIcon.Property_BarUnbranded,"CHAR_PROPERTY_BAR_UNBRANDED"),
+        //     new ContactLookup(ContactIcon.Property_CarModShop,"CHAR_PROPERTY_CAR_MOD_SHOP"),
+        //     new ContactLookup(ContactIcon.Property_CarScrapYard,"CHAR_PROPERTY_CAR_SCRAP_YARD"),
+        //     new ContactLookup(ContactIcon.Property_CinemaDowntown,"CHAR_PROPERTY_CINEMA_DOWNTOWN"),
+        //     new ContactLookup(ContactIcon.Property_CinemaMorningwood,"CHAR_PROPERTY_CINEMA_MORNINGWOOD"),
+        //     new ContactLookup(ContactIcon.Property_CinemaVinewood,"CHAR_PROPERTY_CINEMA_VINEWOOD"),
+        //     new ContactLookup(ContactIcon.Property_GolfClub,"CHAR_PROPERTY_GOLF_CLUB"),
+        //     new ContactLookup(ContactIcon.Property_PlaneScrapYard,"CHAR_PROPERTY_PLANE_SCRAP_YARD"),
+        //     new ContactLookup(ContactIcon.Property_SonarCollections,"CHAR_PROPERTY_SONAR_COLLECTIONS"),
+        //     new ContactLookup(ContactIcon.Property_TaxiLot,"CHAR_PROPERTY_TAXI_LOT"),
+        //     new ContactLookup(ContactIcon.Property_TowingImpound,"CHAR_PROPERTY_TOWING_IMPOUND"),
+        //     new ContactLookup(ContactIcon.Property_WeedShop,"CHAR_PROPERTY_WEED_SHOP"),
+        //     new ContactLookup(ContactIcon.Ron,"CHAR_RON"),
+        //     new ContactLookup(ContactIcon.Saeeda,"CHAR_SAEEDA"),
+        //     new ContactLookup(ContactIcon.Sasquatch,"CHAR_SASQUATCH"),
+        //     new ContactLookup(ContactIcon.Simeon,"CHAR_SIMEON"),
+        //     new ContactLookup(ContactIcon.SocialClub,"CHAR_SOCIAL_CLUB"),
+        //     new ContactLookup(ContactIcon.Solomon,"CHAR_SOLOMON"),
+        //     new ContactLookup(ContactIcon.Steve,"CHAR_STEVE"),
+        //     new ContactLookup(ContactIcon.SteveMichael,"CHAR_STEVE_MIKE_CONF"),
+        //     new ContactLookup(ContactIcon.SteveTrevor,"CHAR_STEVE_TREV_CONF"),
+        //     new ContactLookup(ContactIcon.Stretch,"CHAR_STRETCH"),
+        //     new ContactLookup(ContactIcon.StripperChastity,"CHAR_STRIPPER_CHASTITY"),
+        //     new ContactLookup(ContactIcon.StripperCheetah,"CHAR_STRIPPER_CHEETAH"),
+        //     new ContactLookup(ContactIcon.StripperFufu,"CHAR_STRIPPER_FUFU"),
+        //     new ContactLookup(ContactIcon.StripperInfernus,"CHAR_STRIPPER_INFERNUS"),
+        //     new ContactLookup(ContactIcon.StripperJuliet,"CHAR_STRIPPER_JULIET"),
+        //     new ContactLookup(ContactIcon.StripperNikki,"CHAR_STRIPPER_NIKKI"),
+        //     new ContactLookup(ContactIcon.StripperPeach,"CHAR_STRIPPER_PEACH"),
+        //     new ContactLookup(ContactIcon.StripperSapphire,"CHAR_STRIPPER_SAPPHIRE"),
+        //     new ContactLookup(ContactIcon.Tanisha,"CHAR_TANISHA"),
+        //     new ContactLookup(ContactIcon.Taxi,"CHAR_TAXI"),
+        //     new ContactLookup(ContactIcon.TaxiLiz,"CHAR_TAXI_LIZ"),
+        //     new ContactLookup(ContactIcon.TennisCoach,"CHAR_TENNIS_COACH"),
+        //     new ContactLookup(ContactIcon.Tonya,"CHAR_TOW_TONYA"),
+        //     new ContactLookup(ContactIcon.Tracey,"CHAR_TRACEY"),
+        //     new ContactLookup(ContactIcon.Trevor,"CHAR_TREVOR"),
+        //     new ContactLookup(ContactIcon.Wade,"CHAR_WADE"),
+        //     new ContactLookup(ContactIcon.Youtube,"CHAR_YOUTUBE"),
+        //};
 
         BurnerPhone.Setup();
     }
-    public void ContactAnswered(iFruitContact contact)
+    public void ContactAnswered(PhoneContact contact)
     {
-        if(!NativeFunction.Natives.IS_PED_RUNNING_MOBILE_PHONE_TASK<bool>(Player.Character))
+        //if(!NativeFunction.Natives.IS_PED_RUNNING_MOBILE_PHONE_TASK<bool>(Player.Character))
+        //{
+        if (!BurnerPhone.IsActive)
         {
-            NativeFunction.Natives.CREATE_MOBILE_PHONE(PhoneTypeID);
+            NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerPhoneTypeID);
             isRunningForcedMobileTask = true;
             NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
             Player.Character.KeepTasks = true;
+            if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+            {
+                BurnerPhone.DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper());
+            }
+            else
+            {
+                BurnerPhone.SetOffScreen();
+            }
         }
         else
         {
             isRunningForcedMobileTask = false;
         }
-
+        //}
+        //else
+        //{
+        //    isRunningForcedMobileTask = false;
+        //}
         Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
         if (myGang != null)
         {
@@ -308,17 +294,13 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
         }
         else
         {
-            CustomiFruit.Close();//is civ bullshit
+            Close(0);
         }
 
     }
-    public void DeleteText(iFruitText text)
+    public void DeleteText(PhoneText text)
     {
         AddedTexts.Remove(text);
-        CustomiFruit.RemoveText(text);
-
-        //CustomiFruit.Texts.Remove(text);
-        
     }
     public void DeletePhoneRespone(PhoneResponse phoneResponse)
     {
@@ -327,39 +309,34 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     public void Update()
     {
         CheckScheduledItems();
-        CustomiFruit.Update(Player);
         MenuPool.ProcessMenus();
         GangInteraction?.Update();
         GunDealerInteraction?.Update();
         CorruptCopInteraction?.Update();
         EmergencyServicesInteraction?.Update();
-        BurnerPhone.Update();
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        {
+            BurnerPhone.Update();
+        }
     }
     public void Reset()
     {
-        //CustomiFruit.ForceClose();
-        CustomiFruit = new CustomiFruit();
-        ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
-        AddedTexts = new List<iFruitText>();
-        AddedContacts = new List<iFruitContact>();
+        ContactIndex = 0;
+        AddedTexts = new List<PhoneText>();
+        AddedContacts = new List<PhoneContact>();
         PhoneResponses = new List<PhoneResponse>();
         ScheduledContacts = new List<ScheduledContact>();
         ScheduledTexts = new List<ScheduledText>();
-        if (Settings.SettingsManager.CellphoneSettings.OverwriteVanillaEmergencyServicesContact)
-        {
-            AddEmergencyServicesCustomContact(false);
-        }
+        AddEmergencyServicesCustomContact(false);
     }
     public void ClearTextMessages()
     {
-        AddedTexts = new List<iFruitText>();
-        CustomiFruit.Texts.Clear();
+        AddedTexts = new List<PhoneText>();
     }
     public void ClearContacts()
     {
-        ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingID;
-        AddedContacts = new List<iFruitContact>();
-        CustomiFruit.Contacts.Clear();
+        ContactIndex = 0;
+        AddedContacts = new List<PhoneContact>();
     }
     public void ClearPhoneResponses()
     {
@@ -367,37 +344,57 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     }
     public void Dispose()
     {
-        CustomiFruit.ForceClose();
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        {
+            BurnerPhone.ClosePhone();
+        }
+
+
+        if(!Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
+        {
+            Tools.Scripts.StartScript("cellphone_flashhand", 1424);
+            Tools.Scripts.StartScript("cellphone_controller", 1424);
+        }
     }
     public void Close(int time)
     {
         EntryPoint.WriteToConsole("Mobile Phone Closed");
-        if(isRunningForcedMobileTask)
+        if (isRunningForcedMobileTask)
         {
             NativeFunction.Natives.DESTROY_MOBILE_PHONE();
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         }
         isRunningForcedMobileTask = false;
-        CustomiFruit.Close(time);
+        //CustomiFruit.Close(time);
+
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        {
+            BurnerPhone.ClosePhone();
+        }
+        else if (isRunningForcedMobileTask)
+        {
+            NativeFunction.Natives.DESTROY_MOBILE_PHONE();
+        }
+
     }
-
-
     public void OpenBurner()
     {
-        BurnerPhone.OpenPhone();
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        {
+            BurnerPhone.OpenPhone();
+        }
     }
     public void CloseBurner()
     {
-        BurnerPhone.ClosePhone();
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        {
+            BurnerPhone.ClosePhone();
+        }
     }
     private void CheckScheduledItems()
     {
         CheckScheduledTexts();
         CheckScheduledContacts();
-    }
-    public string GetContactIcon(string contactName)
-    {
-        return ContactList.FirstOrDefault(x => x.Name.ToLower() == contactName.ToLower())?.IconName;
     }
     private void CheckScheduledTexts()
     {
@@ -488,14 +485,14 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     {
         if (!AddedContacts.Any(x => x.Name == Name))
         {
-            iFruitContact contactA = new iFruitContact(Name, ContactIndex);
-            contactA.Answered += ContactAnswered;
+            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
+            //contactA.Answered += ContactAnswered;
             contactA.Active = false;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            contactA.Icon = GetIconFromString(IconName);
+            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            CustomiFruit.Contacts.Add(contactA);
+            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -510,14 +507,14 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     {
         if (!AddedContacts.Any(x => x.Name == gang.ContactName))
         {
-            iFruitContact contactA = new iFruitContact(gang.ContactName, ContactIndex);
-            contactA.Answered += ContactAnswered;
+            PhoneContact contactA = new PhoneContact(gang.ContactName, ContactIndex);
+            //contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            contactA.Icon = GetIconFromString(gang.ContactIcon);
+            //contactA.Icon = GetIconFromString(gang.ContactIcon);
             contactA.IconName = gang.ContactIcon;
-            CustomiFruit.Contacts.Add(contactA);
+            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -532,14 +529,14 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     {
         if (!AddedContacts.Any(x => x.Name == Name))
         {
-            iFruitContact contactA = new iFruitContact(Name, ContactIndex);
-            contactA.Answered += ContactAnswered;
+            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
+            //contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            contactA.Icon = GetIconFromString(IconName);
+            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            CustomiFruit.Contacts.Add(contactA);
+            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -556,14 +553,14 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
         string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == Name))
         {
-            iFruitContact contactA = new iFruitContact(Name, ContactIndex);
-            contactA.Answered += ContactAnswered;
+            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
+           // contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            contactA.Icon = GetIconFromString(IconName);
+            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            CustomiFruit.Contacts.Add(contactA);
+            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -577,15 +574,16 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     public void AddEmergencyServicesCustomContact(bool displayNotification)
     {
         string Name = EntryPoint.UndergroundGunsContactName;
-        string IconName = "CHAR_BLANK_ENTRY";
+        string IconName = "CHAR_CALL911";
         if (!AddedContacts.Any(x => x.Name == EntryPoint.EmergencyServicesContactName))
         {
-            iFruitContact contactA = new iFruitContact(EntryPoint.EmergencyServicesContactName, ContactIndex);
-            contactA.Answered += ContactAnswered;
+            PhoneContact contactA = new PhoneContact(EntryPoint.EmergencyServicesContactName, ContactIndex);
+            //contactA.Answered += ContactAnswered;
             contactA.DialTimeout = 3000;
             contactA.Active = true;
-            contactA.Icon = ContactIcon.Emergency;
-            CustomiFruit.Contacts.Add(contactA);
+            contactA.IconName = IconName;
+            //contactA.Icon = ContactIcon.Emergency;
+            //CustomiFruit.Contacts.Add(contactA);
 
             ContactIndex++;
             AddedContacts.Add(contactA);
@@ -693,17 +691,17 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     {
         if (!AddedTexts.Any(x => x.Name == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
         {
-            iFruitText textA = new iFruitText(Name, TextIndex, message, hourSent, minuteSent);
+            PhoneText textA = new PhoneText(Name, TextIndex, message, hourSent, minuteSent);
             //textA.Icon = GetIconFromString(IconName);      // Contact's icon
             textA.IconName = IconName;
             textA.IsRead = isRead;
             textA.TimeReceived = Time.CurrentDateTime;
-            CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
+            //CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
             TextIndex++;
             AddedTexts.Add(textA);
 
             int NewTextIndex = 0;
-            foreach(iFruitText ifta in CustomiFruit.Texts.OrderByDescending(x=> x.TimeReceived))
+            foreach(PhoneText ifta in TextList.OrderByDescending(x=> x.TimeReceived))
             {
                 ifta.Index = NewTextIndex;
                 NewTextIndex++;
@@ -725,7 +723,7 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     }
     public void DisableContact(string Name)
     {
-        iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
+        PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == Name);
         if(myContact != null)
         {
             myContact.Active = false;
@@ -733,36 +731,12 @@ ContactIndex = Settings.SettingsManager.CellphoneSettings.CustomContactStartingI
     }
     public bool IsContactEnabled(string contactName)
     {
-        iFruitContact myContact = AddedContacts.FirstOrDefault(x => x.Name == contactName);
+        PhoneContact myContact = AddedContacts.FirstOrDefault(x => x.Name == contactName);
         if (myContact != null)
         {
             return myContact.Active;
         }
         return false;
-    }
-    private ContactIcon GetIconFromString(string StringName)
-    {
-        EntryPoint.WriteToConsole($"HERES SOME RETARDED FUCKING SHIT FOR YOU ASSHOLE FUCKER {StringName}");
-        if(ContactLookups != null)
-        {
-            EntryPoint.WriteToConsole($"CONTACT LOOKUPS IS NOT NULL");
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"CONTACT LOOKUPS IS NULL");
-        }
-
-        if(StringName == "")
-        {
-            return ContactIcon.Blank;
-        }
-
-        ContactLookup cl = ContactLookups.FirstOrDefault(x => x != null && x.IconText?.ToLower() == StringName?.ToLower());
-        if (cl != null)
-        {
-            return cl.ContactIcon;
-        }
-        return ContactIcon.Blank;
     }
     private class ContactLookup
     {

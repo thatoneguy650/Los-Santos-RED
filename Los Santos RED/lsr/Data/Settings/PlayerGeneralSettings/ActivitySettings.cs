@@ -32,7 +32,6 @@ public class ActivitySettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-        AllowDraggingOtherPeds = true;
         AllowTakingOtherPedsHostage = true;
 #endif
     }
@@ -44,10 +43,10 @@ public class ActivitySettings : ISettingsDefaultable
 
         AllowPedConversations = true;
         AllowPedLooting = true;
-        AllowDraggingOtherPeds = false;
+        AllowDraggingOtherPeds = true;
         AllowTakingOtherPedsHostage = false;
         AllowStartingScenarios = false;
-        AllowPlayerCrouching = false;
+        AllowPlayerCrouching = true;
 
     }
 }

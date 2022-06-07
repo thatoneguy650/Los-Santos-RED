@@ -326,7 +326,7 @@ public class Pedestrians
                 DeadPeds.Add(Firefighter);
             }
         }
-        foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             bool hasBlip = false;
             Blip myblip = GangMember.Pedestrian.GetAttachedBlip();

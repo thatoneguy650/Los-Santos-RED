@@ -74,12 +74,12 @@ public class GangInteraction
             }
             else
             {
-                GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
-                GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
-                GangTheft = new UIMenuItem("Theft", "Steal an item for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
-                GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
-                GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
-                GangPizza = new UIMenuItem("Pizza Man", "Pizza Time") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
+                GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
+                GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
+                GangTheft = new UIMenuItem("Theft", "Steal an item for the gang. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
+                GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
+                GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
+                GangPizza = new UIMenuItem("Pizza Man", "Pizza Time.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
 
                 GangMenu.AddItem(GangHit);
                 GangMenu.AddItem(GangMoneyPickup);

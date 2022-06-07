@@ -144,6 +144,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 else if (hasSpawnedCar && IsSpawnedVehicleDestroyed)
                 {
                     EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.UndergroundGunsContactName}, the spawned vehicle was destroyed");
+                    Game.DisplayHelp($"{EntryPoint.UndergroundGunsContactName} Vehicle Destroyed");
                     break;
                 }
                 else if (hasSpawnedCar && hasGottenInCar && IsPlayerFarAwayFromSpawnedVehicle)
@@ -175,12 +176,22 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void OnArrivedAtDestination()
         {
-            SpawnedVehicle.IsPersistent = false;
+            if (SpawnedVehicle.Exists())
+            {
+                SpawnedVehicle.IsPersistent = false;
+            }
+            if(GunProp.Exists())
+            {
+                GunProp.IsPersistent = false;
+            }
             CurrentTask.IsReadyForPayment = true;
             Player.LastFriendlyVehicle = null;
             SpawnedVehicle.SetLock((VehicleLockStatus)10);
             EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");
-            Game.DisplayHelp($"You have arrived, leave the vehicle");
+
+            Game.DisplayHelp($"{EntryPoint.UndergroundGunsContactName} You have arrived, leave the vehicle");
+
+            //Game.DisplayHelp($"You have arrived, leave the vehicle");
         }
         private void OnGotInCar()
         {

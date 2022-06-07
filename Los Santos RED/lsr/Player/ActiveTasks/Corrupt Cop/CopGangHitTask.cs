@@ -97,6 +97,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 if (Player.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
                 {
                     CurrentTask.IsReadyForPayment = true;
+                    Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Ready for Payment");
                     EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
                     break;
                 }
@@ -127,6 +128,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     if (myDrop.InteractionComplete)
                     {
+                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Money Picked Up");
                         EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {EntryPoint.OfficerFriendlyContactName}");
                         break;
                     }

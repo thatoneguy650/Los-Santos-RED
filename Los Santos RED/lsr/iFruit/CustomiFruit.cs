@@ -193,7 +193,6 @@ namespace iFruitAddon2
 
         public void Update(ICellPhoneable Player)
         {
-
             if (NativeFunction.Natives.x2C83A9DA6BFFC4F9<int>(_mScriptHash) > 0)
             {
                 IsScriptHashRunning = true;
@@ -248,65 +247,12 @@ namespace iFruitAddon2
                     _timerClose = -1;
                 }
             }
-
             _contacts.Update(Handle);
-
-
-            //if(IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
-            //{
-            //    //SetUnread();
-            //    onHomescreen = true;
-            //}
-            //else
-            //{
-            //    onHomescreen = false;
-            //}
-
-            //if(prevOnHomeScreen != onHomescreen)
-            //{
-            //    //if(onHomescreen)
-            //    //{
-            //    //    if (timesShow <= 5)
-            //    //    {
-            //    //        //NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "DISPLAY_VIEW");
-            //    //        //NativeFunction.Natives.xC3D0841A0CC546A6(0);
-            //    //        //NativeFunction.Natives.xC3D0841A0CC546A6(0);
-            //    //        //NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-            //    //        timesShow++;
-            //    //        SetUnread();
-            //    //    }
-            //    //    //SetUnread();
-            //    //}
-            //    //else
-            //    //{
-            //    //    timesShow = 0;
-            //    //}
-            //    timesShow = 0;
-            //    DebugStuff = $"{Game.GameTime} CHANGED TO {onHomescreen}";
-            //}
-
-
-            //if(onHomescreen && timesShow <= 5)
-            //{
-            //    NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(Handle, "DISPLAY_VIEW");
-            //    NativeFunction.Natives.xC3D0841A0CC546A6(1);
-            //    NativeFunction.Natives.xC3D0841A0CC546A6(0);
-            //    NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-            //    timesShow++;
-            //    SetUnread();
-            //}
-
-
-            // prevOnHomeScreen = onHomescreen;
-
-
-            //#if DEBUG
             if (IsScriptHashRunning && !_contacts.IsScriptRunning && !_texts.IsScriptRunning)
             {
                 SetUnread();
             }
             _texts.Update(Handle, this, Player);
-//#endif
             DebugString = $"Main: {IsScriptHashRunning} Texts: {_texts.IsScriptRunning} Contacts: {_contacts.IsScriptRunning} DebugStuff {DebugStuff} TIME:{Game.GameTime}";
         }
         private void SetUnread()
