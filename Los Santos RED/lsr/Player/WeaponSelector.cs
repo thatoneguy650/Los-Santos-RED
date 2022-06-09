@@ -100,7 +100,7 @@ public class WeaponSelector
                     SetSelectorSetting(SelectorOptions.Safe);
                 }
                 EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}", 5);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(0, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
                 GameTimeLastToggledSelector = Game.GameTime;
             }
         }

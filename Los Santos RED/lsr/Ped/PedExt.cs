@@ -210,6 +210,7 @@ public class PedExt : IComplexTaskable
     public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
     public int WantedLevel => PedCrimes.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
+    public bool WasPersistentOnCreate { get; set; } = false;
     public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public bool WillCallPolice { get; set; } = false;//true;
@@ -249,6 +250,10 @@ public class PedExt : IComplexTaskable
                 else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
                     return 3000;
+                }
+                else if (IsWanted)
+                {
+                    return 500;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {

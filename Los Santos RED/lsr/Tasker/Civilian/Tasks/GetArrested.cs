@@ -297,6 +297,15 @@ public class GetArrested : ComplexTask
                 {
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
+                    if (PedToArrest.Exists() && PedToArrest.IsInAnyVehicle(false))//try it again i guess
+                    {
+                        oldVehicle = PedToArrest.CurrentVehicle;
+                        if (PedToArrest.Exists() && oldVehicle.Exists())
+                        {
+                            NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                            GameFiber.Wait(2500);
+                        }
+                    }
                 }
             }
             //
@@ -356,6 +365,15 @@ public class GetArrested : ComplexTask
                 {
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
+                    if (PedToArrest.Exists() && PedToArrest.IsInAnyVehicle(false))
+                    {
+                        oldVehicle = PedToArrest.CurrentVehicle;
+                        if (PedToArrest.Exists() && oldVehicle.Exists())
+                        {
+                            NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                            GameFiber.Wait(2500);
+                        }
+                    }
                 }
             }
             if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))

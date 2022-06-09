@@ -295,6 +295,7 @@ public class GasPump : InteractableLocation
     {
         if(UnitsToAdd * pricePerUnit > Player.Money)
         {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
             return;
         }
@@ -305,9 +306,24 @@ public class GasPump : InteractableLocation
         {
             IsFueling = true;
            // DisableControl();
-            uint GameTimeBetweenUnits = 2500;  
+            uint GameTimeBetweenUnits = 1500;  
             uint GameTimeAddedUnit = Game.GameTime;
             int dotsAdded = 0;
+            if (VehicleToFill.Vehicle.Exists())
+            {
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, VehicleToFill.Vehicle, 2000);
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, VehicleToFill.Vehicle, -1, 0, 2);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+
+            }
             while (UnitsAdded < UnitsToAdd && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn)
             {
                 string tabs = new string('.', dotsAdded);
@@ -329,9 +345,7 @@ public class GasPump : InteractableLocation
                         VehicleToFill.Vehicle.FuelLevel += PercentFilledPerUnit;
                     }
                     Player.GiveMoney(-1 * pricePerUnit);
-
-                    int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
 
                     EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * pricePerUnit}");
                 }
@@ -345,8 +359,10 @@ public class GasPump : InteractableLocation
 
             if (UnitsAdded > 0)
             {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsAdded} gallons (${UnitsAdded * pricePerUnit}) of fuel at {Name}");
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsAdded} gallons of fuel for a total price of ~r~${UnitsAdded * pricePerUnit}~s~ at {Name}");
             }
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Game.LocalPlayer.HasControl = true;
             //EnableControl();
             KeepInteractionGoing = false;

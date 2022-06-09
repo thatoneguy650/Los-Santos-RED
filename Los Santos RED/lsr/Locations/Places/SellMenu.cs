@@ -598,6 +598,7 @@ public class SellMenu : Menu
         }
         else
         {
+            PlayErrorSound();
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
             return false;
         }
@@ -1088,5 +1089,9 @@ public class SellMenu : Menu
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
         return false;
+    }
+    private void PlayErrorSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
     }
 }

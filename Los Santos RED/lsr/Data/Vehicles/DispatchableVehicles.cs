@@ -241,11 +241,11 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
 
-#if DEBUG
-        Serialization.SerializeParams(VehicleGroupLookupEnhanced, "Plugins\\LosSantosRED\\DispatchableVehicles_Enhanced.xml");
-#else
-        Serialization.SerializeParams(VehicleGroupLookup11John11, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchableVehicles_Enhanced.xml");
-#endif
+//#if DEBUG
+//        Serialization.SerializeParams(VehicleGroupLookupEnhanced, "Plugins\\LosSantosRED\\DispatchableVehicles_Enhanced.xml");
+//#else
+//        Serialization.SerializeParams(VehicleGroupLookup11John11, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchableVehicles_Enhanced.xml");
+//#endif
     }
     private void DefaultConfig()
     {

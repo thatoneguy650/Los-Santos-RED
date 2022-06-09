@@ -5,12 +5,9 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
-using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class CellPhone
 {
@@ -43,7 +40,6 @@ public class CellPhone
     private bool isRunningForcedMobileTask;
     private BurnerPhone BurnerPhone;
     public bool IsActive => BurnerPhone?.IsActive == true;
-   // public CustomiFruit CustomiFruit { get; private set; }
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
@@ -244,8 +240,6 @@ public class CellPhone
     }
     public void ContactAnswered(PhoneContact contact)
     {
-        //if(!NativeFunction.Natives.IS_PED_RUNNING_MOBILE_PHONE_TASK<bool>(Player.Character))
-        //{
         if (!BurnerPhone.IsActive)
         {
             NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
@@ -265,11 +259,6 @@ public class CellPhone
         {
             isRunningForcedMobileTask = false;
         }
-        //}
-        //else
-        //{
-        //    isRunningForcedMobileTask = false;
-        //}
         Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
         if (myGang != null)
         {
@@ -296,7 +285,6 @@ public class CellPhone
         {
             Close(0);
         }
-
     }
     public void DeleteText(PhoneText text)
     {
@@ -349,7 +337,6 @@ public class CellPhone
             BurnerPhone.ClosePhone();
         }
 
-
         if(!Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
         {
             Tools.Scripts.StartScript("cellphone_flashhand", 1424);
@@ -365,8 +352,6 @@ public class CellPhone
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         }
         isRunningForcedMobileTask = false;
-        //CustomiFruit.Close(time);
-
         if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
         {
             BurnerPhone.ClosePhone();
@@ -375,7 +360,6 @@ public class CellPhone
         {
             NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         }
-
     }
     public void OpenBurner()
     {
@@ -407,8 +391,11 @@ public class CellPhone
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
                     NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
-                    TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                    //TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+                    //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+
+
+                    PlayTextReceivedSound();
 
 
                     if (!AddedContacts.Any(x => x.Name == sc.ContactName))
@@ -459,8 +446,9 @@ public class CellPhone
                     {
                         AddContact(sc.ContactName, sc.IconName, true);
                     }
-                    TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                    PlayTextReceivedSound();
+                    //TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
+                    //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
                     if (sc.Message == "")
                     {
                         NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, "New Contact", sc.ContactName, NotificationIconTypes.AddFriendRequest, true);
@@ -499,7 +487,8 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                PlayTextReceivedSound();
+                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -521,7 +510,8 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(gang.ContactIcon, gang.ContactIcon, "New Contact", gang.ContactName, NotificationIconTypes.AddFriendRequest, true);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                PlayTextReceivedSound();
+                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -543,7 +533,8 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                PlayTextReceivedSound();
+                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -567,7 +558,8 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                PlayTextReceivedSound();
+                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -590,7 +582,8 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
+                PlayTextReceivedSound();
+                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -712,14 +705,16 @@ public class CellPhone
     {
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message,Time.CurrentDateTime));
         Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
+        PlayPhoneResponseSound();
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
     }
     public void AddPhoneResponse(string Name, string Message)
     {
         string IconName = ContactList.FirstOrDefault(x => x.Name.ToLower() == Name.ToLower())?.IconName;
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
         Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
+        PlayPhoneResponseSound();
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
     }
     public void DisableContact(string Name)
     {
@@ -737,6 +732,16 @@ public class CellPhone
             return myContact.Active;
         }
         return false;
+    }
+
+
+    private void PlayTextReceivedSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+    }
+    private void PlayPhoneResponseSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
     private class ContactLookup
     {

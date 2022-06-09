@@ -957,6 +957,7 @@ public class PurchaseMenu : Menu
                 }
                 if (CurrentWeapon.HasComponent(Player.Character, myComponent))
                 {
+                    PlayErrorSound();
                     Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", StoreName, "Already Owned", "We are sorry, we are unable to complete this transation, as the item is already owned");
                     return;
                 }
@@ -1363,6 +1364,7 @@ public class PurchaseMenu : Menu
             }
             return true;
         }
+        PlayErrorSound();
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
@@ -1380,6 +1382,7 @@ public class PurchaseMenu : Menu
             }
             return true;
         }
+        PlayErrorSound();
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
@@ -1433,12 +1436,14 @@ public class PurchaseMenu : Menu
             }
             else
             {
+                PlayErrorSound();
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Delivery Failed", "We are sorry, we are unable to complete this transation");
                 return false;
             }
         }
         else
         {
+            PlayErrorSound();
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
             return false;
         }
@@ -1465,10 +1470,14 @@ public class PurchaseMenu : Menu
 
     private void DisplayInsufficientFundsMessage()
     {
+        PlayErrorSound();
         Game.RemoveNotification(NotificationHandle);
         NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
     }
-
+    private void PlayErrorSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+    }
 
     private class ColorLookup
     {

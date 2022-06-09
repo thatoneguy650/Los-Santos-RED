@@ -32,7 +32,7 @@ public class BurnerPhone
     private int prevCurrentColumn;
     private int prevCurrentApp;
     private int prevCurrentIndex;
-    private bool DisplayingTextMessage = false;
+    private bool IsDisplayingTextMessage = false;
     private ISettingsProvideable Settings;
     private bool IsDisplayingCall;
     private PhoneContact LastCalledContact;
@@ -44,7 +44,6 @@ public class BurnerPhone
         Time = time;
         Settings = settings;
     }
-
     public void Setup()
     {
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
@@ -136,7 +135,7 @@ public class BurnerPhone
         CurrentColumn = 0;
         CurrentRow = 0;
         CurrentIndex = 0;
-        DisplayingTextMessage = false;
+        IsDisplayingTextMessage = false;
 
         NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
 
@@ -227,14 +226,18 @@ public class BurnerPhone
         DisabledVanillaControls();
         if (CurrentApp == 1)
         {
+            IsDisplayingCall = false;
+            IsDisplayingTextMessage = false;
             HandleHomeInput();
         }
         else if (CurrentApp == 2)
         {
+            IsDisplayingCall = false;
             HandleMessagesInput();
         }
         else if (CurrentApp == 3)
-        {  
+        {
+            IsDisplayingTextMessage = false;
             HandleContactsInput();
         }
     }
@@ -344,7 +347,7 @@ public class BurnerPhone
     }
     private void HandleMessagesInput()
     {
-        if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !DisplayingTextMessage)//UP
+        if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !IsDisplayingTextMessage)//UP
         {
             EntryPoint.WriteToConsole("Burner Phone: Pressed UP APP MESSAGES");
             MoveFinger(1);
@@ -352,7 +355,7 @@ public class BurnerPhone
             //CurrentIndex = GetSelectedIndex();
             CurrentRow = CurrentRow - 1;
         }
-        else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 173) && !DisplayingTextMessage)//DOWN
+        else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 173) && !IsDisplayingTextMessage)//DOWN
         {
             EntryPoint.WriteToConsole("Burner Phone: Pressed DOWN APP MESSAGES");
             MoveFinger(2);
@@ -373,12 +376,12 @@ public class BurnerPhone
         {
             CurrentRow = 0;
         }
-        if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176) && !DisplayingTextMessage)//SELECT
+        if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176) && !IsDisplayingTextMessage)//SELECT
         {
             EntryPoint.WriteToConsole($"Burner Phone: Pressed MESSAGES CurrentIndex {CurrentIndex} OpenApp {CurrentIndex + 1}");
             MoveFinger(5);
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 1);
-            DisplayingTextMessage = true;
+            IsDisplayingTextMessage = true;
 
 
             DisplayTextUI(Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault());
@@ -391,11 +394,11 @@ public class BurnerPhone
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
 
-            if (DisplayingTextMessage)
+            if (IsDisplayingTextMessage)
             {
                 EntryPoint.WriteToConsole("Burner Phone: Pressed CLOSE APP READING MESSAGES");
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 1);
-                DisplayingTextMessage = false;
+                IsDisplayingTextMessage = false;
                 OpenApp(2);
             }
             else
@@ -486,14 +489,12 @@ public class BurnerPhone
             SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
         }
     }
-
     public void SetOffScreen()
     {
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(0f, 0f, 0f);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
         NativeFunction.Natives.SET_MOBILE_PHONE_SCALE(Settings.SettingsManager.CellphoneSettings.BurnerCellScale);
     }
-
     private void OnLeftCall()
     {
         LastCalledContact = null;
@@ -555,11 +556,7 @@ public class BurnerPhone
             PhoneContact contact = Player.CellPhone.ContactList.Where(x => x.Index == CurrentRow).FirstOrDefault();
             if (contact != null)
             {
-
                 LastCalledContact = contact;
-
-
-
                 if (contact.RandomizeDialTimeout)
                 {
                     contact.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
@@ -567,13 +564,6 @@ public class BurnerPhone
                 IsDisplayingCall = true;
                 Call(contact);
                 DisplayCallUI(contact.Name, "CELL_211", contact.IconName.ToUpper());
-
-
-
-
-
-
-
             }
         }
         int TotalContacts = Player.CellPhone.ContactList.Count();
@@ -618,7 +608,6 @@ public class BurnerPhone
         SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
         SetSoftKeyColor((int)SoftKey.Right, Color.Black);
     }
-
     private void SetSoftKeys()
     {
         SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
@@ -630,8 +619,6 @@ public class BurnerPhone
         SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
         SetSoftKeyColor((int)SoftKey.Right, Color.Black);
     }
-
-
     public void SetSoftKeyIcon(int buttonID, SoftKeyIcon icon)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS");
@@ -649,7 +636,6 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(color.B);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-
     private void DrawContact(PhoneContact contact)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
@@ -770,7 +756,6 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(4);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-
     private int GetCurrentIndex(int column, int row)
     {
         if (row == 1 && column == 1)

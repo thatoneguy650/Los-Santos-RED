@@ -111,8 +111,7 @@ public class InteractableLocation : BasicLocation
     {
         if (modItem != null)
         {
-            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
             Game.RemoveNotification(NotificationHandle);
             if (modItem.MeasurementName == "Item")
             {
@@ -128,8 +127,7 @@ public class InteractableLocation : BasicLocation
     {
         if (modItem != null)
         {
-            int TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
             Game.RemoveNotification(NotificationHandle);
             if (modItem.MeasurementName == "Item")
             {

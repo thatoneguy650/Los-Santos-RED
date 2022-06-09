@@ -202,7 +202,7 @@ public class PopUpMenu
                         }
                         
 
-                        NativeFunction.Natives.PLAY_SOUND_FRONTEND(ActionSoundID, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
+                        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
                         
 
                         popUpMenuMap.Action();
@@ -235,7 +235,7 @@ public class PopUpMenu
             {
                 
                 
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(ActionSoundID, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
             }
 
 

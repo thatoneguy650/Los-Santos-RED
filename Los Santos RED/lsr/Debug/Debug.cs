@@ -58,6 +58,9 @@ public class Debug
     private bool Started1 = false;
     private Input Input;
     private ShopMenus ShopMenus;
+    private int TextSoundID;
+    private int HangUpSoundID;
+
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus)
     {
         PlateTypes = plateTypes;
@@ -943,18 +946,23 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        Game.LocalPlayer.Character.KeepTasks = true;
-        NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
-        Game.LocalPlayer.Character.KeepTasks = true;
+        //Game.LocalPlayer.Character.KeepTasks = true;
+        //NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
+        //Game.LocalPlayer.Character.KeepTasks = true;
         //Player.IsBeingANuisance = !Player.IsBeingANuisance;
         //GameFiber.Sleep(1000);
 
-        //Cop myPed = World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        //if (myPed != null)
-        //{
-        //    myPed.ForceSpeech(Player);
-        //}
+        if (myPed != null)
+        {
+            myPed.IsDealingDrugs = true;
+            //if(myPed.Pedestrian.Exists())
+            //{
+            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
+            //}
+            Game.DisplaySubtitle("Dealer Added");
+        }
 
 
 
@@ -1198,14 +1206,26 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-
+        
+        
+        if (RandomItems.RandomPercent(50))
+        {
+            Game.DisplaySubtitle("Text Sound");
+            PlayTextReceivedSound();
+        }
+        else
+        {
+            Game.DisplaySubtitle("Response Sound");
+            PlayPhoneResponseSound();
+        }
+        GameFiber.Sleep(1000);
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
-        Dispatcher.DebugSpawnCop();
+        //Dispatcher.DebugSpawnCop();
        // Dispatcher.DebugSpawnGang();
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
@@ -1214,6 +1234,21 @@ public class Debug
         //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
         //}
     }
+
+
+    private void PlayTextReceivedSound()
+    {
+        NativeFunction.Natives.RELEASE_SOUND_ID(TextSoundID);
+        TextSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSoundID, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+    }
+    private void PlayPhoneResponseSound()
+    {
+        NativeFunction.Natives.RELEASE_SOUND_ID(HangUpSoundID);
+        HangUpSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(HangUpSoundID, "Hang_Up", "Phone_SoundSet_Default", 0);
+    }
+
     private void HighlightObject()
     {
         //Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);

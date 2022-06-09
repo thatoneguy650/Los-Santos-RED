@@ -56,6 +56,14 @@ public class Civilians
             World.TotalWantedLevel = PoliceRespondable.WantedLevel;
         }
 
+        if(World.TotalWantedLevel > 0 && PoliceRespondable.IsNotWanted && !PoliceRespondable.Investigation.IsActive)
+        {
+            if (worstPed.Pedestrian.Exists())
+            {
+                PoliceRespondable.Investigation.Start(worstPed.Pedestrian.Position, false, true, false, false);
+            }
+        }
+
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);

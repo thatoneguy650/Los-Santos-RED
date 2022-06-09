@@ -26,7 +26,9 @@ public class PedCrimes
     private IWeapons Weapons;
     private uint GameTimeLastCommittedCrime;
     private uint GameTimeLastCommittedGTA;
-   // private List<Ped> AlreadyCalledInPeds = new List<Ped>();
+    private bool prevIsWanted;
+
+    // private List<Ped> AlreadyCalledInPeds = new List<Ped>();
     private bool ShouldCheck
     {
         get
@@ -151,6 +153,19 @@ public class PedCrimes
             if (!PedExt.IsArrested)
             {
                 CheckCrimes(world, player);
+
+                if(prevIsWanted != IsWanted)
+                {
+                    if(IsWanted)
+                    {
+                        OnBecameWanted();
+
+
+
+                    }
+                    prevIsWanted = IsWanted;
+                }
+
                // GameFiber.Yield();//TR maybe if they are a criminal, check crimes more?
                 if (WantedLevel > 0)
                 {
@@ -173,6 +188,25 @@ public class PedCrimes
                     //GameFiber.Yield();//TR//should this only yield if it did something? dont think i need this back, but it was the last to be removed
                 }
             }
+        }
+    }
+    private void OnBecameWanted()
+    {
+        if (PedExt.Pedestrian.Exists())
+        {
+            PedExt.Pedestrian.IsPersistent = true;
+            if(!PedExt.IsGangMember)
+            {
+                RelationshipGroup HatesCops = new RelationshipGroup("HATESCOPS");
+                PedExt.Pedestrian.RelationshipGroup = HatesCops;
+                RelationshipGroup.Cop.SetRelationshipWith(HatesCops, Relationship.Hate);
+                HatesCops.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+            }
+
+            Vector3 pedPos = PedExt.Pedestrian.Position;
+            NativeFunction.Natives.TASK_SMART_FLEE_COORD(PedExt.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 9999f, -1, false, false);
+
         }
     }
     private void CheckPoliceSight(IEntityProvideable world)
