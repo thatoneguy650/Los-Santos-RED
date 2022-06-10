@@ -1212,13 +1212,21 @@ public class Debug
         {
             Game.DisplaySubtitle("Text Sound");
             PlayTextReceivedSound();
+
+
+            GameFiber.Sleep(1000);
         }
         else
         {
             Game.DisplaySubtitle("Response Sound");
             PlayPhoneResponseSound();
+
+
+
         }
-        GameFiber.Sleep(1000);
+        
+
+        
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
@@ -1238,15 +1246,24 @@ public class Debug
 
     private void PlayTextReceivedSound()
     {
-        NativeFunction.Natives.RELEASE_SOUND_ID(TextSoundID);
+        
         TextSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSoundID, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+
+        GameFiber.Sleep(1000);
+        NativeFunction.Natives.RELEASE_SOUND_ID(TextSoundID);
     }
     private void PlayPhoneResponseSound()
     {
-        NativeFunction.Natives.RELEASE_SOUND_ID(HangUpSoundID);
+        
         HangUpSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(HangUpSoundID, "Hang_Up", "Phone_SoundSet_Default", 0);
+
+
+        GameFiber.Sleep(1000);
+
+        NativeFunction.Natives.RELEASE_SOUND_ID(HangUpSoundID);
+
     }
 
     private void HighlightObject()

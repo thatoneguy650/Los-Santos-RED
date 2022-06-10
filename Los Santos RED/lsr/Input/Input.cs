@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
-        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey);
+        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier);
         public bool DisableCellPhoneControl { get; set; }
 
         public void Update()

@@ -571,8 +571,8 @@ public class PlayerInfoMenu
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
             DescriptionText += $"~n~~n~Select to ~r~Delete Message~s~";
-            string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
-            string DescriptionHeaderText = $"{text.Name}";
+            string ListEntryItem = $"{text.ContactName}{(!text.IsRead ? " *" : "")} {TimeReceived}";
+            string DescriptionHeaderText = $"{text.ContactName}";
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
             tItem.Activated += (s, e) =>
             {
@@ -581,7 +581,7 @@ public class PlayerInfoMenu
                     Player.CellPhone.DeleteText(text);
                     TextMessagesSubMenu.Items.Remove(tItem);
                     TextMessagesSubMenu.RefreshIndex();
-                    EntryPoint.WriteToConsole($"Text Message deleted {text.Name} {text.Message}");
+                    EntryPoint.WriteToConsole($"Text Message deleted {text.ContactName} {text.Message}");
                 }
             };
             items.Add(tItem);

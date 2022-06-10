@@ -387,7 +387,7 @@ public class CellPhone
             ScheduledText sc = ScheduledTexts[i];
             if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0)
             {
-                if (!AddedTexts.Any(x => x.Name == sc.ContactName && x.Message == sc.Message))
+                if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
                     NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
@@ -675,14 +675,14 @@ public class CellPhone
     }
     public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
     {
-        if (!AddedTexts.Any(x => x.Name == Name && x.Message == MessageToSend))
+        if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == MessageToSend))
         {
             ScheduledTexts.Add(new ScheduledText(timeToAdd, Name, MessageToSend, IconName));
         }
     }
     public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead)
     {
-        if (!AddedTexts.Any(x => x.Name == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
+        if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
         {
             PhoneText textA = new PhoneText(Name, TextIndex, message, hourSent, minuteSent);
             //textA.Icon = GetIconFromString(IconName);      // Contact's icon

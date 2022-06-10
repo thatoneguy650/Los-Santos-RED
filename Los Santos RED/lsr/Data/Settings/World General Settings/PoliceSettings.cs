@@ -190,7 +190,7 @@ public class PoliceSettings : ISettingsDefaultable
         AllowChaseAssists = true;
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
-        AllowPowerAssist = false;
+        AllowPowerAssist = true;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         //AllowRadioInAnimations = false;

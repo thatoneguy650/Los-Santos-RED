@@ -2773,6 +2773,12 @@ namespace Mod
                             }
                         }
 
+                        if(Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !hasScrewDriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
+                        {
+                            Game.DisplayHelp("Screwdriver required to lockpick");
+                        }
+
+
                         if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);

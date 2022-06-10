@@ -60,7 +60,7 @@ public class CellphoneSettings : ISettingsDefaultable
         BurnerCellPhoneTypeID = 0;
         AllowTerminateVanillaCellphoneScripts = true;
         BurnerCellScaleformName = "cellphone_ifruit";
-        TerminateVanillaCellphone = true;
+        TerminateVanillaCellphone = false;
         BurnerCellThemeID = 1;
         BurnerCellBackgroundID = 0;
     }

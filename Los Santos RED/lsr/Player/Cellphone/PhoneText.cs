@@ -2,7 +2,7 @@
 
 public class PhoneText
 {
-    public string Name { get; set; } = "";
+    public string ContactName { get; set; } = "";
     public string Message { get; set; } = "";
     public int HourSent { get; set; } = 1;
     public int MinuteSent { get; set; } = 0;
@@ -17,7 +17,7 @@ public class PhoneText
     }
     public PhoneText(string name, int index, string message, int hourSent, int minuteSent)
     {
-        Name = name;
+        ContactName = name;
         Index = index;
         Message = message;
         HourSent = hourSent;

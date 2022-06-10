@@ -154,7 +154,41 @@ public class PopUpMenu
                 NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
             }
             NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-            NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+
+           // NativeFunction.Natives.x6c188be134e074aa(TextToShow);
+
+
+            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+        }
+        //return;
+    }
+
+    private void DisplayTextBoxOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, int alpha)
+    {
+        try
+        {
+            if (TextToShow == "" || alpha == 0)
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+            NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+
+            NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Left);
+            NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+
+
+            NativeFunction.Natives.SET_TEXT_WRAP(X, X + 0.15f);
+
+            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
             NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
             NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
         }
@@ -164,6 +198,7 @@ public class PopUpMenu
         }
         //return;
     }
+
     private void FindClosestPositionMap()
     {
         MouseState mouseState = Game.GetMouseState();
@@ -262,6 +297,7 @@ public class PopUpMenu
                 ID++;
             }
         }
+        DrawMessages();
     }
     private void DrawSingle(int ID, float CurrentPositionX, float CurrentPositionY)
     {
@@ -312,6 +348,96 @@ public class PopUpMenu
         Game.DisableControlAction(0, GameControl.Attack2, false);
         Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
         Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
+    }
+    private void DrawMessages()
+    {
+
+        List<Tuple<string, DateTime>> MessageTimes = new List<Tuple<string, DateTime>>();
+
+        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
+        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
+
+
+        int MessagesDisplayed = 0;
+
+        float YMessageSpacing = Settings.SettingsManager.UISettings.ActionPopUpItemMessageYMessageSpacing;
+        float YHeaderSpacing = Settings.SettingsManager.UISettings.ActionPopUpItemMessageYHeaderSpacing;// 0.02f;
+
+
+
+        foreach (Tuple<string, DateTime> dateTime in MessageTimes.OrderByDescending(x => x.Item2).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow))
+        {
+            PhoneResponse phoneResponse = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
+            if (phoneResponse != null)
+            {
+                DisplayTextBoxOnScreen("~h~" + phoneResponse.ContactName + " - " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
+                DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
+                float Width = Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 3f;
+                float Height = Settings.SettingsManager.UISettings.ActionPopUpItemHeight * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 1.25f;
+
+
+                float HalfWidth = Width / 2f;
+                float HalfHeight = Height / 2f;
+
+
+                float posX = Settings.SettingsManager.UISettings.ActionPopUpItemMessageX + HalfWidth - (0.01f);
+                float posY = Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
+
+
+                NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
+                MessagesDisplayed++;
+            }
+            PhoneText phoneText = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
+            if (phoneText != null)
+            {
+                DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + " - " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
+                DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
+
+
+                float Width = Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 3f;
+                float Height = Settings.SettingsManager.UISettings.ActionPopUpItemHeight * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 1.25f ;
+
+
+                float HalfWidth = Width / 2f;
+                float HalfHeight = Height / 2f;
+
+                float posX = Settings.SettingsManager.UISettings.ActionPopUpItemMessageX + HalfWidth - (0.01f);
+                float posY = Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
+
+
+                NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
+
+                MessagesDisplayed++;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        //PhoneResponse phoneResponse = Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).FirstOrDefault();
+        //if (phoneResponse != null)
+        //{    
+        //    DisplayTextBoxOnScreen("Contact: " + phoneResponse.ContactName + " - Received: " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
+        //    DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
+        //    MessagesDisplayed++;
+        //}
+        //PhoneText phoneText = Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).FirstOrDefault();
+        //if (phoneText != null)
+        //{
+        //    if(MessagesDisplayed == 0)
+        //    {
+        //        YMessageSpacing = 0f;
+        //    }
+        //    DisplayTextBoxOnScreen("Contact: " + phoneText.ContactName + " - Received: " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YMessageSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
+        //    DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YMessageSpacing + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
+        //    MessagesDisplayed++;
+        //}
     }
 }
 

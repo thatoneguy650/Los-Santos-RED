@@ -118,7 +118,7 @@ namespace LosSantosRED.lsr.Data
             TextMessages = new List<SavedTextMessage>();
             foreach (PhoneText ifc in player.CellPhone.TextList)
             {
-                TextMessages.Add(new SavedTextMessage(ifc.Name, ifc.Message,ifc.HourSent,ifc.MinuteSent,ifc.IsRead,ifc.Index, ""));
+                TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message,ifc.HourSent,ifc.MinuteSent,ifc.IsRead,ifc.Index, ""));
             }
             CurrentDateTime = time.CurrentDateTime;
 

@@ -579,6 +579,17 @@ public class UI : IMenuProvideable
         {
             ShowRadar = false;
         }
+        else if (Settings.SettingsManager.UISettings.HideRadarUnlessActionPopUpActive)
+        {
+            if(IsDrawingWheelMenu)
+            {
+                ShowRadar = true;
+            }
+            else
+            {
+                ShowRadar = false;
+            }
+        }
         else if (DisplayablePlayer.IsInVehicle)
         {
             if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)

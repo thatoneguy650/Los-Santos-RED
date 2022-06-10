@@ -388,7 +388,7 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
-        foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 150f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
             {

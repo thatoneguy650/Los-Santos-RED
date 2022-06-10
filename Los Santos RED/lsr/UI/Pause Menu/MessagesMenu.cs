@@ -364,14 +364,14 @@ public class MessagesMenu
         List<TabItem> items = new List<TabItem>();
         bool addedItems = false;
 
-        List<DateTime> MessageTimes = new List<DateTime>();
+        List<Tuple<string,DateTime>> MessageTimes = new List<Tuple<string, DateTime>>();
 
-        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => x.TimeReceived));
-        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => x.TimeReceived));
+        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
+        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(15).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
 
-        foreach(DateTime dateTime in MessageTimes.OrderByDescending(x=> x).Take(15))
+        foreach (Tuple<string, DateTime> dateTime in MessageTimes.OrderByDescending(x=> x.Item2).Take(15))
         {
-            PhoneResponse pr = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
+            PhoneResponse pr = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if(pr != null)
             {
                 string TimeReceived = pr.TimeReceived.ToString("HH:mm");
@@ -384,15 +384,15 @@ public class MessagesMenu
                 items.Add(tItem);
                 addedItems = true;
             }
-            PhoneText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime).FirstOrDefault();
+            PhoneText text = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if (text != null)
             {
                 string TimeReceived = text.HourSent.ToString("00") + ":" + text.MinuteSent.ToString("00");// string.Format("{0:D2}h:{1:D2}m",text.HourSent,text.MinuteSent);
                 string DescriptionText = "";
                 DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
                 DescriptionText += $"~n~{text.Message}";
-                string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
-                string DescriptionHeaderText = $"{text.Name}";
+                string ListEntryItem = $"{text.ContactName}{(!text.IsRead ? " *" : "")} {TimeReceived}";
+                string DescriptionHeaderText = $"{text.ContactName}";
                 TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
                 items.Add(tItem);
                 addedItems = true;
@@ -467,8 +467,8 @@ public class MessagesMenu
             DescriptionText += $"~n~Received At: {TimeReceived}";  //+ gr.ToStringBare();
             DescriptionText += $"~n~{text.Message}";
             //DescriptionText += $"~n~~n~Select to ~r~Delete Message~s~";
-            string ListEntryItem = $"{text.Name}{(!text.IsRead ? " *" : "")} {TimeReceived}";
-            string DescriptionHeaderText = $"{text.Name}";
+            string ListEntryItem = $"{text.ContactName}{(!text.IsRead ? " *" : "")} {TimeReceived}";
+            string DescriptionHeaderText = $"{text.ContactName}";
             TabItem tItem = new TabTextItem(ListEntryItem, DescriptionHeaderText, DescriptionText);
             //tItem.Activated += (s, e) =>
             //{

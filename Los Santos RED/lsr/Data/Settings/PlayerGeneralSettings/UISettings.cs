@@ -144,10 +144,22 @@ public class UISettings : ISettingsDefaultable
     public float ActionPopUpItemCenterY { get; set; }
     public float ActionPopUpItemDistanceFromCenter { get; set; }
     public bool HideLSRUIUnlessActionPopUpActive { get; set; }
-
+    public bool HideRadarUnlessActionPopUpActive { get; set; }
 
     public string ActionPopUpTransitionInEffect { get; set; }
     public string ActionPopUpTransitionOutEffect { get; set; }
+
+
+
+    public float ActionPopUpItemMessageX { get; set; }
+    public float ActionPopUpItemMessageY { get; set; }
+    public GTAFont ActionPopUpItemFont { get; set; }
+    public string ActionPopUpItemTextColor { get; set; }
+    public float ActionPopUpItemMessageScale { get; set; }
+    public float ActionPopUpItemMessageYMessageSpacing { get; set; }
+    public float ActionPopUpItemMessageYHeaderSpacing { get; set; }
+    public int ActionPopUpItemMessagesToShow { get; set; }
+
     public UISettings()
     {
         SetDefault();
@@ -268,7 +280,7 @@ public class UISettings : ISettingsDefaultable
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
 
-        AlwaysShowRadar = true;
+        AlwaysShowRadar = false;
         NeverShowRadar = false;
         ShowRadarInVehicleOnly = false;
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
@@ -291,9 +303,22 @@ public class UISettings : ISettingsDefaultable
         ActionPopUpItemDistanceFromCenter = 0.3f;
 
         HideLSRUIUnlessActionPopUpActive = false;
+        HideRadarUnlessActionPopUpActive = false;
 
         ActionPopUpTransitionInEffect = "SwitchHUDIn";
         ActionPopUpTransitionOutEffect = "SwitchHUDOut";
+
+
+        ActionPopUpItemMessageX = 0.05f;
+        ActionPopUpItemMessageY = 0.05f;
+        ActionPopUpItemFont = GTAFont.FontChaletLondon;
+        ActionPopUpItemTextColor = "White";
+        ActionPopUpItemMessageScale = 0.2f;
+
+
+        ActionPopUpItemMessageYMessageSpacing = 0.125f;
+        ActionPopUpItemMessageYHeaderSpacing = 0.02f;
+        ActionPopUpItemMessagesToShow = 4;
 
     }
 }

@@ -194,19 +194,27 @@ public class PedCrimes
     {
         if (PedExt.Pedestrian.Exists())
         {
-            PedExt.Pedestrian.IsPersistent = true;
+            if (!PedExt.IsGangMember && !PedExt.Pedestrian.IsPersistent)
+            {
+                PedExt.Pedestrian.IsPersistent = true;
+            }
             if(!PedExt.IsGangMember)
             {
                 RelationshipGroup HatesCops = new RelationshipGroup("HATESCOPS");
                 PedExt.Pedestrian.RelationshipGroup = HatesCops;
                 RelationshipGroup.Cop.SetRelationshipWith(HatesCops, Relationship.Hate);
                 HatesCops.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-
+                EntryPoint.WriteToConsole($"{PedExt.Pedestrian.Handle} BECAME WANTED SET TO HATESCOPS");
             }
-
             Vector3 pedPos = PedExt.Pedestrian.Position;
-            NativeFunction.Natives.TASK_SMART_FLEE_COORD(PedExt.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 9999f, -1, false, false);
-
+            if(!PedExt.IsGangMember && PedExt.IsDriver)
+            {
+                NativeFunction.Natives.TASK_SMART_FLEE_COORD(PedExt.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 9999f, -1, false, false);
+            }
+            else if(!PedExt.IsGangMember)
+            {
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(PedExt.Pedestrian, 300f, 0);
+            }
         }
     }
     private void CheckPoliceSight(IEntityProvideable world)

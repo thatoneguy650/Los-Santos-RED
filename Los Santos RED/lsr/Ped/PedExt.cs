@@ -187,7 +187,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= (IsCop ? 500 : 700);
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 500;// (IsCop ? 500 : 700);
     public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
     public Ped Pedestrian { get; set; }
    // public PedGroup PedGroup { get; private set; }

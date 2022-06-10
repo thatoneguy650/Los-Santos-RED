@@ -49,7 +49,7 @@ public class AboutMenu
     {
         List<TabItem> items = new List<TabItem>();
         items.Add(new TabTextItem($"About", $"About", $"Many new actions have been added to allow the player to interact with the world in a variety of new ways. The majority of these actions are accessed either through the ~r~Main Menu~s~ -> ~r~Actions~s~ (general activites), through ~r~Main Menu~s~ -> ~r~Inventory~s~ (consumable items) or through the Action Wheel (quick access)."));
-        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel based on the radio/weapon wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and {FormatControls(Keys.None, Settings.SettingsManager.KeySettings.ActionPopUpSelectKey)} to select an item");
+        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel based on the radio/weapon wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and ~o~Attack Control~s~ to select an item");
         items.Add(ActionWheel);
 
         TabItem LootBody = new TabTextItem($"Search Bodies", $"Search Bodies", $"You can now search the bodies of dead or unconscious peds. They can have items and cash. A prompt will appear when looking at a searchable dbody");

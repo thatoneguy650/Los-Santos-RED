@@ -45,7 +45,7 @@ public class KeySettings : ISettingsDefaultable
     public Keys SimplePhoneKeyModifer { get; set; }
 
     public Keys ActionPopUpDisplayKey { get; set; }
-    public Keys ActionPopUpSelectKey { get; set; }
+    public Keys ActionPopUpDisplayKeyModifier { get; set; }
     
 
     public KeySettings()
@@ -99,7 +99,7 @@ public class KeySettings : ISettingsDefaultable
         GestureKeyModifier = Keys.Z;
 
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
-        ActionPopUpSelectKey = Keys.LButton;
+        ActionPopUpDisplayKeyModifier = Keys.None;
 
 
 

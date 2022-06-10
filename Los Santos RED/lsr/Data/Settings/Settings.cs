@@ -110,12 +110,12 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.UISettings.AlwaysShowRadar = false;
         SettingsManager.UISettings.NeverShowRadar = false;
-        SettingsManager.UISettings.ShowRadarInVehicleOnly = true;
-        SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = true;
+        SettingsManager.UISettings.ShowRadarInVehicleOnly = false;
+        SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
 
 
         SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive = true;
-
+        SettingsManager.UISettings.HideRadarUnlessActionPopUpActive = true;
 
         SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
         SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
