@@ -34,7 +34,7 @@ public class ScannerSettings : ISettingsDefaultable
     {
         SetDefault();
 #if DEBUG
-        NumberOfUnitsToAnnounce = 2;
+
 #endif
     }
     public void SetDefault()
@@ -49,7 +49,7 @@ public class ScannerSettings : ISettingsDefaultable
         DelayMaxTime = 2500;
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
-        NumberOfUnitsToAnnounce = 1;
+        NumberOfUnitsToAnnounce = 2;
     }
 
 }

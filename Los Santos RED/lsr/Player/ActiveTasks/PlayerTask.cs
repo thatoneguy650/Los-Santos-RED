@@ -35,6 +35,7 @@ public class PlayerTask
     public DateTime CompletionTime { get; set; }
     public DateTime FailedTime { get; set; }
     public bool FailOnStandardRespawn { get; set; } = false;
+    public bool HasSentExpiringSoon { get; set; } = false;
 
 
     //public uint GameTimeCompleted { get; set; }

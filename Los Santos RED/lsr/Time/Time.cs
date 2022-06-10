@@ -35,6 +35,10 @@ namespace Mod
 
         private DateTime TimeToStopFastForwarding;
         private bool isClockPaused = false;
+        private dynamic StoredClockDay;
+        private dynamic StoredClockMonth;
+        private dynamic StoredClockYear;
+
         public Time(ISettingsProvideable settings)
         {
             Settings = settings;
@@ -269,10 +273,16 @@ namespace Mod
         }
         private void SetToStoredTime()
         {
+            NativeFunction.Natives.SET_CLOCK_DATE(StoredClockDay, StoredClockMonth - 1, StoredClockYear);
             NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
         }
         private void StoreTime()
         {
+
+            StoredClockDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
+            StoredClockMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
+            StoredClockYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
+
             StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
             StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
             StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");

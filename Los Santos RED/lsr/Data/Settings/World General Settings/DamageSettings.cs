@@ -51,7 +51,7 @@ public class DamageSettings : ISettingsDefaultable
 
 
 #if DEBUG
-        AllowInjuryEffects = true;
+
 #endif
     }
     public void SetDefault()
@@ -89,7 +89,7 @@ public class DamageSettings : ISettingsDefaultable
 
 
 
-        AllowInjuryEffects = false;
+        AllowInjuryEffects = true;
         InjuryEffectHealthLostStart = 30;
     }
 

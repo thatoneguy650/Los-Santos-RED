@@ -224,5 +224,12 @@ public class DeadDrop : InteractableLocation
             ButtonPromptText = $"Pickup ${Math.Abs(MoneyAmount)}";
         }
     }
+    public void Reset()
+    {
+        InteractionComplete = false;
+        IsEnabled = false;
+        IsDropOff = false;
+        MoneyAmount = 0;
+    }
 }
 

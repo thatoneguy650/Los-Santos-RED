@@ -56,7 +56,6 @@ public class VehicleSettings : ISettingsDefaultable
 #if DEBUG
         AutoTuneRadioStation = "RADIO_19_USER";
         AutoTuneRadioOnEntry = true;
-        UseCustomFuelSystem = true;
 #endif
     }
     public void SetDefault()
@@ -69,7 +68,7 @@ public class VehicleSettings : ISettingsDefaultable
         AutoTuneRadioOnEntry = false;
         AutoTuneRadioStation = "NONE";
         DisableAutoEngineStart = true;
-        UseCustomFuelSystem = false;
+        UseCustomFuelSystem = true;
         AllowSetEngineState = true;
         ScaleEngineDamage = true;
         ScaleEngineDamageMultiplier = 3.0f;

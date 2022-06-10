@@ -164,15 +164,7 @@ public class UISettings : ISettingsDefaultable
     {
         SetDefault();
         #if DEBUG
-            ShowDebug = false;
             ZoneDisplayShowPrimaryAgency = false;
-
-        AlwaysShowRadar = true;
-        NeverShowRadar = false;
-        //ShowRadarInVehicleOnly = true;
-        //ShowRadarOnFootWhenCellPhoneActiveOnly = true;
-
-
 #endif
     }
     public void SetDefault()
@@ -280,7 +272,7 @@ public class UISettings : ISettingsDefaultable
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
 
-        AlwaysShowRadar = false;
+        AlwaysShowRadar = true;
         NeverShowRadar = false;
         ShowRadarInVehicleOnly = false;
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;

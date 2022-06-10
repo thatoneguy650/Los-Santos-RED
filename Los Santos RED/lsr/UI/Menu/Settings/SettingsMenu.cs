@@ -66,8 +66,8 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         SettingsUIMenu.AddItem(SaveSettingsToFile);
 
 
-        SettingsUIMenu.AddItem(DefaultSettings);
-        SettingsUIMenu.AddItem(EasySettings);
+        //SettingsUIMenu.AddItem(DefaultSettings);
+        //SettingsUIMenu.AddItem(EasySettings);
         SettingsUIMenu.AddItem(HardSettings);
 
 

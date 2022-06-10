@@ -89,7 +89,7 @@ public class PersonTransaction : Interaction
                 PedWasPersistent = Ped.WasEverSetPersistent;
 
 
-                Ped.Pedestrian.IsPersistent = true;
+                //Ped.Pedestrian.IsPersistent = true;
                 Player.IsConversing = true;
                 Player.IsTransacting = true;
 
@@ -204,7 +204,7 @@ public class PersonTransaction : Interaction
                // Ped.Pedestrian.CanBePulledOutOfVehicles = true;
                if(!PedWasPersistent)
                 {
-                    Ped.Pedestrian.IsPersistent = false;
+                    //Ped.Pedestrian.IsPersistent = false;
                 }
                 if(PanickedByPlayer)
                 {
@@ -625,7 +625,7 @@ public class PersonTransaction : Interaction
 
             if (!Ped.IsFedUpWithPlayer)
             {
-                Ped.Pedestrian.IsPersistent = true;
+                //Ped.Pedestrian.IsPersistent = true;
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);

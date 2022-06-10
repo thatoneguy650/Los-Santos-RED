@@ -109,7 +109,6 @@ public class CivilianSettings : ISettingsDefaultable
         SetDefault();
 #if DEBUG
         ShowRandomCriminalBlips = true;
-       // OverrideHealth = false;
 #else
 
 #endif

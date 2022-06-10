@@ -199,7 +199,13 @@ public class GangDen : InteractableLocation
         }
     }
 
-
+    public void Reset()
+    {
+        IsEnabled = false;
+        ExpectedMoney = 0;
+        ExpectedItem = null;
+        ExpectedItemAmount = 0;
+    }
     private void Rest(int Hours)
     {
         Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));

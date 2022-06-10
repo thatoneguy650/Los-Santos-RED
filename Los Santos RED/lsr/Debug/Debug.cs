@@ -1206,24 +1206,24 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        Player.ScannerPlayDebug();
         
-        
-        if (RandomItems.RandomPercent(50))
-        {
-            Game.DisplaySubtitle("Text Sound");
-            PlayTextReceivedSound();
+        //if (RandomItems.RandomPercent(50))
+        //{
+        //    Game.DisplaySubtitle("Text Sound");
+        //    PlayTextReceivedSound();
 
 
-            GameFiber.Sleep(1000);
-        }
-        else
-        {
-            Game.DisplaySubtitle("Response Sound");
-            PlayPhoneResponseSound();
+        //    GameFiber.Sleep(1000);
+        //}
+        //else
+        //{
+        //    Game.DisplaySubtitle("Response Sound");
+        //    PlayPhoneResponseSound();
 
 
 
-        }
+        //}
         
 
         

@@ -132,7 +132,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                    $"The boss wants you to find us {NumberOfItemsToDeliver} {ItemToDeliver.MeasurementName}(s) of {ItemToDeliver.Name}. We need it quick. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve}",
+                    $"I want you to find us {NumberOfItemsToDeliver} {ItemToDeliver.MeasurementName}(s) of {ItemToDeliver.Name}. We need it quick. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve}",
                     $"Go get {NumberOfItemsToDeliver} {ItemToDeliver.MeasurementName}(s) of {ItemToDeliver.Name} from somewhere, I don't wanna know. Don't take too long. Bring it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} to you when you drop it off",
                     $"We need you to find {NumberOfItemsToDeliver} {ItemToDeliver.MeasurementName}(s) of {ItemToDeliver.Name}. We can't wait all week. Take it to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. You'll get ${MoneyToRecieve} when I get my item.",
                     };

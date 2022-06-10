@@ -331,10 +331,10 @@ public class Drag : DynamicActivity
 
                 if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())//turned off for now
                 {
-                    if (!Player.ButtonPromptList.Any(x => x.Identifier == "Load"))
-                    {
-                        Player.ButtonPromptList.Add(new ButtonPrompt("Load", "Load", "Load", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1));
-                    }
+                    //if (!Player.ButtonPromptList.Any(x => x.Identifier == "Load"))
+                    //{
+                    //    Player.ButtonPromptList.Add(new ButtonPrompt("Load", "Load", "Load", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1));
+                    //}
                 }
                 else
                 {

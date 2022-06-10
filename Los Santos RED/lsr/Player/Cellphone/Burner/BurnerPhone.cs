@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-
+//needs to be cleaned up into classes, contacts app, messages app, home app, controller class etc. main class should mostly handle the player interaction (take out phone, do tasks set flags etc.)
 public class BurnerPhone
 {
     private bool _dialActive, _busyActive;
@@ -52,17 +52,6 @@ public class BurnerPhone
         {
             GameFiber.Yield();
         }
-        //SetHomeMenuApp(globalScaleformID, 0, 2, "Texts",Player.CellPhone.TextList.Where(x=>!x.IsRead).Count(), 100);
-        //SetHomeMenuApp(globalScaleformID, 1, 5, "Contacts", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 2, 12, "To-Do List", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 3, 59, "Mobile Radio", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 4, 6, "Eyefind", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 5, 8, "Unknown App", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 6, 24, "Settings", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 7, 1, "Snapmatic", 0, 100);
-        //SetHomeMenuApp(globalScaleformID, 8, 57, "SecuroServ", 0, 100);
-
-
         SetHomeScreen();
     }
     public void Update()
@@ -304,8 +293,8 @@ public class BurnerPhone
         SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
         SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
 
-        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
-        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
 
 
         //CurrentIndex = GetSelectedIndex();
@@ -438,19 +427,19 @@ public class BurnerPhone
             SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
             SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
 
-            SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
-            SetSoftKeyColor((int)SoftKey.Right, Color.Black);
+            SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
+            SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
         }
         else
         {
             SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Delete);
             SetSoftKeyColor((int)SoftKey.Left, Color.Red);
 
-            SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
-            SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+            SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Call);
+            SetSoftKeyColor((int)SoftKey.Middle, Color.LightBlue);
 
-            SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
-            SetSoftKeyColor((int)SoftKey.Right, Color.Black);
+            SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
+            SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
         }
     }
     private void DrawMessage(PhoneText text)
@@ -628,8 +617,8 @@ public class BurnerPhone
         SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
         SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
 
-        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
-        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
+        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
     }
     private void SetSoftKeys()
     {

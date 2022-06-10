@@ -191,7 +191,14 @@ namespace LosSantosRED.lsr
         public void DebugPlayDispatch()
         {
             Reset();
-            AddToQueue(ShotsFired);
+            if (RandomItems.RandomPercent(50))
+            {
+                AddToQueue(RequestNooseUnitsAlt);
+            }
+            else
+            {
+                AddToQueue(RequestNooseUnitsAlt2);
+            }
         }
         public void OnAppliedWantedStats(int wantedLevel)
         {
@@ -320,11 +327,12 @@ namespace LosSantosRED.lsr
         }
         public void OnMedicalServicesRequested()
         {
-            if (!MedicalServicesRequired.HasRecentlyBeenPlayed && MedicalServicesRequired.TimesPlayed <= 2)
+            if (!MedicalServicesRequired.HasRecentlyBeenPlayed && (MedicalServicesRequired.TimesPlayed <= 2 || MedicalServicesRequired.HasntBeenPlayedForAWhile))
             {
                 AddToQueue(MedicalServicesRequired);
+                EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
+            
         }
         public void OnNooseDeployed()
         {
@@ -2256,7 +2264,26 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
             {
-                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.hitandrun.FileName, SWAT3.respondcode3.FileName},"dispatching NOOSE units"),
+                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.respondcode3.FileName},"dispatching NOOSE units"),
+                new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, SWAT3.requestingcode1alphain30minutes.FileName },"dispatching NOOSE units"),
+            },
+            };
+
+            RequestNooseUnitsAlt2 = new Dispatch()
+            {
+                IncludeAttentionAllUnits = false,
+                Name = "NOOSE Units Requested",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Nothing,
+                CanAddExtras = false,
+                MainAudioSet = new List<AudioSet>()
+            {
+               // new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
+               new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching NOOSE units"),
+                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, SWAT3.suspectsarmedwithheavyweaponsandbodyarmor.FileName },"dispatching NOOSE units"),
+                new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName },"dispatching NOOSE units"),
+                new AudioSet(new List<string>() { SWAT3.calloutpending.FileName },"dispatching NOOSE units"),
             },
             };
 
@@ -2274,48 +2301,6 @@ namespace LosSantosRED.lsr
             },
             };
 
-
-
-
-            //RequestNooseUnitsAlt = new Dispatch()
-            //{
-            //    IncludeAttentionAllUnits = false,
-            //    Name = "NOOSE Units Requested",
-            //    IsStatus = true,
-            //    IncludeReportedBy = false,
-            //    CanAddExtras = false,
-            //    LocationDescription = LocationSpecificity.Nothing,
-            //    PreambleAudioSet = new List<AudioSet>()
-            //{
-            //    new AudioSet(new List<string>() { SWAT3.emergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgoahead.FileName },"emergency traffic"),
-            //   new AudioSet(new List<string>() { SWAT3.copyemergencytraffic.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidgo.FileName },"emergency traffic"),
-            // },
-            //    MainAudioSet = new List<AudioSet>()
-            //{
-            //    new AudioSet(new List<string>() { SWAT3.hitandrun.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogershowusinroute.FileName },"dispatching swat units"),
-
-            //    new AudioSet(new List<string>() { SWAT3.requestingcode1alphain30minutes.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogerrespondingcode3.FileName },"dispatching swat units"),
-
-            //    new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_Start_1.FileName,SWAT3.tendavidrogerrespondingcode3.FileName },"dispatching swat units"),
-
-            //},
-            //};
-
-            RequestNooseUnitsAlt2 = new Dispatch()
-            {
-                IncludeAttentionAllUnits = false,
-                Name = "NOOSE Units Requested",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Nothing,
-                CanAddExtras = false,
-                MainAudioSet = new List<AudioSet>()
-            {
-               // new AudioSet(new List<string>() { SWAT3.swat10minuteeta.FileName,SWAT3.suspectarmedusecaution.FileName},"dispatching swat units"),
-
-                new AudioSet(new List<string>() { SWAT3.multipleswatunitsresponding.FileName, SWAT3.swat10minuteeta.FileName, SWAT3.suspectarmedusecaution.FileName },"dispatching NOOSE units"),
-            },
-            };
 
             RequestSwatAirSupport = new Dispatch()
             {
@@ -3079,6 +3064,7 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
+            public bool HasntBeenPlayedForAWhile => Game.GameTime - GameTimeLastPlayed <= 180000;
             public bool IncludeAttentionAllUnits { get; set; }
             public bool IncludeCarryingWeapon { get; set; }
             public bool IncludeDrivingSpeed { get; set; }

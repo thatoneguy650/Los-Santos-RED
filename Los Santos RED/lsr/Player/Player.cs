@@ -526,7 +526,7 @@ namespace Mod
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void AddDistressedPed(Vector3 position)
         {
-            if (World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
+            if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
             {
                 //Scanner.Reset();
                 Investigation.Start(position, false, false, true, false);
@@ -586,7 +586,7 @@ namespace Mod
         }
         public void CallEMS()
         {
-            if (World.TotalWantedLevel <= 1)
+            if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1)
             {
                 Scanner.Reset();
                 Investigation.Start(Position, false, false, true, false);
@@ -1532,11 +1532,11 @@ namespace Mod
                 GangRelationships.ResetAllReputations();
                 foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
                 {
-                    gd.IsEnabled = false;
+                    gd.Reset();
                 }
                 foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
                 {
-                    gd.IsEnabled = false;
+                    gd.Reset();
                 }
                 OfficerFriendlyRelationship.Reset(false);
                 GunDealerRelationship.Reset(false);
