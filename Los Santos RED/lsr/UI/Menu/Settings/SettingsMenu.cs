@@ -18,6 +18,8 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private UIMenuItem HardSettings;
     private ISettingsProvideable SettingsProvider;
     private UIMenu SettingsUIMenu;
+    private UIMenuItem MySettings;
+
     public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable)
     {
         MenuPool = menuPool;
@@ -66,8 +68,12 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         SettingsUIMenu.AddItem(SaveSettingsToFile);
 
 
-        //SettingsUIMenu.AddItem(DefaultSettings);
+        SettingsUIMenu.AddItem(DefaultSettings);
         //SettingsUIMenu.AddItem(EasySettings);
+
+
+        MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
+        SettingsUIMenu.AddItem(MySettings);
         SettingsUIMenu.AddItem(HardSettings);
 
 
@@ -158,6 +164,10 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         else if (selectedItem == HardSettings)
         {
             SettingsProvider.SetHard();
+        }
+        else if (selectedItem == MySettings)
+        {
+            SettingsProvider.SetPreferred();
         }
         SettingsUIMenu.Visible = false;
     }

@@ -20,26 +20,16 @@ public class RespawnSettings : ISettingsDefaultable
     public bool AllowUndie { get; set; }
     [Description("Set a limit to the amount of undies you can do for a given chracter. Use 0 to allow unlimited.")]
     public int UndieLimit { get; set; }
-
     [Description("Used to disallow saving and undieing with a given chracter.")]
     public bool PermanentDeathMode { get; set; }
-
-
-
-
-
     [Description("Deduct the money without granting the bribe if the amount is too low.")]
     public bool DeductMoneyOnFailedBribe { get; set; }
     [Description("Minimum bribe amount required for each wanted level. Ex. a value of 500 would require a $1500 bribe at 3 stars.")]
     public int PoliceBribeWantedLevelScale { get; set; }
-
     [Description("Additional bribe amount for each police officer killed.")]
     public int PoliceBribePoliceKilledMultiplier { get; set; }
     [Description("Additional bribe amount for each police officer injured.")]
     public int PoliceBribePoliceInjuredMultiplier { get; set; }
-
-
-
     [Description("Deduct money on player after surrendering")]
     public bool DeductBailFee { get; set; }
     [Description("Minimum bail amount for each wanted level. Ex a value of 750 would require a $2250 bail fee at 3 stars.")]
@@ -52,24 +42,16 @@ public class RespawnSettings : ISettingsDefaultable
     public int PoliceBailCiviliansKilledMultiplier { get; set; }
     [Description("Minimum bail duration (days) for each wanted level.")]
     public int PoliceBailDurationWantedLevelScale { get; set; }
-
     [Description("Additional bail duration (days) for each police officer killed.")]
     public int PoliceBailDurationPoliceKilledMultiplier { get; set; }
-
     [Description("Additional bail duration (days) for each police officer injured.")]
     public int PoliceBailDurationPoliceInjuredMultiplier { get; set; }
-
     [Description("Additional bail duration (days) for each civilian killed.")]
     public int PoliceBailDurationCiviliansKilledMultiplier { get; set; }
-
     [Description("Clears all illicit items from inventory when you surrender to police")]
     public bool ClearIllicitInventoryOnSurrender { get; set; }
-
     [Description("Remove weapons from player after surrendering")]
     public bool RemoveWeaponsOnSurrender { get; set; }
-
-
-
     [Description("Deduct money on respawn at hospital")]
     public bool DeductHospitalFee { get; set; }
     [Description("Amount to deduct when you respawn in the hospital")]
@@ -80,12 +62,8 @@ public class RespawnSettings : ISettingsDefaultable
     public int HospitalStayMaxDays { get; set; }
     [Description("Clears all illicit items from inventory when you die")]
     public bool ClearIllicitInventoryOnDeath { get; set; }
-
     [Description("Remove weapons from player after respawning at a hostpital")]
     public bool RemoveWeaponsOnDeath { get; set; }
-
-
-
     public RespawnSettings()
     {
         SetDefault();

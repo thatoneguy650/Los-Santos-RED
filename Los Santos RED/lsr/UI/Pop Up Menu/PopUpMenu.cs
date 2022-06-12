@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -187,9 +188,12 @@ public class PopUpMenu
 
             NativeFunction.Natives.SET_TEXT_WRAP(X, X + 0.15f);
 
-            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+            NativeFunction.Natives.x25fbb336df1804cb("jamyfafi"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
             //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
-            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+
+            NativeHelper.AddLongString(TextToShow);
+
+            //NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
             NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
         }
         catch (Exception ex)

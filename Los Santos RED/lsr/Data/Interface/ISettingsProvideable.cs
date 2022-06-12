@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         void SetEasy();
         void SetDefault();
         void ReadConfig();
+        void SetPreferred();
     }
 }

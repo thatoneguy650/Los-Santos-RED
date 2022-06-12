@@ -763,10 +763,7 @@ public class Pedestrians
                 WillCallPoliceIntense = false;
                 canBeAmbientTasked = false;
             }
-
-
             //EntryPoint.WriteToConsole($"Added Ambient Civilian {Pedestrian.Handle}");
-
             PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
             if (myGroup == null)
             {
@@ -781,9 +778,6 @@ public class Pedestrians
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
         }
-
-
-
     }
     private void AddAmbientGangMember(Ped Pedestrian)
     {

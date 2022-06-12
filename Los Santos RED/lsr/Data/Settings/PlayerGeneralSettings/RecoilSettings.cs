@@ -25,9 +25,6 @@ public class RecoilSettings : ISettingsDefaultable
     public float VerticalInVehicleRecoilAdjuster { get; set; }
     [Description("In vehicle horizontal recoil adjuster. Multiplier for the horizontal intensity of the recoil only when in vehicle. Will stack with the global. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]
     public float HorizontalInVehicleRecoilAdjuster { get; set; }
-
-
-
     [Description("Enable or disable the recoil system when in first person only.")]
     public bool ApplyRecoilInFirstPerson { get; set; }
     [Description("Global vertical recoil adjuster. Multiplier for the vertical intensity of the recoil. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]

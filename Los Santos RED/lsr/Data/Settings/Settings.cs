@@ -45,6 +45,42 @@ public class Settings : ISettingsProvideable
     {
         SettingsManager.SetDefault();
     }
+    public void SetPreferred()
+    {
+        SettingsManager.SetDefault();
+
+        SettingsManager.GangSettings.ShowSpawnedBlip = false;
+        SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
+        SettingsManager.UISettings.ShowDebug = false;
+        SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
+        SettingsManager.EMSSettings.ShowSpawnedBlips = false;
+        SettingsManager.FireSettings.ShowSpawnedBlips = false;
+
+        SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier = 120000;
+
+        SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier = 24;
+
+        SettingsManager.PlayerOtherSettings.Recognize_BaseTime = 1500;
+        SettingsManager.PlayerOtherSettings.Recognize_NightPenalty = 1500;
+
+        SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
+
+
+        SettingsManager.SwaySettings.ApplySwayInVehicle = true;
+
+
+        SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency = false;
+
+        SettingsManager.UISettings.AlwaysShowRadar = false;
+        SettingsManager.UISettings.NeverShowRadar = false;
+        SettingsManager.UISettings.ShowRadarInVehicleOnly = false;
+        SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
+
+
+        SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive = true;
+        SettingsManager.UISettings.HideRadarUnlessActionPopUpActive = true;
+
+    }
     public void SetHard()
     {
         SettingsManager.SetDefault();
@@ -153,7 +189,7 @@ public class Settings : ISettingsProvideable
 
 
 
-        SettingsManager.DamageSettings.AllowInjuryEffects = false;
+        SettingsManager.DamageSettings.AllowInjuryEffects = true;
         SettingsManager.DamageSettings.InjuryEffectHealthLostStart = 30;
 
 

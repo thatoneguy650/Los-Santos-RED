@@ -12,6 +12,16 @@ namespace LosSantosRED.lsr.Helper
 {
     public static class NativeHelper
     {
+        public static void AddLongString(string str)//https://github.com/alexguirre/RAGENativeUI/blob/fa32a06b84b3ff33f4988b7ba6fb4d3bb158b134/Source/Elements/ResText.cs
+        {
+            const int strLen = 99;
+            for (int i = 0; i < str.Length; i += strLen)
+            {
+                string substr = str.Substring(i, Math.Min(strLen, str.Length - i));
+                NativeFunction.CallByHash<uint>(0x6c188be134e074aa, substr);      // _ADD_TEXT_COMPONENT_STRING
+            }
+
+        }
         public static uint CashHash(string PlayerName)
         {
             switch (PlayerName.ToLower())
