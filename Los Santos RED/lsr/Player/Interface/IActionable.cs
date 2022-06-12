@@ -44,8 +44,8 @@ namespace LosSantosRED.lsr.Interface
         void CallPolice();
         void SetUnarmed();
         void StartConsumingActivity(ModItem selectedStuff, bool performActivity);
-        void PauseDynamicActivity();
-        void ContinueDynamicActivity();
+        void PauseCurrentActivity();
+        void ContinueCurrentActivity();
         void Gesture(GestureData gestureData);
         void EnterVehicleAsPassenger();
         void ShuffleToNextSeat();

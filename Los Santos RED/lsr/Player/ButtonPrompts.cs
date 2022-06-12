@@ -82,11 +82,24 @@ public class ButtonPrompts
         {
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
         }
+
+        ActivityPrompts();
     }
     public void Dispose()
     {
         Player.ButtonPromptList.Clear();
     }
+
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
+    {
+        if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier) && !Player.ButtonPromptList.Any(x => x.Key == interactKey))
+        {
+            //Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+            //Player.ButtonPromptList.RemoveAll(x => x.Identifier == identifier);
+            Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+        }
+    }
+
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier))
@@ -107,6 +120,10 @@ public class ButtonPrompts
     public bool IsHeld(string identifier)
     {
         return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsHeldNow);
+    }
+    public bool IsGroupPressed(string group)
+    {
+        return Player.ButtonPromptList.Any(x => x.Group == group && x.IsPressedNow);
     }
     private void PersonInteractingPrompts()
     {
@@ -223,6 +240,51 @@ public class ButtonPrompts
         {
             Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
             Player.ButtonPromptList.Add(new ButtonPrompt($"{Player.ClosestScenario?.Name}", "StartScenario", $"StartScenario", Settings.SettingsManager.KeySettings.ScenarioStart, 2));
+        }
+    }
+    private void ActivityPrompts()
+    {
+        if (Player.IsPerformingActivity)
+        {
+            if (Player.CanPauseCurrentActivity && !Player.IsCurrentActivityPaused)
+            {
+                AttemptAddPrompt("ActivityControlPause", "Pause", "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+            }
+            else
+            {
+                RemovePrompts("ActivityControlPause");
+            }
+            if (Player.CanCancelCurrentActivity)
+            {
+                AttemptAddPrompt("ActivityControlCancel", "Stop", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            }
+            else
+            {
+                RemovePrompts("ActivityControlCancel");
+            }
+            RemovePrompts("ActivityControlContinue");
+        }
+        else
+        {
+            if (Player.CanPauseCurrentActivity && Player.IsCurrentActivityPaused)
+            {
+                AttemptAddPrompt("ActivityControlContinue", "Continue", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                if (Player.CanCancelCurrentActivity)
+                {
+                    AttemptAddPrompt("ActivityControlCancel", "Stop", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                }
+                else
+                {
+                    RemovePrompts("ActivityControlCancel");
+                }
+            }
+            else
+            {
+                RemovePrompts("ActivityControlContinue");
+                RemovePrompts("ActivityControlCancel");
+            }
+            RemovePrompts("ActivityControlPause");
+            //RemovePrompts("ActivityControlCancel");
         }
     }
 }

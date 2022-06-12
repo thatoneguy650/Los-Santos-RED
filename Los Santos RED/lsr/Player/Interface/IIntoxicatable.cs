@@ -27,7 +27,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsOnMuscleRelaxants { get; set; }
 
         // void SetUnarmed();
-        void PauseDynamicActivity();
+        void PauseCurrentActivity();
         void ChangeHealth(int healthGained);
     }
 }

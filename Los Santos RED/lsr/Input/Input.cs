@@ -38,30 +38,23 @@ namespace LosSantosRED.lsr
         }
         private uint GameTimeLastPressedEngineToggle;
         private uint GameTimeLastPressedDoorClose;
-        private uint GameTimeLastPressedSelectorToggle;
-        private bool isCellPhoneControlDisabled;
-        private bool IsShowingActivityPrompts;
         private uint GameTimeLastPressedCrouch;
         private uint GameTimeLastPressedSimplePhone;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
         private bool IsPressingSurrender => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SurrenderKeyModifier);
-      //  private bool IsPressingDropWeapon => IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.DropWeaponKeyModifer);
         private bool IsPressingSprint => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SprintKeyModifier);
         private bool IsPressingRightIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer);
-        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);// Game.IsKeyDown(Settings.SettingsManager.KeySettings.EngineToggle) && Game.IsShiftKeyDownRightNow;
-        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);// Game.IsControlKeyDownRightNow;
+        public bool IsPressingEngineToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggle) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.EngineToggleModifier);
+        private bool IsPressingDoorClose => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorClose) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier);
         private bool IsPressingLeftIndicator => IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer);
         private bool IsPressingHazards => IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.HazardKeyModifer);
         private bool IsPressingGesture => IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.GestureKeyModifier);
         private bool IsPressingStopActivity => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActivityKeyModifier);
         private bool IsPressingSelectorToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SelectorKeyModifier);
         private bool IsPressingCrouchToggle => IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.CrouchKeyModifier);
-
-
         private bool IsPressingSimpleCellphone => IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer);
-
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
@@ -72,132 +65,92 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
         private bool IsPressingActionWheelMenu => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier);
-        public bool DisableCellPhoneControl { get; set; }
-
         public void Update()
-        {
-           SurrenderCheck();
-            WeaponCheck();
-            VehicleCheck();
-            ButtonPromptCheck();
-            ConversationCheck();
-            ScenarioCheck();
-            ControlCheck();
-           KeyBindCheck();
-            Player.IsNotHoldingEnter = IsNotHoldingEnter;
-            Player.IsMoveControlPressed = IsMoveControlPressed;
-            Player.IsPressingFireWeapon = IsPressingFireWeapon;
-            Player.ReleasedFireWeapon = ReleasedFireWeapon;
-            //GameFiber.Yield();
-            MenuCheck();
-            CellPhoneCheck();
-            ActivityCheck();
-            Game.DisableControlAction(0, GameControl.Duck, true);
-            StanceCheck();
-            WheelMenuCheck();
-        }
-        private void WheelMenuCheck()
-        {
+        {        
+            DisableVanillaControls();
+            UpdateControlStatus();
+            GeneralControlCheck();
+            VehicleControlCheck();
+            MenuControlCheck();
             MenuProvider.UpdateWheelMenu(IsPressingActionWheelMenu);
-
         }
-        private void ActivityCheck()
+        private void DisableVanillaControls()
         {
-            if(Player.IsPerformingActivity && Player.CanPauseCurrentActivity)
+            Game.DisableControlAction(0, GameControl.CharacterWheel, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterFranklin, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterMichael, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterMultiplayer, true);
+            Game.DisableControlAction(0, GameControl.SelectCharacterTrevor, true);
+            Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+            if(Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching)
             {
-                if (!IsShowingActivityPrompts || !Player.ButtonPromptList.Any(x=> x.Group == "Activity"))
+                Game.DisableControlAction(0, GameControl.Duck, true);
+            }
+        }
+        private void GeneralControlCheck()
+        {
+            if (Player.IsPerformingActivity)
+            {
+                if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
                 {
-                    Player.ButtonPromptList.Add(new ButtonPrompt("Pause Activity", "Activity", "PauseActivity", Settings.SettingsManager.KeySettings.ActivityKey, Settings.SettingsManager.KeySettings.ActivityKeyModifier, 999));
-                    IsShowingActivityPrompts = true;
+                    Player.CancelCurrentActivity();
+                }
+                else if (Player.ButtonPrompts.IsPressed("ActivityControlPause"))
+                {
+                    Player.PauseCurrentActivity();
                 }
             }
             else
             {
-                if(IsShowingActivityPrompts)
+                if (Player.ButtonPrompts.IsPressed("ActivityControlContinue"))
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Activity");
-                    IsShowingActivityPrompts = false;
+                    Player.ContinueCurrentActivity();
                 }
-            }
-            if(IsPressingStopActivity && Player.IsPerformingActivity)
-            {
-                Player.PauseDynamicActivity();
-            }
-        }
-        private void CellPhoneCheck()
-        {
-            if (DisableCellPhoneControl)
-            {
-                //NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 27, true);//up
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(0, 172, true);//up
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 173, true);//down
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 174, true);//left
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 175, true);//right
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 176, true);//select
-                NativeFunction.Natives.DISABLE_CONTROL_ACTION(2, 177, true);//cencel
-                isCellPhoneControlDisabled = true;
-            }
-            else
-            {
-                if (isCellPhoneControlDisabled)
-                 {
-                    //NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 27, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 172, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 173, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 174, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 175, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 176, true);
-                    NativeFunction.Natives.ENABLE_CONTROL_ACTION(2, 177, true);
-                    isCellPhoneControlDisabled = false;
+                if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
+                {
+                    Player.CancelCurrentActivity();
                 }
             }
 
-
-            if(IsPressingSimpleCellphone && !RecentlyPressedSimplePhone)
+            if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone)
             {
                 Player.CellPhone.OpenBurner();
                 GameTimeLastPressedSimplePhone = Game.GameTime;
             }
-        }
-        private void ConversationCheck()
-        {
-            if (Player.ButtonPromptList.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
+
+            if (Player.ButtonPrompts.IsGroupPressed("StartConversation"))//Player.ButtonPromptList.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
             {
                 Player.StartConversation();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPrompts.IsGroupPressed("StartTransaction"))//Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
             {
                 Player.StartTransaction();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPrompts.IsGroupPressed("InteractableLocation"))//Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
             {
                 Player.StartLocationInteraction();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPrompts.IsGroupPressed("Search"))//Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
             {
                 Player.LootPed();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "Drag" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPrompts.IsGroupPressed("Drag"))//Player.ButtonPromptList.Any(x => x.Group == "Drag" && x.IsPressedNow))//string for now...
             {
                 Player.DragPed();
             }
-            else if (Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
+            else if (Player.ButtonPrompts.IsGroupPressed("Grab"))//Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
             {
                 Player.GrabPed();
             }
-        }
-        private void ScenarioCheck()
-        {
-            if (Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
+
+            if (Player.ButtonPrompts.IsGroupPressed("StartScenario"))//Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
                 Player.StartScenario();
-            }  
-        }
-        private void ControlCheck()
-        {
-            if(!Player.IsInVehicle)
+            }
+
+            if (!Player.IsInVehicle)
             {
-                if(IsPressingSprint)
+                if (IsPressingSprint)
                 {
                     Player.Sprinting.Start();
                 }
@@ -206,49 +159,52 @@ namespace LosSantosRED.lsr
                     Player.Sprinting.Stop();
                 }
             }
-        }
-        private void ButtonPromptCheck()
-        {
-            Game.DisableControlAction(0, GameControl.CharacterWheel, true);
-            Game.DisableControlAction(0, GameControl.SelectCharacterFranklin, true);
-            Game.DisableControlAction(0, GameControl.SelectCharacterMichael, true);
-            Game.DisableControlAction(0, GameControl.SelectCharacterMultiplayer, true);
-            Game.DisableControlAction(0, GameControl.SelectCharacterTrevor, true);
-
-
-            Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-           // Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
-            if(Player.ButtonPromptList.Count > 10)
+            if (IsPressingSelectorToggle)
             {
-                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPromptList.Count}", 1);
+                Player.ToggleSelector();
             }
-            foreach (ButtonPrompt bp in Player.ButtonPromptList)
+            if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
             {
-                if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)
+                if (!RecentlyPressedCrouch)
                 {
-                    //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
-                    bp.IsHeldNow = true;
-                }
-                else
-                {
-                    bp.IsHeldNow = false;
-                }
-                if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
-                {
-                    //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
-                    bp.IsPressedNow = true;
-                }
-                else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
-                {
-                    bp.IsPressedNow = true;
-                }
-                else
-                {
-                    bp.IsPressedNow = false;
+                    if (IsPressingCrouchToggle)
+                    {
+                        Player.Crouch();
+                        GameTimeLastPressedCrouch = Game.GameTime;
+                    }
                 }
             }
-        }
-        private void VehicleCheck()
+
+            if (IsPressingSurrender)
+            {
+                if (Player.CanSurrender)
+                {
+                    Player.RaiseHands();
+                }
+                else if (Player.CanWaveHands)
+                {
+                    Player.WaveHands();
+                }
+            }
+            else
+            {
+                if (Player.HandsAreUp && !Player.IsBusted)
+                {
+                    Player.LowerHands();
+                }
+                else if (Player.IsWavingHands)
+                {
+                    Player.LowerHands();
+                }
+            }
+
+            if (IsPressingGesture)
+            {
+                EntryPoint.WriteToConsole("Gesture Start Hotkey");
+                Player.Gesture();
+            }
+        } 
+        private void VehicleControlCheck()
         {
             if (Player.CurrentVehicle != null)
             {
@@ -296,7 +252,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void MenuCheck()
+        private void MenuControlCheck()
         {
             if (!Player.IsDisplayingCustomMenus)
             {
@@ -310,64 +266,41 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void WeaponCheck()
+        private void UpdateControlStatus()
         {
-            //if (IsPressingDropWeapon && Player.CanDropWeapon && Settings.SettingsManager.PlayerOtherSettings.AllowWeaponDropping)
-            //{
-            //    Player.DropWeapon();
-            //}
-            if (IsPressingSelectorToggle)
+            if (Player.ButtonPromptList.Count > 10)
             {
-                Player.ToggleSelector();
+                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPromptList.Count}", 1);
             }
-        }
-
-        private void StanceCheck()
-        {
-            if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
+            foreach (ButtonPrompt bp in Player.ButtonPromptList)
             {
-                if (!RecentlyPressedCrouch)
+                if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)
                 {
-                    if (IsPressingCrouchToggle)
-                    {
-                        Player.Crouch();
-                        GameTimeLastPressedCrouch = Game.GameTime;
-                    }
+                    //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
+                    bp.IsHeldNow = true;
+                }
+                else
+                {
+                    bp.IsHeldNow = false;
+                }
+                if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
+                {
+                    //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
+                    bp.IsPressedNow = true;
+                }
+                else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
+                {
+                    bp.IsPressedNow = true;
+                }
+                else
+                {
+                    bp.IsPressedNow = false;
                 }
             }
-        }
-        private void SurrenderCheck()
-        {
-            if (IsPressingSurrender)
-            {
-                if (Player.CanSurrender)
-                {
-                    Player.RaiseHands();
-                }
-                else if (Player.CanWaveHands)
-                {
-                    Player.WaveHands();
-                }
-            }
-            else
-            {
-                if (Player.HandsAreUp && !Player.IsBusted)
-                {
-                    Player.LowerHands();
-                }
-                else if (Player.IsWavingHands)
-                {
-                    Player.LowerHands();
-                }
-            }
-        }
-        private void KeyBindCheck()
-        {
-            if (IsPressingGesture)
-            {
-                EntryPoint.WriteToConsole("Gesture Start Hotkey");
-                Player.Gesture();
-            }
+            Player.IsNotHoldingEnter = IsNotHoldingEnter;
+            Player.IsMoveControlPressed = IsMoveControlPressed;
+            Player.IsPressingFireWeapon = IsPressingFireWeapon;
+            Player.ReleasedFireWeapon = ReleasedFireWeapon;
         }
         private bool IsKeyDownSafe(Keys key)
         {

@@ -26,6 +26,7 @@ public class SuicideActivity : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
+    public override bool CanCancel { get; set; } = false;
     public override void Cancel()
     {
         IsCancelled = true;
@@ -34,6 +35,7 @@ public class SuicideActivity : DynamicActivity
     {
 
     }
+    public override bool IsPaused() => false;
     public override void Continue()
     {
 

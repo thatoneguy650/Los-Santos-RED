@@ -62,7 +62,8 @@ namespace LosSantosRED.lsr
         private UI UI;
         private VanillaManager VanillaManager;
        // private VehicleScannerAudio VehicleScannerAudio;
-        private WavAudio WavAudio;
+        private WavAudioPlayer WavAudioPlayer;
+       // private NAudioPlayer NAudioPlayer;
         private Weapons Weapons;
         private Weather Weather;
         private Mod.World World;
@@ -133,15 +134,19 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
             ReadDataFiles();
-            WavAudio = new WavAudio();
+            WavAudioPlayer = new WavAudioPlayer();
+            //NAudioPlayer = new NAudioPlayer();
+
+
+
             GameFiber.Yield();
             Time = new Mod.Time(Settings);
             Time.Setup();
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudio, Gangs, GangTerritories, Streets);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudioPlayer, Gangs, GangTerritories, Streets);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus, RelationshipGroups, DanceList);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudioPlayer, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves,Names, ShopMenus, RelationshipGroups, DanceList);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, Settings);
@@ -163,7 +168,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             VanillaManager = new VanillaManager(Settings);
             GameFiber.Yield();
-            Weather = new Weather(WavAudio, Settings, Time, Player);
+            Weather = new Weather(WavAudioPlayer, Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher, Zones, Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs, Input, ShopMenus);

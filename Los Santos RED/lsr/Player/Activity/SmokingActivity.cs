@@ -23,7 +23,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private bool IsEmittingSmoke;
         private bool IsHandByFace;
-        private bool IsPaused = false;
+        private bool isPaused = false;
         private bool IsPot;
         private bool IsSmokedItemAttachedToMouth;
         private bool IsSmokedItemLit;
@@ -57,6 +57,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = true;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -73,12 +74,13 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
-            IsPaused = true;
+            isPaused = true;
             Player.IsPerformingActivity = false;
         }
+        public override bool IsPaused() => isPaused;
         public override void Start()
         {
-            IsPaused = false;
+            isPaused = false;
             Setup();
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
@@ -130,7 +132,7 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
-            while (Player.CanPerformActivities && !IsPaused && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
+            while (Player.CanPerformActivities && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 Player.SetUnarmed();
                 UpdatePosition();
@@ -162,7 +164,11 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
             }
             GameFiber.Sleep(100);
-            if (!Player.CanPerformActivities || IsPaused)
+            if(IsCancelled)
+            {
+                Exit();//drop the cigarette (with animation if possible)
+            }
+            else if (!Player.CanPerformActivities || isPaused)
             {
                 if (IsSmokedItemLit && IsSmokedItemNearMouth)
                 {
@@ -181,7 +187,7 @@ namespace LosSantosRED.lsr.Player
         private void Exit()
         {
             EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
-            if (IsActivelySmoking && Player.CanPerformActivities)
+            if (IsActivelySmoking && Player.CanPerformActivities && !IsCancelled)
             {
                 EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
@@ -202,6 +208,8 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
+            isPaused = false;
+            IsCancelled = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
             EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
             GameFiber.Sleep(5000);
@@ -217,16 +225,11 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            while (Player.CanPerformActivities && !IsCancelled && !IsPaused)
+            while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
                 Player.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
-                    //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                    //{
-                    //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
-                    //    hasGainedHP = true;
-                    //}
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
@@ -268,7 +271,7 @@ namespace LosSantosRED.lsr.Player
             {
                 ShouldContinue = false;
                 IsActivelySmoking = true;
-                IsPaused = false;
+                isPaused = false;
                 Player.IsPerformingActivity = true;
                 Idle();
             }

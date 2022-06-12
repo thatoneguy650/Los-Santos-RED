@@ -42,6 +42,7 @@ public class HumanShield : DynamicActivity
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
+    public override bool CanCancel { get; set; } = false;
     public override void Start()
     {
         if (Ped.Pedestrian.Exists())
@@ -324,4 +325,5 @@ public class HumanShield : DynamicActivity
     {
         Cancel();
     }
+    public override bool IsPaused() => false;
 }

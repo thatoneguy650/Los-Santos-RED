@@ -24,7 +24,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private bool IsEmittingSmoke;
         private bool IsHandByFace;
-        private bool IsPaused = false;
+        private bool isPaused = false;
         private bool IsPot;
         private bool IsSmokedItemAttachedToMouth;
         private bool IsSmokedItemLit;
@@ -61,7 +61,8 @@ namespace LosSantosRED.lsr.Player
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
         public override ModItem ModItem { get; set; }
-        public override bool CanPause { get; set; } = true;
+        public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -78,12 +79,13 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
-            IsPaused = true;
+            isPaused = true;
             Player.IsPerformingActivity = false;
         }
+        public override bool IsPaused() => isPaused;
         public override void Start()
         {
-            IsPaused = false;
+            isPaused = false;
             Setup();
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
@@ -181,7 +183,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
-            while (Player.CanPerformActivities && !IsCancelled && !IsPaused)
+            while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
                 Player.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)

@@ -102,6 +102,7 @@ namespace Mod
         private uint GameTimeLastToggledSurrender;
         private bool isCheckingExcessSpeed;
         private bool isShooting;
+        private bool isGettingOutOfAVehicle;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances)
@@ -203,14 +204,15 @@ namespace Mod
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
 
 
-        public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically;
+        public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
         public bool CanUndie => Respawning.CanUndie;
         public bool CanWaveHands => Surrendering.CanWaveHands;
 
-
+        public bool CanCancelCurrentActivity => UpperBodyActivity?.CanCancel == true || LowerBodyActivity?.CanCancel == true;
         public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
+        public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
         public CellPhone CellPhone { get; private set; }
         public int CellX { get; private set; }
         public int CellY { get; private set; }
@@ -322,6 +324,23 @@ namespace Mod
                 }
             }
         }
+
+
+        //public bool IsGettingOutOfAVehicle
+        //{
+        //    get => isGettingOutOfAVehicle;
+        //    private set
+        //    {
+        //        if (isGettingOutOfAVehicle != value)
+        //        {
+        //            isGettingOutOfAVehicle = value;
+        //            OnGettingOutOfVehicleChanged();
+        //        }
+        //    }
+        //}
+
+
+
         public bool IsHoldingHostage { get; set; }
         public bool IsHoldingUp { get; set; }
         public bool IsHotWiring { get; private set; }
@@ -436,6 +455,7 @@ namespace Mod
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
+        public bool RecentlyGotOutOfVehicle => GameTimeGotOutOfVehicle != 0 && Game.GameTime - GameTimeGotOutOfVehicle <= 1000;
         public bool ReleasedFireWeapon { get; set; }
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
@@ -818,9 +838,16 @@ namespace Mod
                 }
             }
         }
-        public void ContinueDynamicActivity()
+        public void ContinueCurrentActivity()
         {
-            UpperBodyActivity?.Continue();
+            if (UpperBodyActivity != null && UpperBodyActivity.CanPause && UpperBodyActivity.IsPaused())
+            {
+                UpperBodyActivity.Continue();
+            }
+            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause && LowerBodyActivity.IsPaused())
+            {
+                LowerBodyActivity.Continue();
+            }
         }
         public void Crouch()
         {
@@ -1342,9 +1369,27 @@ namespace Mod
         public void OnWantedActiveMode() => Scanner.OnWantedActiveMode();
         public void OnWantedSearchMode() => Scanner.OnWantedSearchMode();
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
-        public void PauseDynamicActivity()
+        public void PauseCurrentActivity()
         {
-            UpperBodyActivity?.Pause();
+            if (UpperBodyActivity != null && UpperBodyActivity.CanPause)
+            {
+                UpperBodyActivity.Pause();
+            }
+            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause)
+            {
+                LowerBodyActivity.Pause();
+            }
+        }
+        public void CancelCurrentActivity()
+        {
+            if(UpperBodyActivity != null && UpperBodyActivity.CanCancel)
+            {
+                UpperBodyActivity.Cancel();
+            }
+            else if(LowerBodyActivity != null && LowerBodyActivity.CanCancel)
+            {
+                LowerBodyActivity.Cancel();
+            }
         }
         public bool PayFine()
         {
@@ -2301,6 +2346,7 @@ namespace Mod
         {
             IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+            //IsGettingOutOfAVehicle = NativeFunction.Natives.IS_PED_JUMPING_OUT_OF_VEHICLE<bool>(Character);
             if (IsInVehicle)
             {
                 if (Character.CurrentVehicle.Exists() && OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Handle == Character.CurrentVehicle.Handle))//OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicle.Vehicle.Handle)
@@ -2825,6 +2871,17 @@ namespace Mod
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
         }
+        //private void OnGettingOutOfVehicleChanged()
+        //{
+        //    if(IsGettingOutOfAVehicle)
+        //    {
+        //       // EntryPoint.WriteToConsole("You are getting out of a vehicle");
+        //    }
+        //    else
+        //    {
+        //        //EntryPoint.WriteToConsole("You are NO LONGER getting out of a vehicle");
+        //    }
+        //}
         private void OnIsInVehicleChanged()
         {
             GameFiber.Yield();

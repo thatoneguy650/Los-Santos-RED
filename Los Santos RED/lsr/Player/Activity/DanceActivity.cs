@@ -32,7 +32,6 @@ namespace LosSantosRED.lsr.Player
         private int AnimationFlagRepeat => 1;
         private int AnimationFlagNormal => 0;
         private bool DisplayedDanceName;
-
         public DanceActivity(IActionable player, DanceData danceData, IRadioStations radioStations, ISettingsProvideable settings, IDances dances) : base()
         {
             Player = player;
@@ -41,10 +40,10 @@ namespace LosSantosRED.lsr.Player
             Settings = settings;
             Dances = dances;
         }
-
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -57,6 +56,7 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = false;
             Player.IsDancing = false;
         }
+        public override bool IsPaused() => false;
         public override void Continue()
         {
 
@@ -117,7 +117,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Player.ButtonPrompts.AddPrompt("DanceActivity","Pick Dance","PickDance", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
                 Player.ButtonPrompts.AddPrompt("DanceActivity", "Random Dance", "RandomDance", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
-                Player.ButtonPrompts.AddPrompt("DanceActivity", "Stop Dancing", "StopDance", Settings.SettingsManager.KeySettings.InteractCancel, 3);
+                //Player.ButtonPrompts.AddPrompt("DanceActivity", "Stop Dancing", "StopDance", Settings.SettingsManager.KeySettings.InteractCancel, 3);
                 PlayingAnimation = DanceData.AnimationIdle;
                 PlayingDictionary = DanceData.AnimationDictionary;
                 EntryPoint.WriteToConsole($"Dance Idle: {DanceData.AnimationIdle}", 5);
@@ -171,18 +171,18 @@ namespace LosSantosRED.lsr.Player
                     {
                         SetRandomDanceData();
                     }
-                    if (Player.ButtonPrompts.IsPressed("StopDance"))
-                    {
-                        Player.ButtonPrompts.RemovePrompts("DanceActivity");
-                        shouldStop = true;
-                        shouldExit = true;
-                    }
+                    //if (Player.ButtonPrompts.IsPressed("StopDance"))
+                    //{
+                    //    Player.ButtonPrompts.RemovePrompts("DanceActivity");
+                    //    shouldStop = true;
+                    //    shouldExit = true;
+                    //}
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
                 Player.ButtonPrompts.RemovePrompts("DanceActivity");
             }
-            if (shouldExit ||IsCancelled)
+            if (shouldExit || IsCancelled)
             {
                 Exit();
             }

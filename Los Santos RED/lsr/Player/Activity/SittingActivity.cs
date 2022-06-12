@@ -48,6 +48,7 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = false;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -58,6 +59,7 @@ namespace LosSantosRED.lsr.Player
         {
 
         }
+        public override bool IsPaused() => false;
         public override void Continue()
         {
         }
@@ -135,7 +137,7 @@ namespace LosSantosRED.lsr.Player
         private void Exit()
         {
             EntryPoint.WriteToConsole("Sitting Activity Exit", 5);
-            Player.PauseDynamicActivity();
+            Player.PauseCurrentActivity();
 
             if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting && FindSittingProp)
             {

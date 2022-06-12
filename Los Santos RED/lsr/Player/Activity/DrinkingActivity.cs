@@ -40,6 +40,7 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -50,6 +51,7 @@ namespace LosSantosRED.lsr.Player
         {
             Cancel();//for now it just cancels
         }
+        public override bool IsPaused() => false;
         public override void Continue()
         {
         }
@@ -124,6 +126,12 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            //if (Player.CanPerformActivities && !IsCancelled)
+            //{
+            //    Player.ButtonPrompts.AddPrompt("DrinkingActivity", "Stop Drinking", "StopDrink", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            //}
+            uint GameTimeBetweenDrinks = 1100;
+            uint GameTimeLastChangedIdle = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
@@ -134,7 +142,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    else
+                    else if(Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenDrinks)
                     {
                         TimesDrank++;
                         PlayingDict = Data.AnimIdleDictionary;
@@ -143,9 +151,15 @@ namespace LosSantosRED.lsr.Player
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
                 }
+                //if (Player.ButtonPrompts.IsPressed("StopDrink"))
+                //{
+                //    Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
+                //    IsCancelled = true;
+                //}
                 UpdateHealthGain();
                 GameFiber.Yield();
             }
+            //Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
             Exit();
         }
         private void UpdateHealthGain()

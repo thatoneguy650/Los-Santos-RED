@@ -244,11 +244,11 @@ public class ActionMenu : Menu
         {
             if (CurrentActivityMenu.SelectedItem == "Continue")
             {
-                Player.ContinueDynamicActivity();
+                Player.ContinueCurrentActivity();
             }
             else if (CurrentActivityMenu.SelectedItem == "Pause")
             {
-                Player.PauseDynamicActivity();
+                Player.PauseCurrentActivity();
             }
             else if (CurrentActivityMenu.SelectedItem == "Stop")
             {

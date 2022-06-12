@@ -20,7 +20,6 @@ public class BasicLocation
     private Interior interior;
     private float distanceToPlayer = 999f;
     private int CellsAway = 99;
-    /// private bool isNearby = false;
     private uint GameTimeLastCheckedDistance;
     private uint GameTimeLastCheckedNearby;
     private uint DistanceUpdateIntervalTime
@@ -67,18 +66,14 @@ public class BasicLocation
             }
         }
     }
-
     public bool HasBannerImage => BannerImagePath != "";
-
     [XmlIgnore]
     public Texture BannerImage { get; set; }
     public string BannerImagePath { get; set; } = "";
     public bool RemoveBanner { get; set; } = false;
-    //[XmlIgnore]
     public bool IsEnabled { get; set; } = true;
     public string Name { get; set; }
     public string Description { get; set; }
-
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
     public float EntranceHeading { get; set; }
     public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
@@ -93,11 +88,8 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public int InteriorID { get; set; } = -1;
     public Interior Interior => interior;
-
-
+    [XmlIgnore]
     public bool IsPlayerInterestedInLocation { get; set; } = false;
-
-
     public virtual string TypeName { get; set; } = "Location";
     public virtual bool ShowsOnDirectory { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
@@ -105,12 +97,9 @@ public class BasicLocation
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapIconAlpha { get; set; } = 1.0f;
-    //public virtual string ButtonPromptText { get; set; }
-
-
-  //  [XmlIgnore]
+    [XmlIgnore]
     public int CellX { get; set; }
-    //[XmlIgnore]
+    [XmlIgnore]
     public int CellY { get; set; }
     [XmlIgnore]
     public string FullStreetAddress { get; set; }
@@ -130,8 +119,8 @@ public class BasicLocation
         EntranceHeading = _EntranceHeading;
         Name = _Name;
         Description = _Description;
-        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
-        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
+        //CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        //CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
     public float DistanceToPlayer => distanceToPlayer;
     public bool IsWalkup { get; set; } = false;

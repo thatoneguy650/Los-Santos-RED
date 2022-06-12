@@ -40,6 +40,8 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = false;
+
         public override void Cancel()
         {
             IsCancelled = true;
@@ -50,6 +52,7 @@ namespace LosSantosRED.lsr.Player
         {
             Cancel();//for now it just cancels
         }
+        public override bool IsPaused() => false;
         public override void Continue()
         {
         }

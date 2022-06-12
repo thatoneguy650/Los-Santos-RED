@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsAliveAndFree { get; }
         bool CanPauseCurrentActivity { get; }
         CellPhone CellPhone { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        bool CanCancelCurrentActivity { get; }
 
         void RaiseHands();
         void LowerHands();
@@ -62,11 +64,13 @@ namespace LosSantosRED.lsr.Interface
         void Gesture();
         void WaveHands();
         void PlaySpeech(string player, bool v);
-        void PauseDynamicActivity();
+        void PauseCurrentActivity();
         void LootPed();
         void GrabPed();
         void Crouch();
         void StartSimpleCellphoneActivity();
         void DragPed();
+        void CancelCurrentActivity();
+        void ContinueCurrentActivity();
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Media;
 using System.Runtime.InteropServices;
 
-public class WavAudio : IAudioPlayable
+public class WavAudioPlayer : IAudioPlayable
 {
     private SoundPlayer AudioDevice = new SoundPlayer();
     public bool IsAudioPlaying { get; private set; }

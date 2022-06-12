@@ -26,6 +26,7 @@
     public string FacialAnimationIdle { get; set; } = "";
     public string FacialAnimationExit { get; set; } = "";
     public bool IsInsulting { get; set; } = false;
+    public bool IsVehicle { get; set; } = false;
     public override string ToString()
     {
         return Name;

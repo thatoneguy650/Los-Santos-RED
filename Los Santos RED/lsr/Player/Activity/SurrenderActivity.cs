@@ -25,6 +25,7 @@ public class SurrenderActivity : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
+    public override bool CanCancel { get; set; } = false;
     public bool IsCommitingSuicide { get; set; }
     public override void Cancel()
     {
@@ -34,6 +35,7 @@ public class SurrenderActivity : DynamicActivity
     {
 
     }
+    public override bool IsPaused() => false;
     public override void Continue()
     {
 

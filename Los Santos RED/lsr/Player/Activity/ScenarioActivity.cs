@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override string DebugString => $"IsPerformingActivity: {Player.IsPerformingActivity}";
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -28,6 +29,7 @@ namespace LosSantosRED.lsr.Player
         {
             Cancel();//for now it just cancels
         }
+        public override bool IsPaused() => false;
         public override void Continue()
         {
 

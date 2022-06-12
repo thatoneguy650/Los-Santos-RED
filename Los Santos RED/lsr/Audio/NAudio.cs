@@ -1,16 +1,18 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
 using LSR;
+using NAudio.Dsp;
 using NAudio.Wave;
 using Rage;
 using Rage.Native;
 using System;
 
-//public class Audio : IAudioPlayable
+//public class NAudioPlayer : IAudioPlayable
 //{
 //    private WaveOutEvent outputDevice;
 //    private AudioFileReader audioFile;
-//    public Audio()
+//    public bool IsPlayingLowPriority { get; set; }
+//    public NAudioPlayer()
 //    {
 
 //    }
@@ -22,6 +24,10 @@ using System;
 //            return outputDevice != null;
 //        }
 //    }
+//    public void Play(string FileName, bool isLowPriority)
+//    {
+//        Play(FileName, 1.0f, isLowPriority);
+//    }
 //    public void Play(string FileName, float volume, bool isLowPriority)
 //    {
 //        try
@@ -30,28 +36,47 @@ using System;
 //            {
 //                return;
 //            }
+//            IsPlayingLowPriority = isLowPriority;
 //            if (outputDevice == null)
 //            {
 //                outputDevice = new WaveOutEvent();
 //                outputDevice.PlaybackStopped += OnPlaybackStopped;
 //            }
+
+//            if (volume > 1.0f)
+//            {
+//                volume = 1.0f;
+//            }
+//            else if (volume < 0.0f)
+//            {
+//                volume = 0.0f;
+//            }
+
+
 //            if (audioFile == null)
 //            {
 //                audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
 //                {
 //                    Volume = volume
 //                };
-//                outputDevice.Init(audioFile);
+//                //var r = BiQuadFilter.LowPassFilter(44100, 1500, 1);
+//                MyWaveProvider filter = new MyWaveProvider(audioFile, 1500);             
+//                outputDevice.Init(filter);
 //            }
 //            else
 //            {
-//                outputDevice.Init(audioFile);
+//                MyWaveProvider filter = new MyWaveProvider(audioFile, 1500);
+//                outputDevice.Init(filter);
 //            }
+
+
+
+
 //            outputDevice.Play();
 //        }
 //        catch (Exception e)
 //        {
-//            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message,0);
+//            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message, 0);
 //        }
 //    }
 //    public void Abort()
@@ -70,10 +95,68 @@ using System;
 //            audioFile.Dispose();
 //        }
 //        audioFile = null;
+//        IsPlayingLowPriority = false;
 //    }
 
 //    public void Play(string fileName, int volume, bool isScannerPlaying)
 //    {
-//        Play(fileName, volume * 1.0f, isScannerPlaying);
+//        float realVolume = (float)volume / 10.0f;
+//        if(realVolume > 1.0f)
+//        {
+//            realVolume = 1.0f;
+//        }
+//        else if (realVolume < 0.0f)
+//        {
+//            realVolume = 0.0f;
+//        }
+//        Play(fileName, realVolume, isScannerPlaying);
+//    }
+
+//    class MyWaveProvider : ISampleProvider
+//    {
+//        private ISampleProvider sourceProvider;
+//        private float cutOffFreq;
+//        private int channels;
+//        private BiQuadFilter[] filters;
+
+//        public MyWaveProvider(ISampleProvider sourceProvider, int cutOffFreq)
+//        {
+//            this.sourceProvider = sourceProvider;
+//            this.cutOffFreq = cutOffFreq;
+
+//            channels = sourceProvider.WaveFormat.Channels;
+//            filters = new BiQuadFilter[channels];
+//            CreateLowFilters();
+//            CreateHighFilters();
+//        }
+
+//        private void CreateLowFilters()
+//        {
+//            for (int n = 0; n < channels; n++)
+//                if (filters[n] == null)
+//                    filters[n] = BiQuadFilter.LowPassFilter(44100, cutOffFreq, 1);
+//                else
+//                    filters[n].SetLowPassFilter(44100, cutOffFreq, 1);
+//        }
+//        private void CreateHighFilters()
+//        {
+//            for (int n = 0; n < channels; n++)
+//                if (filters[n] == null)
+//                    filters[n] = BiQuadFilter.HighPassFilter(44100, cutOffFreq, 1);
+//                else
+//                    filters[n].SetHighPassFilter(44100, cutOffFreq, 1);
+//        }
+
+//        public WaveFormat WaveFormat { get { return sourceProvider.WaveFormat; } }
+
+//        public int Read(float[] buffer, int offset, int count)
+//        {
+//            int samplesRead = sourceProvider.Read(buffer, offset, count);
+
+//            for (int i = 0; i < samplesRead; i++)
+//                buffer[offset + i] = filters[(i % channels)].Transform(buffer[offset + i]);
+
+//            return samplesRead;
+//        }
 //    }
 //}

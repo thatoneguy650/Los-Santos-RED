@@ -30,6 +30,7 @@ public class PlateTheft : DynamicActivity
     public override string DebugString => "";
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
+    public override bool CanCancel { get; set; } = false;
     private bool IsChangingPlate => PlateToAdd != null;
     private bool TargetVehicleHasPlate
     {
@@ -56,6 +57,7 @@ public class PlateTheft : DynamicActivity
     public override void Pause()
     {
     }
+    public override bool IsPaused() => false;
     public override void Start()
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChangingPlate: {IsChangingPlate}", 3);

@@ -332,7 +332,7 @@
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
     <Compile Include="lsr\Tasker\Cop\Tasks\AIApprehend.cs" />
     <Compile Include="lsr\Audio\NAudio.cs" />
-    <Compile Include="lsr\Audio\WavAudio.cs" />
+    <Compile Include="lsr\Audio\WavAudioPlayer.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />
     <Compile Include="lsr\Data\Agencies\Jurisdictions.cs" />
     <Compile Include="lsr\Data\Agencies\ResponseType.cs" />

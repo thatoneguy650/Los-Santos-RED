@@ -447,8 +447,6 @@ public class CellPhone
                         AddContact(sc.ContactName, sc.IconName, true);
                     }
                     PlayTextReceivedSound();
-                    //TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-                    //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
                     if (sc.Message == "")
                     {
                         NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, "New Contact", sc.ContactName, NotificationIconTypes.AddFriendRequest, true);
@@ -474,13 +472,10 @@ public class CellPhone
         if (!AddedContacts.Any(x => x.Name == Name))
         {
             PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-            //contactA.Answered += ContactAnswered;
             contactA.Active = false;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -488,7 +483,6 @@ public class CellPhone
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
-                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -497,13 +491,10 @@ public class CellPhone
         if (!AddedContacts.Any(x => x.Name == gang.ContactName))
         {
             PhoneContact contactA = new PhoneContact(gang.ContactName, ContactIndex);
-            //contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            //contactA.Icon = GetIconFromString(gang.ContactIcon);
             contactA.IconName = gang.ContactIcon;
-            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -511,7 +502,6 @@ public class CellPhone
             {
                 NativeHelper.DisplayNotificationCustom(gang.ContactIcon, gang.ContactIcon, "New Contact", gang.ContactName, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
-                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -520,13 +510,10 @@ public class CellPhone
         if (!AddedContacts.Any(x => x.Name == Name))
         {
             PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-            //contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -534,7 +521,6 @@ public class CellPhone
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
-                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -545,13 +531,10 @@ public class CellPhone
         if (!AddedContacts.Any(x => x.Name == Name))
         {
             PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-           // contactA.Answered += ContactAnswered;
             contactA.Active = true;
             contactA.DialTimeout = 4000;
             contactA.RandomizeDialTimeout = true;
-            //contactA.Icon = GetIconFromString(IconName);
             contactA.IconName = IconName;
-            //CustomiFruit.Contacts.Add(contactA);
             ContactIndex++;
             AddedContacts.Add(contactA);
 
@@ -559,7 +542,6 @@ public class CellPhone
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
-                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -570,12 +552,9 @@ public class CellPhone
         if (!AddedContacts.Any(x => x.Name == EntryPoint.EmergencyServicesContactName))
         {
             PhoneContact contactA = new PhoneContact(EntryPoint.EmergencyServicesContactName, ContactIndex);
-            //contactA.Answered += ContactAnswered;
             contactA.DialTimeout = 3000;
             contactA.Active = true;
             contactA.IconName = IconName;
-            //contactA.Icon = ContactIcon.Emergency;
-            //CustomiFruit.Contacts.Add(contactA);
 
             ContactIndex++;
             AddedContacts.Add(contactA);
@@ -583,7 +562,6 @@ public class CellPhone
             {
                 NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
-                //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
             }
         }
     }
@@ -685,11 +663,9 @@ public class CellPhone
         if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == message && x.HourSent == hourSent && x.MinuteSent == minuteSent))
         {
             PhoneText textA = new PhoneText(Name, TextIndex, message, hourSent, minuteSent);
-            //textA.Icon = GetIconFromString(IconName);      // Contact's icon
             textA.IconName = IconName;
             textA.IsRead = isRead;
             textA.TimeReceived = Time.CurrentDateTime;
-            //CustomiFruit.Texts.Add(textA);         // Add the contact to the phone
             TextIndex++;
             AddedTexts.Add(textA);
 
@@ -706,7 +682,6 @@ public class CellPhone
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message,Time.CurrentDateTime));
         Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
-        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
     }
     public void AddPhoneResponse(string Name, string Message)
     {
@@ -714,7 +689,6 @@ public class CellPhone
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
         Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
-        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_02", "HUD_MINIGAME_SOUNDSET", 0);
     }
     public void DisableContact(string Name)
     {
@@ -733,8 +707,6 @@ public class CellPhone
         }
         return false;
     }
-
-
     private void PlayTextReceivedSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);

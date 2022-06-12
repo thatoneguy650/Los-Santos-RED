@@ -27,6 +27,10 @@ namespace LosSantosRED.lsr.Interface
         float ClosestPoliceDistanceToPlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
         bool CanDragLookedAtPed { get; }
+        bool CanPauseCurrentActivity { get; }
+        bool CanCancelCurrentActivity { get; }
+        bool IsPerformingActivity { get; }
+        bool IsCurrentActivityPaused { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

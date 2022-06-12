@@ -167,6 +167,12 @@ public class Places
             basicLocation.FullStreetAddress = LocationName;
             basicLocation.StreetAddress = ShortLocationName;
             basicLocation.ZoneName = zoneString;
+
+
+
+            basicLocation.CellX = (int)(basicLocation.EntrancePosition.X / EntryPoint.CellSize);
+            basicLocation.CellY = (int)(basicLocation.EntrancePosition.Y / EntryPoint.CellSize);
+
         }
         foreach(GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
         {

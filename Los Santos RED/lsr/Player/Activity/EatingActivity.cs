@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override void Cancel()
         {
             IsCancelled = true;
@@ -47,6 +48,7 @@ namespace LosSantosRED.lsr.Player
         {
             Cancel();//for now it just cancels
         }
+        public override bool IsPaused() => false;
         public override void Start()
         {
             EntryPoint.WriteToConsole("EatingActivity START", 5);
@@ -115,28 +117,14 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            if (Player.CanPerformActivities && !IsCancelled)
+            {
+                Player.ButtonPrompts.AddPrompt("EatingActivity", "Stop Eating", "StopEat", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            }
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            //while (Player.CanPerformActivities && !IsCancelled)
-            //{
-            //    Player.SetUnarmed();
-            //    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-            //    UpdateHealthGain();
-            //    if (AnimationTime >= 0.9f)
-            //    {
-            //        if (Food.Exists())
-            //        {
-            //            Food.Delete();
-            //        }
-            //    }
-            //    if (AnimationTime >= 1.0f)
-            //    {
-            //        break;
-            //    }
-            //    GameFiber.Yield();
-            //}
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
@@ -160,9 +148,15 @@ namespace LosSantosRED.lsr.Player
                         EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte} HealthGiven {HealthGiven}", 5);
                     }
                 }
+                if (Player.ButtonPrompts.IsPressed("StopEat"))
+                {
+                    Player.ButtonPrompts.RemovePrompts("EatingActivity");
+                    IsCancelled = true;
+                }
                 UpdateHealthGain();
                 GameFiber.Yield();
             }
+            Player.ButtonPrompts.RemovePrompts("EatingActivity");
             Exit();
         }
         private void UpdateHealthGain()

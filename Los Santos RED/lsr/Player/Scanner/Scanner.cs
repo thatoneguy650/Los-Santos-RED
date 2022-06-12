@@ -191,14 +191,7 @@ namespace LosSantosRED.lsr
         public void DebugPlayDispatch()
         {
             Reset();
-            if (RandomItems.RandomPercent(50))
-            {
-                AddToQueue(RequestNooseUnitsAlt);
-            }
-            else
-            {
-                AddToQueue(RequestNooseUnitsAlt2);
-            }
+            AddToQueue(DispatchList.PickRandom());
         }
         public void OnAppliedWantedStats(int wantedLevel)
         {
