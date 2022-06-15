@@ -29,13 +29,15 @@ public class LEDispatcher
     private IWeapons Weapons;
     private bool TotalIsWanted;
     private INameProvideable Names;
-
+    private PoliceStation PoliceStation;
+    private bool IsDenSpawn;
     private SpawnLocation SpawnLocation;
     private Agency Agency;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
+    private IPlacesOfInterest PlacesOfInterest;
 
-    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         World = world;
@@ -46,6 +48,7 @@ public class LEDispatcher
         Jurisdictions = jurisdictions;
         Weapons = weapons;
         Names = names;
+        PlacesOfInterest = placesOfInterest;
     }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
@@ -57,6 +60,10 @@ public class LEDispatcher
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
+
+
+    public int LikelyHoodOfStationFootSpawnWhenNear => Settings.SettingsManager.PoliceSettings.PercentageSpawnOnFootNearStation;
+
     private float MaxDistanceToSpawn
     {
         get
@@ -376,6 +383,7 @@ public class LEDispatcher
             {
                 spawnTask.AllowAnySpawn = true;
             }
+            EntryPoint.WriteToConsole($"LE Dispatcher Call Spawn Task Agency: {Agency?.ID} Vehicle {VehicleType?.ModelName} Person {PersonType?.ModelName}");
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
@@ -392,10 +400,35 @@ public class LEDispatcher
     {
         int timesTried = 0;
         bool isValidSpawn;
+        PoliceStation = null;
+        IsDenSpawn = false;
         SpawnLocation = new SpawnLocation();
         do
         {
-            SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+            if (RandomItems.RandomPercent(LikelyHoodOfStationFootSpawnWhenNear) && Player.IsNotWanted)
+            {
+                PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsNearby).PickRandom();
+            }
+            if (PoliceStation != null)
+            {
+                float DistanceTo = PoliceStation.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
+                if (DistanceTo >= 45f)
+                {
+                    IsDenSpawn = true;
+                    SpawnLocation.InitialPosition = PoliceStation.EntrancePosition.Around2D(50f);
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Police Spawn ON FOOT AROUND Station", 3);
+                }
+                else
+                {
+                    PoliceStation = null;
+                    SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Police Spawn ON FOOT AROUND Station !!!! FOUND BUT NOT USING TOO FAR!", 3);
+                }
+            }
+            else
+            {
+                SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+            }      
             SpawnLocation.GetClosestStreet();
             SpawnLocation.GetClosestSidewalk();
             GameFiber.Yield();
@@ -414,23 +447,15 @@ public class LEDispatcher
         Agency = GetRandomAgency(SpawnLocation);
         if (Agency != null)
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
-            //need to add back in the on foot spawns?
-            //bool ShouldSpawnPedestrian = false;
-            //if (SpawnLocation.HasSidewalk)
-            //{
-            //    bool CanSpawnPedestrian = Jurisdictions.CanSpawnPedestrianAtZone(Zones.GetZoneName(SpawnLocation.SidewalkPosition), Agency.ID) && World.TotalWantedLevel <= 1;
-            //    if (CanSpawnPedestrian && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.PedestrianSpawnPercentage))
-            //    {
-            //        ShouldSpawnPedestrian = true;
-            //        VehicleType = null;
-            //        EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn PEDESTRIAN", 3);
-            //    }
-            //    else
-            //    {
-            //        EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn CanSpawnPedestrian {CanSpawnPedestrian} BUT IS NOT SPAWNING CUZ PERCENTAGES", 3);
-            //    }
-            //}
+            bool SpawnVehicle = Player.IsWanted || RandomItems.RandomPercent(80);
+            if (IsDenSpawn && Player.IsNotWanted && RandomItems.RandomPercent(80))
+            {
+                VehicleType = null;
+            }
+            else if (!SpawnLocation.HasSidewalk || SpawnVehicle)
+            {
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
+            }
             if (VehicleType != null)
             {
                 string RequiredGroup = "";
@@ -439,6 +464,14 @@ public class LEDispatcher
                     RequiredGroup = VehicleType.RequiredPedGroup;
                 }
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+            else if (IsDenSpawn && Player.IsNotWanted)
+            {
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel,"");
                 if (PersonType != null)
                 {
                     return true;
@@ -668,6 +701,11 @@ public class LEDispatcher
     }
     public void DebugSpawnCop(string agencyID, bool onFoot)
     {
+        VehicleType = null;
+        PersonType = null;
+        Agency = null;
+            
+        EntryPoint.WriteToConsole($"DEBUG SPAWN COP agencyID: {agencyID} onFoot: {onFoot}");
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
@@ -681,6 +719,7 @@ public class LEDispatcher
         }
         if (Agency == null)
         {
+            EntryPoint.WriteToConsole($"DEBUG SPAWN COP NO AGENCY FOUND");
             return;
         }
         if (!onFoot)

@@ -24,6 +24,7 @@ public class DebugMenu : Menu
     private UIMenuItem ForceSober;
     private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
+    private UIMenuItem ToggleInvestigation;
     private UIMenuNumericScrollerItem<int> FastForwardTime;
     private UIMenuItem GoToReleaseSettings;
     private UIMenuItem GoToHardCoreSettings;
@@ -68,6 +69,7 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Gang> SetGangRepDefault;
     private UIMenuListScrollerItem<Gang> SetGangRepFriendly;
     private UIMenuListScrollerItem<Gang> SetGangRepHostile;
+    private UIMenuListScrollerItem<int> SetWantedLevel;
     private UIMenuItem GetAllItems;
     private IModItems ModItems;
     private int RandomUpgradedWeaponCategory;
@@ -148,6 +150,10 @@ public class DebugMenu : Menu
 
 
 
+
+
+
+
         FastForwardTime = new UIMenuNumericScrollerItem<int>("Fast Forward Time", "Fast forward time.", 1, 24, 1) { Formatter = v => v + " Hours"};
         GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
 
@@ -202,6 +208,16 @@ public class DebugMenu : Menu
         Debug.AddItem(KillPlayer);
         Debug.AddItem(GetRandomWeapon);
         Debug.AddItem(GetRandomUpgradedWeapon);
+
+
+
+        SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+        Debug.AddItem(SetWantedLevel);
+        ToggleInvestigation = new UIMenuItem("Toggle Investigation", "Start or stop an investigation.");
+
+        Debug.AddItem(ToggleInvestigation);
+
+
         Debug.AddItem(GiveMoney);
         Debug.AddItem(SetMoney);
         Debug.AddItem(GetAllItems);
@@ -210,6 +226,10 @@ public class DebugMenu : Menu
         Debug.AddItem(FastForwardTime);
         Debug.AddItem(GoToReleaseSettings);
         Debug.AddItem(GoToHardCoreSettings);
+
+
+
+
 
         Debug.AddItem(ForceSober);
 
@@ -354,6 +374,24 @@ public class DebugMenu : Menu
         if (selectedItem == KillPlayer)
         {
             Game.LocalPlayer.Character.Kill();
+        }
+        else if (selectedItem == SetWantedLevel)
+        {
+            Player.SetWantedLevel(SetWantedLevel.SelectedItem,"Debug Menu",true);
+        }
+        else if (selectedItem == ToggleInvestigation)
+        {
+            if (Player.IsNotWanted)
+            {
+                if (Player.Investigation.IsActive)
+                {
+                    Player.Investigation.Start(Player.Character.Position, false, true, false, false);
+                }
+                else
+                {
+                    Player.Investigation.Expire();
+                }
+            }
         }
         else if (selectedItem == GoToReleaseSettings)
         {

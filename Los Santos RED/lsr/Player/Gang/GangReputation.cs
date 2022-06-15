@@ -148,8 +148,8 @@ public class GangReputation
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         if (GangRelationship == GangRespect.Hostile)
         {
-            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
-            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Dislike);//changed from hate, lets tone them down
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Dislike);
         }
         else if (GangRelationship == GangRespect.Friendly)
         {

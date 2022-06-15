@@ -1,8 +1,11 @@
-﻿public class DispatchablePerson
+﻿using System.Collections.Generic;
+
+public class DispatchablePerson
 {
     public string ModelName { get; set; }
     public string GroupName { get; set; } = "";
     public PedVariation RequiredVariation { get; set; }
+    public bool AllowRandomizeBeforeVariationApplied { get; set; } = false;
     public bool RandomizeHead { get; set; }
     public string OverrideVoice { get; set; } = "";
 
@@ -13,6 +16,10 @@
 
 
 
+    public int OptionalPropChance { get; set; } = 30;
+    public List<PedPropComponent> OptionalProps { get; set; }
+    public int OptionalComponentChance { get; set; } = 30;
+    public List<PedComponent> OptionalComponents { get; set; }
 
 
 

@@ -60,8 +60,18 @@ public abstract class SpawnTask
         }
         else
         {
-            PersonType.RequiredVariation.ApplyToPedSlow(ped);
-            if (PersonType.RandomizeHead)
+            if (PersonType.AllowRandomizeBeforeVariationApplied)
+            {
+                ped.RandomizeVariation();
+            }
+            bool isFreemode = PersonType.ModelName.ToLower() == "mp_m_freemode_01" || PersonType.ModelName.ToLower() == "mp_f_freemode_01";
+            bool setDefaultFirst = false;
+            if(isFreemode)
+            {
+                setDefaultFirst = true;
+            }
+            PersonType.RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
+            if (PersonType.RandomizeHead)//need to have a variation for this as its just freemode otherwise
             {
                 bool isMale = PersonType.ModelName.ToLower() == "mp_m_freemode_01";
                 RandomHeadData rhd = null;
@@ -71,6 +81,30 @@ public abstract class SpawnTask
                     RandomizeHead(ped, rhd);
                 }
             }
+
+
+
+            if(PersonType.OptionalProps != null)
+            {
+                foreach(PedPropComponent prop in PersonType.OptionalProps.GroupBy(x=>x.PropID).Select(x=> x.PickRandom()))
+                {
+                    if (ped.Exists() && RandomItems.RandomPercent(PersonType.OptionalPropChance))
+                    {
+                        NativeFunction.Natives.SET_PED_PROP_INDEX(ped, prop.PropID, prop.DrawableID, prop.TextureID, false);
+                    }
+                }
+            }
+            if (PersonType.OptionalComponents != null)
+            {
+                foreach (PedComponent component in PersonType.OptionalComponents.GroupBy(x => x.ComponentID).Select(x => x.PickRandom()))
+                {
+                    if (ped.Exists() && RandomItems.RandomPercent(PersonType.OptionalComponentChance))
+                    {
+                        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, component.ComponentID, component.DrawableID, component.TextureID, component.PaletteID);
+                    }
+                }
+            }
+
         }
         if (PersonType.RequiredHelmetType != -1)
         {

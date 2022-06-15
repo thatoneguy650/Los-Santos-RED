@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Interface
         Locations.LocationData CurrentLocation { get; }
         VehicleExt CurrentVehicle { get; }
         PoliceResponse PoliceResponse { get; }
+        bool IsNotWanted { get; }
 
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }

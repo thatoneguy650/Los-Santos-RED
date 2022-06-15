@@ -36,6 +36,7 @@ public class LESpawnTask : SpawnTask
     private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
     private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
     private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
+    public bool AllowBuddySpawn { get; set; } = true;
     public override void AttemptSpawn()
     {
         try
@@ -99,6 +100,19 @@ public class LESpawnTask : SpawnTask
     private void AttemptPersonOnlySpawn()
     {
         CreatePerson();
+        if (Agency != null && AllowBuddySpawn)
+        {
+            int BuddiesToSpawn = RandomItems.MyRand.Next(1, 2 + 1) - 1;
+            for (int BuddyIndex = 1; BuddyIndex <= BuddiesToSpawn; BuddyIndex++)
+            {
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+                if (PersonType != null)
+                {
+                    PedExt Buddy = CreatePerson();
+                    EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                }
+            }
+        }
     }
     private void AttemptVehicleSpawn()
     {

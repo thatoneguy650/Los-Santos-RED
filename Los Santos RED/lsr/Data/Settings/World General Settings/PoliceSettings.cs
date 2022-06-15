@@ -135,6 +135,8 @@ public class PoliceSettings : ISettingsDefaultable
     public int InvestigationRespondingOfficers_Wanted6 { get; set; }
 
 
+    public int PercentageSpawnOnFootNearStation { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -271,6 +273,8 @@ public class PoliceSettings : ISettingsDefaultable
         InvestigationRespondingOfficers_Wanted4 = 8;
         InvestigationRespondingOfficers_Wanted5 = 10;
         InvestigationRespondingOfficers_Wanted6 = 14;
+
+        PercentageSpawnOnFootNearStation = 50;
 
     }
 }

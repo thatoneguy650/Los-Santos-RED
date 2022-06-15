@@ -126,11 +126,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            //if (Player.CanPerformActivities && !IsCancelled)
-            //{
-            //    Player.ButtonPrompts.AddPrompt("DrinkingActivity", "Stop Drinking", "StopDrink", Settings.SettingsManager.KeySettings.InteractCancel, 999);
-            //}
-            uint GameTimeBetweenDrinks = 4000;
+            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(2500,4000);
             uint GameTimeLastChangedIdle = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
@@ -150,17 +146,12 @@ namespace LosSantosRED.lsr.Player
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                         GameTimeLastChangedIdle = Game.GameTime;
+                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(2500, 4000);
                     }
                 }
-                //if (Player.ButtonPrompts.IsPressed("StopDrink"))
-                //{
-                //    Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
-                //    IsCancelled = true;
-                //}
                 UpdateHealthGain();
                 GameFiber.Yield();
             }
-            //Player.ButtonPrompts.RemovePrompts("DrinkingActivity");
             Exit();
         }
         private void UpdateHealthGain()

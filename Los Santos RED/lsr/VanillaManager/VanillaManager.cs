@@ -169,7 +169,6 @@ public class VanillaManager
                 ActivateDispatch();
             }
         }
-
         if (Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
             if (IsVanillaScenarioCopsActive)
@@ -184,39 +183,26 @@ public class VanillaManager
                 ActivateScenarioCops();
             }
         }
-
         if (Settings.SettingsManager.VanillaSettings.TerminateRespawn)
         {
             TerminateRespawnScripts();
         }
-
-        ////if (Game.GameTime - GameTimeLastStoppedGang >= 10000)
-        ////{
-
-        //if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
-        //{
-        //    TerminateScenarioGangs();
-        //}
-        //else
-        //{
-        //    if (!IsVanillaScenarioGangsActive)
-        //    {
-        //        ActivateScenarioGangs();
-        //    }
-        //}
-        //if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
-        //{
-        //    SupressVanillaGangPeds();
-        //}
-        //else
-        //{
-        //    if (IsVanillaGangPedsSupressed)
-        //    {
-        //        UnSupressVanillaGangPeds();
-        //    }
-        //}
-        ////    GameTimeLastStoppedGang = Game.GameTime;
-        ////}
+        if (Settings.SettingsManager.VanillaSettings.TerminateScenarioGangs)
+        {
+            TerminateScenarioGangs();
+        }
+        else
+        {
+            ActivateScenarioGangs();
+        }
+        if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
+        {
+            SupressVanillaGangPeds();
+        }
+        else
+        {
+            UnSupressVanillaGangPeds();
+        }
 
         if (Settings.SettingsManager.VanillaSettings.TerminateHealthRecharge)
         {
@@ -231,8 +217,11 @@ public class VanillaManager
     }
     public void UnSupressVanillaGangPeds()
     {
-        IsVanillaGangPedsSupressed = false;
-        SetGangPedsSupression(false);
+        if (IsVanillaGangPedsSupressed)
+        {
+            IsVanillaGangPedsSupressed = false;
+            SetGangPedsSupression(false);
+        }
     }
     private void SetGangPedsSupression(bool isSuppressed)
     {
@@ -285,8 +274,11 @@ public class VanillaManager
     }
     public void ActivateScenarioGangs()
     {
-        IsVanillaScenarioGangsActive = true;
-        SetGangScenarios(true);
+        if (!IsVanillaScenarioGangsActive)
+        {
+            IsVanillaScenarioGangsActive = true;
+            SetGangScenarios(true);
+        }
     }
     public void TerminateScenarioGangs()
     {

@@ -81,14 +81,17 @@ public class PedVariation
             EntryPoint.WriteToConsole($"ReplacePedComponentVariation Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
-    public void ApplyToPedSlow(Ped ped)
+    public void ApplyToPedSlow(Ped ped, bool setDefaultFirst)
     {
         try
         {
             if (ped.Exists())
             {
-                NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
-                GameFiber.Yield();
+                if (setDefaultFirst)
+                {
+                    NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+                    GameFiber.Yield();
+                }
                 if (ped.Exists())
                 {
                     foreach (PedComponent Component in Components)
@@ -104,7 +107,10 @@ public class PedVariation
                             break;
                         }
                     }
-                    NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
+                    if (setDefaultFirst)
+                    {
+                        NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
+                    }
                     foreach (PedPropComponent Prop in Props)
                     {
                         GameFiber.Yield();

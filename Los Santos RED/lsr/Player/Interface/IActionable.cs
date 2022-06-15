@@ -61,6 +61,9 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
+        Investigation Investigation { get; }
+        bool IsNotWanted { get; }
+        PoliceResponse PoliceResponse { get; }
 
 
         //Action DropWeapon { get; }
@@ -82,5 +85,6 @@ namespace LosSantosRED.lsr.Interface
         void ToggleHazards();
         void ToggleVehicleEngine();
         void ToggleDriverWindow();
+        void SetWantedLevel(int selectedItem, string v1, bool v2);
     }
 }

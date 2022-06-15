@@ -26,8 +26,13 @@ class DispatchablePeople : IDispatchablePeople
         }
         else
         {
+            DefaultConfig_Simple();
             DefaultConfig();
         }
+    }
+    public List<DispatchablePerson> GetPersonData(string dispatchablePersonGroupID)
+    {
+        return PeopleGroupLookup.FirstOrDefault(x => x.DispatchablePersonGroupID == dispatchablePersonGroupID)?.DispatchablePeople;
     }
     private void DefaultConfig()
     {
@@ -195,10 +200,10 @@ class DispatchablePeople : IDispatchablePeople
         List<DispatchablePerson> DOAPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("u_m_m_doa_01",100,100) };
         List<DispatchablePerson> SAHPPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_y_hwaycop_01",100,100){ RequiredVariation = new PedVariation(
+            new DispatchablePerson("s_m_y_hwaycop_01",100,100){ AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(4, 1, 0, 0) },
                 new List<PedPropComponent>() ) },
-            new DispatchablePerson("s_m_y_hwaycop_01",0,0){ RequiredHelmetType = 1024, GroupName = "MotorcycleCop",UnitCode = "Mary", RequiredVariation = new PedVariation(
+            new DispatchablePerson("s_m_y_hwaycop_01",0,0){ RequiredHelmetType = 1024, GroupName = "MotorcycleCop",UnitCode = "Mary", AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },
                 new List<PedPropComponent>() ) },};
         List<DispatchablePerson> MilitaryPeds = new List<DispatchablePerson>() {
@@ -328,9 +333,187 @@ class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
-    public List<DispatchablePerson> GetPersonData(string dispatchablePersonGroupID)
+    private void DefaultConfig_Simple()
     {
-        return PeopleGroupLookup.FirstOrDefault(x => x.DispatchablePersonGroupID == dispatchablePersonGroupID)?.DispatchablePeople;
+        List<DispatchablePersonGroup> SimplePeopleGroupLookup = new List<DispatchablePersonGroup>();
+
+        //Cops
+        List<DispatchablePerson> StandardCops = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("s_f_y_cop_01",40,40) { MaxWantedLevelSpawn = 2
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//new PedPropComponent(0, 0, 0)//Hat,//new PedPropComponent(1, 0, 0)//Glasses
+            new DispatchablePerson("s_m_y_cop_01",60,60) { MaxWantedLevelSpawn = 2
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }
+                , AllowRandomizeBeforeVariationApplied = true
+                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) }) },//filled duty belt
+            new DispatchablePerson("s_m_y_cop_01",0,100) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }//Glasses only?
+                , AllowRandomizeBeforeVariationApplied = true
+                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 2, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0, 1, 1) }) },//vest, no hat
+        };
+        List<DispatchablePerson> SheriffPeds = new List<DispatchablePerson>() {
+            
+            new DispatchablePerson("s_f_y_sheriff_01",35,35) { MaxWantedLevelSpawn = 2
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },
+            new DispatchablePerson("s_m_y_sheriff_01",65,65) { MaxWantedLevelSpawn = 2, AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) })
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//filled duty belt
+            new DispatchablePerson("s_m_y_sheriff_01",0,100) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3
+                , AllowRandomizeBeforeVariationApplied = true
+                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 2, 0, 0) })
+                , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//filled duty belt},//vest
+        };
+        List<DispatchablePerson> NOOSEPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_swat_01", 100,100){ RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) }
+        };
+        List<DispatchablePerson> FIBPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_fibsec_01",55,70){MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_fiboffice_01",15,0){MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_fiboffice_02",15,0){MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("u_m_m_fibarchitect",10,0) {MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_y_swat_01", 5,30) { GroupName = "FIBHRT", MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1, 0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) }
+            };
+        List<DispatchablePerson> ParkRangers = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_ranger_01",75,75),
+            new DispatchablePerson("s_f_y_ranger_01",25,25) };
+        List<DispatchablePerson> DOAPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("u_m_m_doa_01",100,100) };
+        List<DispatchablePerson> SAHPPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_hwaycop_01",100,100){ AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(4, 1, 0, 0) },
+                new List<PedPropComponent>() ) },
+            new DispatchablePerson("s_m_y_hwaycop_01",0,0){ RequiredHelmetType = 1024, GroupName = "MotorcycleCop",UnitCode = "Mary", AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },
+                new List<PedPropComponent>() ) },};
+        List<DispatchablePerson> MilitaryPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_armymech_01",25,0),
+            new DispatchablePerson("s_m_m_marine_01",50,0),
+            new DispatchablePerson("s_m_m_marine_02",0,0),
+            new DispatchablePerson("s_m_y_marine_01",25,0),
+            new DispatchablePerson("s_m_y_marine_02",0,0),
+            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0) }) },
+            new DispatchablePerson("s_m_m_pilot_02",0,0),
+            new DispatchablePerson("s_m_y_pilot_01",0,0) };
+        List<DispatchablePerson> PrisonPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_prisguard_01",100,100) };
+        List<DispatchablePerson> SecurityPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_security_01",100,100) };
+        List<DispatchablePerson> CoastGuardPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_uscg_01",100,100) };
+        List<DispatchablePerson> NYSPPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_snowcop_01",100,100) };
+        List<DispatchablePerson> Firefighters = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_fireman_01",100,100) };
+        List<DispatchablePerson> EMTs = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_paramedic_01",100,100) };
+
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("StandardCops", StandardCops));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("SheriffPeds", SheriffPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("SecurityPeds", SecurityPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("EMTs", EMTs));
+
+        //Gangs
+        List<DispatchablePerson> LostMCPEds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> VagosPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_mexgoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgoon_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgoon_03",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_vagos_01",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> FamiliesPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_famca_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_famdnf_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_famfor_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_families_01",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> BallasPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_ballasout_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_ballaeast_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_ballaorig_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_f_y_ballas_01",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> MarabuntaPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_salvaboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_salvagoon_03",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> AltruistPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_acult_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_acult_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_acult_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_acult_01",10,10,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_acult_02",10,10,5,10,400,600,0,1),
+            new DispatchablePerson("a_f_m_fatcult_01",10,10,5,10,400,600,0,1), };
+        List<DispatchablePerson> VarriosPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_azteca_01",100,100,5,10,400,600,0,1),
+            new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1), };
+        List<DispatchablePerson> TriadsPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_korboss_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("ig_hao",33,33,5,10,400,600,0,1),  };
+        List<DispatchablePerson> KoreanPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_y_korean_01",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_korean_02",33,33,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_korlieut_01",33,33,5,10,400,600,0,1) };
+        List<DispatchablePerson> RedneckPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_m_hillbilly_02",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> ArmenianPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_armboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_armgoon_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_armlieut_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_armgoon_02",10,10,5,10,400,600,0,1) };
+        List<DispatchablePerson> CartelPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("g_m_m_mexboss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_m_mexboss_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1), };
+        List<DispatchablePerson> MafiaPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            new DispatchablePerson("s_m_m_highsec_02",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("u_m_m_jewelsec_01",30,30,5,10,400,600,0,1),
+             new DispatchablePerson("u_m_m_aldinapoli",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+                                                                                                                                                                                                   };
+        List<DispatchablePerson> YardiesPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_o_soucent_01",30,30,5,10,400,600,0,1),
+            new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1),};
+
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPEds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("AltruistPeds", AltruistPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("VarriosPeds", VarriosPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("TriadsPeds", TriadsPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("KoreanPeds", KoreanPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("RedneckPeds", RedneckPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
+        SimplePeopleGroupLookup.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
+        Serialization.SerializeParams(SimplePeopleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchablePeople_Simple.xml");
+
     }
+
 }
 
