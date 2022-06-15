@@ -386,7 +386,6 @@ public class Places
             }
         }
     }
-
     public void ActivateBasicLocation(BasicLocation gl)
     {
         if (!ActiveBasicLocations.Contains(gl))

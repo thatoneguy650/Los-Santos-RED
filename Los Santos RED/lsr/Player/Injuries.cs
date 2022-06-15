@@ -25,7 +25,6 @@ public class Injuries
     private string OverLayEffect;
     private bool IsPrimary;
     public bool IsInjured { get; private set; }
-
     public string DebugString { get; set; }
     private string ClipsetAtCurrentIntensity
     {

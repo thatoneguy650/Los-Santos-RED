@@ -28,7 +28,7 @@ public class Settings : ISettingsProvideable
     {
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
-        SettingsManager.UISettings.ShowDebug = false;
+        SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
         SettingsManager.FireSettings.ShowSpawnedBlips = false;
@@ -51,7 +51,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
-        SettingsManager.UISettings.ShowDebug = false;
+        SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
         SettingsManager.FireSettings.ShowSpawnedBlips = false;
@@ -69,16 +69,22 @@ public class Settings : ISettingsProvideable
         SettingsManager.SwaySettings.ApplySwayInVehicle = true;
 
 
-        SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency = false;
+        SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;
 
-        SettingsManager.UISettings.AlwaysShowRadar = false;
-        SettingsManager.UISettings.NeverShowRadar = false;
-        SettingsManager.UISettings.ShowRadarInVehicleOnly = false;
-        SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
+        SettingsManager.UIGeneralSettings.AlwaysShowRadar = false;
+        SettingsManager.UIGeneralSettings.NeverShowRadar = false;
+        SettingsManager.UIGeneralSettings.ShowRadarInVehicleOnly = false;
+        SettingsManager.UIGeneralSettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
 
 
-        SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive = true;
-        SettingsManager.UISettings.HideRadarUnlessActionPopUpActive = true;
+        SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive = true;
+        SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive = true;
+
+
+        SettingsManager.ScannerSettings.EnableNotifications = false;
+
+
+        SettingsManager.ActionWheelSettings.MessagesToShow = 5;
 
     }
     public void SetHard()
@@ -88,7 +94,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
-        SettingsManager.UISettings.ShowDebug = false;
+        SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
         SettingsManager.FireSettings.ShowSpawnedBlips = false;
@@ -142,16 +148,16 @@ public class Settings : ISettingsProvideable
         SettingsManager.SwaySettings.ApplySwayInVehicle = true;
 
 
-        SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency = false;
+        SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;
 
-        SettingsManager.UISettings.AlwaysShowRadar = false;
-        SettingsManager.UISettings.NeverShowRadar = false;
-        SettingsManager.UISettings.ShowRadarInVehicleOnly = false;
-        SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
+        SettingsManager.UIGeneralSettings.AlwaysShowRadar = false;
+        SettingsManager.UIGeneralSettings.NeverShowRadar = false;
+        SettingsManager.UIGeneralSettings.ShowRadarInVehicleOnly = false;
+        SettingsManager.UIGeneralSettings.ShowRadarOnFootWhenCellPhoneActiveOnly = false;
 
 
-        SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive = true;
-        SettingsManager.UISettings.HideRadarUnlessActionPopUpActive = true;
+        SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive = true;
+        SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive = true;
 
         SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
         SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;

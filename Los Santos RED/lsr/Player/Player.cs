@@ -135,45 +135,27 @@ namespace Mod
             WeaponDropping = new WeaponDropping(this, Weapons, Settings);
             Surrendering = new SurrenderActivity(this, World);
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
-            //Violations.Setup();
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
             Inventory = new Inventory(this);
             Sprinting = new Sprinting(this, Settings);
-
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            //Respawning.Setup();
             GangRelationships = new GangRelationships(gangs, this, Settings);
-            //GangRelationships.Setup();
             WeaponSway = new WeaponSway(this, Settings);
             WeaponRecoil = new WeaponRecoil(this, Settings);
             WeaponSelector = new WeaponSelector(this, Settings);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
-            //CellPhone.Setup();
-
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
-            //PlayerTasks.Setup();
-
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
-            //GunDealerRelationship.Setup();
             OfficerFriendlyRelationship = new OfficerFriendlyRelationship(this, PlacesOfInterest);
-            //OfficerFriendlyRelationship.Setup();
-
             Licenses = new Licenses(this);
-
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
-            //Properties.Setup();
-
             ButtonPrompts = new ButtonPrompts(this, Settings);
-
             Injuries = new Injuries(this, Settings);
-            //ButtonPrompts.Setup();
-
             Dances = dances;
-
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
@@ -197,19 +179,13 @@ namespace Mod
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 10f;
         public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing && !IsDancing;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
-
-
-
         public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsDancing;
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
-
-
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
         public bool CanUndie => Respawning.CanUndie;
         public bool CanWaveHands => Surrendering.CanWaveHands;
-
         public bool CanCancelCurrentActivity => UpperBodyActivity?.CanCancel == true || LowerBodyActivity?.CanCancel == true;
         public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
         public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
@@ -324,29 +300,9 @@ namespace Mod
                 }
             }
         }
-
-
-        //public bool IsGettingOutOfAVehicle
-        //{
-        //    get => isGettingOutOfAVehicle;
-        //    private set
-        //    {
-        //        if (isGettingOutOfAVehicle != value)
-        //        {
-        //            isGettingOutOfAVehicle = value;
-        //            OnGettingOutOfVehicleChanged();
-        //        }
-        //    }
-        //}
-
-
-
         public bool IsHoldingHostage { get; set; }
         public bool IsHoldingUp { get; set; }
         public bool IsHotWiring { get; private set; }
-
-
-
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
         public bool IsIncapacitated => IsStunned || IsRagdoll;
@@ -387,7 +343,6 @@ namespace Mod
         public bool IsRagdoll { get; private set; }
         public bool IsRidingBus { get; set; }
         public bool IsSitting { get; set; } = false;
-
         public bool IsShooting
         {
             get => isShooting;
@@ -991,7 +946,7 @@ namespace Mod
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-            if (Settings.SettingsManager.UISettings.AllowScreenEffectReset)//this should be moved methinks
+            if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset)//this should be moved methinks
             {
                 NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
                 NativeFunction.Natives.x80C8B1846639BB19(0);
@@ -2871,17 +2826,6 @@ namespace Mod
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
         }
-        //private void OnGettingOutOfVehicleChanged()
-        //{
-        //    if(IsGettingOutOfAVehicle)
-        //    {
-        //       // EntryPoint.WriteToConsole("You are getting out of a vehicle");
-        //    }
-        //    else
-        //    {
-        //        //EntryPoint.WriteToConsole("You are NO LONGER getting out of a vehicle");
-        //    }
-        //}
         private void OnIsInVehicleChanged()
         {
             GameFiber.Yield();
@@ -2951,8 +2895,6 @@ namespace Mod
             Scanner.OnSuspectWasted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
         }
-
-
         private void OnIsShootingChanged()
         {
             if (IsShooting)
@@ -2968,7 +2910,6 @@ namespace Mod
                 EntryPoint.WriteToConsole("PLAYER EVENT: Stopped Shooting");
             }
         }
-
         private void OnStartedDuckingInVehicle()
         {
             if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)

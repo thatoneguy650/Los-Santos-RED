@@ -32,6 +32,35 @@ public class Names : INameProvideable
             DefaultConfig();
         }
     }
+    public string GetRandomName(string modelName, bool IsMale)
+    {
+        if (modelName.ToLower() == "player_zero")
+        {
+            return "Michael De Santa";
+        }
+        else if (modelName.ToLower() == "player_one")
+        {
+            return "Franklin Clinton";
+        }
+        else if (modelName.ToLower() == "player_two")
+        {
+            return "Trevor Philips";
+        }
+        else
+        {
+            string Name = "";
+            if (IsMale)
+            {
+                Name += NameList.Where(x => x.Type == NameType.Male).PickRandom().Name;
+            }
+            else
+            {
+                Name += NameList.Where(x => x.Type == NameType.Female).PickRandom().Name;
+            }
+            Name += " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
+            return Name;
+        }
+    }
     public string GetRandomName(bool IsMale)
     {
         string Name = "";

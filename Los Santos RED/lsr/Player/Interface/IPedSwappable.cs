@@ -37,5 +37,7 @@ namespace LosSantosRED.lsr.Interface
         void TakeOwnershipOfVehicle(VehicleExt currentVehicle, bool showNotification);
         void ClearVehicleOwnership();
         void UpdateVehicleData();
+        void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12);
+        void SetDemographics(string modelName, bool isMale, string v1, int v2);
     }
 }

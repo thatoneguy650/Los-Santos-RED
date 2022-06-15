@@ -11,6 +11,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
+    private static int LogLevel = 0;
     private static bool MenyooRunning = false;
     private static System.Reflection.Assembly assembly;
     private static System.Diagnostics.FileVersionInfo fvi;
@@ -20,7 +21,6 @@ public static class EntryPoint
     public static int PersistentVehiclesCreated { get; set; } = 0;
     public static int PersistentVehiclesNonPersistent { get; set; } = 0;
     public static int PersistentVehiclesDeleted { get; set; } = 0;
-    private static int LogLevel = 0;
     public static float CellSize { get; private set; } = 50f;
     public static int FocusCellX { get; set; } = 0;
     public static int FocusCellY { get; set; } = 0;
@@ -29,12 +29,9 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
-
-    public static string OfficerFriendlyContactName => "Officer Friendly";
-    public static string UndergroundGunsContactName => "Underground Guns";
-    public static string EmergencyServicesContactName => "911 - Emergency Services";
-
-
+    public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
+    public static string UndergroundGunsContactName => "Underground Guns";//these have gotta go, but where?
+    public static string EmergencyServicesContactName => "911 - Emergency Services";//these have gotta go, but where?
     public static void Main()
     {
         #if DEBUG
@@ -72,7 +69,7 @@ public static class EntryPoint
                     NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk~s~~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
                 }
                 ModController = new ModController();
-                ModController.Start();
+                ModController.Setup();
             }
             GameFiber.Yield();
         }
@@ -81,14 +78,14 @@ public static class EntryPoint
     {
         if (5 <= LogLevel)
         {
-            Game.Console.Print($"m{(MenyooRunning ? 4556 : 0)} v{fvi.FileVersion} - {Message}");
+            Game.Console.Print($"m{(MenyooRunning ? 7556 : 0)} v{fvi.FileVersion} - {Message}");
         }
     }
     public static void WriteToConsole(string Message, int level)
     {
         if (level <= LogLevel)
         {
-            Game.Console.Print($"m{(MenyooRunning ? 4556 : 0)} v{fvi.FileVersion} - {Message}");
+            Game.Console.Print($"m{(MenyooRunning ? 7556 : 0)} v{fvi.FileVersion} - {Message}");
         }
     }
     [ConsoleCommand]

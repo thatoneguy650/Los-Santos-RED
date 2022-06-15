@@ -518,11 +518,11 @@ public class PedSwap : IPedSwap
         variation.ApplyToPed(Game.LocalPlayer.Character);
         if (setRandomDemographics)
         {
-            EntryPoint.ModController.NewPlayer(ModelToChange, isMale);
+            NewPlayer(ModelToChange, isMale);
         }
         else
         {
-            EntryPoint.ModController.NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign);
+            NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign);
         }
         Player.ModelName = ModelToChange;
         Player.CurrentModelVariation = variation.Copy();
@@ -582,11 +582,11 @@ public class PedSwap : IPedSwap
         }
         if (setRandomDemographics)
         {
-            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale);
+           NewPlayer(TargetPedModelName, TargetPedIsMale);
         }
         else
         {
-            EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
+            NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign);
         }
 
 
@@ -805,6 +805,41 @@ public class PedSwap : IPedSwap
         }
         FormerPlayer.IsPersistent = false;
     }
+
+
+
+
+    public void NewPlayer(string modelName, bool isMale)//gotta go
+    {
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax));
+    }
+    public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith)//gotta go
+    {
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
+    }
+    private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
+    {
+        if (modelBeforeSpoof.ToLower() == "player_zero")
+        {
+            return "Michael De Santa";
+        }
+        else if (modelBeforeSpoof.ToLower() == "player_one")
+        {
+            return "Franklin Clinton";
+        }
+        else if (modelBeforeSpoof.ToLower() == "player_two")
+        {
+            return "Trevor Philips";
+        }
+        else
+        {
+            return defaultName;
+        }
+    }
+
+
     private class TakenOverPed
     {
         public TakenOverPed(Ped _Pedestrian, PoolHandle _OriginalHandle)

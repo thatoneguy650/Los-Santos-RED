@@ -89,29 +89,31 @@ public class ButtonPrompts
     {
         Player.ButtonPromptList.Clear();
     }
-
+    public void RemovePrompts(string groupName)
+    {
+        Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+    }
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier) && !Player.ButtonPromptList.Any(x => x.Key == interactKey))
         {
-            //Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
-            //Player.ButtonPromptList.RemoveAll(x => x.Identifier == identifier);
             Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
-
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier))
         {
-            //Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
-            //Player.ButtonPromptList.RemoveAll(x => x.Identifier == identifier);
             Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
     public bool HasPrompt(string identifier)
     {
         return Player.ButtonPromptList.Any(x => x.Identifier == identifier);
+    }
+    public bool HasPrompt(Keys key, string excludedIdentifier)
+    {
+        return Player.ButtonPromptList.Any(x => x.Key == key && x.Identifier != excludedIdentifier);
     }
     public bool IsPressed(string identifier)
     {
@@ -127,15 +129,14 @@ public class ButtonPrompts
     }
     private void PersonInteractingPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Talk {Player.CurrentLookedAtPed.Handle}"))
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Talk {Player.CurrentLookedAtPed.Handle}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"Talk to {Player.CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
+            RemovePrompts("StartConversation");
+            AddPrompt("StartConversation", $"Talk to {Player.CurrentLookedAtPed.FormattedName}", $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
-        if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !Player.ButtonPromptList.Any(x => x.Identifier == $"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
+        if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
         {
             bool toSell = false;
             bool toBuy = false;
@@ -144,7 +145,7 @@ public class ButtonPrompts
                 toSell = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable);
                 toBuy = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Purchaseable);
             }
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
+            RemovePrompts("StartTransaction");
             string promptText = $"Purchase from {Player.CurrentLookedAtPed.FormattedName}";
             if (toSell && toBuy)
             {
@@ -162,93 +163,94 @@ public class ButtonPrompts
             {
                 promptText = $"Transact with {Player.CurrentLookedAtPed.FormattedName}";
             }
-            Player.ButtonPromptList.Add(new ButtonPrompt(promptText, "StartTransaction", $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2));
+
+            AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
+            RemovePrompts("StartTransaction");
         }
     }
     private void PersonLootingPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Search {Player.CurrentLookedAtPed.Handle}"))
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Search {Player.CurrentLookedAtPed.Handle}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"Search {Player.CurrentLookedAtPed.FormattedName}", "Search", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1));
+            RemovePrompts("Search");
+            AddPrompt("Search", $"Search {Player.CurrentLookedAtPed.FormattedName}", $"Search {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
-        //else
-        //{
-        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
-        //}
     }
     private void PersonDraggingPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Drag {Player.CurrentLookedAtPed.Handle}"))
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Drag {Player.CurrentLookedAtPed.Handle}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Drag");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"Drag {Player.CurrentLookedAtPed.FormattedName}", "Drag", $"Drag {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+            RemovePrompts("Drag");
+            AddPrompt("Drag", $"Drag {Player.CurrentLookedAtPed.FormattedName}", $"Drag {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
         }
-        //else
-        //{
-        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
-        //}
     }
     private void PersonGrabPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"Grab {Player.CurrentLookedAtPed.Handle}"))
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Grab {Player.CurrentLookedAtPed.Handle}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"Grab {Player.CurrentLookedAtPed.FormattedName}", "Grab", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999));
+            RemovePrompts("Grab");
+            AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999);
         }
-        //else
-        //{
-        //    Player.ButtonPromptList.RemoveAll(x => x.Group == "Loot");
-        //}
     }
-    public void RemovePrompts(string groupName)
-    {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
-    }
+
     private void LocationInteractingPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
-
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"{Player.ClosestInteractableLocation.ButtonPromptText}"))
+        RemovePrompts("StartConversation");
+        RemovePrompts("StartTransaction");
+        RemovePrompts("StartScenario");
+        RemovePrompts("Search");
+        RemovePrompts("Drag");//new
+        RemovePrompts("Grab");//new
+        if(!HasPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"{Player.ClosestInteractableLocation.ButtonPromptText}", "InteractableLocation", $"{Player.ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+            RemovePrompts("InteractableLocation");
+            AddPrompt("InteractableLocation", $"{Player.ClosestInteractableLocation.ButtonPromptText}", $"{Player.ClosestInteractableLocation.ButtonPromptText}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
+
     }
     private void ScenarioPrompts()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
-
-
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == $"StartScenario"))
+        RemovePrompts("StartConversation");
+        RemovePrompts("StartTransaction");
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("Search");
+        RemovePrompts("Drag");//new
+        RemovePrompts("Grab");//new
+        if (!HasPrompt($"StartScenario"))
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
-            Player.ButtonPromptList.Add(new ButtonPrompt($"{Player.ClosestScenario?.Name}", "StartScenario", $"StartScenario", Settings.SettingsManager.KeySettings.ScenarioStart, 2));
+            RemovePrompts("StartScenario");
+            AddPrompt("StartScenario", $"{Player.ClosestScenario?.Name}", $"StartScenario", Settings.SettingsManager.KeySettings.ScenarioStart, 2);
         }
     }
     private void ActivityPrompts()
     {
+        if(HasPrompt(Settings.SettingsManager.KeySettings.InteractNegativeOrNo, "ActivityControlPause"))
+        {
+            RemovePrompts("ActivityControlPause");
+        }
+        if (HasPrompt(Settings.SettingsManager.KeySettings.InteractNegativeOrNo, "ActivityControlContinue"))
+        {
+            RemovePrompts("ActivityControlContinue");
+        }
+        if (HasPrompt(Settings.SettingsManager.KeySettings.InteractCancel, "ActivityControlCancel"))
+        {
+            RemovePrompts("ActivityControlCancel");
+        }
+
         if (Player.IsPerformingActivity)
         {
             if (Player.CanPauseCurrentActivity && !Player.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlPause", "Pause", "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlPause", "Pause Activity", "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
             }
             else
             {
@@ -256,7 +258,7 @@ public class ButtonPrompts
             }
             if (Player.CanCancelCurrentActivity)
             {
-                AttemptAddPrompt("ActivityControlCancel", "Stop", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                AttemptAddPrompt("ActivityControlCancel", "Stop Activity", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
             }
             else
             {
@@ -268,10 +270,10 @@ public class ButtonPrompts
         {
             if (Player.CanPauseCurrentActivity && Player.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlContinue", "Continue", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlContinue", "Continue Activity", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
                 if (Player.CanCancelCurrentActivity)
                 {
-                    AttemptAddPrompt("ActivityControlCancel", "Stop", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                    AttemptAddPrompt("ActivityControlCancel", "Stop Activity", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
                 }
                 else
                 {
@@ -284,7 +286,6 @@ public class ButtonPrompts
                 RemovePrompts("ActivityControlCancel");
             }
             RemovePrompts("ActivityControlPause");
-            //RemovePrompts("ActivityControlCancel");
         }
     }
 }

@@ -130,7 +130,7 @@ namespace LosSantosRED.lsr.Player
             //{
             //    Player.ButtonPrompts.AddPrompt("DrinkingActivity", "Stop Drinking", "StopDrink", Settings.SettingsManager.KeySettings.InteractCancel, 999);
             //}
-            uint GameTimeBetweenDrinks = 1100;
+            uint GameTimeBetweenDrinks = 4000;
             uint GameTimeLastChangedIdle = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
@@ -149,6 +149,7 @@ namespace LosSantosRED.lsr.Player
                         PlayingAnim = Data.AnimIdle.PickRandom();
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
+                        GameTimeLastChangedIdle = Game.GameTime;
                     }
                 }
                 //if (Player.ButtonPrompts.IsPressed("StopDrink"))

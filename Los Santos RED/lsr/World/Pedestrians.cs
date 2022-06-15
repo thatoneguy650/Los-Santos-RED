@@ -52,9 +52,7 @@ public class Pedestrians
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
-
     public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
-
     public List<PedExt> Citizens
     {
         get
@@ -66,7 +64,6 @@ public class Pedestrians
             return myList;
         }
     }
-
     public List<PedExt> PedExts
     {
         get
@@ -422,7 +419,6 @@ public class Pedestrians
         Civilians.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
     }
-
     public void Setup()
     {
         //foreach(Gang gang in Gangs.AllGangs)
@@ -1061,154 +1057,3 @@ public class Pedestrians
         }
     }
 }
-
-
-/*    public void Prune()
-    {
-        foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            bool hasBlip = false;
-            Blip myblip = Cop.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
-            Cop.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if(!DeadPeds.Any(x=> x.Handle == Cop.Handle))
-            {
-                Cop.IsDead = true;
-                DeadPeds.Add(Cop);
-            }
-        }
-        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            bool hasBlip = false;
-            Blip myblip = EMT.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
-            EMT.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == EMT.Handle))
-            {
-                EMT.IsDead = true;
-                DeadPeds.Add(EMT);
-            }
-        }
-        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            bool hasBlip = false;
-            Blip myblip = Firefighter.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
-            Firefighter.Pedestrian.IsPersistent = false;
-            EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == Firefighter.Handle))
-            {
-                Firefighter.IsDead = true;
-                DeadPeds.Add(Firefighter);
-            }
-        }
-        foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            bool hasBlip = false;
-            Blip myblip = GangMember.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
-            GangMember.Pedestrian.IsPersistent = false;
-
-            if(GangMember.Pedestrian.CurrentVehicle.Exists() && GangMember.Pedestrian.CurrentVehicle.IsPersistent)
-            {
-                GangMember.Pedestrian.CurrentVehicle.IsPersistent = false;
-                EntryPoint.PersistentVehiclesNonPersistent++;
-            }
-            if (!DeadPeds.Any(x => x.Handle == GangMember.Handle))
-            {
-                GangMember.IsDead = true;
-                DeadPeds.Add(GangMember);
-            }
-            EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: GANG MEMBER {GangMember.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-        }
-        foreach (PedExt Civilian in Civilians.Where(x => x.IsBusted && x.DistanceToPlayer >= 100f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            bool hasBlip = false;
-            Blip myblip = Civilian.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
-            if(!Civilian.WasModSpawned)
-            {
-                Civilian.Pedestrian.IsPersistent = false;
-            }
-            EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-        }
-
-        RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
-        foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 150f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent && x.Pedestrian.RelationshipGroup == formerPlayer))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {            
-            Civilian.Pedestrian.IsPersistent = false;
-            EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, FORMER PLAYER", 5);
-            EntryPoint.PersistentPedsNonPersistent++;
-        }
-        foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
-        {
-            if(Civilian.HasSeenPlayerCommitCrime && (Civilian.WillCallPolice || Civilian.WillCallPoliceIntense) && !Civilian.HasLoggedDeath)
-            {
-                Civilian.CurrentTask?.Update();
-            }
-        }
-        // Police.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
-        
-        foreach(PedExt Civilian in Civilians.Where(x=> x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
-        {
-            if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
-            {
-                Civilian.IsDead = true;
-                DeadPeds.Add(Civilian);
-            }
-        }
-        foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
-        {
-            if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
-            {
-                Civilian.IsDead = true;
-                DeadPeds.Add(Civilian);
-            }
-        }
-
-
-
-        Police.RemoveAll(x => x.CanRemove);
-        EMTs.RemoveAll(x => x.CanRemove);
-        Firefighters.RemoveAll(x => x.CanRemove);
-        Merchants.RemoveAll(x => x.CanRemove);
-        Civilians.RemoveAll(x => x.CanRemove);
-        Zombies.RemoveAll(x => x.CanRemove);
-        GangMembers.RemoveAll(x => x.CanRemove);
-
-
-
-
-        Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
-
-
-        DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
-
-    }*/

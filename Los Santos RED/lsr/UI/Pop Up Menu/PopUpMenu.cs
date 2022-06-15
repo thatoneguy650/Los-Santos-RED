@@ -97,8 +97,8 @@ public class PopUpMenu
         //NativeFunction.Natives.RELEASE_SOUND_ID(SelectionSoundID);
         NativeFunction.Natives.RELEASE_SOUND_ID(ActionSoundID);
         Game.DisplaySubtitle("");//clear the subtitles out
-        NativeFunction.Natives.x068E835A1D0DC0E3(Settings.SettingsManager.UISettings.ActionPopUpTransitionInEffect);
-        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.UISettings.ActionPopUpTransitionOutEffect, 0, false);
+        NativeFunction.Natives.x068E835A1D0DC0E3(Settings.SettingsManager.ActionWheelSettings.TransitionInEffect);
+        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.ActionWheelSettings.TransitionOutEffect, 0, false);
 
         //NativeFunction.Natives.x068E835A1D0DC0E3("MinigameTransitionIn");
         Game.TimeScale = 1.0f;
@@ -119,7 +119,7 @@ public class PopUpMenu
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
         Game.TimeScale = 0.2f;
         
-        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.UISettings.ActionPopUpTransitionInEffect, 0, true);
+        NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.ActionWheelSettings.TransitionInEffect, 0, true);
 
         NativeFunction.Natives.STOP_SOUND(TransitionOutSound);
         NativeFunction.Natives.RELEASE_SOUND_ID(TransitionOutSound);
@@ -263,7 +263,7 @@ public class PopUpMenu
 
         if(SelectedMenuMap != null)
         {
-            DisplayTextOnScreen(SelectedMenuMap.Description, 0.5f, 0.5f, Settings.SettingsManager.UISettings.ActionPopUpTextScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpTextColor), Settings.SettingsManager.UISettings.ActionPopUpTextFont, GTATextJustification.Center, 255);
+            DisplayTextOnScreen(SelectedMenuMap.Description, 0.5f, 0.5f, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
         }
 
 
@@ -284,7 +284,7 @@ public class PopUpMenu
     }
     private void DrawShapesAndText()
     {
-        if (Settings.SettingsManager.UISettings.ActionPopUpShowCursor)
+        if (Settings.SettingsManager.ActionWheelSettings.ShowCursor)
         {
             NativeFunction.Natives.xAAE7CE1D63167423();//_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME
         }
@@ -297,7 +297,7 @@ public class PopUpMenu
             double angle = 360.0 / TotalItems * Math.PI / 180.0;
             for (int i = 0; i < TotalItems; i++)
             {
-                DrawSingle(ID, Settings.SettingsManager.UISettings.ActionPopUpItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.UISettings.ActionPopUpItemDistanceFromCenter * ConsistencyScale, Settings.SettingsManager.UISettings.ActionPopUpItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.UISettings.ActionPopUpItemDistanceFromCenter);
+                DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter);
                 ID++;
             }
         }
@@ -305,7 +305,7 @@ public class PopUpMenu
     }
     private void DrawSingle(int ID, float CurrentPositionX, float CurrentPositionY)
     {
-        Color overrideColor = Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemColor);
+        Color overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.ItemColor);
         PopUpMenuMap popUpMenuMap = GetCurrentMenuMap(ID);
         string display = ID.ToString();
         bool isSelected = false;
@@ -314,19 +314,19 @@ public class PopUpMenu
             display = popUpMenuMap.Display;
             if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID)//is the selected item
             {
-                overrideColor = Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemSelectedColor);//Color.FromArgb(72, 133, 164, 100);
+                overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.SelectedItemColor);//Color.FromArgb(72, 133, 164, 100);
                 isSelected = true;
             }
         }
         if (isSelected)
         {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * 1.05f * Settings.SettingsManager.UISettings.ActionPopUpItemScale, Settings.SettingsManager.UISettings.ActionPopUpItemHeight * 1.05f * Settings.SettingsManager.UISettings.ActionPopUpItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 175, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
+            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale, Settings.SettingsManager.ActionWheelSettings.ItemHeight * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 175, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
         }
         else
         {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * Settings.SettingsManager.UISettings.ActionPopUpItemScale, Settings.SettingsManager.UISettings.ActionPopUpItemHeight * Settings.SettingsManager.UISettings.ActionPopUpItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 100, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
+            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale, Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 100, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
         }
-        DisplayTextOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.UISettings.ActionPopUpTextScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpTextColor), Settings.SettingsManager.UISettings.ActionPopUpTextFont, GTATextJustification.Center, 255);
+        DisplayTextOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
     private PopUpMenuMap GetCurrentMenuMap(int ID)
@@ -358,34 +358,34 @@ public class PopUpMenu
 
         List<Tuple<string, DateTime>> MessageTimes = new List<Tuple<string, DateTime>>();
 
-        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
-        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
+        MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
+        MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
 
 
         int MessagesDisplayed = 0;
 
-        float YMessageSpacing = Settings.SettingsManager.UISettings.ActionPopUpItemMessageYMessageSpacing;
-        float YHeaderSpacing = Settings.SettingsManager.UISettings.ActionPopUpItemMessageYHeaderSpacing;// 0.02f;
+        float YMessageSpacing = Settings.SettingsManager.ActionWheelSettings.MessageBodySpacingY;
+        float YHeaderSpacing = Settings.SettingsManager.ActionWheelSettings.MessageHeaderSpacingY;// 0.02f;
 
 
 
-        foreach (Tuple<string, DateTime> dateTime in MessageTimes.OrderByDescending(x => x.Item2).Take(Settings.SettingsManager.UISettings.ActionPopUpItemMessagesToShow))
+        foreach (Tuple<string, DateTime> dateTime in MessageTimes.OrderByDescending(x => x.Item2).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow))
         {
             PhoneResponse phoneResponse = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if (phoneResponse != null)
             {
-                DisplayTextBoxOnScreen("~h~" + phoneResponse.ContactName + " - " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
-                DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
-                float Width = Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 3f;
-                float Height = Settings.SettingsManager.UISettings.ActionPopUpItemHeight * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 1.25f;
+                DisplayTextBoxOnScreen("~h~" + phoneResponse.ContactName + " - " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255);
+                DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255); ;
+                float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f;
+                float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f;
 
 
                 float HalfWidth = Width / 2f;
                 float HalfHeight = Height / 2f;
 
 
-                float posX = Settings.SettingsManager.UISettings.ActionPopUpItemMessageX + HalfWidth - (0.01f);
-                float posY = Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
+                float posX = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX + HalfWidth - (0.01f);
+                float posY = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
 
 
                 NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
@@ -394,19 +394,19 @@ public class PopUpMenu
             PhoneText phoneText = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if (phoneText != null)
             {
-                DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + " - " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
-                DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
+                DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + " - " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255);
+                DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255); ;
 
 
-                float Width = Settings.SettingsManager.UISettings.ActionPopUpItemWidth * ConsistencyScale * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 3f;
-                float Height = Settings.SettingsManager.UISettings.ActionPopUpItemHeight * Settings.SettingsManager.UISettings.ActionPopUpItemScale * 1.25f ;
+                float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f;
+                float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f ;
 
 
                 float HalfWidth = Width / 2f;
                 float HalfHeight = Height / 2f;
 
-                float posX = Settings.SettingsManager.UISettings.ActionPopUpItemMessageX + HalfWidth - (0.01f);
-                float posY = Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
+                float posX = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX + HalfWidth - (0.01f);
+                float posY = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
 
 
                 NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);

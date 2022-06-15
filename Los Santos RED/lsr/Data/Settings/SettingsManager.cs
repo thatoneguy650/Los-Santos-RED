@@ -17,11 +17,12 @@ public class SettingsManager
     public SettingsManager()
     {
         AllDefaultableSettings = new List<ISettingsDefaultable>()
-        {RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, UISettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
-        PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings
+        {RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
+        PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
+        UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings
+
         };
     }
-
     [Category("Player")]
     public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
     [Category("Player")]
@@ -47,17 +48,11 @@ public class SettingsManager
     [Category("Player")]
     public ScannerSettings ScannerSettings { get; set; } = new ScannerSettings();
     [Category("Player")]
-    public UISettings UISettings { get; set; } = new UISettings();
-    [Category("Player")]
     public KeySettings KeySettings { get; set; } = new KeySettings();
     [Category("Player")]
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
     [Category("Player")]
     public CellphoneSettings CellphoneSettings { get; set; } = new CellphoneSettings();
-
-
-
-
     [Category("World")]
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
     [Category("World")]
@@ -78,8 +73,14 @@ public class SettingsManager
     public TimeSettings TimeSettings { get; set; } = new TimeSettings();
     [Category("World")]
     public WeatherReportingSettings WeatherReportingSettings { get; set; } = new WeatherReportingSettings();
-
-
+    [Category("UI")]
+    public UIGeneralSettings UIGeneralSettings { get; set; } = new UIGeneralSettings();
+    [Category("UI")]
+    public LSRHUDSettings LSRHUDSettings { get; set; } = new LSRHUDSettings();
+    [Category("UI")]
+    public BarDisplaySettings BarDisplaySettings { get; set; } = new BarDisplaySettings();
+    [Category("UI")]
+    public ActionWheelSettings ActionWheelSettings { get; set; } = new ActionWheelSettings();
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 

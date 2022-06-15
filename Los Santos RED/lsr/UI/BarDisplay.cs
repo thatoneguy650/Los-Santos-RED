@@ -21,32 +21,14 @@ public class BarDisplay
 
     public void Draw(float bar1Percent, float bar2Percent, float bar3Percent)
     {
-        if (Settings.SettingsManager.UISettings.ShowStaminaBar && NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(0))
+        if (Settings.SettingsManager.BarDisplaySettings.IsEnabled && NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(0))
         {
             DrawBackground();
             DrawBar1(bar1Percent);
             DrawBar2(bar2Percent);
             DrawBar3(bar3Percent);
-
-
-
-            //DrawSpeed();
-
-
         }
     }
-    //private void DrawSpeed()
-    //{
-    //    float width = 0.025f;
-    //    float height = 0.05f;
-
-
-        
-    //    NativeFunction.Natives.DRAW_RECT(Settings.SettingsManager.UISettings.SpeedLimitPositionY, Settings.SettingsManager.UISettings.SpeedLimitPositionX, width + 0.001f, height + 0.001f, 0, 0, 0, 255, false);
-    //    NativeFunction.Natives.DRAW_RECT(Settings.SettingsManager.UISettings.SpeedLimitPositionY, Settings.SettingsManager.UISettings.SpeedLimitPositionX, width, height, 255, 255, 255, 255, false);
-
-
-    //}
     private void DrawBar1(float percentage)
     {
         float BackWidth = 0.07f;

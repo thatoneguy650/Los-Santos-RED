@@ -86,6 +86,9 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         UIMenu worldSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change World Settings SubMenu");
         worldSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
+        UIMenu uiSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change UI Settings SubMenu");
+        uiSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
         UIMenu otherSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Other Settings SubMenu");
         otherSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
@@ -104,6 +107,10 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 else if (propertyCategory.Category == "World")
                 {
                     subMenu = MenuPool.AddSubMenu(worldSubMenu, strippedPropertyName);
+                }
+                else if (propertyCategory.Category == "UI")
+                {
+                    subMenu = MenuPool.AddSubMenu(uiSubMenu, strippedPropertyName);
                 }
                 else
                 {

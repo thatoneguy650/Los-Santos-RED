@@ -722,7 +722,6 @@ public class CellPhone
             ContactIcon = contactIcon;
             IconText = iconText;
         }
-
         public ContactIcon ContactIcon { get; set; }
         public string IconText { get; set; }
     }
@@ -735,7 +734,6 @@ public class CellPhone
             Message = message;
             IconName = iconName;
         }
-
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";

@@ -82,7 +82,6 @@ public class UI : IMenuProvideable
     private PopUpMenu ActionPopUpMenu;
     private bool IsDrawingWheelMenu;
     private IActionable ActionablePlayer;
-    private List<PopUpMenuMap> ActionMenuMap;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
 
@@ -102,21 +101,16 @@ public class UI : IMenuProvideable
         MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
-        StreetFader = new Fader(Settings.SettingsManager.UISettings.StreetDisplayTimeToShow, Settings.SettingsManager.UISettings.StreetDisplayTimeToFade, "StreetFader");
-        ZoneFader = new Fader(Settings.SettingsManager.UISettings.ZoneDisplayTimeToShow, Settings.SettingsManager.UISettings.ZoneDisplayTimeToFade, "ZoneFader");
-        VehicleFader = new Fader(Settings.SettingsManager.UISettings.VehicleStatusTimeToShow, Settings.SettingsManager.UISettings.VehicleStatusTimeToFade, "VehicleFader");
-        PlayerFader = new Fader(Settings.SettingsManager.UISettings.PlayerDisplayTimeToShow, Settings.SettingsManager.UISettings.PlayerDisplayTimeToFade, "PlayerFader");
-        WeaponFader = new Fader(Settings.SettingsManager.UISettings.WeaponDisplayTimeToShow, Settings.SettingsManager.UISettings.WeaponDisplayTimeToFade, "WeaponFader");
+        StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
+        ZoneFader = new Fader(Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToFade, "ZoneFader");
+        VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
+        PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
+        WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
-
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
-
-
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
-
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this);
-
     }
     private enum GTAHudComponent
     {
@@ -167,40 +161,12 @@ public class UI : IMenuProvideable
                 if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
                 {
                     float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-                    float Scale = Settings.SettingsManager.UISettings.SpeedLimitScale * ConsistencyScale;
-                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionX;
-                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.UISettings.SpeedLimitPositionY;
+                    float Scale = Settings.SettingsManager.LSRHUDSettings.SpeedLimitScale * ConsistencyScale;
+                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.LSRHUDSettings.SpeedLimitPositionX;
+                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.LSRHUDSettings.SpeedLimitPositionY;
                     args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
                 }
             }
-
-
-            //works but crashes the game on unload:(
-            //if (PreviousGameTime == Game.GameTime)
-            //{
-            //    SpriteUintCounter++;
-            //}
-            //else if (Game.GameTime > PreviousGameTime)
-            //{
-            //    SpriteUintCounter = 0;
-            //}
-
-
-
-
-
-            //if (SpriteUintCounter >= 10)
-            //{
-            //    TimeOutSprite = true;
-            //}
-            //else
-            //{
-            //    TimeOutSprite = false;
-            //}
-
-
-            //PreviousGameTime = Game.GameTime;
-
         }
         catch (Exception ex)
         {
@@ -210,9 +176,9 @@ public class UI : IMenuProvideable
     public void DrawText()
     {
         GameTimeLastDrawnUI = Game.GameTime;
-        if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
+        if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree)
         {
-            if(!Settings.SettingsManager.UISettings.HideLSRUIUnlessActionPopUpActive || IsDrawingWheelMenu)
+            if(!Settings.SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive || IsDrawingWheelMenu)
             {
                 DisplayCurrentCrimes();
                 DisplayVehicleStatus();
@@ -229,75 +195,75 @@ public class UI : IMenuProvideable
     }
     private void DisplayCurrentCrimes()
     {
-        if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
         {
-            DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.UISettings.CrimesViolatingPositionX, Settings.SettingsManager.UISettings.CrimesViolatingPositionY, Settings.SettingsManager.UISettings.CrimesViolatingScale, Color.White, Settings.SettingsManager.UISettings.CrimesViolatingFont, (GTATextJustification)Settings.SettingsManager.UISettings.CrimesViolatingJustificationID);
+            DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID);
         }
     }
     private void DisplayVehicleStatus()
     {
-        if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayEnabled)
         {
-            DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, Settings.SettingsManager.UISettings.VehicleStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
+            DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID);
         }
     }
     private void DisplayWeaponStatus()
     {
-        if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay)
         {
             WeaponFader.Update(lastWeaponDisplay);
-            if (Settings.SettingsManager.UISettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeWeaponDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
+            if (Settings.SettingsManager.LSRHUDSettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeWeaponDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(WeaponFader.TextToShow, Settings.SettingsManager.UISettings.WeaponDisplayPositionX, Settings.SettingsManager.UISettings.WeaponDisplayPositionY, Settings.SettingsManager.UISettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.UISettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.UISettings.WeaponDisplayJustificationID, WeaponFader.AlphaValue);
+                DisplayTextOnScreen(WeaponFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.WeaponDisplayJustificationID, WeaponFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastWeaponDisplay, Settings.SettingsManager.UISettings.WeaponDisplayPositionX, Settings.SettingsManager.UISettings.WeaponDisplayPositionY, Settings.SettingsManager.UISettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.UISettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.UISettings.WeaponDisplayJustificationID);
+                DisplayTextOnScreen(lastWeaponDisplay, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.WeaponDisplayJustificationID);
             }
         }
     }
     private void DisplayPlayerInfo()
     {
-        if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.ShowPlayerDisplay)
         {
             PlayerFader.Update(lastPlayerDisplay);
-            if (Settings.SettingsManager.UISettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadePlayerDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
+            if (Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID, PlayerFader.AlphaValue);
+                DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, PlayerFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, Settings.SettingsManager.UISettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
+                DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID);
             }
         }
     }
     private void DisplayStreets()
     {
-        if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.ShowStreetDisplay)
         {
             StreetFader.Update(lastStreetDisplay);
-            if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
+            if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID, StreetFader.AlphaValue);
+                DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, StreetFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, Settings.SettingsManager.UISettings.StreetFont, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID);
+                DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID);
             }
         }
     }
     private void DisplayZones()
     {
-        if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.ShowZoneDisplay)
         {
             ZoneFader.Update(lastZoneDisplay);
-            if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
+            if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID, ZoneFader.AlphaValue);
+                DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, ZoneFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, Settings.SettingsManager.UISettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
+                DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID);
             }
         }
     }
@@ -306,10 +272,6 @@ public class UI : IMenuProvideable
         if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
         {
             DrawText();
-
-
-
-
             if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.IntoxicatedIntensityPercent > 0.0f)
             {
                 BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
@@ -344,11 +306,7 @@ public class UI : IMenuProvideable
         //Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
         PlayerInfoMenu.Setup();
         MessagesMenu.Setup();
-        AboutMenu.Setup();
-
-
-
-       
+        AboutMenu.Setup();       
     }
     public void TertiaryTick()
     {
@@ -393,7 +351,7 @@ public class UI : IMenuProvideable
     {
         if (DisplayablePlayer.IsAliveAndFree)
         {
-            if (Time.IsNight && Settings.SettingsManager.UISettings.GreyOutWhiteFontAtNight)
+            if (Time.IsNight && Settings.SettingsManager.UIGeneralSettings.GreyOutWhiteFontAtNight)
             {
                 CurrentDefaultTextColor = "~c~";
             }
@@ -401,71 +359,63 @@ public class UI : IMenuProvideable
             {
                 CurrentDefaultTextColor = "~s~";
             }
-            if (Settings.SettingsManager.UISettings.ShowCrimesDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
             {
                 lastCrimesDisplay = GetViolationsText();
             }
-            //if (Settings.SettingsManager.UISettings.ShowSpeedLimitDisplay)
-            //{
-            //    GetSpeedLimitSign();
-            //}
-            if (Settings.SettingsManager.UISettings.ShowVehicleStatusDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayEnabled)
             {
                 lastVehicleStatusDisplay = GetVehicleStatusDisplay();
             }
-            if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.ShowPlayerDisplay)
             {
                 lastPlayerDisplay = GetPlayerDisplay();
             }
-            if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay)
             {
                 lastWeaponDisplay = GetWeaponDisplay();
             }
             if (playerIsInVehicle != DisplayablePlayer.IsInVehicle)
             {
-                if (Settings.SettingsManager.UISettings.FadeZoneDisplay)
+                if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay)
                 {
                     ZoneFader.UpdateTimeChanged();
                 }
-                if (Settings.SettingsManager.UISettings.FadeStreetDisplay)
+                if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay)
                 {
                     StreetFader.UpdateTimeChanged();
                 }
                 playerIsInVehicle = DisplayablePlayer.IsInVehicle;
             }
-            if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.ShowStreetDisplay)
             {
                 lastStreetDisplay = GetStreetDisplay();
-                if (Settings.SettingsManager.UISettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeStreetDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation))
                 {
-                    //StreetFader.Update(lastStreetDisplay);
-                    if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ZoneFader.TextChangedLastUpdate)
+                    if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ZoneFader.TextChangedLastUpdate)
                     {
                         StreetFader.UpdateTimeChanged();
                     }
                 }
             }
-            if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
+            if (Settings.SettingsManager.LSRHUDSettings.ShowZoneDisplay)
             {
                 lastZoneDisplay = GetZoneDisplay();
-                if (Settings.SettingsManager.UISettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.UISettings.FadeZoneDisplayDuringWantedAndInvestigation))
+                if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplayDuringWantedAndInvestigation))
                 {
-                    // ZoneFader.Update(lastZoneDisplay);
-                    if (Settings.SettingsManager.UISettings.FadeStreetDisplay && StreetFader.TextChangedLastUpdate)
+                    if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && StreetFader.TextChangedLastUpdate)
                     {
                         ZoneFader.UpdateTimeChanged();
                     }
                 }
             }
-
-
             debugString1 = $"Heading: {Math.Round(DisplayablePlayer.Character.Heading,1)}";
             DisplayablePlayer.DebugLine4 = debugString1;
         }
     }
     private void DisplayButtonPrompts()
     {
-        if (Settings.SettingsManager.UISettings.DisplayButtonPrompts)
+        if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts)
         {
             instructional.Buttons.Clear();
 
@@ -512,7 +462,7 @@ public class UI : IMenuProvideable
     {
         try
         {
-            if (TextToShow == "" || alpha == 0)
+            if (TextToShow == "" || alpha == 0 || TextToShow is null)
             {
                 return;
             }
@@ -548,7 +498,7 @@ public class UI : IMenuProvideable
     }
     private void DrawDebug()
     {
-        if (Settings.SettingsManager.UISettings.ShowDebug)
+        if (Settings.SettingsManager.UIGeneralSettings.ShowDebug)
         {
             //float StartingPoint = 0.1f;
             float StartingPoint = 0.5f;
@@ -567,19 +517,19 @@ public class UI : IMenuProvideable
     }
     private void ForceVanillaUI()
     {
-        if (Settings.SettingsManager.UISettings.AlwaysShowHUD)
+        if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowHUD)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
-        if (Settings.SettingsManager.UISettings.AlwaysShowRadar)
+        if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowRadar)
         {
             ShowRadar = true;
         }
-        else if (Settings.SettingsManager.UISettings.NeverShowRadar)
+        else if (Settings.SettingsManager.UIGeneralSettings.NeverShowRadar)
         {
             ShowRadar = false;
         }
-        else if (Settings.SettingsManager.UISettings.HideRadarUnlessActionPopUpActive)
+        else if (Settings.SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive)
         {
             if(IsDrawingWheelMenu)
             {
@@ -592,7 +542,7 @@ public class UI : IMenuProvideable
         }
         else if (DisplayablePlayer.IsInVehicle)
         {
-            if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+            if (Settings.SettingsManager.UIGeneralSettings.ShowRadarInVehicleOnly)
             {
                 if (DisplayablePlayer.IsInVehicle)
                 {
@@ -606,7 +556,7 @@ public class UI : IMenuProvideable
         }
         else if (!DisplayablePlayer.IsInVehicle)
         {
-            if (Settings.SettingsManager.UISettings.ShowRadarOnFootWhenCellPhoneActiveOnly)
+            if (Settings.SettingsManager.UIGeneralSettings.ShowRadarOnFootWhenCellPhoneActiveOnly)
             {
                 if (DisplayablePlayer.CellPhone.IsActive)
                 {
@@ -617,7 +567,7 @@ public class UI : IMenuProvideable
                     ShowRadar = false;
                 }
             }
-            else if (Settings.SettingsManager.UISettings.ShowRadarInVehicleOnly)
+            else if (Settings.SettingsManager.UIGeneralSettings.ShowRadarInVehicleOnly)
             {
                 ShowRadar = false;
             }
@@ -634,7 +584,7 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
-        if (Settings.SettingsManager.UISettings.AlwaysShowCash)
+        if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowCash)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
@@ -642,13 +592,13 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (!Settings.SettingsManager.UISettings.ShowVanillaAreaUI)
+        if (!Settings.SettingsManager.UIGeneralSettings.ShowVanillaAreaUI)
         {
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
         }
-        if (!Settings.SettingsManager.UISettings.ShowVanillaVehicleUI)
+        if (!Settings.SettingsManager.UIGeneralSettings.ShowVanillaVehicleUI)
         {
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
@@ -725,7 +675,7 @@ public class UI : IMenuProvideable
                 PlayerDisplay += $"~o~ BOLO Issued{CurrentDefaultTextColor}";
             }
         }
-        if (DisplayablePlayer.IsNotWanted && Settings.SettingsManager.UISettings.PlayerStatusIncludeTime)
+        if (DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime)
         {
             if (PlayerDisplay == "")
             {
@@ -742,7 +692,7 @@ public class UI : IMenuProvideable
     {
         if (DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable)
         {
-            if (Settings.SettingsManager.UISettings.WeaponDisplaySimpleSelector)
+            if (Settings.SettingsManager.LSRHUDSettings.WeaponDisplaySimpleSelector)
             {
                 if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.Safe)
                 {
@@ -837,11 +787,11 @@ public class UI : IMenuProvideable
         if (ShouldShowSpeedLimitSign)
         {
             float speedLimit = 60f;
-            if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
+            if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "MPH")
             {
                 speedLimit = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH;
             }
-            else if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
+            else if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "KM/H")
             {
                 speedLimit = DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH;
             }
@@ -985,11 +935,11 @@ public class UI : IMenuProvideable
 
                 if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
                 {
-                    if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
+                    if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "MPH")
                     {
-                        if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
+                        if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeTextSpeedLimit)
                         {
-                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
                                 CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH)";
                             }
@@ -1000,7 +950,7 @@ public class UI : IMenuProvideable
                         }
                         else
                         {
-                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
                                 CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}MPH";
                             }
@@ -1010,11 +960,11 @@ public class UI : IMenuProvideable
                             }
                         }
                     }
-                    else if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
+                    else if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "KM/H")
                     {
-                        if (Settings.SettingsManager.UISettings.VehicleStatusIncludeTextSpeedLimit)
+                        if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeTextSpeedLimit)
                         {
-                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
                                 CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H)";
                             }
@@ -1025,7 +975,7 @@ public class UI : IMenuProvideable
                         }
                         else
                         {
-                            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCurrentSpeed)
+                            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
                                 CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} {CurrentDefaultTextColor}KM/H";
                             }
@@ -1057,7 +1007,7 @@ public class UI : IMenuProvideable
             {
                 CurrentSpeedDisplay += $"{CurrentDefaultTextColor} " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }
-            if (Settings.SettingsManager.UISettings.VehicleStatusIncludeCompass)
+            if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCompass)
             {
                 string Heading = NativeHelper.GetSimpleCompassHeading(DisplayablePlayer.Character.Heading);
                 CurrentSpeedDisplay += $" {Heading}";
@@ -1077,7 +1027,7 @@ public class UI : IMenuProvideable
     private string GetWeaponDisplay()
     {
         string WeaponDisplay = "";
-        if (Settings.SettingsManager.UISettings.ShowWeaponDisplay)
+        if (Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay)
         {
             if (WeaponDisplay == "")
             {
@@ -1096,15 +1046,15 @@ public class UI : IMenuProvideable
         if (DisplayablePlayer.CurrentLocation.CurrentZone != null)
         {
             toDisplay = $"{CurrentDefaultTextColor}" + DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
-            if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
+            if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
             {
                 toDisplay += $"{CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
             }
-            if (Settings.SettingsManager.UISettings.ZoneDisplayShowPrimaryGang && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials != string.Empty)
+            if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials != string.Empty)
             {
                 toDisplay += $"{CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials;
             }
-            else if (Settings.SettingsManager.UISettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
+            else if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
             {
                 toDisplay += $"{CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
             }
@@ -1120,19 +1070,19 @@ public class UI : IMenuProvideable
     }
     private void RadarUpdate()
     {
-        if (Settings.SettingsManager.UISettings.SetRadarZoomDistance)
+        if (Settings.SettingsManager.UIGeneralSettings.SetRadarZoomDistance)
         {
             if (DisplayablePlayer.IsWanted)
             {
-                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UISettings.RadarZoomDistance_Wanted);
+                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UIGeneralSettings.RadarZoomDistance_Wanted);
             }
             else if (DisplayablePlayer.Investigation.IsActive)
             {
-                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UISettings.RadarZoomDistance_Investigation);
+                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UIGeneralSettings.RadarZoomDistance_Investigation);
             }
             else
             {
-                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UISettings.RadarZoomDistance_Default);
+                NativeFunction.Natives.SET_RADAR_ZOOM_TO_DISTANCE(Settings.SettingsManager.UIGeneralSettings.RadarZoomDistance_Default);
             }
         }
     }
@@ -1144,19 +1094,19 @@ public class UI : IMenuProvideable
             {
                 GameTimeLastDied = Game.GameTime;
 
-                if (Settings.SettingsManager.UISettings.SetDeathEffect)
+                if (Settings.SettingsManager.UIGeneralSettings.SetDeathEffect)
                 {
                     NativeFunction.Natives.x80C8B1846639BB19(1);
                     NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                     IsShowingCustomOverlay = true;
                 }
-                if (Settings.SettingsManager.UISettings.PlayWastedSounds)
+                if (Settings.SettingsManager.UIGeneralSettings.PlayWastedSounds)
                 {
                     NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "Bed", "WastedSounds", true);
                 }
-                if (Settings.SettingsManager.UISettings.DisplayWastedMessage)
+                if (Settings.SettingsManager.UIGeneralSettings.DisplayWastedMessage)
                 {
-                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UISettings.WastedMessageText, "", HudColor.Black, HudColor.RedDark, 2000);
+                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UIGeneralSettings.WastedMessageText, "", HudColor.Black, HudColor.RedDark, 2000);
                 }
                 StartedDeathEffect = true;
             }
@@ -1171,19 +1121,19 @@ public class UI : IMenuProvideable
             if (!StartedBustedEffect)
             {
                 GameTimeLastBusted = Game.GameTime;
-                if (Settings.SettingsManager.UISettings.SetBustedEffect)
+                if (Settings.SettingsManager.UIGeneralSettings.SetBustedEffect)
                 {
                     NativeFunction.Natives.x80C8B1846639BB19(1);
                     NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                     IsShowingCustomOverlay = true;
                 }
-                if (Settings.SettingsManager.UISettings.PlayWastedSounds)
+                if (Settings.SettingsManager.UIGeneralSettings.PlayWastedSounds)
                 {
                     NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
                 }
-                if (Settings.SettingsManager.UISettings.DisplayBustedMessage)
+                if (Settings.SettingsManager.UIGeneralSettings.DisplayBustedMessage)
                 {
-                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UISettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
+                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UIGeneralSettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
                 }
                 StartedBustedEffect = true;
             }
@@ -1209,7 +1159,7 @@ public class UI : IMenuProvideable
             GameTimeLastBusted = 0;
             StartedBustedEffect = false;
             StartedDeathEffect = false;
-            if (Settings.SettingsManager.UISettings.AllowScreenEffectReset && IsShowingCustomOverlay)
+            if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset && IsShowingCustomOverlay)
             {
                 NativeFunction.Natives.xB4EDDC19532BFB85();
                 NativeFunction.Natives.x80C8B1846639BB19(0);

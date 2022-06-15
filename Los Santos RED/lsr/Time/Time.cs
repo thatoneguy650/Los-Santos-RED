@@ -52,7 +52,7 @@ namespace Mod
 
 
         }
-        public string CurrentTime => Settings.SettingsManager.UISettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
+        public string CurrentTime => Settings.SettingsManager.LSRHUDSettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
         public DateTime CurrentDateTime { get; private set; }
         public int CurrentHour { get; private set; } = 0;

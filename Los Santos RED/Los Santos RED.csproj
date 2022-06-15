@@ -145,6 +145,9 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SprintSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SwaySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ViolationSettings.cs" />
+    <Compile Include="lsr\Data\Settings\UI settings\ActionWheelSettings.cs" />
+    <Compile Include="lsr\Data\Settings\UI settings\LSRHUDSettings.cs" />
+    <Compile Include="lsr\Data\Settings\UI settings\BarDisplaySettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\GangSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\VehicleSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ScannerSettings.cs" />
@@ -158,16 +161,16 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
-    <Compile Include="lsr\iFruit\CustomiFruit.cs" />
-    <Compile Include="lsr\iFruit\iFruitAddon2.cs" />
-    <Compile Include="lsr\iFruit\iFruitContact.cs" />
-    <Compile Include="lsr\iFruit\iFruitContactCollection.cs" />
-    <Compile Include="lsr\iFruit\Image Types\ContactIcon.cs" />
-    <Compile Include="lsr\iFruit\Image Types\PhoneImage.cs" />
-    <Compile Include="lsr\iFruit\Image Types\Wallpaper.cs" />
-    <Compile Include="lsr\iFruit\New\iFruitText.cs" />
-    <Compile Include="lsr\iFruit\New\iFruitTextCollection.cs" />
-    <Compile Include="lsr\iFruit\Tools.cs" />
+    <Compile Include="lsr\Old\iFruit\CustomiFruit.cs" />
+    <Compile Include="lsr\Old\iFruit\iFruitAddon2.cs" />
+    <Compile Include="lsr\Old\iFruit\iFruitContact.cs" />
+    <Compile Include="lsr\Old\iFruit\iFruitContactCollection.cs" />
+    <Compile Include="lsr\Old\iFruit\Image Types\ContactIcon.cs" />
+    <Compile Include="lsr\Old\iFruit\Image Types\PhoneImage.cs" />
+    <Compile Include="lsr\Old\iFruit\Image Types\Wallpaper.cs" />
+    <Compile Include="lsr\Old\iFruit\New\iFruitText.cs" />
+    <Compile Include="lsr\Old\iFruit\New\iFruitTextCollection.cs" />
+    <Compile Include="lsr\Old\iFruit\Tools.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
@@ -545,7 +548,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\KeySettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\PoliceSettings.cs" />
     <Compile Include="lsr\Data\Settings\Settings.cs" />
-    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\UISettings.cs" />
+    <Compile Include="lsr\Data\Settings\UI settings\UIGeneralSettings.cs" />
     <Compile Include="lsr\Vehicle\PlateType.cs" />
     <Compile Include="lsr\World\Vehicles.cs" />
     <Compile Include="lsr\Weapon\WeaponCategory.cs" />
@@ -589,7 +592,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lsr\iFruit\License.txt" />
+    <Content Include="lsr\Old\iFruit\License.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
