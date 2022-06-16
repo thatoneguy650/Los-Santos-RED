@@ -171,10 +171,10 @@ public class VanillaManager
         }
         if (Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
-            if (IsVanillaScenarioCopsActive)
-            {
+            //if (IsVanillaScenarioCopsActive)
+            //{
                 TerminateScenarioCops();
-            }
+            //}
         }
         else if (!Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
@@ -213,7 +213,7 @@ public class VanillaManager
     public void SupressVanillaGangPeds()
     {
         IsVanillaGangPedsSupressed = true;
-        SetGangPedsSupression(true);
+        //SetGangPedsSupression(true);
     }
     public void UnSupressVanillaGangPeds()
     {
@@ -283,7 +283,7 @@ public class VanillaManager
     public void TerminateScenarioGangs()
     {
         IsVanillaScenarioGangsActive = false;
-        SetGangScenarios(false);
+        //SetGangScenarios(false);
     }
     private void SetGangScenarios(bool Enabled)
     {

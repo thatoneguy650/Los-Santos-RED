@@ -84,6 +84,12 @@ public class Engine
         {
             if(VehicleToMonitor.IsHotWireLocked)
             {
+                if(!VehicleToMonitor.HasShowHotwireLockPrompt)
+                {
+                    VehicleToMonitor.HasShowHotwireLockPrompt = true;
+                    Game.DisplayHelp("Screwdriver required to hotwire");
+                }
+                
                 VehicleToMonitor.Vehicle.MustBeHotwired = false;
                 VehicleToMonitor.Vehicle.IsDriveable = false;
                 VehicleToMonitor.Vehicle.IsEngineOn = false;

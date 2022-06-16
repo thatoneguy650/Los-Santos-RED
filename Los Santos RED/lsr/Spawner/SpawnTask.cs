@@ -81,9 +81,6 @@ public abstract class SpawnTask
                     RandomizeHead(ped, rhd);
                 }
             }
-
-
-
             if(PersonType.OptionalProps != null)
             {
                 foreach(PedPropComponent prop in PersonType.OptionalProps.GroupBy(x=>x.PropID).Select(x=> x.PickRandom()))
@@ -104,7 +101,6 @@ public abstract class SpawnTask
                     }
                 }
             }
-
         }
         if (PersonType.RequiredHelmetType != -1)
         {

@@ -236,7 +236,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.UpdatePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
-                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 7),//1000
+                new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
             }));
             TaskGroups.Add(new ModTaskGroup("Group4", new List<ModTask>()
             {

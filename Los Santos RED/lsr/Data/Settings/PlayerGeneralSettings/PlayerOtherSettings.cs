@@ -39,6 +39,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public double HoursBetweenTasksWhenFailed { get; set; }
     [Description("Allows mobile radio when on foot.")]
     public bool AllowMobileRadioOnFoot { get; set; }
+    public bool DisableVanillaGangHassling { get; set; }
+    public bool AllowAttackingFriendlyPeds { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -70,6 +72,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         HoursBetweenTasksWhenCompleted = 6;
         HoursBetweenTasksWhenFailed = 24;
         AllowMobileRadioOnFoot = true;
+        DisableVanillaGangHassling = true;
+        AllowAttackingFriendlyPeds = true;
     }
 
 }

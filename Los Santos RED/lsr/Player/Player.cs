@@ -466,6 +466,8 @@ namespace Mod
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
+        public VehicleExt CurrentLookedAtVehicle { get; private set; }
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -964,6 +966,10 @@ namespace Mod
                 Game.TimeScale = 1f;
             }
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
+
+            NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
+            NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, true);
+
             //Game.DisableControlAction(0, GameControl.Attack, false);
         }
         public void DropWeapon()
@@ -1677,6 +1683,17 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
             }
+
+
+            if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
+            {
+                NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, false);
+            }
+            if(Settings.SettingsManager.PlayerOtherSettings.AllowAttackingFriendlyPeds)
+            {
+                NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
+            }
+
             GameFiber.StartNew(delegate
             {
                 while (isActive)
@@ -3143,10 +3160,19 @@ namespace Mod
                     //EntryPoint.WriteToConsole("Hit Ped in Looked At");
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
                     CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
+                    CurrentLookedAtVehicle = null;
                 }
                 else if (result.Hit && result.HitEntity is Vehicle)
                 {
                     Vehicle myCar = (Vehicle)result.HitEntity;
+                    if(myCar.Exists())
+                    {
+                        CurrentLookedAtVehicle = World.Vehicles.GetVehicleExt(myCar);
+                    }
+                    else
+                    {
+                        CurrentLookedAtVehicle = null;
+                    }
                     if(myCar.Exists() && myCar.Driver.Exists())
                     {
                         Ped closestPed = null;
@@ -3180,6 +3206,7 @@ namespace Mod
                 }
                 else
                 {
+                    CurrentLookedAtVehicle = null;
                     CurrentLookedAtPed = null;
                 }
 

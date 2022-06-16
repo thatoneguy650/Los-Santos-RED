@@ -24,7 +24,7 @@ namespace LSR.Vehicles
 
         private bool IsOnFire;
 
-
+        public bool HasShowHotwireLockPrompt { get; set; } = false;
 
         public bool IsPolice { get; set; } = false;
         public bool IsEMT { get; set; } = false;

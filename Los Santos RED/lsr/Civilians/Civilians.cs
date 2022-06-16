@@ -93,7 +93,7 @@ public class Civilians
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == 10)//5
+                if (yield && localRan == 7)//5
                 {
                     GameFiber.Yield();
                     localRan = 0;

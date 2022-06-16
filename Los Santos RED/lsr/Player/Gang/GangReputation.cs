@@ -153,8 +153,8 @@ public class GangReputation
         }
         else if (GangRelationship == GangRespect.Friendly)
         {
-            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
-            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);      
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Companion);//changed from like to companion?
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Companion);      
         }
         else if (GangRelationship == GangRespect.Neutral)
         {

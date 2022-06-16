@@ -102,7 +102,37 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimEnterDictionary;
             PlayingAnim = Data.AnimEnter;
+
+
+            //unsafe
+            //{
+            //    int lol = 0;
+            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimIdleDictionary, Data.AnimIdle.PickRandom(), 1.0f, -1.0f, -1, 50, 0, false, false, false);
+            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //}
+
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+            while (Player.CanPerformActivities && !IsCancelled)
+            {
+                Player.SetUnarmed();
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 1.0f)
+                {
+                    break;
+                }
+                GameFiber.Yield();
+            }
+
+
+
+
+
             Idle();
         }
         private void Exit()
@@ -114,7 +144,6 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-
             if(ModItem?.CleanupItemImmediately == false)
             {
                 GameFiber.Sleep(5000);
@@ -128,31 +157,50 @@ namespace LosSantosRED.lsr.Player
         {
             uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(2500,4000);
             uint GameTimeLastChangedIdle = Game.GameTime;
+            bool IsFinishedWithSip = false;
+            StartNewIdleAnimation();
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
+                    if(!IsFinishedWithSip)
+                    {
+                        StartExitAnimation();
+                        GameTimeLastChangedIdle = Game.GameTime;
+                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(3500, 5500);
+                        IsFinishedWithSip = true;
+                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
+                    }
                     if (TimesDrank >= 8 && (HealthGiven == ModItem.HealthChangeAmount || Player.Character.Health == Player.Character.MaxHealth))
                     {
                         IsCancelled = true;
                     }
-                    else if(Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenDrinks)
+                    else if(IsFinishedWithSip && Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenDrinks)
                     {
                         TimesDrank++;
-                        PlayingDict = Data.AnimIdleDictionary;
-                        PlayingAnim = Data.AnimIdle.PickRandom();
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                        StartNewIdleAnimation();
+                        IsFinishedWithSip = false;
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
-                        GameTimeLastChangedIdle = Game.GameTime;
-                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(2500, 4000);
                     }
                 }
                 UpdateHealthGain();
                 GameFiber.Yield();
             }
             Exit();
+        }
+        private void StartNewIdleAnimation()
+        {
+            PlayingDict = Data.AnimIdleDictionary;
+            PlayingAnim = Data.AnimIdle.PickRandom();
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+        }
+        private void StartExitAnimation()
+        {
+            PlayingDict = Data.AnimExitDictionary;
+            PlayingAnim = Data.AnimExit;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
         private void UpdateHealthGain()
         {

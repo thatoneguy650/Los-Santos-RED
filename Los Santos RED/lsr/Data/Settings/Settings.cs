@@ -86,6 +86,10 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.ActionWheelSettings.MessagesToShow = 5;
 
+
+        SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
+        SettingsManager.VehicleSettings.KeepRadioAutoTuned = false;
+
     }
     public void SetHard()
     {

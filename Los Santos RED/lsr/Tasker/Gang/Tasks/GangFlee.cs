@@ -21,9 +21,10 @@ public class GangFlee : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
 
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Ped.Pedestrian, (uint)2725352035, true);//set unarmed
 
@@ -36,15 +37,20 @@ public class GangFlee : ComplexTask
             }
 
 
-            //Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
-            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-            {
-                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 1000f, -1, false, false);
-            }
-            else
-            {
-                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 1000f, -1, false, false);
-            }
+            Vector3 CurrentPos = Ped.Pedestrian.Position;
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 500f, -1, false, false);
+
+
+
+            ////Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
+            //if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
+            //{
+            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 1000f, -1, false, false);
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 1000f, -1, false, false);
+            //}
             GameTimeLastRan = Game.GameTime;
         }
     }
