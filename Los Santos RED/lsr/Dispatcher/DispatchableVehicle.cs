@@ -29,7 +29,7 @@ public class DispatchableVehicle
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
-
+    public List<int> RequiredExtras { get; set; } = new List<int>();
 
     public string RequiredPedGroup { get; set; } = "";
     //public List<string> RequiredPassengerModels { get; set; } = new List<string>();

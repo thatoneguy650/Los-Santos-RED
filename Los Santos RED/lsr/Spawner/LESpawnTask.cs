@@ -228,6 +228,17 @@ public class LESpawnTask : SpawnTask
                         CreatedVehicle.UpdateLivery(Agency);
                         CreatedVehicle.UpgradePerformance();
                     }
+
+                    if (VehicleType.RequiredExtras != null)
+                    {
+                        foreach (int extraID in VehicleType.RequiredExtras)
+                        {
+                            if(NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(SpawnedVehicle, extraID))
+                            {
+                                NativeFunction.Natives.SET_VEHICLE_EXTRA(SpawnedVehicle, extraID, 0);
+                            }
+                        }
+                    }
                     CreatedVehicles.Add(CreatedVehicle);
                     if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
                     {

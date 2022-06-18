@@ -952,17 +952,50 @@ public class Debug
         //Player.IsBeingANuisance = !Player.IsBeingANuisance;
         //GameFiber.Sleep(1000);
 
-        PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if (myPed != null)
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            myPed.IsDealingDrugs = true;
-            //if(myPed.Pedestrian.Exists())
-            //{
-            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
-            //}
-            Game.DisplaySubtitle("Dealer Added");
+            int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
+            if (extraID != -1)
+            {
+                bool ExtraExists = NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.CurrentVehicle.Vehicle, extraID);
+
+                if(ExtraExists)
+                {
+                    bool ExtraOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, extraID);
+                    if(ExtraOn)
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 1);
+                    }
+                    else
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 0);
+                    }
+                    Game.DisplaySubtitle($"extraID:{extraID} EXISTS isOn: {ExtraOn}");
+                }
+                else
+                {
+                    Game.DisplaySubtitle($"extraID:{extraID} DOES NOT EXIST");
+                }
+            }
+            
+            
+
         }
+
+
+
+        //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+        //if (myPed != null)
+        //{
+        //    myPed.IsDealingDrugs = true;
+        //    //if(myPed.Pedestrian.Exists())
+        //    //{
+        //    //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
+        //    //}
+        //    Game.DisplaySubtitle("Dealer Added");
+        //}
 
 
 
@@ -1044,9 +1077,9 @@ public class Debug
 
 
         //string Name, string IconName, string MessageToSend, DateTime timeToAd
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
-        EntryPoint.WriteToConsole($"ADDED Text RANDOM GANG", 5);
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
+        //EntryPoint.WriteToConsole($"ADDED Text RANDOM GANG", 5);
 
 
 
@@ -1069,6 +1102,23 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+            if (TotalLiveries > -1)
+            {
+
+                int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
+                if (LiveryNumber != -1)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+                }
+                Game.DisplaySubtitle($"Livery Selected: {LiveryNumber} TotalLiveries:{TotalLiveries}");
+            }
+
+        }
+        //extraId
+
         //if (Player.WantedLevel <= 5)
         //{
         //    Player.SetWantedLevel(Player.WantedLevel + 1, "Debug", true);

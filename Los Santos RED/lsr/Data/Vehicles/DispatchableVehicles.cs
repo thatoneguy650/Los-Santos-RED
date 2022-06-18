@@ -26,14 +26,14 @@ public class DispatchableVehicles : IDispatchableVehicles
         }
         else
         {
-            DefaultConfig_Enhanced();
+            DefaultConfig_Gresk();
             DefaultConfig();
         }
     }
 
-    private void DefaultConfig_Enhanced()
+    private void DefaultConfig_Gresk()
     {
-        List<DispatchableVehicleGroup> VehicleGroupLookupEnhanced = new List<DispatchableVehicleGroup>();
+        List<DispatchableVehicleGroup> VehicleGroupLookupGresk = new List<DispatchableVehicleGroup>();
 
         //Cops
         List<DispatchableVehicle> UnmarkedVehicles = new List<DispatchableVehicle>() {
@@ -51,48 +51,80 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("fbi", 0, 70) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 }, };
         List<DispatchableVehicle> NOOSEVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 0, 35) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("police3", 70, 70){ RequiredLiveries = new List<int>() { 11 }, MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
+            new DispatchableVehicle("sheriff2", 30, 30) { RequiredLiveries = new List<int>() { 11 },MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
+            new DispatchableVehicle("police2", 0, 35) { RequiredLiveries = new List<int>() { 11 },RequiredExtras = new List<int>() { 1 },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("fbi", 0, 40) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("police2", 0, 40) { RequiredLiveries = new List<int>() { 11 },RequiredExtras = new List<int>() { 1 },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 4,MaxOccupants = 5 }};
-        List<DispatchableVehicle> HighwayPatrolVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop" },
-            new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> PrisonVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policet", 70, 70),
             new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> LSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
-            new DispatchableVehicle("police2", 25, 20),
+            new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 1 } },
+            new DispatchableVehicle("police2", 25, 20){ RequiredLiveries = new List<int>() { 1 },RequiredExtras = new List<int>() { 1 } },
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3}};
         List<DispatchableVehicle> SAHPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop" },
-            new DispatchableVehicle("police4", 30, 30) };
+            new DispatchableVehicle("police2", 30, 30) {RequiredLiveries = new List<int>() { 4 } },
+            new DispatchableVehicle("police3", 30, 30) {RequiredLiveries = new List<int>() { 4 } },
+            new DispatchableVehicle("sheriff2", 30, 30) {RequiredLiveries = new List<int>() { 4 } }
+        };
+
+
+
         List<DispatchableVehicle> LSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50),
-            new DispatchableVehicle("sheriff2", 50, 50) };
+            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 7 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 50, 50) {RequiredLiveries = new List<int>() { 7 } },
+            new DispatchableVehicle("sheriff2", 50, 50) {RequiredLiveries = new List<int>() {7 } },};
         List<DispatchableVehicle> BCSOVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50),
-            new DispatchableVehicle("sheriff2", 50, 50) };
+            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() {0 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 50, 50) {RequiredLiveries = new List<int>() {0 } },
+            new DispatchableVehicle("sheriff2", 50, 50) {RequiredLiveries = new List<int>() {0 } }, };
+        List<DispatchableVehicle> MajesticLSSDVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 8 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 50, 50) {RequiredLiveries = new List<int>() { 8 } },
+            new DispatchableVehicle("sheriff2", 50, 50) {RequiredLiveries = new List<int>() { 8 } }, };
         List<DispatchableVehicle> VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff2", 100, 100) };
+            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 9 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 50, 50) {RequiredLiveries = new List<int>() { 9 } },
+            new DispatchableVehicle("sheriff2", 100, 100)  {RequiredLiveries = new List<int>() { 9 } }, };
         List<DispatchableVehicle> ChumashLSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff2", 100, 100) };
+            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 10 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 10 } },
+            new DispatchableVehicle("sheriff2", 100, 100)  {RequiredLiveries = new List<int>() { 10 } },};
+
+
+
+
+
+
+
         List<DispatchableVehicle> RHPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police2", 100, 75),
+            new DispatchableVehicle("police2", 100, 75){RequiredLiveries = new List<int>() { 5 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 100, 75){RequiredLiveries = new List<int>() { 5 } },
+            new DispatchableVehicle("sheriff2", 100, 75){RequiredLiveries = new List<int>() { 5 } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
+
+
+
+
         List<DispatchableVehicle> DPPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) ,
+            new DispatchableVehicle("police2", 100, 75){RequiredLiveries = new List<int>() { 6 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 100, 75){RequiredLiveries = new List<int>() { 6 } },
+            new DispatchableVehicle("sheriff2", 100, 75){RequiredLiveries = new List<int>() { 6 } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> EastLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75),
+            new DispatchableVehicle("police2", 100, 75){RequiredLiveries = new List<int>() { 3 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 100, 75){RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle("sheriff2", 100, 75){RequiredLiveries = new List<int>() { 3 } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> VWPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75),
+            new DispatchableVehicle("police2", 100, 75){RequiredLiveries = new List<int>() { 2 },RequiredExtras = new List<int>() { 1 } },
+            new DispatchableVehicle("police3", 100, 75){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle("sheriff2", 100, 75){RequiredLiveries = new List<int>() { 2 } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 } };
@@ -114,29 +146,30 @@ public class DispatchableVehicles : IDispatchableVehicles
         List<DispatchableVehicle> Amublance3 = new List<DispatchableVehicle>() {
             new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 2 } } };
 
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("ChumashLSSDVehicles", ChumashLSSDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("EastLSPDVehicles", EastLSPDVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("Firetrucks", Firetrucks));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("Amublance1", Amublance1));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("ChumashLSSDVehicles", ChumashLSSDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("MajesticLSSDVehicles", MajesticLSSDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("EastLSPDVehicles", EastLSPDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("PoliceHeliVehicles", PoliceHeliVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("SheriffHeliVehicles", SheriffHeliVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("ArmyVehicles", ArmyVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("Firetrucks", Firetrucks));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("Amublance1", Amublance1));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
 
         //Gangs
         List<DispatchableVehicle> GenericGangVehicles = new List<DispatchableVehicle>() {
@@ -220,32 +253,27 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
         };
 
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
 
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("VagosVehicles", VagosVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("TriadVehicles", TriadVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("YardieVehicles", YardieVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
-        VehicleGroupLookupEnhanced.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("VagosVehicles", VagosVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("MarabuntaVehicles", MarabuntaVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("KoreanVehicles", KoreanVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("TriadVehicles", TriadVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("YardieVehicles", YardieVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("DiablosVehicles", DiablosVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("MafiaVehicles", MafiaVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("ArmeniaVehicles", ArmeniaVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
 
 
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
-
-//#if DEBUG
-//        Serialization.SerializeParams(VehicleGroupLookupEnhanced, "Plugins\\LosSantosRED\\DispatchableVehicles_Enhanced.xml");
-//#else
-//        Serialization.SerializeParams(VehicleGroupLookup11John11, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchableVehicles_Enhanced.xml");
-//#endif
+        Serialization.SerializeParams(VehicleGroupLookupGresk, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchableVehicles_Gresk.xml");
     }
     private void DefaultConfig()
     {

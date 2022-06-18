@@ -88,20 +88,34 @@ public class Zones : IZones
             //One Off
             new Zone("OCEANA", "Pacific Ocean", County.PacificOcean, "Unknown", false, eLocationEconomy.Poor, eLocationType.Wilderness),
 
-            //Ventura County?
-            new Zone("PROCOB", "Procopio Beach", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTCHIL", "Mount Chiliad", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),    
-            new Zone("PALETO", "Paleto Bay", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("PALCOV", "Paleto Cove", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("PALFOR", "Paleto Forest", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CMSW", "Chiliad Mountain State Wilderness", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CCREAK", "Cassidy Creek", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CALAFB", "Calafia Bridge", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("GALFISH", "Galilee", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("BRADP", "Braddock Pass", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("BRADT", "Braddock Tunnel", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            ////Ventura County?
+            //new Zone("PROCOB", "Procopio Beach", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("MTCHIL", "Mount Chiliad", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),    
+            //new Zone("PALETO", "Paleto Bay", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            //new Zone("PALCOV", "Paleto Cove", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("PALFOR", "Paleto Forest", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("CMSW", "Chiliad Mountain State Wilderness", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("CCREAK", "Cassidy Creek", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("CALAFB", "Calafia Bridge", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("GALFISH", "Galilee", County.VenturaCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("BRADP", "Braddock Pass", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("BRADT", "Braddock Tunnel", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            //Ventura County is now blaine county
+            new Zone("PROCOB", "Procopio Beach", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTCHIL", "Mount Chiliad", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PALETO", "Paleto Bay", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("PALCOV", "Paleto Cove", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PALFOR", "Paleto Forest", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CMSW", "Chiliad Mountain State Wilderness", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CCREAK", "Cassidy Creek", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CALAFB", "Calafia Bridge", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("GALFISH", "Galilee", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADP", "Braddock Pass", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADT", "Braddock Tunnel", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("ELGORL", "El Gordo Lighthouse", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTGORDO", "Mount Gordo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             
             //Majestic County
             new Zone("GRAPES", "Grapeseed", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),//has own PD
@@ -115,7 +129,6 @@ public class Zones : IZones
             new Zone("ZQ_UAR", "Davis Quartz", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
             new Zone("HARMO", "Harmony", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
             new Zone("RTRAK", "Redwood Lights Track", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
-
 
             //Blaine
             new Zone("ARMYB", "Fort Zancudo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),

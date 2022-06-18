@@ -213,6 +213,16 @@ public class EMTSpawnTask :SpawnTask
                     {
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
                     }
+                    if (VehicleType.RequiredExtras != null)
+                    {
+                        foreach (int extraID in VehicleType.RequiredExtras)
+                        {
+                            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(SpawnedVehicle, extraID))
+                            {
+                                NativeFunction.Natives.SET_VEHICLE_EXTRA(SpawnedVehicle, extraID, 0);
+                            }
+                        }
+                    }
                     EntryPoint.WriteToConsole($"EMTSpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;
