@@ -72,7 +72,7 @@ public class GameSaves : IGameSaves
             new PedComponent(4, 11, 8, 0) ,
             new PedComponent(5, 0, 0, 0) ,
             new PedComponent(6, 11, 2, 0) ,
-            new PedComponent(7, 2, 0, 0) ,
+            new PedComponent(7, 0, 0, 0) ,
             new PedComponent(8, 8, 0, 0) ,
             new PedComponent(9, 0, 0, 0) ,
             new PedComponent(10, 0, 0, 0) ,

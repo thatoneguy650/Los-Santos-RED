@@ -236,7 +236,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.UpdatePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
-                new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
+                //new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
             }));
             TaskGroups.Add(new ModTaskGroup("Group4", new List<ModTask>()
             {
@@ -306,6 +306,25 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Input Logic");
+
+
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        VanillaManager.Tick();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    DisplayCrashMessage();
+                    Dispose();
+                }
+            }, "Run Vanilla Manager Logic");
         }
         private void StartUILogic()
         {

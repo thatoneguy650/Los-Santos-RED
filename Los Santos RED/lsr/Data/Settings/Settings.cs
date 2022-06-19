@@ -17,6 +17,7 @@ public class Settings : ISettingsProvideable
             SettingsManager = new SettingsManager();
             Serialization.SerializeParam(SettingsManager, ConfigFileName);
         }
+        SettingsManager.Setup();
     }
     public void SerializeAllSettings()
     {
