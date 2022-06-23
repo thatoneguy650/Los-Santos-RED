@@ -229,13 +229,17 @@ public class LESpawnTask : SpawnTask
                         CreatedVehicle.UpgradePerformance();
                     }
 
-                    if (VehicleType.RequiredExtras != null)
+                    if (VehicleType.VehicleExtras != null)
                     {
-                        foreach (int extraID in VehicleType.RequiredExtras)
+                        foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras)
                         {
-                            if(NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(SpawnedVehicle, extraID))
+                            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(SpawnedVehicle, extra.ExtraID))
                             {
-                                NativeFunction.Natives.SET_VEHICLE_EXTRA(SpawnedVehicle, extraID, 0);
+                                int toSet = extra.IsOn ? 0 : 1;
+                                if (RandomItems.RandomPercent(extra.Percentage))
+                                {
+                                    NativeFunction.Natives.SET_VEHICLE_EXTRA(SpawnedVehicle, extra.ExtraID, toSet);
+                                }
                             }
                         }
                     }

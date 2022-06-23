@@ -25,6 +25,12 @@ public class PedComponent
         TextureID = _TextureID;
         PaletteID = _PaletteID;
     }
-
+    public PedComponent(int _ComponentID, int _DrawableID, int _TextureID)
+    {
+        ComponentID = _ComponentID;
+        DrawableID = _DrawableID;
+        TextureID = _TextureID;
+        PaletteID = 0;
+    }
 }
 

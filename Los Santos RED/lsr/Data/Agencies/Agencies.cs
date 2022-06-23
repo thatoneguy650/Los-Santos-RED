@@ -113,7 +113,7 @@ public class Agencies : IAgencies
 
             new Agency("~b~", "GSPD", "Grapeseed Police Department", "Blue", Classification.Police, "StandardCops", "UnmarkedVehicles", "GS ","LimitedSidearms","LimitedLongGuns", "GSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 14  },
             
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, "SecurityPeds", "UnmarkedVehicles", "LSPA ","LimitedSidearms","LimitedLongGuns", "Port Authority Officer") {MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads",Division = 15  },
+            new Agency("~p~", "LSPP", "Los Santos Port Police", "LightGray", Classification.Police, "SecurityPeds", "UnmarkedVehicles", "LSPP ","LimitedSidearms","LimitedLongGuns", "Port Authority Officer") {MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads",Division = 15  },
             new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, "StandardCops", "LSPDVehicles", "LSA ","AllSidearms","AllLongGuns", "LSIAPD Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 16  },
 
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "","BestSidearms","BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" },
@@ -146,8 +146,8 @@ public class Agencies : IAgencies
             new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Classification.Police, "StandardCops", "VWPDVehicles", "LSV ","LimitedSidearms","LimitedLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 2  },
             new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, "StandardCops", "EastLSPDVehicles", "LSE ","LimitedSidearms","LimitedLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 3  },
             
-            new Agency("~b~", "DPPD", "Del Perro Police Department", "Blue", Classification.Police, "DPPDCops", "DPPDVehicles", "DP ","AllSidearms","AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
-            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "Blue", Classification.Police, "RHPDCops", "RHPDVehicles", "RH ","AllSidearms","AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 5  },
+            new Agency("~b~", "DPPD", "Del Perro Police Department", "Blue", Classification.Police, "DPPDCops", "DPPDVehicles", "DP ","AllSidearms","AllLongGuns", "DPPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 4  },
+            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "Blue", Classification.Police, "RHPDCops", "RHPDVehicles", "RH ","AllSidearms","AllLongGuns", "RHPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 5  },
 
 
 
@@ -160,7 +160,7 @@ public class Agencies : IAgencies
             new Agency("~r~", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, "SheriffPeds", "MajesticLSSDVehicles", "MCS ","LimitedSidearms","LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 11  },
 
 
-            new Agency("~r~", "BCSD", "Blaine County Sheriff", "Red", Classification.Sheriff, "BCSheriffPeds", "BCSOVehicles", "BCS ","LimitedSidearms","LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 10 },
+            new Agency("~r~", "BCSO", "Blaine County Sheriff", "Red", Classification.Sheriff, "BCSheriffPeds", "BCSOVehicles", "BCS ","LimitedSidearms","LimitedLongGuns", "BCSO Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 10 },
 
 
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, "SheriffPeds", "SheriffHeliVehicles", "ASD ","HeliSidearms","HeliLongGuns", "LSSD Deputy") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 13  },
@@ -168,7 +168,7 @@ public class Agencies : IAgencies
 
             new Agency("~b~", "GSPD", "Grapeseed Police Department", "Blue", Classification.Police, "StandardCops", "UnmarkedVehicles", "GS ","LimitedSidearms","LimitedLongGuns", "GSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 14  },
 
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, "SecurityPeds", "UnmarkedVehicles", "LSPA ","LimitedSidearms","LimitedLongGuns", "Port Authority Officer") {MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads",Division = 15  },
+            new Agency("~p~", "LSPP", "Los Santos Port Police", "LightGray", Classification.Police, "LSPPPeds", "LSPPVehicles", "LSPP ","LimitedSidearms","LimitedLongGuns", "Port Police Officer") {MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads",Division = 15  },
             new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, "LSIAPDPeds", "LSIAPDVehicles", "LSA ","AllSidearms","AllLongGuns", "LSIAPD Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 16  },
 
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "","BestSidearms","BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" },

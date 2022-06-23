@@ -98,7 +98,7 @@ namespace LosSantosRED.lsr
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
                         }
-                        if (yield && localRan == 3)//1
+                        if (yield && localRan == 4)//1
                         {
                             GameFiber.Yield();
                             localRan = 0;

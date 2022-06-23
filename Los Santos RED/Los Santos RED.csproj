@@ -153,6 +153,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ScannerSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherReportingSettings.cs" />
+    <Compile Include="lsr\Data\Vehicles\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />

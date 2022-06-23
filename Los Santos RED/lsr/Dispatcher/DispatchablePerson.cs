@@ -58,6 +58,9 @@ public class DispatchablePerson
     public string UnitCode { get; set; } = "";
     public int RequiredHelmetType { get; set; } = -1;
 
+
+    public string DebugName { get; set; } = "";
+
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)

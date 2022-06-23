@@ -955,6 +955,10 @@ public class Debug
 
         if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
+
+            Player.CurrentVehicle.Vehicle.Repair();
+            Player.CurrentVehicle.Vehicle.Wash();
+
             int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
             if (extraID != -1)
             {
@@ -1256,8 +1260,11 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        Player.ScannerPlayDebug();
-        
+
+        NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
+
+        //Player.ScannerPlayDebug();
+
         //if (RandomItems.RandomPercent(50))
         //{
         //    Game.DisplaySubtitle("Text Sound");
@@ -1274,9 +1281,9 @@ public class Debug
 
 
         //}
-        
 
-        
+
+
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
@@ -1284,7 +1291,7 @@ public class Debug
         //GameFiber.Sleep(500);
 
         //Dispatcher.DebugSpawnCop();
-       // Dispatcher.DebugSpawnGang();
+        // Dispatcher.DebugSpawnGang();
         //int CurrentWanted = Player.WantedLevel;
         //if (CurrentWanted <= 5)
         //{
