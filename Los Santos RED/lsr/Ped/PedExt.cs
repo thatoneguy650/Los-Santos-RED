@@ -187,7 +187,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 500;// (IsCop ? 500 : 700);
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.DebugSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
     public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
     public Ped Pedestrian { get; set; }
    // public PedGroup PedGroup { get; private set; }
@@ -226,42 +226,42 @@ public class PedExt : IComplexTaskable
             {
                 if (PlayerPerception?.DistanceToTarget >= 300)
                 {
-                    return 3000;
+                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalVeryFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
-                    return 2000;
+                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {
-                    return 750;//1000
+                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalMedium;
                 }
                 else
                 {
-                    return 500;
+                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalClose;
                 }
             }
             else
             {
                 if (PlayerPerception?.DistanceToTarget >= 300)
                 {
-                    return 4000;
+                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalVeryFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
-                    return 3000;
+                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalFar;
                 }
                 else if (IsWanted)
                 {
-                    return 500;
+                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalWanted;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {
-                    return 1000;//2000
+                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalMedium;//2000
                 }
                 else
                 {
-                    return 750;
+                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalClose;
                 }
             }
         }

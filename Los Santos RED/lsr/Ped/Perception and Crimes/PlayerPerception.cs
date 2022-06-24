@@ -57,47 +57,47 @@ public class PlayerPerception
     public bool EverSeenTarget => CanSeeTarget || GameTimeLastSeenTarget > 0;
     public bool HasSpokenWithTarget { get; set; }
     public bool IsFedUpWithTarget => TimesInsultedByTarget >= Originator.InsultLimit;
-    public bool NeedsDistanceCheck
-    {
-        get
-        {
-            if (GameTimeLastDistanceCheck == 0)
-            {
-                return true;
-            }
-            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public bool NeedsLOSCheck
-    {
-        get
-        {
-            //if (DistanceToTarget >= 100)
-            //{
-            //    return false;
-            //}
-            //else 
-            if (GameTimeLastLOSCheck == 0)
-            {
-                return true;
-            }
-            else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    public bool NeedsDistanceCheck => true;
+    //{
+    //    get
+    //    {
+    //        if (GameTimeLastDistanceCheck == 0)
+    //        {
+    //            return true;
+    //        }
+    //        else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //}
+    public bool NeedsLOSCheck => true;
+    //{
+    //    get
+    //    {
+    //        //if (DistanceToTarget >= 100)
+    //        //{
+    //        //    return false;
+    //        //}
+    //        //else 
+    //        if (GameTimeLastLOSCheck == 0)
+    //        {
+    //            return true;
+    //        }
+    //        else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //}
     public Vector3 PositionLastSeenTarget { get; private set; }
     public bool RecentlySeenTarget => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= 10000;
     public uint TimeContinuoslySeenTarget => GameTimeContinuoslySeenTargetSince == 0 ? 0 : Game.GameTime - GameTimeContinuoslySeenTargetSince;
@@ -108,23 +108,29 @@ public class PlayerPerception
     public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
     public bool HasSeenTargetCommitCrime => CrimesWitnessed.Any();
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
+
+
     private int DistanceUpdate//also need to change the full update interval for this to work
     {
         get
         {
-            if (Originator.IsCop)//IsCop)
+            if (Originator.IsCop)
             {
                 if (DistanceToTarget >= 300f)
                 {
-                    return 1500;
+                    return 3000;
                 }
-                else if (DistanceToTarget >= 80f)
+                else if (DistanceToTarget >= 200f)
                 {
-                    return 300;
+                    return 2000;
+                }
+                else if (DistanceToTarget >= 50f)
+                {
+                    return 750;
                 }
                 else
                 {
-                    return 250;//150
+                    return 500;//150
                 }
             }
             else
@@ -132,15 +138,19 @@ public class PlayerPerception
 
                 if (DistanceToTarget >= 300f)
                 {
-                    return 2000;
+                    return 4000;
                 }
-                else if (DistanceToTarget >= 80f)
+                else if (DistanceToTarget >= 200f)
                 {
-                    return 300;
+                    return 3000;
+                }
+                else if (DistanceToTarget >= 50f)
+                {
+                    return 1000;
                 }
                 else
                 {
-                    return 250;
+                    return 500;
                 }
             }
         }
@@ -155,7 +165,11 @@ public class PlayerPerception
             }
             else if (DistanceToTarget >= 100f)
             {
-                return 500;//750
+                return 500;
+            }
+            else if (DistanceToTarget >= 50f)
+            {
+                return 500;
             }
             else
             {
@@ -163,49 +177,63 @@ public class PlayerPerception
             }
         }
     }
-    //private int DistanceUpdate
+
+    //private int DistanceUpdate//also need to change the full update interval for this to work
     //{
     //    get
     //    {
     //        if (Originator.IsCop)//IsCop)
     //        {
-    //            if (DistanceToTarget >= 300)
+    //            if (DistanceToTarget >= 300f)
     //            {
     //                return 1500;
     //            }
+    //            else if (DistanceToTarget >= 80f)
+    //            {
+    //                return 300;
+    //            }
     //            else
     //            {
-    //                return 500;//150
+    //                return 250;//150
     //            }
     //        }
     //        else
     //        {
 
-    //            if (DistanceToTarget >= 300)
+    //            if (DistanceToTarget >= 300f)
     //            {
     //                return 2000;
     //            }
+    //            else if (DistanceToTarget >= 80f)
+    //            {
+    //                return 300;
+    //            }
     //            else
     //            {
-    //                return 500;// 750;//500// 750;//500
+    //                return 250;
     //            }
     //        }
     //    }
     //}
-    //private int LosUpdate
+    //private int LosUpdate//also need to change the full update interval for this to work
     //{
     //    get
     //    {
-    //        if (DistanceToTarget >= 300)
+    //        if (DistanceToTarget >= 300f)
     //        {
     //            return 2000;
     //        }
+    //        else if (DistanceToTarget >= 100f)
+    //        {
+    //            return 500;//750
+    //        }
     //        else
     //        {
-    //            return 750;//500// 750;//500
+    //            return 350;
     //        }
     //    }
     //}
+
     public bool NeedsUpdate
     {
         get

@@ -54,7 +54,14 @@ public class Vehicles
     }
     public void Setup()
     {
-
+        //RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
+        //foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
+        //{
+        //    if (vehicle.IsPoliceVehicle)
+        //    {
+        //        vehicle.Delete();
+        //    }
+        //}
     }
     public void Dispose()
     {

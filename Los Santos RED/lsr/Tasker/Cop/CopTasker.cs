@@ -172,16 +172,16 @@ public class CopTasker
             }
             else if (Player.PoliceResponse.IsDeadlyChase)
             {
-                CopTarget MaybeMainTarget = copsPossibleTargets
-                    .OrderByDescending(x => x.Target.IsDeadlyChase)
-                    .ThenBy(x => x.IsOverloaded)
-                    .ThenByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted)
-                    .ThenByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
-                    .ThenBy(x => x.Target.IsBusted)
+                CopTarget MaybeMainTarget = copsPossibleTargets.Where(x => x.Target.IsDeadlyChase && !x.IsOverloaded && !x.Target.IsBusted)
+                    //.OrderByDescending(x => x.Target.IsDeadlyChase)
+                   // .OrderByDescending(x => x.IsOverloaded)
+                    //.OrderByDescending(x => /*x.DistanceToTarget <= 20f &&*/  !x.Target.IsBusted)
+                    .OrderByDescending(x => x.Target.ArrestingPedHandle == Cop.Handle)
+                    //.ThenBy(x => x.Target.IsBusted)
                     .ThenBy(x => x.DistanceToTarget).FirstOrDefault();
 
                 MainTarget = MaybeMainTarget?.Target;
-                if (MaybeMainTarget != null && MaybeMainTarget.Target != null && (PlayerCops < Player.WantedLevel || Player.WantedLevel >= 3))// && MaybeMainTarget.DistanceToTarget <= Cop.DistanceToPlayer + 20f)
+                if (MaybeMainTarget != null && MaybeMainTarget.Target != null && (MaybeMainTarget.DistanceToTarget > Cop.DistanceToPlayer + 5f) )//&& (PlayerCops < Player.WantedLevel || Player.WantedLevel >= 3))//removed for testing, want to allow cosp to engate targets close to them better
                 {
                    // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Player is Closer Than Closest Target (Deadly)", 3);
                     //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Player is Closer Than Closest Target (Deadly)", 3);

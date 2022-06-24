@@ -1768,6 +1768,7 @@ namespace LosSantosRED.lsr
             {
                 Name = "Trespassing on Government Property",
                 ResultsInLethalForce = true,
+                CanBeReportedMultipleTimes = false,
                 LocationDescription = LocationSpecificity.Zone,
                 MainAudioSet = new List<AudioSet>()
             {

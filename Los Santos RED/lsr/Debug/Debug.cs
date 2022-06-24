@@ -1121,6 +1121,22 @@ public class Debug
             }
 
         }
+        else
+        {
+
+            int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
+            if (LiveryNumber != -1)
+            {
+                foreach (VehicleExt veh in World.Vehicles.PoliceVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) < 150f))
+                {
+                    NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+                }
+            }
+        }
+
+
+
+
         //extraId
 
         //if (Player.WantedLevel <= 5)
@@ -1260,8 +1276,18 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+        for (int i = 0; i < TotalLiveries; i++)
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, i);
+                GameFiber.Sleep(3000);
+            }
+        }
 
-        NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
+
+        //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
 
         //Player.ScannerPlayDebug();
 

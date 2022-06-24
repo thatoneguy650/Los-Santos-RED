@@ -82,6 +82,7 @@ public class PedSwap : IPedSwap
     {
         try
         {
+            Game.FadeScreenOut(500, true);
             ResetOffsetForCurrentModel();
             Ped TargetPed = FindPedToSwapWith(radius, nearest);
             if (!TargetPed.Exists())
@@ -90,6 +91,10 @@ public class PedSwap : IPedSwap
                 {
                     BecomeRandomPed();
                 }
+                else
+                {
+                    Game.FadeScreenIn(0);
+                }
                 return;
             }
             StoreTargetPedData(TargetPed);
@@ -97,6 +102,11 @@ public class PedSwap : IPedSwap
             Player.IsCop = false;
             HandlePreviousPed(deleteOld);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+
+
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+
             GiveHistory();
         }
         catch (Exception e3)
@@ -108,9 +118,11 @@ public class PedSwap : IPedSwap
     {
         try
         {
+            Game.FadeScreenOut(500, true);
             ResetOffsetForCurrentModel();
             if (!TargetPed.Exists())
             {
+                Game.FadeScreenIn(0);
                 return;
             }
             World.PauseTime();
@@ -120,6 +132,10 @@ public class PedSwap : IPedSwap
             Player.IsCop = false;
             HandlePreviousPed(true);
             PostLoad(modelName, false, fullName, money, variation);
+
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+
             GiveHistory();
             Player.DisplayPlayerNotification();
         }
@@ -162,12 +178,14 @@ public class PedSwap : IPedSwap
     {
         try
         {
+            Game.FadeScreenOut(500, true);
             ResetOffsetForCurrentModel();
             Ped TargetPed = new Ped(Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
             EntryPoint.SpawnedEntities.Add(TargetPed);
             GameFiber.Yield();
             if (!TargetPed.Exists())
             {
+                Game.FadeScreenIn(0);
                 return;
             }
             TargetPed.RandomizeVariation();
@@ -176,6 +194,9 @@ public class PedSwap : IPedSwap
             Player.IsCop = false;
             HandlePreviousPed(false);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+
             GiveHistory();
         }
         catch (Exception e3)

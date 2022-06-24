@@ -93,7 +93,7 @@ public class Civilians
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == 8)//5
+                if (yield && localRan == Settings.SettingsManager.DebugSettings.CivilianUpdateBatch)//5
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -130,7 +130,7 @@ public class Civilians
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == 5)
+                if (yield && localRan == Settings.SettingsManager.DebugSettings.EMTsUpdateBatch)
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -159,7 +159,7 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (yield && localRan == 5)
+                if (yield && localRan == Settings.SettingsManager.DebugSettings.MerchantsUpdateBatch)
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -203,7 +203,7 @@ public class Civilians
                     ped.WillFight = true;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == 5)//1
+                if (yield && localRan == Settings.SettingsManager.DebugSettings.GangUpdateBatch)//1
                 {
                     GameFiber.Yield();
                     localRan = 0;

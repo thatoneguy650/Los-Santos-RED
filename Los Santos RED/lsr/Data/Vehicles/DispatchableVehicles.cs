@@ -113,6 +113,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police3", 25, 25)  {RequiredLiveries = new List<int>() { 10 } },
             new DispatchableVehicle("sheriff2", 50, 50)  {RequiredLiveries = new List<int>() { 10 } },};
         List<DispatchableVehicle> LSIAPDVehicles = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 12 } },
             new DispatchableVehicle("sheriff2", 25, 25)  {RequiredLiveries = new List<int>() { 12 } },};
@@ -139,9 +140,10 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
         List<DispatchableVehicle> LSPPVehicles = new List<DispatchableVehicle>() {
-
+            new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 13 } },};
+            new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 13 } },
+            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 13 } }, };
 
 
 

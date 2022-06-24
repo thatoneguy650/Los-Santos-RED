@@ -157,10 +157,10 @@ public class VanillaManager
         }
         if (Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
-            if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
-            {
+            //if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
+            //{
                 TerminateDispatch();
-            }
+            //}
         }
         else if (!Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
