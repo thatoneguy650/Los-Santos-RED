@@ -10,8 +10,7 @@ public class LEDispatcher
 {
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
-    private readonly int LikelyHoodOfAnySpawn = 5;
-    private readonly int LikelyHoodOfCountySpawn = 10;
+
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
@@ -49,6 +48,34 @@ public class LEDispatcher
         Weapons = weapons;
         Names = names;
         PlacesOfInterest = placesOfInterest;
+    }
+    private float LikelyHoodOfAnySpawn
+    {
+        get
+        {
+            if (TotalIsWanted)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted;
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_NotWanted;
+            }
+        }
+    }
+    private float LikelyHoodOfCountySpawn
+    {
+        get
+        {
+            if(TotalIsWanted)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted;
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_NotWanted;
+            }
+        }
     }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
@@ -663,7 +690,7 @@ public class LEDispatcher
     }
     public void SpawnRoadblock()//temp public
     {
-        Vector3 Position = Player.Character.GetOffsetPositionFront(350f);//400f 400 is mostly far enough to not see it
+        Vector3 Position = Player.Character.GetOffsetPositionFront(300f);//400f 400 is mostly far enough to not see it
         Street ForwardStreet = Streets.GetStreet(Position);
         GameFiber.Yield();
         if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)

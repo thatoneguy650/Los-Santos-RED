@@ -84,7 +84,7 @@ public class Roadblock
                 CreateBarrier(ConePosition, NodeHeading);
                 StripsAdded++;
             }
-        } while (Created && StripsAdded < 5);
+        } while (Created && StripsAdded < 3);
     }
     private void AddVehicles(bool InFront)
     {

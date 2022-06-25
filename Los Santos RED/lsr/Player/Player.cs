@@ -1498,6 +1498,11 @@ namespace Mod
             IsPerformingActivity = false;
             CurrentVehicle = null;
             RemoveGPSRoute();
+
+
+            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+            IsMobileRadioEnabled = false;
+
             // IsIntoxicated = false;
             if (resetWanted)
             {

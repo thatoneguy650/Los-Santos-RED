@@ -136,6 +136,11 @@ public class PoliceSettings : ISettingsDefaultable
 
 
     public int PercentageSpawnOnFootNearStation { get; set; }
+    public int LikelyHoodOfAnySpawn_NotWanted { get; set; }
+    public int LikelyHoodOfCountySpawn_NotWanted { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted { get; set; }
 
     public PoliceSettings()
     {
@@ -276,5 +281,12 @@ public class PoliceSettings : ISettingsDefaultable
 
         PercentageSpawnOnFootNearStation = 50;
 
+
+        LikelyHoodOfAnySpawn_NotWanted = 5;
+        LikelyHoodOfCountySpawn_NotWanted = 5;
+
+
+        LikelyHoodOfAnySpawn_Wanted = 20;
+        LikelyHoodOfCountySpawn_Wanted = 20;
     }
 }

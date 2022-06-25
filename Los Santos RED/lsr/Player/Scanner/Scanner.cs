@@ -235,7 +235,7 @@ namespace LosSantosRED.lsr
         }
         public void OnFIBHRTDeployed()
         {
-            if (Player.IsWanted && !RequestFIBUnits.HasBeenPlayedThisWanted)
+            if (Player.IsWanted && Player.WantedLevel >= 5 && !RequestFIBUnits.HasBeenPlayedThisWanted)
             {
                 AddToQueue(RequestFIBUnits);
             }
@@ -329,7 +329,7 @@ namespace LosSantosRED.lsr
         }
         public void OnNooseDeployed()
         {
-            if (Player.IsWanted && !RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.Pedestrians.AnyNooseUnitsSpawned)
+            if (Player.IsWanted && Player.WantedLevel >= 4 && !RequestNooseUnitsAlt.HasBeenPlayedThisWanted && !RequestNooseUnitsAlt2.HasBeenPlayedThisWanted && World.Pedestrians.AnyNooseUnitsSpawned)
             {
                 if (RandomItems.RandomPercent(50))
                 {
