@@ -314,15 +314,26 @@ public class WeaponInventory
     {
         if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive) //if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
         {
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)WeaponHash.StunGun, false))
+            //EntryPoint.WriteToConsole($"SET COP {WeaponOwner.Pedestrian.Handle} LESS LETHAL HasTaser: {WeaponOwner.HasTaser}");
+            uint lessLethalHash = (uint)WeaponHash.StunGun;
+            if (!WeaponOwner.HasTaser)
             {
-                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)WeaponHash.StunGun, 100, false, true);
+                if (!IsSetLessLethal)
+                {
+                    NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(WeaponOwner.Pedestrian, false);
+                }
+
+                lessLethalHash = (uint)1737195953;
+            }
+            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, lessLethalHash, false))
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, lessLethalHash, 100, false, true);
             }
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
-            if(currentWeapon != (uint)WeaponHash.StunGun)
+            if (currentWeapon != lessLethalHash || !WeaponOwner.HasTaser)
             {
-                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, (uint)WeaponHash.StunGun, true);
+                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, lessLethalHash, true);
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys

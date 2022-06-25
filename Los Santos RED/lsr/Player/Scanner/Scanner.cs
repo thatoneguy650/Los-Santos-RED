@@ -286,7 +286,7 @@ namespace LosSantosRED.lsr
         {
             if (Player.IsWanted && !ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && !RequestSwatAirSupport.HasBeenPlayedThisWanted && World.Pedestrians.AnyHelicopterUnitsSpawned)
             {
-                if (World.Pedestrians.AnyNooseUnitsSpawned)
+                if (World.Pedestrians.AnyNooseUnitsSpawned && Player.WantedLevel >= 4)
                 {
                     AddToQueue(RequestSwatAirSupport);
                 }

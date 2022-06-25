@@ -986,7 +986,10 @@ public class Debug
             
 
         }
-
+        foreach (Cop cop in World.Pedestrians.Police)
+        {
+            cop.HasTaser = false;
+        }
 
 
         //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();

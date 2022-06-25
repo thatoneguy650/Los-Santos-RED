@@ -60,7 +60,7 @@ public class Cop : PedExt, IWeaponIssuable
     public WeaponInventory WeaponInventory { get; private set; }
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
-
+    public bool HasTaser { get; set; } = true;
 
     public int Division { get; set; } = -1;
     public string UnityType { get; set; } = "Lincoln";

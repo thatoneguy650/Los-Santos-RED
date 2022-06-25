@@ -35,5 +35,5 @@ public class GangMember : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     //public bool WasModSpawned { get; private set; }
 
-
+    public bool HasTaser { get; set; } = false;
 }

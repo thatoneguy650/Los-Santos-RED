@@ -82,6 +82,7 @@ public class Agency
     [XmlIgnore]
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public string VehiclesID { get; set; }
+    public bool HasTasers { get; set; } = true;
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
     {

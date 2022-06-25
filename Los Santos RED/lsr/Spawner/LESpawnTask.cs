@@ -344,6 +344,7 @@ public class LESpawnTask : SpawnTask
         PrimaryCop.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
         PrimaryCop.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
         PrimaryCop.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
+        PrimaryCop.HasTaser = Agency.HasTasers;
         if (Agency.Division != -1)
         {
             PrimaryCop.Division = Agency.Division;
