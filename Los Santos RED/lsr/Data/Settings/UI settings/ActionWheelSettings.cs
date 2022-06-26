@@ -40,8 +40,8 @@ public class ActionWheelSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        ItemWidth = 0.08f;
-        ItemHeight = 0.08f;
+        ItemWidth = 0.06f;
+        ItemHeight = 0.06f;
         ItemSpacingX = 0.04f;
         ItemSpacingY = 0.04f;
         ItemScale = 1.2f;
@@ -58,7 +58,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         TransitionOutEffect = "SwitchHUDOut";
         MessageStartingPositionX = 0.05f;
         MessageStartingPositionY = 0.05f;
-        MessageFont = GTAFont.FontChaletLondon;
+        MessageFont = GTAFont.FontChaletComprimeCologne;
         MessageTextColor = "White";
         MessageScale = 0.2f;
         MessageBodySpacingY = 0.125f;

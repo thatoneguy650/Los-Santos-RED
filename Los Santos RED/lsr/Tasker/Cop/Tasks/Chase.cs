@@ -363,7 +363,7 @@ public class Chase : ComplexTask
             }
             else
             {
-                return Task.Nothing;
+                return Task.CarJack;
             }
         }
         else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_OnFoot)

@@ -39,9 +39,17 @@ public class WeaponInventory
         if (issueMelee)
         {
             Melee = WeaponOwner.GetRandomMeleeWeapon(weapons);
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))//(uint)WeaponHash.StunGun
+            if (Melee != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))//(uint)WeaponHash.StunGun
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), 100, false, false);
+            }
+            if(Melee != null && Melee.IsTaser)
+            {
+                WeaponOwner.HasTaser = true;
+            }
+            else
+            {
+                WeaponOwner.HasTaser = false;
             }
         }
         if (issueSidearm)
@@ -221,12 +229,11 @@ public class WeaponInventory
     }
     public void SetDefault()
     {
-        if (!IsSetDefault && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)//if ((!IsSetDefault || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
+        if (!IsSetDefault && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
         {
-            //EntryPoint.WriteToConsole($"COP EVENT {Cop.Pedestrian.Handle}: SETTING DEFAULT WEAPON LOADOUT", 3);
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)WeaponHash.StunGun, false))
+            if (Melee != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))
             {
-                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)WeaponHash.StunGun, 100, false, false);
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), 100, false, false);
             }
             if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), false))
             {
@@ -253,12 +260,17 @@ public class WeaponInventory
     {
         if (!IsSetDeadly && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive) //if ((!IsSetDeadly || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
         {
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), false))
+            if (Melee != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), 200, false, false);
+                Melee.ApplyVariation(WeaponOwner.Pedestrian);
+            }
+            if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
                 Sidearm.ApplyVariation(WeaponOwner.Pedestrian);
             }
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
+            if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(WeaponOwner.Pedestrian);
@@ -279,7 +291,7 @@ public class WeaponInventory
                         {
                             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, LongGun.GetHash(), true);
                         }
-                        else
+                        else if(Sidearm != null)
                         {
                             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
                         }
@@ -293,7 +305,7 @@ public class WeaponInventory
                         {
                             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, LongGun.GetHash(), true);
                         }
-                        else
+                        else if (Sidearm != null)
                         {
                             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
                         }
@@ -312,31 +324,39 @@ public class WeaponInventory
     }
     public void SetLessLethal()
     {
-        if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive) //if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
+        if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
         {
-            //EntryPoint.WriteToConsole($"SET COP {WeaponOwner.Pedestrian.Handle} LESS LETHAL HasTaser: {WeaponOwner.HasTaser}");
-            uint lessLethalHash = (uint)WeaponHash.StunGun;
-            if (!WeaponOwner.HasTaser)
+            EntryPoint.WriteToConsole($"WeaponOwner {WeaponOwner.Handle} LESS LETHAL RAN IsSetLessLethal :{IsSetLessLethal}");
+            if (!IsSetLessLethal)
             {
-                if (!IsSetLessLethal)
+                NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(WeaponOwner.Pedestrian, false);
+            }
+            if (Melee != null)
+            {
+                if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))
                 {
-                    NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(WeaponOwner.Pedestrian, false);
+                    NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), 100, false, true);
                 }
-
-                lessLethalHash = (uint)1737195953;
+                uint currentWeapon;
+                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
+                if (currentWeapon != (uint)Melee.GetHash())
+                {
+                    NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), true);
+                }
+                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
+                NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
             }
-            if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, lessLethalHash, false))
+            else
             {
-                NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, lessLethalHash, 100, false, true);
-            }
-            uint currentWeapon;
-            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
-            if (currentWeapon != lessLethalHash || !WeaponOwner.HasTaser)
-            {
-                NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, lessLethalHash, true);
-            }
-            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
-            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
+                uint currentWeapon;
+                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
+                if (currentWeapon != 2725352035)
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", WeaponOwner.Pedestrian, 2725352035, true);
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
+                }
+                NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
+            }    
             IsSetLessLethal = true;
             IsSetUnarmed = false;
             IsSetDeadly = false;

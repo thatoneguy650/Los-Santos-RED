@@ -1,5 +1,9 @@
 ﻿public class GestureData
 {
+    public GestureData()
+    {
+
+    }
     public GestureData(string name, string animationName)
     {
         Name = name;
@@ -24,6 +28,7 @@
     public string AnimationEnter { get; set; } = "";
     public string AnimationExit { get; set; } = "";
     public bool IsInsulting { get; set; } = false;
+    public bool IsOnActionWheel { get; set; } = false;
     public override string ToString()
     {
         return Name;

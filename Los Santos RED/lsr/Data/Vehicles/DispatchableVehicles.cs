@@ -298,8 +298,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
 
 
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
-        Serialization.SerializeParams(VehicleGroupLookupGresk, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchableVehicles_Gresk.xml");
+        Serialization.SerializeParams(VehicleGroupLookupGresk, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\DispatchableVehicles_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
     }
     private void DefaultConfig()
     {

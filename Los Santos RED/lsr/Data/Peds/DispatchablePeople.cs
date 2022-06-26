@@ -26,7 +26,6 @@ class DispatchablePeople : IDispatchablePeople
         }
         else
         {
-            Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
             DefaultConfig();
             DefaultConfig_EUPBasic();
             Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
@@ -4685,7 +4684,7 @@ class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
-        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\DispatchablePeople_Gresk.xml");
+        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\DispatchablePeople_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
 
     }
 

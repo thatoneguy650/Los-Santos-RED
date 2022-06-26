@@ -85,7 +85,7 @@ public class UI : IMenuProvideable
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
 
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures)
     {
         DisplayablePlayer = displayablePlayer;
         ActionablePlayer = actionablePlayer;
@@ -98,7 +98,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances);
+        MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
@@ -110,7 +110,8 @@ public class UI : IMenuProvideable
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
-        ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this);
+        ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
+        
     }
     private enum GTAHudComponent
     {
@@ -148,8 +149,7 @@ public class UI : IMenuProvideable
     public void Dispose()
     {
         IsDisposed = true;
-        //GameFiber.Sleep(50);
-        //Game.RawFrameRender -= DrawSprites;
+        ActionPopUpMenu.Dispose();
     }
     public void DrawSprites(object sender, GraphicsEventArgs args)
     {
@@ -287,26 +287,11 @@ public class UI : IMenuProvideable
     }
     public void Setup()
     {
-        //Game.RawFrameRender += DrawSprites;
         IsDisposed = false;
-        //Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
-        //Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
-        //Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
-        //Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
-        //Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
-        //Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
-        //Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
-        //Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
-        //Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
-        //Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
-        //Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
-        //Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
-        //Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
-        //Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
-        //Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
         PlayerInfoMenu.Setup();
         MessagesMenu.Setup();
-        AboutMenu.Setup();       
+        AboutMenu.Setup();
+        ActionPopUpMenu.Setup();
     }
     public void TertiaryTick()
     {

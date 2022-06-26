@@ -13,6 +13,7 @@ public class WeaponInformation
     public int WeaponLevel { get; set; }
     public uint Hash { get; set; }
     public bool CanPistolSuicide { get; set; } = false;
+    public bool IsTaser { get; set; } = false;
     public bool IsTwoHanded { get; set; } = false;
     public bool IsOneHanded { get; set; } = false;
     public bool IsLegal { get; set; } = false;

@@ -109,6 +109,7 @@
     <Compile Include="lsr\Data\Interface\IDispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Interface\IGangs.cs" />
     <Compile Include="lsr\Data\Interface\IGangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IGestures.cs" />
     <Compile Include="lsr\Data\Interface\IHeads.cs" />
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="lsr\Data\Items\ModItems.cs" />
     <Compile Include="lsr\Data\Peds\Dances.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePersonGroup.cs" />
+    <Compile Include="lsr\Data\Peds\Gestures.cs" />
     <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
     <Compile Include="lsr\Data\Peds\Heads.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
@@ -423,6 +425,7 @@
     <Compile Include="lsr\UI\Pause Menu\Util.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PopUpMenu.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PopUpMenuConfig.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\PopUpMenuGroup.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PopUpMenuMap.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PositionMap.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />

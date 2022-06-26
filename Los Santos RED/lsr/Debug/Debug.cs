@@ -2871,27 +2871,27 @@ public class Debug
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
     }
-    public void IssueWeapons(IWeapons weapons)
-    {
-        IssuableWeapon Sidearm = Agencies.GetAgency("NOOSE").GetRandomWeapon(true, weapons);
-        IssuableWeapon LongGun = Agencies.GetAgency("NOOSE").GetRandomWeapon(false, weapons);
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, false))
-        {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, 100, false, false);
-        }
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), false))
-        {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), 200, false, false);
-            Sidearm.ApplyVariation(Game.LocalPlayer.Character);
-        }
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), false))
-        {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), 200, false, false);
-            LongGun.ApplyVariation(Game.LocalPlayer.Character);
-        }
-       // NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Game.LocalPlayer.Character, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
-      //  NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Game.LocalPlayer.Character, 2, true);//can do drivebys    
-    }
+    //public void IssueWeapons(IWeapons weapons)
+    //{
+    //    IssuableWeapon Sidearm = Agencies.GetAgency("NOOSE").GetRandomWeapon(true, weapons);
+    //    IssuableWeapon LongGun = Agencies.GetAgency("NOOSE").GetRandomWeapon(false, weapons);
+    //    if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, false))
+    //    {
+    //        NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash.StunGun, 100, false, false);
+    //    }
+    //    if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), false))
+    //    {
+    //        NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)Sidearm.GetHash(), 200, false, false);
+    //        Sidearm.ApplyVariation(Game.LocalPlayer.Character);
+    //    }
+    //    if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), false))
+    //    {
+    //        NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, (uint)LongGun.GetHash(), 200, false, false);
+    //        LongGun.ApplyVariation(Game.LocalPlayer.Character);
+    //    }
+    //   // NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Game.LocalPlayer.Character, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
+    //  //  NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Game.LocalPlayer.Character, 2, true);//can do drivebys    
+    //}
     private void SetupTimecycles()
     {
         Timecycles = new List<string>()

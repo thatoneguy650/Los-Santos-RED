@@ -53,13 +53,33 @@ public class LEDispatcher
     {
         get
         {
-            if (TotalIsWanted)
+            if (World.TotalWantedLevel == 1)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted;
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted1;
+            }
+            else if (World.TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted2;
+            }
+            else if (World.TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted3;
+            }
+            else if (World.TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted4;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted5;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted6;
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_NotWanted;
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Default;
             }
         }
     }
@@ -67,13 +87,33 @@ public class LEDispatcher
     {
         get
         {
-            if(TotalIsWanted)
+            if(World.TotalWantedLevel == 1)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted;
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted1;
+            }
+            else if (World.TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted2;
+            }
+            else if (World.TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted3;
+            }
+            else if (World.TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted4;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted5;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted6;
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_NotWanted;
+                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Default;
             }
         }
     }

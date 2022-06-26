@@ -165,15 +165,8 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(63, "Nothing", "None", 0));
         FullPlateTypeList.Add(new PlateType(64, "New Austin 1", "New Austin", 3, "ABC 123"));
         FullPlateTypeList.Add(new PlateType(65, "New Austin 2", "New Austin", 3, "ABC 123"));
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
 
-#if DEBUG
-        Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\PlateTypes_Full.xml");
-#else
-        Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\AlternateConfigs\\PlateTypes_Full.xml");
-#endif
-
-
+        Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\PlateTypes_AddOnPlates_Wildbrick142.xml");
 
     }
 }

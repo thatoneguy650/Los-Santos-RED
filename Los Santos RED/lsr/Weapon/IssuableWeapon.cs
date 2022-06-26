@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 public class IssuableWeapon
 {
     private uint ModelHash;
+    private bool isTaser = false;
     public IssuableWeapon()
     {
 
@@ -19,10 +20,18 @@ public class IssuableWeapon
         ModelName = name;
         Variation = variation;
     }
+    public IssuableWeapon(string name, WeaponVariation variation, int spawnChance)
+    {
+        ModelName = name;
+        Variation = variation;
+        SpawnChance = spawnChance;
+    }
 
     public string ModelName { get; set; }
     private List<WeaponComponent> PossibleComponents  = new List<WeaponComponent>();
     public WeaponVariation Variation { get; set; }
+    public int SpawnChance { get; set; } = 100;
+    public bool IsTaser => isTaser;
     public void ApplyVariation(Ped WeaponOwner)
     {
         //EntryPoint.WriteToConsole($"ISSUABLE WEAPON: ApplyVariation {ModelName}", 5);
@@ -53,14 +62,16 @@ public class IssuableWeapon
             }
         }
     }
-    public void SetIssued(uint hash, List<WeaponComponent> possibleComponents)
+    public void SetIssued(uint hash, List<WeaponComponent> possibleComponents, bool isWeaponTaser)
     {
         ModelHash = hash;
         PossibleComponents = possibleComponents;
+        isTaser = isWeaponTaser;
     }
-    public void SetIssued(uint hash)
+    public void SetIssued(uint hash, bool isWeaponTaser)
     {
         ModelHash = hash;
+        isTaser = isWeaponTaser;
     }
     public uint GetHash()
     {

@@ -984,8 +984,7 @@ public class Jurisdictions : IJurisdictions
             //new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
             //new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),      
         };
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
-        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\ZoneJurisdictions_Gresk.xml");
+        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\ZoneJurisdictions_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
     }
     private void DefaultCountyConfig_Gresk()
     {
@@ -996,8 +995,7 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
             new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100),
         };
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
-        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\CountyJurisdictions_Gresk.xml");
+        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\CountyJurisdictions_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
 
     }
 }

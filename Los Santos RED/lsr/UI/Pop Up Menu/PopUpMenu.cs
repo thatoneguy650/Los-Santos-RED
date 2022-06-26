@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public class PopUpMenu
 {
+    private Regex rgx = new Regex("[^a-zA-Z0-9]");
     private IActionable Player;
     private ISettingsProvideable Settings;
     private List<PositionMap> PositionMaps = new List<PositionMap>();
@@ -26,6 +28,14 @@ public class PopUpMenu
     private float ConsistencyScale;
     private int TransitionInSound;
     private int TransitionOutSound;
+    private string CurrentPopUpMenuGroup;
+    private IGestures Gestures;
+    private IDances Dances;
+
+    private List<PopUpMenuGroup> PopUpMenuGroups = new List<PopUpMenuGroup>();
+    private float excessiveItemScaler;
+
+    private bool IsCurrentPopUpMenuGroupDefault => CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot";
 
     public bool HasRanItem { get; private set; }
     private enum GTATextJustification
@@ -34,28 +44,41 @@ public class PopUpMenu
         Left = 1,
         Right = 2,
     };
-    public PopUpMenu(IActionable player, ISettingsProvideable settings, UI uI)
+    public PopUpMenu(IActionable player, ISettingsProvideable settings, UI uI, IGestures gestures, IDances dances)
     {
         Player = player;
         Settings = settings;
         UI = uI;
+        Gestures = gestures;
+        Dances = dances;
+    }
+    public void Setup()
+    {
+
+
+
         OnFootMenuMaps = new List<PopUpMenuMap>()
         {
             new PopUpMenuMap(0, "Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
             new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
             new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
 
-            new PopUpMenuMap(3,"Last Gesture",Player.Gesture,"Perform last gesture"),
-            new PopUpMenuMap(4,"Suicide",Player.CommitSuicide,"Commit suicide"),
-            new PopUpMenuMap(5,"Dance",Player.Dance,"Dance in place"),
+
+            new PopUpMenuMap(3,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
+            new PopUpMenuMap(4,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false },
+
+            new PopUpMenuMap(5,"Suicide",Player.CommitSuicide,"Commit suicide"),
+            
             new PopUpMenuMap(6,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
             new PopUpMenuMap(7,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
             new PopUpMenuMap(8,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
-            new PopUpMenuMap(9,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
 
-            new PopUpMenuMap(10,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
-            new PopUpMenuMap(11,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
-            //new PopUpMenuMap(11,"Drop Weapon 2",Player.DropWeapon),
+            new PopUpMenuMap(9,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
+            new PopUpMenuMap(10,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
+            new PopUpMenuMap(11,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
+
+           // new PopUpMenuMap(12,"Last Gesture 2","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
+
         };
 
         InVehicleMenuMaps = new List<PopUpMenuMap>()
@@ -64,21 +87,44 @@ public class PopUpMenu
             new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
             new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
 
-            new PopUpMenuMap(3,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
-            new PopUpMenuMap(4,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
+            new PopUpMenuMap(3,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
+
+
+            new PopUpMenuMap(4,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
             new PopUpMenuMap(5,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
-            new PopUpMenuMap(6,"Last Gesture",Player.Gesture,"Perform last gesture"),
-            new PopUpMenuMap(7,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
+            new PopUpMenuMap(6,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
+            new PopUpMenuMap(7,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
             new PopUpMenuMap(8,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
-            new PopUpMenuMap(9,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-            new PopUpMenuMap(10,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
-           // new PopUpMenuMap(10,"None",Player.CloseDriverDoor),
-           // new PopUpMenuMap(11,"None 2",Player.CloseDriverDoor),
+            new PopUpMenuMap(9,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
+
+            new PopUpMenuMap(10,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
+
         };
+
+        List<PopUpMenuMap> GestureMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastGesture.Name, ""), new Action(() => Player.Gesture(Player.LastGesture)), rgx.Replace(Player.LastGesture.Name, "")) };
+        int ID = 1;
+        foreach(GestureData gd in Gestures.GestureLookups.Where(x=> x.IsOnActionWheel).Take(30))
+        {
+            GestureMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, ""), new Action(() => Player.Gesture(gd)), rgx.Replace(gd.Name, "")));
+            ID++;
+        }
+        List<PopUpMenuMap> DancesMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastDance.Name, ""), new Action(() => Player.Dance(Player.LastDance)), rgx.Replace(Player.LastDance.Name, "")) };
+        ID = 1;
+        foreach (DanceData gd in Dances.DanceLookups.Where(x=> x.IsOnActionWheel).Take(30))
+        {
+            DancesMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, "") , new Action(() => Player.Dance(gd)), rgx.Replace(gd.Name, "")));
+            ID++;
+        }
+
+        PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultOnFoot", OnFootMenuMaps));
+        PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultInVehicle", InVehicleMenuMaps));
+        PopUpMenuGroups.Add(new PopUpMenuGroup("Gesture", GestureMenuMaps) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("Dance", DancesMenuMaps) { IsChild = true });
 
     }
     public void Draw()
     {
+        UpdateDefaultMapping(false);
         DrawShapesAndText();
         DisableControls();    
         FindClosestPositionMap();
@@ -106,7 +152,7 @@ public class PopUpMenu
 
         NativeFunction.Natives.STOP_SOUND(TransitionInSound);
         NativeFunction.Natives.RELEASE_SOUND_ID(TransitionInSound);
-
+        CurrentPopUpMenuGroup = "DefaultOnFoot";
 
         //TransitionOutSound = NativeFunction.Natives.GET_SOUND_ID<int>();
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionOutSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
@@ -124,12 +170,9 @@ public class PopUpMenu
         NativeFunction.Natives.STOP_SOUND(TransitionOutSound);
         NativeFunction.Natives.RELEASE_SOUND_ID(TransitionOutSound);
 
-
         TransitionInSound = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionInSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
-
-
-
+        CurrentPopUpMenuGroup = "DefaultOnFoot";
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
     {
@@ -169,7 +212,6 @@ public class PopUpMenu
         }
         //return;
     }
-
     private void DisplayTextBoxOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, int alpha)
     {
         try
@@ -202,7 +244,6 @@ public class PopUpMenu
         }
         //return;
     }
-
     private void FindClosestPositionMap()
     {
         MouseState mouseState = Game.GetMouseState();
@@ -230,7 +271,7 @@ public class PopUpMenu
             PopUpMenuMap popUpMenuMap = GetCurrentMenuMap(ClosestPositionMap.ID);
             if (popUpMenuMap != null)
             {
-                if (popUpMenuMap.Action != null)
+                if (popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != "")
                 {
                     if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 200)//or is disbaled control just released.....
                     {
@@ -239,12 +280,15 @@ public class PopUpMenu
                             Dispose();
                             HasRanItem = true;
                         }
-                        
-
                         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
-                        
-
-                        popUpMenuMap.Action();
+                        if (popUpMenuMap.Action != null)
+                        {
+                            popUpMenuMap.Action();
+                        }
+                        else if (popUpMenuMap.ChildMenuID != "")
+                        {
+                            CurrentPopUpMenuGroup = popUpMenuMap.ChildMenuID;
+                        }
                         GameTimeLastClicked = Game.GameTime;
                     }
                 }
@@ -259,28 +303,22 @@ public class PopUpMenu
         {
             SelectedMenuMap = null;
         }
-
-
         if(SelectedMenuMap != null)
         {
             DisplayTextOnScreen(SelectedMenuMap.Description, 0.5f, 0.5f, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
         }
-
-
         if (PrevSelectedMenuMap?.Display != SelectedMenuMap?.Display)
         {
-           // Game.DisplaySubtitle($"{SelectedMenuMap?.Description}");
             if(SelectedMenuMap != null)
             {
-                
-                
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
             }
-
-
             PrevSelectedMenuMap = SelectedMenuMap;
         }
-
+        if(!IsCurrentPopUpMenuGroupDefault && Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
+        {
+            UpdateDefaultMapping(true);
+        }
     }
     private void DrawShapesAndText()
     {
@@ -292,12 +330,22 @@ public class PopUpMenu
         PositionMaps.Clear();
         int ID = 0;
         int TotalItems = GetCurrentMenuMap().Count();
+        if(TotalItems > 14)
+        {
+            float shrinkAmount = (TotalItems - 14) * 0.001f;
+            excessiveItemScaler = 1.0f - shrinkAmount;
+
+        }
+        else
+        {
+            excessiveItemScaler = 1.0f;
+        }
         if (TotalItems > 0)
         {
             double angle = 360.0 / TotalItems * Math.PI / 180.0;
             for (int i = 0; i < TotalItems; i++)
             {
-                DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter);
+                DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * excessiveItemScaler);
                 ID++;
             }
         }
@@ -320,28 +368,35 @@ public class PopUpMenu
         }
         if (isSelected)
         {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale, Settings.SettingsManager.ActionWheelSettings.ItemHeight * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 175, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
+            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemHeight * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, overrideColor.R, overrideColor.G, overrideColor.B, 175, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
         }
         else
         {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale, Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale, overrideColor.R, overrideColor.G, overrideColor.B, 100, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
+            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, overrideColor.R, overrideColor.G, overrideColor.B, 100, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
         }
-        DisplayTextOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
+        DisplayTextOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
     private PopUpMenuMap GetCurrentMenuMap(int ID)
     {
-        return GetCurrentMenuMap().FirstOrDefault(x => x.ID == ID);
+        return GetCurrentMenuMap()?.FirstOrDefault(x => x.ID == ID);
     }
     private List<PopUpMenuMap> GetCurrentMenuMap()
     {
-        if (Player.IsInVehicle && Player.CurrentVehicle != null)
+        return PopUpMenuGroups.FirstOrDefault(x => x.ID == CurrentPopUpMenuGroup)?.PopUpMenuMaps;
+    }
+    private void UpdateDefaultMapping(bool force)
+    {
+        if (CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot" || force)
         {
-            return InVehicleMenuMaps;
-        }
-        else
-        {
-            return OnFootMenuMaps;
+            if (Player.IsInVehicle && Player.CurrentVehicle != null)
+            {
+                CurrentPopUpMenuGroup = "DefaultInVehicle";
+            }
+            else
+            {
+                CurrentPopUpMenuGroup = "DefaultOnFoot";
+            }
         }
     }
     private void DisableControls()
@@ -414,34 +469,6 @@ public class PopUpMenu
                 MessagesDisplayed++;
             }
         }
-
-
-
-
-
-
-
-
-
-
-        //PhoneResponse phoneResponse = Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).FirstOrDefault();
-        //if (phoneResponse != null)
-        //{    
-        //    DisplayTextBoxOnScreen("Contact: " + phoneResponse.ContactName + " - Received: " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
-        //    DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
-        //    MessagesDisplayed++;
-        //}
-        //PhoneText phoneText = Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).FirstOrDefault();
-        //if (phoneText != null)
-        //{
-        //    if(MessagesDisplayed == 0)
-        //    {
-        //        YMessageSpacing = 0f;
-        //    }
-        //    DisplayTextBoxOnScreen("Contact: " + phoneText.ContactName + " - Received: " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YMessageSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255);
-        //    DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.UISettings.ActionPopUpItemMessageX, Settings.SettingsManager.UISettings.ActionPopUpItemMessageY + YMessageSpacing + YHeaderSpacing, Settings.SettingsManager.UISettings.ActionPopUpItemMessageScale, Color.FromName(Settings.SettingsManager.UISettings.ActionPopUpItemTextColor), Settings.SettingsManager.UISettings.ActionPopUpItemFont, 255); ;
-        //    MessagesDisplayed++;
-        //}
     }
 }
 

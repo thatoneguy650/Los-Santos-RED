@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class PoliceSettings : ISettingsDefaultable
+﻿public class PoliceSettings : ISettingsDefaultable
 {
     public bool ManageDispatching { get; set; }
     public bool ManageTasking { get; set; }
@@ -136,11 +129,26 @@ public class PoliceSettings : ISettingsDefaultable
 
 
     public int PercentageSpawnOnFootNearStation { get; set; }
-    public int LikelyHoodOfAnySpawn_NotWanted { get; set; }
-    public int LikelyHoodOfCountySpawn_NotWanted { get; set; }
+    public int LikelyHoodOfAnySpawn_Default { get; set; }
+    public int LikelyHoodOfCountySpawn_Default { get; set; }
 
-    public int LikelyHoodOfAnySpawn_Wanted { get; set; }
-    public int LikelyHoodOfCountySpawn_Wanted { get; set; }
+    public int LikelyHoodOfAnySpawn_Wanted1 { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted1 { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted2 { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted2 { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted3 { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted3 { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted4 { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted4 { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted5 { get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted5 { get; set; }
+
+    public int LikelyHoodOfAnySpawn_Wanted6{ get; set; }
+    public int LikelyHoodOfCountySpawn_Wanted6 { get; set; }
 
     public PoliceSettings()
     {
@@ -282,11 +290,26 @@ public class PoliceSettings : ISettingsDefaultable
         PercentageSpawnOnFootNearStation = 50;
 
 
-        LikelyHoodOfAnySpawn_NotWanted = 5;
-        LikelyHoodOfCountySpawn_NotWanted = 5;
+        LikelyHoodOfAnySpawn_Default = 5;
+        LikelyHoodOfCountySpawn_Default = 5;
 
 
-        LikelyHoodOfAnySpawn_Wanted = 20;
-        LikelyHoodOfCountySpawn_Wanted = 20;
+        LikelyHoodOfAnySpawn_Wanted1 = 5;
+        LikelyHoodOfCountySpawn_Wanted1 = 5;
+
+        LikelyHoodOfAnySpawn_Wanted2 = 5;
+        LikelyHoodOfCountySpawn_Wanted2 = 5;
+
+        LikelyHoodOfAnySpawn_Wanted3 = 10;
+        LikelyHoodOfCountySpawn_Wanted3 = 10;
+
+        LikelyHoodOfAnySpawn_Wanted4 = 20;
+        LikelyHoodOfCountySpawn_Wanted4 = 20;
+
+        LikelyHoodOfAnySpawn_Wanted5 = 20;
+        LikelyHoodOfCountySpawn_Wanted5 = 20;
+
+        LikelyHoodOfAnySpawn_Wanted6 = 20;
+        LikelyHoodOfCountySpawn_Wanted6 = 20;
     }
 }

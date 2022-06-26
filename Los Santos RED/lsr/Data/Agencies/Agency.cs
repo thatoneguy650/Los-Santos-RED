@@ -16,11 +16,12 @@ public class Agency
     public Agency()
     {
     }
-    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string sideArmsID, string longGunsID, string groupName)
+    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string groupName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
+        LessLethalWeaponsID = meleeWeaponsID;
         PersonnelID = _DispatchablePeropleGroupID;
         ColorString = _AgencyColorString;
         VehiclesID = _DispatchableVehicleGroupID;
@@ -82,7 +83,10 @@ public class Agency
     [XmlIgnore]
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public string VehiclesID { get; set; }
-    public bool HasTasers { get; set; } = true;
+    [XmlIgnore]
+    public List<IssuableWeapon> LessLethalWeapons { get; set; } = new List<IssuableWeapon>();
+    public string LessLethalWeaponsID { get; set; }
+
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
     {
@@ -127,12 +131,7 @@ public class Agency
         {
             ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
         }
-        //if (RequiredModels != null && RequiredModels.Any())
-        //{
-        //    ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
-        //}
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
-        //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (DispatchablePerson Cop in ToPickFrom)
         {
@@ -182,25 +181,68 @@ public class Agency
     }
     public IssuableWeapon GetRandomWeapon(bool isSidearm, IWeapons weapons)
     {
-        IssuableWeapon weaponToIssue;
+        List<IssuableWeapon> PossibleWeapons;     
         if (isSidearm)
         {
-            weaponToIssue = SideArms.PickRandom();
+            PossibleWeapons = SideArms;
         }
         else
         {
-            weaponToIssue = LongGuns.PickRandom();
+            PossibleWeapons = LongGuns;
         }
-        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
-        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
-        return weaponToIssue;
+        if (PossibleWeapons != null && PossibleWeapons.Any())
+        {
+            int Total = PossibleWeapons.Sum(x => x.SpawnChance);
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
+            foreach (IssuableWeapon weapon in PossibleWeapons)
+            {
+                int SpawnChance = weapon.SpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(weapon.ModelName);
+                    if (WeaponLookup != null)
+                    {
+
+                        weapon.SetIssued(Game.GetHashKey(weapon.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                        return weapon;
+                    }
+                }
+                RandomPick -= SpawnChance;
+            }
+            if (PossibleWeapons.Any())
+            {
+                return PossibleWeapons.PickRandom();
+            }
+        }
+        return null;
     }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons)
     {
-        IssuableWeapon weaponToIssue = new IssuableWeapon("weapon_stungun",new WeaponVariation());
-        WeaponInformation WeaponLookup = weapons.GetWeapon(weaponToIssue.ModelName);
-        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), WeaponLookup.PossibleComponents);
-        return weaponToIssue;
+        List<IssuableWeapon> PossibleWeapons = LessLethalWeapons;
+        if (PossibleWeapons != null && PossibleWeapons.Any())
+        {
+            int Total = PossibleWeapons.Sum(x => x.SpawnChance);
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
+            foreach (IssuableWeapon weapon in PossibleWeapons)
+            {
+                int SpawnChance = weapon.SpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(weapon.ModelName);
+                    if (WeaponLookup != null)
+                    {
+                        weapon.SetIssued(Game.GetHashKey(weapon.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                        return weapon;
+                    }
+                }
+                RandomPick -= SpawnChance;
+            }
+            if (PossibleWeapons.Any())
+            {
+                return PossibleWeapons.PickRandom();
+            }
+        }
+        return null;
     }
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
     public bool HasSpawnableHelicopters(int wantedLevel) => Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn(wantedLevel));

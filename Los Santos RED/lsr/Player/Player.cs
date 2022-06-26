@@ -1751,7 +1751,8 @@ namespace Mod
                 Tools.Scripts.TerminateScript("cellphone_flashhand");
                 Tools.Scripts.TerminateScript("cellphone_controller");
             }
-
+            LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
+            LastDance = Dances.GetRandomDance();
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {

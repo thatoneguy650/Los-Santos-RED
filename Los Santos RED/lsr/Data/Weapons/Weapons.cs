@@ -240,7 +240,7 @@ public class Weapons : IWeapons
         };
         WeaponsList.Add(new WeaponInformation("weapon_appistol", 60, WeaponCategory.Pistol, 1, 584646201, true, false, false, 1.0f, 1.2f, 0.7f, 0.9f, 0.75f, 1.0f, 0.75f, 1.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = APPistolComponents, CanPistolSuicide = true });
 
-        WeaponsList.Add(new WeaponInformation("weapon_stungun", 0, WeaponCategory.Melee, 0, 911657153, true, false, true, 0.2f, 0.3f, 0.1f, 0.2f, 0.75f, 1.0f, 0.75f, 1.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { CanPistolSuicide = false });
+        WeaponsList.Add(new WeaponInformation("weapon_stungun", 0, WeaponCategory.Melee, 0, 911657153, true, false, true, 0.2f, 0.3f, 0.1f, 0.2f, 0.75f, 1.0f, 0.75f, 1.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { CanPistolSuicide = false,IsTaser = true });
 
         List<WeaponComponent> Pistol50Components = new List<WeaponComponent>
         {

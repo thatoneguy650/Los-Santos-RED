@@ -1,5 +1,9 @@
 ﻿public class DanceData
 {
+    public DanceData()
+    {
+
+    }
     public DanceData(string name, string animationName)
     {
         Name = name;
@@ -27,6 +31,7 @@
     public string FacialAnimationExit { get; set; } = "";
     public bool IsInsulting { get; set; } = false;
     public bool IsVehicle { get; set; } = false;
+    public bool IsOnActionWheel { get; set; } = false;
     public override string ToString()
     {
         return Name;

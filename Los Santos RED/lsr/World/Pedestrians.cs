@@ -913,7 +913,6 @@ public class Pedestrians
             myCop.TaserShootRate = tazerShootRate;
             myCop.VehicleAccuracy = vehicleAccuracy;
             myCop.VehicleShootRate = vehicleShootRate;
-            myCop.HasTaser = AssignedAgency.HasTasers;
             if (AssignedAgency.Division != -1)
             {
                 myCop.Division = AssignedAgency.Division;
