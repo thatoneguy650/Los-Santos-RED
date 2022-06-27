@@ -63,6 +63,15 @@ public class Interiors : IInteriors
             //new Interior(37122,"Ammunation"),
 
 
+
+            new Interior(22786, "BINCO Textile City",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3146141106, new Vector3(418.5713f,-808.674f,29.64108f)),
+                    new InteriorDoor(868499217, new Vector3(418.5713f,-806.3979f,29.64108f)) }),//doesntwork?
+
+
             new Interior(-555,"Ammunation Vespucci Boulevard",
                 new List<string>() {  },
                 new List<string>() {  },

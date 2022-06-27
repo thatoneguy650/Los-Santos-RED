@@ -17,8 +17,6 @@ public class PopUpMenu
     private IActionable Player;
     private ISettingsProvideable Settings;
     private List<PositionMap> PositionMaps = new List<PositionMap>();
-    private List<PopUpMenuMap> OnFootMenuMaps;
-    private List<PopUpMenuMap> InVehicleMenuMaps;
     private PopUpMenuMap SelectedMenuMap;
     private uint GameTimeLastClicked;
     private PopUpMenuMap PrevSelectedMenuMap;
@@ -54,73 +52,84 @@ public class PopUpMenu
     }
     public void Setup()
     {
-
-
-
-        OnFootMenuMaps = new List<PopUpMenuMap>()
+        List<PopUpMenuMap> OnFootMenuMaps = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
+            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },        
+            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
+        };
+        List<PopUpMenuMap> InVehicleMenuMaps = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },      
+            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
+        };
+        List<PopUpMenuMap> InfoSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0, "Player Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
             new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
             new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
-
-
-            new PopUpMenuMap(3,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
-            new PopUpMenuMap(4,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false },
-
-            new PopUpMenuMap(5,"Suicide",Player.CommitSuicide,"Commit suicide"),
-            
-            new PopUpMenuMap(6,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
-            new PopUpMenuMap(7,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
-            new PopUpMenuMap(8,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
-
-            new PopUpMenuMap(9,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
-            new PopUpMenuMap(10,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
-            new PopUpMenuMap(11,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-
-           // new PopUpMenuMap(12,"Last Gesture 2","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
-
         };
-
-        InVehicleMenuMaps = new List<PopUpMenuMap>()
+        List<PopUpMenuMap> ActionsSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
-            new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
-            new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
-
-            new PopUpMenuMap(3,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
-
-
-            new PopUpMenuMap(4,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
-            new PopUpMenuMap(5,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
-            new PopUpMenuMap(6,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
-            new PopUpMenuMap(7,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
-            new PopUpMenuMap(8,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
-            new PopUpMenuMap(9,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
-
-            new PopUpMenuMap(10,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-
+            new PopUpMenuMap(0,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
+            new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false },
+            new PopUpMenuMap(2,"Suicide",Player.CommitSuicide,"Commit suicide"),
+            new PopUpMenuMap(3,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
         };
-
-        List<PopUpMenuMap> GestureMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastGesture.Name, ""), new Action(() => Player.Gesture(Player.LastGesture)), rgx.Replace(Player.LastGesture.Name, "")) };
+        List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
+            new PopUpMenuMap(1,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
+        };
+        List<PopUpMenuMap> StanceSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
+            new PopUpMenuMap(1,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
+            new PopUpMenuMap(2,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
+        };
+        List<PopUpMenuMap> VehicleSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
+            new PopUpMenuMap(1,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
+            new PopUpMenuMap(2,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
+            new PopUpMenuMap(3,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
+            new PopUpMenuMap(4,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
+            new PopUpMenuMap(5,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
+        };
+        List<PopUpMenuMap> GestureMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastGesture.Name, " "), new Action(() => Player.Gesture(Player.LastGesture)), rgx.Replace(Player.LastGesture.Name, " ")) };
         int ID = 1;
         foreach(GestureData gd in Gestures.GestureLookups.Where(x=> x.IsOnActionWheel).Take(30))
         {
-            GestureMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, ""), new Action(() => Player.Gesture(gd)), rgx.Replace(gd.Name, "")));
+            GestureMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.Gesture(gd)), rgx.Replace(gd.Name, " ")));
             ID++;
         }
-        List<PopUpMenuMap> DancesMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastDance.Name, ""), new Action(() => Player.Dance(Player.LastDance)), rgx.Replace(Player.LastDance.Name, "")) };
+        List<PopUpMenuMap> DancesMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastDance.Name, " "), new Action(() => Player.Dance(Player.LastDance)), rgx.Replace(Player.LastDance.Name, " ")) };
         ID = 1;
         foreach (DanceData gd in Dances.DanceLookups.Where(x=> x.IsOnActionWheel).Take(30))
         {
-            DancesMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, "") , new Action(() => Player.Dance(gd)), rgx.Replace(gd.Name, "")));
+            DancesMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " ") , new Action(() => Player.Dance(gd)), rgx.Replace(gd.Name, " ")));
             ID++;
         }
+
 
         PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultOnFoot", OnFootMenuMaps));
         PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultInVehicle", InVehicleMenuMaps));
         PopUpMenuGroups.Add(new PopUpMenuGroup("Gesture", GestureMenuMaps) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpMenuGroup("Dance", DancesMenuMaps) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("InfoSubMenu", InfoSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("ActionsSubMenu", ActionsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("WeaponsSubMenu", WeaponsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("StancesSubMenu", StanceSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });
 
+
+
+        //UpdateInventoryMenuGroups();
     }
     public void Draw()
     {
@@ -137,6 +146,37 @@ public class PopUpMenu
     public void Reset()
     {
         HasRanItem = false;
+    }
+    private void UpdateInventoryMenuGroups()
+    {
+        PopUpMenuGroups.RemoveAll(x => x.Group == "Inventory");
+        int ID = 0;
+        int ID2 = 0;
+        List<PopUpMenuMap> InventoryCategoriesSubMenu = new List<PopUpMenuMap>();
+        foreach (ItemType mi in Player.Inventory.Items.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct())
+        {
+            InventoryCategoriesSubMenu.Add(new PopUpMenuMap(ID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
+            ID2 = 0;
+
+            List<PopUpMenuMap> InventoryCategorySubMenu = new List<PopUpMenuMap>();
+            foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi).Take(30))
+            {
+                InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, rgx.Replace(ii.ModItem.Name," "), new Action(() => Player.StartConsumingActivity(ii.ModItem,true)), $"Use {rgx.Replace(ii.ModItem.Name," ")} Remaining: {ii.Amount}"));
+                ID2++;
+            }
+
+            PopUpMenuGroups.Add(new PopUpMenuGroup($"{mi}SubMenu", InventoryCategorySubMenu) { IsChild = true, Group = "Inventory" });
+
+            ID++;
+        }
+        PopUpMenuGroups.Add(new PopUpMenuGroup("InventoryCategoriesSubMenu", InventoryCategoriesSubMenu) { IsChild = true, Group = "Inventory" });
+
+
+
+
+        
+
+
     }
     public void OnStopDisplaying()
     {
@@ -173,6 +213,7 @@ public class PopUpMenu
         TransitionInSound = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionInSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
         CurrentPopUpMenuGroup = "DefaultOnFoot";
+        UpdateInventoryMenuGroups();
     }
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
     {
@@ -273,7 +314,7 @@ public class PopUpMenu
             {
                 if (popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != "")
                 {
-                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 200)//or is disbaled control just released.....
+                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
                         if (popUpMenuMap.ClosesMenu)
                         {
@@ -329,24 +370,39 @@ public class PopUpMenu
         ConsistencyScale = (float)Game.Resolution.Height/(float)Game.Resolution.Width; //(float)Game.Resolution.Width / 3840f;
         PositionMaps.Clear();
         int ID = 0;
-        int TotalItems = GetCurrentMenuMap().Count();
-        if(TotalItems > 14)
+        List<PopUpMenuMap> CurrentMenuMap = GetCurrentMenuMap();
+        if (CurrentMenuMap != null)
         {
-            float shrinkAmount = (TotalItems - 14) * 0.001f;
-            excessiveItemScaler = 1.0f - shrinkAmount;
-
-        }
-        else
-        {
-            excessiveItemScaler = 1.0f;
-        }
-        if (TotalItems > 0)
-        {
-            double angle = 360.0 / TotalItems * Math.PI / 180.0;
-            for (int i = 0; i < TotalItems; i++)
+            int TotalItems = CurrentMenuMap.Count();
+            if (TotalItems > 14)
             {
-                DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * excessiveItemScaler);
-                ID++;
+                float shrinkAmount = (TotalItems - 14) * 0.004f;
+                excessiveItemScaler = 1.0f - shrinkAmount;
+            }
+            else
+            {
+                excessiveItemScaler = 1.0f;
+            }
+
+
+
+
+            if (excessiveItemScaler > 1.25f)
+            {
+                excessiveItemScaler = 1.25f;
+            }
+            if (excessiveItemScaler < 0.75f)
+            {
+                excessiveItemScaler = 0.75f;
+            }
+            if (TotalItems > 0)
+            {
+                double angle = 360.0 / TotalItems * Math.PI / 180.0;
+                for (int i = 0; i < TotalItems; i++)
+                {
+                    DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * (1.0f / excessiveItemScaler), Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * (1.0f / excessiveItemScaler));
+                    ID++;
+                }
             }
         }
         DrawMessages();

@@ -105,7 +105,17 @@ public class LSRHUDSettings : ISettingsDefaultable
     public uint WeaponDisplayTimeToShow { get; set; }
     public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
- 
+
+
+
+
+
+    public float AltCashPositionX { get; set; }
+    public float AltCashPositionY { get; set; }
+    public float AltCashScale { get; set; }
+
+
+
     public LSRHUDSettings()
     {
         SetDefault();
@@ -182,5 +192,10 @@ public class LSRHUDSettings : ISettingsDefaultable
         WeaponDisplayJustificationID = 2;
         WeaponDisplayFont = GTAFont.FontHouseScript;
         WeaponDisplaySimpleSelector = false;
+
+
+        AltCashPositionX = 0.05f;
+        AltCashPositionY = 0.99f;
+        AltCashScale = 0.55f;
     }
 }

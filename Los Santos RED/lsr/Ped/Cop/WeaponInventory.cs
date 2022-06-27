@@ -279,6 +279,10 @@ public class WeaponInventory
             bool hasVehicleWeapon = false;
             hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(WeaponOwner.Pedestrian, out currentVehicleWeapon);
             //3450622333 searchlight
+            if(hasVehicleWeapon)
+            {
+                EntryPoint.WriteToConsole($"I AM {WeaponOwner.Handle} AND I HAVE A VEHICLE WEAPON {currentVehicleWeapon} HELI: {WeaponOwner.IsInHelicopter} DRVIER: {WeaponOwner.IsDriver}");
+            }
             if (!hasVehicleWeapon)
             {
                 uint currentWeapon;

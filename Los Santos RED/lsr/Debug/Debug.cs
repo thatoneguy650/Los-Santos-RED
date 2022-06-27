@@ -952,44 +952,44 @@ public class Debug
         //Player.IsBeingANuisance = !Player.IsBeingANuisance;
         //GameFiber.Sleep(1000);
 
+        StuffTwo();
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
 
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        {
+        //    Player.CurrentVehicle.Vehicle.Repair();
+        //    Player.CurrentVehicle.Vehicle.Wash();
 
-            Player.CurrentVehicle.Vehicle.Repair();
-            Player.CurrentVehicle.Vehicle.Wash();
+        //    int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
+        //    if (extraID != -1)
+        //    {
+        //        bool ExtraExists = NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.CurrentVehicle.Vehicle, extraID);
 
-            int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
-            if (extraID != -1)
-            {
-                bool ExtraExists = NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.CurrentVehicle.Vehicle, extraID);
+        //        if(ExtraExists)
+        //        {
+        //            bool ExtraOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, extraID);
+        //            if(ExtraOn)
+        //            {
+        //                NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 1);
+        //            }
+        //            else
+        //            {
+        //                NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 0);
+        //            }
+        //            Game.DisplaySubtitle($"extraID:{extraID} EXISTS isOn: {ExtraOn}");
+        //        }
+        //        else
+        //        {
+        //            Game.DisplaySubtitle($"extraID:{extraID} DOES NOT EXIST");
+        //        }
+        //    }
 
-                if(ExtraExists)
-                {
-                    bool ExtraOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, extraID);
-                    if(ExtraOn)
-                    {
-                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 1);
-                    }
-                    else
-                    {
-                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 0);
-                    }
-                    Game.DisplaySubtitle($"extraID:{extraID} EXISTS isOn: {ExtraOn}");
-                }
-                else
-                {
-                    Game.DisplaySubtitle($"extraID:{extraID} DOES NOT EXIST");
-                }
-            }
-            
-            
 
-        }
-        foreach (Cop cop in World.Pedestrians.Police)
-        {
-            cop.HasTaser = false;
-        }
+
+        //}
+        //foreach (Cop cop in World.Pedestrians.Police)
+        //{
+        //    cop.HasTaser = false;
+        //}
 
 
         //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();

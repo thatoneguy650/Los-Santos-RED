@@ -150,6 +150,8 @@ public class UI : IMenuProvideable
     {
         IsDisposed = true;
         ActionPopUpMenu.Dispose();
+        NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
     }
     public void DrawSprites(object sender, GraphicsEventArgs args)
     {
@@ -186,6 +188,7 @@ public class UI : IMenuProvideable
                 DisplayPlayerInfo();
                 DisplayStreets();
                 DisplayZones();
+                DisplayCash();
             }
             if (IsDrawingWheelMenu)
             {
@@ -265,6 +268,13 @@ public class UI : IMenuProvideable
             {
                 DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID);
             }
+        }
+    }
+    private void DisplayCash()
+    {
+        if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !DisplayablePlayer.CharacterModelIsPrimaryCharacter && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
+        {
+            DisplayTextOnScreen(DisplayablePlayer.Money.ToString("C0"), Settings.SettingsManager.LSRHUDSettings.AltCashPositionX, Settings.SettingsManager.LSRHUDSettings.AltCashPositionY, Settings.SettingsManager.LSRHUDSettings.AltCashScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2);
         }
     }
     public void PrimaryTick()
@@ -573,7 +583,7 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        else if (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted)
+        else if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || DisplayablePlayer.CharacterModelIsPrimaryCharacter) && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }

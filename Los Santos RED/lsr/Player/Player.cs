@@ -26,8 +26,8 @@ namespace Mod
 
 
 
-        
 
+        private int money = 0;
 
         private ICrimes Crimes;
         private CriminalHistory CriminalHistory;
@@ -383,11 +383,20 @@ namespace Mod
                 {
                     PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
                 }
-                unsafe
+
+                if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
+
+                    unsafe
+                    {
+                        NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
+                    }
+                    return CurrentCash;
                 }
-                return CurrentCash;
+                else
+                {
+                    return money;
+                }
             }
         }
         public OfficerFriendlyRelationship OfficerFriendlyRelationship { get; private set; }
@@ -1137,17 +1146,33 @@ namespace Mod
             EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
 
             //uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
-            unsafe
+
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
             {
-                NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
-            }
-            if (CurrentCash + Amount < 0)
-            {
-                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
+
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
+                }
+                if (CurrentCash + Amount < 0)
+                {
+                    NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
+                }
+                else
+                {
+                    NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
+                }
             }
             else
             {
-                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
+                if(money + Amount < 0)
+                {
+                    money = 0;
+                }
+                else
+                {
+                    money += Amount;
+                }
             }
         }
         public void GrabPed()
@@ -1637,8 +1662,16 @@ namespace Mod
             {
                 PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
             }
+           
             EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
-            NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, Amount, 1);
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
+            {
+                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, Amount, 1);
+            }
+            else
+            {
+                money = Amount;
+            }
         }
         public void SetPlayerToLastWeapon()
         {

@@ -38,7 +38,7 @@ public class InteractableLocation : BasicLocation
     public ShopMenu Menu { get; set; }
     public string MenuID { get; set; }
 
-
+    public virtual bool InteractsWithVendor { get; set; } = true;
 
     [XmlIgnore]
     public bool CanInteract { get; set; } = true;
@@ -100,8 +100,11 @@ public class InteractableLocation : BasicLocation
     {
         if (HasVendor)
         {
-            CanInteract = false;
-            SpawnVendor(settings, crimes, weapons);
+            if (InteractsWithVendor)
+            {
+                CanInteract = false;
+            }
+            SpawnVendor(settings, crimes, weapons, InteractsWithVendor);
             GameFiber.Yield();
         }
         base.Setup(interiors, settings, crimes, weapons);
@@ -148,7 +151,7 @@ public class InteractableLocation : BasicLocation
         }
         base.Dispose();
     }
-    private void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    private void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)
     {
         Ped ped;
         string ModelName;
@@ -175,7 +178,10 @@ public class InteractableLocation : BasicLocation
             if (ped.Exists())
             {
                 Merchant = new Merchant(ped, settings, false, false, false, "Vendor", crimes, weapons);
-                Merchant.ShopMenu = Menu;
+                if (addMenu)
+                {
+                    Merchant.ShopMenu = Menu;
+                }
                 Merchant.AssociatedStore = this;
                 EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
             }

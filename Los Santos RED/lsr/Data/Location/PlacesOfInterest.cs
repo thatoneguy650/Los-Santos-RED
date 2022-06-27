@@ -61,6 +61,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.FoodStands);
         AllLocations.AddRange(PossibleLocations.CarDealerships);
         AllLocations.AddRange(PossibleLocations.DriveThrus);
+        AllLocations.AddRange(PossibleLocations.ClothingShops);
         return AllLocations;
     }
 
@@ -79,34 +80,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         List<BasicLocation> AllLocations = new List<BasicLocation>();
 
-        AllLocations.AddRange(PossibleLocations.DeadDrops);
-        AllLocations.AddRange(PossibleLocations.ScrapYards);
-        AllLocations.AddRange(PossibleLocations.GangDens);
-        AllLocations.AddRange(PossibleLocations.GunStores);
-        AllLocations.AddRange(PossibleLocations.Hotels);
-        AllLocations.AddRange(PossibleLocations.Residences);
-        AllLocations.AddRange(PossibleLocations.CityHalls);
-        AllLocations.AddRange(PossibleLocations.VendingMachines);
-        AllLocations.AddRange(PossibleLocations.Restaurants);
-        AllLocations.AddRange(PossibleLocations.Pharmacies);
-        AllLocations.AddRange(PossibleLocations.Dispensaries);
-        AllLocations.AddRange(PossibleLocations.HeadShops);
-        AllLocations.AddRange(PossibleLocations.HardwareStores);
-        AllLocations.AddRange(PossibleLocations.PawnShops);
-        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
-        AllLocations.AddRange(PossibleLocations.LiquorStores);
-        AllLocations.AddRange(PossibleLocations.GasStations);
-        AllLocations.AddRange(PossibleLocations.Bars);
-        AllLocations.AddRange(PossibleLocations.FoodStands);
-        AllLocations.AddRange(PossibleLocations.CarDealerships);
-        AllLocations.AddRange(PossibleLocations.DriveThrus);
-
-        AllLocations.AddRange(PossibleLocations.PoliceStations);
-        AllLocations.AddRange(PossibleLocations.Hospitals);
-        AllLocations.AddRange(PossibleLocations.FireStations);
-        AllLocations.AddRange(PossibleLocations.Banks);
-        AllLocations.AddRange(PossibleLocations.BeautyShops);
-        AllLocations.AddRange(PossibleLocations.Stadiums);
+        AllLocations.AddRange(GetAllBasicLocations());
+        AllLocations.AddRange(GetAllInteractableLocations());
         return AllLocations;
     }
     private void DefaultConfig()
@@ -735,6 +710,16 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DriveThru(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, "Horny's Burgers", "Horny's Burgers","BeefyBillsMenu"),
 
         });
+
+
+        PossibleLocations.ClothingShops.AddRange(new List<ClothingShop>()
+        {
+                new ClothingShop(new Vector3(430.0404f, -804.3267f, 29.49115f), 359.4608f, "Binco Textile City","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(430.0404f, -804.3267f, 29.49115f)) { VendorModels = new List<string>() { "s_f_y_shop_low" }, VendorPosition = new Vector3(427.1392f, -806.624f, 29.49114f), VendorHeading = 78.23051f,OpenTime = 4, CloseTime = 22, InteriorID = 22786 },
+            
+
+        });
+
+
     }
 }
 

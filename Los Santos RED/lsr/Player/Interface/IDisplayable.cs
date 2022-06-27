@@ -66,7 +66,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsTransacting { get; }
         bool RecentlyChangedMoney { get; }
         CellPhone CellPhone { get; }
-
-
+        bool CharacterModelIsPrimaryCharacter { get; }
+        int Money { get; }
     }
 }

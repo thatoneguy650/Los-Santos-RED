@@ -19,5 +19,6 @@ public class PopUpMenuGroup
     public bool IsChild { get; set; } = false;
     public string ID { get; set; } = "";
     public List<PopUpMenuMap> PopUpMenuMaps { get; set; } = new List<PopUpMenuMap>();
+    public string Group { get; set; } = "";
 }
 

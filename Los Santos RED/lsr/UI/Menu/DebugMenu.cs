@@ -506,6 +506,7 @@ public class DebugMenu : Menu
 
             foreach (ModItem modItem in ModItems.Items)
             {
+                if(modItem.ItemType != ItemType.Services && modItem.ItemType != ItemType.Vehicles && modItem.ItemType != ItemType.Weapons && modItem.ItemType != ItemType.None)
                 Player.Inventory.Add(modItem, 5);
             }
         }
