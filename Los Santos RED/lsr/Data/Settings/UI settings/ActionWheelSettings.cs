@@ -33,6 +33,8 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float MessageBodySpacingY { get; set; }
     public float MessageHeaderSpacingY { get; set; }
     public int MessagesToShow { get; set; }
+    public float ItemDistanceFromCenterExtraItemScalar { get; set; }
+    public float ItemScaleExtraItemScalar { get; set; }
 
     public ActionWheelSettings()
     {
@@ -64,5 +66,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         MessageBodySpacingY = 0.125f;
         MessageHeaderSpacingY = 0.02f;
         MessagesToShow = 4;
+        ItemDistanceFromCenterExtraItemScalar = -0.01f;
+        ItemScaleExtraItemScalar = 0.01f;
     }
 }

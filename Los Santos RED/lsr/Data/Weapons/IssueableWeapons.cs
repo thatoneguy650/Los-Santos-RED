@@ -144,10 +144,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_pumpshotgun_mk2", new WeaponVariation()),
             new IssuableWeapon("weapon_pumpshotgun_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )})),
         };
-
-
-
-
         List<IssuableWeapon> Tasers = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_stungun", new WeaponVariation(), 100),
@@ -157,15 +153,9 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_nightstick", new WeaponVariation(), 100),
         };
 
-
-
-
-
         IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>();
-
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Tasers", Tasers));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Nightsticks", Nightsticks));
-
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllSidearms", AllSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllLongGuns", AllLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("BestSidearms", BestSidearms));
@@ -176,7 +166,6 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns));
-
 
         //Gangs
         List<IssuableWeapon> MeleeWeapons = new List<IssuableWeapon>()
@@ -191,8 +180,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_crowbar", new WeaponVariation()),
             new IssuableWeapon("weapon_hammer", new WeaponVariation()),
         };
-
-
         List<IssuableWeapon> AllGangSidearms = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_pistol", new WeaponVariation()),
@@ -261,7 +248,6 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_combatmg_mk2", new WeaponVariation()),
             new IssuableWeapon("weapon_combatmg_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Extended Clip") })),
         };
-
         List<IssuableWeapon> FamiliesSidearms = new List<IssuableWeapon>()
         {
             new IssuableWeapon("weapon_pistol", new WeaponVariation()),

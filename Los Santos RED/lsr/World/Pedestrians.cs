@@ -418,6 +418,7 @@ public class Pedestrians
         }
         Civilians.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
+        PedExts.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
     }
     public void Setup()
     {

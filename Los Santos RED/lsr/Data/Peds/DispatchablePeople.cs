@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class DispatchablePeople : IDispatchablePeople
+public class DispatchablePeople : IDispatchablePeople
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\DispatchablePeople.xml";
     private List<DispatchablePersonGroup> PeopleGroupLookup = new List<DispatchablePersonGroup>();

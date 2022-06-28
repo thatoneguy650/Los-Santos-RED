@@ -26,15 +26,9 @@ public class Places
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
-
-
-    private List<GasStation> ActiveGasStations = new List<GasStation>();
-
     private List<string> VendingMachinesModelNames = new List<string>();
     private List<uint> VendingMachinessModelHashes = new List<uint>();
-
     private List<GasPump> ActiveGasPumps = new List<GasPump>();
-
     private List<string> GasPumpsModelNames = new List<string>();
     private List<uint> GasPumpsModelHashes = new List<uint>();
 

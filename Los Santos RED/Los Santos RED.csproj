@@ -165,6 +165,7 @@
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
+    <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Old\iFruit\CustomiFruit.cs" />
     <Compile Include="lsr\Old\iFruit\iFruitAddon2.cs" />
     <Compile Include="lsr\Old\iFruit\iFruitContact.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="lsr\Locations\Places\Transaction.cs" />
     <Compile Include="lsr\Locations\Places\Interact\VendingMachine.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
+    <Compile Include="lsr\ModController\ModTaskGroup.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
@@ -419,6 +421,8 @@
     <Compile Include="lsr\Ped\Perception and Crimes\PlayerPerception.cs" />
     <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
+    <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
+    <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\MessagesMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
@@ -465,7 +469,7 @@
     <Compile Include="lsr\Tasker\Cop\Tasks\Locate.cs" />
     <Compile Include="lsr\Time\ITimeReportable.cs" />
     <Compile Include="lsr\UI\Menu\Menu.cs" />
-    <Compile Include="lsr\Other\ModTask.cs" />
+    <Compile Include="lsr\ModController\ModTask.cs" />
     <Compile Include="lsr\Helper\NativeHelper.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
     <Compile Include="lsr\Audio\IAudioPlayable.cs" />

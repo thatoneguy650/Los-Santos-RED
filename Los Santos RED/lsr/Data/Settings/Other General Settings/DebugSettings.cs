@@ -42,12 +42,16 @@ public class DebugSettings : ISettingsDefaultable
         ShowCivilianPerceptionArrows = false;
         PrintUpdateTimes = false;
 
-
-        CivilianUpdateBatch = 8;
-        PoliceUpdateBatch = 5;
-        GangUpdateBatch = 5;
-        MerchantsUpdateBatch = 5;
-        EMTsUpdateBatch = 5;
+        CivilianUpdateBatch = 10;
+        PoliceUpdateBatch = 10;
+        GangUpdateBatch = 10;
+        MerchantsUpdateBatch = 10;
+        EMTsUpdateBatch = 10;
+        //CivilianUpdateBatch = 8;
+        //PoliceUpdateBatch = 5;
+        //GangUpdateBatch = 5;
+        //MerchantsUpdateBatch = 5;
+        //EMTsUpdateBatch = 5;
         TaskAssignmentCheckFrequency = 500;
 
 

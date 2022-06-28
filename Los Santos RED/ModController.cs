@@ -10,49 +10,26 @@ namespace LosSantosRED.lsr
     public class ModController
     {
         private List<ModTaskGroup> TaskGroups;
-        private Agencies Agencies;
         private Civilians Civilians;
-        private Crimes Crimes;
         private Debug Debug;
         private Dispatcher Dispatcher;
-        private GameSaves GameSaves;
-        private Gangs Gangs;
-        private GangTerritories GangTerritories;
-        private Input Input;
-        private Interiors Interiors;
-        private Intoxicants Intoxicants;
-        private Jurisdictions Jurisdictions;
-        private ModItems ModItems;
-        private Names Names;
-        private PedSwap PedSwap;
-        private PlacesOfInterest PlacesOfInterest;
-        private PlateTypes PlateTypes;
+        private Input Input;   
+        private PedSwap PedSwap;   
         private Mod.Player Player;
-        private Police Police;
-        private RadioStations RadioStations;
-        private PedGroups RelationshipGroups;
-        private Scenarios Scenarios;
-        private Settings Settings;
-        private ShopMenus ShopMenus;
-        private Streets Streets;
+        private Police Police;  
         private Tasker Tasker;
         private Mod.Time Time;
         private UI UI;
         private VanillaManager VanillaManager;
         private WavAudioPlayer WavAudioPlayer;
        // private NAudioPlayer NAudioPlayer;
-        private Weapons Weapons;
         private Weather Weather;
         private Mod.World World;
-        private Zones Zones;
-        private Heads Heads;
-        private DispatchableVehicles DispatchableVehicles;
-        private DispatchablePeople DispatchablePeople;
-        private IssueableWeapons IssueableWeapons;
-        private Dances DanceList;
-        private Gestures GestureList;
+        
+        private ModDataFileManager ModDataFileManager;
         public ModController()
         {
+            ModDataFileManager = new ModDataFileManager();
         }
         public bool IsRunning { get; private set; }
         public void Setup()
@@ -62,42 +39,45 @@ namespace LosSantosRED.lsr
             {
                 GameFiber.Yield();
             }
-            LoadDataFiles();
+
+            ModDataFileManager = new ModDataFileManager();
+            ModDataFileManager.Setup();
+
             WavAudioPlayer = new WavAudioPlayer();
             //NAudioPlayer = new NAudioPlayer();
             GameFiber.Yield();
-            Time = new Mod.Time(Settings);
+            Time = new Mod.Time(ModDataFileManager.Settings);
             Time.Setup();
             GameFiber.Yield();
-            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups, Weapons, Crimes, Time, ShopMenus, Interiors, WavAudioPlayer, Gangs, GangTerritories, Streets);
+            World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, WavAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets);
             World.Setup();
             GameFiber.Yield();
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudioPlayer, PlacesOfInterest, Interiors, ModItems, Intoxicants, Gangs, Jurisdictions, GangTerritories, GameSaves, Names, ShopMenus, RelationshipGroups, DanceList);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, WavAudioPlayer, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList);
             Player.Setup();
             GameFiber.Yield();
-            Police = new Police(World, Player, Player, Settings);
+            Police = new Police(World, Player, Player, ModDataFileManager.Settings);
             GameFiber.Yield();
-            Civilians = new Civilians(World, Player, Player, Settings);
+            Civilians = new Civilians(World, Player, Player, ModDataFileManager.Settings);
             GameFiber.Yield();
-            PedSwap = new PedSwap(Time, Player, Settings, World, Weapons, Crimes, Names, ModItems);
+            PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems);
             GameFiber.Yield();
-            Tasker = new Tasker(World, Player, Weapons, Settings, PlacesOfInterest);
+            Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes, RelationshipGroups, Gangs, GangTerritories, ShopMenus, PlacesOfInterest);
+            Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Player, Weapons, RadioStations, GameSaves, World, Player, Player, Tasker, Player, ModItems, Time, Player, Gangs, GangTerritories, Zones, Streets, Interiors, Dispatcher, Agencies, Player, DanceList, GestureList);
+            UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList);
             UI.Setup();
             GameFiber.Yield();
-            Input = new Input(Player, Settings, UI, PedSwap);
+            Input = new Input(Player, ModDataFileManager.Settings, UI, PedSwap);
             GameFiber.Yield();
-            VanillaManager = new VanillaManager(Settings);
+            VanillaManager = new VanillaManager(ModDataFileManager.Settings);
             GameFiber.Yield();
-            Weather = new Weather(WavAudioPlayer, Settings, Time, Player);
+            Weather = new Weather(WavAudioPlayer, ModDataFileManager.Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher, Zones, Crimes, this, Settings, Tasker, Time, Agencies, Weapons, ModItems, Weather, PlacesOfInterest, Interiors, Gangs, Input, ShopMenus);
+            Debug = new Debug(ModDataFileManager.PlateTypes, World, Player, ModDataFileManager.Streets, Dispatcher, ModDataFileManager.Zones, ModDataFileManager.Crimes, this, ModDataFileManager.Settings, Tasker, Time, ModDataFileManager.Agencies, ModDataFileManager.Weapons, ModDataFileManager.ModItems, Weather, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus);
             Debug.Setup();
             GameFiber.Yield();
             World.Setup();
@@ -133,130 +113,13 @@ namespace LosSantosRED.lsr
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
         }
-        private void LoadDataFiles()
-        {
-
-
-            SetupAlternateConfigs();
-
-
-            Settings = new Settings();
-            Settings.ReadConfig();
-            GameFiber.Yield();
-            ModItems = new ModItems();
-            ModItems.ReadConfig();
-            GameFiber.Yield();
-            ShopMenus = new ShopMenus();
-            ShopMenus.ReadConfig();
-            GameFiber.Yield();
-            Zones = new Zones();
-            Zones.ReadConfig();
-            GameFiber.Yield();
-            PlateTypes = new PlateTypes();
-            PlateTypes.ReadConfig();
-            GameFiber.Yield();
-            Streets = new Streets();
-            Streets.ReadConfig();
-            GameFiber.Yield();
-            Weapons = new Weapons();
-            Weapons.ReadConfig();
-            GameFiber.Yield();
-            Names = new Names();
-            Names.ReadConfig();
-            GameFiber.Yield();
-            Heads = new Heads();
-            Heads.ReadConfig();
-            GameFiber.Yield();
-            DispatchableVehicles = new DispatchableVehicles();
-            DispatchableVehicles.ReadConfig();
-            GameFiber.Yield();
-            DispatchablePeople = new DispatchablePeople();
-            DispatchablePeople.ReadConfig();
-            GameFiber.Yield();
-            IssueableWeapons = new IssueableWeapons();
-            IssueableWeapons.ReadConfig();
-            GameFiber.Yield();
-            Agencies = new Agencies();
-            Agencies.ReadConfig();
-            Agencies.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
-            GameFiber.Yield();
-            Gangs = new Gangs();
-            Gangs.ReadConfig();
-            Gangs.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
-            GameFiber.Yield();
-            PlacesOfInterest = new PlacesOfInterest(ShopMenus, Gangs);
-            PlacesOfInterest.ReadConfig();
-            GameFiber.Yield();
-            Jurisdictions = new Jurisdictions(Agencies);
-            Jurisdictions.ReadConfig();
-            GameFiber.Yield();
-            GangTerritories = new GangTerritories(Gangs);
-            GangTerritories.ReadConfig();
-            GameFiber.Yield();
-            RadioStations = new RadioStations();
-            RadioStations.ReadConfig();
-            GameFiber.Yield();
-            RelationshipGroups = new PedGroups();
-            RelationshipGroups.ReadConfig();
-            GameFiber.Yield();
-            Scenarios = new Scenarios();
-            GameFiber.Yield();
-            Crimes = new Crimes();
-            Crimes.ReadConfig();
-            GameFiber.Yield();
-            GameSaves = new GameSaves();
-            GameSaves.ReadConfig();
-            GameFiber.Yield();
-            Interiors = new Interiors();
-            Interiors.ReadConfig();
-            Intoxicants = new Intoxicants();
-            Intoxicants.ReadConfig();
-            GameFiber.Yield();
-            DanceList = new Dances();
-            DanceList.ReadConfig();
-            GameFiber.Yield();
-            GestureList = new Gestures();
-            GestureList.ReadConfig();
-        }
-        private void SetupAlternateConfigs()
-        {
-            Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
-            SetupAddonPlatesConfig();
-            SetupEUPAndLiveries();
-        }
-        private void SetupAddonPlatesConfig()
-        {
-            Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142");
-            string Description = "PreMade config for 'Addon Plates' by Wildbrick 142's. Installation: https://www.gta5-mods.com/paintjobs/new-license-plates-add-on."+ Environment.NewLine + 
-                "To use, copy the all of the .xml files from the AlternateConfigs\\AddOnPlates_Wildbrick142 folder into the top level LosSantosRED folder and restart the mod";
-            File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\readme.txt", Description);
-        }
-        private void SetupEUPAndLiveries()
-        {
-            Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries");
-            string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. No gameconfig changes are needed, as these are mostly replace." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-                "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine+ Environment.NewLine +
-               "Expanded Department Liveries Installation: " + Environment.NewLine +
-                "Stanier (police) - Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft to '\\mods\\x64e.rpf\\levels\\gta5\\vehicles.rpf'" + Environment.NewLine +
-                "Buffalo (police2) - Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-                "Interceptor (police3) - Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-                "Granger (sheriff2) - Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
-                "To use, copy all of the .xml files from the AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries folder into the top level LosSantosRED folder and restart the mod" + Environment.NewLine + Environment.NewLine +
-                "Model Credits:" + Environment.NewLine +
-                "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" + Environment.NewLine +
-                "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." + Environment.NewLine +
-                "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues." + Environment.NewLine +
-                "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues" + Environment.NewLine +
-                "";
-            File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\readme.txt", Description);
-        }
         private void StartModLogic()
         {
             TaskGroups = new List<ModTaskGroup>();
             TaskGroups.Add(new ModTaskGroup("Group1", new List<ModTask>()
             {
                  new ModTask(100, "Player.Update", Player.Update, 0),//1
-                 new ModTask(250, "UI.Update", UI.Update, 1),//500
+                 new ModTask(250, "UI.UpdateData", UI.CacheData, 1),//500
             }));
             TaskGroups.Add(new ModTaskGroup("Group2", new List<ModTask>()
             {
@@ -377,7 +240,7 @@ namespace LosSantosRED.lsr
                     while (IsRunning)
                     {
 
-                        UI.PrimaryTick();
+                        UI.Tick1();
                         GameFiber.Yield();
                     }
                 }
@@ -394,7 +257,7 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        UI.SecondaryTick();
+                        UI.Tick2();
                         GameFiber.Yield();
                     }
                 }
@@ -411,7 +274,7 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        UI.TertiaryTick();
+                        UI.Tick3();
                         GameFiber.Yield();
                         Time.Tick();//this was below before, but shouldnt be any different
                         GameFiber.Yield();
@@ -457,83 +320,7 @@ namespace LosSantosRED.lsr
             {
                 Game.RemoveNotification(EntryPoint.NotificationID);
             }
-            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully.~n~~n~Press {Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~~n~~n~Select ~r~About~s~ for mod information.");
-        }
-        private class ModTaskGroup
-        {
-            private int CurrentTaskOrderID;
-            public ModTaskGroup(string name, List<ModTask> tasksToRun)
-            {
-                Name = name;
-                TasksToRun = tasksToRun;
-            }
-            public string Name { get; set; }
-            public bool IsRunning { get; set; } = true;
-            public List<ModTask> TasksToRun { get; set; }
-            public void Update()
-            {
-                if (IsRunning)
-                {
-                    if (CurrentTaskOrderID > TasksToRun.Count)
-                    {
-                        CurrentTaskOrderID = 0;
-                    }
-                    ModTask taskToRun = TasksToRun.Where(x => x.ShouldRun && x.RunOrder == CurrentTaskOrderID).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
-                    if (taskToRun != null)
-                    {
-                        taskToRun.Run();
-                        CurrentTaskOrderID++;
-                    }
-                    else
-                    {
-                        ModTask altTaskToRun = TasksToRun.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
-                        if (altTaskToRun != null)
-                        {
-                            altTaskToRun.Run();
-                        }
-                    }
-                }
-            }
-
-        }
-        private class ModTask
-        {
-            public string DebugName;
-            public uint GameTimeLastRan = 0;
-            public uint Interval = 500;
-            public uint IntervalMissLength;
-            public bool RanThisTick = false;
-            public int RunGroup;
-            public int RunOrder;
-            public Action TickToRun;
-            public ModTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunGroup, int _RunOrder)
-            {
-                GameTimeLastRan = 0;
-                Interval = _Interval;
-                IntervalMissLength = Interval * 2;
-                DebugName = _DebugName;
-                TickToRun = _TickToRun;
-                RunGroup = _RunGroup;
-                RunOrder = _RunOrder;
-            }
-            public ModTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunOrder)
-            {
-                GameTimeLastRan = 0;
-                Interval = _Interval;
-                IntervalMissLength = Interval * 2;
-                DebugName = _DebugName;
-                TickToRun = _TickToRun;
-                RunOrder = _RunOrder;
-            }
-            public bool MissedInterval => Interval != 0 && Game.GameTime - GameTimeLastRan >= IntervalMissLength;
-            public bool RunningBehind => Interval != 0 && Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2);
-            public bool ShouldRun => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan > Interval;
-            public void Run()
-            {
-                TickToRun();
-                GameTimeLastRan = Game.GameTime;
-                RanThisTick = true;
-            }
+            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully.~n~~n~Press {ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~~n~~n~Select ~r~About~s~ for mod information.");
         }
     }
 }

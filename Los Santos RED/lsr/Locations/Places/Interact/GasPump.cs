@@ -172,6 +172,18 @@ public class GasPump : InteractableLocation
         }
         else
         {
+            if(VehicleToFill == null || (VehicleToFill != null && !VehicleToFill.Vehicle.Exists()))
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"No vehicle found to fuel");
+            }
+            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && VehicleToFill.Vehicle.IsEngineOn)
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle engine is still on");
+            }
+            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel >= 100f)
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle fuel tank is already full");
+            }
             InteractionMenu.Visible = false;
         }
 
@@ -288,9 +300,6 @@ public class GasPump : InteractableLocation
         Game.LocalPlayer.HasControl = true;
         NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
     }
-
-
-
     private void FuelVehicle(int UnitsToAdd)
     {
         if(UnitsToAdd * pricePerUnit > Player.Money)

@@ -32,6 +32,7 @@ public class PopUpMenu
 
     private List<PopUpMenuGroup> PopUpMenuGroups = new List<PopUpMenuGroup>();
     private float excessiveItemScaler;
+    private float excessiveCenterScaler;
 
     private bool IsCurrentPopUpMenuGroupDefault => CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot";
 
@@ -374,33 +375,24 @@ public class PopUpMenu
         if (CurrentMenuMap != null)
         {
             int TotalItems = CurrentMenuMap.Count();
-            if (TotalItems > 14)
+            if (TotalItems > 9)
             {
-                float shrinkAmount = (TotalItems - 14) * 0.004f;
+                float shrinkAmount = (TotalItems - 9) * Settings.SettingsManager.ActionWheelSettings.ItemScaleExtraItemScalar;
                 excessiveItemScaler = 1.0f - shrinkAmount;
+                float centershrinkAmount = (TotalItems - 9) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenterExtraItemScalar;
+                excessiveCenterScaler = 1.0f - centershrinkAmount;
             }
             else
             {
                 excessiveItemScaler = 1.0f;
-            }
-
-
-
-
-            if (excessiveItemScaler > 1.25f)
-            {
-                excessiveItemScaler = 1.25f;
-            }
-            if (excessiveItemScaler < 0.75f)
-            {
-                excessiveItemScaler = 0.75f;
+                excessiveCenterScaler = 1.0f;
             }
             if (TotalItems > 0)
             {
                 double angle = 360.0 / TotalItems * Math.PI / 180.0;
                 for (int i = 0; i < TotalItems; i++)
                 {
-                    DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * (1.0f / excessiveItemScaler), Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * (1.0f / excessiveItemScaler));
+                    DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * excessiveCenterScaler, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * excessiveCenterScaler);
                     ID++;
                 }
             }
