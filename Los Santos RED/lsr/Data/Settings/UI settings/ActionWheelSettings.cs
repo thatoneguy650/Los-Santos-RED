@@ -48,7 +48,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         ItemSpacingY = 0.04f;
         ItemScale = 1.2f;
         TextScale = 0.3f;
-        TextFont = GTAFont.FontMonospace;
+        TextFont = GTAFont.FontChaletLondon;// GTAFont.FontMonospace;
         TextColor = "White";
         ItemColor = "Black";
         SelectedItemColor = "Red";
@@ -60,13 +60,13 @@ public class ActionWheelSettings : ISettingsDefaultable
         TransitionOutEffect = "SwitchHUDOut";
         MessageStartingPositionX = 0.05f;
         MessageStartingPositionY = 0.05f;
-        MessageFont = GTAFont.FontChaletComprimeCologne;
+        MessageFont = GTAFont.FontChaletLondon;//GTAFont.FontChaletComprimeCologne;
         MessageTextColor = "White";
-        MessageScale = 0.2f;
+        MessageScale = 0.25f;
         MessageBodySpacingY = 0.125f;
         MessageHeaderSpacingY = 0.02f;
         MessagesToShow = 4;
         ItemDistanceFromCenterExtraItemScalar = -0.01f;
-        ItemScaleExtraItemScalar = 0.01f;
+        ItemScaleExtraItemScalar = 0.005f;// 0.01f;
     }
 }

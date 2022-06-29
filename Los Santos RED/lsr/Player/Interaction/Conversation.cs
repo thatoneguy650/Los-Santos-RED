@@ -180,29 +180,23 @@ public class Conversation : Interaction
         {
             foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
             {
-                if(isPlayer)
+                string voiceName = null;
+                bool IsOverWrittingVoice = false;
+                if(isPlayer && Player.CharacterModelIsFreeMode)
                 {
-                    if (Player.CharacterModelIsFreeMode)
-                    {
-                        ToSpeak.PlayAmbientSpeech(Player.FreeModeVoice, AmbientSpeech, 0, SpeechModifier.Force);
-                    }
-                    else
-                    {
-                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                    }
+                    voiceName = Player.FreeModeVoice;
+                    IsOverWrittingVoice = true;
                 }
-                else
+                else if (!isPlayer && Ped.VoiceName != "")
                 {
-                    if(Ped.VoiceName != "")
-                    {
-                        ToSpeak.PlayAmbientSpeech(Ped.VoiceName, AmbientSpeech, 0, SpeechModifier.Force);
-                    }
-                    else
-                    {
-                        ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-                    }
+                    voiceName = Ped.VoiceName;
+                    IsOverWrittingVoice = true;
                 }
-                
+                bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(ToSpeak, AmbientSpeech, false);
+                if (IsOverWrittingVoice || hasContext)
+                {
+                    ToSpeak.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, SpeechModifier.Force);
+                }
                 GameFiber.Sleep(300);//100
                 if (ToSpeak.IsAnySpeechPlaying)
                 {
@@ -220,10 +214,10 @@ public class Conversation : Interaction
                 Spoke = true;
                 GameFiber.Yield();
             }
-            if (!Spoke)
-            {
-                Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
-            }
+            //if (!Spoke)
+            //{
+            //    Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
+            //}
         }
         return Spoke;
     }

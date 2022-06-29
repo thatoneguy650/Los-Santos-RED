@@ -160,14 +160,14 @@ public class Locate : ComplexTask
             {
                 HasReachedReportedPosition = true;
             }
-            if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-            }
+            //if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+            //}
         }
     }
     private void SetSiren()

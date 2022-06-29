@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-public class LSRHUDSettings : ISettingsDefaultable
+﻿public class LSRHUDSettings : ISettingsDefaultable
 {
     public bool CrimesDisplayEnabled { get; set; }
     public float CrimesDisplayPositionX { get; set; }
@@ -94,27 +85,21 @@ public class LSRHUDSettings : ISettingsDefaultable
 
 
 
+
     public bool ShowWeaponDisplay { get; set; }
-    public bool FadeWeaponDisplay { get; set; }
-    public float WeaponDisplayPositionX { get; set; }
-    public float WeaponDisplayPositionY { get; set; }
-    public float WeaponDisplayScale { get; set; }
-    public GTAFont WeaponDisplayFont { get; set; }
-    public int WeaponDisplayJustificationID { get; set; }
-    public bool FadeWeaponDisplayDuringWantedAndInvestigation { get; set; }
-    public uint WeaponDisplayTimeToShow { get; set; }
-    public uint WeaponDisplayTimeToFade { get; set; }
+    //public bool FadeWeaponDisplay { get; set; }
+    public float TopDisplayPositionX { get; set; }
+    public float TopDisplayPositionY { get; set; }
+    public float TopDisplayScale { get; set; }
+
+
+
+
+    //public bool FadeWeaponDisplayDuringWantedAndInvestigation { get; set; }
+    //public uint WeaponDisplayTimeToShow { get; set; }
+    //public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
-
-
-
-
-
-    public float AltCashPositionX { get; set; }
-    public float AltCashPositionY { get; set; }
-    public float AltCashScale { get; set; }
-
-
+    //public int DropShadowPixels { get; set; }
 
     public LSRHUDSettings()
     {
@@ -182,20 +167,46 @@ public class LSRHUDSettings : ISettingsDefaultable
         ZoneDisplayShowSecondaryAgency = false;
         ZoneDisplayShowPrimaryGang = true;     
         ShowWeaponDisplay = true;
-        FadeWeaponDisplay = true;
-        FadeWeaponDisplayDuringWantedAndInvestigation = false;
-        WeaponDisplayTimeToShow = 2500;
-        WeaponDisplayTimeToFade = 2500;
-        WeaponDisplayPositionX = 0.78f;
-        WeaponDisplayPositionY = 0.98f;
-        WeaponDisplayScale = 0.52f;
-        WeaponDisplayJustificationID = 2;
-        WeaponDisplayFont = GTAFont.FontHouseScript;
+        //FadeWeaponDisplay = true;
+        //FadeWeaponDisplayDuringWantedAndInvestigation = false;
+        //WeaponDisplayTimeToShow = 2500;
+        //WeaponDisplayTimeToFade = 2500;
         WeaponDisplaySimpleSelector = false;
 
 
-        AltCashPositionX = 0.05f;
-        AltCashPositionY = 0.99f;
-        AltCashScale = 0.55f;
-    }
+        //WeaponDisplayPositionX = 0.78f;
+        //WeaponDisplayPositionY = 0.98f;
+
+        TopDisplayPositionX = 0.0175f; 
+        TopDisplayPositionY = 0.985f;
+        TopDisplayScale = 0.65f;
+
+
+
+
+
+
+
+
+        //TopDisplay2PositionX = 0.0525f;
+        //TopDisplay2PositionY = 0.985f;
+        //TopDisplay2Scale = 0.65f;
+
+        //0.35f between?
+
+
+        //Vanilla Cash Position 1
+        /*
+         *        
+         *        AltCashPositionX = 0.0175f;
+        AltCashPositionY = 0.985f;
+        AltCashScale = 0.65f;
+        */
+
+
+        //Weapon Position 2
+        /*        WeaponDisplayPositionX = 0.0525f;
+        WeaponDisplayPositionY = 0.985f;
+        WeaponDisplayScale = 0.65f;*/
+}
 }

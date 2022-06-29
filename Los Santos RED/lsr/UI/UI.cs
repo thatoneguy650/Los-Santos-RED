@@ -79,6 +79,10 @@ public class UI : IMenuProvideable
     private PopUpMenu ActionPopUpMenu;
     private bool IsDrawingWheelMenu;
     private IActionable ActionablePlayer;
+    private bool IsVanillaWeaponHUDVisible;
+    private int VanillaDiplayedLines;
+    private bool IsVanillaStarsHUDVisible;
+    private bool IsVanillaCashHUDVisible;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures)
@@ -101,7 +105,7 @@ public class UI : IMenuProvideable
         ZoneFader = new Fader(Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
-        WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
+        //WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
@@ -131,6 +135,7 @@ public class UI : IMenuProvideable
                 ActionPopUpMenu.Draw();
             }
         }
+        DisplayTopMenu();
         MenuUpdate();
     }
     public void Tick2()
@@ -220,11 +225,11 @@ public class UI : IMenuProvideable
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
     }
 
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
     {
-        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, 255);
+        DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
     }
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification,bool outline, int alpha)
     {
         try
         {
@@ -237,8 +242,17 @@ public class UI : IMenuProvideable
             NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
 
             NativeFunction.Natives.SetTextJustification((int)Justification);
-            NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
 
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+
+
+            if (outline)
+            {
+                NativeFunction.Natives.SET_TEXT_OUTLINE();
+            }
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+            NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+            
             if (Justification == GTATextJustification.Right)
             {
                 NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
@@ -289,43 +303,33 @@ public class UI : IMenuProvideable
             {
                 DisplayCurrentCrimes();
                 DisplayVehicleStatus();
-                DisplayWeaponStatus();
+                
                 DisplayPlayerInfo();
                 DisplayStreets();
                 DisplayZones();
-                DisplayCash();
+
+
+                
+
             }
+            
         }
     }
     private void DisplayCurrentCrimes()
     {
         if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
         {
-            DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID);
+            DisplayTextOnScreen(lastCrimesDisplay, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
         }
     }
     private void DisplayVehicleStatus()
     {
         if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayEnabled)
         {
-            DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID);
+            DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID, false);
         }
     }
-    private void DisplayWeaponStatus()
-    {
-        if (Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay)
-        {
-            WeaponFader.Update(lastWeaponDisplay);
-            if (Settings.SettingsManager.LSRHUDSettings.FadeWeaponDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeWeaponDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
-            {
-                DisplayTextOnScreen(WeaponFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.WeaponDisplayJustificationID, WeaponFader.AlphaValue);
-            }
-            else
-            {
-                DisplayTextOnScreen(lastWeaponDisplay, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionX, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.WeaponDisplayJustificationID);
-            }
-        }
-    }
+
     private void DisplayPlayerInfo()
     {
         if (Settings.SettingsManager.LSRHUDSettings.ShowPlayerDisplay)
@@ -333,11 +337,11 @@ public class UI : IMenuProvideable
             PlayerFader.Update(lastPlayerDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, PlayerFader.AlphaValue);
+                DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false, PlayerFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID);
+                DisplayTextOnScreen(lastPlayerDisplay, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false);
             }
         }
     }
@@ -348,11 +352,11 @@ public class UI : IMenuProvideable
             StreetFader.Update(lastStreetDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, StreetFader.AlphaValue);
+                DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false, StreetFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID);
+                DisplayTextOnScreen(lastStreetDisplay, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false);
             }
         }
     }
@@ -363,19 +367,72 @@ public class UI : IMenuProvideable
             ZoneFader.Update(lastZoneDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
-                DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, ZoneFader.AlphaValue);
+                DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false, ZoneFader.AlphaValue);
             }
             else
             {
-                DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID);
+                DisplayTextOnScreen(lastZoneDisplay, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false);
             }
         }
     }
     private void DisplayCash()
     {
-        if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !DisplayablePlayer.CharacterModelIsPrimaryCharacter && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
+        //if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !DisplayablePlayer.CharacterModelIsPrimaryCharacter && 
+            
+            
+
+    }
+
+
+    private void DisplayTopMenu()
+    {
+        
+
+        if(IsDrawingWheelMenu && DisplayablePlayer.CurrentWeapon!= null)
         {
-            DisplayTextOnScreen(DisplayablePlayer.Money.ToString("C0"), Settings.SettingsManager.LSRHUDSettings.AltCashPositionX, Settings.SettingsManager.LSRHUDSettings.AltCashPositionY, Settings.SettingsManager.LSRHUDSettings.AltCashScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2);
+            NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);
+        }
+        IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);
+
+        bool willShowCash = DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu;
+        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && lastWeaponDisplay != "";
+        
+        float WeaponPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
+        if(IsVanillaStarsHUDVisible)
+        {
+            WeaponPosition += 0.035f;
+            if (IsVanillaWeaponHUDVisible)
+            {
+                WeaponPosition += 0.035f;
+            }
+        }
+        else
+        {
+            if (IsVanillaWeaponHUDVisible)
+            {
+                WeaponPosition += 0.035f;
+            }
+            else
+            {
+                WeaponPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
+            }
+        }
+        float CashPosition;
+        if (willShowWeapon)
+        {
+            CashPosition = WeaponPosition + 0.035f;
+        }
+        else
+        {
+            CashPosition = WeaponPosition;
+        }
+        if (willShowWeapon)
+        {
+            DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+        }
+        if (willShowCash)
+        {
+            DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
     }
     private void DisplayButtonPrompts()
@@ -577,7 +634,7 @@ public class UI : IMenuProvideable
                     }
                     else
                     {
-                        return $"~r~FULL AUTO ~s~(~r~{DisplayablePlayer.CurrentWeaponMagazineSize}~s~)~s~";
+                        return $"~r~FULL AUTO~s~";// ~s~(~r~{DisplayablePlayer.CurrentWeaponMagazineSize}~s~)~s~";
                     }
                 }
                 else
@@ -1078,14 +1135,18 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
-        if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowCash)
-        {
-            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
-        }
-        else if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || DisplayablePlayer.CharacterModelIsPrimaryCharacter) && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
-        {
-            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
-        }
+
+        NativeFunction.CallByName<bool>("DISPLAY_CASH", false);
+
+
+        //if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowCash)
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        //}
+        //else if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || DisplayablePlayer.CharacterModelIsPrimaryCharacter) && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        //}
         if (!Settings.SettingsManager.UIGeneralSettings.ShowVanillaAreaUI)
         {
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
@@ -1097,6 +1158,14 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
         }
+
+        VanillaDiplayedLines = 0;
+
+        IsVanillaStarsHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(1);
+        IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);
+        IsVanillaCashHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(3);
+
+        NativeFunction.Natives.FLASH_WANTED_DISPLAY(DisplayablePlayer.IsWanted && DisplayablePlayer.IsInSearchMode);
     }
 
     private void Show(Menu toShow)

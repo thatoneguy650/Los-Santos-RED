@@ -13,7 +13,7 @@ public class Fader
 {
     private string LastText = "";
     private string ExistingText = "";
-    private uint GameTimeDisplayChanged;
+    private int GameTimeDisplayChanged;
     private uint TimeToShow;
     private uint TimeToFade;
     private bool FadeIsInverse = false;
@@ -69,7 +69,7 @@ public class Fader
     }
     public void UpdateTimeChanged()
     {
-        GameTimeDisplayChanged = Game.GameTime;
+        GameTimeDisplayChanged = Environment.TickCount;// Game.GameTime;
     }
     private void OnFullyFadedIn()
     {
@@ -104,13 +104,13 @@ public class Fader
         }
         LastText = ExistingText;
         ExistingText = incomingText;
-        GameTimeDisplayChanged = Game.GameTime;
+        GameTimeDisplayChanged = Environment.TickCount;
         TextChangedLastUpdate = true;
         //EntryPoint.WriteToConsole($"Fader {DebugName} OnTextChanged TextToShow:{TextToShow} ", 2);
     }
-    private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
+    private int CalculateAlpha(int GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {
-        uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;
+        int TimeSinceChanged = Environment.TickCount - GameTimeLastChanged;
         if (TimeSinceChanged < timeToShow)
         {
             return 255;

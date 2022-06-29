@@ -162,7 +162,7 @@ public class PopUpMenu
             List<PopUpMenuMap> InventoryCategorySubMenu = new List<PopUpMenuMap>();
             foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi).Take(30))
             {
-                InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, rgx.Replace(ii.ModItem.Name," "), new Action(() => Player.StartConsumingActivity(ii.ModItem,true)), $"Use {rgx.Replace(ii.ModItem.Name," ")} Remaining: {ii.Amount}"));
+                InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.StartConsumingActivity(ii.ModItem,true)), ii.Description));
                 ID2++;
             }
 
@@ -347,7 +347,17 @@ public class PopUpMenu
         }
         if(SelectedMenuMap != null)
         {
-            DisplayTextOnScreen(SelectedMenuMap.Description, 0.5f, 0.5f, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
+            float heightScalar = 1.0f;
+            if(SelectedMenuMap.Description.Contains("~n~"))
+            {
+                heightScalar = 2.25f;
+            }
+
+
+            float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f * 1.25f;
+            float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f * heightScalar;
+            NativeFunction.Natives.DRAW_RECT(0.5f, 0.5f, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
+            DisplayTextBoxOnScreen(SelectedMenuMap.Description, 0.5f - (Width/2.2f), 0.5f - (Height/2.2f), Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255);
         }
         if (PrevSelectedMenuMap?.Display != SelectedMenuMap?.Display)
         {
@@ -455,6 +465,10 @@ public class PopUpMenu
         Game.DisableControlAction(0, GameControl.Attack2, false);
         Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
         Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
+        Game.DisableControlAction(0, GameControl.Aim, false);
+        Game.DisableControlAction(0, GameControl.VehicleAim, false);
+        Game.DisableControlAction(0, GameControl.AccurateAim, false);
+        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
     }
     private void DrawMessages()
     {
@@ -518,6 +532,7 @@ public class PopUpMenu
             }
         }
     }
+
 }
 
 
