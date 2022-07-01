@@ -71,6 +71,7 @@ public class DebugMenu : Menu
     private UIMenuListScrollerItem<Gang> SetGangRepHostile;
     private UIMenuListScrollerItem<int> SetWantedLevel;
     private UIMenuItem GetAllItems;
+    private UIMenuItem GetSomeItems;
     private IModItems ModItems;
     private int RandomUpgradedWeaponCategory;
 
@@ -170,8 +171,8 @@ public class DebugMenu : Menu
 
         GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         SetMoney = new UIMenuItem("Set Money", "Sets your cash");
-        GetAllItems = new UIMenuItem("Get All Items", "Gets 5 of every item");
-
+        GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
+        GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
         FillHealth = new UIMenuItem("Fill Health", "Refill health only");
         FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
 
@@ -221,6 +222,7 @@ public class DebugMenu : Menu
         Debug.AddItem(GiveMoney);
         Debug.AddItem(SetMoney);
         Debug.AddItem(GetAllItems);
+        Debug.AddItem(GetSomeItems);
         Debug.AddItem(FillHealth);
         Debug.AddItem(FillHealthAndArmor);
         Debug.AddItem(FastForwardTime);
@@ -506,12 +508,24 @@ public class DebugMenu : Menu
 
             foreach (ModItem modItem in ModItems.Items)
             {
-                if(modItem.ItemType != ItemType.Services && modItem.ItemType != ItemType.Vehicles && modItem.ItemType != ItemType.Weapons && modItem.ItemType != ItemType.None)
-                Player.Inventory.Add(modItem, 5);
+                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                {
+                    Player.Inventory.Add(modItem, 10);
+                }
             }
         }
+        else if (selectedItem == GetSomeItems)
+        {
 
-        if(selectedItem == SetGangRepHostile)
+            foreach (ModItem modItem in ModItems.Items.OrderBy(x => RandomItems.MyRand.Next()).Take(30))
+            {
+                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                {
+                    Player.Inventory.Add(modItem, 10);
+                }
+            }
+        }
+        if (selectedItem == SetGangRepHostile)
         {
             Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -5000, false);
         }

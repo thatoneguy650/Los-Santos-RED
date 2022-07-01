@@ -490,56 +490,6 @@ public class GasPump : InteractableLocation
             FullDispose();
         }
     }
-    private bool UseMachine(ModItem item)
-    {
-        string modelName = "";
-        bool HasProp = false;
-        if (item.PackageItem != null && item.PackageItem.ModelName != "")
-        {
-            modelName = item.PackageItem.ModelName;
-            HasProp = true;
-        }
-        else if (item.ModelItem != null && item.ModelItem.ModelName != "")
-        {
-            modelName = item.ModelItem.ModelName;
-            HasProp = true;
-        }
-
-
-
-        PlayingDict = "mini@sprunk";
-        PlayingAnim = "plyr_buy_drink_pt1";
-        AnimationDictionary.RequestAnimationDictionay(PlayingDict);
-
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
-        EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
-        bool IsCompleted = false;
-        while (Player.CanPerformActivities && !IsCancelled)
-        {
-            Player.SetUnarmed();
-            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-            if (AnimationTime >= 0.5f)
-            {
-                if (HasProp && modelName != "" && !hasAttachedProp)
-                {
-                    SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-                    GameFiber.Yield();
-                    if (SellingProp.Exists())
-                    {
-                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
-                    }
-                    hasAttachedProp = true;
-                }
-            }
-            if (AnimationTime >= 0.7f)
-            {
-                IsCompleted = true;
-                break;
-            }
-            GameFiber.Yield();
-        }
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        return IsCompleted;
-    }
+   
 }
 

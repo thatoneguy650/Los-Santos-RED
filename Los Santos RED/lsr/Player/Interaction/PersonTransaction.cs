@@ -778,7 +778,7 @@ public class PersonTransaction : Interaction
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
             }
         }
         GameFiber.Sleep(500);
@@ -806,7 +806,7 @@ public class PersonTransaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
             }
         }
         GameFiber.Sleep(1000);
@@ -899,7 +899,7 @@ public class PersonTransaction : Interaction
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
             }
         }
         GameFiber.Sleep(500);
@@ -929,7 +929,7 @@ public class PersonTransaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, modItem.ModelItem.AttachBoneIndex), modItem.ModelItem.AttachOffset, modItem.ModelItem.AttachRotation);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
             }
         }
         GameFiber.Sleep(1000);

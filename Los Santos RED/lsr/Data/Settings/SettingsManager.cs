@@ -86,6 +86,13 @@ public class SettingsManager
         UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings
 
         };
+
+
+//#if DEBUG
+//        PoliceSettings.ManageDispatching = false;
+//        EMSSettings.ManageDispatching = false;
+//        GangSettings.ManageDispatching = false;
+//#endif
     }
     public void SetDefault()
     {

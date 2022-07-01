@@ -16,32 +16,57 @@ public class PhysicalItem
     {
         ModelName = modelName;
     }
-    public PhysicalItem(string modelName, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation)
+    public PhysicalItem(string modelName, Vector3 attachOffset, Rotator attachRotation)
     {
-        AttachBoneIndex = attachBoneIndex;
-        AttachOffset = attachOffset;
-        AttachRotation = attachRotation;
+        AttachOffsetOverride = attachOffset;
+        AttachRotationOverride = attachRotation;
         ModelName = modelName;
     }
+
+
+    public PhysicalItem(string modelName, Vector3 attachOffsetOverride, Rotator attachRotationOverride, Vector3 secondaryAttachOffsetOverride, Rotator secondaryAttachRotationOverride)
+    {
+        AttachOffsetOverride = attachOffsetOverride;
+        AttachRotationOverride = attachRotationOverride;
+
+        SecondaryAttachOffsetOverride = secondaryAttachOffsetOverride;
+        SecondaryAttachRotationOverride = secondaryAttachRotationOverride;
+
+
+        ModelName = modelName;
+    }
+
     public PhysicalItem(string modelName, uint modelHash)
     {
         ModelName = modelName;
         ModelHash = modelHash;
     }
-    public PhysicalItem(string modelName, uint modelHash, int attachBoneIndex, Vector3 attachOffset, Rotator attachRotation)
+    public PhysicalItem(string modelName, uint modelHash, Vector3 attachOffset, Rotator attachRotation)
     {
-        AttachBoneIndex = attachBoneIndex;
-        AttachOffset = attachOffset;
-        AttachRotation = attachRotation;
+        AttachOffsetOverride = attachOffset;
+        AttachRotationOverride = attachRotation;
         ModelName = modelName;
         ModelHash = modelHash;
     }
-    public int AttachBoneIndex { get; set; } = 57005;
-    public Vector3 AttachOffset { get; set; } = Vector3.Zero;
-    public Rotator AttachRotation { get; set; } = Rotator.Zero;
+
     public string ModelName { get; set; } = "";
     public uint ModelHash { get; set; } = 0;
     public bool IsLarge { get; set; } = false;
     public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
+
+
+
+    public Vector3 AttachOffsetOverride { get; set; } = Vector3.Zero;
+    public Rotator AttachRotationOverride { get; set; } = Rotator.Zero;
+
+
+
+    public Vector3 SecondaryAttachOffsetOverride { get; set; } = Vector3.Zero;
+    public Rotator SecondaryAttachRotationOverride { get; set; } = Rotator.Zero;
+
+
+    public Vector3 SecondaryAttachOffsetFemaleOverride { get; set; } = Vector3.Zero;
+    public Rotator SecondaryAttachRotationFemaleOverride { get; set; } = Rotator.Zero;
+
 }
 

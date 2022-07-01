@@ -92,7 +92,11 @@ namespace LosSantosRED.lsr.Player
             CreateSmokedItem();
             if (SmokedItem.Exists() && IsSmokedItemAttachedToMouth)
             {
-                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                //SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+
+                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_R_PH_HAND"), Data.HandOffset, Data.HandRotator);
+
+
                 IsSmokedItemAttachedToMouth = false;
                 Player.AttachedProp = SmokedItem;
             }
@@ -102,7 +106,7 @@ namespace LosSantosRED.lsr.Player
             CreateSmokedItem();
             if (SmokedItem.Exists() && !IsSmokedItemAttachedToMouth)
             {
-                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.MouthBoneID), Data.MouthOffset, Data.MouthRotator);
+                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_HEAD"), Data.MouthOffset, Data.MouthRotator);
                 IsSmokedItemAttachedToMouth = true;
                 Player.AttachedProp = SmokedItem;
                 if (!HasLightingAnimation)
@@ -302,9 +306,9 @@ namespace LosSantosRED.lsr.Player
         }
         private void Setup()
         {
-            int HandBoneID;
-            Vector3 HandOffset;
-            Rotator HandRotator;
+            int HandBoneID = 57005;
+            Vector3 HandOffset = new Vector3();
+            Rotator HandRotator = new Rotator();
             string AnimBase;
             string AnimBaseDictionary;
             string AnimEnter;
@@ -316,6 +320,7 @@ namespace LosSantosRED.lsr.Player
             int MouthBoneID;
             Vector3 MouthOffset;
             Rotator MouthRotator;
+            bool isFemalePed = false;
             string PropModelName = "ng_proc_cigarette01a";
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two")
             {
@@ -326,8 +331,6 @@ namespace LosSantosRED.lsr.Player
                     AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };
                     AnimEnterDictionary = "amb@world_human_smoking@male@male_b@enter";
                     AnimExitDictionary = "amb@world_human_smoking@male@male_b@exit";
-                    HandOffset = new Vector3(0.141f, 0.03f, -0.033f);
-                    HandRotator = new Rotator(0.0f, -168f, -84f);
                 }
                 else
                 {
@@ -336,13 +339,10 @@ namespace LosSantosRED.lsr.Player
                     AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };
                     AnimEnterDictionary = "amb@world_human_smoking@male@male_a@enter";
                     AnimExitDictionary = "amb@world_human_smoking@male@male_a@exit";
-                    HandOffset = new Vector3(0.1640f, 0.019f, 0.0f);
-                    HandRotator = new Rotator(0.49f, 79f, 79f);
                 }
                 AnimBase = "base";
                 AnimEnter = "enter";
                 AnimExit = "exit";
-                HandBoneID = 57005;
                 MouthBoneID = 31086;
                 MouthOffset = new Vector3(-0.007f, 0.13f, 0.01f);
                 MouthRotator = new Rotator(0.0f, -175f, 91f);
@@ -355,8 +355,6 @@ namespace LosSantosRED.lsr.Player
                     AnimIdleDictionary = "amb@world_human_smoking@male@male_b@idle_a";
                     AnimEnterDictionary = "amb@world_human_smoking@male@male_b@enter";
                     AnimExitDictionary = "amb@world_human_smoking@male@male_b@exit";
-                    HandOffset = new Vector3(0.141f, 0.03f, -0.033f);
-                    HandRotator = new Rotator(0.0f, -168f, -84f);
                 }
                 else
                 {
@@ -364,20 +362,20 @@ namespace LosSantosRED.lsr.Player
                     AnimIdleDictionary = "amb@world_human_smoking@male@male_a@idle_a";
                     AnimEnterDictionary = "amb@world_human_smoking@male@male_a@enter";
                     AnimExitDictionary = "amb@world_human_smoking@male@male_a@exit";
-                    HandOffset = new Vector3(0.14f, 0.03f, 0.0f);
-                    HandRotator = new Rotator(0.49f, 79f, 79f);
                 }
                 AnimBase = "base";
                 AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };
                 AnimEnter = "enter";
                 AnimExit = "exit";
-                HandBoneID = 57005;
                 MouthBoneID = 17188;
-                MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
-                MouthRotator = new Rotator(0.0f, -180f, 0f);
+                //MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
+                //MouthRotator = new Rotator(0.0f, -180f, 0f);
+                MouthOffset = new Vector3(-0.007f, 0.13f, 0.01f);
+                MouthRotator = new Rotator(0.0f, -175f, 91f);
             }
             else
             {
+                isFemalePed = true;
                 AnimBaseDictionary = "amb@world_human_smoking@female@idle_a";
                 AnimBase = "base";
                 AnimIdleDictionary = "amb@world_human_smoking@female@idle_a";
@@ -386,29 +384,25 @@ namespace LosSantosRED.lsr.Player
                 AnimEnter = "enter";
                 AnimExitDictionary = "amb@world_human_smoking@female@exit";
                 AnimExit = "exit";
-                HandBoneID = 57005;
-                HandOffset = new Vector3(0.14f, 0.01f, 0.0f);
-                HandRotator = new Rotator(0.49f, 79f, 79f);
                 MouthBoneID = 17188;
-                MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
-                MouthRotator = new Rotator(0.0f, -180f, 0f);
-            }
+                //MouthOffset = new Vector3(-0.007f, 0.13f, 0.01f);
+                //MouthRotator = new Rotator(0.0f, -175f, 91f);
+                MouthOffset = new Vector3(-0.02f, 0.1f, 0.01f);
+                MouthRotator = new Rotator(0f, 0f, -80f);
 
+
+            }
             if (Player.IsSitting || Player.IsInVehicle)
             {
-                AnimBaseDictionary = "amb@incar@male@smoking@base";
-                AnimBase = "base";
-                AnimIdleDictionary = "amb@incar@male@smoking@idle_a";
-                AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };//"idle_a", "idle_b", these are kinda bad
-                AnimEnterDictionary = "amb@incar@male@smoking@enter";
-                AnimEnter = "enter";
-                AnimExitDictionary = "amb@incar@male@smoking@exit";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
-                AnimExit = "exit";
+                //AnimBaseDictionary = "amb@incar@male@smoking@base";
+                //AnimBase = "base";
+                //AnimIdleDictionary = "amb@incar@male@smoking@idle_a";
+                //AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };//"idle_a", "idle_b", these are kinda bad
+                //AnimEnterDictionary = "amb@incar@male@smoking@enter";
+                //AnimEnter = "enter";
+                //AnimExitDictionary = "amb@incar@male@smoking@exit";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
+                //AnimExit = "exit";
                 HasLightingAnimation = false;
-
-
-
-
                 AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
                 AnimBase = "enter";
                 AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
@@ -420,15 +414,46 @@ namespace LosSantosRED.lsr.Player
                 HasLightingAnimation = false;
 
             }
-
-            if (ModItem != null)
+            if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModelName = ModItem.ModelItem.ModelName;
+                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
+                HandRotator = ModItem.ModelItem.AttachRotationOverride;
+                if(ModItem.ModelItem.SecondaryAttachOffsetOverride != Vector3.Zero)
+                {
+                    MouthOffset = ModItem.ModelItem.SecondaryAttachOffsetOverride;
+                }
+                if(ModItem.ModelItem.SecondaryAttachRotationOverride != Rotator.Zero)
+                {
+                    MouthRotator = ModItem.ModelItem.SecondaryAttachRotationOverride;
+                }
+
+                if(isFemalePed)
+                {
+                    if (ModItem.ModelItem.SecondaryAttachOffsetFemaleOverride != Vector3.Zero)
+                    {
+                        MouthOffset = ModItem.ModelItem.SecondaryAttachOffsetFemaleOverride;
+                    }
+                    if (ModItem.ModelItem.SecondaryAttachRotationFemaleOverride != Rotator.Zero)
+                    {
+                        MouthRotator = ModItem.ModelItem.SecondaryAttachRotationFemaleOverride;
+                    }
+                }
             }
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
+            }
+            if(Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
+            {
+                HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
+                HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
+            }
+            if (Settings.SettingsManager.PlayerOtherSettings.OverwriteMouthOffset)
+            {
+                MouthOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.MouthOffsetX, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetY, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetZ);
+                MouthRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.MouthRotateX, Settings.SettingsManager.PlayerOtherSettings.MouthRotateY, Settings.SettingsManager.PlayerOtherSettings.MouthRotateZ);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);

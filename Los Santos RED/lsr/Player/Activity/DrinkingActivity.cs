@@ -68,7 +68,11 @@ namespace LosSantosRED.lsr.Player
             CreateBottle();
             if (Bottle.Exists() && !IsAttachedToHand)
             {
-                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                //Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+
+                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
+                
+
                 IsAttachedToHand = true;
                 Player.AttachedProp = Bottle;
             }
@@ -252,17 +256,19 @@ namespace LosSantosRED.lsr.Player
 
 
 
+
+
+            HandOffset = new Vector3();
+            HandRotator = new Rotator();
+
+
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModel = ModItem.ModelItem.ModelName;
-                HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-                HandOffset = ModItem.ModelItem.AttachOffset;
-                HandRotator = ModItem.ModelItem.AttachRotation;
+                //HandBoneID = ModItem.ModelItem.AttachBoneIndex;
+                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
+                HandRotator = ModItem.ModelItem.AttachRotationOverride;
             }
-
-
-
-
 
 
             if (Player.IsInVehicle)
@@ -332,6 +338,49 @@ namespace LosSantosRED.lsr.Player
                 }
             }
 
+
+
+
+
+
+
+
+            //works best with the bonetag bones instead of the hand bones
+
+
+      
+            //HandOffset = new Vector3(0.0f, 0.0f, Settings.SettingsManager.PlayerOtherSettings.HandOffsetDrinking);
+
+
+           // if(Settings.SettingsManager.PlayerOtherSettings.HandOffsetDrinking)
+
+          //  HandRotator = new Rotator(0.0f, 0.0f, 0.0f);
+
+
+            //SPRUNK AND eCOLA CANS -0.1f
+
+            //CUP OF eCola and Sprunk = -0.2f
+
+
+            //Raine and GRey Water = -0.05f
+
+
+            //Coffee
+            //Junk Energy = 0.0f
+            //Pisswasser = 0.0f?
+            //ORANG O TANG CAN = 0.0f;
+
+
+
+            //ALL BEER BESIDES PISSWASSER 
+
+            //-0.15f
+
+
+
+
+
+
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
@@ -342,99 +391,5 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }
-        //private void Setup()
-        //{
-        //    List<string> AnimIdle;
-        //    string AnimEnter;
-        //    string AnimEnterDictionary;
-        //    string AnimExit;
-        //    string AnimExitDictionary;
-        //    string AnimIdleDictionary;
-        //    int HandBoneID;
-        //    Vector3 HandOffset;
-        //    Rotator HandRotator;
-        //    string PropModel = "";
-        //    if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-        //    {
-        //        AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
-        //        AnimEnter = "enter";
-        //        AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
-        //        AnimExit = "exit";
-        //        AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
-        //        AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-        //        HandBoneID = 57005;
-        //        HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
-        //        HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
-
-
-        //        AnimEnterDictionary = "amb@world_human_drinking@coffee@male@enter";
-        //        AnimEnter = "enter";
-        //        AnimExitDictionary = "amb@world_human_drinking@coffee@male@exit";
-        //        AnimExit = "exit";
-        //        AnimIdleDictionary = "amb@world_human_drinking@coffee@male@idle_a";
-        //        AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-
-        //    }
-        //    else
-        //    {
-        //        AnimEnterDictionary = "amb@world_human_drinking@beer@female@enter";
-        //        AnimEnter = "enter";
-        //        AnimExitDictionary = "amb@world_human_drinking@beer@female@exit";
-        //        AnimExit = "exit";
-        //        AnimIdleDictionary = "amb@world_human_drinking@beer@female@idle_a";
-        //        AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-        //        HandBoneID = 57005;
-        //        HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
-        //        HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
-
-
-        //        AnimEnterDictionary = "amb@world_human_drinking@coffee@female@enter";
-        //        AnimEnter = "enter";
-        //        AnimExitDictionary = "amb@world_human_drinking@coffee@female@exit";
-        //        AnimExit = "exit";
-        //        AnimIdleDictionary = "amb@world_human_drinking@coffee@female@idle_a";
-        //        AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-        //    }
-
-
-
-
-
-        //    //need left hand and into end exit?
-        //    //amb@code_human_in_car_mp_actions@drink@std@ds@base enter
-        //    //amb@code_human_in_car_mp_actions@drink_bottle@std@ps@base exit
-
-
-        //    if (ModItem != null && ModItem.ModelItem != null)
-        //    {
-        //        PropModel = ModItem.ModelItem.ModelName;
-        //        HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-        //        HandOffset = ModItem.ModelItem.AttachOffset;
-        //        HandRotator = ModItem.ModelItem.AttachRotation;
-        //    }
-
-
-        //    //if (Player.IsSitting || Player.IsInVehicle)
-        //    //{
-        //    //    HandBoneID = 18905;
-        //    //    AnimEnterDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
-        //    //    AnimEnter = "enter";
-        //    //    AnimExitDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
-        //    //    AnimExit = "exit";
-        //    //    AnimIdleDictionary = "amb@code_human_in_car_mp_actions@drink@std@ds@base";
-        //    //    AnimIdle = new List<string>() { "idle_a" };
-        //    //}
-
-
-        //    if (ModItem != null && ModItem.IsIntoxicating)
-        //    {
-        //        CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
-        //        Player.Intoxication.StartIngesting(CurrentIntoxicant);
-        //    }
-        //    AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
-        //    AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
-        //    AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
-        //    Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
-        //}
     }
 }

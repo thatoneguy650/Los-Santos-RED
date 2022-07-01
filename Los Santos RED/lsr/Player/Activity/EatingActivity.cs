@@ -226,9 +226,9 @@ namespace LosSantosRED.lsr.Player
             }
             if (ModItem != null && ModItem.ModelItem != null)
             {
-                HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-                HandOffset = ModItem.ModelItem.AttachOffset;
-                HandRotator = ModItem.ModelItem.AttachRotation;
+                //HandBoneID = ModItem.ModelItem.AttachBoneIndex;
+                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
+                HandRotator = ModItem.ModelItem.AttachRotationOverride;
                 PropModel = ModItem.ModelItem.ModelName;
             }
 

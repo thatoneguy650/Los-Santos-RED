@@ -154,13 +154,13 @@ public class PopUpMenu
         int ID = 0;
         int ID2 = 0;
         List<PopUpMenuMap> InventoryCategoriesSubMenu = new List<PopUpMenuMap>();
-        foreach (ItemType mi in Player.Inventory.Items.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct())
+        foreach (ItemType mi in Player.Inventory.Items.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x=>x.Value))
         {
             InventoryCategoriesSubMenu.Add(new PopUpMenuMap(ID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
             ID2 = 0;
 
             List<PopUpMenuMap> InventoryCategorySubMenu = new List<PopUpMenuMap>();
-            foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi).Take(30))
+            foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
             {
                 InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.StartConsumingActivity(ii.ModItem,true)), ii.Description));
                 ID2++;
@@ -171,13 +171,6 @@ public class PopUpMenu
             ID++;
         }
         PopUpMenuGroups.Add(new PopUpMenuGroup("InventoryCategoriesSubMenu", InventoryCategoriesSubMenu) { IsChild = true, Group = "Inventory" });
-
-
-
-
-        
-
-
     }
     public void OnStopDisplaying()
     {
@@ -216,7 +209,7 @@ public class PopUpMenu
         CurrentPopUpMenuGroup = "DefaultOnFoot";
         UpdateInventoryMenuGroups();
     }
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, int alpha)
+    private void DisplayTextBoxOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, int alpha, bool addBackground, Color BackGroundColor)
     {
         try
         {
@@ -224,67 +217,51 @@ public class PopUpMenu
             {
                 return;
             }
+
+            float Height = GetTextBoxLines(TextToShow, Scale, X, Y, Font) * Scale * Settings.SettingsManager.ActionWheelSettings.TextBoxScale;// ((TextToShow.Length + 90) / 90) * Settings.SettingsManager.ActionWheelSettings.TextScale * 0.3f;
+            float Width = 0.0f;
             NativeFunction.Natives.SET_TEXT_FONT((int)Font);
             NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
             NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
-
-            NativeFunction.Natives.SetTextJustification((int)Justification);
+            NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
             NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-
-            if (Justification == GTATextJustification.Right)
-            {
-                NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
-            }
-            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
-            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
-
-           // NativeFunction.Natives.x6c188be134e074aa(TextToShow);
-
-
-            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
-        }
-        catch (Exception ex)
-        {
-            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
-        }
-        //return;
-    }
-    private void DisplayTextBoxOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, int alpha)
-    {
-        try
-        {
-            if (TextToShow == "" || alpha == 0)
-            {
-                return;
-            }
-            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
-            NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
-            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
-
-            NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Left);
-            NativeFunction.Natives.SetTextDropshadow(10, 255, 0, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-
-
             NativeFunction.Natives.SET_TEXT_WRAP(X, X + 0.15f);
-
             NativeFunction.Natives.x25fbb336df1804cb("jamyfafi"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
-
             NativeHelper.AddLongString(TextToShow);
-
-            //NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
-            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
+            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y - (Height / 2.0f));
+            if (addBackground)
+            {
+                Width = GetTextBoxWidth(TextToShow, Scale, X, Font);
+                if (Width >= 0.15f)
+                {
+                    Width = 0.15f;
+                }
+                NativeFunction.Natives.DRAW_RECT(X, Y, Width + 0.01f, Height + 0.01f, BackGroundColor.R, BackGroundColor.G, BackGroundColor.B, 100, false);
+            }
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
         }
-        //return;
+    }
+
+    private float GetTextBoxWidth(string TextToShow, float Scale, float X, GTAFont Font)
+    {
+        NativeFunction.Natives.x54CE8AC98E120CAB("jamyfafi");
+        NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+        NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+        NativeFunction.Natives.SET_TEXT_WRAP(X, X + 0.15f);
+        NativeHelper.AddLongString(TextToShow);
+        return NativeFunction.Natives.x85F061DA64ED2F67<float>(true);
+    }
+    private float GetTextBoxLines(string TextToShow, float Scale, float X, float Y, GTAFont Font)
+    {
+        NativeFunction.Natives.x521FB041D93DD0E4("jamyfafi");
+        NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+        NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+        NativeFunction.Natives.SET_TEXT_WRAP(X, X + 0.15f);
+        NativeHelper.AddLongString(TextToShow);
+        return NativeFunction.Natives.x9040DFB09BE75706<int>(X,Y);
     }
     private void FindClosestPositionMap()
     {
@@ -347,17 +324,7 @@ public class PopUpMenu
         }
         if(SelectedMenuMap != null)
         {
-            float heightScalar = 1.0f;
-            if(SelectedMenuMap.Description.Contains("~n~"))
-            {
-                heightScalar = 2.25f;
-            }
-
-
-            float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f * 1.25f;
-            float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f * heightScalar;
-            NativeFunction.Natives.DRAW_RECT(0.5f, 0.5f, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
-            DisplayTextBoxOnScreen(SelectedMenuMap.Description, 0.5f - (Width/2.2f), 0.5f - (Height/2.2f), Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255);
+            DisplayTextBoxOnScreen(SelectedMenuMap.Description, 0.5f, 0.5f, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, Color.Black);
         }
         if (PrevSelectedMenuMap?.Display != SelectedMenuMap?.Display)
         {
@@ -424,15 +391,9 @@ public class PopUpMenu
                 isSelected = true;
             }
         }
-        if (isSelected)
-        {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemHeight * 1.05f * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, overrideColor.R, overrideColor.G, overrideColor.B, 175, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
-        }
-        else
-        {
-            NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * excessiveItemScaler, overrideColor.R, overrideColor.G, overrideColor.B, 100, false);//NativeFunction.Natives.DRAW_RECT(CurrentPositionX, CurrentPositionY, ItemWidth, ItemHeight, 181, 48, 48, 255, false);
-        }
-        DisplayTextOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, GTATextJustification.Center, 255);
+
+        float selectedSizeScalar = 1.05f;
+        DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
     private PopUpMenuMap GetCurrentMenuMap(int ID)
@@ -472,62 +433,26 @@ public class PopUpMenu
     }
     private void DrawMessages()
     {
-
         List<Tuple<string, DateTime>> MessageTimes = new List<Tuple<string, DateTime>>();
-
         MessageTimes.AddRange(Player.CellPhone.PhoneResponseList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
         MessageTimes.AddRange(Player.CellPhone.TextList.OrderByDescending(x => x.TimeReceived).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow).Select(x => new Tuple<string, DateTime>(x.ContactName, x.TimeReceived)));
-
-
         int MessagesDisplayed = 0;
-
         float YMessageSpacing = Settings.SettingsManager.ActionWheelSettings.MessageBodySpacingY;
         float YHeaderSpacing = Settings.SettingsManager.ActionWheelSettings.MessageHeaderSpacingY;// 0.02f;
-
-
-
         foreach (Tuple<string, DateTime> dateTime in MessageTimes.OrderByDescending(x => x.Item2).Take(Settings.SettingsManager.ActionWheelSettings.MessagesToShow))
         {
             PhoneResponse phoneResponse = Player.CellPhone.PhoneResponseList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if (phoneResponse != null)
             {
-                DisplayTextBoxOnScreen("~h~" + phoneResponse.ContactName + " - " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255);
-                DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255); ;
-                float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f;
-                float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f;
-
-
-                float HalfWidth = Width / 2f;
-                float HalfHeight = Height / 2f;
-
-
-                float posX = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX + HalfWidth - (0.01f);
-                float posY = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
-
-
-                NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
+                DisplayTextBoxOnScreen("~h~" + phoneResponse.ContactName + " - " + phoneResponse.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255, true, Color.Black);
+                DisplayTextBoxOnScreen(phoneResponse.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255, true, Color.Black); ;
                 MessagesDisplayed++;
             }
             PhoneText phoneText = Player.CellPhone.TextList.Where(x => x.TimeReceived == dateTime.Item2 && x.ContactName == dateTime.Item1).FirstOrDefault();
             if (phoneText != null)
             {
-                DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + " - " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255);
-                DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255); ;
-
-
-                float Width = Settings.SettingsManager.ActionWheelSettings.ItemWidth * ConsistencyScale * Settings.SettingsManager.ActionWheelSettings.ItemScale * 3f;
-                float Height = Settings.SettingsManager.ActionWheelSettings.ItemHeight * Settings.SettingsManager.ActionWheelSettings.ItemScale * 1.25f ;
-
-
-                float HalfWidth = Width / 2f;
-                float HalfHeight = Height / 2f;
-
-                float posX = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX + HalfWidth - (0.01f);
-                float posY = Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + HalfHeight - 0.01f;
-
-
-                NativeFunction.Natives.DRAW_RECT(posX, posY, Width, Height, Color.Black.R, Color.Black.G, Color.Black.B, 100, false);
-
+                DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + " - " + phoneText.TimeReceived.ToString("HH:mm"), Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255, true, Color.Black);
+                DisplayTextBoxOnScreen(phoneText.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed) + YHeaderSpacing, Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255, true, Color.Black); ;
                 MessagesDisplayed++;
             }
         }

@@ -247,7 +247,7 @@ public class VendingMachine : InteractableLocation
                     GameFiber.Yield();
                     if (SellingProp.Exists())
                     {
-                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, item.ModelItem.AttachBoneIndex), item.ModelItem.AttachOffset, item.ModelItem.AttachRotation);
+                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), item.ModelItem.AttachOffsetOverride, item.ModelItem.AttachRotationOverride);
                     }
                     hasAttachedProp = true;
                 }

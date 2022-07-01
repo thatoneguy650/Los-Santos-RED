@@ -35,6 +35,7 @@ public class ActionWheelSettings : ISettingsDefaultable
     public int MessagesToShow { get; set; }
     public float ItemDistanceFromCenterExtraItemScalar { get; set; }
     public float ItemScaleExtraItemScalar { get; set; }
+    public float TextBoxScale { get; set; }
 
     public ActionWheelSettings()
     {
@@ -47,7 +48,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         ItemSpacingX = 0.04f;
         ItemSpacingY = 0.04f;
         ItemScale = 1.2f;
-        TextScale = 0.3f;
+        TextScale = 0.35f;
         TextFont = GTAFont.FontChaletLondon;// GTAFont.FontMonospace;
         TextColor = "White";
         ItemColor = "Black";
@@ -58,15 +59,17 @@ public class ActionWheelSettings : ISettingsDefaultable
         ItemDistanceFromCenter = 0.3f;
         TransitionInEffect = "SwitchHUDIn";
         TransitionOutEffect = "SwitchHUDOut";
-        MessageStartingPositionX = 0.05f;
-        MessageStartingPositionY = 0.05f;
+        MessageStartingPositionX = 0.1f;// 0.05f;
+        MessageStartingPositionY = 0.1f;// 0.05f;
         MessageFont = GTAFont.FontChaletLondon;//GTAFont.FontChaletComprimeCologne;
         MessageTextColor = "White";
         MessageScale = 0.25f;
-        MessageBodySpacingY = 0.125f;
-        MessageHeaderSpacingY = 0.02f;
+        MessageBodySpacingY = 0.15f;//0.125f;
+        MessageHeaderSpacingY = 0.055f;//0.02f;
         MessagesToShow = 4;
         ItemDistanceFromCenterExtraItemScalar = -0.01f;
         ItemScaleExtraItemScalar = 0.005f;// 0.01f;
+
+        TextBoxScale = 0.084f;//0.025f;
     }
 }

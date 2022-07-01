@@ -60,6 +60,9 @@ public class Debug
     private ShopMenus ShopMenus;
     private int TextSoundID;
     private int HangUpSoundID;
+    private Vector3 Offset;
+    private Rotator Rotation;
+    private bool isPrecise;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus)
     {
@@ -951,8 +954,8 @@ public class Debug
         //Game.LocalPlayer.Character.KeepTasks = true;
         //Player.IsBeingANuisance = !Player.IsBeingANuisance;
         //GameFiber.Sleep(1000);
-
-        StuffTwo();
+        SetPropAttachment();
+        //StuffTwo();
         //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //{
 
@@ -1362,6 +1365,143 @@ public class Debug
     }
 
 
+    private void SetPropAttachment()
+    {
+        string PropName = NativeHelper.GetKeyboardInput("prop_cigar_02");
+        Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
+        GameFiber.Yield();
+
+        string headBoneName = "BONETAG_HEAD";
+        string handRBoneName = "BONETAG_R_PH_HAND";
+        string handLBoneName = "BONETAG_L_PH_HAND";
+
+        string boneName = headBoneName;
+
+
+        string wantedBone = NativeHelper.GetKeyboardInput("Head");
+        if(wantedBone == "RHand")
+        {
+            boneName = handRBoneName;
+        }
+        else if (wantedBone == "LHand")
+        {
+            boneName = handLBoneName;
+        }
+
+        uint GameTimeLastAttached = 0;
+        Offset = new Vector3();
+        Rotation = new Rotator();
+        isPrecise = false;
+        if (SmokedItem.Exists())
+        {
+            AttachItem(SmokedItem, boneName, Offset, Rotation);
+            GameFiber.StartNew(delegate
+            {
+                while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
+                {
+                    if(Game.GameTime - GameTimeLastAttached >= 100 &&  CheckAttachmentkeys())
+                    {
+                        AttachItem(SmokedItem, boneName, Offset, Rotation);
+                        GameTimeLastAttached = Game.GameTime;
+                    }
+
+
+                    if(Game.IsKeyDown(Keys.B))
+                    {
+                        EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                    }
+                    if (Game.IsKeyDown(Keys.N))
+                    {
+                        isPrecise = !isPrecise;
+                    }
+
+                    Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                    GameFiber.Yield();
+                }
+
+                if(SmokedItem.Exists())
+                {
+                    SmokedItem.Delete();
+                }
+            }, "Run Debug Logic");
+        }
+    }
+    private void AttachItem(Rage.Object SmokedItem, string boneName, Vector3 offset, Rotator rotator)
+    {
+        if (SmokedItem.Exists())
+        {
+            SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, boneName), offset, rotator);
+            
+        }
+    }
+    private bool CheckAttachmentkeys()
+    {
+
+        float adderOffset = isPrecise ? 0.001f : 0.01f;
+        float rotatorOFfset = isPrecise ? 1.0f : 10f;
+        if (Game.IsKeyDownRightNow(Keys.T))//X UP?
+        {
+            Offset = new Vector3(Offset.X + adderOffset, Offset.Y, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.G))//X Down?
+        {
+            Offset = new Vector3(Offset.X - adderOffset, Offset.Y, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.Y))//Y UP?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y + adderOffset, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.H))//Y Down?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y - adderOffset, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.U))//Z Up?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y, Offset.Z + adderOffset);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.J))//Z Down?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y, Offset.Z - adderOffset);
+            return true;
+        }
+
+        else if (Game.IsKeyDownRightNow(Keys.I))//XR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch + rotatorOFfset, Rotation.Roll, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.K))//XR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch - rotatorOFfset, Rotation.Roll, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.O))//YR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll + rotatorOFfset, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.L))//YR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll - rotatorOFfset, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.P))//ZR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll, Rotation.Yaw + rotatorOFfset);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.OemSemicolon))//ZR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll, Rotation.Yaw - rotatorOFfset);
+            return true;
+        }
+        return false;
+    }
     private void PlayTextReceivedSound()
     {
         
