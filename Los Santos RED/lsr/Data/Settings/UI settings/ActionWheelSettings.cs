@@ -53,7 +53,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         TextColor = "White";
         ItemColor = "Black";
         SelectedItemColor = "Red";
-        ShowCursor = false;
+        ShowCursor = true;
         ItemCenterX = 0.5f;
         ItemCenterY = 0.5f;
         ItemDistanceFromCenter = 0.3f;

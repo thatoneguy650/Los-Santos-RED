@@ -46,7 +46,10 @@ public class KeySettings : ISettingsDefaultable
 
     public Keys ActionPopUpDisplayKey { get; set; }
     public Keys ActionPopUpDisplayKeyModifier { get; set; }
-    
+
+
+    public Keys AltActionPopUpDisplayKey { get; set; }
+    public Keys AltActionPopUpDisplayKeyModifier { get; set; }
 
     public KeySettings()
     {
@@ -101,7 +104,8 @@ public class KeySettings : ISettingsDefaultable
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpDisplayKeyModifier = Keys.None;
 
-
+        AltActionPopUpDisplayKey = Keys.N;//N
+        AltActionPopUpDisplayKeyModifier = Keys.None;
 
 
     }

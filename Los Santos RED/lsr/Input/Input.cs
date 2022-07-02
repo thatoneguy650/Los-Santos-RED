@@ -59,12 +59,13 @@ namespace LosSantosRED.lsr
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
+        private bool IsPressingVehicleAccelerate => Game.IsControlPressed(0, GameControl.VehicleAccelerate);
         private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 1500;
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 1500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 1500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 1500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 1500;
-        private bool IsPressingActionWheelMenu => IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier);
+        private bool IsPressingActionWheelMenu => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
         public void Update()
         {        
             DisableVanillaControls();
@@ -215,6 +216,12 @@ namespace LosSantosRED.lsr
                         Player.CurrentVehicle.Engine.Toggle();
                         GameTimeLastPressedEngineToggle = Game.GameTime;
                     }
+                    else if (IsPressingVehicleAccelerate && !Player.CurrentVehicle.Engine.IsRunning && Settings.SettingsManager.VehicleSettings.AllowSetEngineState)
+                    {
+                        Player.CurrentVehicle.Engine.Toggle(true);
+                        GameTimeLastPressedEngineToggle = Game.GameTime;
+                    }
+
                 }
                 if (!RecentlyPressedIndicators)
                 {

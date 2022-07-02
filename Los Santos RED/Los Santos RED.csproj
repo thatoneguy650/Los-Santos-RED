@@ -165,6 +165,7 @@
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Old\iFruit\CustomiFruit.cs" />
     <Compile Include="lsr\Old\iFruit\iFruitAddon2.cs" />

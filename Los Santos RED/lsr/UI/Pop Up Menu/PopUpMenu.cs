@@ -57,7 +57,7 @@ public class PopUpMenu
         {
             new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },        
             new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
         };
@@ -65,7 +65,7 @@ public class PopUpMenu
         {
             new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },      
             new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
         };
@@ -77,15 +77,15 @@ public class PopUpMenu
         };
         List<PopUpMenuMap> ActionsSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },
-            new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false },
-            new PopUpMenuMap(2,"Suicide",Player.CommitSuicide,"Commit suicide"),
+            new PopUpMenuMap(0,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities) },
+            new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle) },
+            new PopUpMenuMap(2,"Suicide",Player.CommitSuicide,"Commit suicide") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
             new PopUpMenuMap(3,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
         };
         List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false },
-            new PopUpMenuMap(1,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"),
+            new PopUpMenuMap(0,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(1,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"){ IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
         };
         List<PopUpMenuMap> StanceSubMenu = new List<PopUpMenuMap>()
         {
@@ -95,7 +95,7 @@ public class PopUpMenu
         };
         List<PopUpMenuMap> VehicleSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine"),
+            new PopUpMenuMap(0,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine") { IsCurrentlyValid = new Func<bool>(() => Player.CurrentVehicle?.Engine.CanToggle == true)},
             new PopUpMenuMap(1,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
             new PopUpMenuMap(2,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
             new PopUpMenuMap(3,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
@@ -106,14 +106,24 @@ public class PopUpMenu
         int ID = 1;
         foreach(GestureData gd in Gestures.GestureLookups.Where(x=> x.IsOnActionWheel).Take(30))
         {
-            GestureMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.Gesture(gd)), rgx.Replace(gd.Name, " ")));
+            GestureMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " "), new Action(() => Player.Gesture(gd)), rgx.Replace(gd.Name, " "))
+
+            { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities) }
+
+                );
             ID++;
         }
         List<PopUpMenuMap> DancesMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastDance.Name, " "), new Action(() => Player.Dance(Player.LastDance)), rgx.Replace(Player.LastDance.Name, " ")) };
         ID = 1;
         foreach (DanceData gd in Dances.DanceLookups.Where(x=> x.IsOnActionWheel).Take(30))
         {
-            DancesMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " ") , new Action(() => Player.Dance(gd)), rgx.Replace(gd.Name, " ")));
+            DancesMenuMaps.Add(new PopUpMenuMap(ID, rgx.Replace(gd.Name, " ") , new Action(() => Player.Dance(gd)), rgx.Replace(gd.Name, " "))
+
+
+            { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle) }
+
+
+                );
             ID++;
         }
 
@@ -288,9 +298,9 @@ public class PopUpMenu
         if (ClosestPositionMap != null)
         {
             PopUpMenuMap popUpMenuMap = GetCurrentMenuMap(ClosestPositionMap.ID);
-            if (popUpMenuMap != null)
+            if (popUpMenuMap != null && popUpMenuMap.IsCurrentlyValid())
             {
-                if (popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != "")
+                if ((popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != ""))
                 {
                     if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
@@ -382,18 +392,23 @@ public class PopUpMenu
         PopUpMenuMap popUpMenuMap = GetCurrentMenuMap(ID);
         string display = ID.ToString();
         bool isSelected = false;
+        Color textColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor);
         if (popUpMenuMap != null)
         {
             display = popUpMenuMap.Display;
-            if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID)//is the selected item
+            if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID && SelectedMenuMap.IsCurrentlyValid())//is the selected item
             {
                 overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.SelectedItemColor);//Color.FromArgb(72, 133, 164, 100);
                 isSelected = true;
             }
+           if(!popUpMenuMap.IsCurrentlyValid())
+            {
+                textColor = Color.Gray;
+            }
         }
 
         float selectedSizeScalar = 1.05f;
-        DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
+        DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
     private PopUpMenuMap GetCurrentMenuMap(int ID)

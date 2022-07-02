@@ -419,7 +419,7 @@ public class PedSwap : IPedSwap
     }
     private void HandlePreviousPed(bool deleteOld)
     {
-        if (!CurrentPed.Exists())
+        if (!CurrentPed.Exists() || CurrentPed.Handle == Game.LocalPlayer.Character.Handle)
         {
             return;
         }
@@ -743,7 +743,7 @@ public class PedSwap : IPedSwap
     }
     private void TaskFormerPed(Ped FormerPlayer, bool isWanted, bool isBusted)
     {
-        if (!FormerPlayer.Exists() || isBusted || FormerPlayer.IsDead)
+        if (!FormerPlayer.Exists() || isBusted || FormerPlayer.IsDead || FormerPlayer.Handle == Game.LocalPlayer.Character.Handle)
         {
             return;
         }

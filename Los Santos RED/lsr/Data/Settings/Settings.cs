@@ -23,8 +23,6 @@ public class Settings : ISettingsProvideable
     {
         Serialization.SerializeParam(SettingsManager == null ? new SettingsManager() : SettingsManager, ConfigFileName);
     }
-
-
     public void SetRelease()
     {
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
@@ -90,6 +88,7 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.VehicleSettings.KeepRadioAutoTuned = false;
+        SettingsManager.WeatherReportingSettings.ReportWeather = false;
 
     }
     public void SetHard()
@@ -183,19 +182,19 @@ public class Settings : ISettingsProvideable
 
 
 
-        SettingsManager.DamageSettings.Armor_NormalDamageModifier = 1.5f;
-        SettingsManager.DamageSettings.Armor_GrazeDamageModifier = 0.5f;
-        SettingsManager.DamageSettings.Armor_CriticalDamageModifier = 3.0f;
-        SettingsManager.DamageSettings.Health_FatalDamageModifier = 100.0f;
-        SettingsManager.DamageSettings.Health_NormalDamageModifier = 2.0f;
-        SettingsManager.DamageSettings.Health_GrazeDamageModifier = 0.75f;
-        SettingsManager.DamageSettings.Health_CriticalDamageModifier = 3.5f;
+        SettingsManager.DamageSettings.Armor_NormalDamageModifierPlayer = 1.5f;
+        SettingsManager.DamageSettings.Armor_GrazeDamageModifierPlayer = 0.5f;
+        SettingsManager.DamageSettings.Armor_CriticalDamageModifierPlayer = 3.0f;
+        SettingsManager.DamageSettings.Health_FatalDamageModifierPlayer = 100.0f;
+        SettingsManager.DamageSettings.Health_NormalDamageModifierPlayer = 2.0f;
+        SettingsManager.DamageSettings.Health_GrazeDamageModifierPlayer = 0.75f;
+        SettingsManager.DamageSettings.Health_CriticalDamageModifierPlayer = 3.5f;
 
 
-        SettingsManager.DamageSettings.NormalDamagePercent = 70f;
-        SettingsManager.DamageSettings.GrazeDamagePercent = 2f;
-        SettingsManager.DamageSettings.CriticalDamagePercent = 20f;
-        SettingsManager.DamageSettings.FatalDamagePercent = 8f;
+        SettingsManager.DamageSettings.NormalDamagePercentPlayer = 70f;
+        SettingsManager.DamageSettings.GrazeDamagePercentPlayer = 2f;
+        SettingsManager.DamageSettings.CriticalDamagePercentPlayer = 20f;
+        SettingsManager.DamageSettings.FatalDamagePercentPlayer = 8f;
 
 
 

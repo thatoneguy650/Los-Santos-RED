@@ -25,6 +25,7 @@ public class Places
     private IStreets Streets;
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
+    private IAgencies Agencies;
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
     private List<string> VendingMachinesModelNames = new List<string>();
     private List<uint> VendingMachinessModelHashes = new List<uint>();
@@ -32,7 +33,7 @@ public class Places
     private List<string> GasPumpsModelNames = new List<string>();
     private List<uint> GasPumpsModelHashes = new List<uint>();
 
-    public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets)
+    public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies)
     {
         World = world;
         PlacesOfInterest = placesOfInterest;
@@ -47,6 +48,7 @@ public class Places
         Gangs = gangs;
         GangTerritories = gangTerritories;
         Streets = streets;
+        Agencies = agencies;
     }
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
     public List<BasicLocation> ActiveBasicLocations { get; private set; } = new List<BasicLocation>();
@@ -178,6 +180,13 @@ public class Places
         {
             tl.Menu = ShopMenus.GetMenu(tl.MenuID);
         }
+        foreach(PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations)
+        {
+            if (ps.AssignedAgencyID != null)
+            {
+                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
+            }
+        }
     }
     public void Dispose()
     {
@@ -201,8 +210,6 @@ public class Places
                 {
                     ActiveInteractableLocations.Add(gl);
                     gl.Setup(Interiors, Settings, Crimes, Weapons);
-
-
                     World.Pedestrians.AddEntity(gl.Merchant);
                     World.AddBlip(gl.Blip);
                     GameFiber.Yield();
@@ -265,6 +272,12 @@ public class Places
             gl.Update();
             GameFiber.Yield();
         }
+        foreach (BasicLocation gl in ActiveBasicLocations.ToList())
+        {
+            gl.Update();
+            GameFiber.Yield();
+        }
+
     }
     private void UpdateGeneratedLocations()
     {

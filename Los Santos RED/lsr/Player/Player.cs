@@ -126,7 +126,7 @@ namespace Mod
             GameSaves = gameSaves;
             Names = names;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
-            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person"), Settings);
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person"), Settings, true);
             if (CharacterModelIsFreeMode)
             {
                 HealthState.MyPed.VoiceName = FreeModeVoice;
@@ -3122,6 +3122,9 @@ namespace Mod
                         {
                             existingVehicleExt.SetAsEntered();
                         }
+
+                        existingVehicleExt.Engine.Synchronize();
+
                         existingVehicleExt.Update(this);
                         GameFiber.Yield();//TR removed 4
                         if (vehicle.Exists())

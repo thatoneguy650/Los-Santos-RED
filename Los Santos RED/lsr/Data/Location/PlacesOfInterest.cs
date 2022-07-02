@@ -149,17 +149,17 @@ public class PlacesOfInterest : IPlacesOfInterest
 
             new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            //new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            //new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+           // new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            //new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
             new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
             new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+           // new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            //new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
 
 
 
@@ -288,17 +288,70 @@ public class PlacesOfInterest : IPlacesOfInterest
         });
         PossibleLocations.PoliceStations.AddRange(new List<PoliceStation>()
         {
-            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842},
-            new PoliceStation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24 },
-            new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Downtown","") {InteriorID = 58882, OpenTime = 0,CloseTime = 24 },
+            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+
+                new ConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, 50f),
+                new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 50f),
+                new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 50f),
+            } },
+            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
+                new ConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
+            } },
+            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-438.606f, 6021.66f, 31.49011f), 358.9023f, 30f),
+                new ConditionalLocation(new Vector3(-448.8453f, 6011.864f, 31.71639f), 310.0714f, 30f),
+                new ConditionalLocation(new Vector3(-444.1118f, 6011.967f, 31.71639f), 359.0966f, 30f),
+                new ConditionalLocation(new Vector3(-454.7975f, 6007.629f, 31.49011f), 131.4658f, 30f),
+            }},
+            new PoliceStation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() { 
+                new ConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 30f),
+                new ConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 30f),
+                new ConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 30f),
+
+
+                new ConditionalLocation(new Vector3(426.1106f, -1003.349f, 30.71002f), 159.3153f, 30f),
+                new ConditionalLocation(new Vector3(480.1246f, -974.9543f, 27.98389f), 332.2961f, 30f),
+            } },
+            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(823.9117f, -1288.765f, 28.24066f), 74.91795f, 30f),
+                new ConditionalLocation(new Vector3(823.3896f, -1291.954f, 28.24066f), 102.1528f, 30f),
+                new ConditionalLocation(new Vector3(821.5445f, -1275.796f, 26.38955f), 61.38755f, 30f),
+                new ConditionalLocation(new Vector3(843.4933f, -1314.606f, 26.25885f), 126.1716f, 30f),
+
+            } },
+            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 50f),
+                new ConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 50f),
+                new ConditionalLocation(new Vector3(624.8208f, 20.23717f, 87.97021f), 345.2158f, 50f),
+            } },
+            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 50f),
+                new ConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 50f),
+                new ConditionalLocation(new Vector3(-541.8491f, -134.7859f, 38.55503f), 208.2207f, 50f),
+
+            } },
+            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 50f),
+                new ConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 50f),
+                new ConditionalLocation(new Vector3(-1056.813f, -820.9451f, 19.23504f), 300.4652f, 50f),
+
+            } },
+            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 50f),
+                new ConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 50f),
+
+            } },
+            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 50f),
+                new ConditionalLocation(new Vector3(-1307.496f, -1526.527f, 4.359179f), 244.9207f, 50f),
+
+            } },
+            new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Downtown","") { AssignedAgencyID = "FIB", InteriorID = 58882, OpenTime = 0,CloseTime = 24, PossibleCopPedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 50f),
+                new ConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 50f),
+                new ConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 50f),
+            } },
         });
         PossibleLocations.Hospitals.AddRange(new List<Hospital>()
         {

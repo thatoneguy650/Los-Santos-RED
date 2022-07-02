@@ -419,7 +419,12 @@ public class Pedestrians
         Civilians.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
         PedExts.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
-        PedExts.RemoveAll(x => x.Handle  == Game.LocalPlayer.Character.Handle);
+        PedExts.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
+
+
+        PedExts.RemoveAll(x => x.Handle == (uint)Game.LocalPlayer.Character.Handle);
+
+        //DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
     }
     public void Setup()
     {
@@ -548,11 +553,17 @@ public class Pedestrians
             }
             else if (Pedestrian.IsPoliceArmy())
             {
-                if (!Police.Any(x => x.Handle == localHandle))
+                if (Police.Any(x => x.Handle == localHandle))
                 {
-                    AddAmbientCop(Pedestrian);
-                    GameFiber.Yield();
+                    continue;
                 }
+                if (Settings.SettingsManager.PoliceSettings.RemoveVanillaSpawnedPeds)
+                {
+                    Delete(Pedestrian);
+                    continue;
+                }
+                AddAmbientCop(Pedestrian);
+                GameFiber.Yield();
             }
             else
             {

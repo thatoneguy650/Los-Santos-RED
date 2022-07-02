@@ -21,6 +21,7 @@ public class HealthState
     private bool HurtByVehicle;
     private ISettingsProvideable Settings;
     private uint GameTimeLastSetRagDoll;
+    private bool IsPlayer;
 
     //private int TimeBetweenYelling = 2500;
     //private uint GameTimeLastYelled;
@@ -32,7 +33,7 @@ public class HealthState
     {
 
     }
-    public HealthState(PedExt _MyPed, ISettingsProvideable settings)
+    public HealthState(PedExt _MyPed, ISettingsProvideable settings, bool isPlayer)
     {
         MyPed = _MyPed;
         Health = _MyPed.Pedestrian.Health;
@@ -40,6 +41,7 @@ public class HealthState
         CurrentArmor = Armor;
         CurrentHealth = Health;
         Settings = settings;
+        IsPlayer = isPlayer;
     }
     public PedExt MyPed { get; set; }
     public bool HasLoggedDeath { get; private set; }
@@ -101,9 +103,10 @@ public class HealthState
                     GameFiber.Yield();
                     EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                     FlagDamage(CurrentPlayer);
-                    //GameFiber.Yield();//TR2022
-                    ModifyDamage();
-                    //GameFiber.Yield();//TR2022
+                    if (Settings.SettingsManager.DamageSettings.ModifyAIDamage)
+                    {
+                        ModifyDamage();
+                    }
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
@@ -112,15 +115,15 @@ public class HealthState
                     Health = CurrentHealth;
                     Armor = CurrentArmor;
                 }
-                if(Health > 100 && !MyPed.IsUnconscious && (Health <= 130 || Health - prevHealth >= 20) && RandomItems.RandomPercent(30))// && RandomItems.RandomPercent(40))
+                if(Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnDamage && Health > Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageAliveHealth && !MyPed.IsUnconscious && (Health <= Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageMinimumHealth || Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamageMinimumHealthChange) && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnDamagePercentage))// && RandomItems.RandomPercent(40))
                 {
                     SetUnconscious();
                 }
-                else if (MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(30))
+                else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
                 {
                     SetUnconscious();
                 }
-                if((HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
+                if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
                 {
                     MyPed.YellInPain(true);
                     MyPed.GameTimeLastInjured = Game.GameTime;
@@ -128,7 +131,7 @@ public class HealthState
                 }
             }
         }
-        if(MyPed.IsInWrithe)
+        if(MyPed.IsInWrithe && Settings.SettingsManager.DamageSettings.AllowAIPainYells)
         {
             MyPed.YellInPain(false);
         }
@@ -166,7 +169,7 @@ public class HealthState
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
             }
-            if (Health - prevHealth >= 15 && MyPed.HasExistedFor >= 4000)
+            if (Settings.SettingsManager.DamageSettings.AllowPlayerPainYells && Health - prevHealth >= Settings.SettingsManager.DamageSettings.PlayerPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
             {
                 CurrentPlayer.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;
@@ -264,33 +267,67 @@ public class HealthState
     }
     private float GetDamageModifier(InjuryType injury, bool IsArmor)
     {
-        if (IsArmor)
+        if (IsPlayer)
         {
-            if (injury == InjuryType.Normal)
-                return Settings.SettingsManager.DamageSettings.Armor_NormalDamageModifier;
-            else if (injury == InjuryType.Graze)
-                return Settings.SettingsManager.DamageSettings.Armor_GrazeDamageModifier;
-            else if (injury == InjuryType.Critical)
-                return Settings.SettingsManager.DamageSettings.Armor_CriticalDamageModifier;
-            else if (injury == InjuryType.Vanilla)
-                return 1.0f;
+            if (IsArmor)
+            {
+                if (injury == InjuryType.Normal)
+                    return Settings.SettingsManager.DamageSettings.Armor_NormalDamageModifierPlayer;
+                else if (injury == InjuryType.Graze)
+                    return Settings.SettingsManager.DamageSettings.Armor_GrazeDamageModifierPlayer;
+                else if (injury == InjuryType.Critical)
+                    return Settings.SettingsManager.DamageSettings.Armor_CriticalDamageModifierPlayer;
+                else if (injury == InjuryType.Vanilla)
+                    return 1.0f;
+                else
+                    return 1.0f;
+            }
             else
-                return 1.0f;
+            {
+                if (injury == InjuryType.Fatal)
+                    return Settings.SettingsManager.DamageSettings.Health_FatalDamageModifierPlayer;
+                else if (injury == InjuryType.Normal)
+                    return Settings.SettingsManager.DamageSettings.Health_NormalDamageModifierPlayer;
+                else if (injury == InjuryType.Graze)
+                    return Settings.SettingsManager.DamageSettings.Health_GrazeDamageModifierPlayer;
+                else if (injury == InjuryType.Critical)
+                    return Settings.SettingsManager.DamageSettings.Health_CriticalDamageModifierPlayer;
+                else if (injury == InjuryType.Vanilla)
+                    return 1.0f;
+                else
+                    return 1.0f;
+            }
         }
         else
         {
-            if (injury == InjuryType.Fatal)
-                return Settings.SettingsManager.DamageSettings.Health_FatalDamageModifier;
-            else if (injury == InjuryType.Normal)
-                return Settings.SettingsManager.DamageSettings.Health_NormalDamageModifier;
-            else if (injury == InjuryType.Graze)
-                return Settings.SettingsManager.DamageSettings.Health_GrazeDamageModifier;
-            else if (injury == InjuryType.Critical)
-                return Settings.SettingsManager.DamageSettings.Health_CriticalDamageModifier;
-            else if (injury == InjuryType.Vanilla)
-                return 1.0f;
+            if (IsArmor)
+            {
+                if (injury == InjuryType.Normal)
+                    return Settings.SettingsManager.DamageSettings.Armor_NormalDamageModifierAI;
+                else if (injury == InjuryType.Graze)
+                    return Settings.SettingsManager.DamageSettings.Armor_GrazeDamageModifierAI;
+                else if (injury == InjuryType.Critical)
+                    return Settings.SettingsManager.DamageSettings.Armor_CriticalDamageModifierAI;
+                else if (injury == InjuryType.Vanilla)
+                    return 1.0f;
+                else
+                    return 1.0f;
+            }
             else
-                return 1.0f;
+            {
+                if (injury == InjuryType.Fatal)
+                    return Settings.SettingsManager.DamageSettings.Health_FatalDamageModifierAI;
+                else if (injury == InjuryType.Normal)
+                    return Settings.SettingsManager.DamageSettings.Health_NormalDamageModifierAI;
+                else if (injury == InjuryType.Graze)
+                    return Settings.SettingsManager.DamageSettings.Health_GrazeDamageModifierAI;
+                else if (injury == InjuryType.Critical)
+                    return Settings.SettingsManager.DamageSettings.Health_CriticalDamageModifierAI;
+                else if (injury == InjuryType.Vanilla)
+                    return 1.0f;
+                else
+                    return 1.0f;
+            }
         }
     }
     private void ModifyDamage()
@@ -424,13 +461,31 @@ public class HealthState
     }
     private InjuryType RandomType(bool CanBeFatal)
     {
-        var ToPickFrom = new List<(float, InjuryType)>
+        var ToPickFrom = new List<(float, InjuryType)> { };
+        if(IsPlayer)
         {
-            (Settings.SettingsManager.DamageSettings.NormalDamagePercent, InjuryType.Normal),
-            (Settings.SettingsManager.DamageSettings.GrazeDamagePercent, InjuryType.Graze),
-            (Settings.SettingsManager.DamageSettings.CriticalDamagePercent, InjuryType.Critical),
-            (Settings.SettingsManager.DamageSettings.FatalDamagePercent,InjuryType.Fatal)
-        };
+            ToPickFrom = new List<(float, InjuryType)>
+            {
+                (Settings.SettingsManager.DamageSettings.NormalDamagePercentPlayer, InjuryType.Normal),
+                (Settings.SettingsManager.DamageSettings.GrazeDamagePercentPlayer, InjuryType.Graze),
+                (Settings.SettingsManager.DamageSettings.CriticalDamagePercentPlayer, InjuryType.Critical),
+                (Settings.SettingsManager.DamageSettings.FatalDamagePercentPlayer,InjuryType.Fatal)
+            };
+        }
+        else
+        {
+            ToPickFrom = new List<(float, InjuryType)>
+            {
+                (Settings.SettingsManager.DamageSettings.NormalDamagePercentAI, InjuryType.Normal),
+                (Settings.SettingsManager.DamageSettings.GrazeDamagePercentAI, InjuryType.Graze),
+                (Settings.SettingsManager.DamageSettings.CriticalDamagePercentAI, InjuryType.Critical),
+                (Settings.SettingsManager.DamageSettings.FatalDamagePercentAI,InjuryType.Fatal)
+            };
+        }
+
+
+
+
         float Total = ToPickFrom.Sum(x => x.Item1);
         float RandomPick = RandomItems.GetRandomNumber(0, Total);//--RandomItems.MyRand.Next(0, Total);
         foreach ((float, InjuryType) percentage in ToPickFrom)

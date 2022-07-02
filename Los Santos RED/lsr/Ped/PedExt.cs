@@ -45,7 +45,7 @@ public class PedExt : IComplexTaskable
         //{
         //    PedGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
         //}
-        CurrentHealthState = new HealthState(this, settings);
+        CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
         PedCrimes = new PedCrimes(this, crimes, settings, weapons);
         PlayerPerception = new PlayerPerception(this, null, settings);

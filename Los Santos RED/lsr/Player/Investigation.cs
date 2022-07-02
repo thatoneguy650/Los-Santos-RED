@@ -185,7 +185,11 @@ public class Investigation
             int tasked = 0;
             foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && (InvestigationWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))//first pass, only want my police and whatever units?
             {
-                if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                if(!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(Position) >= 150f)
+                {
+                    cop.IsRespondingToInvestigation = false;
+                }
+                else if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
                 {
                     cop.IsRespondingToInvestigation = true;
                     tasked++;
@@ -199,7 +203,11 @@ public class Investigation
             {
                 foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
                 {
-                    if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                    if (!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(Position) >= 150f)
+                    {
+                        cop.IsRespondingToInvestigation = false;
+                    }
+                    else if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
                     {
                         cop.IsRespondingToInvestigation = true;
                         tasked++;

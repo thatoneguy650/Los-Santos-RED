@@ -411,7 +411,11 @@ namespace LosSantosRED.lsr
             int tasked = 0;
             foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
             {
-                if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                if(!cop.IsInVehicle && cop.DistanceToPlayer >= 150f)
+                {
+                    cop.IsRespondingToWanted = false;
+                }
+                else if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
                 {
                     cop.IsRespondingToWanted = true;
                     tasked++;

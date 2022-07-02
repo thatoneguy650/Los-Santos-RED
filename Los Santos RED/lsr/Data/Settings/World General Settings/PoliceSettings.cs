@@ -149,6 +149,7 @@
 
     public int LikelyHoodOfAnySpawn_Wanted6{ get; set; }
     public int LikelyHoodOfCountySpawn_Wanted6 { get; set; }
+    public bool RemoveVanillaSpawnedPeds { get; set; }
 
     public PoliceSettings()
     {
@@ -311,5 +312,8 @@
 
         LikelyHoodOfAnySpawn_Wanted6 = 20;
         LikelyHoodOfCountySpawn_Wanted6 = 20;
+
+
+        RemoveVanillaSpawnedPeds = false;
     }
 }

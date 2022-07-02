@@ -22,7 +22,7 @@ public class Engine
     private uint GameTimeLastToggleEngine;
 
     public bool IsRunning { get; private set; }
-    private bool CanToggle => VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.Speed < 4f && !VehicleToMonitor.Vehicle.MustBeHotwired;
+    public bool CanToggle => VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.Speed < 4f && !VehicleToMonitor.Vehicle.MustBeHotwired;
     public Engine(VehicleExt vehicleToMonitor, ISettingsProvideable settings)
     {
         VehicleToMonitor = vehicleToMonitor;
@@ -120,6 +120,14 @@ public class Engine
             {
                 IsRunning = true;
             }
+        }
+    }
+
+    public void Synchronize()
+    {
+        if(VehicleToMonitor.Vehicle.Exists())
+        {
+            IsRunning = VehicleToMonitor.Vehicle.IsEngineOn;
         }
     }
 }

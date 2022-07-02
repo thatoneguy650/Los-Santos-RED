@@ -31,5 +31,8 @@ public class PopUpMenuMap
     public bool ClosesMenu { get; set; } = true;
     public string Description { get; set; }
     public string ChildMenuID { get; set; }
+
+
+    public Func<bool> IsCurrentlyValid { get; set; } = new Func<bool>(() => true);
 }
 

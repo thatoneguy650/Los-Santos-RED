@@ -81,9 +81,10 @@ public class SettingsManager
     public void Setup()
     {
         AllDefaultableSettings = new List<ISettingsDefaultable>()
-        {RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
-        PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
-        UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings
+        {
+            RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
+            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
+            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings
 
         };
 

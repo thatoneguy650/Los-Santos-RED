@@ -31,12 +31,12 @@ public class WeatherReportingSettings : ISettingsDefaultable
 
         SetDefault();
 
-#if DEBUG
-        ReportWeather = false;
-#else
+//#if DEBUG
+//        ReportWeather = false;
+//#else
 
 
-#endif
+//#endif
     }
     public void SetDefault()
     {

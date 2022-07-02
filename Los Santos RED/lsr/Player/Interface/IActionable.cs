@@ -64,6 +64,8 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         bool IsNotWanted { get; }
         PoliceResponse PoliceResponse { get; }
+        WeaponInformation CurrentWeapon { get; }
+        bool IsStill { get; }
 
 
         //Action DropWeapon { get; }

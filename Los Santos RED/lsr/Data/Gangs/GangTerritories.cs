@@ -162,7 +162,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEACH", 0, 100, 100),//Vespucci Beach
+           ////////////////// new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEACH", 0, 100, 100),//Vespucci Beach
 
             //new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
@@ -182,7 +182,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","CHU", 0, 100, 100),//Chumash
+         ///////////////   new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","CHU", 0, 100, 100),//Chumash
 
             //new ZoneJurisdiction("LSMC","CMSW", 0, 100, 100),
 
@@ -209,13 +209,13 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","ELGORL", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_DIABLOS","ELYSIAN", 0, 100, 100),//elysian island
+        ///////////////    new ZoneJurisdiction("AMBIENT_GANG_DIABLOS","ELYSIAN", 0, 100, 100),//elysian island
 
             //new ZoneJurisdiction("LSMC","GALFISH", 0, 100, 100),
 
             //new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","GRAPES", 0, 100, 100),//Grapeseed
+        ////////////    new ZoneJurisdiction("AMBIENT_GANG_PAVANO","GRAPES", 0, 100, 100),//Grapeseed
 
             //new ZoneJurisdiction("LSMC","GREATC", 0, 100, 100),
 
@@ -269,7 +269,7 @@ public class GangTerritories : IGangTerritories
 
             //new ZoneJurisdiction("LSMC","PALCOV", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","PALETO", 0, 100, 100),//Paleto Bay
+         ///////   new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","PALETO", 0, 100, 100),//Paleto Bay
 
             new ZoneJurisdiction("AMBIENT_GANG_LOST","PALFOR", 0, 100, 100),//Paleto Forest
 

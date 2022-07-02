@@ -32,7 +32,6 @@ public class DebugSettings : ISettingsDefaultable
 
     public DebugSettings()
     {
-
         SetDefault();
     }
     public void SetDefault()

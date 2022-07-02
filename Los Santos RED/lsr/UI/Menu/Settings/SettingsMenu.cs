@@ -57,23 +57,18 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private void CreateSettingsMenu()
     {
         SettingsUIMenu.Clear();
-        ReloadSettingsFromFile = new UIMenuItem("Reload Settings From File", "Reloads the Settings XML");
+        //ReloadSettingsFromFile = new UIMenuItem("Reload Settings From File", "Reloads the Settings XML");
         SaveSettingsToFile = new UIMenuItem("Save Settings To File", "Saves the Settings to XML");
-
         DefaultSettings = new UIMenuItem("Set Default Settings", "Set all values back to default settings");
+        MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
         EasySettings = new UIMenuItem("Set Easy Settings", "Use the easy preset for settings");
         HardSettings = new UIMenuItem("Set Hard Settings", "Use the hard preset for settings");
 
-        SettingsUIMenu.AddItem(ReloadSettingsFromFile);
+        //SettingsUIMenu.AddItem(ReloadSettingsFromFile);
         SettingsUIMenu.AddItem(SaveSettingsToFile);
-
-
         SettingsUIMenu.AddItem(DefaultSettings);
-        //SettingsUIMenu.AddItem(EasySettings);
-
-
-        MySettings = new UIMenuItem("Set Greskrendtregk Settings", "Set my personal settings");
         SettingsUIMenu.AddItem(MySettings);
+        //SettingsUIMenu.AddItem(EasySettings);
         SettingsUIMenu.AddItem(HardSettings);
 
 
@@ -152,11 +147,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == ReloadSettingsFromFile)
-        {
-            SettingsProvider.ReadConfig();
-        }
-        else if (selectedItem == SaveSettingsToFile)
+        if (selectedItem == SaveSettingsToFile)
         {
             SettingsProvider.SerializeAllSettings();
         }
