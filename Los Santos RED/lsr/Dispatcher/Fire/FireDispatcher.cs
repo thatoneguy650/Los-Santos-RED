@@ -29,7 +29,8 @@ public class FireDispatcher
     private Agency Agency;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
-    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    private IPlacesOfInterest PlacesOfInterest;
+    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         World = world;
@@ -40,6 +41,7 @@ public class FireDispatcher
         Jurisdictions = jurisdictions;
         Weapons = weapons;
         Names = names;
+        PlacesOfInterest = placesOfInterest;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -57,12 +59,52 @@ public class FireDispatcher
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            if (GetSpawnLocation() && GetSpawnTypes())
+            if (GetSpawnLocation() && GetSpawnTypes(false,null))
             {
-                CallSpawnTask(false);
+                CallSpawnTask(false,true);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
+        if (Settings.SettingsManager.FireSettings.ManageDispatching)
+        {
+            foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+            {
+                if (ps.PossiblePedSpawns != null)
+                {
+                    bool spawnedsome = false;
+                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                    {
+                        if (RandomItems.RandomPercent(cl.Percentage))
+                        {
+                            HasDispatchedThisTick = true;
+                            SpawnLocation = new SpawnLocation(cl.Location);
+                            SpawnLocation.Heading = cl.Heading;
+                            SpawnLocation.StreetPosition = cl.Location;
+                            SpawnLocation.SidewalkPosition = cl.Location;
+                            if (GetSpawnTypes(true, ps.AssignedAgency))
+                            {
+                                CallSpawnTask(true, false);
+                                spawnedsome = true;
+                            }
+                        }
+                    }
+                    ps.IsDispatchFilled = true;
+
+                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
+                }
+                else
+                {
+                    ps.IsDispatchFilled = true;
+                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled NO SPAWNS");
+                }
+            }
+            foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
+            {
+                ps.IsDispatchFilled = false;
+                EntryPoint.WriteToConsole($"Police Station: {ps.Name} DEACTIVATED");
+            }
+        }
+
         return HasDispatchedThisTick;
     }
     public void Dispose()
@@ -84,7 +126,7 @@ public class FireDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
-    private void CallSpawnTask(bool allowAny)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy)
     {
         try
         {
@@ -118,12 +160,19 @@ public class FireDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes()
+    private bool GetSpawnTypes(bool forcePed, Agency forceAgency)
     {
         Agency = null;
         VehicleType = null;
         PersonType = null;
-        Agency = GetRandomAgency(SpawnLocation);
+        if (forceAgency != null)
+        {
+            Agency = forceAgency;
+        }
+        else
+        {
+            Agency = GetRandomAgency(SpawnLocation);
+        }
         if (Agency != null)
         {
             VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);

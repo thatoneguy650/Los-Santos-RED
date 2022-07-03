@@ -100,7 +100,7 @@ public class PedSwap : IPedSwap
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            HandlePreviousPed(deleteOld);
+            HandlePreviousPed(deleteOld, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
 
 
@@ -130,7 +130,7 @@ public class PedSwap : IPedSwap
             CurrentModelPlayerIs = TargetPed.Model;
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            HandlePreviousPed(true);
+            HandlePreviousPed(true, TargetPed);
             PostLoad(modelName, false, fullName, money, variation);
 
             GameFiber.Sleep(500);
@@ -166,7 +166,7 @@ public class PedSwap : IPedSwap
         Player.IsCop = true;
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-        HandlePreviousPed(false);
+        HandlePreviousPed(false, TargetPed);
         PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
         //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         IssueWeapons(toSwapWith.WeaponInventory.Sidearm, toSwapWith.WeaponInventory.LongGun);
@@ -192,7 +192,7 @@ public class PedSwap : IPedSwap
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.IsCop = false;
-            HandlePreviousPed(false);
+            HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
@@ -251,7 +251,7 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.IsCop = false;
-            HandlePreviousPed(true);
+            HandlePreviousPed(true, TargetPed);
             PostLoad(modelName, false, playerName, money, variation);
         }
         catch (Exception e3)
@@ -417,33 +417,46 @@ public class PedSwap : IPedSwap
         }
 
     }
-    private void HandlePreviousPed(bool deleteOld)
+    private void HandlePreviousPed(bool deleteOld, Ped TargetPed)
     {
-        if (!CurrentPed.Exists() || CurrentPed.Handle == Game.LocalPlayer.Character.Handle)
+        Ped previousPed = null;
+        if(CurrentPed.Exists() && CurrentPed.Handle != Game.LocalPlayer.Character.Handle)
         {
-            return;
+            previousPed = CurrentPed;
+            EntryPoint.WriteToConsole("HandlePreviousPed Using 'CurrentPed' as it is not equal to the player character.");
         }
-        
-        if (CurrentPedIsDead && CurrentPed.Exists() && CurrentPed.IsAlive)
+        else if (TargetPed.Exists() && TargetPed.Handle != Game.LocalPlayer.Character.Handle)
         {
-            CurrentPed.Kill();
-            CurrentPed.Health = 0;
+            previousPed = TargetPed;
+            EntryPoint.WriteToConsole("HandlePreviousPed Using 'TargetPed' as it is not equal to the player character.");
+        }
+
+
+        //if (!CurrentPed.Exists() || CurrentPed.Handle == Game.LocalPlayer.Character.Handle)
+        //{
+        //    return;
+        //}
+        
+        if (CurrentPedIsDead && previousPed.Exists() && previousPed.IsAlive)
+        {
+            previousPed.Kill();
+            previousPed.Health = 0;
         }
 
         if (deleteOld)
         {
-            CurrentPed.Delete();
+            previousPed.Delete();
         }
         else
         {
             if (!CurrentPedIsDead)
             {
-                CurrentPed.IsPersistent = true;
+                previousPed.IsPersistent = true;
             }
-            PedExt toCreate = Entities.Pedestrians.GetPedExt(CurrentPed.Handle);
+            PedExt toCreate = Entities.Pedestrians.GetPedExt(previousPed.Handle);
             if (toCreate == null)
             {
-                toCreate = new PedExt(CurrentPed, Settings, Crimes, Weapons, CurrentPedName, "Person");
+                toCreate = new PedExt(previousPed, Settings, Crimes, Weapons, CurrentPedName, "Person");
             }
             int WantedToSet = Player.WantedLevel;
             if (Player.WantedLevel == 3)
@@ -456,11 +469,11 @@ public class PedSwap : IPedSwap
                 toCreate.SetBusted();
             }
 
-            CurrentPed.RelationshipGroup = new RelationshipGroup("FORMERPLAYER");
+            previousPed.RelationshipGroup = new RelationshipGroup("FORMERPLAYER");
 
             Entities.Pedestrians.AddEntity(toCreate);
             //EntryPoint.WriteToConsole($"HandlePreviousPed WantedToSet {WantedToSet} WantedLevel {toCreate.WantedLevel} IsBusted {toCreate.IsBusted}", 5);
-            TaskFormerPed(CurrentPed, toCreate.IsWanted, toCreate.IsBusted);
+            TaskFormerPed(previousPed, toCreate.IsWanted, toCreate.IsBusted);
         }
     }
     private bool InSameCar(Ped myPed, Ped PedToCompare)
@@ -583,7 +596,7 @@ public class PedSwap : IPedSwap
             if (TargetPedVehicle.Exists())
             {
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-                NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
+                NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(TargetPedVehicle, true);
             }
             NewVehicle = Entities.Vehicles.GetVehicleExt(TargetPedVehicle);
             if (NewVehicle != null)

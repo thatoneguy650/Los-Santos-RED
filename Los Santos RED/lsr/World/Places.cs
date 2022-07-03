@@ -187,6 +187,20 @@ public class Places
                 ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
             }
         }
+        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals)
+        {
+            if (ps.AssignedAgencyID != null)
+            {
+                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
+            }
+        }
+        foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations)
+        {
+            if (ps.AssignedAgencyID != null)
+            {
+                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
+            }
+        }
     }
     public void Dispose()
     {

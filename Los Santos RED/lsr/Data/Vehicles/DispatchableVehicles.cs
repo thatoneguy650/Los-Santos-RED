@@ -107,7 +107,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 9 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("police3", 25, 25) {RequiredLiveries = new List<int>() { 9 } },
             new DispatchableVehicle("sheriff2", 50, 50)  {RequiredLiveries = new List<int>() { 9 } }, };
-        List<DispatchableVehicle> ChumashLSSDVehicles = new List<DispatchableVehicle>() {
+        List<DispatchableVehicle> DavisLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 10 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 10 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("police3", 25, 25)  {RequiredLiveries = new List<int>() { 10 } },
@@ -183,7 +183,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles));
-        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("ChumashLSSDVehicles", ChumashLSSDVehicles));
+        VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("DavisLSSDVehicles", DavisLSSDVehicles));
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("MajesticLSSDVehicles", MajesticLSSDVehicles));
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles));
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles));
@@ -349,7 +349,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sheriff2", 50, 50) };
         List<DispatchableVehicle> VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 100, 100) };
-        List<DispatchableVehicle> ChumashLSSDVehicles = new List<DispatchableVehicle>() {
+        List<DispatchableVehicle> DavisLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 100, 100) };
         List<DispatchableVehicle> RHPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police2", 100, 75),
@@ -394,7 +394,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles));
-        VehicleGroupLookup.Add(new DispatchableVehicleGroup("ChumashLSSDVehicles", ChumashLSSDVehicles));
+        VehicleGroupLookup.Add(new DispatchableVehicleGroup("DavisLSSDVehicles", DavisLSSDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles));

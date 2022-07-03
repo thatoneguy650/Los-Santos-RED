@@ -333,10 +333,10 @@ public class Pedestrians
                 DeadPeds.Add(Civilian);
             }
         }
-        Police.RemoveAll(x => x.CanRemove);
-        EMTs.RemoveAll(x => x.CanRemove);
-        Firefighters.RemoveAll(x => x.CanRemove);
-        Merchants.RemoveAll(x => x.CanRemove);
+        Police.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        Merchants.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
     }
     private void PruneGangMembers()
     {
@@ -364,7 +364,7 @@ public class Pedestrians
             EntryPoint.PersistentPedsNonPersistent++;
             EntryPoint.WriteToConsole($"Pedestrians: GANG MEMBER {GangMember.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
-        GangMembers.RemoveAll(x => x.CanRemove);
+        GangMembers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
     }
     private void PruneCivilians()
     {
@@ -385,6 +385,7 @@ public class Pedestrians
             EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
+        RelationshipGroup hatesCops = new RelationshipGroup("HATESCOPS");
         foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
@@ -399,7 +400,6 @@ public class Pedestrians
                 EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, WAS NOT PERSISTENTLY CREATED", 5);
                 EntryPoint.PersistentPedsNonPersistent++;
             }
-
         }
         foreach (PedExt Civilian in Civilians.Where(x => !x.Pedestrian.Exists()))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -416,13 +416,32 @@ public class Pedestrians
                 DeadPeds.Add(Civilian);
             }
         }
-        Civilians.RemoveAll(x => x.CanRemove);
-        Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
-        PedExts.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
-        PedExts.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
+        Civilians.RemoveAll(x => x.CanRemove || (x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop) || (x.Handle == Game.LocalPlayer.Character.Handle));
+        DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
 
 
-        PedExts.RemoveAll(x => x.Handle == (uint)Game.LocalPlayer.Character.Handle);
+
+        foreach (PedExt Civilian in DeadPeds.Where(x => NativeHelper.MaxCellsAway(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY) >= 3 && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        {
+            if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == hatesCops)
+            {
+                Civilian.Pedestrian.IsPersistent = false;
+                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, FORMER PLAYER OR WANTED PED", 5);
+                EntryPoint.PersistentPedsNonPersistent++;
+            }
+            else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
+            {
+                Civilian.Pedestrian.IsPersistent = false;
+                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, WAS NOT PERSISTENTLY CREATED", 5);
+                EntryPoint.PersistentPedsNonPersistent++;
+            }
+        }
+
+
+        //Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
+        //Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
+        //Civilians.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
+        //Civilians.RemoveAll(x => x.Handle == (uint)Game.LocalPlayer.Character.Handle);
 
         //DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
     }

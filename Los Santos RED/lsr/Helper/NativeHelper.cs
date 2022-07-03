@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LosSantosRED.lsr.Helper
 {
@@ -21,6 +22,37 @@ namespace LosSantosRED.lsr.Helper
                 NativeFunction.CallByHash<uint>(0x6c188be134e074aa, substr);      // _ADD_TEXT_COMPONENT_STRING
             }
 
+        }
+
+        public static string FormatControls(Keys modifier, Keys key)
+        {
+            string KeyString = $"~o~{KeyHandyName(key)}~s~";
+            string ModifierString = $"~o~{KeyHandyName(modifier)}~s~";
+            if (modifier != Keys.None && key != Keys.None)
+            {
+                return $"{KeyString} + {ModifierString}";
+            }
+            else if (modifier != Keys.None && key == Keys.None)
+            {
+                return $"{ModifierString}";
+            }
+            else if (modifier == Keys.None && key != Keys.None)
+            {
+                return $"{KeyString}";
+            }
+            return "";
+        }
+        private static string KeyHandyName(Keys key)
+        {
+            if(key == Keys.XButton1)
+            {
+                return "Mouse-4";
+            }
+            else if (key == Keys.XButton2)
+            {
+                return "Mouse-5";
+            }
+            return key.ToString();
         }
         public static uint CashHash(string PlayerName)
         {

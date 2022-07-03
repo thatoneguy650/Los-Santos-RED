@@ -14,6 +14,9 @@ public class Investigate : ComplexTask
     private Vector3 CurrentTaskedPosition;
     private Task CurrentTask = Task.Nothing;
     private bool HasReachedReportedPosition;
+    private bool isSetCode3Close;
+    private bool isSetCode2;
+
     private bool IsRespondingCode3 => Player.Investigation.InvestigationWantedLevel > 1;
     private enum Task
     {
@@ -227,6 +230,38 @@ public class Investigate : ComplexTask
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, DrivingStyle, 20f);
                     }
+
+
+
+                    if (isCode3)
+                    {
+                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
+                        {
+                            if (!isSetCode3Close)
+                            {
+                                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                                isSetCode3Close = true;
+                            }
+                        }
+                        else
+                        {
+                            if (isSetCode3Close)
+                            {
+                                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                                isSetCode3Close = false;
+                            }
+                        }
+                        isSetCode2 = false;
+                    }
+                    else
+                    {
+                        if (!isSetCode2)
+                        {
+                            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code2);
+                            isSetCode2 = false;
+                        }
+                    }
+
                     EntryPoint.WriteToConsole(string.Format("TASKER: Investigation UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
                 }
             }

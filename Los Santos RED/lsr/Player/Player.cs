@@ -2474,6 +2474,12 @@ namespace Mod
                     }
                 }
 
+                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.HasSiren && CurrentVehicle.Vehicle.IsSirenSilent)
+                {
+                    CurrentVehicle.Vehicle.IsSirenSilent = false;
+                }
+
+
                 if (VehicleSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
@@ -2566,7 +2572,7 @@ namespace Mod
                     GameTimeStartedMoving = 0;
                 }
 
-                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot)
+                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && !IsDancing)
                 {
                     NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                 }
@@ -2898,6 +2904,11 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
+
+
+
+
+
             }
             else
             {
@@ -2908,6 +2919,15 @@ namespace Mod
                     Scanner.OnGotOutOfVehicle();
                 }
                 //CreateOwnedVehicleBlip();
+
+                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && IsMobileRadioEnabled && !IsDancing)
+                {
+                    IsMobileRadioEnabled = false;
+                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+                }
+
+
+
             }
             //UpdateOwnedBlips();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
@@ -3124,6 +3144,10 @@ namespace Mod
                         }
 
                         existingVehicleExt.Engine.Synchronize();
+
+
+
+
 
                         existingVehicleExt.Update(this);
                         GameFiber.Yield();//TR removed 4

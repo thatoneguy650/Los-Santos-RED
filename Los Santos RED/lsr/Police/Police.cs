@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr
         {
             UpdateCops();
             UpdateRecognition();
-            if (Player.IsBustable && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1) && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
                 GameFiber.Yield();
                 Player.Arrest();

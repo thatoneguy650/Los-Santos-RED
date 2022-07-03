@@ -81,6 +81,13 @@ public class PopUpMenu
             new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle) },
             new PopUpMenuMap(2,"Suicide",Player.CommitSuicide,"Commit suicide") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
             new PopUpMenuMap(3,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
+
+
+
+            new PopUpMenuMap(4,"Sit", new Action(() => Player.StartSittingDown(true,true)),"Sit down at nearest seat") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
+
+
+
         };
         List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
         {

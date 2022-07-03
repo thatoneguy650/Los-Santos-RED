@@ -14,6 +14,8 @@ public class Locate : ComplexTask
     private Vector3 CurrentTaskedPosition;
     private Task CurrentTask = Task.Nothing;
     private bool HasReachedReportedPosition;
+    private bool isSetCode3Close;
+
     private enum Task
     {
         Wander,
@@ -160,14 +162,22 @@ public class Locate : ComplexTask
             {
                 HasReachedReportedPosition = true;
             }
-            //if(Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-            //}
-            //else
-            //{
-            //    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-            //}
+            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
+            {
+                if (!isSetCode3Close)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                    isSetCode3Close = true;
+                }
+            }
+            else
+            {
+                if (isSetCode3Close)
+                {
+                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                    isSetCode3Close = false;
+                }
+            }
         }
     }
     private void SetSiren()

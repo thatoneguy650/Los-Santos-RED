@@ -94,7 +94,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         CorruptCopWantedClearCostScalar = 5000;
         HoursBetweenTasksWhenCompleted = 6;
         HoursBetweenTasksWhenFailed = 24;
-        AllowMobileRadioOnFoot = true;
+        AllowMobileRadioOnFoot = false;
         DisableVanillaGangHassling = true;
         AllowAttackingFriendlyPeds = true;
 

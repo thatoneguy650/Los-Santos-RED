@@ -1,4 +1,5 @@
 ﻿
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI.PauseMenu;
@@ -49,7 +50,7 @@ public class AboutMenu
     {
         List<TabItem> items = new List<TabItem>();
         items.Add(new TabTextItem($"About", $"About", $"Many new actions have been added to allow the player to interact with the world in a variety of new ways. The majority of these actions are accessed either through the ~r~Main Menu~s~ -> ~r~Actions~s~ (general activites), through ~r~Main Menu~s~ -> ~r~Inventory~s~ (consumable items) or through the Action Wheel (quick access)."));
-        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel based on the radio/weapon wheel has been added allowing you quick access to a variety of items. Press {FormatControls(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} to open it and ~o~Attack Control~s~ to select an item");
+        TabItem ActionWheel = new TabTextItem($"Action Wheel", $"Action Wheel", $"A quick action wheel based on the radio/weapon wheel has been added allowing you quick access to a variety of items. Press {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} or {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)} to open it and ~o~Attack Control~s~ to select an item");
         items.Add(ActionWheel);
 
         TabItem LootBody = new TabTextItem($"Search Bodies", $"Search Bodies", $"You can now search the bodies of dead or unconscious peds. They can have items and cash. A prompt will appear when looking at a searchable dbody");
@@ -66,14 +67,14 @@ public class AboutMenu
         TabItem Carjack = new TabTextItem($"Car Jacking", $"Car Jacking", "You can carjack vehicles with a weapon by tapping ~o~Vehicle Entry~s~ while holding a weapon instead of holding ~o~Vehicle Entry~s~. Can do regular entry by not having a weapon out or holding ~o~Vehicle Entry~s~.");
         TabItem CarLockPick = new TabTextItem($"Car Lock Picking", $"Car Lock Picking", "You can pick a vehicles lock instead of smashing the window by tapping ~o~Vehicle Entry~s~ instead of holding ~o~Vehicle Entry~s~. This will keep the vehicle from looking suspicious to law enforcement with the downside of taking longer. Optional setting to require you to purchase a screwdriver before allowing. Can do the regular smash enter by holding ~o~Vehicle Entry~s~.");
         TabItem PlateStealing = new TabTextItem($"Plate Swapping", $"Plate Swapping", "You now have the ability to change or remove a license plate from a vehicle. Open the ~r~Main Menu~s~ -> ~r~Actions~s~ -> ~r~Change Plate~s~/~r~Remove Plate~s~ when near a vehicle. Can be used to place clean plates on wanted vehicles.");
-        items.Add(new TabTextItem($"Sprinting", $"Sprinting", $"The player can get an extra speed boost while jogging by pressing {FormatControls(Settings.SettingsManager.KeySettings.SprintKeyModifier, Settings.SettingsManager.KeySettings.SprintKey)}. The added ~r~red bar~s~ under the health shows the current sprint stamina level."));
-        items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey)}"));
-        items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier, Settings.SettingsManager.KeySettings.EngineToggle)}." +
-            $"You can close the drive door with {FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
-            $"Left: {FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
-            $"Right: {FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
-            $"Hazards: {FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}. It can also be opened using the Action Wheel."));
-        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}. It can also be opened using the Action Wheel."));
+        items.Add(new TabTextItem($"Sprinting", $"Sprinting", $"The player can get an extra speed boost while jogging by pressing {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.SprintKeyModifier, Settings.SettingsManager.KeySettings.SprintKey)}. The added ~r~red bar~s~ under the health shows the current sprint stamina level."));
+        items.Add(new TabTextItem($"Surrendering", $"Surrendering", $"The player can surrender to the police by pressing {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey)}"));
+        items.Add(new TabTextItem($"Vehicle Controls", $"Vehicle Controls", $"The player can manually start and stop the vehicles engine with {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.EngineToggleModifier, Settings.SettingsManager.KeySettings.EngineToggle)}." +
+            $"You can close the drive door with {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.ManualDriverDoorCloseModifier, Settings.SettingsManager.KeySettings.ManualDriverDoorClose)}. Indicators are used with " +
+            $"Left: {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.LeftIndicatorKeyModifer, Settings.SettingsManager.KeySettings.LeftIndicatorKey)}, " +
+            $"Right: {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.RightIndicatorKeyModifer, Settings.SettingsManager.KeySettings.RightIndicatorKey)}, " +
+            $"Hazards: {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.HazardKeyModifer, Settings.SettingsManager.KeySettings.HazardKey)}. It can also be opened using the Action Wheel."));
+        items.Add(new TabTextItem($"Fire Selection", $"Fire Selection", $"The player choose between a weapons firing modes (safe, semi, burst, auto) with {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.SelectorKeyModifier, Settings.SettingsManager.KeySettings.SelectorKey)}. It can also be opened using the Action Wheel."));
         items.Add(PlateStealing);
         items.Add(Carjack);
         items.Add(CarLockPick);
@@ -95,7 +96,7 @@ public class AboutMenu
     {
         List<TabItem> items = new List<TabItem>();
         TabItem About = new TabTextItem($"About", $"About", "To interact with NPCs around the world, you will need to use your burner phone. Contacts will be automatically added as they are discovered. Try interacting with Cop, Gang Members, and Shops to discover possible contacts.");
-        TabItem One = new TabTextItem($"Burner Phone", $"Burner Phone", $"You can interact with people in the world using your burner cellphone. It can be activated with {FormatControls(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, Settings.SettingsManager.KeySettings.SimplePhoneKey)}. It can also be opened using the Action Wheel.");
+        TabItem One = new TabTextItem($"Burner Phone", $"Burner Phone", $"You can interact with people in the world using your burner cellphone. It can be activated with {NativeHelper.FormatControls(Settings.SettingsManager.KeySettings.SimplePhoneKeyModifer, Settings.SettingsManager.KeySettings.SimplePhoneKey)}. It can also be opened using the Action Wheel.");
         TabItem Three = new TabTextItem($"Pause Menu", $"Pause Menu", "There is a pause menu that allows you to interact with contacts and view messages you have received. It is accessed with the Action Wheel menu.");
         items.Add(About);
         items.Add(One);
@@ -130,7 +131,7 @@ public class AboutMenu
         TabItem RandomCop = new TabTextItem($"Become Cop", $"Become Cop", "Become a random cop around the world. Very basic, might be expanded. Might cause other issues. Accessed by ~r~Main Menu~s~ -> ~r~Ped Swap~s~ -> ~r~Become Random Cop~s~.");
         items.Add(CustomPed);
         items.Add(RandomPed);
-        items.Add(RandomCop);
+        //items.Add(RandomCop);
 
         tabView.AddTab(new TabSubmenuItem("Ped Swap", items));
     }
@@ -184,22 +185,22 @@ public class AboutMenu
         items.Add(Six);
         tabView.AddTab(new TabSubmenuItem("Locations", items));
     }
-    private string FormatControls(Keys modifier, Keys key)
-    {
-        if (modifier != Keys.None && key != Keys.None)
-        {
-            return $"~o~{modifier}~s~ + ~o~{key}~s~";
-        }
-        else if (modifier != Keys.None && key == Keys.None)
-        {
-            return $"~o~{modifier}~s~";
-        }
-        else if (modifier == Keys.None && key != Keys.None)
-        {
-            return $"~o~{key}~s~";
-        }
-        return "";
-    }
+    //private string FormatControls(Keys modifier, Keys key)
+    //{
+    //    if (modifier != Keys.None && key != Keys.None)
+    //    {
+    //        return $"~o~{modifier}~s~ + ~o~{key}~s~";
+    //    }
+    //    else if (modifier != Keys.None && key == Keys.None)
+    //    {
+    //        return $"~o~{modifier}~s~";
+    //    }
+    //    else if (modifier == Keys.None && key != Keys.None)
+    //    {
+    //        return $"~o~{key}~s~";
+    //    }
+    //    return "";
+    //}
     private void TabView_OnMenuClose(object sender, EventArgs e)
     {
         Game.IsPaused = false;

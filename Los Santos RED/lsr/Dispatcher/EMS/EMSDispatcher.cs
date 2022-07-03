@@ -29,8 +29,9 @@ public class EMSDispatcher
     private Agency Agency;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
+    private IPlacesOfInterest PlacesOfInterest;
 
-    public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names)
+    public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         World = world;
@@ -41,6 +42,7 @@ public class EMSDispatcher
         Jurisdictions = jurisdictions;
         Weapons = weapons;
         Names = names;
+        PlacesOfInterest = placesOfInterest;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<EMT> DeletableOfficers => World.Pedestrians.EMTList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -58,11 +60,50 @@ public class EMSDispatcher
         if (Settings.SettingsManager.EMSSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;
-            if (GetSpawnLocation() && GetSpawnTypes())
+            if (GetSpawnLocation() && GetSpawnTypes(false,null))
             {
-                CallSpawnTask(false);
+                CallSpawnTask(false, true);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
+        }
+        if (Settings.SettingsManager.EMSSettings.ManageDispatching)
+        {
+            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+            {
+                if (ps.PossiblePedSpawns != null)
+                {
+                    bool spawnedsome = false;
+                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                    {
+                        if (RandomItems.RandomPercent(cl.Percentage))
+                        {
+                            HasDispatchedThisTick = true;
+                            SpawnLocation = new SpawnLocation(cl.Location);
+                            SpawnLocation.Heading = cl.Heading;
+                            SpawnLocation.StreetPosition = cl.Location;
+                            SpawnLocation.SidewalkPosition = cl.Location;
+                            if (GetSpawnTypes(true, ps.AssignedAgency))
+                            {
+                                CallSpawnTask(true, false);
+                                spawnedsome = true;
+                            }
+                        }
+                    }
+                    ps.IsDispatchFilled = true;
+
+                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
+                }
+                else
+                {
+                    ps.IsDispatchFilled = true;
+                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled NO SPAWNS");
+                }
+            }
+            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
+            {
+                ps.IsDispatchFilled = false;
+                EntryPoint.WriteToConsole($"Police Station: {ps.Name} DEACTIVATED");
+            }
         }
         return HasDispatchedThisTick;
     }
@@ -100,15 +141,26 @@ public class EMSDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes()
+    private bool GetSpawnTypes(bool forcePed, Agency forceAgency)
     {
         Agency = null;
         VehicleType = null;
         PersonType = null;
-        Agency = GetRandomAgency(SpawnLocation);
+        if (forceAgency != null)
+        {
+            Agency = forceAgency;
+        }
+        else
+        {
+            Agency = GetRandomAgency(SpawnLocation);
+        }
         if (Agency != null)
         {
             VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+            if (forcePed)
+            {
+                VehicleType = null;
+            }
             if (VehicleType != null)
             {
                 string RequiredGroup = "";
@@ -116,7 +168,15 @@ public class EMSDispatcher
                 {
                     RequiredGroup = VehicleType.RequiredPedGroup;
                 }
-                PersonType = Agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+            else if (forcePed)
+            {
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
                 if (PersonType != null)
                 {
                     return true;
@@ -125,7 +185,7 @@ public class EMSDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy)
     {
         try
         {
@@ -287,7 +347,7 @@ public class EMSDispatcher
             }
             PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true);
+        CallSpawnTask(true, false);
     }
 
 }

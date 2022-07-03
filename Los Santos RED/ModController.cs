@@ -1,9 +1,11 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Helper;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace LosSantosRED.lsr
 {
@@ -320,7 +322,20 @@ namespace LosSantosRED.lsr
             {
                 Game.RemoveNotification(EntryPoint.NotificationID);
             }
-            Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully.~n~~n~Press {ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~~n~~n~Select ~r~About~s~ for mod information.");
+            Game.DisplayNotification(
+                $"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} " +
+                $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully." +
+                $"~n~" +
+                $"~n~Press {ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~" +
+                $"~n~Select ~r~Main Menu -> About~s~ for mod information and controls." +
+                $"~n~" +
+                $"~n~Press {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} " +
+                    $"or {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)} " +
+                    $"to open the ~r~Action Wheel~s~");
+                
+                
         }
+
+
     }
 }

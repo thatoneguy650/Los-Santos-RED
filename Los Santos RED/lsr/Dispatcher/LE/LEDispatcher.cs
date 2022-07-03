@@ -410,13 +410,14 @@ public class LEDispatcher
             {
                 foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
                 {
-                    if (ps.PossibleCopPedSpawns != null)
+                    if (ps.PossiblePedSpawns != null)
                     {
                         bool spawnedsome = false;
-                        foreach (ConditionalLocation cl in ps.PossibleCopPedSpawns)
+                        foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                         {
                             if (RandomItems.RandomPercent(cl.Percentage))
                             {
+                                HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);
                                 SpawnLocation.Heading = cl.Heading;
                                 SpawnLocation.StreetPosition = cl.Location;

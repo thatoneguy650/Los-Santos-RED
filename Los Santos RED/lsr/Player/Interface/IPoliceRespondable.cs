@@ -72,6 +72,7 @@ namespace LosSantosRED.lsr.Interface
         GangRelationships GangRelationships { get; }
         Cop ClosestCopToPlayer { get; set; }
         Licenses Licenses { get; }
+        bool IsIncapacitated { get; }
 
         // BigMessageHandler BigMessage { get; }
 

@@ -22,8 +22,8 @@ public class PoliceStation : BasicLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
-    public List<ConditionalLocation> PossibleCopPedSpawns { get; set; }
-    public List<ConditionalLocation> PossibleCopVehicleSpawns { get; set; }
+    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 
 
     public string AssignedAgencyID { get; set; }

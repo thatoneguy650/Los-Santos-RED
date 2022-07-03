@@ -194,7 +194,7 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","BANHAMC", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
             new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
@@ -211,7 +211,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","BHAMCA", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
             new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
@@ -253,7 +253,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","CHU", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","CHU", 0, 100, 100),
             new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
@@ -267,7 +267,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","DAVIS", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
@@ -546,7 +546,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","TONGVAH", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
             new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 
@@ -632,7 +632,7 @@ public class Jurisdictions : IJurisdictions
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","BANHAMC", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","BANHAMC", 0, 100, 100),
             new ZoneJurisdiction("LSFD","BANHAMC", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
 
@@ -648,7 +648,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","BEACH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BEACH", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","BHAMCA", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","BHAMCA", 0, 100, 100),
             new ZoneJurisdiction("LSFD","BHAMCA", 0, 100, 100),
             new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
 
@@ -684,7 +684,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CHIL", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHIL", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","CHU", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","CHU", 0, 100, 100),
             new ZoneJurisdiction("LSFD","CHU", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CHU", 0, 100, 100),
 
@@ -697,7 +697,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","CYPRE", 0, 100, 100),
             new ZoneJurisdiction("LSMC","CYPRE", 0, 100, 100),
 
-            new ZoneJurisdiction("LSPD","DAVIS", 0, 100, 100),
+            new ZoneJurisdiction("LSSD-DV","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("LSFD","DAVIS", 0, 100, 100),
             new ZoneJurisdiction("MRH","DAVIS", 0, 100, 100),
 
@@ -937,7 +937,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","TEXTI", 0, 100, 100),
             new ZoneJurisdiction("MRH","TEXTI", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-CH","TONGVAH", 0, 100, 100),
+            new ZoneJurisdiction("LSSD","TONGVAH", 0, 100, 100),
             new ZoneJurisdiction("LSFD","TONGVAH", 0, 100, 100),
             new ZoneJurisdiction("LSMC","TONGVAH", 0, 100, 100),
 

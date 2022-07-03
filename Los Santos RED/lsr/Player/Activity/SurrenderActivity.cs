@@ -134,7 +134,7 @@ public class SurrenderActivity : DynamicActivity
             {
                 GameFiber.Yield();
             }
-            if (!Player.Character.Exists())
+            if (!Player.Character.Exists() || !Player.IsBusted)
             {
                 return;
             }
@@ -200,12 +200,16 @@ public class SurrenderActivity : DynamicActivity
     {
         GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
         {
+            EntryPoint.WriteToConsole("UnsetArrestedRan");
             AnimationDictionary.RequestAnimationDictionay("random@arrests");
             AnimationDictionary.RequestAnimationDictionay("busted");
             AnimationDictionary.RequestAnimationDictionay("ped");
             if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_a", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_a") > 0f 
               || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_2_hands_up", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_2_hands_up") > 0f)//do both to cover my bases, is for player anysways so can be expensive to be right
             {
+
+                EntryPoint.WriteToConsole("UnsetArrestedRan FIRST IF");
+
                 NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
                 GameFiber.Wait(1500);//1250
                 if (!Player.Character.Exists() || !Player.IsBusted)
@@ -223,10 +227,14 @@ public class SurrenderActivity : DynamicActivity
             }
             else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
             {
+                EntryPoint.WriteToConsole("UnsetArrestedRan SECOND IF");
+
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
             else
             {
+                EntryPoint.WriteToConsole("UnsetArrestedRan THIRD IF");
+
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
         }, "UnSetArrestedAnimation");
