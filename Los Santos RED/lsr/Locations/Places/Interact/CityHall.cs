@@ -130,7 +130,6 @@ public class CityHall : InteractableLocation
     {
         return $"Change your characters name. ~n~Legal Name: ~p~{Player.PlayerName}~s~";
     }
-
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == ChangeNameMenu)

@@ -245,14 +245,16 @@ public class UI : IMenuProvideable
 
             NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
 
-
             if (outline)
             {
-                NativeFunction.Natives.SET_TEXT_OUTLINE();
+                NativeFunction.Natives.SET_TEXT_OUTLINE(true);
+
+
+                NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
             }
             NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
-            NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-            
+            //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+            //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
             if (Justification == GTATextJustification.Right)
             {
                 NativeFunction.Natives.SET_TEXT_WRAP(0f, Y);
@@ -262,7 +264,7 @@ public class UI : IMenuProvideable
                 NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
             }
             NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
-            NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
             NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
             NativeFunction.Natives.xCD015E5BB0D96A57(Y, X);
         }
@@ -385,55 +387,62 @@ public class UI : IMenuProvideable
 
 
     private void DisplayTopMenu()
-    {
-        
-
+    {     
         if(IsDrawingWheelMenu && DisplayablePlayer.CurrentWeapon!= null)
         {
-            NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);
+            NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);//WEAPON_ICON
         }
-        IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);
+       
 
-        bool willShowCash = DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu;
-        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && lastWeaponDisplay != "";
-        
-        float WeaponPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
-        if(IsVanillaStarsHUDVisible)
+        IsVanillaStarsHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(1);
+        IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);     
+        IsVanillaCashHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(3);
+
+
+
+
+        bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
+        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable;
+        float WeaponPosition = 0.0f;
+        float CashPosition = 0.0f;
+        float StartingPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
+        if (IsVanillaStarsHUDVisible)
         {
-            WeaponPosition += 0.035f;
-            if (IsVanillaWeaponHUDVisible)
-            {
-                WeaponPosition += 0.035f;
-            }
+            StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;
         }
-        else
+        if(IsVanillaWeaponHUDVisible)
         {
-            if (IsVanillaWeaponHUDVisible)
-            {
-                WeaponPosition += 0.035f;
-            }
-            else
-            {
-                WeaponPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
-            }
+            StartingPosition += 0.035f;
         }
-        float CashPosition;
+        if(IsVanillaCashHUDVisible)
+        {
+            StartingPosition += 0.035f;
+        }
+        if(willShowWeapon)
+        {
+            WeaponPosition = StartingPosition;
+            StartingPosition += 0.035f;
+        }
+        if(willShowCash)
+        {
+            CashPosition = StartingPosition;
+            StartingPosition += 0.035f;
+        }
         if (willShowWeapon)
         {
-            CashPosition = WeaponPosition + 0.035f;
-        }
-        else
-        {
-            CashPosition = WeaponPosition;
-        }
-        if (willShowWeapon)
-        {
-            DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+           // DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale + Settings.SettingsManager.LSRHUDSettings.TopDisplayOutlineSize, Color.Black, GTAFont.FontPricedown, (GTATextJustification)0, true);
+            DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, false);
+
         }
         if (willShowCash)
         {
+           // DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale + Settings.SettingsManager.LSRHUDSettings.TopDisplayOutlineSize, Color.Black, GTAFont.FontPricedown, (GTATextJustification)0, true);
             DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
+
+        //string debugText = $"VStar {IsVanillaStarsHUDVisible} VWeap{IsVanillaWeaponHUDVisible} V$ {IsVanillaCashHUDVisible} will$ {willShowCash} pos {CashPosition} willWeap {willShowWeapon} pos {WeaponPosition}";
+        //DisplayTextOnScreen(debugText, 0.6f, 0.6f, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+
     }
     private void DisplayButtonPrompts()
     {

@@ -82,7 +82,17 @@ public class EMSDispatcher
                             SpawnLocation.Heading = cl.Heading;
                             SpawnLocation.StreetPosition = cl.Location;
                             SpawnLocation.SidewalkPosition = cl.Location;
-                            if (GetSpawnTypes(true, ps.AssignedAgency))
+                            Agency toSpawn = ps.AssignedAgency;
+                            if (toSpawn == null)
+                            {
+                                Zone CurrentZone = Zones.GetZone(cl.Location);
+                                Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.EMS);
+                                if (ZoneAgency != null)
+                                {
+                                    toSpawn = ZoneAgency;
+                                }
+                            }
+                            if (GetSpawnTypes(true, toSpawn))
                             {
                                 CallSpawnTask(true, false);
                                 spawnedsome = true;
@@ -190,10 +200,8 @@ public class EMSDispatcher
         try
         {
             EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
-            if (allowAny)
-            {
-                eMTSpawnTask.AllowAnySpawn = true;
-            }
+            eMTSpawnTask.AllowAnySpawn = allowAny;
+            eMTSpawnTask.AllowBuddySpawn = allowBuddy;
             eMTSpawnTask.AttemptSpawn();
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));

@@ -1011,6 +1011,15 @@ namespace Mod
                 int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
                 if (seatIndex != null)
                 {
+                    foreach (Ped passenger in toEnter.Vehicle.Occupants)
+                    {
+                        if (passenger.Exists())
+                        {
+                            passenger.StaysInVehiclesWhenJacked = true;
+                            passenger.BlockPermanentEvents = true;
+                        }
+                    }
+                    LastFriendlyVehicle = toEnter.Vehicle;
                     NativeFunction.Natives.TASK_ENTER_VEHICLE(Character, toEnter.Vehicle, 5000, seatIndex, 1f, 9);
                 }
             }
@@ -2521,6 +2530,15 @@ namespace Mod
                 {
                     GameTimeStartedMoving = 0;
                 }
+
+
+                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && Character.SeatIndex != -1 && !IsRidingBus && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
+                {
+                    IsRidingBus = true;
+                    BusRide MyBusRide = new BusRide(this, CurrentVehicle.Vehicle, World, PlacesOfInterest);
+                    MyBusRide.Start();
+                }
+
             }
             else
             {
@@ -2862,19 +2880,19 @@ namespace Mod
                             CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
                             MyBreakIn.BreakIn();
                         }
-                        else if (SeatTryingToEnter != -1)
-                        {
-                            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
-                            {
-                                EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                                BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World);
-                                MyBusRide.Start();
-                            }
-                            else
-                            {
-                                EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
-                            }
-                        }
+                        //else if (SeatTryingToEnter != -1)
+                        //{
+                        //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
+                        //    {
+                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                        //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
+                        //        MyBusRide.Start();
+                        //    }
+                        //    else
+                        //    {
+                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
+                        //    }
+                        //}
                     }
                 }
                 else
@@ -2904,6 +2922,8 @@ namespace Mod
                 {
                     CurrentVehicle.HasAutoSetRadio = false;
                 }
+
+
 
 
 

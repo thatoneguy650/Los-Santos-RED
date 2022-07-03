@@ -10,13 +10,13 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Will teleport to the sitting entry point instead of walking. Useful when there are objects in the way like a large table you dont want to hit.")]
     public bool TeleportWhenSitting { get; set; }
 
-    [Description("Will teleport to the sitting entry point instead of walking if there is an object in the way.")]
-    public bool TeleportWhenSittingWhenBlocked { get; set; }
+    //[Description("Will teleport to the sitting entry point instead of walking if there is an object in the way.")]
+    //public bool TeleportWhenSittingWhenBlocked { get; set; }
 
-    [Description("Attempt to set any blocking object as no collision with the player when sitting down. Used to stop from tipping over tables.")]
-    public bool SetNoTableCollisionWhenSitting { get; set; }
-    [Description("If disabled, the gesture menu will stay open for you to continually use gestures.")]
-    public bool CloseMenuOnGesture { get; set; }
+    //[Description("Attempt to set any blocking object as no collision with the player when sitting down. Used to stop from tipping over tables.")]
+    //public bool SetNoTableCollisionWhenSitting { get; set; }
+    //[Description("If disabled, the gesture menu will stay open for you to continually use gestures.")]
+    //public bool CloseMenuOnGesture { get; set; }
 
 
     [Description("Allow the player to start converstaions with random peds.")]
@@ -32,7 +32,6 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Allow the player to go into crouch mode.")]
     public bool AllowPlayerCrouching { get; set; }
 
-
     public ActivitySettings()
     {
         SetDefault();
@@ -43,9 +42,8 @@ public class ActivitySettings : ISettingsDefaultable
     public void SetDefault()
     {
         TeleportWhenSitting = false;
-        SetNoTableCollisionWhenSitting = true;
-        TeleportWhenSittingWhenBlocked = true;
-        CloseMenuOnGesture = false;
+        //SetNoTableCollisionWhenSitting = true;
+        //CloseMenuOnGesture = false;
 
         AllowPedConversations = true;
         AllowPedLooting = true;
@@ -53,6 +51,5 @@ public class ActivitySettings : ISettingsDefaultable
         AllowTakingOtherPedsHostage = false;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
-
     }
 }

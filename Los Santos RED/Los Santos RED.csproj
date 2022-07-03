@@ -164,6 +164,7 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />

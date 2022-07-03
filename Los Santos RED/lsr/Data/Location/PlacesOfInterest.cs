@@ -62,6 +62,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.CarDealerships);
         AllLocations.AddRange(PossibleLocations.DriveThrus);
         AllLocations.AddRange(PossibleLocations.ClothingShops);
+        AllLocations.AddRange(PossibleLocations.BusStops);
         return AllLocations;
     }
 
@@ -816,7 +817,27 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         });
 
+        PossibleLocations.BusStops.AddRange(new List<BusStop>()
+        {
+                
+                new BusStop(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, "La Mesa Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
 
+                new BusStop(new Vector3(-107.1481f, -1687.019f, 28.4079f), 141.5815f, "Chamberlain Hills Stop 1","") { OpenTime = 0, CloseTime = 24, },
+
+                new BusStop(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, "Pillbox Hill Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-251.2524f, -882.9617f, 29.76333f), 249.6444f, "Pillbox Hill Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-271.6416f, -824.817f, 30.89726f), 340.778f, "Pillbox Hill Bus Stop 3","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-243.9823f, -712.2824f, 32.61737f), 160.4338f, "Pillbox Hill Bus Stop 4","") { OpenTime = 0, CloseTime = 24, },
+
+                new BusStop(new Vector3(-506.5057f, -667.5629f, 32.20013f), 269.3689f, "Little Seoul Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-692.9445f, -667.7023f, 29.95664f), 267.5733f, "Little Seoul Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+
+                new BusStop(new Vector3(-1213.239f, -1216.875f, 6.736316f), 191.0029f, "Vespucci Beach Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-1168.73f, -1471.557f, 3.438046f), 215.5927f, "Vespucci Beach Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+
+                new BusStop(new Vector3(-1421.381f, -87.43785f, 51.512f), 298.6868f, "Richman Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-645.8302f, -139.4489f, 36.86523f), 31.0542f, "Rockford Hills Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+        });
     }
 }
 

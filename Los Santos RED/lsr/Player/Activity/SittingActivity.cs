@@ -6,6 +6,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace LosSantosRED.lsr.Player
@@ -21,6 +22,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsActivelySitting = false;
         private Vector3 StartingPosition;
         private int PlayerScene;
+        private List<uint> NonSeatModels;
         private List<SeatModel> SeatModels;
         private List<TableModel> TableModels;
         //0xe7ed1a59 doesnt work properly, del pierro beach bench
@@ -139,7 +141,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole("Sitting Activity Exit", 5);
             Player.PauseCurrentActivity();
 
-            if ((Settings.SettingsManager.ActivitySettings.TeleportWhenSitting || (Settings.SettingsManager.ActivitySettings.TeleportWhenSittingWhenBlocked && PossibleCollisionTable.Exists())) && FindSittingProp)
+            if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
                 Game.FadeScreenOut(500, true);
                 Player.Character.Position = StoredPlayerPosition;
@@ -250,7 +252,7 @@ namespace LosSantosRED.lsr.Player
                     if (seatModel != null || modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
                     {
                         float DistanceToObject = obj.DistanceTo(Game.LocalPlayer.Character.Position);
-                        if (DistanceToObject <= 2.5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)//
+                        if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)//
                         {
                             ClosestSittableEntity = obj;
                             ClosestDistance = DistanceToObject;
@@ -292,8 +294,6 @@ namespace LosSantosRED.lsr.Player
                 {
                     DesiredHeading = ClosestSittableEntity.Heading + 180f;
                 }
-
-
                 float ModelWidth = ClosestSittableEntity.Model.Dimensions.X;
                 float TrimmedModelWidth = ModelWidth - 0.6f;//add two edges
                 if (ModelWidth >= 1.2f)
@@ -302,10 +302,7 @@ namespace LosSantosRED.lsr.Player
                     if(SeatNumber > 1)
                     {
                         List<Vector3> PossibleSeatPositions = new List<Vector3>();
-
-                        float FirstPosition = ModelWidth / (float)SeatNumber;
-                        
-
+                        float FirstPosition = ModelWidth / (float)SeatNumber;    
                         for (int i = 0; i < SeatNumber; i++)
                         {
                             float XPosition = (FirstPosition * (i + 1)) - 0.6f;
@@ -313,7 +310,6 @@ namespace LosSantosRED.lsr.Player
                             PossibleSeatPositions.Add(SeatPosition);
                             EntryPoint.WriteToConsole($"Sitting Partition {SeatNumber} XPosition {XPosition} Position {SeatPosition}", 5);
                         }
-
                         float ClosestDistance = 99f;
                         Vector3 ClosestPosition = Vector3.Zero;
                         foreach(Vector3 possiblePos in PossibleSeatPositions)
@@ -330,10 +326,6 @@ namespace LosSantosRED.lsr.Player
                         return true;
                     }
                 }
-
-
-
-
                 SeatEntryPosition = DesiredPos;
                 SeatEntryHeading = DesiredHeading;
                 return true;
@@ -345,7 +337,30 @@ namespace LosSantosRED.lsr.Player
         }
         private void GetPossibleBlockingProp()
         {
-            if (Settings.SettingsManager.ActivitySettings.SetNoTableCollisionWhenSitting)
+            if (1 == 0)// Settings.SettingsManager.ActivitySettings.SetNoCollisionWhenSitting)
+            {
+                List<Rage.Object> Objects = World.GetAllObjects().ToList();
+                float ClosestDistance = 999f;
+                foreach (Rage.Object obj in Objects)
+                {
+                    if (obj.Exists() && (!ClosestSittableEntity.Exists() || obj.Handle != ClosestSittableEntity.Handle))// && obj.Model.Name.ToLower().Contains("chair") || obj.Model.Name.ToLower().Contains("bench") || obj.Model.Name.ToLower().Contains("seat") || obj.Model.Name.ToLower().Contains("chr") || SeatModels.Contains(obj.Model.Hash))
+                    {
+                        float DistanceToObject = obj.DistanceTo(SeatEntryPosition);
+                        if(Player.AttachedProp.Exists() && Player.AttachedProp.Handle == obj.Handle)
+                        {
+                            continue;
+                        }
+                        if (DistanceToObject <= ClosestDistance && DistanceToObject <= 3f && obj.Model.Dimensions.X >= 0.3f)
+                        {
+                            PossibleCollisionTable = obj;
+                            ClosestDistance = DistanceToObject;
+                            EntryPoint.WriteToConsole("Sitting BLOCKINGPROP FOUND");
+                            //break;
+                        }
+                    }
+                }
+            }
+            else if (1==0)//Settings.SettingsManager.ActivitySettings.SetNoTableCollisionWhenSitting)
             {
                 List<Rage.Object> Objects = World.GetAllObjects().ToList();
                 float ClosestDistance = 999f;
@@ -377,12 +392,6 @@ namespace LosSantosRED.lsr.Player
                         }
                     }
                 }
-                //if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                //{
-                //    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                //}
-
-
                 if(PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
                 {
                     PossibleCollisionTable.IsPositionFrozen = true;
@@ -391,7 +400,7 @@ namespace LosSantosRED.lsr.Player
         }
         private bool MoveToSeatCoordinates()
         {
-            if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting || (Settings.SettingsManager.ActivitySettings.TeleportWhenSittingWhenBlocked && PossibleCollisionTable.Exists()))
+            if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
                 StoredPlayerPosition = Player.Character.Position;
                 StoredPlayerHeading = Player.Character.Heading;
@@ -421,6 +430,13 @@ namespace LosSantosRED.lsr.Player
                         IsCancelled = true;
                     }
                     IsCloseEnough = Game.LocalPlayer.Character.DistanceTo2D(SeatEntryPosition) < 0.2f;
+
+#if DEBUG
+                    Rage.Debug.DrawArrowDebug(SeatEntryPosition + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+
+#endif
+
+
                     GameFiber.Yield();
                 }
                 GameFiber.Sleep(250);
@@ -437,6 +453,17 @@ namespace LosSantosRED.lsr.Player
                         IsFacingDirection = true;
                         EntryPoint.WriteToConsole($"Sitting FACING TRUE {Game.LocalPlayer.Character.DistanceTo(SeatEntryPosition)} {Extensions.GetHeadingDifference(heading, SeatEntryHeading)} {heading} {SeatEntryHeading}", 5);
                     }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                    }
+
+#if DEBUG
+                    Rage.Debug.DrawArrowDebug(SeatEntryPosition + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+
+#endif
+
+
                     GameFiber.Yield();
                 }
                 GameFiber.Sleep(250);
@@ -570,7 +597,7 @@ namespace LosSantosRED.lsr.Player
 
             //"amb@prop_human_seat_chair@male@generic@react_aggressive" "enter_back"
 
-
+            NonSeatModels = new List<uint>() { 0x272a1260 };
 
             SeatModels = new List<SeatModel>() { 
                 new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" }, //sometime float a bit above it

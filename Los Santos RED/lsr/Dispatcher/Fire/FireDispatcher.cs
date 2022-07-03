@@ -81,7 +81,17 @@ public class FireDispatcher
                             SpawnLocation.Heading = cl.Heading;
                             SpawnLocation.StreetPosition = cl.Location;
                             SpawnLocation.SidewalkPosition = cl.Location;
-                            if (GetSpawnTypes(true, ps.AssignedAgency))
+                            Agency toSpawn = ps.AssignedAgency;
+                            if (toSpawn == null)
+                            {
+                                Zone CurrentZone = Zones.GetZone(cl.Location);
+                                Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
+                                if (ZoneAgency != null)
+                                {
+                                    toSpawn = ZoneAgency;
+                                }
+                            }
+                            if (GetSpawnTypes(true, toSpawn))
                             {
                                 CallSpawnTask(true, false);
                                 spawnedsome = true;
@@ -131,10 +141,8 @@ public class FireDispatcher
         try
         {
             FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
-            if (allowAny)
-            {
-                fireFighterSpawnTask.AllowAnySpawn = true;
-            }
+            fireFighterSpawnTask.AllowAnySpawn = allowAny;
+            fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
             fireFighterSpawnTask.AttemptSpawn();
             fireFighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
@@ -175,7 +183,10 @@ public class FireDispatcher
         }
         if (Agency != null)
         {
-            VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+            if (!forcePed)
+            {
+                VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+            }
             if (VehicleType != null)
             {
                 string RequiredGroup = "";
@@ -184,6 +195,14 @@ public class FireDispatcher
                     RequiredGroup = VehicleType.RequiredPedGroup;
                 }
                 PersonType = Agency.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+            else if (forcePed)
+            {
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
                 if (PersonType != null)
                 {
                     return true;

@@ -398,7 +398,7 @@ public class LEDispatcher
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
                 LastAgencySpawned = Agency;
-                CallSpawnTask(false, true);
+                CallSpawnTask(false, true, false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -422,10 +422,20 @@ public class LEDispatcher
                                 SpawnLocation.Heading = cl.Heading;
                                 SpawnLocation.StreetPosition = cl.Location;
                                 SpawnLocation.SidewalkPosition = cl.Location;
-                                if (GetSpawnTypes(true, ps.AssignedAgency))
+                                Agency toSpawn = ps.AssignedAgency;
+                                if (toSpawn == null)
+                                {
+                                    Zone CurrentZone = Zones.GetZone(cl.Location);
+                                    Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
+                                    if (ZoneAgency != null)
+                                    {
+                                        toSpawn = ZoneAgency;
+                                    }
+                                }
+                                if (GetSpawnTypes(true, toSpawn))
                                 {
                                     LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false);
+                                    CallSpawnTask(true, false, true);
                                     spawnedsome = true;
                                 }
                             }
@@ -484,21 +494,17 @@ public class LEDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn)
     {
         try
         {
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
-            if (allowAny)
-            {
-                spawnTask.AllowAnySpawn = true;
- 
-            }
+            spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             EntryPoint.WriteToConsole($"LE Dispatcher Call Spawn Task Agency: {Agency?.ID} Vehicle {VehicleType?.ModelName} Person {PersonType?.ModelName}");
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
-            spawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
             spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             HasDispatchedThisTick = true;
             Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
@@ -726,6 +732,7 @@ public class LEDispatcher
         }
         return agency;
     }
+
     private Agency GetRandomAgency(Vector3 spawnLocation)
     {
         Agency agency;
@@ -886,6 +893,6 @@ public class LEDispatcher
             }
             PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true, true);
+        CallSpawnTask(true, true, true);
     }
 }

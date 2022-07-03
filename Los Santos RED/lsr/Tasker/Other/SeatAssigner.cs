@@ -103,6 +103,10 @@ public class SeatAssigner
         {
             Tasker.RemoveSeatAssignment(Ped);
             Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
+            if (VehicleTryingToEnter.Vehicle.Exists())
+            {
+                VehicleTryingToEnter.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
+            }
         }
     }
 

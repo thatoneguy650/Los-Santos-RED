@@ -24,6 +24,7 @@ public abstract class SpawnTask
     public DispatchableVehicle VehicleType { get; set; }
     public DispatchablePerson PersonType { get; set; }
     public bool AllowAnySpawn { get; set; } = false;
+    public bool AllowBuddySpawn { get; set; } = true;
     public Vector3 Position
     {
         get

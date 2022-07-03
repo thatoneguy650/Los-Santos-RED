@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -25,8 +26,10 @@ public class Idle : ComplexTask
     private IPlacesOfInterest PlacesOfInterest;
     private Vector3 taskedPosition;
     private Cop Cop;
+    private uint GameTimeBetweenScenarios = 60000;
     private uint GameTimeLastStartedScenario;
     private SeatAssigner SeatAssigner;
+    private bool ForceScenario;
 
     private enum Task
     {
@@ -39,7 +42,11 @@ public class Idle : ComplexTask
     {
         get
         {
-            if (!Ped.Pedestrian.IsInAnyVehicle(false))
+            if(Cop.IsAmbientSpawn)
+            {
+                return Task.Wander;
+            }
+            else if (!Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Ped.DistanceToPlayer <= 75f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0 && VehicleTryingToEnter.Vehicle.Speed < 1.0f) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
                 {
@@ -219,15 +226,28 @@ public class Idle : ComplexTask
             else
             {
                 Vector3 pedPos = Ped.Pedestrian.Position;
-                if (Game.GameTime - GameTimeLastStartedScenario >= 60000 && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
+                if (Cop.IsAmbientSpawn || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
                 {
-                    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
+                    //NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
+
+
+                    List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_COP_IDLES", "WORLD_HUMAN_INSPECT_STAND", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
+
+                    string ScenarioChosen = PossibleScenarios.PickRandom();
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
+
+
+
+                    GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
                     GameTimeLastStartedScenario = Game.GameTime;
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
+                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario GameTimeBetweenScenarios {GameTimeBetweenScenarios} ScenarioChosen {ScenarioChosen}", 5);
                 }
                 else
                 {
-                    NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+
+
+                    NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
+                    //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
                     EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
                 }
 

@@ -10,6 +10,8 @@ public enum eCustomDrivingStyles
 {
     RegularDriving = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians  | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256,
 
+    RegularDrivingClose = (int)VehicleDrivingFlags.FollowTraffic | (int)VehicleDrivingFlags.YieldToCrossingPedestrians | 8 | (int)VehicleDrivingFlags.RespectIntersections | 256 | (int)VehicleDrivingFlags.DriveBySight,
+
     Code2 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,  //20220531 allowwrongway and median crossing is new
 
     Code3 = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8  | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing,

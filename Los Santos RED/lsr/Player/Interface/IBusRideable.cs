@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsRidingBus { get; set; }
         bool IsGettingIntoAVehicle { get; }
         Ped Character { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
+        VehicleExt CurrentVehicle { get; }
+        float VehicleSpeedMPH { get; }
     }
 }

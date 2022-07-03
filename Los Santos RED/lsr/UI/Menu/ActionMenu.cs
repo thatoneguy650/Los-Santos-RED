@@ -224,10 +224,10 @@ public class ActionMenu : Menu
         else if (selectedItem == GestureMenu)
         {
             Player.Gesture(GestureMenu.SelectedItem);
-            if (!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
-            {
-                return;
-            }
+            //if (!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
+            //{
+            //    return;
+            //}
         }
         else if (selectedItem == DanceMenu)
         {

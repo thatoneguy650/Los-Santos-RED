@@ -92,13 +92,14 @@
     public float TopDisplayPositionY { get; set; }
     public float TopDisplayScale { get; set; }
 
-
+    public float TopDisplaySpacing { get; set; }
 
 
     //public bool FadeWeaponDisplayDuringWantedAndInvestigation { get; set; }
     //public uint WeaponDisplayTimeToShow { get; set; }
     //public uint WeaponDisplayTimeToFade { get; set; }
     public bool WeaponDisplaySimpleSelector { get; set; }
+
     //public int DropShadowPixels { get; set; }
 
     public LSRHUDSettings()
@@ -185,7 +186,7 @@
 
 
 
-
+        TopDisplaySpacing = 0.035f;
 
 
         //TopDisplay2PositionX = 0.0525f;
@@ -208,5 +209,5 @@
         /*        WeaponDisplayPositionX = 0.0525f;
         WeaponDisplayPositionY = 0.985f;
         WeaponDisplayScale = 0.65f;*/
-}
+    }
 }

@@ -40,8 +40,8 @@ public class PossibleLocations
     public List<CarDealership> CarDealerships { get; private set; } = new List<CarDealership>();
     public List<Bar> Bars { get; private set; } = new List<Bar>();
     public List<DriveThru> DriveThrus { get; private set; } = new List<DriveThru>();
-
     public List<ClothingShop> ClothingShops { get; private set; } = new List<ClothingShop>();
+    public List<BusStop> BusStops { get; private set; } = new List<BusStop>();
 
 }
 

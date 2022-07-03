@@ -906,39 +906,48 @@ public class Debug
     private void DebugNumpad6()
     {
 
+        //HighlightProp();
+
+        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        {
+            BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest);
+            MyBusRide.Start();
+        }
+
+
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
         //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
         //GameFiber.Sleep(500);
 
 
 
-        int TotalEntities = 0;
-        EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
-        foreach (Entity ent in EntryPoint.SpawnedEntities)
-        {
-            if (ent.Exists())
-            {
-                TotalEntities++;
-                EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-            }
-        }
-        EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //int TotalEntities = 0;
+        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 2);
+        //foreach (Entity ent in EntryPoint.SpawnedEntities)
+        //{
+        //    if (ent.Exists())
+        //    {
+        //        TotalEntities++;
+        //        EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //    }
+        //}
+        //EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-        TotalEntities = 0;
+        //TotalEntities = 0;
 
-        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
-        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
-        foreach (Entity ent in AllEntities)
-        {
-            if (ent.Exists() && ent.IsPersistent)
-            {
-                TotalEntities++;
-                EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
-            }
-        }
-        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
+        //List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 2);
+        //foreach (Entity ent in AllEntities)
+        //{
+        //    if (ent.Exists() && ent.IsPersistent)
+        //    {
+        //        TotalEntities++;
+        //        EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 2);
+        //    }
+        //}
+        //EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 2);
 
-        WriteCopState();
+        //WriteCopState();
 
         //SpawnModelChecker();
         //Vector3 pos = Game.LocalPlayer.Character.Position;
@@ -4011,6 +4020,26 @@ public class Debug
 
 
 
+    }
+
+
+    private void HighlightProp()
+    {
+
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        if (ClosestEntity.Exists())
+        {
+            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+            EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
+            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+            uint GameTimeStartedDisplaying = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedDisplaying <= 5000)
+            {
+                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                GameFiber.Yield();
+            }
+
+        }
     }
 
 

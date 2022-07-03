@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -27,6 +28,7 @@ public class EMTIdle : ComplexTask
     private EMT EMT;
     private SeatAssigner SeatAssigner;
     private uint GameTimeLastStartedScenario;
+    private uint GameTimeBetweenScenarios = 60000;
 
     private enum Task
     {
@@ -39,7 +41,11 @@ public class EMTIdle : ComplexTask
     {
         get
         {
-            if (!Ped.Pedestrian.IsInAnyVehicle(false))
+            if (EMT.IsAmbientSpawn)
+            {
+                return Task.Wander;
+            }
+            else if (!Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Ped.DistanceToPlayer <= 75f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0 && VehicleTryingToEnter.Vehicle.Speed < 1.0f) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
                 {
@@ -157,11 +163,6 @@ public class EMTIdle : ComplexTask
                 }
                 WanderTask();
             }
-            //else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
-            //{
-            //    WanderTask();
-            //    EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
-            //}
             if (IsReturningToStation && Ped.Pedestrian.DistanceTo2D(taskedPosition) < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 1.0f)//arrived, wait then drive away
             {
                 IsReturningToStation = false;
@@ -227,21 +228,41 @@ public class EMTIdle : ComplexTask
             }
             else
             {
-                //Ped.Pedestrian.Tasks.Wander();
-                //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
 
-                //Vector3 pedPos = Ped.Pedestrian.Position;
-                //if (Game.GameTime - GameTimeLastStartedScenario >= 60000 && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
-                //{
-                //    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
-                //    GameTimeLastStartedScenario = Game.GameTime;
-                //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
-                //}
-                //else
-               // {
-                    NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                Vector3 pedPos = Ped.Pedestrian.Position;
+                if (EMT.IsAmbientSpawn || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
+                {
+                    //NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
+                    List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_INSPECT_STAND", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
+                    string ScenarioChosen = PossibleScenarios.PickRandom();
+                    NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
+                    GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
+                    GameTimeLastStartedScenario = Game.GameTime;
+                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario GameTimeBetweenScenarios {GameTimeBetweenScenarios} ScenarioChosen {ScenarioChosen}", 5);
+                }
+                else
+                {
+                    NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
+                    //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
                     EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
-                //}
+                }
+
+
+                // //Ped.Pedestrian.Tasks.Wander();
+                // //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+
+                // //Vector3 pedPos = Ped.Pedestrian.Position;
+                // //if (Game.GameTime - GameTimeLastStartedScenario >= 60000 && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true))
+                // //{
+                // //    NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
+                // //    GameTimeLastStartedScenario = Game.GameTime;
+                // //    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion", 5);
+                // //}
+                // //else
+                //// {
+                //     NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                //     EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
+                // //}
 
             }
         }
@@ -306,82 +327,6 @@ public class EMTIdle : ComplexTask
         SeatAssigner.AssignFrontSeat();
         VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
         SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
-
-
-        //if (Ped.AssignedVehicle != null)
-        //{
-        //    VehicleExt ClosestAvailableEMSVehicle = null;
-        //    int OpenSeatInClosestAvailableEMSVehicle = 9;
-        //    float ClosestAvailableEMSVehicleDistance = 999f;
-        //    if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(EMT.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, EMT.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, EMT.AssignedSeat, false, true))
-        //    {
-        //        OpenSeatInClosestAvailableEMSVehicle = EMT.AssignedSeat;
-        //        ClosestAvailableEMSVehicle = Ped.AssignedVehicle;
-        //    }
-        //    else if (Ped.Pedestrian.LastVehicle.Exists())// && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
-        //    {
-        //        VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
-        //        if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
-        //        {
-        //            OpenSeatInClosestAvailableEMSVehicle = Ped.LastSeatIndex;
-        //            ClosestAvailableEMSVehicle = myCopCar;
-        //        }
-        //    }
-        //    VehicleTryingToEnter = ClosestAvailableEMSVehicle;
-        //    SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
-        //    if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
-        //    {
-        //        Tasker.RemoveSeatAssignment(Ped);
-        //        Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
-        //        //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-        //    }
-        //    else
-        //    {
-        //        foreach (VehicleExt ambulance in World.Vehicles.EMSVehicleList)
-        //        {
-        //            if (ambulance.Vehicle.Exists() && ambulance.Vehicle.Speed < 0.5f)//stopped 4 door car with at least one seat free in back
-        //            {
-        //                float DistanceTo = ambulance.Vehicle.DistanceTo2D(Ped.Pedestrian);
-        //                if (DistanceTo <= 50f)
-        //                {
-        //                    if (ambulance.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, ambulance, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, -1, false, true))
-        //                    {
-        //                        if (DistanceTo < ClosestAvailableEMSVehicleDistance)
-        //                        {
-        //                            OpenSeatInClosestAvailableEMSVehicle = -1;
-        //                            ClosestAvailableEMSVehicle = ambulance;
-        //                            ClosestAvailableEMSVehicleDistance = DistanceTo;
-        //                        }
-
-        //                    }
-        //                    else if (ambulance.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, ambulance, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, 0, false, true))
-        //                    {
-        //                        if (DistanceTo < ClosestAvailableEMSVehicleDistance)
-        //                        {
-        //                            OpenSeatInClosestAvailableEMSVehicle = 0;
-        //                            ClosestAvailableEMSVehicle = ambulance;
-        //                            ClosestAvailableEMSVehicleDistance = DistanceTo;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        VehicleTryingToEnter = ClosestAvailableEMSVehicle;
-        //        SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
-        //        if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
-        //        {
-        //            Tasker.RemoveSeatAssignment(Ped);
-        //            Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
-        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-        //        }
-        //        else
-        //        {
-        //            //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat NOT Assigned", 3);
-        //        }
-        //    }
-
-        //}
-        //Tasker.PrintAllSeatAssignments();
     }
     private void ClearTasks(bool resetAlertness)//temp public
     {
@@ -408,7 +353,6 @@ public class EMTIdle : ComplexTask
             {
                 Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
             }
-            //EntryPoint.WriteToConsole(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
         }
     }
     private void Nothing(bool IsFirstRun)

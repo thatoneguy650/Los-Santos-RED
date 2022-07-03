@@ -162,6 +162,8 @@ public class PedExt : IComplexTaskable
 
     public bool IsUnconscious { get; set; }
 
+    public bool IsAmbientSpawn { get; set; } = false;
+
     public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedCrimes.IsWanted;
     public bool IsNotWanted => PedCrimes.IsNotWanted;
