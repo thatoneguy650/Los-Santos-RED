@@ -14,7 +14,8 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateScenarioCops { get; set; }
     public bool TerminateScenarioGangs { get; set; }
     public bool SuppressVanillaGangPeds { get; set; }
-
+    public bool TerminateScenarioPeds { get; set; }
+    public bool TerminateRandomEvents { get; set; }
     public VanillaSettings()
     {
 
@@ -29,7 +30,9 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateScanner = true;
         TerminateScenarioCops = true;
         TerminateScenarioGangs = true;
-        SuppressVanillaGangPeds = true;
+        SuppressVanillaGangPeds = false;
+        TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
+        TerminateRandomEvents = false;
     }
 
 }

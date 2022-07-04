@@ -594,6 +594,14 @@ public class Pedestrians
                     }
                     if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
                     {
+                        //Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+                        //if(!Civilians.Any(x => x.Handle == localHandle))
+                        //{
+                        //    AddAmbientCivilian(Pedestrian);
+                        //    GameFiber.Yield();
+                        //}
+
+
                         Delete(Pedestrian);
                         continue;
                     }

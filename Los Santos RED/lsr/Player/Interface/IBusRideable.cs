@@ -17,5 +17,11 @@ namespace LosSantosRED.lsr.Interface
         Vehicle LastFriendlyVehicle { get; set; }
         VehicleExt CurrentVehicle { get; }
         float VehicleSpeedMPH { get; }
+        bool IsNotWanted { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        bool IsAliveAndFree { get; }
+
+        void AddGPSRoute(string v, Vector3 entrancePosition);
+        void RemoveGPSRoute();
     }
 }

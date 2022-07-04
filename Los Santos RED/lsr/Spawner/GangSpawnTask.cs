@@ -42,7 +42,6 @@ public class GangSpawnTask : SpawnTask
     private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
     private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
     private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
-    public bool AllowBuddySpawn { get; set; } = true;
     public override void AttemptSpawn()
     {
         try
@@ -178,6 +177,7 @@ public class GangSpawnTask : SpawnTask
             GameFiber.Yield();
             if (createdPed.Exists())
             {
+                EntryPoint.WriteToConsole("GangSpawn Task CREATED PED!");
                 SetupPed(createdPed);
                 if (!createdPed.Exists())
                 {

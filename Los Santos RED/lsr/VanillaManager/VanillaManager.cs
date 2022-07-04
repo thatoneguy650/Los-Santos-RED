@@ -124,9 +124,7 @@ public class VanillaManager
         ,1520708641//G_F_Y_Vagos_01
         ,0x5AA42C21//G_F_Y_Vagos_01
     };
-
-
-
+    private bool isRandomEventsDisabled;
 
     private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
     public VanillaManager(ISettingsProvideable settings)
@@ -308,12 +306,44 @@ public class VanillaManager
         {
             TerminateHealthRecharge();
         }
+
+        if(Settings.SettingsManager.VanillaSettings.TerminateScenarioPeds)
+        {
+            TerminateScenarioPeds();
+        }
+
+        if(Settings.SettingsManager.VanillaSettings.TerminateRandomEvents)
+        {
+            if (!isRandomEventsDisabled)
+            {
+                TerminateRandomEvents();
+            }
+        }
+        else if(isRandomEventsDisabled)
+        {
+            ActivateRandomEvents();
+        }
+
         TerminateAudio();   
+    }
+    private void ActivateRandomEvents()
+    {
+        NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
+        isRandomEventsDisabled = false;
+    }
+    private void TerminateRandomEvents()
+    {
+        NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
+        isRandomEventsDisabled = true;
+    }
+    private void TerminateScenarioPeds()
+    {
+        NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(0f);
     }
     public void SupressVanillaGangPeds()
     {
         IsVanillaGangPedsSupressed = true;
-        //SetGangPedsSupression(true);
+        SetGangPedsSupression(true);
     }
     public void UnSupressVanillaGangPeds()
     {

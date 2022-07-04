@@ -53,6 +53,13 @@ public class GangDen : InteractableLocation
     public int ExpectedItemAmount { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
+    [XmlIgnore]
+    public bool IsDispatchFilled { get; set; } = false;
+
+
+    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+
 
     public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

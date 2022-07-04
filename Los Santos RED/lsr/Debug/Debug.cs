@@ -907,12 +907,12 @@ public class Debug
     {
 
         //HighlightProp();
-
-        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        {
-            BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest);
-            MyBusRide.Start();
-        }
+        SetFlags();
+        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
+        //    MyBusRide.Start();
+        //}
 
 
         //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
@@ -1605,7 +1605,49 @@ public class Debug
     //}
 
 
+    private void SetFlags()
+    {
+        GameFiber.StartNew(delegate
+        {
 
+
+
+
+            bool setMission = false; ;
+
+            while (!Game.IsKeyDown(Keys.P))
+            {
+                NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(0f);
+                Game.DisplayHelp($"Press P to Stop~n~Press O to Mission");
+
+
+
+                if(Game.IsKeyDown(Keys.O) && !setMission)
+                {
+                    NativeFunction.Natives.SET_MISSION_FLAG(true);
+                    Game.DisplaySubtitle("SET MISSION FLAG TO TRUE");
+                    setMission = true;
+                }
+
+                GameFiber.Yield();
+            }
+
+            if(setMission)
+            {
+                NativeFunction.Natives.SET_MISSION_FLAG(false);
+            }
+            //if (myCar.Exists())
+            //{
+            //    myCar.Delete();
+            //}
+            //if (busDriver.Exists())
+            //{
+            //    busDriver.Delete();
+            //}
+            //NativeFunction.Natives.SET_ENTITY_AS_MISSION_ENTITY(myCar, false, 1);
+
+        }, "Run Debug Logic");
+    }
     private void SpawnBus()
     {
 

@@ -28,36 +28,43 @@ public class FuelTank
     {
         get
         {
-           return string.Format(" Fuel: {0}", (VehicleExt.Vehicle.FuelLevel / 100f).ToString("P2"));
+            if(VehicleExt.Vehicle.Exists())
+            {
+                return string.Format(" Fuel: {0}", (VehicleExt.Vehicle.FuelLevel / 100f).ToString("P2"));
+            }
+            return string.Format(" Fuel: {0}", (100f).ToString("P2"));
         }
     }   
     public void Update()
     {
-        FuelLevel = VehicleExt.Vehicle.FuelLevel;
-        if(prevFuelLevel != FuelLevel)
+        if (VehicleExt.Vehicle.Exists())
         {
-            if(FuelLevel > prevFuelLevel)
+            FuelLevel = VehicleExt.Vehicle.FuelLevel;
+            if (prevFuelLevel != FuelLevel)
             {
-                OnFuelAdded();
-            }
-            else if(FuelLevel < prevFuelLevel)
-            {
-                if (!IsLeaking)
+                if (FuelLevel > prevFuelLevel)
                 {
-                    OnTankStartedLeaking();
+                    OnFuelAdded();
                 }
+                else if (FuelLevel < prevFuelLevel)
+                {
+                    if (!IsLeaking)
+                    {
+                        OnTankStartedLeaking();
+                    }
+                }
+                prevFuelLevel = FuelLevel;
             }
-            prevFuelLevel = FuelLevel;
+            else
+            {
+                IsLeaking = false;
+            }
+            if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
+            {
+                ConsumeFuel();
+                GameTimeLastCheckedFuel = Game.GameTime;
+            }
         }
-        else
-        {
-            IsLeaking = false;
-        }
-        if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
-        {
-            ConsumeFuel();
-            GameTimeLastCheckedFuel = Game.GameTime;
-        }    
     }
 
     private void OnFuelAdded()
@@ -71,7 +78,7 @@ public class FuelTank
     }
     private void ConsumeFuel()
     {
-        if (VehicleExt.Vehicle.IsEngineOn)
+        if (VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.IsEngineOn)
         {
             float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
             FuelLevel -= AmountToSubtract;

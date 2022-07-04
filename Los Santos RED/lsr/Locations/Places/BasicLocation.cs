@@ -109,6 +109,11 @@ public class BasicLocation
     public string ZoneName { get; set; }
     [XmlIgnore]
     public bool IsNearby { get; private set; } = false;
+
+
+
+
+
     public BasicLocation()
     {
 

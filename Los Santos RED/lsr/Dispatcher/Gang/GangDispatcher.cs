@@ -69,12 +69,56 @@ public class GangDispatcher
         if (Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            if (GetSpawnLocation() && GetSpawnTypes())
+            if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false);
+                CallSpawnTask(false, true);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
+
+        if (!HasDispatchedThisTick && Settings.SettingsManager.GangSettings.ManageDispatching)
+        {
+            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(Game.LocalPlayer.Character) <= 150f))
+            {
+                if (ps.PossiblePedSpawns != null)
+                {
+                    bool spawnedsome = false;
+                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                    {
+                        if (RandomItems.RandomPercent(cl.Percentage))
+                        {
+                            HasDispatchedThisTick = true;
+                            SpawnLocation = new SpawnLocation(cl.Location);
+                            SpawnLocation.Heading = cl.Heading;
+                            SpawnLocation.StreetPosition = cl.Location;
+                            //SpawnLocation.SidewalkPosition = cl.Location;
+                            if (GetSpawnTypes(true, ps.AssociatedGang))
+                            {
+                                CallSpawnTask(true, false);
+                                spawnedsome = true;
+                                HasDispatchedThisTick = true;
+                            }
+                        }
+                    }
+                    ps.IsDispatchFilled = true;
+
+                    EntryPoint.WriteToConsole($"Gang Den: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
+                }
+                else
+                {
+                    ps.IsDispatchFilled = true;
+                    EntryPoint.WriteToConsole($"Gang Den: {ps.Name} IsDispatchFilled NO SPAWNS");
+                }
+            }
+            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => !x.IsNearby && x.IsDispatchFilled))
+            {
+                ps.IsDispatchFilled = false;
+                EntryPoint.WriteToConsole($"Gang Den: {ps.Name} DEACTIVATED");
+            }
+        }
+
+
+
         return HasDispatchedThisTick;
     }
     public void Dispose()
@@ -139,12 +183,17 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes()
+    private bool GetSpawnTypes(bool forcePed, Gang forceGang)
     {
         Gang = null;
         VehicleType = null;
         PersonType = null;
-        if (IsDenSpawn && GangDen != null)
+
+        if(forceGang != null)
+        {
+            Gang = forceGang;
+        }
+        else if (IsDenSpawn && GangDen != null)
         {
             Gang = GangDen.AssociatedGang;
         }
@@ -155,14 +204,18 @@ public class GangDispatcher
         if (Gang != null)
         {
             int TotalGangMembers = World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID);
-            if (TotalGangMembers >= Gang.SpawnLimit)
+            if (TotalGangMembers >= Gang.SpawnLimit && !forcePed)
             {
                 return true;
             }
             EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {Gang.ID} spawnLocation.HasSidewalk {SpawnLocation.HasSidewalk} IsDenSpawn {IsDenSpawn}", 3);
             VehicleType = null;
-            bool SpawnVehicle = RandomItems.RandomPercent(Gang.VehicleSpawnPercentage);
-            if (IsDenSpawn && RandomItems.RandomPercent(80))
+            bool SpawnVehicle = RandomItems.RandomPercent(Gang.VehicleSpawnPercentage);    
+            if (forcePed)
+            {
+                VehicleType = null;
+            }
+            else if (IsDenSpawn && RandomItems.RandomPercent(80))
             {
                 VehicleType = null;
             }
@@ -170,7 +223,15 @@ public class GangDispatcher
             {
                 VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
             }
-            if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
+            if (forcePed)
+            {
+                PersonType = Gang.GetRandomPed(Player.WantedLevel, "");
+                if (PersonType != null)
+                {
+                    return true;
+                }
+            }
+            else if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
             {
                 string RequiredGroup = "";
                 if (VehicleType != null)
@@ -186,15 +247,13 @@ public class GangDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy)
     {
         try
         {
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
-            if (allowAny)
-            {
-                gangSpawnTask.AllowAnySpawn = true;
-            }
+            gangSpawnTask.AllowAnySpawn = allowAny;
+            gangSpawnTask.AllowBuddySpawn = allowBuddy;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
@@ -376,7 +435,7 @@ public class GangDispatcher
             }
             PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true);
+        CallSpawnTask(true, true);
     }
     
 }
