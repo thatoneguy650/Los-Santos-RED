@@ -29,10 +29,15 @@ public class PopUpMenu
     private string CurrentPopUpMenuGroup;
     private IGestures Gestures;
     private IDances Dances;
+    private int CurrentPage = 0;
+    private int TotalPages = 0;
 
     private List<PopUpMenuGroup> PopUpMenuGroups = new List<PopUpMenuGroup>();
     private float excessiveItemScaler;
     private float excessiveCenterScaler;
+    private PopUpMenuMap NextPageMenuMap;
+
+    private PopUpMenuMap PrevPageMenuMap;
 
     private bool IsCurrentPopUpMenuGroupDefault => CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot";
 
@@ -133,8 +138,8 @@ public class PopUpMenu
                 );
             ID++;
         }
-
-
+        NextPageMenuMap = new PopUpMenuMap(999, "Next Page", new Action(() => CurrentPage++), "") { ClosesMenu = false } ;
+        PrevPageMenuMap = new PopUpMenuMap(998, "Prev Page", new Action(() => CurrentPage--), "") { ClosesMenu = false };
         PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultOnFoot", OnFootMenuMaps));
         PopUpMenuGroups.Add(new PopUpMenuGroup("DefaultInVehicle", InVehicleMenuMaps));
         PopUpMenuGroups.Add(new PopUpMenuGroup("Gesture", GestureMenuMaps) { IsChild = true });
@@ -292,7 +297,7 @@ public class PopUpMenu
             foreach (PositionMap positionMap2 in PositionMaps)
             {
                 float distanceToMouse = (float)Math.Sqrt(Math.Pow(positionMap2.PositionX - XPercent, 2) + Math.Pow(positionMap2.PositionY - YPercent, 2));
-                if (distanceToMouse <= ClosestDistance && distanceToMouse <= 0.2f)
+                if (distanceToMouse <= ClosestDistance && distanceToMouse <= 0.15f)
                 {
                     ClosestDistance = distanceToMouse;
                     ClosestPositionMap = positionMap2;
@@ -305,6 +310,15 @@ public class PopUpMenu
         if (ClosestPositionMap != null)
         {
             PopUpMenuMap popUpMenuMap = GetCurrentMenuMap(ClosestPositionMap.ID);
+
+            if(popUpMenuMap == null && ClosestPositionMap.ID == 999)
+            {
+                popUpMenuMap = NextPageMenuMap;
+            }
+            else if (popUpMenuMap == null && ClosestPositionMap.ID == 998)
+            {
+                popUpMenuMap = PrevPageMenuMap;
+            }
             if (popUpMenuMap != null && popUpMenuMap.IsCurrentlyValid())
             {
                 if ((popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != ""))
@@ -324,6 +338,8 @@ public class PopUpMenu
                         else if (popUpMenuMap.ChildMenuID != "")
                         {
                             CurrentPopUpMenuGroup = popUpMenuMap.ChildMenuID;
+                            CurrentPage = 0;
+                            TotalPages = 0;
                         }
                         GameTimeLastClicked = Game.GameTime;
                     }
@@ -354,6 +370,8 @@ public class PopUpMenu
         if(!IsCurrentPopUpMenuGroupDefault && Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
         {
             UpdateDefaultMapping(true);
+            CurrentPage = 0;
+            TotalPages = 0;
         }
     }
     private void DrawShapesAndText()
@@ -364,13 +382,15 @@ public class PopUpMenu
         }
         ConsistencyScale = (float)Game.Resolution.Height/(float)Game.Resolution.Width; //(float)Game.Resolution.Width / 3840f;
         PositionMaps.Clear();
+        bool DrawPages = false;
         int ID = 0;
+        TotalPages = 0;
         List<PopUpMenuMap> CurrentMenuMap = GetCurrentMenuMap();
         if (CurrentMenuMap != null)
         {
             int TotalItems = CurrentMenuMap.Count();
-            if (TotalItems > 9)
-            {
+            if (TotalItems > Settings.SettingsManager.ActionWheelSettings.ItemsPerPage)
+            {          
                 float shrinkAmount = (TotalItems - 9) * Settings.SettingsManager.ActionWheelSettings.ItemScaleExtraItemScalar;
                 excessiveItemScaler = 1.0f - shrinkAmount;
                 float centershrinkAmount = (TotalItems - 9) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenterExtraItemScalar;
@@ -383,11 +403,39 @@ public class PopUpMenu
             }
             if (TotalItems > 0)
             {
-                double angle = 360.0 / TotalItems * Math.PI / 180.0;
-                for (int i = 0; i < TotalItems; i++)
+                int startingItem = 0;
+                int ItemsToDisplay = TotalItems;
+                if(TotalItems > Settings.SettingsManager.ActionWheelSettings.ItemsPerPage)
                 {
-                    DrawSingle(ID, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * excessiveCenterScaler, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * excessiveCenterScaler);
+                    excessiveItemScaler = 1.0f;
+                    excessiveCenterScaler = 1.0f;
+                    DrawPages = true;
+                    if(CurrentPage * Settings.SettingsManager.ActionWheelSettings.ItemsPerPage > TotalItems)
+                    {
+                        CurrentPage = 0;
+                    }
+                    startingItem = CurrentPage * Settings.SettingsManager.ActionWheelSettings.ItemsPerPage;
+                    if(TotalItems - startingItem > Settings.SettingsManager.ActionWheelSettings.ItemsPerPage)
+                    {
+                        ItemsToDisplay = Settings.SettingsManager.ActionWheelSettings.ItemsPerPage;
+                    }
+                    else
+                    {
+                        ItemsToDisplay = TotalItems - startingItem;
+                    }
+                    TotalPages = (int)Math.Ceiling(TotalItems / (float)Settings.SettingsManager.ActionWheelSettings.ItemsPerPage);
+                }
+                double angle = 360.0 / ItemsToDisplay * Math.PI / 180.0;
+                for (int i = 0; i < ItemsToDisplay; i++)
+                {
+                    DrawSingle(startingItem + i, Settings.SettingsManager.ActionWheelSettings.ItemCenterX + (float)Math.Cos((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * ConsistencyScale * excessiveCenterScaler, Settings.SettingsManager.ActionWheelSettings.ItemCenterY + (float)Math.Sin((angle * i) - 1.5708) * Settings.SettingsManager.ActionWheelSettings.ItemDistanceFromCenter * excessiveCenterScaler);
                     ID++;
+                }
+                if(DrawPages)
+                {
+                    DrawPage(PrevPageMenuMap, Settings.SettingsManager.ActionWheelSettings.PrevPageCenterX, Settings.SettingsManager.ActionWheelSettings.PrevPageCenterY);
+                    DrawPage(NextPageMenuMap, Settings.SettingsManager.ActionWheelSettings.NextPageCenterX, Settings.SettingsManager.ActionWheelSettings.NextPageCenterY);
+                    //DisplayTextBoxOnScreen($"{CurrentPage + 1}/{TotalPages}", Settings.SettingsManager.ActionWheelSettings.PageCenterX + 0.15f, Settings.SettingsManager.ActionWheelSettings.PageCenterY, Settings.SettingsManager.ActionWheelSettings.TextScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor), Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, Color.Black);
                 }
             }
         }
@@ -403,6 +451,9 @@ public class PopUpMenu
         if (popUpMenuMap != null)
         {
             display = popUpMenuMap.Display;
+
+
+
             if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID && SelectedMenuMap.IsCurrentlyValid())//is the selected item
             {
                 overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.SelectedItemColor);//Color.FromArgb(72, 133, 164, 100);
@@ -418,6 +469,35 @@ public class PopUpMenu
         DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
+    private void DrawPage(PopUpMenuMap popUpMenuMap, float CurrentPositionX, float CurrentPositionY)
+    {
+        Color overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.ItemColor);
+        string display = "Next Page!";
+        bool isSelected = false;
+        Color textColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor);
+        if (popUpMenuMap != null)
+        {
+            display = popUpMenuMap.Display;
+            if (popUpMenuMap.ID == NextPageMenuMap.ID)
+            {
+                display += $" {CurrentPage + 1}/{TotalPages}";
+            }
+            if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID && SelectedMenuMap.IsCurrentlyValid())//is the selected item
+            {
+                overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.SelectedItemColor);//Color.FromArgb(72, 133, 164, 100);
+                isSelected = true;
+            }
+            if (!popUpMenuMap.IsCurrentlyValid())
+            {
+                textColor = Color.Gray;
+            }
+        }
+
+        float selectedSizeScalar = 1.05f;
+        DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
+        PositionMaps.Add(new PositionMap(popUpMenuMap.ID, display, CurrentPositionX, CurrentPositionY));
+    }
+
     private PopUpMenuMap GetCurrentMenuMap(int ID)
     {
         return GetCurrentMenuMap()?.FirstOrDefault(x => x.ID == ID);

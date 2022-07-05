@@ -87,9 +87,9 @@ public class ModItems : IModItems
             new ModItem("Bottle of 40 oz", "Drink like a true thug!", eConsumableType.Drink, ItemType.Drinks){
                 ModelItem = new PhysicalItem("prop_cs_beer_bot_40oz", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)),IntoxicantName = "Low Proof Alcohol", ItemSubType= ItemSubType.Beer},
             new ModItem("Bottle of Sinsimito Tequila", "Extra Anejo 100% De Agave. 42% Alcohol by volume", eConsumableType.Drink, ItemType.Drinks){
-                ModelItem = new PhysicalItem("h4_prop_h4_t_bottle_02a", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15,CleanupItemImmediately = true, ItemSubType= ItemSubType.Liquor},
+                PackageItem = new PhysicalItem("h4_prop_h4_t_bottle_02a", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15,CleanupItemImmediately = true, ItemSubType= ItemSubType.Liquor},
             new ModItem("Bottle of Cazafortuna Tequila", "Tequila Anejo. 100% Blue Agave 40% Alcohol by volume", eConsumableType.Drink, ItemType.Drinks){
-                ModelItem = new PhysicalItem("h4_prop_h4_t_bottle_01a", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15,CleanupItemImmediately = true, ItemSubType= ItemSubType.Liquor},
+                PackageItem = new PhysicalItem("h4_prop_h4_t_bottle_01a", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)),IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15,CleanupItemImmediately = true, ItemSubType= ItemSubType.Liquor},
             //Cups & Cans
             new ModItem("Can of eCola", "Deliciously Infectious!", eConsumableType.Drink, ItemType.Drinks){
                 ModelItem = new PhysicalItem("ng_proc_sodacan_01a", new Vector3(0.0f, 0.0f, -0.1f), new Rotator(0.0f, 0.0f, 0.0f)),HealthChangeAmount = 10, ItemSubType= ItemSubType.Soda},
@@ -176,11 +176,11 @@ public class ModItems : IModItems
 
             //Legal Drugs
             new ModItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.",eConsumableType.Smoke, ItemType.Drugs) {
-                ModelItem = new PhysicalItem("p_amb_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter , ItemSubType = ItemSubType.Narcotic},
+                ModelItem = new PhysicalItem("p_cs_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter , ItemSubType = ItemSubType.Narcotic},
             new ModItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.",eConsumableType.Smoke, ItemType.Drugs) {
-                ModelItem = new PhysicalItem("p_amb_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ModelItem = new PhysicalItem("p_cs_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
             new ModItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.",eConsumableType.Smoke, ItemType.Drugs) {
-                ModelItem = new PhysicalItem("p_amb_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ModelItem = new PhysicalItem("p_cs_joint_01"),PackageItem = new PhysicalItem("prop_weed_bottle"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
             new ModItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!",eConsumableType.Ingest, ItemType.Drugs) {
                 ModelItem = new PhysicalItem("prop_cs_pills",new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Narcotic},
             new ModItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.",eConsumableType.Ingest, ItemType.Drugs) {
@@ -197,7 +197,7 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_cs_pills",new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Narcotic },
             //Illegal Drugs
             new ModItem("Marijuana","Little Jacob Tested, Truth Approved",eConsumableType.Smoke, ItemType.Drugs) {
-                ModelItem = new PhysicalItem("p_amb_joint_01")
+                ModelItem = new PhysicalItem("p_cs_joint_01")//p_amb_joint_01
                 ,PackageItem = new PhysicalItem("sf_prop_sf_bag_weed_01a"), PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
             new ModItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?",eConsumableType.Ingest, ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItem = new PhysicalItem("prop_cs_pills",new Vector3(0.12f, 0.03f, 0.0f),new Rotator(-76f, 0f, 0f)),IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic },
@@ -255,7 +255,7 @@ public class ModItems : IModItems
                 ModelItem = new PhysicalItem("prop_sandwich_01",new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthChangeAmount = 10, ItemSubType = ItemSubType.Entree } ,
             new ModItem("Tuna Sandwich","Haven't got enough heavy metals in you at your job? Try tuna!",eConsumableType.Eat, ItemType.Food) {
                 ModelItem = new PhysicalItem("prop_sandwich_01",new Vector3(0.14f, -0.02f, -0.04f),new Rotator(178.0f, 28.0f, 0.0f)), HealthChangeAmount = 10, ItemSubType = ItemSubType.Entree } ,
-            new ModItem("Taco",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, ItemSubType = ItemSubType.Entree, ModelItem = new PhysicalItem("Prop_Taco_02") },
+            new ModItem("Taco",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, ItemSubType = ItemSubType.Entree, ModelItem = new PhysicalItem("prop_taco_01") },
             new ModItem("Strawberry Rails Cereal","The breakfast food you snort!",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 50, ItemSubType = ItemSubType.Cereal} ,
             new ModItem("Crackles O' Dawn Cereal","Smile at the crack!",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 60, ItemSubType = ItemSubType.Cereal} ,
             new ModItem("White Bread","Extra white, with minimal taste.",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, AmountPerPackage = 25, ItemSubType = ItemSubType.Bread} ,
@@ -263,41 +263,41 @@ public class ModItems : IModItems
             new ModItem("Slice of Pizza","Caution may be hot",eConsumableType.Eat, ItemType.Food) {
                 ModelItem = new PhysicalItem("v_res_tt_pizzaplate",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 10, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Small Cheese Pizza","Best when you are home alone.",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Small Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Small Supreme Pizza","Get stuffed",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Medium Cheese Pizza","Best when you are home alone.",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Medium Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Medium Supreme Pizza","Get stuffed",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Large Cheese Pizza","Best when you are home alone.",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Large Pepperoni Pizza","Get a load of our pepperonis!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("Large Supreme Pizza","Get stuffed",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_02",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("10 inch Cheese Pizza","Extra cheesy!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 25, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("10 inch Pepperoni Pizza","Mostly Meat!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 30, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("10 inch Supreme Pizza","We forgot the kitchen sink!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 35, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("12 inch Cheese Pizza","Extra cheesy!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 50, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("12 inch Pepperoni Pizza","Mostly Meat!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 55, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("12 inch Supreme Pizza","We forgot the kitchen sink!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 60, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("18 inch Cheese Pizza","Extra cheesy! Extra Large!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 65, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("18 inch Pepperoni Pizza","Mostly Meat! Extra Large!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 70, ItemSubType = ItemSubType.Pizza } ,
             new ModItem("18 inch Supreme Pizza","We forgot the kitchen sink! Extra Large!",eConsumableType.Eat, ItemType.Food) {
-                ModelItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75, ItemSubType = ItemSubType.Pizza } ,
+                PackageItem = new PhysicalItem("prop_pizza_box_01",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 75, ItemSubType = ItemSubType.Pizza } ,
             //Chips
             new ModItem("Sticky Rib Phat Chips","They are extra phat. Sticky Rib Flavor.",eConsumableType.Eat, ItemType.Food) {
                 ModelItem = new PhysicalItem("v_ret_ml_chips1",new Vector3(0.12f, 0.0f, -0.06f),new Rotator(-77.0f, 23.0f, 0.0f)), HealthChangeAmount = 10, ItemSubType = ItemSubType.Snack },

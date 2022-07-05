@@ -62,8 +62,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public float MouthRotateX { get; set; }
     public float MouthRotateY { get; set; }
     public float MouthRotateZ { get; set; }
-
-
+    public bool AllowDLCVehiclesInStores { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -115,6 +114,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MouthRotateX = 0.0f;
         MouthRotateY = 0.0f;
         MouthRotateZ = 0.0f;
+
+        AllowDLCVehiclesInStores = false;
 
     }
 

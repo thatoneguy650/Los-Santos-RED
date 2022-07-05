@@ -403,8 +403,15 @@ public class UI : IMenuProvideable
 
         bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
         bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable;
+
+        bool willShowCashChange = willShowCash && DisplayablePlayer.RecentlyChangedMoney;
+        bool willShowNeeds = IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed;
+
+
         float WeaponPosition = 0.0f;
         float CashPosition = 0.0f;
+        float CashChangePosition = 0.0f;
+        float NeedsPosition = 0.0f;
         float StartingPosition = Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionX;
         if (IsVanillaStarsHUDVisible)
         {
@@ -428,6 +435,20 @@ public class UI : IMenuProvideable
             CashPosition = StartingPosition;
             StartingPosition += 0.035f;
         }
+
+        if(willShowCashChange)
+        {
+            CashChangePosition = StartingPosition;
+            StartingPosition += 0.035f;
+        }    
+
+        if(willShowNeeds)
+        {
+            NeedsPosition = StartingPosition;
+            StartingPosition += 0.035f;
+        }
+
+
         if (willShowWeapon)
         {
            // DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale + Settings.SettingsManager.LSRHUDSettings.TopDisplayOutlineSize, Color.Black, GTAFont.FontPricedown, (GTATextJustification)0, true);
@@ -440,10 +461,24 @@ public class UI : IMenuProvideable
             DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
+        if(willShowCashChange)
+        {
+            string Prefix = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "~g" : "~r~";
+            DisplayTextOnScreen(Prefix + "$" + DisplayablePlayer.LastChangeMoneyAmount.ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+        }
+
+        if (willShowNeeds)
+        {
+            DisplayTextOnScreen(DisplayablePlayer.HumanState.DisplayString(), NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+        }
+
         //string debugText = $"VStar {IsVanillaStarsHUDVisible} VWeap{IsVanillaWeaponHUDVisible} V$ {IsVanillaCashHUDVisible} will$ {willShowCash} pos {CashPosition} willWeap {willShowWeapon} pos {WeaponPosition}";
         //DisplayTextOnScreen(debugText, 0.6f, 0.6f, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
 
     }
+
+ 
+
     private void DisplayButtonPrompts()
     {
         if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts)

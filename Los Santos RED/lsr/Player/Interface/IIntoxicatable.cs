@@ -25,6 +25,7 @@ namespace LosSantosRED.lsr.Interface
         string DebugLine4 { get; set; }
         Sprinting Sprinting { get; }
         bool IsOnMuscleRelaxants { get; set; }
+        HumanState HumanState { get; }
 
         // void SetUnarmed();
         void PauseCurrentActivity();

@@ -68,5 +68,7 @@ namespace LosSantosRED.lsr.Interface
         CellPhone CellPhone { get; }
         bool CharacterModelIsPrimaryCharacter { get; }
         int Money { get; }
+        HumanState HumanState { get; set; }
+        int LastChangeMoneyAmount { get; }
     }
 }

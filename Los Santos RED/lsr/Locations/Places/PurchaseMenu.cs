@@ -655,7 +655,10 @@ public class PurchaseMenu : Menu
                     {
                         if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
                         {
-                            AddVehicleEntry(cii, myItem);
+                            if (!myItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
+                            {
+                                AddVehicleEntry(cii, myItem);
+                            }
                         }
                         else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
                         {

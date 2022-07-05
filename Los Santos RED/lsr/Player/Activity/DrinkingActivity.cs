@@ -171,7 +171,8 @@ namespace LosSantosRED.lsr.Player
                 {
                     if(!IsFinishedWithSip)
                     {
-                        StartExitAnimation();
+                        //StartExitAnimation();
+                        StartBaseAnimation();
                         GameTimeLastChangedIdle = Game.GameTime;
                         GameTimeBetweenDrinks = RandomItems.GetRandomNumber(3500, 5500);
                         IsFinishedWithSip = true;
@@ -206,6 +207,14 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
+
+        private void StartBaseAnimation()
+        {
+            PlayingDict = Data.AnimExitDictionary;
+            PlayingAnim = Data.AnimExit;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, 50, 0, false, false, false);
+        }
+
         private void UpdateHealthGain()
         {
             if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
@@ -216,11 +225,13 @@ namespace LosSantosRED.lsr.Player
                     {
                         HealthGiven++;
                         Player.ChangeHealth(1);
+                        Player.HumanState.ChangeThirst(1.0f);
                     }
                     else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
                     {
                         HealthGiven--;
                         Player.ChangeHealth(-1);
+                        Player.HumanState.ChangeThirst(1.0f);
                     }
                 }
                 GameTimeLastGivenHealth = Game.GameTime;
@@ -238,8 +249,6 @@ namespace LosSantosRED.lsr.Player
             Vector3 HandOffset = Vector3.Zero;
             Rotator HandRotator = Rotator.Zero;
             string PropModel = "";
-
-
             bool isBottle = false;
 
             if (ModItem != null && ModItem.Name.ToLower().Contains("bottle"))
@@ -247,21 +256,11 @@ namespace LosSantosRED.lsr.Player
                 isBottle = true;
             }
             EntryPoint.WriteToConsole($"Drinking Start isBottle {isBottle}");
-
-
-
             HandBoneID = 18905;
-            HandOffset = new Vector3(0.12f, -0.07f, 0.07f);
-            HandRotator = new Rotator(-110.0f, 14.0f, 1.0f);
-
-
-
-
-
+            //HandOffset = new Vector3(0.12f, -0.07f, 0.07f);
+            //HandRotator = new Rotator(-110.0f, 14.0f, 1.0f);
             HandOffset = new Vector3();
             HandRotator = new Rotator();
-
-
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModel = ModItem.ModelItem.ModelName;
@@ -269,8 +268,6 @@ namespace LosSantosRED.lsr.Player
                 HandOffset = ModItem.ModelItem.AttachOffsetOverride;
                 HandRotator = ModItem.ModelItem.AttachRotationOverride;
             }
-
-
             if (Player.IsInVehicle)
             {
                 if (Player.IsDriver)
@@ -337,49 +334,6 @@ namespace LosSantosRED.lsr.Player
                     AnimIdle = new List<string>() { "loop" };
                 }
             }
-
-
-
-
-
-
-
-
-            //works best with the bonetag bones instead of the hand bones
-
-
-      
-            //HandOffset = new Vector3(0.0f, 0.0f, Settings.SettingsManager.PlayerOtherSettings.HandOffsetDrinking);
-
-
-           // if(Settings.SettingsManager.PlayerOtherSettings.HandOffsetDrinking)
-
-          //  HandRotator = new Rotator(0.0f, 0.0f, 0.0f);
-
-
-            //SPRUNK AND eCOLA CANS -0.1f
-
-            //CUP OF eCola and Sprunk = -0.2f
-
-
-            //Raine and GRey Water = -0.05f
-
-
-            //Coffee
-            //Junk Energy = 0.0f
-            //Pisswasser = 0.0f?
-            //ORANG O TANG CAN = 0.0f;
-
-
-
-            //ALL BEER BESIDES PISSWASSER 
-
-            //-0.15f
-
-
-
-
-
 
             if (ModItem != null && ModItem.IsIntoxicating)
             {

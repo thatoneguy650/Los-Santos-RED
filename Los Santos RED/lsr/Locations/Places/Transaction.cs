@@ -22,10 +22,7 @@ public class Transaction
     public float ItemPreviewHeading { get; set; } = 0f;
     public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
     public float ItemDeliveryHeading { get; set; } = 0f;
-
     public bool PreviewItems { get; set; } = true;
-
-
     public PersonTransaction PersonTransaction;
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)

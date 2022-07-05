@@ -36,6 +36,12 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float ItemDistanceFromCenterExtraItemScalar { get; set; }
     public float ItemScaleExtraItemScalar { get; set; }
     public float TextBoxScale { get; set; }
+    public float PrevPageCenterX { get; set; }
+    public float PrevPageCenterY { get; set; }
+
+    public float NextPageCenterX { get; set; }
+    public float NextPageCenterY { get; set; }
+    public int ItemsPerPage { get; set; }
 
     public ActionWheelSettings()
     {
@@ -67,9 +73,19 @@ public class ActionWheelSettings : ISettingsDefaultable
         MessageBodySpacingY = 0.15f;//0.125f;
         MessageHeaderSpacingY = 0.055f;//0.02f;
         MessagesToShow = 4;
-        ItemDistanceFromCenterExtraItemScalar = -0.01f;
+        ItemDistanceFromCenterExtraItemScalar = -0.005f;//-0.01f;
         ItemScaleExtraItemScalar = 0.005f;// 0.01f;
 
         TextBoxScale = 0.084f;//0.025f;
+
+        NextPageCenterX = 0.875f;
+        NextPageCenterY = 0.8f;
+
+
+        PrevPageCenterX = 0.8f;
+        PrevPageCenterY = 0.8f;
+
+
+        ItemsPerPage = 10;
     }
 }

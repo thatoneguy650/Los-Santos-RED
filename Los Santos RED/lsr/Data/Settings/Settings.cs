@@ -89,6 +89,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.VehicleSettings.KeepRadioAutoTuned = false;
         SettingsManager.WeatherReportingSettings.ReportWeather = false;
+        SettingsManager.WeatherReportingSettings.ShowWeatherNotifications = false;
 
     }
     public void SetHard()

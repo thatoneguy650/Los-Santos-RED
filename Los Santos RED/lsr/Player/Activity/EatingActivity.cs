@@ -63,7 +63,12 @@ namespace LosSantosRED.lsr.Player
             CreateFood();
             if (Food.Exists() && !IsAttachedToHand)
             {
-                Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                //Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
+                
+
+
+
                 IsAttachedToHand = true;
                 Player.AttachedProp = Food;
             }
@@ -169,11 +174,13 @@ namespace LosSantosRED.lsr.Player
                     {
                         HealthGiven++;
                         Player.ChangeHealth(1);
+                        Player.HumanState.ChangeHunger(1.0f);
                     }
                     else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
                     {
                         HealthGiven--;
                         Player.ChangeHealth(-1);
+                        Player.HumanState.ChangeHunger(1.0f);
                     }
                 }
                 GameTimeLastGivenHealth = Game.GameTime;
@@ -194,36 +201,36 @@ namespace LosSantosRED.lsr.Player
             Rotator HandRotator = Rotator.Zero;
             string PropModel = "";
 
-            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-            {
-                AnimIdleDictionary = "amb@code_human_wander_eating_donut@male@idle_a";
-                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-                AnimBase = "base";
-                AnimBaseDictionary = "amb@code_human_wander_eating_donut@male@base";
-                AnimEnter = "static";
-                AnimEnterDictionary = "amb@code_human_wander_eating_donut@male@base";
+            //if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
+            //{
+            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@male@idle_a";
+            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
+            //    AnimBase = "base";
+            //    AnimBaseDictionary = "amb@code_human_wander_eating_donut@male@base";
+            //    AnimEnter = "static";
+            //    AnimEnterDictionary = "amb@code_human_wander_eating_donut@male@base";
 
-                if (Player.IsSitting || Player.IsInVehicle)
-                {
-                    AnimIdleDictionary = "amb@world_human_seat_wall_eating@male@both_hands@idle_a";
-                    AnimIdle = new List<string>() { "Idle_c" };
-                }
-            }
-            else
-            {
-                AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
-                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-                AnimBase = "base";
-                AnimBaseDictionary = "amb@code_human_wander_eating_donut@female@base";
-                AnimEnter = "static";
-                AnimEnterDictionary = "amb@code_human_wander_eating_donut@female@base";
+            //    if (Player.IsSitting || Player.IsInVehicle)
+            //    {
+            //        AnimIdleDictionary = "amb@world_human_seat_wall_eating@male@both_hands@idle_a";
+            //        AnimIdle = new List<string>() { "Idle_c" };
+            //    }
+            //}
+            //else
+            //{
+            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
+            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
+            //    AnimBase = "base";
+            //    AnimBaseDictionary = "amb@code_human_wander_eating_donut@female@base";
+            //    AnimEnter = "static";
+            //    AnimEnterDictionary = "amb@code_human_wander_eating_donut@female@base";
 
-                if (Player.IsSitting || Player.IsInVehicle)
-                {
-                    AnimIdleDictionary = "amb@world_human_seat_wall_eating@female@sandwich_right_hand@idle_a";
-                    AnimIdle = new List<string>() { "idle_a" };
-                }
-            }
+            //    if (Player.IsSitting || Player.IsInVehicle)
+            //    {
+            //        AnimIdleDictionary = "amb@world_human_seat_wall_eating@female@sandwich_right_hand@idle_a";
+            //        AnimIdle = new List<string>() { "idle_a" };
+            //    }
+            //}
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 //HandBoneID = ModItem.ModelItem.AttachBoneIndex;
@@ -232,17 +239,30 @@ namespace LosSantosRED.lsr.Player
                 PropModel = ModItem.ModelItem.ModelName;
             }
 
+
+
+
             //works, but need to redo all the food attachments
             //HandBoneID = 18905;
-            //AnimIdleDictionary = "mp_player_inteat@burger";
-            //AnimIdle = new List<string>() { "mp_player_int_eat_burger" };
-            //AnimBase = "mp_player_int_eat_burger_enter";
-            //AnimBaseDictionary = "mp_player_inteat@burger";
-            //AnimEnter = "mp_player_int_eat_burger_enter";
-            //AnimEnterDictionary = "mp_player_inteat@burger";
 
 
+            HandOffset = Vector3.Zero;
+            HandRotator = Rotator.Zero;
 
+
+            AnimIdleDictionary = "mp_player_inteat@burger";
+            AnimIdle = new List<string>() { "mp_player_int_eat_burger" };
+            AnimBase = "mp_player_int_eat_burger_enter";
+            AnimBaseDictionary = "mp_player_inteat@burger";
+            AnimEnter = "mp_player_int_eat_burger_enter";
+            AnimEnterDictionary = "mp_player_inteat@burger";
+
+
+            if (Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
+            {
+                HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
+                HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
+            }
 
 
 

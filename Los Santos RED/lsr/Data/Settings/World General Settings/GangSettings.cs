@@ -72,7 +72,7 @@ public class GangSettings : ISettingsDefaultable
         OverrideArmor = true;
         OverrideHealth = true;
         OverrideAccuracy = true;
-        PercentageSpawnNearDen = 70;
+        PercentageSpawnNearDen = 10;
        // MakeVanillaSpawnedGangMembersPersistent = false;
 
 

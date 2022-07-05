@@ -19,7 +19,7 @@ namespace Mod
 {
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
-                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable
+                          IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable
     {
         public int UpdateState = 0;
         //private BigMessageThread BigMessageThread;
@@ -156,6 +156,7 @@ namespace Mod
             ButtonPrompts = new ButtonPrompts(this, Settings);
             Injuries = new Injuries(this, Settings);
             Dances = dances;
+            HumanState = new HumanState(this);
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
@@ -279,6 +280,7 @@ namespace Mod
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
         public bool IsCop { get; set; } = false;
+        public bool IsAlive => !IsDead;
         public bool IsCrouched { get; set; }
         public bool IsCustomizingPed { get; set; }
         public bool IsDead { get; private set; }
@@ -369,6 +371,7 @@ namespace Mod
         public Licenses Licenses { get; private set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
+        public int LastChangeMoneyAmount { get; set; }
         public int Money
         {
             get
@@ -410,7 +413,7 @@ namespace Mod
         public Properties Properties { get; private set; }
         public bool RecentlyBribedPolice => Respawning.RecentlyBribedPolice;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
-        public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 10000;
+        public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
         public bool RecentlyCrashedVehicle => GameTimeLastCrashedVehicle != 0 && Game.GameTime - GameTimeLastCrashedVehicle <= 5000;
         public bool RecentlyFedUpCop => GameTimeLastFedUpCop != 0 && Game.GameTime - GameTimeLastFedUpCop <= 5000;
         public bool RecentlyPaidFine => Respawning.RecentlyPaidFine;
@@ -476,7 +479,260 @@ namespace Mod
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
+        public float FootSpeed { get; set; }
+        public HumanState HumanState { get; set; }
+        public void Setup()
+        {
+            Violations.Setup();
+            Respawning.Setup();
+            GangRelationships.Setup();
+            CellPhone.Setup();
+            PlayerTasks.Setup();
+            GunDealerRelationship.Setup();
+            OfficerFriendlyRelationship.Setup();
+            Properties.Setup();
+            ButtonPrompts.Setup();
+            HumanState.Setup();
 
+
+            SetWantedLevel(0, "Initial", true);
+            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
+            SetUnarmed();
+            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
+            ModelName = Game.LocalPlayer.Character.Model.Name;
+            CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+            {
+                UpdateCurrentVehicle();
+                TakeOwnershipOfVehicle(CurrentVehicle, false);
+            }
+            if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+            }
+            if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
+            }
+
+
+            if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
+            {
+                NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, false);
+            }
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowAttackingFriendlyPeds)
+            {
+                NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
+            }
+
+            GameFiber.StartNew(delegate
+            {
+                while (isActive)
+                {
+                    if (Game.LocalPlayer.Character.IsShooting)
+                    {
+                        WeaponRecoil.Update();
+                        GameTimeLastShot = Game.GameTime;
+                    }
+                    else if (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming)
+                    {
+                        WeaponSway.Update();
+                    }
+                    GameFiber.Yield();
+                }
+            }, "IsShootingChecker");
+            GameFiber.StartNew(delegate
+            {
+                while (isActive)
+                {
+                    WeaponSelector.Update();
+                    GameFiber.Yield();
+                }
+            }, "IsShootingChecker2");
+
+            GameFiber.StartNew(delegate
+            {
+                while (isActive)
+                {
+                    CellPhone.Update();
+                    GameFiber.Yield();
+                }
+            }, "CellPhone");
+
+            //BigMessageThread = new BigMessageThread(true);
+            //BigMessage = BigMessageThread.MessageInstance;
+
+
+
+            AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
+
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
+            AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
+
+
+            if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
+            {
+                Tools.Scripts.TerminateScript("cellphone_flashhand");
+                Tools.Scripts.TerminateScript("cellphone_controller");
+            }
+            LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
+            LastDance = Dances.GetRandomDance();
+        }
+        public void Update()
+        {
+            UpdateData();
+            ButtonPrompts.Update();
+        }
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth)
+        {
+            IsDead = false;
+            IsBusted = false;
+            Game.LocalPlayer.HasControl = true;
+            BeingArrested = false;
+            HealthState.Reset();
+            IsPerformingActivity = false;
+            CurrentVehicle = null;
+            RemoveGPSRoute();
+
+
+            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+            IsMobileRadioEnabled = false;
+
+            // IsIntoxicated = false;
+            if (resetWanted)
+            {
+                PoliceResponse.Reset();
+                Investigation.Reset();
+                Violations.Reset();
+                MaxWantedLastLife = 0;
+                GameTimeStartedPlaying = Game.GameTime;
+                Scanner.Reset();
+                Update();
+            }
+            if (resetTimesDied)
+            {
+                Respawning.Reset();
+            }
+            if (clearWeapons)
+            {
+                Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+            }
+            if (clearCriminalHistory)
+            {
+                CriminalHistory.Clear();
+            }
+            if (clearInventory)
+            {
+                Inventory.Clear();
+            }
+            if (clearIntoxication)
+            {
+                Intoxication.Dispose();
+            }
+            else if (IsIntoxicated)
+            {
+                Intoxication.Restart();
+            }
+            if (resetGangRelationships)
+            {
+                GangRelationships.ResetAllReputations();
+                foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
+                {
+                    gd.Reset();
+                }
+                foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
+                {
+                    gd.Reset();
+                }
+                OfficerFriendlyRelationship.Reset(false);
+                GunDealerRelationship.Reset(false);
+            }
+            if (clearOwnedVehicles)
+            {
+                ClearVehicleOwnership();
+            }
+            if (clearCellphone)
+            {
+                CellPhone.Reset();
+            }
+            if (clearActiveTasks)
+            {
+                PlayerTasks.Clear();
+            }
+            if (clearProperties)
+            {
+                Properties.Dispose();
+            }
+            if (resetHealth)
+            {
+                Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+                NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
+                Injuries.Dispose();
+
+                HumanState.Reset();
+
+            }
+            else if (Injuries.IsInjured)
+            {
+                Injuries.Restart();
+            }
+        }
+        public void Dispose()
+        {
+            Investigation.Dispose(); //remove blip
+            CriminalHistory.Dispose(); //remove blip
+            PoliceResponse.Dispose(); //same ^
+            Interaction?.Dispose();
+            SearchMode.Dispose();
+            GangRelationships.Dispose();
+            CellPhone.Dispose();
+            PlayerTasks.Dispose();
+            Properties.Dispose();
+            ButtonPrompts.Dispose();
+            Intoxication.Dispose();
+            Injuries.Dispose();
+
+            GunDealerRelationship.Dispose();
+            OfficerFriendlyRelationship.Dispose();
+            HumanState.Dispose();
+
+            isActive = false;
+            RemoveGPSRoute();
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
+
+
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
+            // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
+
+            NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
+            NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset)//this should be moved methinks
+            {
+                NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+                NativeFunction.Natives.x80C8B1846639BB19(0);
+                NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+            }
+
+            Game.LocalPlayer.WantedLevel = 0;
+            NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
+            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 6);
+
+            NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
+            ClearVehicleOwnership();
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
+            {
+                Game.TimeScale = 1f;
+            }
+            NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
+
+            NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
+            NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, true);
+
+            //Game.DisableControlAction(0, GameControl.Attack, false);
+        }
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -927,60 +1183,7 @@ namespace Mod
             {
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{PlayerName}", "~s~Vehicle: None");
             }
-        }
-        public void Dispose()
-        {
-            Investigation.Dispose(); //remove blip
-            CriminalHistory.Dispose(); //remove blip
-            PoliceResponse.Dispose(); //same ^
-            Interaction?.Dispose();
-            SearchMode.Dispose();
-            GangRelationships.Dispose();
-            CellPhone.Dispose();
-            PlayerTasks.Dispose();
-            Properties.Dispose();
-            ButtonPrompts.Dispose();
-            Intoxication.Dispose();
-            Injuries.Dispose();
-
-            GunDealerRelationship.Dispose();
-            OfficerFriendlyRelationship.Dispose();
-
-            isActive = false;
-            RemoveGPSRoute();
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
-
-
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
-            // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
-
-            NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
-            NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-            if (Settings.SettingsManager.UIGeneralSettings.AllowScreenEffectReset)//this should be moved methinks
-            {
-                NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-                NativeFunction.Natives.x80C8B1846639BB19(0);
-                NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-            }
-
-            Game.LocalPlayer.WantedLevel = 0;
-            NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
-            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 6);
-
-            NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
-            ClearVehicleOwnership();
-            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
-            {
-                Game.TimeScale = 1f;
-            }
-            NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
-
-            NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
-            NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, true);
-
-            //Game.DisableControlAction(0, GameControl.Attack, false);
-        }
+        }    
         public void DropWeapon()
         {
             if (CanDropWeapon)
@@ -1139,6 +1342,7 @@ namespace Mod
         {
             if (Amount != 0)
             {
+                LastChangeMoneyAmount = Amount;
                 GameTimeLastChangedMoney = Game.GameTime;
             }
             int CurrentCash;
@@ -1522,97 +1726,6 @@ namespace Mod
                 UpperBodyActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth)
-        {
-            IsDead = false;
-            IsBusted = false;
-            Game.LocalPlayer.HasControl = true;
-            BeingArrested = false;
-            HealthState.Reset();
-            IsPerformingActivity = false;
-            CurrentVehicle = null;
-            RemoveGPSRoute();
-
-
-            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-            IsMobileRadioEnabled = false;
-
-            // IsIntoxicated = false;
-            if (resetWanted)
-            {
-                PoliceResponse.Reset();
-                Investigation.Reset();
-                Violations.Reset();
-                MaxWantedLastLife = 0;
-                GameTimeStartedPlaying = Game.GameTime;
-                Scanner.Reset();
-                Update();
-            }
-            if (resetTimesDied)
-            {
-                Respawning.Reset();
-            }
-            if (clearWeapons)
-            {
-                Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-            }
-            if (clearCriminalHistory)
-            {
-                CriminalHistory.Clear();
-            }
-            if (clearInventory)
-            {
-                Inventory.Clear();
-            }
-            if (clearIntoxication)
-            {
-                Intoxication.Dispose();
-            }
-            else if (IsIntoxicated)
-            {
-                Intoxication.Restart();
-            }
-            if (resetGangRelationships)
-            {
-                GangRelationships.ResetAllReputations();
-                foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
-                {
-                    gd.Reset();
-                }
-                foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
-                {
-                    gd.Reset();
-                }
-                OfficerFriendlyRelationship.Reset(false);
-                GunDealerRelationship.Reset(false);
-            }
-            if (clearOwnedVehicles)
-            {
-                ClearVehicleOwnership();
-            }
-            if (clearCellphone)
-            {
-                CellPhone.Reset();
-            }
-            if (clearActiveTasks)
-            {
-                PlayerTasks.Clear();
-            }
-            if (clearProperties)
-            {
-                Properties.Dispose();
-            }
-            if (resetHealth)
-            {
-                Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-                NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
-                Injuries.Dispose();
-            }
-            else if (Injuries.IsInjured)
-            {
-                Injuries.Restart();
-            }
-        }
         public void ResetScanner() => Scanner.Reset();
         public void ResetScannerDebug()
         {
@@ -1697,105 +1810,7 @@ namespace Mod
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
             }
-        }
-        public void Setup()
-        {
-            Violations.Setup();
-            Respawning.Setup();
-            GangRelationships.Setup();
-            CellPhone.Setup();
-            PlayerTasks.Setup();
-            GunDealerRelationship.Setup();
-            OfficerFriendlyRelationship.Setup();
-            Properties.Setup();
-            ButtonPrompts.Setup();
-
-
-            SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-            SetUnarmed();
-            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
-            ModelName = Game.LocalPlayer.Character.Model.Name;
-            CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
-            {
-                UpdateCurrentVehicle();
-                TakeOwnershipOfVehicle(CurrentVehicle, false);
-            }
-            if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
-            {
-                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-            }
-            if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
-            {
-                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
-            }
-
-
-            if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
-            {
-                NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, false);
-            }
-            if(Settings.SettingsManager.PlayerOtherSettings.AllowAttackingFriendlyPeds)
-            {
-                NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
-            }
-
-            GameFiber.StartNew(delegate
-            {
-                while (isActive)
-                {
-                    if (Game.LocalPlayer.Character.IsShooting)
-                    {
-                        WeaponRecoil.Update();
-                        GameTimeLastShot = Game.GameTime;
-                    }
-                    else if (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming)
-                    {
-                        WeaponSway.Update();
-                    }
-                    GameFiber.Yield();
-                }
-            }, "IsShootingChecker");
-            GameFiber.StartNew(delegate
-            {
-                while (isActive)
-                {
-                    WeaponSelector.Update();
-                    GameFiber.Yield();
-                }
-            }, "IsShootingChecker2");
-
-            GameFiber.StartNew(delegate
-            {
-                while (isActive)
-                {
-                    CellPhone.Update();
-                    GameFiber.Yield();
-                }
-            }, "CellPhone");
-
-            //BigMessageThread = new BigMessageThread(true);
-            //BigMessage = BigMessageThread.MessageInstance;
-
-
-
-            AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
-
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
-
-
-            if(Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
-            {
-                Tools.Scripts.TerminateScript("cellphone_flashhand");
-                Tools.Scripts.TerminateScript("cellphone_controller");
-            }
-            LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
-            LastDance = Dances.GetRandomDance();
-        }
+        }  
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
         {
             if (desiredWantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel)
@@ -2125,11 +2140,6 @@ namespace Mod
             //{
                 Surrendering.UnSetArrestedAnimation();
             //}
-        }
-        public void Update()
-        {
-            UpdateData();
-            ButtonPrompts.Update();
         }
         public void UpdateStateData()
         {
@@ -2548,7 +2558,9 @@ namespace Mod
                 IsInAutomobile = false;
                 PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
+                
                 float PlayerSpeed = Game.LocalPlayer.Character.Speed;
+                FootSpeed = PlayerSpeed;
                 if (PlayerSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
@@ -3212,7 +3224,7 @@ namespace Mod
             GameFiber.Yield();//TR Yield RemovedTest 1
             Injuries.Update(!IntoxicationIsPrimary);
             GameFiber.Yield();//TR Yield RemovedTest 1
-
+            HumanState.Update();
 
 
 
