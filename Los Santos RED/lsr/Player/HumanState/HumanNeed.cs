@@ -13,14 +13,16 @@ public abstract class HumanNeed
     private float MaxValue;
     private float MinValue;
     private uint GameTimeLastUpdated;
-    private uint GameTimeBetweenUpdates = 500;
-    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable)
+    private uint GameTimeBetweenUpdates = 1000;
+    private ITimeReportable Time;
+    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time)
     {
         Name = name;
         MaxValue = maxValue;
         MinValue = minValue;
         Player = humanStateable;
         CurrentValue = maxValue;
+        Time = time;
     }
     public bool NeedsUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenUpdates;
     public string Name { get; set; }

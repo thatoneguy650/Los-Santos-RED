@@ -136,7 +136,7 @@ namespace LosSantosRED.lsr.Player
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
-                    if (TimesAte >= 1 && (HealthGiven == ModItem.HealthChangeAmount || Player.Character.Health == Player.Character.MaxHealth))
+                    if (TimesAte >= 3 && (HealthGiven == ModItem.HealthChangeAmount)) // || Player.Character.Health == Player.Character.MaxHealth))
                     {
                         if (Food.Exists())
                         {
@@ -174,14 +174,13 @@ namespace LosSantosRED.lsr.Player
                     {
                         HealthGiven++;
                         Player.ChangeHealth(1);
-                        Player.HumanState.ChangeHunger(1.0f);
                     }
                     else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
                     {
                         HealthGiven--;
-                        Player.ChangeHealth(-1);
-                        Player.HumanState.ChangeHunger(1.0f);
+                        Player.ChangeHealth(-1);  
                     }
+                    Player.HumanState.ChangeHunger(3.0f);
                 }
                 GameTimeLastGivenHealth = Game.GameTime;
             }

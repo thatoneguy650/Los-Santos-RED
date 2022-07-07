@@ -79,7 +79,8 @@ public abstract class SpawnTask
                 rhd = PossibleHeads.Where(x => x.IsMale == isMale).PickRandom();
                 if (rhd != null)
                 {
-                    RandomizeHead(ped, rhd);
+                    RandomHeadData rhd2 = PossibleHeads.Where(x => x.IsMale == isMale && x.Name != rhd.Name).PickRandom();
+                    RandomizeHead(ped, rhd, rhd2);
                 }
             }
             if(PersonType.OptionalProps != null)
@@ -109,13 +110,14 @@ public abstract class SpawnTask
             ped.GiveHelmet(false, (HelmetTypes)PersonType.RequiredHelmetType, 4096);
         }
     }
-    public void RandomizeHead(Ped ped, RandomHeadData myHead)
+    public void RandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead)
     {
         GameFiber.Yield();
         if (ped.Exists())
         {
             int HairColor = myHead.HairColors.PickRandom();
             int HairID = myHead.HairComponents.PickRandom();
+            int EyeColor = myHead.EyeColors.PickRandom();
             if (ped.Exists())
             {
                 NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, 2, HairID, 0, 0);
@@ -124,11 +126,22 @@ public abstract class SpawnTask
             if (ped.Exists())
             {
                 NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+                //if (blendHead == null)
+                //{
+                //    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+                //}
+                //else
+                //{
+                //    float Mix1 = RandomItems.GetRandomNumber(0.6f, 1.0f);
+                //    float Mix2 = 1.0f - Mix1;
+                //    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, Mix1, Mix2, 0, 0, false);
+                //}
                 GameFiber.Yield();
             }
             if (ped.Exists())
             {
                 NativeFunction.Natives.x4CFFC65454C93A49(ped, HairColor, HairColor);
+                
                 GameFiber.Yield();
             }
             if (ped.Exists())
@@ -140,6 +153,10 @@ public abstract class SpawnTask
             {
                 NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
                 GameFiber.Yield();
+            }
+            if (ped.Exists())
+            {
+                NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
             }
             EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");
         }

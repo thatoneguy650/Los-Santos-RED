@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsMovingDynamically { get; }
         bool IsMovingFast { get; }
         float FootSpeed { get; }
+        bool IsResting { get; }
     }
 }

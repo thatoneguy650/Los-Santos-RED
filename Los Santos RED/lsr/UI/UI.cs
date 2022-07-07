@@ -85,6 +85,7 @@ public class UI : IMenuProvideable
     private bool IsVanillaCashHUDVisible;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
+    public bool IsDisplayingMenu => menuPool.IsAnyMenuOpen();
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures)
     {
         DisplayablePlayer = displayablePlayer;
@@ -405,7 +406,7 @@ public class UI : IMenuProvideable
         bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.RecentlyChangedMoney;
-        bool willShowNeeds = IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed;
+        bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
 
 
         float WeaponPosition = 0.0f;

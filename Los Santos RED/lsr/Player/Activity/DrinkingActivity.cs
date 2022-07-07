@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = true;
                         EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
-                    if (TimesDrank >= 8 && (HealthGiven == ModItem.HealthChangeAmount || Player.Character.Health == Player.Character.MaxHealth))
+                    if (TimesDrank >= 8 && (HealthGiven == ModItem.HealthChangeAmount))// || Player.Character.Health == Player.Character.MaxHealth))
                     {
                         IsCancelled = true;
                     }
@@ -225,14 +225,13 @@ namespace LosSantosRED.lsr.Player
                     {
                         HealthGiven++;
                         Player.ChangeHealth(1);
-                        Player.HumanState.ChangeThirst(1.0f);
                     }
                     else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
                     {
                         HealthGiven--;
                         Player.ChangeHealth(-1);
-                        Player.HumanState.ChangeThirst(1.0f);
                     }
+                    Player.HumanState.ChangeThirst(2.0f);
                 }
                 GameTimeLastGivenHealth = Game.GameTime;
             }

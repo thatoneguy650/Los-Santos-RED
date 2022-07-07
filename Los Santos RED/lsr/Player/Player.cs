@@ -156,7 +156,7 @@ namespace Mod
             ButtonPrompts = new ButtonPrompts(this, Settings);
             Injuries = new Injuries(this, Settings);
             Dances = dances;
-            HumanState = new HumanState(this);
+            HumanState = new HumanState(this, TimeControllable, Settings);
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
@@ -478,6 +478,8 @@ namespace Mod
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
+        public bool IsResting { get; set; }
+        public bool IsSleeping { get; set; }
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public HumanState HumanState { get; set; }
@@ -585,7 +587,7 @@ namespace Mod
             UpdateData();
             ButtonPrompts.Update();
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds)
         {
             IsDead = false;
             IsBusted = false;
@@ -671,12 +673,17 @@ namespace Mod
                 NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
                 Injuries.Dispose();
 
-                HumanState.Reset();
+
 
             }
             else if (Injuries.IsInjured)
             {
                 Injuries.Restart();
+            }
+
+            if(resetNeeds)
+            {
+                HumanState.Reset();
             }
         }
         public void Dispose()

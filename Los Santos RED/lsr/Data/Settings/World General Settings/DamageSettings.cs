@@ -51,6 +51,10 @@ public class DamageSettings : ISettingsDefaultable
     [Description("Health lost level at which the effects will start")]
     public int InjuryEffectHealthLostStart { get; set; }
 
+    [Description("Intensity scalar for the health lost effects.")]
+    public float InjuryEffectIntensityModifier { get; set; }
+
+
     [Description("Allow the player to yell when damaged.")]
     public bool AllowPlayerPainYells { get; set; }
     [Description("Health damage taken needed to trigger a pain yell for the player.")]
@@ -130,7 +134,10 @@ public class DamageSettings : ISettingsDefaultable
         ClearDamage = true;
 
         AllowInjuryEffects = true;
-        InjuryEffectHealthLostStart = 30;
+        InjuryEffectHealthLostStart = 60;
+        InjuryEffectIntensityModifier = 0.6f;
+
+
 
         ModifyPlayerDamage = true;
 

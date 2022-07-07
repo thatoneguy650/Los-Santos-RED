@@ -59,6 +59,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool IsNotWanted { get; }
         bool IsAliveAndFree { get; }
+        bool IsResting { get; set; }
+        bool IsSleeping { get; set; }
 
         void SetWantedLevel(int v1, string v2, bool v3);
     }

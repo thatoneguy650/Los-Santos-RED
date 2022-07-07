@@ -113,7 +113,7 @@ namespace LosSantosRED.lsr
                 }
             }
 
-            if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone)
+            if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)
             {
                 Player.CellPhone.OpenBurner();
                 GameTimeLastPressedSimplePhone = Game.GameTime;

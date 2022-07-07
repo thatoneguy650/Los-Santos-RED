@@ -223,7 +223,9 @@ public class GangDen : InteractableLocation
         {
             while (Time.IsFastForwarding)
             {
-                if(DateTime.Compare(Time.CurrentDateTime, TimeLastAddedItems) >= 0)
+                Player.IsResting = true;
+                Player.IsSleeping = true;
+                if (DateTime.Compare(Time.CurrentDateTime, TimeLastAddedItems) >= 0)
                 {
                     if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
                     {
@@ -234,6 +236,8 @@ public class GangDen : InteractableLocation
                 }
                 GameFiber.Yield();
             }
+            Player.IsResting = false;
+            Player.IsSleeping = false;
             InteractionMenu.Visible = true;
             KeepInteractionGoing = false;
         }, "RestWatcher");
@@ -251,6 +255,7 @@ public class GangDen : InteractableLocation
             {
                 GameFiber.Yield();
             }
+
             Player.SetWantedLevel(0, "Gang Lay Low", true);
             RemoveLayLow();
             //InteractionMenu.Visible = true;

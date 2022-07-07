@@ -44,6 +44,12 @@ public class SettingsManager
     public ScannerSettings ScannerSettings { get; set; } = new ScannerSettings();
     [Category("Player")]
     public KeySettings KeySettings { get; set; } = new KeySettings();
+
+
+    [Category("Player")]
+    public NeedsSettings NeedsSettings { get; set; } = new NeedsSettings();
+
+
     [Category("Player")]
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
     [Category("Player")]
@@ -84,7 +90,7 @@ public class SettingsManager
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
-            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings
+            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings
 
         };
 

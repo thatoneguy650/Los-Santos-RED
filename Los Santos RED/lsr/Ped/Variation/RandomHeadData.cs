@@ -10,12 +10,13 @@ public class RandomHeadData
     {
 
     }
-    public RandomHeadData(int headID, string name, List<int> hairColors, List<int> hairComponents, bool isMale)
+    public RandomHeadData(int headID, string name, List<int> hairColors, List<int> hairComponents, List<int> eyeColors, bool isMale)
     {
         HeadID = headID;
         Name = name;
         HairColors = hairColors;
         HairComponents = hairComponents;
+        EyeColors = eyeColors;
         IsMale = isMale;
     }
 
@@ -23,5 +24,6 @@ public class RandomHeadData
     public string Name { get; set; }
     public List<int> HairColors { get; set; }
     public List<int> HairComponents { get; set; }
+    public List<int> EyeColors { get; set; }
     public bool IsMale { get; set; }
 }

@@ -142,6 +142,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CellPhoneSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\InvestigationSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\NeedsSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RecoilSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SelectorSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SprintSettings.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />
     <Compile Include="lsr\Player\HumanState\HumanNeed.cs" />
     <Compile Include="lsr\Player\HumanState\HumanState.cs" />
+    <Compile Include="lsr\Player\HumanState\SleepNeed.cs" />
     <Compile Include="lsr\Player\HumanState\ThirstNeed.cs" />
     <Compile Include="lsr\Player\Injuries.cs" />
     <Compile Include="lsr\Player\Interaction\Drag.cs" />

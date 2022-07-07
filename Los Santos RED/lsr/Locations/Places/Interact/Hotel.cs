@@ -130,9 +130,10 @@ public class Hotel : InteractableLocation
             {
                 Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
             }
-            
 
 
+            Player.IsResting = true;
+            Player.IsSleeping = true;
 
 
 
@@ -157,7 +158,8 @@ public class Hotel : InteractableLocation
                     }
                     GameFiber.Yield();
                 }
-
+                Player.IsResting = false;
+                Player.IsSleeping = false;
                 Player.ButtonPrompts.RemovePrompts("HotelStay");
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for staying at {Name}");
                 InteractionMenu.Visible = true;

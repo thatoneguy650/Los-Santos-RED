@@ -181,8 +181,21 @@ public class Injuries
         if (Settings.SettingsManager.DamageSettings.AllowInjuryEffects)
         {
             IsPrimary = isPrimary;
-            int Health = Player.Character.Health - 100;
-            int MaxHealth = Player.Character.MaxHealth - 100;
+            int Health = Player.Character.Health;// - 100;
+            int MaxHealth = Player.Character.MaxHealth;// - 100;
+            if(Health > 99)
+            {
+                Health = Health - 100;
+            }
+            if (MaxHealth > 99)
+            {
+                MaxHealth = MaxHealth - 100;
+            }
+
+            if (MaxHealth < Health || Health <= 0 || MaxHealth < 0)
+            {
+                return;
+            }
             if (Health < 0)
             {
                 Health = 0;
@@ -196,12 +209,10 @@ public class Injuries
                 OverLayEffect = "dying";
                 float Percentage = (float)Health / (float)(MaxHealth- Settings.SettingsManager.DamageSettings.InjuryEffectHealthLostStart);
                 Percentage = 1f - Percentage;
-
-                float coolpercent = Percentage;
                 Percentage *= 5f;
+                Percentage *= Settings.SettingsManager.DamageSettings.InjuryEffectIntensityModifier;
                 CurrentIntensity = Percentage;
                 UpdateInjuredStatus();
-                //EntryPoint.WriteToConsole($"Injuries Intensity {CurrentIntensity} CurrentClipset {CurrentClipset} MaxHealth {MaxHealth} Health {Health} coolpercent {coolpercent}");
             }
             else
             {
@@ -211,7 +222,6 @@ public class Injuries
                 }
             }
         }
-        //EntryPoint.WriteToConsole(DebugString, 5);
     }
     private void UpdateInjuredStatus()
     {
@@ -235,12 +245,7 @@ public class Injuries
                 NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
             }
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
-
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
-            //NativeFunction.Natives.x2C328AF17210F009(CurrentIntensity / 5.0f);
-
-
-
             if (Player.IsInVehicle)
             {
                 UpdateSwerving();
@@ -249,7 +254,6 @@ public class Injuries
     }
     private void UpdateSwerving()
     {
-        //SET_VEHICLE_STEER_BIAS
         if (Game.GameTime >= GameTimeUntilNextSwerve)
         {
             GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
@@ -259,14 +263,12 @@ public class Injuries
                 GameTimeStartedSwerving = Game.GameTime;
                 GameTimeToStopSwerving = Game.GameTime + RandomItems.GetRandomNumber(SwerveMinLength, SwerveMaxLength);
                 SteeringBias = RandomItems.GetRandomNumber(-1f * SwerveAtCurrentIntensity, SwerveAtCurrentIntensity);
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE STARTED BIAS: {SwerveAtCurrentIntensity}", 3);
             }
         }
         if (IsSwerving && Game.GameTime > GameTimeToStopSwerving)
         {
             IsSwerving = false;
             SteeringBias = 0f;
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: DRUNK SWERVE ENDED", 3);
         }
         if (Player.IsDriver && IsSwerving && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
@@ -287,15 +289,10 @@ public class Injuries
             NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
         }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
-
-
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
         //NativeFunction.Natives.x5096FD9CCB49056D(OverLayEffect);
         //NativeFunction.Natives.x2C328AF17210F009(CurrentIntensity / 5.0f);
-
-
-
         NativeFunction.Natives.x80C8B1846639BB19(1);
         NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);

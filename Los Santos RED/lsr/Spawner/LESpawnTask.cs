@@ -108,7 +108,7 @@ public class LESpawnTask : SpawnTask
                 if (PersonType != null)
                 {
                     PedExt Buddy = CreatePerson();
-                    EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                    EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To LE Spawn", 5);
                 }
             }
         }
@@ -267,25 +267,6 @@ public class LESpawnTask : SpawnTask
     }
     private void PutPedInVehicle(PedExt Person, int seat)
     {
-
-        //if (seat != -1)
-        //{
-
-
-        //    int? FreeSeat = LastCreatedVehicle.Vehicle.GetFreePassengerSeatIndex();
-        //    if (FreeSeat != null)
-        //    {
-        //        seat = FreeSeat.Value;
-        //        Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
-        //        Person.AssignedVehicle = LastCreatedVehicle;
-        //        Person.AssignedSeat = seat;
-        //        Person.UpdateVehicleState();
-        //    }
-        //}
-        //else
-        //{
-
-        //}
         Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = seat;
@@ -313,9 +294,6 @@ public class LESpawnTask : SpawnTask
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
         }
-
-
-
         RelationshipGroup rg = new RelationshipGroup("COP");
         ped.RelationshipGroup = rg;
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);

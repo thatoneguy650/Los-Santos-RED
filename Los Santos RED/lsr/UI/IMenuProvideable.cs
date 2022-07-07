@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 public interface IMenuProvideable
 {
+    bool IsDisplayingMenu { get; }
+
     void ToggleMenu();
     void ToggleDebugMenu();
     void ToggleMessagesMenu();

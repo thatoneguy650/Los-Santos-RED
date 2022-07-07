@@ -17,24 +17,31 @@ public class HumanState
     private HumanNeed Temperature;
     private HumanNeed Energy;
     private uint GameTimeLastChangedNeed;
-
+    private ITimeReportable Time;
+    private ISettingsProvideable Settings;
     public bool RecentlyChangedNeed => GameTimeLastChangedNeed > 0 && Game.GameTime - GameTimeLastChangedNeed <= 5000;
-    public HumanState(IHumanStateable player)
+    public HumanState(IHumanStateable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
+        Time = time;
+        Settings = settings;
     }
     public void Setup()
     {
-        Thirst = new ThirstNeed("Thirst", 0, 100f, Player);
-        Hunger = new HungerNeed("Hunger", 0, 100f, Player);
-        HumanNeeds = new List<HumanNeed>() { Thirst, Hunger };
+        Thirst = new ThirstNeed("Thirst", 0, 100f, Player, Time, Settings);
+        Hunger = new HungerNeed("Hunger", 0, 100f, Player, Time, Settings);
+        Sleep = new SleepNeed("Sleep", 0, 100f, Player, Time, Settings);
+        HumanNeeds = new List<HumanNeed>() { Thirst, Hunger, Sleep };
 
     }
     public void Update()
     {
-        foreach(HumanNeed humanNeed in HumanNeeds)
+        if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
-            humanNeed.Update();
+            foreach (HumanNeed humanNeed in HumanNeeds)
+            {
+                humanNeed.Update();
+            }
         }
     }
     public void Reset()

@@ -104,27 +104,20 @@ public class ActionMenu : Menu
             CallPolice = new UIMenuItem("Call Police", "Need some help?");
             CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
         }
-
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
         LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
         GestureMenu = new UIMenuListScrollerItem<GestureData>("Gesture", "Perform the selected gesture", Gestures.GestureLookups);
-
         DanceMenu = new UIMenuListScrollerItem<DanceData>("Dance", "Perform the selected dance", Dances.DanceLookups);
-
         CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue", "Pause", "Stop" });
-
         EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
         ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
-
         IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
         HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
-
         ToggleActionMode = new UIMenuItem("Toggle Action Mode", "Toggle action mode on or off");
         ToggleStealthMode = new UIMenuItem("Toggle Stealth Mode", "Toggle stealth mode on or off");
-
         ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
         ToggleBodyArmor.Value = 0;
 
@@ -132,10 +125,8 @@ public class ActionMenu : Menu
         Actions.AddItem(GestureMenu);
         Actions.AddItem(DanceMenu);
         Actions.AddItem(SitDown);
-
         Actions.AddItem(ToggleActionMode);
         Actions.AddItem(ToggleStealthMode);
-
 #if DEBUG
         Actions.AddItem(LayDown);
 #endif
@@ -143,7 +134,6 @@ public class ActionMenu : Menu
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
         Actions.AddItem(ToggleBodyArmor);
-
 #if DEBUG
         Actions.AddItem(EnterAsPassenger);
         Actions.AddItem(ShuffleSeat);
@@ -224,10 +214,6 @@ public class ActionMenu : Menu
         else if (selectedItem == GestureMenu)
         {
             Player.Gesture(GestureMenu.SelectedItem);
-            //if (!Settings.SettingsManager.ActivitySettings.CloseMenuOnGesture)
-            //{
-            //    return;
-            //}
         }
         else if (selectedItem == DanceMenu)
         {
@@ -249,14 +235,10 @@ public class ActionMenu : Menu
         else if (selectedItem == ToggleActionMode)
         {
             Player.ToggleActionMode();
-            //bool isUsingActionMode = NativeFunction.Natives.IS_PED_USING_ACTION_MODE<bool>(Player.Character);
-            //NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Player.Character, !isUsingActionMode, -1, "DEFAULT_ACTION");
         }
         else if (selectedItem == ToggleStealthMode)
         {
             Player.ToggleStealthMode();
-            //bool isUsingStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Player.Character);
-            //NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, !isUsingStealthMode, "DEFAULT_ACTION");
         }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;
