@@ -93,6 +93,8 @@ public class PopUpMenu
             new PopUpMenuMap(5,"Sit Here (F)", new Action(() => Player.StartSittingDown(false,true)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
             new PopUpMenuMap(6,"Sit Here (B)", new Action(() => Player.StartSittingDown(false,false)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
 
+            new PopUpMenuMap(7,"Lay Down", new Action(() => Player.StartLayingDown(false)),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsLayingDown)},
+
         };
         List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
         {

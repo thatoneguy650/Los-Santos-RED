@@ -345,6 +345,13 @@ namespace Mod
         public bool IsRagdoll { get; private set; }
         public bool IsRidingBus { get; set; }
         public bool IsSitting { get; set; } = false;
+
+        public bool IsLayingDown { get; set; } = false;
+
+
+        public bool IsResting { get; set; } = false;
+        public bool IsSleeping { get; set; } = false;
+
         public bool IsShooting
         {
             get => isShooting;
@@ -478,8 +485,7 @@ namespace Mod
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
-        public bool IsResting { get; set; }
-        public bool IsSleeping { get; set; }
+
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public HumanState HumanState { get; set; }
@@ -1962,7 +1968,7 @@ namespace Mod
         }
         public void StartLayingDown(bool FindSittingProp)
         {
-            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting)
             {
                 if (UpperBodyActivity != null)
                 {
@@ -2240,6 +2246,23 @@ namespace Mod
             EntryPoint.FocusCellY = CellY;
             EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
 
+
+            if(IsSleeping && !Investigation.IsActive && !Investigation.IsSuspicious)
+            {
+                if (!TimeControllable.IsFastForwarding)
+                {
+                    TimeControllable.FastForward(999);
+                }
+            }
+            else
+            {
+                if(TimeControllable.IsFastForwarding)
+                {
+                    TimeControllable.StopFastForwarding();
+                }
+            }
+           
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
@@ -2257,6 +2280,9 @@ namespace Mod
                         }
                     }
                 }
+
+
+
 
 
 

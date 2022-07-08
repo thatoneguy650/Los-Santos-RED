@@ -22,6 +22,8 @@ public class DebugMenu : Menu
     private UIMenuItem FillHealth;
     private UIMenuItem FillHealthAndArmor;
     private UIMenuItem ForceSober;
+    private UIMenuItem SpawnGunAttackersMenu;
+    private UIMenuItem SpawnNoGunAttackersMenu;
     private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
     private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
     private UIMenuItem ToggleInvestigation;
@@ -176,7 +178,11 @@ public class DebugMenu : Menu
         FillHealth = new UIMenuItem("Fill Health", "Refill health only");
         FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
 
-        ForceSober = new UIMenuItem("Become Sober", "Froces a sober state on the player (if intoxicated)");
+        ForceSober = new UIMenuItem("Become Sober", "Forces a sober state on the player (if intoxicated)");
+
+        SpawnGunAttackersMenu = new UIMenuItem("Spawn Gun Attacker", "spawns some peds with guns that will atack you");
+        SpawnNoGunAttackersMenu = new UIMenuItem("Spawn No Gun Attackers", "spawns some peds without guins that will attack you");
+
 
         AutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
         LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
@@ -231,7 +237,8 @@ public class DebugMenu : Menu
 
 
 
-
+        Debug.AddItem(SpawnGunAttackersMenu);
+        Debug.AddItem(SpawnNoGunAttackersMenu);
 
         Debug.AddItem(ForceSober);
 
@@ -380,6 +387,14 @@ public class DebugMenu : Menu
         else if (selectedItem == SetWantedLevel)
         {
             Player.SetWantedLevel(SetWantedLevel.SelectedItem,"Debug Menu",true);
+        }
+        else if (selectedItem == SpawnGunAttackersMenu)
+        {
+            SpawnGunAttackers();
+        }
+        else if (selectedItem == SpawnNoGunAttackersMenu)
+        {
+            SpawnNoGunAttackers();
         }
         else if (selectedItem == ToggleInvestigation)
         {
@@ -723,5 +738,90 @@ public class DebugMenu : Menu
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
+
+    private void SpawnGunAttackers()
+    {
+        GameFiber.StartNew(delegate
+        {
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+            GameFiber.Yield();
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
+
+                coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+
+                //if (RandomItems.RandomPercent(30))
+                //{
+                //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+                //}
+                //else if (RandomItems.RandomPercent(30))
+                //{
+                //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                //}
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            }
+            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+            {
+                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+
+
+                if (Game.IsKeyDownRightNow(Keys.O))
+                {
+                    coolguy.Tasks.Clear();
+                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                }
+                GameFiber.Sleep(25);
+            }
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+        }, "Run Debug Logic");
+    }
+    private void SpawnNoGunAttackers()
+    {
+        GameFiber.StartNew(delegate
+        {
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
+            GameFiber.Yield();
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
+                NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe
+                NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", coolguy, false);
+
+                if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                }
+                else if (RandomItems.RandomPercent(30))
+                {
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
+                }
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+            }
+            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+            {
+                // Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+
+
+                if (Game.IsKeyDownRightNow(Keys.O))
+                {
+                    coolguy.Tasks.Clear();
+                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                }
+                GameFiber.Sleep(25);
+            }
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+
+        }, "Run Debug Logic");
+    }
+
 
 }

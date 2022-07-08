@@ -305,7 +305,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "AIApprehend")
         {
             EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
-            Cop.CurrentTask = new AIApprehend(Cop, Player) { OtherTarget = MainTarget };
+            Cop.CurrentTask = new AIApprehend(Cop, Player, Cop) { OtherTarget = MainTarget };
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

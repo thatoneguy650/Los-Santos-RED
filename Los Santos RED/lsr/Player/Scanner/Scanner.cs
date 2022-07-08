@@ -120,6 +120,9 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private VehicleScannerAudio VehicleScannerAudio;
         private Dispatch VehicleStartedFire;
+
+        private Dispatch PublicVagrancy;
+
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
         private IEntityProvideable World;
@@ -1374,6 +1377,9 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
             new CrimeDispatch("ArmedRobbery",ArmedRobbery),
             new CrimeDispatch("PublicNuisance",PublicNuisance),
+
+            new CrimeDispatch("PublicVagrancy",PublicVagrancy),
+
         };
             DispatchList = new List<Dispatch>
         {
@@ -1940,6 +1946,18 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_07.Apublicnuisance.FileName },"a public nuisance"),
             },
             };
+
+            PublicVagrancy = new Dispatch()
+            {
+                Name = "Public Vagrancy",
+                LocationDescription = LocationSpecificity.Street,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_drug_overdose.An11357PossibleOD.FileName },"a possible OD"),
+                new AudioSet(new List<string>() { crime_unconscious_civilian.Anunconsciouscivilian.FileName },"an unconscious civilian"),
+            },
+            };
+
 
             SuspiciousVehicle = new Dispatch()
             {

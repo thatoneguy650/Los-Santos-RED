@@ -82,6 +82,10 @@ public class Crimes : ICrimes
 
             new Crime("PublicNuisance", "Public Nuisance", 1, false, 50, true, false, false),
 
+
+            new Crime("PublicVagrancy", "Public Vagrancy", 1, false, 51, true, false, false),
+
+
             new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false, false,false),
 
         };

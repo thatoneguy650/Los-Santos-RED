@@ -68,10 +68,20 @@ namespace LosSantosRED.lsr.Player
             CreateBottle();
             if (Bottle.Exists() && !IsAttachedToHand)
             {
-                //Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
 
-                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
-                
+
+                //if (Player.IsMale)
+                //{
+                    Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
+                //}
+                //else
+                //{
+                //    Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                //}
+
+
+
+
 
                 IsAttachedToHand = true;
                 Player.AttachedProp = Bottle;
@@ -254,7 +264,7 @@ namespace LosSantosRED.lsr.Player
             {
                 isBottle = true;
             }
-            EntryPoint.WriteToConsole($"Drinking Start isBottle {isBottle}");
+            EntryPoint.WriteToConsole($"Drinking Start isBottle {isBottle} isMale {Player.IsMale}");
             HandBoneID = 18905;
             //HandOffset = new Vector3(0.12f, -0.07f, 0.07f);
             //HandRotator = new Rotator(-110.0f, 14.0f, 1.0f);

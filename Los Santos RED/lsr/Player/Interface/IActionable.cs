@@ -25,7 +25,10 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         bool IsMale { get; }
         bool IsSitting { get; set; }
-       Rage.Object AttachedProp { get; }
+
+        bool IsLayingDown { get; set; }
+
+        Rage.Object AttachedProp { get; }
         bool IsMoveControlPressed { get; }
         string ModelName { get; }
         bool HasCurrentActivity { get; }
@@ -66,6 +69,8 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         WeaponInformation CurrentWeapon { get; }
         bool IsStill { get; }
+        bool IsResting { get; set; }
+        bool IsSleeping { get; set; }
 
 
         //Action DropWeapon { get; }

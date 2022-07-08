@@ -127,9 +127,9 @@ public class ActionMenu : Menu
         Actions.AddItem(SitDown);
         Actions.AddItem(ToggleActionMode);
         Actions.AddItem(ToggleStealthMode);
-#if DEBUG
+
         Actions.AddItem(LayDown);
-#endif
+
         Actions.AddItem(ChangePlate);
         Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);

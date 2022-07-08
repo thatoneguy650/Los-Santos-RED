@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr.Player
             }
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
             while (Player.CanPerformActivities && !IsCancelled)
             {
@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player
                         TimesAte++;
                         PlayingDict = Data.AnimIdleDictionary;
                         PlayingAnim = Data.AnimIdle.PickRandom();
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);
                         EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte} HealthGiven {HealthGiven}", 5);
                     }
                 }

@@ -382,7 +382,7 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x=> x.ID == "AttemptingSuicide"));//.IsCurrentlyViolating = true;
             }
-            if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000)
+            if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "TrespessingOnGovtProperty"));//.IsCurrentlyViolating = true;
             }
@@ -446,38 +446,17 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
-
             if(Player.RecentlyResistedArrest)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));
             }
-            //GameFiber.Yield();//TR Yield RemovedTest 1
-
-
-
-            //if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers)// && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Exists() && !x.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(x,Player.GroupID) && x.Handle != Player.Character.Handle))
-            //{
-            //    foreach(Ped passenger in Player.CurrentVehicle.Vehicle.Passengers)
-            //    {
-            //        //EntryPoint.WriteToConsole($"VIOLATIONS: Kidnapping {passenger.Handle} IsPersistent {passenger.IsPersistent} IS_PED_GROUP_MEMBER {NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID)}", 5);
-            //        if (passenger.Exists() && passenger.IsAlive && !passenger.IsPersistent && !NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(passenger, Player.GroupID) && passenger.Handle != Player.Character.Handle)
-            //        {
-            //            AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
-            //            break;
-            //        }
-
-            //    }
-
-            //}
             if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 2.0f && !Player.IsInVehicle)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
             }
-
             if(Player.RecentlyFedUpCop)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "InsultingOfficer"));
-                
             }
             if(Player.IsDealingDrugs)
             {
@@ -487,7 +466,6 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "DealingGuns"));
             }
-
             if(Player.IsHoldingHostage)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));
@@ -496,7 +474,10 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicNuisance"));//.IsCurrentlyViolating = true;
             }
-
+            if(Player.IsSleeping)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicVagrancy"));//.IsCurrentlyViolating = true;
+            }
         }
         private void CheckTrafficViolations()
         {

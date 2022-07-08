@@ -57,5 +57,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyResistedArrest { get; }
         bool AnyPoliceCanRecognizePlayer { get; }
         bool IsBeingANuisance { get; set; }
+        bool IsSleeping { get; }
+        int WantedLevel { get; }
     }
 }
