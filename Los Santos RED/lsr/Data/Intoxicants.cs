@@ -23,16 +23,17 @@ public class Intoxicants : IIntoxicants
         FileInfo ConfigFile = LSRDirectory.GetFiles("Itoxicants*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Intoxicants config: {ConfigFile.FullName}",0);
             IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Intoxicants config  {ConfigFileName}",0);
             IntoxicantList = Serialization.DeserializeParams<Intoxicant>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Intoxicants config found, creating default", 0);
             DefaultConfig();
         }
     }

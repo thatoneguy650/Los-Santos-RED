@@ -22,16 +22,17 @@ public class Streets : IStreets
         FileInfo ConfigFile = LSRDirectory.GetFiles("Streets*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Streets config: {ConfigFile.FullName}",0);
             StreetsList = Serialization.DeserializeParams<Street>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Streets config  {ConfigFileName}",0);
             StreetsList = Serialization.DeserializeParams<Street>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Streets config found, creating default", 0);
             DefaultConfig();
         }
     }

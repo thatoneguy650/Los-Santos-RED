@@ -18,20 +18,23 @@ public class DispatchableVehicles : IDispatchableVehicles
         FileInfo ConfigFile = LSRDirectory.GetFiles("DispatchableVehicles*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Dispatchable Vehicles config: {ConfigFile.FullName}", 0);
             VehicleGroupLookup = Serialization.DeserializeParams<DispatchableVehicleGroup>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
+            EntryPoint.WriteToConsole($"Loaded Dispatchable Vehicles config  {ConfigFileName}", 0);
             VehicleGroupLookup = Serialization.DeserializeParams<DispatchableVehicleGroup>(ConfigFileName);
         }
         else
         {
-            DefaultConfig_Gresk();
+            EntryPoint.WriteToConsole($"No Dispatchable Vehicles config found, creating default", 0);
+            DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
         }
     }
 
-    private void DefaultConfig_Gresk()
+    private void DefaultConfig_FullExpandedJurisdiction()
     {
         List<DispatchableVehicleGroup> VehicleGroupLookupGresk = new List<DispatchableVehicleGroup>();
 
@@ -73,10 +76,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3}};
-
-
-
-
         List<DispatchableVehicle> SAHPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 15,10){ RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policeb", 25, 15) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2 },
@@ -84,9 +83,6 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police3", 30, 30) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
             new DispatchableVehicle("sheriff2", 15, 10) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } }
         };
-
-
-
         List<DispatchableVehicle> LSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
@@ -298,7 +294,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookupGresk.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
 
 
-        Serialization.SerializeParams(VehicleGroupLookupGresk, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\DispatchableVehicles_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
+        Serialization.SerializeParams(VehicleGroupLookupGresk, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchableVehicles_FullExpandedJurisdiction.xml");
     }
     private void DefaultConfig()
     {
@@ -326,14 +322,11 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("fbi", 0, 40) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 4,MaxOccupants = 5 }};
-        List<DispatchableVehicle> HighwayPatrolVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop" },
-            new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> PrisonVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policet", 70, 70),
             new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> LSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 48,35) { RequiredLiveries = new List<int>() { 0,1,2,3,4,5 } },
+            new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 25, 20),
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
@@ -342,26 +335,26 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("policeb", 70, 70) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop" },
             new DispatchableVehicle("police4", 30, 30) {RequiredPedGroup = "StandardSAHP" }  };
         List<DispatchableVehicle> LSSDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50),
+            new DispatchableVehicle("sheriff", 50, 50) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) };
         List<DispatchableVehicle> BCSOVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 50, 50),
+            new DispatchableVehicle("sheriff", 50, 50) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle("sheriff2", 50, 50) };
         List<DispatchableVehicle> VWHillsLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 100, 100) };
         List<DispatchableVehicle> DavisLSSDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sheriff2", 100, 100) };
         List<DispatchableVehicle> RHPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police2", 100, 75),
+            new DispatchableVehicle("police2", 100, 75){ VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,25) } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> DPPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police3", 100, 75) ,
+            new DispatchableVehicle("police3", 100, 75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,75) } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> EastLSPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75),
+            new DispatchableVehicle("police", 100,75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> VWPDVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,75),
+            new DispatchableVehicle("police", 100,75) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> PoliceHeliVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("polmav", 0,100) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 4 } };
@@ -395,6 +388,15 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("BCSOVehicles", BCSOVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("VWHillsLSSDVehicles", VWHillsLSSDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("DavisLSSDVehicles", DavisLSSDVehicles));
+        VehicleGroupLookup.Add(new DispatchableVehicleGroup("MajesticLSSDVehicles", VWHillsLSSDVehicles));
+
+
+
+        VehicleGroupLookup.Add(new DispatchableVehicleGroup("LSPPVehicles", RHPDVehicles));
+        VehicleGroupLookup.Add(new DispatchableVehicleGroup("LSIAPDVehicles", RHPDVehicles));
+
+        
+
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("RHPDVehicles", RHPDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("DPPDVehicles", DPPDVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("VWPDVehicles", VWPDVehicles));
@@ -491,7 +493,6 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
-
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("LostMCVehicles", LostMCVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("VarriosVehicles", VarriosVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("BallasVehicles", BallasVehicles));
@@ -506,9 +507,8 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
-
         Serialization.SerializeParams(VehicleGroupLookup, ConfigFileName);
-
+        Serialization.SerializeParams(VehicleGroupLookup, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchableVehicles_EUP.xml");
     }
 
     public List<DispatchableVehicle> GetVehicleData(string dispatchableVehicleGroupID)

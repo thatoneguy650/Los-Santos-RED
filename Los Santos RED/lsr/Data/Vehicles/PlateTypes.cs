@@ -24,16 +24,17 @@ public class PlateTypes : IPlateTypes
         FileInfo ConfigFile = LSRDirectory.GetFiles("PlateTypes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Plate Types config: {ConfigFile.FullName}",0);
             PlateTypeList = Serialization.DeserializeParams<PlateType>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Plate Types config  {ConfigFileName}",0);
             PlateTypeList = Serialization.DeserializeParams<PlateType>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Plate Types config found, creating default", 0);
             DefaultConfig_Full();
             DefaultConfig();
         }

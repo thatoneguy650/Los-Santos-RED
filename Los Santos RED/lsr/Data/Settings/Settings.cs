@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using System.IO;
+using System.Linq;
 
 public class Settings : ISettingsProvideable
 {
@@ -8,16 +9,29 @@ public class Settings : ISettingsProvideable
     public SettingsManager SettingsManager { get; private set; }
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Settings*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
+            SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Settings config  {ConfigFileName}", 0);
             SettingsManager = Serialization.DeserializeParam<SettingsManager>(ConfigFileName);
         }
         else
         {
-            SettingsManager = new SettingsManager();
-            Serialization.SerializeParam(SettingsManager, ConfigFileName);
+            EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
+            DefaultConfig();
         }
+    }
+    public void DefaultConfig()
+    {
+        SettingsManager = new SettingsManager();
         SettingsManager.Setup();
+        Serialization.SerializeParam(SettingsManager, ConfigFileName);
     }
     public void SerializeAllSettings()
     {

@@ -28,16 +28,17 @@ public class ShopMenus : IShopMenus
         FileInfo ConfigFile = LSRDirectory.GetFiles("ShopMenus*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFile.FullName}",0);
             ShopMenuList = Serialization.DeserializeParams<ShopMenu>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Shop Menus config  {ConfigFileName}",0);
             ShopMenuList = Serialization.DeserializeParams<ShopMenu>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Shop Menus config found, creating default", 0);
             DefaultConfig();
         }
     }

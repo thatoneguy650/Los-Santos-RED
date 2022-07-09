@@ -38,6 +38,7 @@ public class Cop : PedExt, IWeaponIssuable
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new Voice(this, ModelName);
         AssistManager = new AssistManager(this);
+
     }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);

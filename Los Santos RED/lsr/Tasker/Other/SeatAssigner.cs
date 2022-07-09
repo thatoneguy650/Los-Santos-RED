@@ -25,7 +25,6 @@ public class SeatAssigner
 
     public VehicleExt VehicleTryingToEnter { get; set; }
     public int SeatTryingToEnter { get; set; }
-
     public void AssignFrontSeat()
     {
         VehicleTryingToEnter = null;
@@ -74,7 +73,7 @@ public class SeatAssigner
                     if (possibleVehicle.Vehicle.Exists() && possibleVehicle.Vehicle.Speed < 0.5f)
                     {
                         float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
-                        if (DistanceTo <= 75f)
+                        if (DistanceTo <= 125f)
                         {
                             if(IsSeatAvailable(possibleVehicle, -1))
                             {
@@ -106,10 +105,10 @@ public class SeatAssigner
             if (VehicleTryingToEnter.Vehicle.Exists())
             {
                 VehicleTryingToEnter.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
+                VehicleTryingToEnter.Vehicle.MustBeHotwired = false;
             }
         }
     }
-
     public void AssignPrisonerSeat()
     {
         VehicleTryingToEnter = null;
@@ -140,9 +139,6 @@ public class SeatAssigner
             Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
         }
     }
-
-
-
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
     {
         if (vehicleToCheck != null && vehicleToCheck.Vehicle.Exists() && vehicleToCheck.Vehicle.IsSeatFree(seatToCheck) && !Tasker.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))

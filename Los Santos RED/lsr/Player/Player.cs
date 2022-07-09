@@ -400,7 +400,6 @@ namespace Mod
 
                 if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
                 {
-
                     unsafe
                     {
                         NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);

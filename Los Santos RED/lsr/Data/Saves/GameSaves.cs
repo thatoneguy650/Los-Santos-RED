@@ -15,14 +15,22 @@ public class GameSaves : IGameSaves
     public List<GameSave> GameSaveList { get; private set; } = new List<GameSave>();
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("SaveGames*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Games Saves config: {ConfigFile.FullName}", 0);
+            GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Game Saves config  {ConfigFileName}", 0);
             GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Game Saves config found, creating default", 0);
             DefaultConfig();
-            
         }
     }
     public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)

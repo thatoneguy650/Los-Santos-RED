@@ -23,16 +23,17 @@ public class Gestures : IGestures
         FileInfo ConfigFile = LSRDirectory.GetFiles("Gestures*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Gestures config: {ConfigFile.FullName}",0);
             GestureLookups = Serialization.DeserializeParams<GestureData>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Gestures config  {ConfigFileName}",0);
             GestureLookups = Serialization.DeserializeParams<GestureData>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Gestures config found, creating default", 0);
             DefaultConfig();
         }
     }

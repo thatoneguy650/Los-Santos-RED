@@ -26,17 +26,18 @@ public class Jurisdictions : IJurisdictions
         FileInfo ZoneFile = LSRDirectory.GetFiles("ZoneJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ZoneFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ZoneFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config: {ZoneFile.FullName}",0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneFile.FullName);
         }
         else if (File.Exists(ZoneConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ZoneConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Zone Jurisdictions config  {ZoneConfigFileName}",0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
         }
         else
         {
-            DefaultZoneConfig_Gresk();
+            EntryPoint.WriteToConsole($"No Zone Jurisdiction config found, creating default", 0);
+            DefaultZoneConfig_FullExpandedJurisdiction();
             DefaultZoneConfig();
         }
 
@@ -44,17 +45,18 @@ public class Jurisdictions : IJurisdictions
         FileInfo CountyFile = LSRDirectory.GetFiles("CountyJurisdictions*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (CountyFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {CountyFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config: {CountyFile.FullName}",0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyFile.FullName);
         }
         else if (File.Exists(CountyConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {CountyConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded County Jurisdictions config  {CountyConfigFileName}",0);
             CountyJurisdictionList = Serialization.DeserializeParams<CountyJurisdiction>(CountyConfigFileName);
         }
         else
         {
-            DefaultCountyConfig_Gresk();
+            EntryPoint.WriteToConsole($"No County Jurisdiction config found, creating default", 0);
+            DefaultCountyConfig_FullExpandedJurisdiction();
             DefaultCountyConfig();
         }
     }
@@ -614,7 +616,7 @@ public class Jurisdictions : IJurisdictions
     }
 
 
-    private void DefaultZoneConfig_Gresk()
+    private void DefaultZoneConfig_FullExpandedJurisdiction()
     {
         List<ZoneJurisdiction> SimpleZoneJurisdictionsList = new List<ZoneJurisdiction>()
         {
@@ -984,9 +986,10 @@ public class Jurisdictions : IJurisdictions
             //new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
             //new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),      
         };
-        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\ZoneJurisdictions_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
+        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ZoneJurisdictions_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\ZoneJurisdictions_EUP.xml");
     }
-    private void DefaultCountyConfig_Gresk()
+    private void DefaultCountyConfig_FullExpandedJurisdiction()
     {
         List<CountyJurisdiction> SimpleCountyJurisdictionList = new List<CountyJurisdiction>()
         {
@@ -995,7 +998,8 @@ public class Jurisdictions : IJurisdictions
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
             new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100),
         };
-        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\CountyJurisdictions_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
+        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\CountyJurisdictions_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\CountyJurisdictions_EUP.xml");
 
     }
 }

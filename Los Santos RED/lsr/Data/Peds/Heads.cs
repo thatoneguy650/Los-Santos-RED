@@ -18,14 +18,17 @@ public class Heads : IHeads
         FileInfo ConfigFile = LSRDirectory.GetFiles("Heads*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Heads config: {ConfigFile.FullName}", 0);
             RandomHeadDataLookup = Serialization.DeserializeParams<HeadDataGroup>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
+            EntryPoint.WriteToConsole($"Loaded Heads config  {ConfigFileName}", 0);
             RandomHeadDataLookup = Serialization.DeserializeParams<HeadDataGroup>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Heads config found, creating default", 0);
             DefaultConfig();
         }
     }

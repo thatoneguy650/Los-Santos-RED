@@ -443,7 +443,7 @@ public class LEDispatcher
     }
     private void HandleStationSpawns()
     {
-        if (!TotalIsWanted)
+        if (World.TotalWantedLevel <= 2)
         {
             foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
             {

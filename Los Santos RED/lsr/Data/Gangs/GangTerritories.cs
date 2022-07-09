@@ -23,16 +23,17 @@ public class GangTerritories : IGangTerritories
         FileInfo ConfigFile = LSRDirectory.GetFiles("GangTerritories*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ConfigFile.FullName}",0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ConfigFile.FullName);
         }
         else if (File.Exists(ZoneConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ZoneConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Gang Territories config  {ZoneConfigFileName}",0);
             ZoneJurisdictionsList = Serialization.DeserializeParams<ZoneJurisdiction>(ZoneConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
             DefaultZoneConfig();
         }
     }

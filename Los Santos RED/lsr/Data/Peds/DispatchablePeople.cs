@@ -18,17 +18,19 @@ public class DispatchablePeople : IDispatchablePeople
         FileInfo ConfigFile = LSRDirectory.GetFiles("DispatchablePeople*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Dispatchable People config: {ConfigFile.FullName}", 0);
             PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
+            EntryPoint.WriteToConsole($"Loaded Dispatchable People config  {ConfigFile.FullName}", 0);
             PeopleGroupLookup = Serialization.DeserializeParams<DispatchablePersonGroup>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Dispatchable People config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_EUPBasic();
-            Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
+            DefaultConfig_FullExpandedJurisdiction();
         }
     }
     public List<DispatchablePerson> GetPersonData(string dispatchablePersonGroupID)
@@ -319,12 +321,11 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_Default.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
         PeopleConfig_Default.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
         PeopleConfig_Default.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
-        PeopleConfig_Default.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
-
-       
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));    
         PeopleGroupLookup = PeopleConfig_Default;
+        Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
-    private void DefaultConfig_EUPBasic()
+    private void DefaultConfig_FullExpandedJurisdiction()
     {
         List<DispatchablePersonGroup> PeopleConfig_EUP = new List<DispatchablePersonGroup>();
 
@@ -4520,7 +4521,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
-        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\DispatchablePeople_EUPBasicPedsAndExpandedJurisdictionLiveries.xml");
+        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchablePeople_FullExpandedJurisdiction.xml");
+        Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople_EUP.xml");
 
     }
 

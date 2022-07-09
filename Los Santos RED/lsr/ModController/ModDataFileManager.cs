@@ -126,33 +126,43 @@ public class ModDataFileManager
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs");
         SetupAddonPlatesConfig();
-        SetupEUPAndLiveries();
+        SetupEUP();
+        SetupFullExpandedJurisdiction();
     }
     private void SetupAddonPlatesConfig()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142");
         string Description = "PreMade config for 'Addon Plates' by Wildbrick 142's. Installation: https://www.gta5-mods.com/paintjobs/new-license-plates-add-on." + Environment.NewLine +
-            "To use, copy the all of the .xml files from the AlternateConfigs\\AddOnPlates_Wildbrick142 folder into the top level LosSantosRED folder and restart the mod";
+            "To use, copy the all of the .xml files from the AlternateConfigs\\AddOnPlates_Wildbrick142 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\readme.txt", Description);
     }
-    private void SetupEUPAndLiveries()
+    private void SetupEUP()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries");
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\EUP");
+        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+            "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine + Environment.NewLine +
+            "To use, copy all of the .xml files from the AlternateConfigs\\EUP folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
+            "";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\readme.txt", Description);
+    }
+    private void SetupFullExpandedJurisdiction()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
         string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. No gameconfig changes are needed, as these are mostly replace." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine + Environment.NewLine +
-           "Expanded Department Liveries Installation: " + Environment.NewLine +
+            "Expanded Department Liveries Installation: " + Environment.NewLine +
             "Stanier (police) - Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft to '\\mods\\x64e.rpf\\levels\\gta5\\vehicles.rpf'" + Environment.NewLine +
             "Buffalo (police2) - Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
             "Interceptor (police3) - Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
             "Granger (sheriff2) - Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
-            "To use, copy all of the .xml files from the AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries folder into the top level LosSantosRED folder and restart the mod" + Environment.NewLine + Environment.NewLine +
+            "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
             "Model Credits:" + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" + Environment.NewLine +
             "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." + Environment.NewLine +
             "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues." + Environment.NewLine +
             "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues" + Environment.NewLine +
             "";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\EUPBasicPedsAndExpandedJurisdictionLiveries\\readme.txt", Description);
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
     }
 }
 

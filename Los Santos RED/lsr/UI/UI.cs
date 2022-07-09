@@ -399,7 +399,7 @@ public class UI : IMenuProvideable
         IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);     
         IsVanillaCashHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(3);
 
-
+        IsVanillaCashHUDVisible = !Settings.SettingsManager.UIGeneralSettings.DisableVanillaCashDisplay;
 
 
         bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
@@ -464,7 +464,7 @@ public class UI : IMenuProvideable
 
         if(willShowCashChange)
         {
-            string Prefix = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "~g" : "~r~";
+            string Prefix = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "~g~" : "~r~";
             DisplayTextOnScreen(Prefix + "$" + DisplayablePlayer.LastChangeMoneyAmount.ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
@@ -1190,8 +1190,11 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
 
-        NativeFunction.CallByName<bool>("DISPLAY_CASH", false);
 
+        if (Settings.SettingsManager.UIGeneralSettings.DisableVanillaCashDisplay)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_CASH", false);
+        }
 
         //if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowCash)
         //{

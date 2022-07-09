@@ -474,7 +474,7 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicNuisance"));//.IsCurrentlyViolating = true;
             }
-            if(Player.IsSleeping && !Player.CurrentLocation.IsInside)
+            if(Player.IsSleeping && !Player.CurrentLocation.IsInside && Player.CurrentLocation.CurrentZone?.Type != eLocationType.Wilderness && (Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Rich || Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Middle))
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicVagrancy"));//.IsCurrentlyViolating = true;
             }

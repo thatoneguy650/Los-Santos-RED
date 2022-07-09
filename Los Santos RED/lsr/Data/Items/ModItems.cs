@@ -25,16 +25,17 @@ public class ModItems : IModItems
         FileInfo ConfigFile = LSRDirectory.GetFiles("ModItems*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}",0);
             ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Mod Items config  {ConfigFileName}",0);
             ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Mod Items config found, creating default", 0);
             DefaultConfig();
         }
     }

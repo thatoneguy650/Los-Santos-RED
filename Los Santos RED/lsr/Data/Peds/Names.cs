@@ -19,16 +19,17 @@ public class Names : INameProvideable
         FileInfo ConfigFile = LSRDirectory.GetFiles("Names*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Names config: {ConfigFile.FullName}", 0);
             NameList = Serialization.DeserializeParams<PedName>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Names config  {ConfigFileName}", 0);
             NameList = Serialization.DeserializeParams<PedName>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Names config found, creating default", 0);
             DefaultConfig();
         }
     }

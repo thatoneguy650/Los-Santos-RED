@@ -36,6 +36,7 @@ public class Idle : ComplexTask
     private SeatAssigner SeatAssigner;
     private bool ForceScenario;
     private bool ForceGuard = false;
+    private bool hasBeenVehiclePatrolTasked;
 
     private enum Task
     {
@@ -64,7 +65,7 @@ public class Idle : ComplexTask
             }
             else if (!Ped.Pedestrian.IsInAnyVehicle(false))
             {
-                if (Ped.DistanceToPlayer <= 75f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0 && VehicleTryingToEnter.Vehicle.Speed < 1.0f) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+                if (Ped.DistanceToPlayer <= 150f && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.IsDriveable && VehicleTryingToEnter.Vehicle.FreeSeatsCount > 0 && VehicleTryingToEnter.Vehicle.Speed < 1.0f) //if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
                 {
                     return Task.GetInCar;
                 }
@@ -97,12 +98,14 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if(Cop.IsAmbientSpawn)
+            if(Cop.IsAmbientSpawn && Cop.HasBeenSpawnedFor <= 10000)
             {
                 ForceGuard = true;
             }
-
-
+            else
+            {
+                ForceGuard = false;
+            }
             ClearTasks(true);
             GetClosesetPoliceVehicle();
             Update();
@@ -334,6 +337,10 @@ public class Idle : ComplexTask
                 CheckPassengers();
                 VehiclePatrolTask();
             }
+            if(!hasBeenVehiclePatrolTasked)
+            {
+                VehiclePatrolTask();
+            }
             if (IsReturningToStation && Ped.Pedestrian.DistanceTo2D(taskedPosition) < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 1.0f)//arrived, wait then drive away
             {
                 IsReturningToStation = false;
@@ -350,6 +357,7 @@ public class Idle : ComplexTask
             Ped.Pedestrian.KeepTasks = true;
             if ((Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
+                hasBeenVehiclePatrolTasked = true;
                 if (IsReturningToStation)
                 {
                     BasicLocation closestPoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Ped.Pedestrian.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();

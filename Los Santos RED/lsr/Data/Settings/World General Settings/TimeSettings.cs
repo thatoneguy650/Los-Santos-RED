@@ -19,7 +19,7 @@ public class TimeSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ScaleTime = true;
-        FastForwardMultiplier = 100;//300
+        FastForwardMultiplier = 25;//300
         FastForwardInterval = 10;
     }
 

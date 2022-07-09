@@ -24,17 +24,24 @@ public class PlacesOfInterest : IPlacesOfInterest
         Gangs = gangs;
         PossibleLocations = new PossibleLocations();
     }
-
     public void ReadConfig()
     {
-        if (File.Exists(ConfigFileName))
+        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
+        FileInfo ConfigFile = LSRDirectory.GetFiles("Locations*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        if (ConfigFile != null)
         {
+            EntryPoint.WriteToConsole($"Loaded Locations config: {ConfigFile.FullName}", 0);
+            PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFile.FullName);
+        }
+        else if (File.Exists(ConfigFileName))
+        {
+            EntryPoint.WriteToConsole($"Loaded Locations config  {ConfigFileName}", 0);
             PossibleLocations = Serialization.DeserializeParam<PossibleLocations>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
             DefaultConfig();
-            Serialization.SerializeParam(PossibleLocations, ConfigFileName);
         }
     }
     public List<InteractableLocation> GetAllInteractableLocations()
@@ -65,7 +72,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.BusStops);
         return AllLocations;
     }
-
     public List<BasicLocation> GetAllBasicLocations()
     {
         List<BasicLocation> AllLocations = new List<BasicLocation>();
@@ -868,8 +874,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DriveThru(new Vector3(1256.509f, -357.1387f, 68.52029f), 347.8622f, "Horny's Burgers", "Horny's Burgers","BeefyBillsMenu"),
 
         });
-
-
         PossibleLocations.ClothingShops.AddRange(new List<ClothingShop>()
         {
                 new ClothingShop(new Vector3(430.0404f, -804.3267f, 29.49115f), 359.4608f, "Binco Textile City","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(430.0404f, -804.3267f, 29.49115f)) 
@@ -884,7 +888,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             
 
         });
-
         PossibleLocations.BusStops.AddRange(new List<BusStop>()
         {
                 
@@ -908,6 +911,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new BusStop(new Vector3(-1421.381f, -87.43785f, 51.512f), 298.6868f, "Richman Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
                 new BusStop(new Vector3(-645.8302f, -139.4489f, 36.86523f), 31.0542f, "Rockford Hills Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
         });
+
+        Serialization.SerializeParam(PossibleLocations, ConfigFileName);
     }
 }
 

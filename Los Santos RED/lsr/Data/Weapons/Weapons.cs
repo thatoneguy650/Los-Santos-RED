@@ -24,16 +24,17 @@ public class Weapons : IWeapons
         FileInfo ConfigFile = LSRDirectory.GetFiles("Weapons*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Weapons config: {ConfigFile.FullName}",0);
             WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Issuable Weapons config  {ConfigFileName}",0);
             WeaponsList = Serialization.DeserializeParams<WeaponInformation>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Weapons config found, creating default", 0);
             DefaultConfig();
         }
     }

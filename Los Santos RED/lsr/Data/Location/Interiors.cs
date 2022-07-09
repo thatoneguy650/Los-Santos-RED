@@ -22,16 +22,17 @@ public class Interiors : IInteriors
         FileInfo ConfigFile = LSRDirectory.GetFiles("Interiors*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFile.FullName}",0);
             LocationsList = Serialization.DeserializeParams<Interior>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Interiors config  {ConfigFileName}",0);
             LocationsList = Serialization.DeserializeParams<Interior>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Interiors config found, creating default", 0);
             DefaultConfig();
         }
     }

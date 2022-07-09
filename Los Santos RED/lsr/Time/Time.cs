@@ -15,6 +15,11 @@ namespace Mod
     public class Time : ITimeControllable, ITimeReportable
     {
         private int ClockMultiplier = 1;
+
+        //private int FastForwardMultiplier = 10;
+
+        //private int FastForwardReducedMultiplier = 3;
+
         private uint GameTimeLastSetClock;
         private int Interval = 1000;
         private bool IsPaused;
@@ -62,7 +67,7 @@ namespace Mod
         public int CurrentYear { get; private set; } = 2021;
         public int CurrentMonth { get; private set; } = 1;
         public bool IsNight { get; private set; } = false;
-        public bool IsFastForwarding { get; private set; } = false;   
+        public bool IsFastForwarding { get; private set; } = false;
         public void Dispose()
         {
             NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
@@ -152,6 +157,24 @@ namespace Mod
                 IsFastForwarding = true;
                 GetIntervalAndMultiplier();
                 TimeToStopFastForwarding = CurrentDateTime.AddHours(HoursTo);
+
+                GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+                {
+                    while (IsFastForwarding)
+                    {
+                        CheckTimeInterval();
+                        GameFiber.Yield();
+                    }
+                }, "FastForwardWatcher");
+            }
+        }
+        public void FastForwardInPerson()
+        {
+            if (!IsFastForwarding)
+            {
+                IsFastForwarding = true;
+                GetIntervalAndMultiplier();
+                TimeToStopFastForwarding = CurrentDateTime.AddHours(999);
 
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {

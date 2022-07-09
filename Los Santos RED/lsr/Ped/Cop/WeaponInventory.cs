@@ -330,7 +330,7 @@ public class WeaponInventory
     {
         if ((!IsSetLessLethal || NeedsWeaponCheck) && WeaponOwner.Pedestrian.Exists() && WeaponOwner.Pedestrian.IsAlive)
         {
-            EntryPoint.WriteToConsole($"WeaponOwner {WeaponOwner.Handle} LESS LETHAL RAN IsSetLessLethal :{IsSetLessLethal}");
+            //EntryPoint.WriteToConsole($"WeaponOwner {WeaponOwner.Handle} LESS LETHAL RAN IsSetLessLethal :{IsSetLessLethal}");
             if (!IsSetLessLethal)
             {
                 NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(WeaponOwner.Pedestrian, false);

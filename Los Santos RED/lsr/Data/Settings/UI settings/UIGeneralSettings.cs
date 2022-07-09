@@ -17,6 +17,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool HideLSRUIUnlessActionWheelActive { get; set; }
     public bool HideRadarUnlessActionWheelActive { get; set; }
     public bool AlwaysShowCash { get; set; }
+    public bool DisableVanillaCashDisplay { get; set; }
     public bool AlwaysShowHUD { get; set; }
     public bool ShowVanillaVehicleUI { get; set; }
     public bool ShowVanillaAreaUI { get; set; }
@@ -36,6 +37,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool DisplayButtonPrompts { get; set; }
     public bool ShowDebug { get; set; }
 
+
     public UIGeneralSettings()
     {
         SetDefault();
@@ -44,8 +46,10 @@ public class UIGeneralSettings : ISettingsDefaultable
     public void SetDefault()
     {
         IsEnabled = true;
-        AlwaysShowCash = false;   
+        AlwaysShowCash = false;
+        DisableVanillaCashDisplay = true;
         AlwaysShowHUD = true;
+
         ShowDebug = false;
         ShowVanillaVehicleUI = false;
         ShowVanillaAreaUI = false;
@@ -70,5 +74,6 @@ public class UIGeneralSettings : ISettingsDefaultable
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
         HideLSRUIUnlessActionWheelActive = false;
         HideRadarUnlessActionWheelActive = false;
+        
     }
 }

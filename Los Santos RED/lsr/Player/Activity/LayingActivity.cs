@@ -344,12 +344,14 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimExit = "forward";
                 Data.AnimExitDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
                 Data.AnimExitFlag = 0;
-                Data.AnimEnterBlendOut = -1.0f;
+                Data.AnimExitBlendIn = 1.0f;
+                Data.AnimExitBlendOut = -1.0f;
 
                 MaxExit = 0.95f;
                 Data.AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
                 Data.AnimIdleDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@idle_a";
                 Data.AnimIdleFlag = 1;
+
                 isUsingVehicleAnimations = true;
             }
             else

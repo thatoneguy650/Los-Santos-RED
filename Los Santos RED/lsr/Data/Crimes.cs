@@ -17,16 +17,17 @@ public class Crimes : ICrimes
         FileInfo ConfigFile = LSRDirectory.GetFiles("Crimes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Deserializing 1 {ConfigFile.FullName}");
+            EntryPoint.WriteToConsole($"Loaded Crimes config: {ConfigFile.FullName}",0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Deserializing 2 {ConfigFileName}");
+            EntryPoint.WriteToConsole($"Loaded Crimes config  {ConfigFileName}",0);
             CrimeList = Serialization.DeserializeParams<Crime>(ConfigFileName);
         }
         else
         {
+            EntryPoint.WriteToConsole($"No Crimes config found, creating default", 0);
             DefaultConfig();
         }
     }
