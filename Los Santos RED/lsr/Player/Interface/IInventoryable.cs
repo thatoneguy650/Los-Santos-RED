@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         Licenses Licenses { get; }
         Properties Properties { get; }
         OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
+        HumanState HumanState { get; }
 
         void ClearVehicleOwnership();
     }

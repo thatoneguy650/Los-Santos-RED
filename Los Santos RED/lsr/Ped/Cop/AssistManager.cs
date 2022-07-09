@@ -66,7 +66,7 @@ public class AssistManager
                 float length = copCar.Model.Dimensions.Y;
                 float speed = copCar.Speed;
                 float distanceInFront = 3f;
-                if(speed >= 18f || Cop.DistanceToPlayer >= 150f)//~40mph
+                if (speed >= 5f || Cop.DistanceToPlayer >= 150f) //if (speed >= 18f || Cop.DistanceToPlayer >= 150f)//~40mph
                 {
                     float range = 6f;// 4f;
                     if(speed >= 27f || Cop.DistanceToPlayer >= 150f)//~60mph

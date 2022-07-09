@@ -43,6 +43,9 @@ public class HumanShield : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override string PausePrompt { get; set; } = "Pause Activity";
+    public override string CancelPrompt { get; set; } = "Stop Activity";
+    public override string ContinuePrompt { get; set; } = "Continue Activity";
     public override void Start()
     {
         if (Ped.Pedestrian.Exists())

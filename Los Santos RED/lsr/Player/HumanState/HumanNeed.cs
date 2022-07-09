@@ -15,7 +15,10 @@ public abstract class HumanNeed
     private uint GameTimeLastUpdated;
     private uint GameTimeBetweenUpdates = 1000;
     private ITimeReportable Time;
-    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time)
+    private uint GameTimeLastChangedNeed;
+    private int Digits;
+    private string ColorPrefix => CurrentValue <= MaxValue * 0.25f ? "~r~" : CurrentValue <= MaxValue * 0.5f ? "~o~" : CurrentValue <= MaxValue * 0.75f ? "~y~" : "~s~";
+    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, int digits)
     {
         Name = name;
         MaxValue = maxValue;
@@ -23,12 +26,16 @@ public abstract class HumanNeed
         Player = humanStateable;
         CurrentValue = maxValue;
         Time = time;
+        Digits = digits;
     }
+    public bool IsMax => CurrentValue == MaxValue;
     public bool NeedsUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenUpdates;
+    public bool RecentlyChanged => GameTimeLastChangedNeed > 0 && Game.GameTime - GameTimeLastChangedNeed <= 5000;
     public string Name { get; set; }
     public float CurrentValue { get; private set; }
+    public virtual string Display => $"{ColorPrefix}{Name}: {Math.Round(CurrentValue, Digits)}%";
     public abstract void Update();
-    public virtual void Change(float value)
+    public virtual void Change(float value, bool updateRecent)
     {
         if (CurrentValue + value < MinValue)
         {
@@ -50,6 +57,38 @@ public abstract class HumanNeed
         {
             OnMaximum();
         }
+        if (updateRecent)
+        {
+            GameTimeLastChangedNeed = Game.GameTime;
+        }
+    }
+
+    public virtual void Set(float value)
+    {
+        if (value < MinValue)
+        {
+            CurrentValue = MinValue;
+        }
+        else if (value > MaxValue)
+        {
+            CurrentValue = MaxValue;
+        }
+        else
+        {
+            CurrentValue = value;
+        }
+        if (CurrentValue == MinValue)
+        {
+            OnMinimum();
+        }
+        if (CurrentValue == MaxValue)
+        {
+            OnMaximum();
+        }
+    }
+    public void SetRandom()
+    {
+        Set(RandomItems.GetRandomNumber(MinValue, MaxValue));
     }
     public abstract void OnMinimum();
     public abstract void OnMaximum();
@@ -58,5 +97,8 @@ public abstract class HumanNeed
         CurrentValue = MaxValue;
         GameTimeLastUpdated = Game.GameTime;
     }
+
+
+
 }
 

@@ -14,7 +14,9 @@ public class ThirstNeed : HumanNeed
     private ITimeReportable Time;
     private float RealTimeScalar;
     private ISettingsProvideable Settings;
-    public ThirstNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
+    private bool ShouldSlowDrain => Player.IsResting || Player.IsSleeping || Player.IsSitting || Player.IsLayingDown;
+    private bool ShouldChange => Player.IsAlive && !RecentlyChanged;
+    public ThirstNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time, settings.SettingsManager.NeedsSettings.ThirstDisplayDigits)
     {
         Player = humanStateable;
         Time = time;
@@ -25,50 +27,53 @@ public class ThirstNeed : HumanNeed
     {
 
     }
-
     public override void OnMinimum()
     {
 
     }
-
     public override void Update()
     {
-        if(NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplyThirst)
+        if (NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplyThirst)
         {
-            if(Player.IsAlive)
+            UpdateRealTimeScalar();
+            if (ShouldChange)
             {
-                RealTimeScalar = 1.0f;
-                TimeSpan TimeDifference = Time.CurrentDateTime - TimeLastUpdatedValue;
-                RealTimeScalar = (float)TimeDifference.TotalSeconds;
                 Drain();
-                TimeLastUpdatedValue = Time.CurrentDateTime;
             }
         }
     }
     private void Drain()
     {
-        float RestScalar = 1.0f;
-        if (Player.IsResting)
+        float ChangeAmount = MinChangeValue * RealTimeScalar;
+        if (ShouldSlowDrain)
         {
-            RestScalar = 0.25f;
+            ChangeAmount *= 0.25f;
         }
-        if (Player.IsInVehicle)
+        if (!Player.IsInVehicle)
         {
-            Change(MinChangeValue * RealTimeScalar * RestScalar);
+            ChangeAmount *= FootSpeedMultiplier();
         }
-        else
+        Change(ChangeAmount, false);
+    }
+    private float FootSpeedMultiplier()
+    {
+        float Multiplier = 1.0f;
+        if (Player.FootSpeed >= 1.0f)
         {
-            float Multiplier = 1.0f * RealTimeScalar;
-            if (Player.FootSpeed >= 1.0f)
-            {
-                Multiplier = Player.FootSpeed / 5.0f;
-            }
-            if (Multiplier <= 1.0f)
-            {
-                Multiplier = 1.0f;
-            }
-            Change(MinChangeValue * Multiplier * RestScalar);
+            Multiplier = Player.FootSpeed / 5.0f;
         }
+        if (Multiplier <= 1.0f)
+        {
+            Multiplier = 1.0f;
+        }
+        return Multiplier;
+    }
+    private void UpdateRealTimeScalar()
+    {
+        RealTimeScalar = 1.0f;
+        TimeSpan TimeDifference = Time.CurrentDateTime - TimeLastUpdatedValue;
+        RealTimeScalar = (float)TimeDifference.TotalSeconds;
+        TimeLastUpdatedValue = Time.CurrentDateTime;
     }
 }
 

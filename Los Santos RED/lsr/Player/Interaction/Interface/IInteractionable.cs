@@ -36,7 +36,6 @@ namespace LosSantosRED.lsr.Interface
         void SetAngeredCop();
         void GiveMoney(int v);
         void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
-        void ConsumeItem(ModItem toAdd);
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }

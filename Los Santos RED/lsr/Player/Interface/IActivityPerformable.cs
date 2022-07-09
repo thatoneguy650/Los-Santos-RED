@@ -51,7 +51,6 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void StopDynamicActivity();
         void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
-        void ConsumeItem(ModItem modItem);
         void ChangeName(string newName);
         void EnterVehicleAsPassenger();
         void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
@@ -63,5 +62,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSleeping { get; set; }
 
         void SetWantedLevel(int v1, string v2, bool v3);
+        void StartConsumingActivity(ModItem modItem, bool v);
+        //void StartConsumingActivity(ModItem modItem, bool v);
     }
 }

@@ -31,6 +31,9 @@ namespace LosSantosRED.lsr.Interface
         bool CanCancelCurrentActivity { get; }
         bool IsPerformingActivity { get; }
         bool IsCurrentActivityPaused { get; }
+        string PauseCurrentActivityPrompt { get; }
+        string CancelCurrentActivityPrompt { get; }
+        string ContinueCurrentActivityPrompt { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

@@ -250,7 +250,7 @@ public class ButtonPrompts
         {
             if (Player.CanPauseCurrentActivity && !Player.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlPause", "Pause Activity", "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlPause", Player.PauseCurrentActivityPrompt, "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
             }
             else
             {
@@ -258,7 +258,7 @@ public class ButtonPrompts
             }
             if (Player.CanCancelCurrentActivity)
             {
-                AttemptAddPrompt("ActivityControlCancel", "Stop Activity", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                AttemptAddPrompt("ActivityControlCancel", Player.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
             }
             else
             {
@@ -270,10 +270,10 @@ public class ButtonPrompts
         {
             if (Player.CanPauseCurrentActivity && Player.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlContinue", "Continue Activity", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlContinue", Player.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
                 if (Player.CanCancelCurrentActivity)
                 {
-                    AttemptAddPrompt("ActivityControlCancel", "Stop Activity", "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                    AttemptAddPrompt("ActivityControlCancel", Player.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
                 }
                 else
                 {
@@ -287,6 +287,11 @@ public class ButtonPrompts
             }
             RemovePrompts("ActivityControlPause");
         }
+    }
+
+    private void AttemptAddPrompt(string v1, object continueCurrentActivityPrompt, string v2, Keys interactNegativeOrNo, int v3)
+    {
+        throw new NotImplementedException();
     }
 }
 

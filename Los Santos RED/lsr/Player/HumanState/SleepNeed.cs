@@ -1,9 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class SleepNeed : HumanNeed
@@ -14,7 +10,10 @@ public class SleepNeed : HumanNeed
     private ITimeReportable Time;
     private float RealTimeScalar;
     private ISettingsProvideable Settings;
-    public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
+    private bool ShouldRecover => Player.IsResting || Player.IsSleeping;
+    private bool ShouldChange => Player.IsAlive;
+    private bool ShouldSlowDrain => Player.IsResting || Player.IsSitting || Player.IsLayingDown;
+    public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time, settings.SettingsManager.NeedsSettings.SleepDisplayDigits)
     {
         Player = humanStateable;
         Time = time;
@@ -36,12 +35,10 @@ public class SleepNeed : HumanNeed
     {
         if (NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplySleep)
         {
-            if (Player.IsAlive)
+            UpdateRealTimeScalar();
+            if (ShouldChange)
             {
-                RealTimeScalar = 1.0f;
-                TimeSpan TimeDifference = Time.CurrentDateTime - TimeLastUpdatedValue;
-                RealTimeScalar = (float)TimeDifference.TotalSeconds;
-                if (Player.IsResting)
+                if (ShouldRecover)
                 {
                     Recover();
                 }
@@ -49,34 +46,46 @@ public class SleepNeed : HumanNeed
                 {
                     Drain();
                 }
-                TimeLastUpdatedValue = Time.CurrentDateTime;
             }
         }
+    }
+    private void UpdateRealTimeScalar()//move this into the base class?
+    {
+        RealTimeScalar = 1.0f;
+        TimeSpan TimeDifference = Time.CurrentDateTime - TimeLastUpdatedValue;
+        RealTimeScalar = (float)TimeDifference.TotalSeconds;
+        TimeLastUpdatedValue = Time.CurrentDateTime;
     }
     private void Drain()
     {
-        if (Player.IsInVehicle)
+        float ChangeAmount = MinChangeValue * RealTimeScalar;
+        if (ShouldSlowDrain)
         {
-            Change(MinChangeValue * RealTimeScalar);
+            ChangeAmount *= 0.5f;
         }
-        else
+        if (!Player.IsInVehicle)
         {
-            float Multiplier = 1.0f * RealTimeScalar;
-            if (Player.FootSpeed >= 1.0f)
-            {
-                Multiplier = Player.FootSpeed / 5.0f;
-            }
-            if (Multiplier <= 1.0f)
-            {
-                Multiplier = 1.0f;
-            }
-            Change(MinChangeValue * Multiplier);
-
+            ChangeAmount *= FootSpeedMultiplier();
         }
+        Change(ChangeAmount, false);
+    }
+    private float FootSpeedMultiplier()
+    {
+        float Multiplier = 1.0f;
+        if (Player.FootSpeed >= 1.0f)
+        {
+            Multiplier = Player.FootSpeed / 5.0f;
+        }
+        if (Multiplier <= 1.0f)
+        {
+            Multiplier = 1.0f;
+        }
+        return Multiplier;
     }
     private void Recover()
     {
-        Change(Math.Abs(MinChangeValue) * RealTimeScalar);
+        float ChangeAmount = Math.Abs(MinChangeValue) * RealTimeScalar;
+        Change(ChangeAmount, false);
     }
 }
 

@@ -82,7 +82,7 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true) });
                     }
                     else
                     {
@@ -93,7 +93,7 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true) });
+                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true)});
                     }
                     else
                     {
@@ -116,15 +116,13 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        ActionablePlayer.StartConsumingActivity(selectedModItem, false);
+                        ActivityPerformablePlayer.StartConsumingActivity(selectedModItem, false);
 
                     }
                     else
                     {
-                        ActionablePlayer.StartConsumingActivity(selectedModItem, true);
-                        // inventoryMenu.Visible = false;
+                        ActivityPerformablePlayer.StartConsumingActivity(selectedModItem, true);
                     }
-
                     InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
                     if (ii != null)
                     {
@@ -141,50 +139,9 @@ public class InventoryMenu : Menu
                     }
                     else
                     {
-                        //    sender.RemoveItemAt(index);
-                        //    sender.RefreshIndex();
                         selectedItem.Enabled = false;
                         selectedItem.RightLabel = "None";
                         selectedItem.Description = "";
-
-
-                        //if(index == 0 && sender.MenuItems.Count() == 1)
-                        //{
-                        //   // sender.Clear();
-                        //}
-                        //else
-                        //{
-                        //    sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
-                        //    sender.RefreshIndex();
-                        //}
-
-                        //sender.RemoveItemAt(sender.MenuItems.IndexOf(selectedItem));
-                        //sender.RefreshIndex();
-                        //selectedItem.Enabled = false;
-                        //selectedItem.RightLabel = "None";
-
-                        //if (index != 0)
-                        //{
-                        //    sender.RemoveItemAt(index);
-                        //    sender.RefreshIndex();
-                        //}
-                        //int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == selectedStuff.ItemType);
-                        //UIMenu SubMenu = MenuPool.FirstOrDefault(x => x.SubtitleText == selectedStuff.ItemType.ToString());
-                        //if (SubMenu != null)
-                        //{
-                        //    UIMenuItem subItem = inventoryMenu.MenuItems.FirstOrDefault(x => x.Text == SubMenu.SubtitleText);
-                        //    if (subItem != null)
-                        //    {
-                        //        if (totalItems > 0)
-                        //        {
-                        //            subItem.RightLabel = $"{totalItems} Item(s)";
-                        //        }
-                        //        else
-                        //        {
-                        //            //MenuPool.Remove(SubMenu);
-                        //        }
-                        //    }
-                        //}
                     }
                     EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);
                 }

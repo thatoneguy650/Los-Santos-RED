@@ -25,6 +25,18 @@ namespace LosSantosRED.lsr.Player
         private int HealthGiven;
         private int TimesDrank;
 
+        private uint GameTimeLastCheckedAnimation;
+        private float LastAnimationValue;
+        private uint GameTimeLastGivenNeeds;
+        private float HungerGiven;
+        private float ThirstGiven;
+        private int SleepGiven;
+        private bool GivenFullHealth;
+        private bool GivenFullHunger;
+        private bool GivenFullThirst;
+        private bool GivenFullSleep;
+        private float PrevAnimationTime;
+
         public DrinkingActivity(IIntoxicatable consumable, ISettingsProvideable settings) : base()
         {
             Player = consumable;
@@ -41,6 +53,9 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override string PausePrompt { get; set; } = "Pause Drinking";
+        public override string CancelPrompt { get; set; } = "Stop Drinking";
+        public override string ContinuePrompt { get; set; } = "Continue Drinking";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -68,21 +83,7 @@ namespace LosSantosRED.lsr.Player
             CreateBottle();
             if (Bottle.Exists() && !IsAttachedToHand)
             {
-
-
-                //if (Player.IsMale)
-                //{
-                    Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
-                //}
-                //else
-                //{
-                //    Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
-                //}
-
-
-
-
-
+                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
                 Player.AttachedProp = Bottle;
             }
@@ -114,24 +115,7 @@ namespace LosSantosRED.lsr.Player
             Player.SetUnarmed();
             AttachBottleToHand();
             Player.IsPerformingActivity = true;
-            PlayingDict = Data.AnimEnterDictionary;
-            PlayingAnim = Data.AnimEnter;
-
-
-            //unsafe
-            //{
-            //    int lol = 0;
-            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimIdleDictionary, Data.AnimIdle.PickRandom(), 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            //}
-
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+            StartNewEnterAnimation();
             while (Player.CanPerformActivities && !IsCancelled)
             {
                 Player.SetUnarmed();
@@ -140,13 +124,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     break;
                 }
+                if (!IsAnimationRunning(AnimationTime))
+                {
+                    IsCancelled = true;
+                }
                 GameFiber.Yield();
             }
-
-
-
-
-
             Idle();
         }
         private void Exit()
@@ -181,14 +164,13 @@ namespace LosSantosRED.lsr.Player
                 {
                     if(!IsFinishedWithSip)
                     {
-                        //StartExitAnimation();
                         StartBaseAnimation();
                         GameTimeLastChangedIdle = Game.GameTime;
                         GameTimeBetweenDrinks = RandomItems.GetRandomNumber(3500, 5500);
                         IsFinishedWithSip = true;
                         EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
-                    if (TimesDrank >= 8 && (HealthGiven == ModItem.HealthChangeAmount))// || Player.Character.Health == Player.Character.MaxHealth))
+                    if (TimesDrank >= 5 && GivenFullHealth && GivenFullHunger && GivenFullSleep && GivenFullThirst)// || Player.Character.Health == Player.Character.MaxHealth))
                     {
                         IsCancelled = true;
                     }
@@ -200,19 +182,52 @@ namespace LosSantosRED.lsr.Player
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
                 }
+                if (!IsAnimationRunning(AnimationTime))
+                {
+                    IsCancelled = true;
+                }
                 UpdateHealthGain();
+                UpdateNeeds();
                 GameFiber.Yield();
             }
             Exit();
         }
+        private bool IsAnimationRunning(float AnimationTime)
+        {
+            return true;
+            if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
+            {
+                if (PrevAnimationTime == AnimationTime)
+                {
+                    EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
+                    return false;
+                }
+                PrevAnimationTime = AnimationTime;
+                GameTimeLastCheckedAnimation = Game.GameTime;
+            }
+            return true;
+        }
+
+        private void StartNewEnterAnimation()
+        {
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
+            PlayingDict = Data.AnimEnterDictionary;
+            PlayingAnim = Data.AnimEnter;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+        }
         private void StartNewIdleAnimation()
         {
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
         private void StartExitAnimation()
         {
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
@@ -220,6 +235,8 @@ namespace LosSantosRED.lsr.Player
 
         private void StartBaseAnimation()
         {
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, 50, 0, false, false, false);
@@ -241,11 +258,116 @@ namespace LosSantosRED.lsr.Player
                         HealthGiven--;
                         Player.ChangeHealth(-1);
                     }
-                    Player.HumanState.ChangeThirst(2.0f);
+                    //Player.HumanState.Thirst.Change(2.0f, true);
                 }
                 GameTimeLastGivenHealth = Game.GameTime;
             }
         }
+        private void UpdateNeeds()
+        {
+            if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
+            {
+                if (ModItem.ChangesNeeds)
+                {
+                    if (ModItem.ChangesHunger)
+                    {
+                        if (ModItem.HungerChangeAmount < 0.0f)
+                        {
+                            if (HungerGiven > ModItem.HungerChangeAmount)
+                            {
+                                Player.HumanState.Hunger.Change(-1.0f, true);
+                                HungerGiven--;
+                            }
+                            else
+                            {
+                                GivenFullHunger = true;
+                            }
+                        }
+                        else
+                        {
+                            if (HungerGiven < ModItem.HungerChangeAmount)
+                            {
+                                Player.HumanState.Hunger.Change(1.0f, true);
+                                HungerGiven++;
+                            }
+                            else
+                            {
+                                GivenFullHunger = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullHunger = true;
+                    }
+                    if (ModItem.ChangesThirst)
+                    {
+                        if (ModItem.ThirstChangeAmount < 0.0f)
+                        {
+                            if (ThirstGiven > ModItem.ThirstChangeAmount)
+                            {
+                                Player.HumanState.Thirst.Change(-1.0f, true);
+                                ThirstGiven--;
+                            }
+                            else
+                            {
+                                GivenFullThirst = true;
+                            }
+                        }
+                        else
+                        {
+                            if (ThirstGiven < ModItem.ThirstChangeAmount)
+                            {
+                                Player.HumanState.Thirst.Change(1.0f, true);
+                                ThirstGiven++;
+                            }
+                            else
+                            {
+                                GivenFullThirst = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullThirst = true;
+                    }
+                    if (ModItem.ChangesSleep)
+                    {
+                        if (ModItem.SleepChangeAmount < 0.0f)
+                        {
+                            if (SleepGiven > ModItem.SleepChangeAmount)
+                            {
+                                Player.HumanState.Sleep.Change(-1.0f, true);
+                                SleepGiven--;
+                            }
+                            else
+                            {
+                                GivenFullSleep = true;
+                            }
+                        }
+                        else
+                        {
+                            if (SleepGiven < ModItem.SleepChangeAmount)
+                            {
+                                Player.HumanState.Sleep.Change(1.0f, true);
+                                SleepGiven++;
+                            }
+                            else
+                            {
+                                GivenFullSleep = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullSleep = true;
+                    }
+                }
+                GameTimeLastGivenNeeds = Game.GameTime;
+            }
+        }
+
+
         private void Setup()
         {
             List<string> AnimIdle;

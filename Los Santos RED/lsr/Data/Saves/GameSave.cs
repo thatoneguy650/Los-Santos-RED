@@ -135,6 +135,11 @@ namespace LosSantosRED.lsr.Data
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
 
+
+            HungerValue = player.HumanState.Hunger.CurrentValue;
+            SleepValue = player.HumanState.Sleep.CurrentValue;
+            ThirstValue = player.HumanState.Thirst.CurrentValue;
+
             if (player.Licenses.HasDriversLicense)
             {
                 DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate };
@@ -189,6 +194,13 @@ namespace LosSantosRED.lsr.Data
         public int OfficerFriendlyMoneySpent { get; set; }
         public int OfficerFriendlyDebt { get; set; }
         public int OfficerFriendlyReputation { get; set; }
+
+
+
+        public float HungerValue { get; set; }
+        public float ThirstValue { get; set; }
+        public float SleepValue { get; set; }
+
 
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -341,9 +353,9 @@ namespace LosSantosRED.lsr.Data
                         }
                     }
                 }
-
-
-
+                player.HumanState.Thirst.Set(ThirstValue);
+                player.HumanState.Hunger.Set(HungerValue);
+                player.HumanState.Sleep.Set(SleepValue);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
             }

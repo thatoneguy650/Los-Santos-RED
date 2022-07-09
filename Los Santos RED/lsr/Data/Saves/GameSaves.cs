@@ -122,6 +122,9 @@ public class GameSaves : IGameSaves
         AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", 15.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", 1.0f));
+        AlexisGameSave.HungerValue = 75.0f;
+        AlexisGameSave.ThirstValue = 75.0f;
+        AlexisGameSave.SleepValue = 75.0f;
 
 
         AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30,"CHAR_BLANK_ENTRY"));
@@ -200,6 +203,12 @@ public class GameSaves : IGameSaves
         SawyerGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = SawyerGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = SawyerGameSave.CurrentDateTime });
         SawyerGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
         SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",3000,0,0,0,0,0,0,0) };
+        SawyerGameSave.HungerValue = 75.0f;
+        SawyerGameSave.ThirstValue = 75.0f;
+        SawyerGameSave.SleepValue = 75.0f;
+
+
+
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,

@@ -32,5 +32,6 @@ namespace LosSantosRED.lsr.Interface
         OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
         Licenses Licenses { get; }
         Properties Properties { get; }
+        HumanState HumanState { get; }
     }
 }

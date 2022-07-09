@@ -17,6 +17,9 @@ namespace LosSantosRED.lsr.Player
         public abstract string DebugString { get; }
         public abstract bool CanPause { get; set; }
         public abstract bool CanCancel { get; set; }
+        public abstract string CancelPrompt { get; set; }
+        public abstract string PausePrompt { get; set; }
+        public abstract string ContinuePrompt { get; set; }
         public abstract bool IsPaused();
         public abstract void Start();
         public abstract void Continue();

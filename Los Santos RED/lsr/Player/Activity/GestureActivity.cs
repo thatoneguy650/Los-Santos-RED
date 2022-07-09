@@ -27,6 +27,9 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override string PausePrompt { get; set; } = "Pause Gesture";
+        public override string CancelPrompt { get; set; } = "Stop Gesture";
+        public override string ContinuePrompt { get; set; } = "Continue Gesture";
         public override void Cancel()
         {
             IsCancelled = true;

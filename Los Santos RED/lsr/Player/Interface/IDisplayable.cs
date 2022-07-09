@@ -70,5 +70,6 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         HumanState HumanState { get; set; }
         int LastChangeMoneyAmount { get; }
+        bool IsSleeping { get; }
     }
 }

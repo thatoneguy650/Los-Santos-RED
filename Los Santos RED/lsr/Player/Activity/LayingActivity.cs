@@ -42,6 +42,9 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = false;
+        public override string PausePrompt { get; set; } = "Pause Activity";
+        public override string CancelPrompt { get; set; } = "Stop Activity";
+        public override string ContinuePrompt { get; set; } = "Continue Activity";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -159,6 +162,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 }
+
+                if(Player.HumanState.Sleep.IsMax)
+                {
+                    IsCancelled = true;
+                }
+
                 //if (AnimationTime >= 1.0f && !Player.IsPerformingActivity)
                 //{
                 //    StartNewIdleScene();

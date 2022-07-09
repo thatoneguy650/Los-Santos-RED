@@ -717,6 +717,10 @@ public class PurchaseMenu : Menu
             {
                 description += $"~n~{modItem.HealthChangeDescription}";
             }
+            if (modItem.ChangesNeeds)
+            {
+                description += $"~n~{modItem.NeedChangeDescription}";
+            }
             if (modItem.ConsumeOnPurchase && (modItem.Type == eConsumableType.Eat || modItem.Type == eConsumableType.Drink))
             {
                 description += $"~n~~r~Dine-In Only~s~";
@@ -1399,7 +1403,7 @@ public class PurchaseMenu : Menu
             menuItem.ItemsSoldToPlayer += TotalItems;
             if (modItem.ConsumeOnPurchase)
             {
-                Player.ConsumeItem(modItem);
+                Player.StartConsumingActivity(modItem, false);
             }
             else
             {

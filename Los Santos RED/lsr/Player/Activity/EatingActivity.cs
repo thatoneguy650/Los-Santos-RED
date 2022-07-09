@@ -23,6 +23,16 @@ namespace LosSantosRED.lsr.Player
         private uint GameTimeLastGivenHealth;
         private int HealthGiven;
         private int TimesAte;
+        private uint GameTimeLastGivenNeeds;
+        private float HungerGiven;
+        private float ThirstGiven;
+        private int SleepGiven;
+        private bool GivenFullHealth;
+        private bool GivenFullHunger;
+        private bool GivenFullThirst;
+        private bool GivenFullSleep;
+        private float PrevAnimationTime;
+        private uint GameTimeLastCheckedAnimation;
 
         public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -35,6 +45,9 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override string PausePrompt { get; set; } = "Pause Eating";
+        public override string CancelPrompt { get; set; } = "Stop Eating";
+        public override string ContinuePrompt { get; set; } = "Continue Eating";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -65,10 +78,6 @@ namespace LosSantosRED.lsr.Player
             {
                 //Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
-                
-
-
-
                 IsAttachedToHand = true;
                 Player.AttachedProp = Food;
             }
@@ -102,6 +111,43 @@ namespace LosSantosRED.lsr.Player
             Player.IsPerformingActivity = true;
             Idle();
         }
+
+        private void Idle()
+        {
+            StartNewIdleAnimation();
+            EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
+            while (Player.CanPerformActivities && !IsCancelled)
+            {
+                Player.SetUnarmed();
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 1.0f)
+                {
+                    if (TimesAte >= 5 && GivenFullHealth && GivenFullHunger && GivenFullSleep && GivenFullThirst) // || Player.Character.Health == Player.Character.MaxHealth))
+                    {
+                        if (Food.Exists())
+                        {
+                            Food.Delete();
+                        }
+                        IsCancelled = true;
+                    }
+                    else
+                    {
+                        TimesAte++;
+                        StartNewIdleAnimation();
+                    }
+                }
+                if (!IsAnimationRunning(AnimationTime))
+                {
+                    IsCancelled = true;
+                }
+                UpdateHealthGain();
+                UpdateNeeds();
+                GameFiber.Yield();
+            }
+            Exit();
+        }
+
+
         private void Exit()
         {
             if (Food.Exists())
@@ -120,50 +166,31 @@ namespace LosSantosRED.lsr.Player
                 Food.Delete();
             }
         }
-        private void Idle()
+
+        private void StartNewIdleAnimation()
         {
-            if (Player.CanPerformActivities && !IsCancelled)
-            {
-                Player.ButtonPrompts.AddPrompt("EatingActivity", "Stop Eating", "StopEat", Settings.SettingsManager.KeySettings.InteractCancel, 999);
-            }
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);//-1
-            EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            while (Player.CanPerformActivities && !IsCancelled)
-            {
-                Player.SetUnarmed();
-                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 1.0f)
-                {
-                    if (TimesAte >= 3 && (HealthGiven == ModItem.HealthChangeAmount)) // || Player.Character.Health == Player.Character.MaxHealth))
-                    {
-                        if (Food.Exists())
-                        {
-                            Food.Delete();
-                        }
-                        IsCancelled = true;
-                    }
-                    else
-                    {
-                        TimesAte++;
-                        PlayingDict = Data.AnimIdleDictionary;
-                        PlayingAnim = Data.AnimIdle.PickRandom();
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);
-                        EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte} HealthGiven {HealthGiven}", 5);
-                    }
-                }
-                if (Player.ButtonPrompts.IsPressed("StopEat"))
-                {
-                    Player.ButtonPrompts.RemovePrompts("EatingActivity");
-                    IsCancelled = true;
-                }
-                UpdateHealthGain();
-                GameFiber.Yield();
-            }
-            Player.ButtonPrompts.RemovePrompts("EatingActivity");
-            Exit();
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);
         }
+        private bool IsAnimationRunning(float AnimationTime)
+        {
+            return true;
+            if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
+            {
+                if (PrevAnimationTime == AnimationTime)
+                {
+                    EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
+                    return false;
+                }
+                PrevAnimationTime = AnimationTime;
+                GameTimeLastCheckedAnimation = Game.GameTime;
+            }
+            return true;
+        }
+
         private void UpdateHealthGain()
         {
             if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
@@ -180,9 +207,118 @@ namespace LosSantosRED.lsr.Player
                         HealthGiven--;
                         Player.ChangeHealth(-1);  
                     }
-                    Player.HumanState.ChangeHunger(3.0f);
+                    //Player.HumanState.Hunger.Change(3.0f, true);
                 }
+
+                if(HealthGiven == ModItem.HealthChangeAmount)
+                {
+                    GivenFullHealth = true;
+                }
+
                 GameTimeLastGivenHealth = Game.GameTime;
+            }
+        }
+        private void UpdateNeeds()
+        {
+            if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
+            {
+                if(ModItem.ChangesNeeds)
+                {
+                    if(ModItem.ChangesHunger)
+                    {
+                        if(ModItem.HungerChangeAmount < 0.0f)
+                        {
+                            if(HungerGiven > ModItem.HungerChangeAmount)
+                            {
+                                Player.HumanState.Hunger.Change(-1.0f, true);
+                                HungerGiven--;
+                            }
+                            else
+                            {
+                                GivenFullHunger = true;
+                            }
+                        }
+                        else
+                        {
+                            if(HungerGiven < ModItem.HungerChangeAmount)
+                            {
+                                Player.HumanState.Hunger.Change(1.0f, true);
+                                HungerGiven++;
+                            }
+                            else
+                            {
+                                GivenFullHunger = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullHunger = true;
+                    }
+                    if (ModItem.ChangesThirst)
+                    {
+                        if (ModItem.ThirstChangeAmount < 0.0f)
+                        {
+                            if (ThirstGiven > ModItem.ThirstChangeAmount)
+                            {
+                                Player.HumanState.Thirst.Change(-1.0f, true);
+                                ThirstGiven--;
+                            }
+                            else
+                            {
+                                GivenFullThirst = true;
+                            }
+                        }
+                        else
+                        {
+                            if (ThirstGiven < ModItem.ThirstChangeAmount)
+                            {
+                                Player.HumanState.Thirst.Change(1.0f, true);
+                                ThirstGiven++;
+                            }
+                            else
+                            {
+                                GivenFullThirst = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullThirst = true;
+                    }
+                    if (ModItem.ChangesSleep)
+                    {
+                        if (ModItem.SleepChangeAmount < 0.0f)
+                        {
+                            if (SleepGiven > ModItem.SleepChangeAmount)
+                            {
+                                Player.HumanState.Sleep.Change(-1.0f, true);
+                                SleepGiven--;
+                            }
+                            else
+                            {
+                                GivenFullSleep = true;
+                            }
+                        }
+                        else
+                        {
+                            if (SleepGiven < ModItem.SleepChangeAmount)
+                            {
+                                Player.HumanState.Sleep.Change(1.0f, true);
+                                SleepGiven++;
+                            }
+                            else
+                            {
+                                GivenFullSleep = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GivenFullSleep = true;
+                    }
+                }
+                GameTimeLastGivenNeeds = Game.GameTime;
             }
         }
         private void Setup()

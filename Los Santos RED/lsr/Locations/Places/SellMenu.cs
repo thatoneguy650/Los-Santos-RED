@@ -359,6 +359,10 @@ public class SellMenu : Menu
             {
                 description += $"~n~{modItem.HealthChangeDescription}";
             }
+            if (modItem.ChangesNeeds)
+            {
+                description += $"~n~{modItem.NeedChangeDescription}";
+            }
             description += $"~n~{RemainingToSell} {modItem.MeasurementName}(s) For Purchase~s~";
             description += $"~n~Player Inventory: {PlayerItems}~s~ {modItem.MeasurementName}(s)";
             scrollerItem.Maximum = MaxSell;

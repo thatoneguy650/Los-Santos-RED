@@ -19,5 +19,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsMovingFast { get; }
         float FootSpeed { get; }
         bool IsResting { get; }
+        bool IsSleeping { get; }
+        bool IsSitting { get; }
+        bool IsLayingDown { get; }
     }
 }

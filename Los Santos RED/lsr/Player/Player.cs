@@ -187,6 +187,10 @@ namespace Mod
         public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
         public bool CanUndie => Respawning.CanUndie;
         public bool CanWaveHands => Surrendering.CanWaveHands;
+
+        public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
+        public string CancelCurrentActivityPrompt => UpperBodyActivity != null ?  UpperBodyActivity.CancelPrompt : LowerBodyActivity  != null ? LowerBodyActivity.CancelPrompt : "";
+        public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
         public bool CanCancelCurrentActivity => UpperBodyActivity?.CanCancel == true || LowerBodyActivity?.CanCancel == true;
         public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
         public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
@@ -1063,13 +1067,26 @@ namespace Mod
                 UpperBodyActivity.Start();
             }
         }
-        public void ConsumeItem(ModItem toAdd)
+        private void ConsumeItem(ModItem toAdd)
         {
             if (toAdd.CanConsume)
             {
                 if (toAdd.ChangesHealth)
                 {
                     ChangeHealth(toAdd.HealthChangeAmount);
+                }
+
+                if(toAdd.ChangesHunger)
+                {
+                    HumanState.Hunger.Change(toAdd.HungerChangeAmount, true);
+                }
+                if (toAdd.ChangesSleep)
+                {
+                    HumanState.Sleep.Change(toAdd.SleepChangeAmount, true);
+                }
+                if (toAdd.ChangesThirst)
+                {
+                    HumanState.Thirst.Change(toAdd.ThirstChangeAmount, true);
                 }
             }
         }
@@ -1929,7 +1946,8 @@ namespace Mod
                 else
                 {
                     TimeControllable.FastForward(TimeControllable.CurrentDateTime.AddMinutes(3));
-                    ChangeHealth(modItem.HealthChangeAmount);
+                    ConsumeItem(modItem);
+                    //ChangeHealth(modItem.HealthChangeAmount);
                 }
             }
         }
@@ -2247,7 +2265,7 @@ namespace Mod
             EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
 
 
-            if(IsSleeping && !Investigation.IsActive && !Investigation.IsSuspicious)
+            if(IsSleeping && IsNotWanted && !Investigation.IsActive && !Investigation.IsSuspicious)
             {
                 if (!TimeControllable.IsFastForwarding)
                 {
@@ -2280,26 +2298,6 @@ namespace Mod
                         }
                     }
                 }
-
-
-
-
-
-
-                //if(ClosestInteractableLocation != null && ClosestInteractableLocation.HasVendor)
-                //{
-                //    float VendorPositionDistanceToPlayer = ClosestInteractableLocation.VendorPosition.DistanceTo(Character);
-                //    if (VendorPositionDistanceToPlayer <= 3.0f && (ClosestInteractableLocation.Merchant?.IsDead == true || ClosestInteractableLocation.Merchant?.IsUnconscious == true || ClosestInteractableLocation.Merchant?.HasBeenMugged == true || ClosestInteractableLocation.Merchant?.DistanceToPlayer >= 50f))
-                //    {
-                //        ClosestInteractableLocation.CanInteract = true;
-                //        ClosestInteractableLocation.VendorAbandoned = true;
-                //    }
-                //    else
-                //    {
-                //        ClosestInteractableLocation.CanInteract = false;
-                //        ClosestInteractableLocation.VendorAbandoned = false;
-                //    }
-                //}
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
             Sprinting.Update();
@@ -2372,9 +2370,6 @@ namespace Mod
                 }
 
             }
-
-
-
             if(IsInVehicle)
             {
                 int VehicleViewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
@@ -2399,9 +2394,6 @@ namespace Mod
                     IsInFirstPerson = false;
                 }
             }
-
-
-
             PlayerTasks.Update();
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }

@@ -406,7 +406,7 @@ public class UI : IMenuProvideable
         bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.RecentlyChangedMoney;
-        bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
+        bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
 
 
         float WeaponPosition = 0.0f;
@@ -470,7 +470,16 @@ public class UI : IMenuProvideable
 
         if (willShowNeeds)
         {
-            DisplayTextOnScreen(DisplayablePlayer.HumanState.DisplayString(), NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+            string NeedsString = "";
+            if(IsDrawingWheelMenu || DisplayablePlayer.IsSleeping)
+            {
+                NeedsString = DisplayablePlayer.HumanState.DisplayString();
+            }
+            else
+            {
+                NeedsString = DisplayablePlayer.HumanState.RecentlyChangedString();
+            }
+            DisplayTextOnScreen(NeedsString, NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
         //string debugText = $"VStar {IsVanillaStarsHUDVisible} VWeap{IsVanillaWeaponHUDVisible} V$ {IsVanillaCashHUDVisible} will$ {willShowCash} pos {CashPosition} willWeap {willShowWeapon} pos {WeaponPosition}";

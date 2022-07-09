@@ -76,6 +76,8 @@ public class DebugMenu : Menu
     private UIMenuItem GetSomeItems;
     private IModItems ModItems;
     private int RandomUpgradedWeaponCategory;
+    private UIMenuItem SetRandomNeeds;
+    private UIMenuItem ResetNeeds;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems)
     {
@@ -206,7 +208,8 @@ public class DebugMenu : Menu
         FriendlyGangRep = new UIMenuItem("Set Gang Rep Friendly", "Sets the player reputation to each gang to friendly");
         SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
 
-
+        SetRandomNeeds = new UIMenuItem("Set Random Needs", "Sets the player needs level random");
+        ResetNeeds = new UIMenuItem("Reset Needs", "Sets the player needs to the default level");
 
         Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
 
@@ -236,6 +239,9 @@ public class DebugMenu : Menu
         Debug.AddItem(GoToHardCoreSettings);
 
 
+
+        Debug.AddItem(ResetNeeds);
+        Debug.AddItem(SetRandomNeeds);
 
         Debug.AddItem(SpawnGunAttackersMenu);
         Debug.AddItem(SpawnNoGunAttackersMenu);
@@ -520,23 +526,27 @@ public class DebugMenu : Menu
 
         else if (selectedItem == GetAllItems)
         {
-
             foreach (ModItem modItem in ModItems.Items)
             {
                 if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
                 {
-                    Player.Inventory.Add(modItem, 10);
+                    if (!modItem.ConsumeOnPurchase)
+                    {
+                        Player.Inventory.Add(modItem, 10);
+                    }
                 }
             }
         }
         else if (selectedItem == GetSomeItems)
         {
-
             foreach (ModItem modItem in ModItems.Items.OrderBy(x => RandomItems.MyRand.Next()).Take(30))
             {
                 if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
                 {
-                    Player.Inventory.Add(modItem, 10);
+                    if (!modItem.ConsumeOnPurchase)
+                    {
+                        Player.Inventory.Add(modItem, 10);
+                    }
                 }
             }
         }
@@ -572,6 +582,17 @@ public class DebugMenu : Menu
         {
             Player.GangRelationships.SetFriendlyReputations();
         }
+
+
+        else if (selectedItem == SetRandomNeeds)
+        {
+            Player.HumanState.SetRandom();
+        }
+        else if (selectedItem == ResetNeeds)
+        {
+            Player.HumanState.Reset();
+        }
+
 
         //if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
         //{
@@ -805,7 +826,7 @@ public class DebugMenu : Menu
             }
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {
-                // Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+                 Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
 
 
                 if (Game.IsKeyDownRightNow(Keys.O))

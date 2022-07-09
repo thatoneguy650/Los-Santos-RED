@@ -66,66 +66,23 @@ public class ModItem
     public string HealthChangeDescription => HealthChangeAmount > 0 ? $"~g~+{HealthChangeAmount} ~s~HP" : $"~r~{HealthChangeAmount} ~s~HP";
     public bool ConsumeOnPurchase { get; set; } = false;
 
-
-
+    public string NeedChangeDescription => (ChangesHunger ? HungerChangeDescription + " " : "") + (ChangesThirst ? ThirstChangeDescription + " " : "") + (ChangesSleep ? SleepChangeDescription : "").Trim();
+    public bool ChangesNeeds => ChangesHunger || ChangesThirst || ChangesSleep;
+    public bool ChangesHunger => HungerChangeAmount != 0.0f;
+    public string HungerChangeDescription => ChangesHunger ? $"{(HungerChangeAmount > 0.0f ? "~g~+" : "~r~") + HungerChangeAmount.ToString() + "~s~ Hunger"}" : "";
+    public float HungerChangeAmount { get; set; } = 0.0f;
+    public bool ChangesThirst => ThirstChangeAmount != 0.0f;
+    public string ThirstChangeDescription => ChangesThirst ? $"{(ThirstChangeAmount > 0.0f ? "~g~+" : "~r~") + ThirstChangeAmount.ToString() + "~s~ Thirst"}" : "";
+    public float ThirstChangeAmount { get; set; } = 0.0f;
+    public bool ChangesSleep => SleepChangeAmount != 0.0f;
+    public string SleepChangeDescription => ChangesSleep ? $"{(SleepChangeAmount > 0.0f ? "~g~+" : "~r~") + SleepChangeAmount.ToString() + "~s~ Sleep"}" : "";
+    public float SleepChangeAmount { get; set; } = 0.0f;
     public bool RequiresDLC { get; set; } = false;
-
-
     public bool IsTool => ToolType != ToolTypes.None;
     public ToolTypes ToolType { get; set; } = ToolTypes.None;
     public bool RequiresTool => RequiredToolType != ToolTypes.None;
     public ToolTypes RequiredToolType { get; set; } = ToolTypes.None;
     public float PercentLostOnUse { get; set; } = 0.0f;
-
-
-
-    //public string FormattedItemType
-    //{
-    //    get
-    //    {
-    //        if(IsTool)
-    //        {
-    //            return "Tool - " + ToolType.ToString();
-    //        }
-    //        if(Type == eConsumableType.Drink)
-    //        {
-    //            return "Drinkable";
-    //        }
-    //        else if (Type == eConsumableType.Eat)
-    //        {
-    //            return "Edible";
-    //        }
-    //        else if (Type == eConsumableType.Smoke)
-    //        {
-    //            return "Smokable";
-    //        }
-    //        else if (Type == eConsumableType.AltSmoke)
-    //        {
-    //            return "Smokable";
-    //        }
-    //        else if (Type == eConsumableType.Ingest || Type == eConsumableType.Snort)
-    //        {
-    //            return "Ingestable";
-    //        }
-    //        else if (Type == eConsumableType.Inject)
-    //        {
-    //            return "Injectable";
-    //        }
-    //        else if (Type == eConsumableType.Service)
-    //        {
-    //            return "Service";
-    //        }
-    //        else if (Type == eConsumableType.None)
-    //        {
-    //            return "Other";
-    //        }
-    //        else
-    //        {
-    //            return Type.ToString();
-    //        }
-    //    }
-    //}
-
     public bool IsPossessionIllicit { get; set; } = false;
 }
 

@@ -26,6 +26,9 @@ public class SurrenderActivity : DynamicActivity
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override string PausePrompt { get; set; } = "Pause Activity";
+    public override string CancelPrompt { get; set; } = "Stop Activity";
+    public override string ContinuePrompt { get; set; } = "Continue Activity";
     public bool IsCommitingSuicide { get; set; }
     public override void Cancel()
     {

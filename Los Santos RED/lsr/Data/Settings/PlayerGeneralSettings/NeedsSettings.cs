@@ -22,23 +22,35 @@ public class NeedsSettings : ISettingsDefaultable
     [Description("Change the intensity of the drain and recovery for sleep. Default 1.0")]
     public float SleepChangeScalar { get; set; }
 
+    [Description("Changes the amount of digits seen on the hunger ui")]
+    public int HungerDisplayDigits { get; set; }
+    [Description("Changes the amount of digits seen on the thirst ui")]
+    public int ThirstDisplayDigits { get; set; }
+    [Description("Changes the amount of digits seen on the sleep ui")]
+    public int SleepDisplayDigits { get; set; }
     public NeedsSettings()
     {
         SetDefault();
-#if DEBUG
 
-#endif
     }
     public void SetDefault()
     {
         ApplyNeeds = true;
         ApplyThirst = true;
         ThirstChangeScalar = 1.0f;
+        ThirstDisplayDigits = 0;
         ApplyHunger = true;
         HungerChangeScalar = 1.0f;
+        HungerDisplayDigits = 0;
         ApplySleep = true;
         SleepChangeScalar = 1.0f;
+        SleepDisplayDigits = 0;
 
+#if DEBUG
+        ThirstDisplayDigits = 2;
+        HungerDisplayDigits = 2;
+        SleepDisplayDigits = 2;
+#endif
     }
 
 }

@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
+        HumanState HumanState { get; }
 
 
         //Action DropWeapon { get; }
