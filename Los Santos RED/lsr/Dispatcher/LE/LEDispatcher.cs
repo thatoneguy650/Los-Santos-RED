@@ -478,19 +478,16 @@ public class LEDispatcher
                         }
                     }
                     ps.IsDispatchFilled = true;
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
                 }
                 else
                 {
                     ps.IsDispatchFilled = true;
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled NO SPAWNS");
                 }
             }
         }
         foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
         {
             ps.IsDispatchFilled = false;
-            EntryPoint.WriteToConsole($"Police Station: {ps.Name} DEACTIVATED");
         }
     }
     private void HandleRoadblockSpawns()
@@ -508,7 +505,6 @@ public class LEDispatcher
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
-            EntryPoint.WriteToConsole($"LE Dispatcher Call Spawn Task Agency: {Agency?.ID} Vehicle {VehicleType?.ModelName} Person {PersonType?.ModelName}");
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
@@ -518,7 +514,7 @@ public class LEDispatcher
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"LE Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
     private bool GetSpawnLocation()
@@ -732,36 +728,24 @@ public class LEDispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(World.TotalWantedLevel))
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn",5);
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle) IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}",5);
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot) IS: {cop.DistanceToPlayer} REQ: {DistanceToDeleteOnFoot}",5);
             return true;
         }
         else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}",5);
             return true;
         }
-
         else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.Pedestrians.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: World.AnyCopsNearCop IS: {cop.DistanceToPlayer} REQ: {DistanceToDelete}", 5);
             return true;
         }
-
-        //else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
-        //{
-        //    //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
-        //    return true;
-        //}
         return false;
     }
     public void SpawnRoadblock()//temp public

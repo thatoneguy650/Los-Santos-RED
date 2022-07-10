@@ -274,19 +274,15 @@ public class Idle : ComplexTask
                 Vector3 pedPos = Ped.Pedestrian.Position;
                 if (Cop.IsAmbientSpawn || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
                 {
-                    //NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
                     List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_COP_IDLES", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
                     string ScenarioChosen = PossibleScenarios.PickRandom();
                     NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
                     GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
                     GameTimeLastStartedScenario = Game.GameTime;
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario GameTimeBetweenScenarios {GameTimeBetweenScenarios} ScenarioChosen {ScenarioChosen}", 5);
                 }
                 else
                 {
                     NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
-                    //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
                 }
 
             }
@@ -309,7 +305,6 @@ public class Idle : ComplexTask
                     if (Cop.IsAmbientSpawn && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
                     {
                         ForceGuard = true;
-                        EntryPoint.WriteToConsole("COP IDLE Transitioning from FOOT PATROL TO GUARD");
                     }
                 }
             }
@@ -440,7 +435,6 @@ public class Idle : ComplexTask
                     if(RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
                     {
                         ForceGuard = false;
-                        EntryPoint.WriteToConsole("COP IDLE Transitioning from GUARD TO FOOT PATROL");
                     }
                     else
                     {

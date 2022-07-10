@@ -1,5 +1,4 @@
-﻿using iFruitAddon2;
-using LosSantosRED.lsr.Locations;
+﻿using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
 using System;

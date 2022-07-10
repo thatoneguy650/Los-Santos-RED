@@ -362,7 +362,6 @@ public class Pedestrians
                 DeadPeds.Add(GangMember);
             }
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: GANG MEMBER {GangMember.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         GangMembers.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
     }
@@ -382,7 +381,6 @@ public class Pedestrians
                 Civilian.Pedestrian.IsPersistent = false;
             }
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
         }
         RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
         RelationshipGroup hatesCops = new RelationshipGroup("HATESCOPS");
@@ -391,13 +389,11 @@ public class Pedestrians
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
             {
                 Civilian.Pedestrian.IsPersistent = false;
-                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, FORMER PLAYER", 5);
                 EntryPoint.PersistentPedsNonPersistent++;
             }
             else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
             {
                 Civilian.Pedestrian.IsPersistent = false;
-                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, WAS NOT PERSISTENTLY CREATED", 5);
                 EntryPoint.PersistentPedsNonPersistent++;
             }
         }
@@ -418,51 +414,22 @@ public class Pedestrians
         }
         Civilians.RemoveAll(x => x.CanRemove || (x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop) || (x.Handle == Game.LocalPlayer.Character.Handle));
         DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
-
-
-
         foreach (PedExt Civilian in DeadPeds.Where(x => NativeHelper.MaxCellsAway(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY) >= 3 && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == hatesCops)
             {
                 Civilian.Pedestrian.IsPersistent = false;
-                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, FORMER PLAYER OR WANTED PED", 5);
                 EntryPoint.PersistentPedsNonPersistent++;
             }
             else if (Civilian.IsWanted && !Civilian.WasPersistentOnCreate && !Civilian.WasModSpawned)
             {
                 Civilian.Pedestrian.IsPersistent = false;
-                EntryPoint.WriteToConsole($"Pedestrians: CIVILIAN {Civilian.Pedestrian.Handle} SET NON PERISISTENT, WAS NOT PERSISTENTLY CREATED", 5);
                 EntryPoint.PersistentPedsNonPersistent++;
             }
         }
-
-
-        //Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.RelationshipGroup == RelationshipGroup.Cop);
-        //Civilians.RemoveAll(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Game.LocalPlayer.Character.Handle);
-        //Civilians.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
-        //Civilians.RemoveAll(x => x.Handle == (uint)Game.LocalPlayer.Character.Handle);
-
-        //DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
     }
     public void Setup()
     {
-        //foreach(Gang gang in Gangs.AllGangs)
-        //{
-        //    RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
-        //    RelationshipGroup policeGroup = new RelationshipGroup("COP");
-        //    foreach (Gang otherGang in Gangs.AllGangs)
-        //    {
-        //        if(otherGang.ID != gang.ID)
-        //        {
-        //            RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-        //            otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-        //            thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
-        //        }
-        //    }
-        //    thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);
-        //    policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-        //}
         foreach (Gang gang in Gangs.AllGangs)
         {
             RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
@@ -483,7 +450,6 @@ public class Pedestrians
                         otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
                         thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Like);
                     }
-
                 }
             }
             thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Like);
@@ -561,7 +527,6 @@ public class Pedestrians
             if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
             {
                 Delete(Pedestrian);
-                //Pedestrian.Delete();
                 continue;
             }
             uint localHandle = Pedestrian.Handle;
@@ -594,20 +559,11 @@ public class Pedestrians
                     }
                     if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
                     {
-                        //Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
-                        //if(!Civilians.Any(x => x.Handle == localHandle))
-                        //{
-                        //    AddAmbientCivilian(Pedestrian);
-                        //    GameFiber.Yield();
-                        //}
-
-
                         Delete(Pedestrian);
                         continue;
                     }
                     else if(Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
                     {
-                        EntryPoint.WriteToConsole("RemoveVanillaSpawnedPedsOnFoot DELETED PED");
                         Delete(Pedestrian);
                         continue;
                     }
@@ -799,7 +755,6 @@ public class Pedestrians
                 WillCallPoliceIntense = false;
                 canBeAmbientTasked = false;
             }
-            //EntryPoint.WriteToConsole($"Added Ambient Civilian {Pedestrian.Handle}");
             PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
             if (myGroup == null)
             {
@@ -826,7 +781,6 @@ public class Pedestrians
             {
                 MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName, relationshipGroupName);
             }
-
             DispatchablePerson gangPerson = null;
             if(MyGang.Personnel != null)
             {
@@ -907,9 +861,7 @@ public class Pedestrians
                     NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
                     NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
                 }
-                //EntryPoint.WriteToConsole($"PEDESTRIANS: COULD NOT LOOKUP GANG MEMBER GOING WITH DEFAULT", 2);
             }
-            //EntryPoint.WriteToConsole($"PEDESTRIANS: Add GANG MEMBER {Pedestrian.Handle} withPerson lookup? {withPerson}", 2);
             GangMembers.Add(gm);
         }
     }
@@ -1028,7 +980,6 @@ public class Pedestrians
             }
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
             NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
-           // NativeFunction.Natives.SET_DRIVER_ABILITY(Pedestrian, 100f);
         }
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
@@ -1037,7 +988,6 @@ public class Pedestrians
         unsafe
         {
             IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
-
             zoneName = Marshal.PtrToStringAnsi(ptr);
         }
         return zoneName;

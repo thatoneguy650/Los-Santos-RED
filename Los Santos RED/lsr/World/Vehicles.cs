@@ -20,7 +20,6 @@ public class Vehicles
     private ISettingsProvideable Settings;
     private Entity[] RageVehicles;
     private uint GameTimeLastCreatedVehicles;
-
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
         Zones = zones;
@@ -31,7 +30,6 @@ public class Vehicles
     }
     public List<VehicleExt> PoliceVehicleList => PoliceVehicles;
     public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
-
     public List<VehicleExt> FireVehicleList => FireVehicles;
     public List<VehicleExt> EMSVehicleList => EMSVehicles;
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
@@ -54,14 +52,7 @@ public class Vehicles
     }
     public void Setup()
     {
-        //RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
-        //foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
-        //{
-        //    if (vehicle.IsPoliceVehicle)
-        //    {
-        //        vehicle.Delete();
-        //    }
-        //}
+
     }
     public void Dispose()
     {
@@ -78,18 +69,10 @@ public class Vehicles
     {
         RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
-        //int VehiclesCreated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
             if (AddEntity(vehicle))
-            {   //{
-                //    VehiclesCreated++;
-                //}
-                //if (VehiclesCreated > 4)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
-                //{
-                //    VehiclesCreated = 0;
-                //    GameFiber.Yield();
-                //}
+            {   
                 GameFiber.Yield();
             }
         }
@@ -130,7 +113,7 @@ public class Vehicles
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"UpdatePlates ERROR {ex.Message} {ex.StackTrace}", 0);
+                EntryPoint.WriteToConsole($"Update Plates Error: {ex.Message} {ex.StackTrace}", 0);
             }
         }
     }
@@ -150,15 +133,12 @@ public class Vehicles
                             {
                                 EntryPoint.PersistentVehiclesDeleted++;
                             }
-                            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles {PoliceCar.Vehicle.Handle}", 5);
                             PoliceCar.Vehicle.Delete();
                             GameFiber.Yield();
                         }
                         GameFiber.Yield();
-                    }
-                    
+                    }  
                 }
-
             }
             foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
             {
@@ -178,13 +158,12 @@ public class Vehicles
                         }
                         GameFiber.Yield();
                     }
-                    
                 }
             }
         }
         catch(InvalidOperationException ex)
         {
-            EntryPoint.WriteToConsole($"RemoveAbandonedPoliceVehicles ERROR collection was modified? {ex.Message} {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"Remove Abandoned Vehicles, Collection Modified Error: {ex.Message} {ex.StackTrace}", 0);
         }
     }
     private void FixDamagedPoliceVehicles()
@@ -197,7 +176,6 @@ public class Vehicles
                 {
                     PoliceCar.Vehicle.Repair();
                     GameFiber.Yield();
-                    EntryPoint.WriteToConsole($"FixDamagedPoliceVehicles Repaird {PoliceCar.Vehicle.Handle}", 5);
                 }
             }
         }
@@ -314,22 +292,6 @@ public class Vehicles
                     return true;
                 }
             }
-            //else if (responseType == ResponseType.EMS)
-            //{
-            //    if (!EMSVehicles.Any(x => x.Handle == vehicle.Handle))
-            //    {
-            //        EMSVehicles.Add(Car);
-            //        return true;
-            //    }
-            //}
-            //else if (responseType == ResponseType.Fire)
-            //{
-            //    if (!FireVehicles.Any(x => x.Handle == vehicle.Handle))
-            //    {
-            //        FireVehicles.Add(Car);
-            //        return true;
-            //    }
-            //}
             else
             {
                 if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
@@ -386,17 +348,7 @@ public class Vehicles
         {
             vehicleExt.HasUpdatedPlateType = true;
             PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
-            //string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
             Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
-
-
-            /*
-             * 
-             *TEMP HERE UNTIL I DECIDE
-             * 
-             * 
-             * */
-
             if(force)
             {
                 PlateType NewType = PlateTypes.GetRandomPlateType();
@@ -418,12 +370,10 @@ public class Vehicles
                     }
                     if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                     {
-                        //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
                         NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                         vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                         vehicleExt.CarPlate.PlateType = NewType.Index;
                     }
-                    // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
             else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
@@ -432,7 +382,6 @@ public class Vehicles
 
                 if (NewType != null)
                 {
-                    //EntryPoint.WriteToConsole($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                     if (NewPlateNumber != "")
                     {
@@ -442,12 +391,10 @@ public class Vehicles
                     }
                     if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                     {
-                        //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
                         NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                         vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                         vehicleExt.CarPlate.PlateType = NewType.Index;
                     }
-                    // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
             else
@@ -466,17 +413,14 @@ public class Vehicles
                         }
                         if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                         {
-                            //EntryPoint.WriteToConsole($"NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
                             NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                             vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                             vehicleExt.CarPlate.PlateType = NewType.Index;
                         }
-                        // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                     }
                 }
             }
         }
-
     }
     public Agency GetAgency(Vehicle vehicle, int wantedLevel, ResponseType responseType)
     {

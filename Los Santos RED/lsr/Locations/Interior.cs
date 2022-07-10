@@ -101,7 +101,7 @@ public class Interior
             NativeFunction.Natives.REFRESH_INTERIOR(ID);
             IsActive = true;
             GameFiber.Yield();
-            EntryPoint.WriteToConsole($"Interior LOADED {Name} {ID}", 5);
+            //EntryPoint.WriteToConsole($"Interior LOADED {Name} {ID}");
         }, "Load Interior");
     }
     public void Unload()
@@ -145,7 +145,7 @@ public class Interior
                 NativeFunction.Natives.REFRESH_INTERIOR(ID);
                 IsActive = false;
                 GameFiber.Yield();
-                EntryPoint.WriteToConsole($"Interior UNLOADED {Name} {ID}", 5);
+                //EntryPoint.WriteToConsole($"Interior UNLOADED {Name} {ID}");
         }, "Unload Interiors");
     }
 

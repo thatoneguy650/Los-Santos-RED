@@ -200,7 +200,7 @@ public class DeadDrop : InteractableLocation
         GameFiber.Sleep(250);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
-            EntryPoint.WriteToConsole($"Moving to drop IN POSITION {Game.LocalPlayer.Character.DistanceTo(MovePosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, ObjectHeading)} {heading} {ObjectHeading}", 5);
+            //EntryPoint.WriteToConsole($"Moving to drop IN POSITION {Game.LocalPlayer.Character.DistanceTo(MovePosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, ObjectHeading)} {heading} {ObjectHeading}", 5);
             return true;
         }
         else

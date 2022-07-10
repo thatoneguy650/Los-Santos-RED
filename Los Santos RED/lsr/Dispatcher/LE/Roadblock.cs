@@ -112,7 +112,6 @@ public class Roadblock
                 {
                     NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
                 }
-
                 float DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
                 while (!IsDisposed && DistanceToRoadblock >= 125f)
                 {
@@ -126,28 +125,11 @@ public class Roadblock
 
                 while (!IsDisposed)
                 {
-                    //Rage.Debug.DrawArrowDebug(new Vector3(NodeCenter.X, NodeCenter.Y, NodeCenter.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-                    //Rage.Debug.DrawArrowDebug(new Vector3(NodeOffset.X, NodeOffset.Y,NodeOffset.Z + 2.0f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                    //Vector3 FrontRight = new Vector3(NodeCenter.X + VehicleModel.Dimensions.X / 2, NodeCenter.Y + VehicleModel.Dimensions.Y / 2, NodeCenter.Z+ 2.0f);
-                    //Vector3 FrontLeft = new Vector3(NodeCenter.X - VehicleModel.Dimensions.X / 2, NodeCenter.Y + VehicleModel.Dimensions.Y / 2, NodeCenter.Z + 2.0f);
-                    //Vector3 RearRight = new Vector3(NodeCenter.X + VehicleModel.Dimensions.X / 2, NodeCenter.Y - VehicleModel.Dimensions.Y / 2, NodeCenter.Z + 2.0f);
-                    //Vector3 RearLeft = new Vector3(NodeCenter.X - VehicleModel.Dimensions.X / 2, NodeCenter.Y - VehicleModel.Dimensions.Y / 2, NodeCenter.Z + 2.0f);
-                    //Rage.Debug.DrawArrowDebug(FrontRight, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                    //Rage.Debug.DrawArrowDebug(FrontLeft, Vector3.Zero, Rotator.Zero, 1f, Color.Black);
-                    //Rage.Debug.DrawArrowDebug(RearRight, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                    //Rage.Debug.DrawArrowDebug(RearLeft, Vector3.Zero, Rotator.Zero, 1f, Color.Black);
-
                     if (Player.IsInVehicle && Player.CurrentVehicle != null)
                     {
                         if (Player.CurrentVehicle.Vehicle.Exists())
                         {
                             DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
-                            //'0 = wheel_lf / bike, plane or jet front
-                            //'1 = wheel_rf
-                            //'2 = wheel_lm / in 6 wheels trailer, plane or jet is first one on left
-                            //'3 = wheel_rm / in 6 wheels trailer, plane or jet is first one on right
-                            //'4 = wheel_lr / bike rear / in 6 wheels trailer, plane or jet is last one on left
-                            //'5 = wheel_rr / in 6 wheels trailer, plane or jet is last one on right
                             if (DistanceToRoadblock <= 100)
                             {
                                 List<(int, string)> WheelList = new List<(int, string)>() { (0, "wheel_lf"), (1, "wheel_rf"), (2, "wheel_lm"), (3, "wheel_rm"), (4, "wheel_lr"), (5, "wheel_rr") };
@@ -166,7 +148,7 @@ public class Roadblock
             }
             catch (Exception e)
             {
-                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                EntryPoint.WriteToConsole("Roadblock Spawn Error: " + e.Message + " : " + e.StackTrace, 0);
             }
         }, "SpikeStripTireChecker2");
     }

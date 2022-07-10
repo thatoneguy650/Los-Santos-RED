@@ -71,7 +71,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         MessageTextColor = "White";
         MessageScale = 0.25f;
         MessageBodySpacingY = 0.15f;//0.125f;
-        MessageHeaderSpacingY = 0.055f;//0.02f;
+        MessageHeaderSpacingY = 0.04f;//0.02f;
         MessagesToShow = 4;
         ItemDistanceFromCenterExtraItemScalar = -0.005f;//-0.01f;
         ItemScaleExtraItemScalar = 0.005f;// 0.01f;

@@ -492,7 +492,10 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroup weaponsGroup = IssuableWeaponsGroupLookup.FirstOrDefault(x => x.IssuableWeaponsID == issuableWeaponsID);
         if(weaponsGroup == null)
         {
-            EntryPoint.WriteToConsole($"GetWeaponData NULL {issuableWeaponsID}");
+            if (issuableWeaponsID != "")
+            {
+                EntryPoint.WriteToConsole($"Error Looking Up Weapon Data for {issuableWeaponsID}",0);
+            }
             return null;
         }
         else

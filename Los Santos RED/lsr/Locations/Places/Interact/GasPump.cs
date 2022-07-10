@@ -101,34 +101,22 @@ public class GasPump : InteractableLocation
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
-
-              // NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
                 GetPropEntry();
                 if (!MoveToMachine())
                 {
-                    EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER", 5);
                     FullDispose();
                 }
-
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
                 GenerateGasMenu();
-
                 while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-
-                EntryPoint.WriteToConsole("Gas Pump DIspose                                                     1111111111");
-
                 DisposeInteractionMenu();
-
                 FullDispose();
-
-
                 Player.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
@@ -138,22 +126,14 @@ public class GasPump : InteractableLocation
 
     private void GenerateGasMenu()
     {
-
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
         if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel < 100f)
         {
-
             GetVehicleData();
-
-
-
             string MenuString = $"~n~Price Per Gallon: ~r~${pricePerUnit}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~p~{UnitsOfFuelNeeded}~s~ Gallons";
-
             GetGasSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Gas Up {VehicleToFillName}");
-
             InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Gas Up Your Vehicle";
             InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
-
             if (HasBannerImage)
             {
                 BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
@@ -186,9 +166,6 @@ public class GasPump : InteractableLocation
             }
             InteractionMenu.Visible = false;
         }
-
-
-     
     }
 
     private void GetVehicleData()
@@ -217,10 +194,8 @@ public class GasPump : InteractableLocation
         else
         {
             pricePerUnit = 3;
-        }
-        
+        }    
         PercentFuelNeeded = (100f - VehicleToFill.Vehicle.FuelLevel)/100f;
-
         VehicleToFillFuelTankCapacity = VehicleToFill.FuelTankCapacity(VehicleToFillClassName);
         UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
 
@@ -234,16 +209,11 @@ public class GasPump : InteractableLocation
         }
 
         AmountToFill = UnitsOfFuelNeeded * pricePerUnit;
-
     }
     private void GetGasSubMenu_OnMenuOpen(UIMenu sender)
     {
         if(VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
-            EntryPoint.WriteToConsole("Gas Sub Menu Opened");
-            //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-            //GameFiber.Sleep(2000);
-            // NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(VehicleToFill.Vehicle.Position.X, VehicleToFill.Vehicle.Position.Y, VehicleToFill.Vehicle.Position.Z, -1, 2000, 2000);
             if (VehicleToFill != null && VehicleToFill.Vehicle.Exists())
             {
                 NativeFunction.Natives.SET_GAMEPLAY_VEHICLE_HINT(VehicleToFill.Vehicle, 0f, 0f, 0f, true, -1, 2000, 2000);
@@ -252,13 +222,11 @@ public class GasPump : InteractableLocation
     }
     private void GetGasSubMenu_OnMenuClose(UIMenu sender)
     {
-        EntryPoint.WriteToConsole("Gas Sub Menu Closed");
-        //NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
-        //NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+
     }
     public override void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        StartMachineBuyAnimation(modItem, false);
+        StartMachineBuyAnimation();
         base.OnItemPurchased(modItem, menuItem, totalItems);
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
@@ -269,7 +237,6 @@ public class GasPump : InteractableLocation
             InteractionMenu.Visible = false;
             sender.Visible = false;
             FuelVehicle(UnitsOfFuelNeeded);
-            //KeepInteractionGoing = false;
         }
         else if (selectedItem == AddSomeMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
@@ -277,21 +244,15 @@ public class GasPump : InteractableLocation
             InteractionMenu.Visible = false;
             sender.Visible = false;
             FuelVehicle(AddSomeMenuItem.Value);
-            //KeepInteractionGoing = false;
         }
     }
-
     private void DisableControl()
     {
-
         Game.LocalPlayer.HasControl = false;
         NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
         Game.DisableControlAction(0, GameControl.LookLeftRight, true);
         Game.DisableControlAction(0, GameControl.LookUpDown, true);
-
         Game.DisableControlAction(0, GameControl.LookUpDown, true);
-
-
     }
     private void EnableControl()
     {
@@ -314,7 +275,6 @@ public class GasPump : InteractableLocation
         GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
         {
             IsFueling = true;
-           // DisableControl();
             uint GameTimeBetweenUnits = 1500;  
             uint GameTimeAddedUnit = Game.GameTime;
             int dotsAdded = 0;
@@ -336,15 +296,12 @@ public class GasPump : InteractableLocation
             while (UnitsAdded < UnitsToAdd && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn)
             {
                 string tabs = new string('.', dotsAdded);
-
                 Game.DisplayHelp($"Fueling Progress {UnitsAdded}/{UnitsToAdd}");
                 Game.LocalPlayer.HasControl = false;
                 if (Game.GameTime - GameTimeAddedUnit >= GameTimeBetweenUnits)
                 {
                     UnitsAdded++;
                     GameTimeAddedUnit = Game.GameTime;
-
-
                     if (VehicleToFill.Vehicle.FuelLevel + PercentFilledPerUnit > 100f)
                     {
                         VehicleToFill.Vehicle.FuelLevel = 100f;
@@ -364,8 +321,6 @@ public class GasPump : InteractableLocation
                 }
                 GameFiber.Yield();
             }
-
-
             if (UnitsAdded > 0)
             {
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
@@ -373,7 +328,6 @@ public class GasPump : InteractableLocation
             }
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Game.LocalPlayer.HasControl = true;
-            //EnableControl();
             KeepInteractionGoing = false;
             Player.ButtonPrompts.RemovePrompts("Fueling");
             IsFueling = false;
@@ -395,7 +349,6 @@ public class GasPump : InteractableLocation
             float DistanceToRear = Player.Position.DistanceTo2D(PumpProp.GetOffsetPositionFront(1f));
             if (DistanceToFront <= DistanceToRear)
             {
-                EntryPoint.WriteToConsole("Gas Pump You are Closer to the FRONT, using that side");
                 PropEntryPosition = PumpProp.GetOffsetPositionFront(-1f);
                 PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
                 float ObjectHeading = PumpProp.Heading - 180f;
@@ -431,8 +384,6 @@ public class GasPump : InteractableLocation
         {
             return false;
         }
-
-
         NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, PropEntryPosition.X, PropEntryPosition.Y, PropEntryPosition.Z, 1.0f, -1, PropEntryHeading, 0.2f);
         uint GameTimeStartedSitting = Game.GameTime;
         float heading = Game.LocalPlayer.Character.Heading;
@@ -459,14 +410,12 @@ public class GasPump : InteractableLocation
             if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
             {
                 IsFacingDirection = true;
-                EntryPoint.WriteToConsole($"Moving to Machine FACING TRUE {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
             }
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
-            EntryPoint.WriteToConsole($"Moving to Machine IN POSITION {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
             return true;
         }
         else
@@ -475,17 +424,9 @@ public class GasPump : InteractableLocation
             return false;
         }
     }
-    private void StartMachineBuyAnimation(ModItem item, bool isIllicit)
+    private void StartMachineBuyAnimation()
     {
-
-        if (MoveToMachine())
-        {
-            //if (UseMachine(item))
-            //{
-
-            //}
-        }
-        else
+        if (!MoveToMachine())
         {
             FullDispose();
         }

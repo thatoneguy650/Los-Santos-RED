@@ -21,7 +21,6 @@ public class ScaredCallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn Start: {Ped.Pedestrian.Handle}", 3);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
                 unsafe
@@ -30,7 +29,7 @@ public class ScaredCallIn : ComplexTask
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 50f, 10000);//100f
                     NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 100f, -1);
+                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 1500f, -1);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -45,7 +44,7 @@ public class ScaredCallIn : ComplexTask
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000);//100f
                     NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 100f, -1);
+                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -69,7 +68,6 @@ public class ScaredCallIn : ComplexTask
             if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
-                //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
             }
         }
         GameTimeLastRan = Game.GameTime;
@@ -88,9 +86,6 @@ public class ScaredCallIn : ComplexTask
         {
             if(Ped.PlayerCrimesWitnessed.Any())
             {
-                
-
-                //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
                 List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
                 foreach (Crime toReport in toCheck)
@@ -102,7 +97,6 @@ public class ScaredCallIn : ComplexTask
             }
             else if (Ped.OtherCrimesWitnessed.Any())
             {
-                //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
@@ -115,14 +109,11 @@ public class ScaredCallIn : ComplexTask
                 Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
                 Ped.HasSeenDistressedPed = false;
             }
-            //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
         }
         else if(!Ped.Pedestrian.Exists())
         {
-
             if (Ped.PlayerCrimesWitnessed.Any())
             {
-                //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
                 Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
                 List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
                 foreach (Crime toReport in toCheck)
@@ -133,7 +124,6 @@ public class ScaredCallIn : ComplexTask
             }
             else if (Ped.OtherCrimesWitnessed.Any())
             {
-                //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime OtherCrimesWithnessed: {Ped.Handle}", 3);
                 WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
                 if (toReport != null)
                 {
@@ -146,7 +136,6 @@ public class ScaredCallIn : ComplexTask
                 Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
                 Ped.HasSeenDistressedPed = false;
             }
-            //EntryPoint.WriteToConsole($"TASKER: ScaredCallIn ReportCrime GHOST: {Ped.Handle}", 3);
         }
         
     }

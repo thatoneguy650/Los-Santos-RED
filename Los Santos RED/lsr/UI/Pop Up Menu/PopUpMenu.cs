@@ -26,6 +26,7 @@ public class PopUpMenu
     private float ConsistencyScale;
     private int TransitionInSound;
     private int TransitionOutSound;
+    private string PrevPopUpMenuGroup;
     private string CurrentPopUpMenuGroup;
     private IGestures Gestures;
     private IDances Dances;
@@ -86,16 +87,21 @@ public class PopUpMenu
             new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle) },
             new PopUpMenuMap(2,"Suicide",Player.CommitSuicide,"Commit suicide") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
             new PopUpMenuMap(3,"Hands Up",Player.ToggleSurrender,"Toggle hands up mode"),
-
-
-
-            new PopUpMenuMap(4,"Sit", new Action(() => Player.StartSittingDown(true,true)),"Sit down at nearest seat") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
-            new PopUpMenuMap(5,"Sit Here (F)", new Action(() => Player.StartSittingDown(false,true)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
-            new PopUpMenuMap(6,"Sit Here (B)", new Action(() => Player.StartSittingDown(false,false)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
-
-            new PopUpMenuMap(7,"Lay Down", new Action(() => Player.StartLayingDown(false)),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsLayingDown)},
+            new PopUpMenuMap(4,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
+            new PopUpMenuMap(5,"Lay Down", new Action(() => Player.StartLayingDown(false)),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsLayingDown)},
 
         };
+
+
+        List<PopUpMenuMap> SitSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0,"Sit At Nearest", new Action(() => Player.StartSittingDown(true,true)),"Sit down at nearest seat") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
+            new PopUpMenuMap(1,"Sit Here Facing Front", new Action(() => Player.StartSittingDown(false,true)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
+            new PopUpMenuMap(2,"Sit Here Facing Back", new Action(() => Player.StartSittingDown(false,false)),"Sit here facing forwards") { IsCurrentlyValid = new Func<bool>(() => !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)},
+        };
+
+
+
         List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
         {
             new PopUpMenuMap(0,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
@@ -110,12 +116,18 @@ public class PopUpMenu
         List<PopUpMenuMap> VehicleSubMenu = new List<PopUpMenuMap>()
         {
             new PopUpMenuMap(0,"Engine",Player.ToggleVehicleEngine,"Toggle vehicle engine") { IsCurrentlyValid = new Func<bool>(() => Player.CurrentVehicle?.Engine.CanToggle == true)},
-            new PopUpMenuMap(1,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
-            new PopUpMenuMap(2,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
-            new PopUpMenuMap(3,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
-            new PopUpMenuMap(4,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
-            new PopUpMenuMap(5,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
+            new PopUpMenuMap(1,"Indicators","IndicatorsSubMenu","Open Indicators Sub Menu") { ClosesMenu = false },
+            new PopUpMenuMap(2,"Driver Window",Player.ToggleDriverWindow,"Toggle driver window"),
+            new PopUpMenuMap(3,"Driver Door",Player.CloseDriverDoor,"Close driver door"),
         };
+        List<PopUpMenuMap> IndicatorsSubMenu = new List<PopUpMenuMap>()
+        {
+            new PopUpMenuMap(0,"Hazards",Player.ToggleHazards,"Toggle the vehicle hazards"),
+            new PopUpMenuMap(1,"Right Indicator",Player.ToggleRightIndicator,"Toggle right vehicle indicator"),
+            new PopUpMenuMap(2,"Left Indicator",Player.ToggleLeftIndicator,"Toggle the left vehicle indicator"),
+        };
+
+
         List<PopUpMenuMap> GestureMenuMaps = new List<PopUpMenuMap>() { new PopUpMenuMap(0, rgx.Replace(Player.LastGesture.Name, " "), new Action(() => Player.Gesture(Player.LastGesture)), rgx.Replace(Player.LastGesture.Name, " ")) };
         int ID = 1;
         foreach(GestureData gd in Gestures.GestureLookups.Where(x=> x.IsOnActionWheel).Take(30))
@@ -151,8 +163,8 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpMenuGroup("WeaponsSubMenu", WeaponsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpMenuGroup("StancesSubMenu", StanceSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpMenuGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });
-
-
+        PopUpMenuGroups.Add(new PopUpMenuGroup("IndicatorsSubMenu", IndicatorsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpMenuGroup("SitSubMenu", SitSubMenu) { IsChild = true });
 
         //UpdateInventoryMenuGroups();
     }
@@ -339,6 +351,7 @@ public class PopUpMenu
                         }
                         else if (popUpMenuMap.ChildMenuID != "")
                         {
+                            PrevPopUpMenuGroup = CurrentPopUpMenuGroup;
                             CurrentPopUpMenuGroup = popUpMenuMap.ChildMenuID;
                             CurrentPage = 0;
                             TotalPages = 0;
@@ -371,6 +384,7 @@ public class PopUpMenu
         }
         if(!IsCurrentPopUpMenuGroupDefault && Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25))
         {
+
             UpdateDefaultMapping(true);
             CurrentPage = 0;
             TotalPages = 0;
@@ -416,6 +430,11 @@ public class PopUpMenu
                     {
                         CurrentPage = 0;
                     }
+                    TotalPages = (int)Math.Ceiling(TotalItems / (float)Settings.SettingsManager.ActionWheelSettings.ItemsPerPage);
+                    if (CurrentPage < 0)
+                    {
+                        CurrentPage = TotalPages-1;
+                    }
                     startingItem = CurrentPage * Settings.SettingsManager.ActionWheelSettings.ItemsPerPage;
                     if(TotalItems - startingItem > Settings.SettingsManager.ActionWheelSettings.ItemsPerPage)
                     {
@@ -425,7 +444,7 @@ public class PopUpMenu
                     {
                         ItemsToDisplay = TotalItems - startingItem;
                     }
-                    TotalPages = (int)Math.Ceiling(TotalItems / (float)Settings.SettingsManager.ActionWheelSettings.ItemsPerPage);
+                    
                 }
                 double angle = 360.0 / ItemsToDisplay * Math.PI / 180.0;
                 for (int i = 0; i < ItemsToDisplay; i++)
@@ -499,7 +518,6 @@ public class PopUpMenu
         DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
         PositionMaps.Add(new PositionMap(popUpMenuMap.ID, display, CurrentPositionX, CurrentPositionY));
     }
-
     private PopUpMenuMap GetCurrentMenuMap(int ID)
     {
         return GetCurrentMenuMap()?.FirstOrDefault(x => x.ID == ID);

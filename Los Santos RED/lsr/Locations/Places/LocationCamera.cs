@@ -23,7 +23,8 @@ public class LocationCamera
     private bool IsCancelled;
     private InteractableLocation Store;
     private bool isHighlightingLocation = false;
-
+    private float PlayerHeading = 0f;
+    private Vector3 PlayerPosition;
 
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
@@ -60,7 +61,6 @@ public class LocationCamera
     {
         DisableControl();
         DoEntryCam();
-
         if(ItemPreviewPosition != Vector3.Zero)
         {
             isHighlightingLocation = true;
@@ -70,12 +70,19 @@ public class LocationCamera
         {
             HighlightStoreWithCamera();
         }
-        
         Game.LocalPlayer.Character.IsVisible = false;
+        PlayerPosition = Player.Position;
+        PlayerHeading = Player.Character.Heading;
+
+        NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, true);
+
+
+        //Player.Character.Position = new Vector3(402.5164f, -1002.847f, -99.2587f);
         EntryPoint.WriteToConsole("Transaction: Setup Camera Ran", 5);
     }
     public void Dispose()
     {
+        NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, false);
         if (isHighlightingLocation)
         {
             Game.FadeScreenOut(1500, true);
@@ -352,6 +359,7 @@ public class LocationCamera
         CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
         CameraTo.Active = true;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
+        NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(StoreCam.Position.X, StoreCam.Position.Y, StoreCam.Position.Z, 0f, 0f, 0f);
         GameFiber.Sleep(1500);
     }
 

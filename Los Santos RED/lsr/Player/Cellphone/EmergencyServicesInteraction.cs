@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using iFruitAddon2;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;

@@ -630,13 +630,16 @@ public class PlayerPerception
         {
             foreach (Crime committing in Target.Violations.CivilianReportableCrimesViolating)
             {
-                if (CanRecognizeTarget && !committing.CanReportBySound)
+                if (DistanceToTarget <= committing.MaxReportingDistance)
                 {
-                    AddWitnessedCrime(committing, Originator.Pedestrian.Position);
-                }
-                else if (WithinWeaponsAudioRange && committing.CanReportBySound)
-                {
-                    AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                    if (CanRecognizeTarget && !committing.CanReportBySound)
+                    {
+                        AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                    }
+                    else if (WithinWeaponsAudioRange && committing.CanReportBySound)
+                    {
+                        AddWitnessedCrime(committing, Originator.Pedestrian.Position);
+                    }
                 }
             }
         }

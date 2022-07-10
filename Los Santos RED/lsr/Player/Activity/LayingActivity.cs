@@ -26,12 +26,13 @@ namespace LosSantosRED.lsr.Player
         private Vector3 StoredPlayerPosition;
         private float StoredPlayerHeading;
         private bool FindLayingDownProp = false;
-        private bool isUsingVehicleAnimations;
+        private bool UseRegularAnimations;
+        private bool IsUsingvehicleAnimations;
         private float EnterBlendIn;
         private float EnterBlendOut;
         private float MaxExit = 1.0f;
         private uint GameTimeLastDidThing;
-
+        
         public LayingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp) : base()
         {
             Player = player;
@@ -72,7 +73,6 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole("Laying Activity Enter", 5);
             Player.SetUnarmed();
             Player.IsLayingDown = true;
-
             if (FindLayingDownProp)
             {
                 GetLayableProp();
@@ -86,15 +86,23 @@ namespace LosSantosRED.lsr.Player
                     return;
                 }
             }
-            LayDown();
-            if (IsActivelyLayingDown)
+            if(Data.AnimEnterIsReverse)
             {
-                Idle();
+                LayDownTotal();
             }
             else
             {
-                Exit();
+                LayDown();
+                if (IsActivelyLayingDown)
+                {
+                    Idle();
+                }
+                else
+                {
+                    Exit();
+                }
             }
+
         }
         private void LayDown()
         {
@@ -102,9 +110,20 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimEnter;
             StartingPosition = Game.LocalPlayer.Character.Position;
             float Heading = Game.LocalPlayer.Character.Heading;
-            if (isUsingVehicleAnimations)
+            if (UseRegularAnimations)
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimEnterBlendIn, Data.AnimEnterBlendOut, -1, Data.AnimEnterFlag, 0, false, false, false);//-1
+                if (Data.AnimEnterIsReverse)
+                {
+                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+                    NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+                    NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 0, 0.99f, 0, 0);
+                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+                    NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+                }
+                else
+                {
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, Data.AnimEnterFlag, 0, false, false, false);//-1
+                }
             }
             else
             {
@@ -113,10 +132,11 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Data.AnimEnterDictionary, Data.AnimEnter, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
             }
-            float AnimationTime = 0f;
-            while (Player.CanPerformActivities && !IsCancelled && AnimationTime < 1.0f)
+            float AnimationTime = 0.0f;
+            uint GameTimeStarted = Game.GameTime;
+            while (Player.CanPerformActivities && !IsCancelled)
             {
-                if (isUsingVehicleAnimations)
+                if (UseRegularAnimations)
                 {
                     AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 }
@@ -124,24 +144,121 @@ namespace LosSantosRED.lsr.Player
                 {
                     AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 }
+                EntryPoint.WriteToConsole($"Animation Time {AnimationTime}");
+
+                if (Data.AnimEnterIsReverse)
+                {
+                    NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+                    if (Game.GameTime - GameTimeStarted >= 500 && AnimationTime == 0.0f)
+                    {
+                        EntryPoint.WriteToConsole("Laying Activity, Enter Break1");
+                        break;
+                    }
+                }
+                else
+                {
+                    if (AnimationTime >= 1.0f)
+                    {
+                        EntryPoint.WriteToConsole("Laying Activity, Enter Break2");
+                        break;
+                    }
+                }
+
                 if (Player.IsMoveControlPressed)
                 {
                     IsCancelled = true;
                 }
-
-
-                if(Game.GameTime - GameTimeLastDidThing >= 1000)
+                if (Game.GameTime - GameTimeLastDidThing >= 1000)
                 {
-                    EntryPoint.WriteToConsole($"LAYING ANIMATION TIME {AnimationTime} isUsingVehicleAnimations {isUsingVehicleAnimations}");
+                    EntryPoint.WriteToConsole($"LAYING ANIMATION TIME {AnimationTime} isUsingVehicleAnimations {UseRegularAnimations}");
                     GameTimeLastDidThing = Game.GameTime;
                 }
                 Player.SetUnarmed();
                 GameFiber.Yield();
             }
-            if (AnimationTime >= 0.2f)
+
+
+            EntryPoint.WriteToConsole("Laying Activity, Enter ENded");
+            if (Data.AnimEnterIsReverse)
+            {
+                if (AnimationTime == 0.0f)
+                {
+                    IsActivelyLayingDown = true;
+                }
+            }
+            else
+            {
+                if (AnimationTime >= 0.2f)
+                {
+                    IsActivelyLayingDown = true;
+                }
+            }
+            
+
+        }
+        private void LayDownTotal()
+        {
+            PlayingDict = Data.AnimEnterDictionary;
+            PlayingAnim = Data.AnimEnter;
+            StartingPosition = Game.LocalPlayer.Character.Position;
+            float Heading = Game.LocalPlayer.Character.Heading;
+
+            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);           
+            NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 0, 0.99f, 0, 0);
+
+            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+
+            float AnimationTime = 0.0f;
+            uint GameTimeStarted = Game.GameTime;
+            while (Game.GameTime - GameTimeStarted <= 2000 && !IsCancelled)
+            {
+                AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+
+                if (Game.GameTime - GameTimeStarted >= 500 && AnimationTime == 0.0f)
+                {
+                    break;
+                }
+                if (Player.IsMoveControlPressed)
+                {
+                    IsCancelled = true;
+                }
+                EntryPoint.WriteToConsole($"Animation Time {AnimationTime}");
+
+                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+                GameFiber.Yield();
+            }
+            IdleTotal();
+        }
+        private void IdleTotal()
+        {
+            if (Player.CanPerformActivities && !IsCancelled)
             {
                 IsActivelyLayingDown = true;
+                PlayingAnim = "base";
+                PlayingDict = "amb@world_human_bum_slumped@male@laying_on_left_side@base";
+                NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 1, 0.0f, 0, 0);
+                IsActivelyLayingDown = true;
+
+                Player.IsResting = true;
+                Player.IsSleeping = true;
+
+                while (Player.CanPerformActivities && !IsCancelled)
+                {
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                    }
+                    Player.SetUnarmed();
+                    GameFiber.Yield();
+                }
             }
+            Player.IsResting = false;
+            Player.IsSleeping = false;
+            Player.IsLayingDown = false;
+            Exit();
+
         }
         private void Idle()
         {
@@ -152,9 +269,10 @@ namespace LosSantosRED.lsr.Player
             Player.IsResting = true;
             Player.IsSleeping = true;
 
+
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                if (isUsingVehicleAnimations)
+                if (UseRegularAnimations)
                 {
                     AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 }
@@ -163,12 +281,12 @@ namespace LosSantosRED.lsr.Player
                     AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 }
 
-                if(Player.HumanState.Sleep.IsMax)
-                {
-                    IsCancelled = true;
-                }
+                //if(Player.HumanState.Sleep.IsMax)
+                //{
+                //    IsCancelled = true;
+                //}
 
-                //if (AnimationTime >= 1.0f && !Player.IsPerformingActivity)
+                //if (AnimationTime >= 1.0f && RandomItems.RandomPercent(10))
                 //{
                 //    StartNewIdleScene();
                 //}
@@ -184,7 +302,7 @@ namespace LosSantosRED.lsr.Player
 
             Player.IsResting = false;
             Player.IsSleeping = false;
-
+            Player.IsLayingDown = false;
             Exit();
         }
         private void Exit()
@@ -211,7 +329,7 @@ namespace LosSantosRED.lsr.Player
                     PlayingAnim = Data.AnimExit;
                     Vector3 Position = Game.LocalPlayer.Character.Position;
                     float Heading = Game.LocalPlayer.Character.Heading;
-                    if (isUsingVehicleAnimations)
+                    if (UseRegularAnimations)
                     {
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimExitBlendIn, Data.AnimExitBlendOut, -1, Data.AnimExitFlag, 0, false, false, false);//-1
                     }
@@ -225,7 +343,7 @@ namespace LosSantosRED.lsr.Player
                     float AnimationTime = 0f;
                     while (AnimationTime < MaxExit)
                     {
-                        if (isUsingVehicleAnimations)
+                        if (UseRegularAnimations)
                         {
                             AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                         }
@@ -239,7 +357,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole("Laying Activity Exit 2", 5);
                 }
                 EntryPoint.WriteToConsole("Laying Activity Exit 3", 5);
-                if (!isUsingVehicleAnimations)
+                if (!UseRegularAnimations)
                 {
                     AnimationDictionary.RequestAnimationDictionay("ped");
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -265,7 +383,7 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             Vector3 Position = Game.LocalPlayer.Character.Position;
             float Heading = Game.LocalPlayer.Character.Heading;
-            if (isUsingVehicleAnimations)
+            if (UseRegularAnimations)
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimIdletBlendIn, Data.AnimIdleBlendOut, -1, Data.AnimIdleFlag, 0, false, false, false);//-1
             }
@@ -282,11 +400,13 @@ namespace LosSantosRED.lsr.Player
         {
             PlayingDict = Data.AnimBaseDictionary;
             PlayingAnim = Data.AnimBase;
+            AnimationDictionary.RequestAnimationDictionay(PlayingDict);
             Vector3 Position = Game.LocalPlayer.Character.Position;
             float Heading = Game.LocalPlayer.Character.Heading;
-            if (isUsingVehicleAnimations)
+            if (UseRegularAnimations)
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimBaseBlendIn, Data.AnimBaseBlendOut, -1, Data.AnimBaseFlag, 0, false, false, false);//-1
+                NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 1, 0.0f, 0, 0);
+                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimBaseBlendIn, Data.AnimBaseBlendOut, -1, Data.AnimBaseFlag, 0, false, false, false);//-1
             }
             else
             {
@@ -326,19 +446,19 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
             }
 
-            isUsingVehicleAnimations = false;
+            UseRegularAnimations = false;
             if (!Player.IsInVehicle)
             {
                 Data.AnimBase = "base";
                 Data.AnimBaseDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@base";
-                Data.AnimBaseBlendIn = 1.0f;
-                Data.AnimBaseBlendOut = -1.0f;
+                Data.AnimBaseBlendIn = 8.0f;
+                Data.AnimBaseBlendOut = -8.0f;
                 Data.AnimBaseFlag = 2;
 
-                Data.AnimEnter = "base";
-                Data.AnimEnterDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@base";
-                Data.AnimEnterBlendIn = 1.0f;
-                Data.AnimEnterBlendOut = -1.0f;
+                Data.AnimEnter = "forward";
+                Data.AnimEnterDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
+                Data.AnimEnterBlendIn = 8.0f;
+                Data.AnimEnterBlendOut = -8.0f;
                 Data.AnimEnterFlag = 2;
 
                 Data.AnimExit = "forward";
@@ -346,13 +466,31 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimExitFlag = 0;
                 Data.AnimExitBlendIn = 1.0f;
                 Data.AnimExitBlendOut = -1.0f;
+                //MaxExit = 0.90f;
 
-                MaxExit = 0.95f;
+
+                Data.AnimExit = "left";
+                Data.AnimExitDictionary = "get_up@standard";
+                Data.AnimExitFlag = 0;
+                Data.AnimExitBlendIn = 1.0f;
+                Data.AnimExitBlendOut = -1.0f;
+
+                Data.AnimEnter = "forward";// "left";
+                Data.AnimEnterDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";// "get_up@standard";
+                Data.AnimEnterIsReverse = true;
+                Data.AnimEnterBlendIn = 8.0f;
+                Data.AnimEnterBlendOut = -8.0f;
+                //  Data.AnimEnterFlag = 1;
+
+                Data.AnimEnterFlag = 0;
+
+
                 Data.AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
                 Data.AnimIdleDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@idle_a";
                 Data.AnimIdleFlag = 1;
 
-                isUsingVehicleAnimations = true;
+                UseRegularAnimations = true;
+                IsUsingvehicleAnimations = false;
             }
             else
             {
@@ -371,7 +509,8 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimIdle = new List<string>() { "base_premier_michael" };
                 Data.AnimIdleDictionary = "switch@michael@sleep_in_car";
                 Data.AnimIdleFlag = 50;
-                isUsingVehicleAnimations = true;
+                UseRegularAnimations = true;
+                IsUsingvehicleAnimations = true;
             }
 
             AnimationDictionary.RequestAnimationDictionay(Data.AnimBaseDictionary);

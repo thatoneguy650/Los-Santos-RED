@@ -332,8 +332,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
-            new ZoneJurisdiction("GSPD","GRAPES", 0, 85, 75),
-            new ZoneJurisdiction("LSSD-MJ","GRAPES", 1, 15, 25),
+            new ZoneJurisdiction("LSSD-MJ","GRAPES", 0, 100, 100),
             new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 
@@ -751,7 +750,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","GOLF", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GOLF", 0, 100, 100),
 
-            new ZoneJurisdiction("GSPD","GRAPES", 0, 100, 100),
+            new ZoneJurisdiction("LSSD-MJ","GRAPES", 0, 100, 100),
             new ZoneJurisdiction("LSFD","GRAPES", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GRAPES", 0, 100, 100),
 

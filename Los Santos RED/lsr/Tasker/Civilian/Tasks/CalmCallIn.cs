@@ -49,7 +49,7 @@ public class CalmCallIn : ComplexTask
             if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();
-                EntryPoint.WriteToConsole($"TASKER: CalmCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"TASKER: CalmCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
             }
         }
         GameTimeLastRan = Game.GameTime;

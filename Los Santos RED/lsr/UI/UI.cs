@@ -465,7 +465,8 @@ public class UI : IMenuProvideable
         if(willShowCashChange)
         {
             string Prefix = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "~g~" : "~r~";
-            DisplayTextOnScreen(Prefix + "$" + DisplayablePlayer.LastChangeMoneyAmount.ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+            string indicator = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "+" : "-";
+            DisplayTextOnScreen(Prefix + indicator + "$" + Math.Abs(DisplayablePlayer.LastChangeMoneyAmount).ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
         if (willShowNeeds)

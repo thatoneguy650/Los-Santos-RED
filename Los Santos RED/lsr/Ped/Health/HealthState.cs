@@ -101,7 +101,7 @@ public class HealthState
                 if (MyPed.Pedestrian.Exists() && MyPed.HasExistedFor >= 4000)//10000)
                 {
                     GameFiber.Yield();
-                    EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                    //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                     FlagDamage(CurrentPlayer);
                     if (Settings.SettingsManager.DamageSettings.ModifyAIDamage)
                     {
@@ -127,7 +127,7 @@ public class HealthState
                 {
                     MyPed.YellInPain(true);
                     MyPed.GameTimeLastInjured = Game.GameTime;
-                    EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
+                    //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
                 }
             }
         }
@@ -161,7 +161,7 @@ public class HealthState
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 GameFiber.Yield();
-                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                 if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
                 {
                     ModifyDamage();
@@ -173,7 +173,7 @@ public class HealthState
             {
                 CurrentPlayer.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;
-                EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
+                //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
             }
         }
     }
@@ -189,7 +189,6 @@ public class HealthState
             CurrentHealth = Health;
         }
     }
-
     private void SetUnconscious()
     {
         if(MyPed.Pedestrian.Exists())
@@ -202,7 +201,6 @@ public class HealthState
             EntryPoint.WriteToConsole($"HEALTHSTATE SetUnconscious {MyPed.Pedestrian.Handle} GameTimeLastInjured {MyPed.GameTimeLastInjured} Health {Health}", 5);
         }
     }
-
     private void FlagDamage(IPoliceRespondable CurrentPlayer)
     {
         if(CurrentPlayer == null || !MyPed.Pedestrian.Exists())//only flag the player we want to have the damage
@@ -216,7 +214,6 @@ public class HealthState
             {
                 MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
-               // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Killed By Player", 5);
             }
         }
         else
@@ -227,11 +224,6 @@ public class HealthState
                 {
                     MyPed.HasBeenHurtByPlayer = true;
                     CurrentPlayer.Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
-                   // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player", 5);
-                }
-                else
-                {
-                   // EntryPoint.WriteToConsole($"FlagDamage: {MyPed.Pedestrian.Handle} Hurt By Player (Small Amount Discarded)", 5);
                 }
             }
         }
@@ -394,12 +386,6 @@ public class HealthState
                 HealthInjury = RandomType(CanBeFatal);
                 ArmorInjury = RandomType(false);
             }
-
-            //if(HealthInjury == InjuryType.Critical || HealthInjury == InjuryType.Fatal)
-            //{
-            //    FlagAsBleeding();
-            //}
-
             float HealthDamageModifier = GetDamageModifier(HealthInjury, false);
             float ArmorDamageModifier = GetDamageModifier(ArmorInjury, true);
 
@@ -424,7 +410,6 @@ public class HealthState
             {
                 MyPed.Pedestrian.Health = 0;
             }
-
             if (Armor - NewArmorDamage > 0)
             {
                 MyPed.Pedestrian.Armor = Armor - NewArmorDamage;
@@ -433,25 +418,21 @@ public class HealthState
             {
                 MyPed.Pedestrian.Armor = 0;
             }
-
-            string DisplayString = "";
-            if (MyPed.IsCop)
-            {
-                DisplayString = string.Format("  Cop: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-                 MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
-            }
-            else
-            {
-                DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-                  MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
-            }
-
-            if(MyPed.HasBeenHurtByPlayer)
-            {
-                EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
-            }
-
-            //EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
+           // string DisplayString = "";
+            //if (MyPed.IsCop)
+            //{
+            //    //DisplayString = string.Format("  Cop: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
+            //     //MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
+            //}
+            //else
+            //{
+            //    //DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
+            //      //MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
+            //}
+            //if(MyPed.HasBeenHurtByPlayer)
+            //{
+            //    EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
+            //}
         }
         if (Health != CurrentHealth && MyPed.Pedestrian.Health > 0)
         {

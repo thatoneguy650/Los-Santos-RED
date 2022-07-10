@@ -16,7 +16,6 @@ public class Civilians
     private uint GameTimeLastUpdatedPeds;
     private int TotalRan;
     private int TotalChecked;
-
     public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings)
     {
         World = world;
@@ -39,13 +38,11 @@ public class Civilians
     {
         TotalRan = 0;
         TotalChecked = 0;
-
         UpdateCivilians();
         UpdateMerchants();
         UpdateZombies();
         UpdateGangMembers();
         UpdateEMTs();
-
         PedExt worstPed = World.Pedestrians.Citizens.Where(x=>!x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
         {
@@ -55,7 +52,6 @@ public class Civilians
         {
             World.TotalWantedLevel = PoliceRespondable.WantedLevel;
         }
-
         if(World.TotalWantedLevel > 0 && PoliceRespondable.IsNotWanted && !PoliceRespondable.Investigation.IsActive)
         {
             if (worstPed.Pedestrian.Exists())
@@ -63,7 +59,6 @@ public class Civilians
                 PoliceRespondable.Investigation.Start(worstPed.Pedestrian.Position, false, true, false, false);
             }
         }
-
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
@@ -192,9 +187,6 @@ public class Civilians
                 {
                     ped.WeaponInventory.UpdateSettings();
                 }
-                
-
-
                 if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
@@ -216,7 +208,6 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating GangMember Data");
             }
         }
-
         bool anyGangMemberCanSeePlayer = false;
         bool anyGangMemberCanHearPlayer = false;
         bool anyGangMemberRecentlySeenPlayer = false;
@@ -243,9 +234,7 @@ public class Civilians
             {
                 break;
             }
-            //GameFiber.Yield();
         }
-
         Perceptable.AnyGangMemberCanSeePlayer = anyGangMemberCanSeePlayer;
         Perceptable.AnyGangMemberCanHearPlayer = anyGangMemberCanHearPlayer;
         Perceptable.AnyGangMemberRecentlySeenPlayer = anyGangMemberRecentlySeenPlayer;

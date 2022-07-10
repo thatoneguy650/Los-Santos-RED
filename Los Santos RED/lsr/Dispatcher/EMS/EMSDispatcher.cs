@@ -100,19 +100,15 @@ public class EMSDispatcher
                         }
                     }
                     ps.IsDispatchFilled = true;
-
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
                 }
                 else
                 {
                     ps.IsDispatchFilled = true;
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled NO SPAWNS");
                 }
             }
             foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
             {
                 ps.IsDispatchFilled = false;
-                EntryPoint.WriteToConsole($"Police Station: {ps.Name} DEACTIVATED");
             }
         }
         return HasDispatchedThisTick;
@@ -208,7 +204,7 @@ public class EMSDispatcher
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
     private bool ShouldBeRecalled(EMT emt)

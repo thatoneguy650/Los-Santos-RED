@@ -59,18 +59,18 @@ public class Crimes : ICrimes
             new Crime("DrunkDriving", "Drunk Driving", 2, false, 20, true, false, false),     
             new Crime("AssaultingWithDeadlyWeapon", "Assaulting With A Deadly Weapon", 2, false, 21, true, true, true),
             new Crime("AssaultingCivilians", "Assaulting", 2, false, 22, true, true, true),
-            new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false),
-            new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false),
+            new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false) { MaxReportingDistance = 20f },
+            new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f },
 
 
-            
+
 
 
 
 
             new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, true, false, false) { IsTrafficViolation = true },
             new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, true, false, false),
-            new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, true, false, false),
+            new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, true, false, false) { MaxReportingDistance = 20f },
             new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, false, false, false) { IsTrafficViolation = true },
             new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 33, false, false, false) { IsTrafficViolation = true },
             new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 34, false, false, false) { IsTrafficViolation = true },
@@ -79,12 +79,12 @@ public class Crimes : ICrimes
             new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, false,false,false),
             new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false,false,false),
             new Crime("InsultingOfficer", "Insulting a Police Officer", 2, false, 40, false, false, true),
-            new Crime("Harassment", "Harassment", 1, false, 41, true, false, false),
+            new Crime("Harassment", "Harassment", 1, false, 41, true, false, false) { MaxReportingDistance = 15f },
 
-            new Crime("PublicNuisance", "Public Nuisance", 1, false, 50, true, false, false),
+            new Crime("PublicNuisance", "Public Nuisance", 1, false, 50, true, false, false) { MaxReportingDistance = 15f },
 
 
-            new Crime("PublicVagrancy", "Public Vagrancy", 1, false, 51, true, false, false),
+            new Crime("PublicVagrancy", "Public Vagrancy", 1, false, 51, true, false, false) { MaxReportingDistance = 15f },
 
 
             new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false, false,false),

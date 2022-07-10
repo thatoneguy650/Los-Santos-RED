@@ -61,7 +61,7 @@ public class PedSwap : IPedSwap
             ResetOffsetForCurrentModel();
             Player.IsCustomizingPed = true;
             MenuPool menuPool = new MenuPool();
-            PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player);
+            PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
             GameFiber.Yield();

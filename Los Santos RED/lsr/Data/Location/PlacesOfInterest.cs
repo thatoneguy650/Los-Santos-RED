@@ -227,13 +227,22 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1319.703f, -1775.434f, 54.5059f), 215.1372f, 50f),
             } },
             new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
-            new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            //new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
-                new ConditionalLocation(new Vector3(-761.3151f, -910.3087f, 19.53444f), 237.0572f, 50f),
-                new ConditionalLocation(new Vector3(-762.3676f, -923.8786f, 18.74619f), 237.6777f, 50f),
-                new ConditionalLocation(new Vector3(-760.9077f, -927.9499f, 18.47775f), 292.1328f, 50f),
-                new ConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
+            //    new ConditionalLocation(new Vector3(-761.3151f, -910.3087f, 19.53444f), 237.0572f, 50f),
+            //    new ConditionalLocation(new Vector3(-762.3676f, -923.8786f, 18.74619f), 237.6777f, 50f),
+            //    new ConditionalLocation(new Vector3(-760.9077f, -927.9499f, 18.47775f), 292.1328f, 50f),
+            //    new ConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
+            //} },
+
+            new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+
+                new ConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 50f),
+                new ConditionalLocation(new Vector3(-581.7299f, -780.7718f, 25.01723f), 66.59444f, 50f),
+                new ConditionalLocation(new Vector3(-613.7438f, -782.4008f, 25.20246f), 42.77346f, 50f),
+                new ConditionalLocation(new Vector3(-622.1181f, -768.7686f, 25.95107f), 88.71659f, 50f),
             } },
+
             new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),

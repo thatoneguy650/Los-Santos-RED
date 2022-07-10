@@ -24,6 +24,23 @@ namespace LosSantosRED.lsr.Helper
 
         }
 
+
+        public static void StartScript(string scriptName, int buffer)
+        {
+            NativeFunction.Natives.REQUEST_SCRIPT(scriptName);
+
+            while (!NativeFunction.Natives.HAS_SCRIPT_LOADED<bool>(scriptName))
+            {
+                NativeFunction.Natives.REQUEST_SCRIPT(scriptName);
+                GameFiber.Yield();
+            }
+
+            NativeFunction.Natives.START_NEW_SCRIPT(scriptName, buffer);
+            NativeFunction.Natives.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
+        }
+
+
+
         public static string FormatControls(Keys modifier, Keys key)
         {
             string KeyString = $"~o~{KeyHandyName(key)}~s~";
@@ -303,7 +320,7 @@ namespace LosSantosRED.lsr.Helper
             }
             catch (Exception e)
             {
-                EntryPoint.WriteToConsole("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message, 0);
+                EntryPoint.WriteToConsole("Copy Ped Variation Error: " + e.Message, 0);
                 return null;
             }
         }
@@ -441,7 +458,7 @@ namespace LosSantosRED.lsr.Helper
             }
             catch (Exception e)
             {
-                EntryPoint.WriteToConsole("GetVehicleVariation! GetVehicleVariation Error; " + e.Message + " " + e.StackTrace, 0);
+                EntryPoint.WriteToConsole("Copy Vehicle Variation Error: " + e.Message + " " + e.StackTrace, 0);
                 return null;
             }
         }

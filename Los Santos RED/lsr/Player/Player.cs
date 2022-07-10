@@ -22,16 +22,9 @@ namespace Mod
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable
     {
         public int UpdateState = 0;
-        //private BigMessageThread BigMessageThread;
-
-
-
-
         private int money = 0;
-
         private ICrimes Crimes;
         private CriminalHistory CriminalHistory;
-
         private IGameSaves GameSaves;
         private uint GameTimeGotInVehicle;
         private uint GameTimeGotOutOfVehicle;
@@ -58,8 +51,7 @@ namespace Mod
         private bool HasThrownGotOffFreeway;
         private bool HasThrownGotOnFreeway;
         private HealthState HealthState;
-        private IIntoxicants Intoxicants;
-        
+        private IIntoxicants Intoxicants;    
         private bool isActive = true;
         private bool isAiming;
         private bool isAimingInVehicle;
@@ -80,8 +72,7 @@ namespace Mod
         private Scanner Scanner;
         private IScenarios Scenarios;
         private SearchMode SearchMode;
-        private ISettingsProvideable Settings;
-        
+        private ISettingsProvideable Settings;     
         private int storedViewMode = -1;
         private SurrenderActivity Surrendering;
         private uint targettingHandle;
@@ -103,7 +94,6 @@ namespace Mod
         private bool isCheckingExcessSpeed;
         private bool isShooting;
         private bool isGettingOutOfAVehicle;
-
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances)
         {
@@ -187,7 +177,6 @@ namespace Mod
         public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && CurrentWeapon != null && CurrentWeapon.CanPistolSuicide;
         public bool CanUndie => Respawning.CanUndie;
         public bool CanWaveHands => Surrendering.CanWaveHands;
-
         public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
         public string CancelCurrentActivityPrompt => UpperBodyActivity != null ?  UpperBodyActivity.CancelPrompt : LowerBodyActivity  != null ? LowerBodyActivity.CancelPrompt : "";
         public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -349,13 +338,9 @@ namespace Mod
         public bool IsRagdoll { get; private set; }
         public bool IsRidingBus { get; set; }
         public bool IsSitting { get; set; } = false;
-
         public bool IsLayingDown { get; set; } = false;
-
-
         public bool IsResting { get; set; } = false;
         public bool IsSleeping { get; set; } = false;
-
         public bool IsShooting
         {
             get => isShooting;
@@ -488,7 +473,6 @@ namespace Mod
         public bool IsInFirstPerson { get; private set; }
         public bool IsDancing { get; set; }
         public bool IsBeingANuisance { get; set; }
-
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public HumanState HumanState { get; set; }
@@ -504,8 +488,6 @@ namespace Mod
             Properties.Setup();
             ButtonPrompts.Setup();
             HumanState.Setup();
-
-
             SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             SetUnarmed();
@@ -525,8 +507,6 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
             }
-
-
             if (Settings.SettingsManager.PlayerOtherSettings.DisableVanillaGangHassling)
             {
                 NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, false);
@@ -535,7 +515,6 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
             }
-
             GameFiber.StartNew(delegate
             {
                 while (isActive)
@@ -569,24 +548,15 @@ namespace Mod
                     GameFiber.Yield();
                 }
             }, "CellPhone");
-
-            //BigMessageThread = new BigMessageThread(true);
-            //BigMessage = BigMessageThread.MessageInstance;
-
-
-
             AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
             AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
-
             AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
             AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
             AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
-
-
             if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
             {
-                Tools.Scripts.TerminateScript("cellphone_flashhand");
-                Tools.Scripts.TerminateScript("cellphone_controller");
+                NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
+                NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_controller");
             }
             LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
             LastDance = Dances.GetRandomDance();
@@ -749,6 +719,7 @@ namespace Mod
 
             //Game.DisableControlAction(0, GameControl.Attack, false);
         }
+
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
@@ -766,20 +737,14 @@ namespace Mod
             GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
             CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
             PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
-
             if (!isObservedByPolice && IsNotWanted)
             {
                 Investigation.Start(Location, PoliceResponse.PoliceHaveDescription,true,false,false);
             }
-
-
-
             if (AnnounceCrime)
             {
                 Scanner.AnnounceCrime(crimeObserved, description);
             }
-
-
         }
         public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
         public void AddDistressedPed(Vector3 position)
@@ -2195,7 +2160,6 @@ namespace Mod
             {
                 MaxWantedLastLife = WantedLevel;
             }
-
             //this was below that, see if this helps with the flashing.....
             int realWantedLevel = Game.LocalPlayer.WantedLevel;
             if (realWantedLevel != 0)//NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>()) //if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)

@@ -101,24 +101,17 @@ public class GangDispatcher
                         }
                     }
                     ps.IsDispatchFilled = true;
-
-                    EntryPoint.WriteToConsole($"Gang Den: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
                 }
                 else
                 {
                     ps.IsDispatchFilled = true;
-                    EntryPoint.WriteToConsole($"Gang Den: {ps.Name} IsDispatchFilled NO SPAWNS");
                 }
             }
             foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => !x.IsNearby && x.IsDispatchFilled))
             {
                 ps.IsDispatchFilled = false;
-                EntryPoint.WriteToConsole($"Gang Den: {ps.Name} DEACTIVATED");
             }
         }
-
-
-
         return HasDispatchedThisTick;
     }
     public void Dispose()
@@ -160,19 +153,16 @@ public class GangDispatcher
                 {
                     IsDenSpawn = true;
                     SpawnLocation.InitialPosition = GangDen.EntrancePosition.Around2D(50f);
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn AROUND DEN", 3);
                 }
                 else
                 {
                     GangDen = null;
                     SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn DEN FOUND BUT NOT USING!", 3);
                 }
             }
             else
             {
                 SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn NO DEN FOUND!", 3);
             }
             SpawnLocation.GetClosestStreet();
             SpawnLocation.GetClosestSidewalk();
@@ -208,7 +198,6 @@ public class GangDispatcher
             {
                 return true;
             }
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Gang Spawn for {Gang.ID} spawnLocation.HasSidewalk {SpawnLocation.HasSidewalk} IsDenSpawn {IsDenSpawn}", 3);
             VehicleType = null;
             bool SpawnVehicle = RandomItems.RandomPercent(Gang.VehicleSpawnPercentage);    
             if (forcePed)
@@ -264,7 +253,7 @@ public class GangDispatcher
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Spawn Gang ERROR {ex.Message} : {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"Gang Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
     private bool ShouldBeRecalled(GangMember emt)
@@ -331,34 +320,19 @@ public class GangDispatcher
         Gang ZoneAgency = GangTerritories.GetRandomGang(CurrentZone.InternalGameName, WantedLevel);
         if (ZoneAgency != null)
         {
-            ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
+            ToReturn.Add(ZoneAgency);
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
             ToReturn.Clear();
             ToReturn.AddRange(Gangs.GetSpawnableGangs(WantedLevel));
-            EntryPoint.WriteToConsole("Gang Dispatcher, set to random gang spawn");
-        }
-        foreach (Gang ag in ToReturn)
-        {
-            //EntryPoint.WriteToConsole(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
     private Vector3 GetPositionAroundPlayer()
     {
         Vector3 Position;
-
         Position = Player.Position;
-
-        //if (Player.IsInVehicle)
-        //{
-        //    Position = Player.Character.GetOffsetPositionFront(100f);//250f//350f
-        //}
-        //else
-        //{
-        //    Position = Player.Position;
-        //}
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }

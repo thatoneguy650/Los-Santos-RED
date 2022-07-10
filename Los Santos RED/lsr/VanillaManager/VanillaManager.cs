@@ -464,7 +464,7 @@ public class VanillaManager
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS(Enabled);
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
-
+        NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
         foreach (string scenario in CopScenarios)
         {
             NativeFunction.Natives.SET_SCENARIO_TYPE_ENABLED(scenario, Enabled);

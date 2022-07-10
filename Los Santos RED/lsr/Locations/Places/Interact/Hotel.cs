@@ -28,10 +28,6 @@ public class Hotel : InteractableLocation
     {
 
     }
-
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
     public override string TypeName { get; set; } = "Hotel";
     public override int MapIcon { get; set; } = 475;
     public override Color MapIconColor { get; set; } = Color.White;
@@ -50,12 +46,10 @@ public class Hotel : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (CanInteract)
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
-
             GameFiber.StartNew(delegate
             {
                 StoreCamera = new LocationCamera(this, Player);
@@ -69,7 +63,6 @@ public class Hotel : InteractableLocation
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
                 Player.IsInteractingWithLocation = false;
@@ -120,30 +113,19 @@ public class Hotel : InteractableLocation
         if (Player.Money >= Price)
         {
             Player.GiveMoney(-1 * Price);
-
-
-            if(Time.CurrentHour <= 10)
-            {
-                Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights-1, 11, 0, 0));
-            }
-            else
-            {
+            //if(Time.CurrentHour <= 10)
+            //{
+            //    Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights-1, 11, 0, 0));
+            //}
+            //else
+            //{
                 Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
-            }
-
-
+            //}
             Player.IsResting = true;
             Player.IsSleeping = true;
-
-
-
-
             KeepInteractionGoing = true;
             InteractionMenu.Visible = false;
-
-
             Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);
-
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
                 while (Time.IsFastForwarding)
@@ -165,8 +147,6 @@ public class Hotel : InteractableLocation
                 InteractionMenu.Visible = true;
                 KeepInteractionGoing = false;
             }, "FastForwardWatcher");
-            EntryPoint.WriteToConsole($"PLAYER EVENT: StartServiceActivity HOTEL", 3);
-
         }
         else
         {

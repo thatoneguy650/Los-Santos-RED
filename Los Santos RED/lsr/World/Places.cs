@@ -61,8 +61,7 @@ public class Places
             if(GangStuff != null)
             {
                 zone.Gangs.AddRange(GangStuff);
-            }
-            
+            }    
             zone.Agencies = new List<Agency>();
             List<Agency> LEAgency = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.LawEnforcement);
             if (LEAgency != null)
@@ -79,7 +78,6 @@ public class Places
             {
                 zone.Agencies.AddRange(FireAgencies);
             }
-
             zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName, ResponseType.LawEnforcement)?.ColorInitials;
             Gang mainGang = GangTerritories.GetMainGang(zone.InternalGameName);
             if (mainGang != null)
@@ -108,7 +106,6 @@ public class Places
         VendingMachinessModelHashes = new List<uint>()
             {0x3b21c5e7,0x426a547c,0x418f055a};
 
-
         GasPumpsModelNames = new List<string>()
         { "prop_gas_pump_1a", //ron pump
         "prop_gas_pump_1b",// globe oil
@@ -129,7 +126,6 @@ public class Places
             0x64ff4c0e ///globe new
         };
 
-
         foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllLocations())
         {
             Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
@@ -149,7 +145,6 @@ public class Places
             }
             string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
             string StreetNumber = "";
-
             if (streetName == "")
             {
                 betweener = "";
@@ -163,12 +158,8 @@ public class Places
             basicLocation.FullStreetAddress = LocationName;
             basicLocation.StreetAddress = ShortLocationName;
             basicLocation.ZoneName = zoneString;
-
-
-
             basicLocation.CellX = (int)(basicLocation.EntrancePosition.X / EntryPoint.CellSize);
             basicLocation.CellY = (int)(basicLocation.EntrancePosition.Y / EntryPoint.CellSize);
-
         }
         foreach(GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
         {
@@ -291,7 +282,6 @@ public class Places
             gl.Update();
             GameFiber.Yield();
         }
-
     }
     private void UpdateGeneratedLocations()
     {
@@ -334,7 +324,6 @@ public class Places
                 World.AddBlip(newVend.Blip);
                 ActiveInteractableLocations.Add(newVend);
                 ActiveVendingMachines.Add(newVend);
-                EntryPoint.WriteToConsole($"Nearby Vending {vendingMenu.Name} ADDED Props FOUND {modelName}", 5);
             }
         }
     }
@@ -345,7 +334,6 @@ public class Places
         {
             if (!ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
             {
-                //ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
                 GasStation ClosestStation = (GasStation)ActiveInteractableLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
                 GasPump newGasPump;
                 if (ClosestStation != null)
@@ -361,7 +349,6 @@ public class Places
                 World.AddBlip(newGasPump.Blip);
                 ActiveInteractableLocations.Add(newGasPump);
                 ActiveGasPumps.Add(newGasPump);
-                EntryPoint.WriteToConsole($"Nearby gas pump ADDED Props FOUND {modelName}", 5);
             }
         }
     }
@@ -378,7 +365,6 @@ public class Places
                 }
                 if (ActiveVendingMachines.Contains(gl))
                 {
-                    EntryPoint.WriteToConsole($"Nearby Vending {gl.Name} REMOVED", 5);
                     ActiveVendingMachines.Remove(gl);
                     gl.Dispose();
                     GameFiber.Yield();
@@ -399,7 +385,6 @@ public class Places
                 }
                 if (ActiveGasPumps.Contains(gl))
                 {
-                    EntryPoint.WriteToConsole($"Nearby gas pump {gl.Name} REMOVED", 5);
                     ActiveGasPumps.Remove(gl);
                     gl.Dispose();
                     GameFiber.Yield();
@@ -421,7 +406,6 @@ public class Places
     {
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
-            EntryPoint.WriteToConsole($"Enabled Den {gl.Name}");
             gl.IsEnabled = v;
         }
     }

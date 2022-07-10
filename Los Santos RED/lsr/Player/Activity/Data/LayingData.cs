@@ -57,7 +57,6 @@ namespace LosSantosRED.lsr.Player.Activity
         public float AnimIdletBlendIn { get; set; } = 8.0f;
         public float AnimIdleBlendOut { get; set; } = -8.0f;
         public int AnimIdleFlag { get; set; } = 0;
-
-
+        public bool AnimEnterIsReverse { get; set; } = false;
     }
 }

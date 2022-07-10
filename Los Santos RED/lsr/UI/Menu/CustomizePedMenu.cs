@@ -57,13 +57,16 @@ public class CustomizePedMenu : Menu
     private string WorkingName = "John Doe";
     private PedVariation WorkingVariation = new PedVariation();
     private uint GameTimeLastPrinted;
+    private IEntityProvideable World;
+    private PedExt ModelPedExt;
 
-    public CustomizePedMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player)
+    public CustomizePedMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
         Names = names;
         Player = player;
+        World = world;
         CustomizeMainMenu = new UIMenu("Customize Ped", "Select an Option");
         CustomizeMainMenu.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(CustomizeMainMenu);
@@ -185,7 +188,15 @@ public class CustomizePedMenu : Menu
             EntryPoint.WriteToConsole(WorkingVariation.ToString());
             GameTimeLastPrinted = Game.GameTime;
         }
-
+        if (ModelPed.Exists() && ModelPedExt == null)
+        {
+            ModelPedExt = World.Pedestrians.GetPedExt(ModelPed.Handle);
+            if (ModelPedExt != null)
+            {
+                ModelPedExt.CanBeAmbientTasked = false;
+                ModelPedExt.CanBeTasked = false;
+            }
+        }
         MenuPool.ProcessMenus();
     }
     private void ActivateDefaultCamera()
@@ -218,6 +229,7 @@ public class CustomizePedMenu : Menu
                 ModelPed.IsPersistent = true;
                 ModelPed.IsVisible = true;
                 ModelPed.BlockPermanentEvents = true;
+                ModelPedExt = null;
             }
         }
         catch (Exception ex)

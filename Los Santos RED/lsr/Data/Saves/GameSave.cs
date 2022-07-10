@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using iFruitAddon2;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player;
@@ -31,6 +30,32 @@ namespace LosSantosRED.lsr.Data
             WeaponInventory = weaponInventory;
             OwnedVehicleVariations = vehicleVariations;
         }
+        public Vector3 PlayerPosition { get; set; }
+        public float PlayerHeading { get; set; }
+        public string PlayerName { get; set; }
+        public int Money { get; set; }
+        public string ModelName { get; set; }
+        public bool IsMale { get; set; }
+        public DateTime CurrentDateTime { get; set; }
+        public DriversLicense DriversLicense { get; set; }
+        public CCWLicense CCWLicense { get; set; }
+        public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
+        public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
+        public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
+        public PedVariation CurrentModelVariation { get; set; }
+        public List<StoredWeapon> WeaponInventory { get; set; }
+        public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
+        public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
+        public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+        public int UndergroundGunsMoneySpent { get; set; }
+        public int UndergroundGunsDebt { get; set; }
+        public int UndergroundGunsReputation { get; set; }
+        public int OfficerFriendlyMoneySpent { get; set; }
+        public int OfficerFriendlyDebt { get; set; }
+        public int OfficerFriendlyReputation { get; set; }
+        public float HungerValue { get; set; }
+        public float ThirstValue { get; set; }
+        public float SleepValue { get; set; }
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             PlayerName = player.PlayerName;
@@ -53,31 +78,13 @@ namespace LosSantosRED.lsr.Data
             {
                 if (car.Vehicle.Exists())
                 {
-                    //int primaryColor;
-                    //int secondaryColor;
-                    //unsafe
-                    //{
-                    //    NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", car.Vehicle, &primaryColor, &secondaryColor);
-                    //}
-
-
                     uint modelHash;
                     var hex = car.VehicleModelName.ToLower();
                     if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
                     {
                         hex = hex.Substring(2);
                     }
-                    bool parsedSuccessfully = uint.TryParse(hex,NumberStyles.HexNumber,CultureInfo.CurrentCulture, out modelHash);
-
-
-
-
-
-
-
-                    EntryPoint.WriteToConsole($"STRIPPED NAME {parsedSuccessfully} hex {hex} {modelHash}");
-
-
+                    bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
                     VehicleSaveStatus vss;
                     if (parsedSuccessfully)//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
                     {
@@ -85,29 +92,16 @@ namespace LosSantosRED.lsr.Data
                     }
                     else
                     {
-                        vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading); 
+                        vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading);
                     }
                     vss.VehicleVariation = NativeHelper.GetVehicleVariation(car.Vehicle);
                     OwnedVehicleVariations.Add(vss);
-                    
-
                 }
             }
-
-            //if(player.OwnedVehicle != null && player.OwnedVehicle.Vehicle.Exists())
-            //{
-            //    int primaryColor;
-            //    int secondaryColor;
-            //    unsafe
-            //    {
-            //        NativeFunction.CallByName<int>("GET_VEHICLE_COLOURS", player.OwnedVehicle.Vehicle, &primaryColor, &secondaryColor);
-            //    }
-            //    OwnedVehicleVariation = new VehicleVariation(player.OwnedVehicle.Vehicle.Model.Name, primaryColor, secondaryColor, new LicensePlate(player.OwnedVehicle.CarPlate.PlateNumber,player.OwnedVehicle.CarPlate.PlateType,player.OwnedVehicle.CarPlate.IsWanted), player.OwnedVehicle.Vehicle.Position, player.OwnedVehicle.Vehicle.Heading);
-            //}
             GangReputations = new List<GangRepSave>();
-            foreach(GangReputation gr in player.GangRelationships.GangReputations)
+            foreach (GangReputation gr in player.GangRelationships.GangReputations)
             {
-                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt,gr.MembersKilled,gr.MembersCarJacked,gr.MembersHurtInTerritory,gr.MembersKilledInTerritory,gr.MembersCarJackedInTerritory,gr.PlayerDebt));
+                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt));
             }
 
             Contacts = new List<SavedContact>();
@@ -118,28 +112,20 @@ namespace LosSantosRED.lsr.Data
             TextMessages = new List<SavedTextMessage>();
             foreach (PhoneText ifc in player.CellPhone.TextList)
             {
-                TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message,ifc.HourSent,ifc.MinuteSent,ifc.IsRead,ifc.Index, ""));
+                TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, ifc.Index, ""));
             }
             CurrentDateTime = time.CurrentDateTime;
-
-
             UndergroundGunsMoneySpent = player.GunDealerRelationship.TotalMoneySpentAtShops;
             UndergroundGunsDebt = player.GunDealerRelationship.PlayerDebt;
             UndergroundGunsReputation = player.GunDealerRelationship.ReputationLevel;
-
             OfficerFriendlyMoneySpent = player.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
             OfficerFriendlyDebt = player.OfficerFriendlyRelationship.PlayerDebt;
             OfficerFriendlyReputation = player.OfficerFriendlyRelationship.ReputationLevel;
-
-
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
-
-
             HungerValue = player.HumanState.Hunger.CurrentValue;
             SleepValue = player.HumanState.Sleep.CurrentValue;
             ThirstValue = player.HumanState.Thirst.CurrentValue;
-
             if (player.Licenses.HasDriversLicense)
             {
                 DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate };
@@ -151,10 +137,10 @@ namespace LosSantosRED.lsr.Data
             SavedResidences.Clear();
             foreach (Residence res in player.Properties.Residences)//placesOfInterest.PossibleLocations.Residences)
             {
-                if(res.IsOwned || res.IsRented)
+                if (res.IsOwned || res.IsRented)
                 {
                     SavedResidence myRes = new SavedResidence(res.Name, res.IsOwned, res.IsRented);
-                    if(res.IsRented)
+                    if (res.IsRented)
                     {
                         myRes.DateOfLastRentalPayment = res.DateRentalPaymentPaid;
                         myRes.RentalPaymentDate = res.DateRentalPaymentDue;
@@ -162,46 +148,7 @@ namespace LosSantosRED.lsr.Data
                     SavedResidences.Add(myRes);
                 }
             }
-
         }
-        public Vector3 PlayerPosition { get; set; }
-        public float PlayerHeading { get; set; }
-        public string PlayerName { get; set; }
-        public int Money { get; set; }
-        public string ModelName { get; set; }
-        public bool IsMale { get; set; }
-
-        public DateTime CurrentDateTime { get; set; }
-
-
-        public DriversLicense DriversLicense { get; set; }
-        public CCWLicense CCWLicense { get; set; }
-
-        public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
-        public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
-
-        public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
-        public PedVariation CurrentModelVariation { get; set; }
-        public List<StoredWeapon> WeaponInventory { get; set; }
-        public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
-        public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
-
-        public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
-        public int UndergroundGunsMoneySpent { get; set; }
-        public int UndergroundGunsDebt { get; set; }
-        public int UndergroundGunsReputation { get; set; }
-
-        public int OfficerFriendlyMoneySpent { get; set; }
-        public int OfficerFriendlyDebt { get; set; }
-        public int OfficerFriendlyReputation { get; set; }
-
-
-
-        public float HungerValue { get; set; }
-        public float ThirstValue { get; set; }
-        public float SleepValue { get; set; }
-
-
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             try
@@ -242,18 +189,8 @@ namespace LosSantosRED.lsr.Data
                         {
                             NewVehicle = new Vehicle(OwnedVehicleVariation.ModelHash, SpawnPos, Heading);
                         }
-
                         if (NewVehicle.Exists())
                         {
-                            //NewVehicle.LicensePlate = OwnedVehicleVariation.LicensePlate.PlateNumber;
-                            //NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(NewVehicle, OwnedVehicleVariation.LicensePlate.PlateType);
-                            //if (OwnedVehicleVariation.PrimaryColor != -1)
-                            //{
-                            //    NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, OwnedVehicleVariation.PrimaryColor, OwnedVehicleVariation.SecondaryColor);
-                            //}
-
-
-
                             NewVehicle.Wash();
                             VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
                             if (MyVeh == null)
@@ -261,14 +198,8 @@ namespace LosSantosRED.lsr.Data
                                 MyVeh = new VehicleExt(NewVehicle, settings);
                                 MyVeh.HasUpdatedPlateType = true;
                                 World.Vehicles.AddEntity(MyVeh, ResponseType.None);
-
                                 OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
-
-
-
-
                             }
-                            //VehicleExt MyNewCar = new VehicleExt(NewVehicle, settings);
                             player.TakeOwnershipOfVehicle(MyVeh,false);
                             if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
                             {
@@ -278,7 +209,6 @@ namespace LosSantosRED.lsr.Data
                         }
                     }
                 }
-
                 foreach(GangRepSave tuple in GangReputations)
                 {
                     Gang myGang = gangs.GetGang(tuple.GangID);
@@ -302,10 +232,8 @@ namespace LosSantosRED.lsr.Data
                     else
                     {
                         player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
-                    }
-                
+                    }    
                 }
-
                 foreach (SavedTextMessage ifc in TextMessages)
                 {
                     player.CellPhone.AddText(ifc.Name,ifc.IconName,ifc.Message,ifc.HourSent,ifc.MinuteSent, ifc.IsRead);
@@ -316,18 +244,12 @@ namespace LosSantosRED.lsr.Data
                     player.Character.Position = PlayerPosition;
                     player.Character.Heading = PlayerHeading;
                 }
-
                 player.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
                 player.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
                 player.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
-
-
                 player.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
                 player.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
                 player.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
-
-
-
                 if (DriversLicense != null)
                 {
                     player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };
@@ -336,7 +258,6 @@ namespace LosSantosRED.lsr.Data
                 {
                     player.Licenses.CCWLicense = new CCWLicense() { ExpirationDate = CCWLicense.ExpirationDate, IssueDate = CCWLicense.IssueDate };
                 }
-
                 foreach (SavedResidence res in SavedResidences)
                 {
                     if (res.IsOwnedByPlayer || res.IsRentedByPlayer)
@@ -362,11 +283,10 @@ namespace LosSantosRED.lsr.Data
             catch (Exception e)
             {
                 Game.FadeScreenIn(0);
-                EntryPoint.WriteToConsole("GetVehicleVariation! GetVehicleVariation Error; " + e.Message + " " + e.StackTrace, 0);
+                EntryPoint.WriteToConsole("Error Loading Game Save: " + e.Message + " " + e.StackTrace, 0);
                 Game.DisplayNotification("Error Loading Save");
             }
         }
-
         public override string ToString()
         {
             return $"{PlayerName}";//base.ToString();

@@ -21,8 +21,6 @@ public class Flee : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
-
             if(NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(Ped.Pedestrian))
             {
                 Vector3 PedPos = Ped.Pedestrian.Position;
@@ -30,17 +28,7 @@ public class Flee : ComplexTask
                 NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
             }
             Vector3 CurrentPos = Ped.Pedestrian.Position;
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 500f, -1, false, false);
-
-            ////Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
-            //if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-            //{
-            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 1000f, -1, false, false);
-            //}
-            //else
-            //{
-            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Target.Character, 1000f, -1, false, false);
-            //}                
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 1500f, -1, false, false);         
             GameTimeLastRan = Game.GameTime;
         }
     }

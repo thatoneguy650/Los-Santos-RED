@@ -133,8 +133,6 @@ public class GangDen : InteractableLocation
                         Transaction?.SellMenu?.Update();
                         GameFiber.Yield();
                     }
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: Gang Den LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
-                    //Transaction.ProcessTransactionMenu();
                     Transaction.DisposeTransactionMenu();
                     Player.IsTransacting = false;
                 }
@@ -241,7 +239,6 @@ public class GangDen : InteractableLocation
             InteractionMenu.Visible = true;
             KeepInteractionGoing = false;
         }, "RestWatcher");
-        EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT GANG DEN", 3);
     }
     private void LayLow()
     {
@@ -258,10 +255,7 @@ public class GangDen : InteractableLocation
 
             Player.SetWantedLevel(0, "Gang Lay Low", true);
             RemoveLayLow();
-            //InteractionMenu.Visible = true;
-            //KeepInteractionGoing = false;
         }, "LayLowWatcher");
-        EntryPoint.WriteToConsole($"PLAYER EVENT: START LAY LOW ACTIVITY AT GANG DEN", 3);
     }
     private void RemoveLayLow()
     {

@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using iFruitAddon2;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -18,7 +17,6 @@ public class CellPhone
     private MenuPool MenuPool;
     private IJurisdictions Jurisdictions;
     private List<PhoneContact> AddedContacts = new List<PhoneContact>();
-    private List<ContactLookup> ContactLookups = new List<ContactLookup>();
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
@@ -337,11 +335,10 @@ public class CellPhone
             BurnerPhone.ClosePhone();
         }
 
-        if(!Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
-        {
-            Tools.Scripts.StartScript("cellphone_flashhand", 1424);
-            Tools.Scripts.StartScript("cellphone_controller", 1424);
-        }
+
+            NativeHelper.StartScript("cellphone_flashhand", 1424);
+            NativeHelper.StartScript("cellphone_controller", 1424);
+        //}
     }
     public void Close(int time)
     {
@@ -715,16 +712,7 @@ public class CellPhone
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
-    private class ContactLookup
-    {
-        public ContactLookup(ContactIcon contactIcon, string iconText)
-        {
-            ContactIcon = contactIcon;
-            IconText = iconText;
-        }
-        public ContactIcon ContactIcon { get; set; }
-        public string IconText { get; set; }
-    }
+
     private class ScheduledContact
     {
         public ScheduledContact(DateTime timeToSend, string contactName, string message, string iconName)
@@ -738,11 +726,6 @@ public class CellPhone
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
         public string IconName { get; set; } = "CHAR_DEFAULT";
-    }
-    private class ScheduledCall
-    {
-        public DateTime TimeToSend { get; set; }
-        public iFruitContact ContactToCall { get; set; }
     }
     private class ScheduledText
     {

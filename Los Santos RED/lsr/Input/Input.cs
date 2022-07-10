@@ -275,10 +275,6 @@ namespace LosSantosRED.lsr
         }
         private void UpdateControlStatus()
         {
-            if (Player.ButtonPromptList.Count > 10)
-            {
-                EntryPoint.WriteToConsole($"INPUT: Excessive Button Prompts {Player.ButtonPromptList.Count}", 1);
-            }
             foreach (ButtonPrompt bp in Player.ButtonPromptList)
             {
                 if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)

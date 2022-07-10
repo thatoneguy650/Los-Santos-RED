@@ -41,7 +41,6 @@ namespace LosSantosRED.lsr
             {
                 GameFiber.Yield();
             }
-
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
 
@@ -335,7 +334,5 @@ namespace LosSantosRED.lsr
                 
                 
         }
-
-
     }
 }

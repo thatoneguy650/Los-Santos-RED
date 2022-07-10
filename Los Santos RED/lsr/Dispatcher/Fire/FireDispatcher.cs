@@ -99,19 +99,15 @@ public class FireDispatcher
                         }
                     }
                     ps.IsDispatchFilled = true;
-
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled AnySpawns: {spawnedsome}");
                 }
                 else
                 {
                     ps.IsDispatchFilled = true;
-                    EntryPoint.WriteToConsole($"Police Station: {ps.Name} IsDispatchFilled NO SPAWNS");
                 }
             }
             foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
             {
                 ps.IsDispatchFilled = false;
-                EntryPoint.WriteToConsole($"Police Station: {ps.Name} DEACTIVATED");
             }
         }
 
@@ -149,7 +145,7 @@ public class FireDispatcher
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
 
@@ -211,10 +207,6 @@ public class FireDispatcher
         }
         return false;
     }
-
-
-
-
     private bool ShouldBeRecalled(Firefighter ff)
     {
         if (ff.IsInVehicle)

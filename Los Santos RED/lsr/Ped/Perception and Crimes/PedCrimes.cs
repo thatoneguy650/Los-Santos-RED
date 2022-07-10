@@ -340,8 +340,6 @@ public class PedCrimes
                     float distanceToCriminal = PedExt.Pedestrian.DistanceTo2D(criminal.Pedestrian);
                     if (!PedExt.IsGangMember && (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && criminal.WantedLevel >= 3)))
                     {
-
-                       
                         uint VehicleWitnessed = 0;
                         uint WeaponWitnessed = 0;
                         Vector3 LocationWitnessed = criminal.Pedestrian.Position;
@@ -380,16 +378,22 @@ public class PedCrimes
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
                             {
-                                AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                if (distanceToCriminal <= crime.MaxReportingDistance)
+                                {
+                                    AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                                    GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                }
                             }
                         }
                         else if (distanceToCriminal <= 100f)
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
                             {
-                                AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
-                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                if (distanceToCriminal <= crime.MaxReportingDistance)
+                                {
+                                    AddOtherPedObserved(crime, criminal, fullVehicle, fullWeapon, LocationWitnessed);
+                                    GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                }
                             }
                         }
 
@@ -400,16 +404,22 @@ public class PedCrimes
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
                             {
-                                AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
-                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                if (distanceToCriminal <= crime.MaxReportingDistance)
+                                {
+                                    AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
+                                    GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                }
                             }
                         }
                         else if (distanceToCriminal <= 100f)
                         {
                             foreach (Crime crime in criminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
                             {
-                                AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
-                                GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                if (distanceToCriminal <= crime.MaxReportingDistance)
+                                {
+                                    AddOtherPedObserved(crime, criminal, null, null, PedExt.PositionLastSeenCrime);
+                                    GameTimeLastWitnessedCivilianCrime = Game.GameTime;
+                                }
                             }
                         }
                     }

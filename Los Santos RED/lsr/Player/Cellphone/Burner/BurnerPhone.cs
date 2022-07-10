@@ -1,4 +1,4 @@
-﻿using iFruitAddon2;
+﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -9,16 +9,17 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static BurnerPhone;
 
 //needs to be cleaned up into classes, contacts app, messages app, home app, controller class etc. main class should mostly handle the player interaction (take out phone, do tasks set flags etc.)
 public class BurnerPhone
 {
-    private bool _dialActive, _busyActive;
-    private int _dialSoundID = -1;
-    private int _busySoundID = -1;
-    private int _callTimer, _busyTimer;
-
-
+    private bool isDialActive;
+        private bool isBusyActive;
+    private int dialSoundID = -1;
+    private int busySoundID = -1;
+    private int callTimer;
+    private int busyTimer;
     private ICellPhoneable Player;
     private ITimeReportable Time;
     private int globalScaleformID;
@@ -36,7 +37,6 @@ public class BurnerPhone
     private ISettingsProvideable Settings;
     private bool IsDisplayingCall;
     private PhoneContact LastCalledContact;
-
     public bool IsActive => isPhoneActive;
     public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings)
     {
@@ -94,32 +94,26 @@ public class BurnerPhone
     }
     public void ClosePhone()
     {
-
         if(isPhoneActive)
         {
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Put_Away", "Phone_SoundSet_Michael", 0);
         }
-
         OnLeftCall();
-
-
         isPhoneActive = false;
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         Game.DisableControlAction(0, GameControl.Sprint, false);
-
         if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts && !Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
         {
-            Tools.Scripts.StartScript("cellphone_flashhand", 1424);
-            Tools.Scripts.StartScript("cellphone_controller", 1424);
+            NativeHelper.StartScript("cellphone_flashhand", 1424);
+            NativeHelper.StartScript("cellphone_controller", 1424);
         }
-
     }
     public void OpenPhone()
     {
         if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts)
         {
-            Tools.Scripts.TerminateScript("cellphone_flashhand");
-            Tools.Scripts.TerminateScript("cellphone_controller");
+            NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
+            NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_controller");
         }
         globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName);
         while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
@@ -136,26 +130,16 @@ public class BurnerPhone
         CurrentRow = 0;
         CurrentIndex = 0;
         IsDisplayingTextMessage = false;
-
         NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
-
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(Settings.SettingsManager.CellphoneSettings.BurnerCellPositionX, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionY, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionZ);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
         NativeFunction.Natives.SET_MOBILE_PHONE_SCALE(Settings.SettingsManager.CellphoneSettings.BurnerCellScale);
-
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "DISPLAY_VIEW");
         NativeFunction.Natives.xC3D0841A0CC546A6(1);
         NativeFunction.Natives.xC3D0841A0CC546A6(0);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Pull_Out", "Phone_SoundSet_Michael", 0);
-
-
-
-
         isVanillaPhoneDisabled = true;
-
-
     }
     private void UpdatePhone()
     {
@@ -510,13 +494,13 @@ public class BurnerPhone
     private void OnLeftCall()
     {
         LastCalledContact = null;
-        _dialActive = false;
-        _busyActive = false;
-        NativeFunction.Natives.STOP_SOUND(_busySoundID);
-        NativeFunction.Natives.RELEASE_SOUND_ID(_busySoundID);
+        isDialActive = false;
+        isBusyActive = false;
+        NativeFunction.Natives.STOP_SOUND(busySoundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(busySoundID);
 
-        NativeFunction.Natives.STOP_SOUND(_dialSoundID);
-        NativeFunction.Natives.RELEASE_SOUND_ID(_dialSoundID);
+        NativeFunction.Natives.STOP_SOUND(dialSoundID);
+        NativeFunction.Natives.RELEASE_SOUND_ID(dialSoundID);
     }
     private void UpdateContactsApp()
     {
@@ -667,31 +651,31 @@ public class BurnerPhone
     private void UpdateContact(PhoneContact contact)
     {
         // Contact was busy and busytimer has ended
-        if (_busyActive && Game.GameTime > _busyTimer)
+        if (isBusyActive && Game.GameTime > busyTimer)
         {
             //Game.LocalPlayer.Character.Task.PutAwayMobilePhone();
             NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, false);
-            NativeFunction.Natives.STOP_SOUND(_busySoundID);
-            NativeFunction.Natives.RELEASE_SOUND_ID(_busySoundID);
-            _busySoundID = -1;
-            _busyActive = false;
+            NativeFunction.Natives.STOP_SOUND(busySoundID);
+            NativeFunction.Natives.RELEASE_SOUND_ID(busySoundID);
+            busySoundID = -1;
+            isBusyActive = false;
         }
 
         // We are calling the contact
-        if (_dialActive && Game.GameTime > _callTimer)
+        if (isDialActive && Game.GameTime > callTimer)
         {
-            NativeFunction.Natives.STOP_SOUND(_dialSoundID);
-            NativeFunction.Natives.RELEASE_SOUND_ID(_dialSoundID);
-            _dialSoundID = -1;
+            NativeFunction.Natives.STOP_SOUND(dialSoundID);
+            NativeFunction.Natives.RELEASE_SOUND_ID(dialSoundID);
+            dialSoundID = -1;
 
             if (!contact.Active)
             {
                 // Contact is busy, play the busy sound until the busytimer runs off
                 DisplayCallUI(contact.Name, "CELL_220", contact.IconName.ToUpper()); // Displays "BUSY"
-                _busySoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(_busySoundID, "Remote_Engaged", "Phone_SoundSet_Default", 1);
-                _busyTimer = (int)Game.GameTime + 5000;
-                _busyActive = true;
+                busySoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+                NativeFunction.Natives.PLAY_SOUND_FRONTEND(busySoundID, "Remote_Engaged", "Phone_SoundSet_Default", 1);
+                busyTimer = (int)Game.GameTime + 5000;
+                isBusyActive = true;
             }
             else
             {
@@ -704,13 +688,13 @@ public class BurnerPhone
                 //OnAnswered(this); // Answer the phone
             }
 
-            _dialActive = false;
+            isDialActive = false;
         }
     }
     public void Call(PhoneContact contact)
     {
         // Cannot call if already on call or contact is busy (Active == false)
-        if (_dialActive || _busyActive)
+        if (isDialActive || isBusyActive)
         {
             return;
         }
@@ -721,10 +705,10 @@ public class BurnerPhone
         {
             // Play the Dial sound
             DisplayCallUI(contact.Name, "CELL_220", contact.IconName.ToUpper()); // Displays "BUSY"
-            _dialSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(_dialSoundID, "Dial_and_Remote_Ring", "Phone_SoundSet_Default", 1);
-            _callTimer = (int)Game.GameTime + contact.DialTimeout;
-            _dialActive = true;
+            dialSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(dialSoundID, "Dial_and_Remote_Ring", "Phone_SoundSet_Default", 1);
+            callTimer = (int)Game.GameTime + contact.DialTimeout;
+            isDialActive = true;
 
 
             EntryPoint.WriteToConsole("BURNER PHONE CALL CALLED!!!!");
@@ -813,37 +797,5 @@ public class BurnerPhone
     {
         NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
     }
-    public enum SoftKey
-    {
-        Left = 1,
-        Middle,
-        Right
-    }
-
-    public enum SoftkeyIcon
-    {
-        Blank = 1,
-        Select = 2,
-        Pages = 3,
-        Back = 4,
-        Call = 5,
-        Hangup = 6,
-        Hangup_Human = 7,
-        Hide_Phone = 8,
-        Keypad = 9,
-        Open = 10,
-        Reply = 11,
-        Delete = 12,
-        Yes = 13,
-        No = 14,
-        Sort = 15,
-        Website = 16,
-        Police = 17,
-        Ambulance = 18,
-        Fire = 19,
-        Pages2 = 20
-    }
-
-
 }
 
