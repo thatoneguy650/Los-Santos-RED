@@ -15,10 +15,14 @@ public static class AnimationDictionary
 {
     public static void RequestAnimationDictionay(string sDict)
     {
-        NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-        while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+        if (sDict != "")
         {
-            GameFiber.Yield();
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+            uint GameTimeStartedRequesting = Game.GameTime;
+            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict) && Game.GameTime - GameTimeStartedRequesting <= 100)
+            {
+                GameFiber.Yield();
+            }
         }
     }
 

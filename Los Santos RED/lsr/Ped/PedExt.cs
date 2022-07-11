@@ -195,8 +195,8 @@ public class PedExt : IComplexTaskable
    // public PedGroup PedGroup { get; private set; }
     public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
-    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 1000;
-    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 1000;
+    public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 4000;//was 1000
+    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 4000;//was 1000
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
     public int RelationShipFromPlayer { get; set; } = 255;
     public int RelationShipToPlayer { get; set; } = 255;

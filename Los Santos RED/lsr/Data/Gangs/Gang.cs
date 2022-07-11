@@ -99,7 +99,7 @@ public class Gang
     public float DrugDealerPercentage { get; set; } = 40f;
     public int AmbientMemberMoneyMin { get; set; } = 500;
     public int AmbientMemberMoneyMax { get; set; } = 5000;
-    public float VehicleSpawnPercentage { get; set; } = 40f;
+    public float VehicleSpawnPercentage { get; set; } = 60f;
     public int CostToPayoffGangScalar { get; set; } = 5;
     public bool RemoveRepOnWantedInTerritory { get; set; } = true;
     public int RemoveRepoOnWantedInTerritoryScalar { get; set; } = 5;

@@ -46,11 +46,29 @@ public class DebugSettings : ISettingsDefaultable
         GangUpdateBatch = 10;
         MerchantsUpdateBatch = 10;
         EMTsUpdateBatch = 10;
-        //CivilianUpdateBatch = 8;
-        //PoliceUpdateBatch = 5;
-        //GangUpdateBatch = 5;
-        //MerchantsUpdateBatch = 5;
-        //EMTsUpdateBatch = 5;
+        TaskAssignmentCheckFrequency = 500;
+
+
+        CopUpdateIntervalClose = 250;
+        CopUpdateIntervalMedium = 250;
+        CopUpdateIntervalFar = 750;
+        CopUpdateIntervalVeryFar = 2000;
+
+
+        OtherUpdateIntervalWanted = 250;
+        OtherUpdateIntervalClose = 250;
+        OtherUpdateIntervalMedium = 750;
+        OtherUpdateIntervalFar = 2000;
+        OtherUpdateIntervalVeryFar = 300;
+
+
+
+        /*
+         *         CivilianUpdateBatch = 10;
+        PoliceUpdateBatch = 10;
+        GangUpdateBatch = 10;
+        MerchantsUpdateBatch = 10;
+        EMTsUpdateBatch = 10;
         TaskAssignmentCheckFrequency = 500;
 
 
@@ -64,29 +82,8 @@ public class DebugSettings : ISettingsDefaultable
         OtherUpdateIntervalClose = 500;
         OtherUpdateIntervalMedium = 750;
         OtherUpdateIntervalFar = 2000;
-        OtherUpdateIntervalVeryFar = 300;
+        OtherUpdateIntervalVeryFar = 300;*/
 
-
-        //Old defaults
-        //CivilianUpdateBatch = 8;
-        //PoliceUpdateBatch = 4;
-        //GangUpdateBatch = 5;
-        //MerchantsUpdateBatch = 5;
-        //EMTsUpdateBatch = 5;
-        //TaskAssignmentCheckFrequency = 500;
-
-
-        //CopUpdateIntervalClose = 500;
-        //CopUpdateIntervalMedium = 750;
-        //CopUpdateIntervalFar = 2000;
-        //CopUpdateIntervalVeryFar = 3000;
-
-
-        //OtherUpdateIntervalWanted = 500;
-        //OtherUpdateIntervalClose = 750;
-        //OtherUpdateIntervalMedium = 1000;
-        //OtherUpdateIntervalFar = 3000;
-        //OtherUpdateIntervalVeryFar = 4000;
     }
 
 }

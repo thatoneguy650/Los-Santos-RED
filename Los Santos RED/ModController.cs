@@ -148,8 +148,8 @@ namespace LosSantosRED.lsr
             {
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 2),
-                new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 3),
+                //new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 2),
+                //new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 3),
             }));
             TaskGroups.Add(new ModTaskGroup("Group5", new List<ModTask>()
             {
@@ -166,6 +166,11 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.UpdateNear", World.Places.UpdateNearLocations, 2),//1000
                 new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationships.Update, 3),//might become a priority...
                 new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 4),//might become a priority...
+            }));
+            TaskGroups.Add(new ModTaskGroup("Group8", new List<ModTask>()
+            {
+                new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
+                new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
             }));
         }
         private void StartCoreLogic()

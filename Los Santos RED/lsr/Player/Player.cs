@@ -1950,7 +1950,7 @@ namespace Mod
         }
         public void StartLayingDown(bool FindSittingProp)
         {
-            if (!IsPerformingActivity && CanPerformActivities && !IsSitting)
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsLayingDown)
             {
                 if (UpperBodyActivity != null)
                 {

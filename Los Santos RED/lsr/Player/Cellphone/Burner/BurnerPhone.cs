@@ -60,8 +60,6 @@ public class BurnerPhone
         {
             DetectInput();
             UpdatePhone();
-
-
             if (prevCurrentRow != CurrentRow)
             {
                 EntryPoint.WriteToConsole($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
@@ -87,10 +85,8 @@ public class BurnerPhone
                 prevCurrentIndex = CurrentIndex;
             }
         }
-
         UpdateMessagesApp();
         UpdateContactsApp();
-
     }
     public void ClosePhone()
     {
@@ -163,7 +159,6 @@ public class BurnerPhone
             NativeFunction.CallByName<bool>("GET_MOBILE_PHONE_RENDER_ID", &lol);
             NativeFunction.Natives.SET_TEXT_RENDER_ID(lol);
         }
-
 
         NativeFunction.Natives.DRAW_SCALEFORM_MOVIE(globalScaleformID, 0.1f, 0.18f, 0.2f, 0.35f, 255, 255, 255, 255, 0);
         NativeFunction.Natives.SET_TEXT_RENDER_ID(1);

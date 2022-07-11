@@ -238,7 +238,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         List<DispatchableVehicle> TriadVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fugitive", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
-            new DispatchableVehicle("oracle", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
+            new DispatchableVehicle("washington", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
            // new DispatchableVehicle("cavalcade", 33, 33){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
         };
         List<DispatchableVehicle> YardieVehicles = new List<DispatchableVehicle>() {
@@ -267,8 +267,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sanchez2",33,33) {MaxOccupants = 1 },
         };
         List<DispatchableVehicle> FamiliesVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("emperor ",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-            new DispatchableVehicle("peyote ",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("emperor",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("peyote",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("nemesis",15,15) {MaxOccupants = 1 },
             new DispatchableVehicle("buccaneer",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("manana",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
@@ -454,7 +454,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         };
         List<DispatchableVehicle> TriadVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("fugitive", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
-            new DispatchableVehicle("oracle", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
+            new DispatchableVehicle("washington", 50, 50){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
            // new DispatchableVehicle("cavalcade", 33, 33){ RequiredPrimaryColorID = 111,RequiredSecondaryColorID = 111 },//white
         };
         List<DispatchableVehicle> YardieVehicles = new List<DispatchableVehicle>() {
@@ -483,8 +483,8 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sanchez2",33,33) {MaxOccupants = 1 },
         };
         List<DispatchableVehicle> FamiliesVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("emperor ",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-            new DispatchableVehicle("peyote ",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("emperor",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("peyote",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("nemesis",15,15) {MaxOccupants = 1 },
             new DispatchableVehicle("buccaneer",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("manana",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green

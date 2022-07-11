@@ -60,8 +60,8 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_f_freemode_01",40,40) { RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = "S_F_Y_COP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
-                    new List<PedPropComponent>() {  }), 
-                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 45, 0), new PedPropComponent(1, 25, 9) } },//no body armor with hat and glasses possible
+                    new List<PedPropComponent>() {  }),
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 45, 0), new PedPropComponent(1, 25, 9) }, OptionalPropChance = 10 },//no body armor with hat and glasses possible
             new DispatchablePerson("mp_f_freemode_01",0,40) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = "S_F_Y_COP_01_BLACK_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
@@ -72,7 +72,14 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("mp_m_freemode_01",30,30) { RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = "S_M_Y_HWAYCOP_01_WHITE_FULL_02",
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
-                    new List<PedPropComponent>() { new PedPropComponent(0, 46, 0),new PedPropComponent(1,23,9) }) },//no body armor with glasses and goofy hat
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 46, 0), new PedPropComponent(1, 23, 9) }
+
+                ,OptionalPropChance = 20
+
+
+
+            },//no body armor with glasses and goofy hat
 
 
             new DispatchablePerson("s_m_y_cop_01",30,30) { MaxWantedLevelSpawn = 2

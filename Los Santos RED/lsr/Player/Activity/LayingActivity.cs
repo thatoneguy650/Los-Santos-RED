@@ -193,6 +193,11 @@ namespace LosSantosRED.lsr.Player
                     IsActivelyLayingDown = true;
                 }
             }
+
+            if(IsUsingvehicleAnimations)
+            {
+                IsActivelyLayingDown = true;
+            }
             
 
         }
@@ -250,6 +255,11 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
+
+                    if (Player.HumanState.Sleep.IsMax)
+                    {
+                        IsCancelled = true;
+                    }
                     Player.SetUnarmed();
                     GameFiber.Yield();
                 }
@@ -263,43 +273,26 @@ namespace LosSantosRED.lsr.Player
         private void Idle()
         {
             EntryPoint.WriteToConsole("Laying Activity Idle", 5);
-            StartNewBaseScene();
-            float AnimationTime;
 
-            Player.IsResting = true;
-            Player.IsSleeping = true;
-
-
-            while (Player.CanPerformActivities && !IsCancelled)
+            if (Player.CanPerformActivities && !IsCancelled)
             {
-                if (UseRegularAnimations)
+                StartNewBaseScene();
+                Player.IsResting = true;
+                Player.IsSleeping = true;
+                while (Player.CanPerformActivities && !IsCancelled)
                 {
-                    AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                    if (Player.HumanState.Sleep.IsMax)
+                    {
+                        IsCancelled = true;
+                    }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        IsCancelled = true;
+                    }
+                    Player.SetUnarmed();
+                    GameFiber.Yield();
                 }
-                else
-                {
-                    AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                }
-
-                //if(Player.HumanState.Sleep.IsMax)
-                //{
-                //    IsCancelled = true;
-                //}
-
-                //if (AnimationTime >= 1.0f && RandomItems.RandomPercent(10))
-                //{
-                //    StartNewIdleScene();
-                //}
-                if (Player.IsMoveControlPressed)
-                {
-                    IsCancelled = true;
-                }
-                Player.SetUnarmed();
-                GameFiber.Yield();
             }
-
-
-
             Player.IsResting = false;
             Player.IsSleeping = false;
             Player.IsLayingDown = false;
@@ -307,54 +300,45 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            EntryPoint.WriteToConsole("Sitting Activity Exit", 5);
-            Player.PauseCurrentActivity();
-
-            if (1==0)
+            EntryPoint.WriteToConsole("Laying Activity Exit", 5);
+            //Player.PauseCurrentActivity();
+            if(IsActivelyLayingDown && IsUsingvehicleAnimations)
             {
-                Game.FadeScreenOut(500, true);
-                Player.Character.Position = StoredPlayerPosition;
-                Player.Character.Heading = StoredPlayerHeading;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                Game.FadeScreenIn(500, true);
+                //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
                 Player.IsLayingDown = false;
-
+                EntryPoint.WriteToConsole("Laying Activity Exit 1", 5);
             }
-            else
+            else if (IsActivelyLayingDown && Data.AnimExitDictionary != "")
             {
-
-                if (IsActivelyLayingDown && Data.AnimExitDictionary != "")
+                PlayingDict = Data.AnimExitDictionary;
+                PlayingAnim = Data.AnimExit;
+                Vector3 Position = Game.LocalPlayer.Character.Position;
+                float Heading = Game.LocalPlayer.Character.Heading;
+                if (UseRegularAnimations)
                 {
-                    PlayingDict = Data.AnimExitDictionary;
-                    PlayingAnim = Data.AnimExit;
-                    Vector3 Position = Game.LocalPlayer.Character.Position;
-                    float Heading = Game.LocalPlayer.Character.Heading;
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimExitBlendIn, Data.AnimExitBlendOut, -1, Data.AnimExitFlag, 0, false, false, false);//-1
+                }
+                else
+                {
+                    PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
+                    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+                }
+                float AnimationTime = 0f;
+                while (AnimationTime < MaxExit)
+                {
                     if (UseRegularAnimations)
                     {
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimExitBlendIn, Data.AnimExitBlendOut, -1, Data.AnimExitFlag, 0, false, false, false);//-1
+                        AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                     }
                     else
                     {
-                        PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
-                        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
-                        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-                        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
+                        AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                     }
-                    float AnimationTime = 0f;
-                    while (AnimationTime < MaxExit)
-                    {
-                        if (UseRegularAnimations)
-                        {
-                            AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                        }
-                        else
-                        {
-                            AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                        }
-                        Player.SetUnarmed();
-                        GameFiber.Yield();
-                    }
-                    EntryPoint.WriteToConsole("Laying Activity Exit 2", 5);
+                    Player.SetUnarmed();
+                    GameFiber.Yield();
                 }
                 EntryPoint.WriteToConsole("Laying Activity Exit 3", 5);
                 if (!UseRegularAnimations)
@@ -421,30 +405,30 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("Sitting Activity SETUP RAN", 5);
             Data = new LayingData();
-            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-            {
-                EntryPoint.WriteToConsole("Laying Activity SETUPO MALE", 5);
-                Data.AnimBase = "f_getin_l_bighouse";
-                Data.AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimEnter = "f_getin_l_bighouse";
-                Data.AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimExit = "f_getout_l_bighouse";
-                Data.AnimExitDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
-                Data.AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
-            }
-            else
-            {
-                EntryPoint.WriteToConsole("Laying Activity SETUP FEMALE", 5);
-                Data.AnimBase = "f_getin_l_bighouse";
-                Data.AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimEnter = "f_getin_l_bighouse";
-                Data.AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimExit = "f_getout_l_bighouse";
-                Data.AnimExitDictionary = "anim@mp_bedmid@left_var_01";
-                Data.AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
-                Data.AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
-            }
+            //if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
+            //{
+            //    EntryPoint.WriteToConsole("Laying Activity SETUPO MALE", 5);
+            //    Data.AnimBase = "f_getin_l_bighouse";
+            //    Data.AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimEnter = "f_getin_l_bighouse";
+            //    Data.AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimExit = "f_getout_l_bighouse";
+            //    Data.AnimExitDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
+            //    Data.AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
+            //}
+            //else
+            //{
+            //    EntryPoint.WriteToConsole("Laying Activity SETUP FEMALE", 5);
+            //    Data.AnimBase = "f_getin_l_bighouse";
+            //    Data.AnimBaseDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimEnter = "f_getin_l_bighouse";
+            //    Data.AnimEnterDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimExit = "f_getout_l_bighouse";
+            //    Data.AnimExitDictionary = "anim@mp_bedmid@left_var_01";
+            //    Data.AnimIdle = new List<string>() { "f_sleep_l_loop_bighouse" };
+            //    Data.AnimIdleDictionary = "anim@mp_bedmid@left_var_01";
+            //}
 
             UseRegularAnimations = false;
             if (!Player.IsInVehicle)
@@ -454,20 +438,6 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimBaseBlendIn = 8.0f;
                 Data.AnimBaseBlendOut = -8.0f;
                 Data.AnimBaseFlag = 2;
-
-                Data.AnimEnter = "forward";
-                Data.AnimEnterDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
-                Data.AnimEnterBlendIn = 8.0f;
-                Data.AnimEnterBlendOut = -8.0f;
-                Data.AnimEnterFlag = 2;
-
-                Data.AnimExit = "forward";
-                Data.AnimExitDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
-                Data.AnimExitFlag = 0;
-                Data.AnimExitBlendIn = 1.0f;
-                Data.AnimExitBlendOut = -1.0f;
-                //MaxExit = 0.90f;
-
 
                 Data.AnimExit = "left";
                 Data.AnimExitDictionary = "get_up@standard";
@@ -480,10 +450,7 @@ namespace LosSantosRED.lsr.Player
                 Data.AnimEnterIsReverse = true;
                 Data.AnimEnterBlendIn = 8.0f;
                 Data.AnimEnterBlendOut = -8.0f;
-                //  Data.AnimEnterFlag = 1;
-
                 Data.AnimEnterFlag = 0;
-
 
                 Data.AnimIdle = new List<string>() { "idle_a", "idle_b", "idle_c" };
                 Data.AnimIdleDictionary = "amb@world_human_bum_slumped@male@laying_on_left_side@idle_a";
