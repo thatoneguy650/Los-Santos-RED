@@ -36,6 +36,7 @@ public class Agencies : IAgencies
         {
             EntryPoint.WriteToConsole($"No Agencies config found, creating default", 0);
             DefaultConfig_FullExpanded();
+            DefaultConfig_LosSantos2004();
             DefaultConfig();
         }
     }
@@ -151,7 +152,30 @@ public class Agencies : IAgencies
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
     }
-
+    private void DefaultConfig_LosSantos2004()
+    {
+        List<Agency> SimpleAgenicesList = new List<Agency>
+        {
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LS ","Nightsticks","AllSidearms","AllLongGuns", "LSPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Nightsticks","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, "SheriffPeds", "LSSDVehicles", "LSCS ","Nightsticks","LimitedSidearms","LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 7  },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, "SheriffPeds", "SheriffHeliVehicles", "ASD ","Nightsticks","HeliSidearms","HeliLongGuns", "LSSD Deputy") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 13  },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "","Nightsticks","BestSidearms","BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, "FIBPeds", "FIBVehicles", "FIB ","Nightsticks","BestSidearms","BestLongGuns", "FIB Agent") { MaxWantedLevelSpawn = 5, SpawnLimit = 6,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, "DOAPeds", "UnmarkedVehicles", "DOA ","Nightsticks","AllSidearms","AllLongGuns", "DOA Agent")  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, "SAHPPeds", "SAHPVehicles", "HP ","Nightsticks","LimitedSidearms","LimitedLongGuns", "SAHP Officer") { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, "PrisonPeds", "PrisonVehicles", "SASPA ","Nightsticks","AllSidearms","AllLongGuns", "SASPA Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 2, HeadDataGroupID = "AllHeads"  },
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "","Nightsticks","AllSidearms","AllLongGuns", "SA Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, "CoastGuardPeds", "CoastGuardVehicles", "SACG ","Nightsticks","LimitedSidearms","LimitedLongGuns", "Coast Guard Officer"){ MaxWantedLevelSpawn = 3,SpawnLimit = 3, HeadDataGroupID = "AllHeads"  },
+            new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "","Nightsticks","MilitarySidearms","MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~r~", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "LSFD ",null,null, null, "LSFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, "EMTs", "Amublance1", "LSMC ",null,null, null, "LSMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "MRH", "Mission Row Hospital", "White", Classification.EMS, "EMTs", "Amublance2", "MRH ",null,null, null, "MRH Officer") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "EMTs", "Amublance3", "LSFD ",null,null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
+        };
+        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\Agencies_LosSantos2004.xml");
+    }
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
     {
         foreach(Agency agency in AgenciesList)

@@ -128,6 +128,7 @@ public class ModDataFileManager
         SetupAddonPlatesConfig();
         SetupEUP();
         SetupFullExpandedJurisdiction();
+        SetupLosSantos2004();
     }
     private void SetupAddonPlatesConfig()
     {
@@ -164,5 +165,14 @@ public class ModDataFileManager
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
     }
+
+
+    private void SetupLosSantos2004()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004");
+        string Description = "PreMade config for 2004 Los Santos";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\readme.txt", Description);
+    }
+
 }
 

@@ -26,6 +26,9 @@ public class Settings : ISettingsProvideable
             EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
             DefaultConfig();
         }
+
+        SettingsManager.Setup();
+
     }
     public void DefaultConfig()
     {

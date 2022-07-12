@@ -331,6 +331,48 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_Default.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));    
         PeopleGroupLookup = PeopleConfig_Default;
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
+
+
+
+        List<DispatchablePerson> StandardCops_Old = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_f_y_cop_01",40,40) { OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//new PedPropComponent(0, 0, 0)//Hat,//new PedPropComponent(1, 0, 0)//Glasses
+            new DispatchablePerson("s_m_y_cop_01",60,60) { OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0), new PedPropComponent(1, 2, 0), new PedPropComponent(1, 3, 0) }
+                , AllowRandomizeBeforeVariationApplied = true
+                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) }) },};
+
+        List<DispatchablePersonGroup> PeopleGroupLookup_Old = new List<DispatchablePersonGroup>();
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("StandardCops", StandardCops_Old));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("SheriffPeds", SheriffPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("SecurityPeds", SecurityPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
+        PeopleConfig_Default.Add(new DispatchablePersonGroup("EMTs", EMTs));
+
+
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPEds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("AltruistPeds", AltruistPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VarriosPeds", VarriosPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("TriadsPeds", TriadsPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("KoreanPeds", KoreanPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("RedneckPeds", RedneckPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+
+        Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\DispatchablePeople_LosSantos2004.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
     {
@@ -4532,6 +4574,11 @@ public class DispatchablePeople : IDispatchablePeople
         Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople_EUP.xml");
 
     }
+
+
+
+
+
 
 }
 
