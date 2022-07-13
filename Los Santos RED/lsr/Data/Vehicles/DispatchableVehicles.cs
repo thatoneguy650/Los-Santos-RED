@@ -514,6 +514,12 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
 
+
+
+
+
+
+
         List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>();
         List<DispatchableVehicle> FIBVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
@@ -561,7 +567,7 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ParkRangerVehicles", ParkRangerVehicles));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ParkRangerVehicles", UnmarkedVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles_Old));

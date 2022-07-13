@@ -279,6 +279,8 @@ public class PedExt : IComplexTaskable
 
     public bool WasModSpawned { get; set; } = false;
 
+    public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
+
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
     {

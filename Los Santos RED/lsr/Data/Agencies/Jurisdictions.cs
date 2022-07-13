@@ -1008,8 +1008,7 @@ public class Jurisdictions : IJurisdictions
     {
         List<ZoneJurisdiction> ZoneJurisdictionsList2004 = new List<ZoneJurisdiction>()
         {
-            new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95) {CanSpawnPedestrianOfficers = true },
-            new ZoneJurisdiction("LSPD","AIRP", 1, 5, 5) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","AIRP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
             new ZoneJurisdiction("MRH","AIRP", 0, 100, 100),
 

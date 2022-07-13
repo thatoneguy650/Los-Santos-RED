@@ -49,7 +49,10 @@ public class SeatAssigner
             VehicleExt LastVehicle = null;//
             if (Ped.Pedestrian.LastVehicle.Exists())
             {
-                LastVehicle = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+                if (!Ped.BlackListedVehicles.Any(x => x == Ped.Pedestrian.LastVehicle.Handle))
+                {
+                    LastVehicle = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+                }
             }
             if(LastVehicle != null && IsSeatAvailable(LastVehicle, Ped.LastSeatIndex))
             {

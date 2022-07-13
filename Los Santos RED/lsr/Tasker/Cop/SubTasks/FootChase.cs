@@ -20,6 +20,7 @@ public class FootChase
     private float LocalDistance;
     private float GoToDistance;
     private float prevRunSpeed;
+    private float CloseDistance;
 
     private enum SubTask
     {
@@ -48,7 +49,7 @@ public class FootChase
 
         if(!Cop.HasTaser)
         {
-            MoveRate = 1.1f;
+            MoveRate = 1.15f;
         }
         RunSpeed = 500f;
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
@@ -70,17 +71,33 @@ public class FootChase
         {
             GoToDistance = 3f;
         }
-        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < 10f && ShouldAttackWithLessLethal && ShouldAimTaser)//7f
+        else if(!Cop.HasTaser)
+        {
+            GoToDistance = 3f;
+        }
+
+
+
+        CloseDistance = 10f;
+        if(!Cop.HasTaser)
+        {
+            CloseDistance = 2f;
+        }
+
+
+
+
+        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && ShouldAttackWithLessLethal && ShouldAimTaser)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAttackWithLessLethal();
         }
-        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < 10f && !ShouldAttackWithLessLethal && ShouldAimTaser && Cop.HasTaser)//7f
+        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && ShouldAimTaser && Cop.HasTaser)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAimTaser();
         }
-        else if (LocalDistance < 10f && !ShouldAttackWithLessLethal && !ShouldAimTaser)
+        else if (LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && !ShouldAimTaser)
         {
             if(!Cop.HasTaser)
             {
@@ -107,12 +124,27 @@ public class FootChase
                     TaskLookAt();
                 }
             }
-        }     
-        else if (CurrentSubTask != SubTask.Goto && LocalDistance >= 10f)
+        }
+        else if (CurrentSubTask != SubTask.Goto && LocalDistance >= CloseDistance)
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskGoTo();
         }
+        else if (CurrentSubTask == SubTask.None)
+        {
+            Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            if (LocalDistance >= CloseDistance)
+            {
+                TaskGoTo();
+            }
+            else
+            {
+                TaskLookAt();
+            }
+        }
+
+
+        //else 
     }
     public void Dispose()
     {
@@ -178,7 +210,7 @@ public class FootChase
         }
         else
         {
-            Cop.WeaponInventory.SetLessLethal();
+            //Cop.WeaponInventory.SetLessLethal();
             if (LocalDistance > 5f)
             {
                 unsafe

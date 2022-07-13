@@ -1368,44 +1368,43 @@ public class Debug
 
 
 
-        GameFiber.StartNew(delegate
-        {
-            float multiplier = 0.01f;
+        //GameFiber.StartNew(delegate
+        //{
+        //    float multiplier = 0.01f;
 
-            while (!Game.IsKeyDownRightNow(Keys.Space))
-            {
-                if(Game.IsKeyDownRightNow(Keys.Right))
-                {
-                    multiplier *= 1.2f;
-                }
-                if (Game.IsKeyDownRightNow(Keys.Left))
-                {
-                    multiplier *= 0.8f;
-                }
-                float CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + (50f * multiplier));
-                GameFiber.Yield();
-            }
-        }, "Run Debug Logic");
+        //    while (!Game.IsKeyDownRightNow(Keys.Space))
+        //    {
+        //        if(Game.IsKeyDownRightNow(Keys.Right))
+        //        {
+        //            multiplier *= 1.2f;
+        //        }
+        //        if (Game.IsKeyDownRightNow(Keys.Left))
+        //        {
+        //            multiplier *= 0.8f;
+        //        }
+        //        float CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        //        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + (50f * multiplier));
+        //        GameFiber.Yield();
+        //    }
+        //}, "Run Debug Logic");
 
 
 
 
         if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
-            for (int i = 0; i < TotalLiveries; i++)
+
+            PedExt Cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 50f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if(Cop != null && Cop.Pedestrian.Exists())
             {
-                if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-                {
-                    NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, i);
-                    if (Game.IsKeyDown(Keys.Space))
-                    {
-                        return;
-                    }
-                    GameFiber.Sleep(3000);
-                }
+                EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Tasked");
+                NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.Pedestrian, Player.CurrentVehicle.Vehicle, 18000f, -1, 500f);
+                GameFiber.Sleep(1000);
             }
+
+            
+
+
         }
 
         //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
