@@ -180,6 +180,7 @@ public class Respawning// : IRespawning
         }
         World.ClearSpawned();
         Time.SetDateTime(HospitalDischargeDate);
+        GameFiber.Sleep(2000);
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
         {
@@ -209,6 +210,7 @@ public class Respawning// : IRespawning
         }
         World.ClearSpawned();
         Time.SetDateTime(BailPostingTime);
+        GameFiber.Sleep(2000);
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
         {
@@ -410,18 +412,10 @@ public class Respawning// : IRespawning
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
         EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
         EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
-
-
         if (ToSet.HasInterior)
         {
-            World.Places.ActivateBasicLocation(ToSet);
+            World.Places.StaticPlaces.ActivateBasicLocation(ToSet);
         }
-
-        //if (ToSet.Type == LocationType.Grave)
-        //{
-        //    Game.LocalPlayer.Character.IsRagdoll = true;
-        //}
-        //Game.LocalPlayer.Character.Tasks.ClearImmediately();
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }
     private void SetBailFee(string PoliceStationName, int BailFee)

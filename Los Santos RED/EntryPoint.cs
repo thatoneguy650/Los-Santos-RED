@@ -47,14 +47,14 @@ public static class EntryPoint
     {
         assembly = System.Reflection.Assembly.GetExecutingAssembly();
         fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-        if (File.Exists("menyoo.asi"))
-        {
-            NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
-        }
-        else
-        {
+        //if (File.Exists("menyoo.asi"))
+        //{
+        //    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
+        //}
+        //else
+        //{
             NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
-        }
+       // }
         while (true)
         {
             if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
@@ -63,11 +63,11 @@ public static class EntryPoint
                 {
                     Game.RemoveNotification(NotificationID);
                 }
-                if (File.Exists("menyoo.asi"))
-                {
-                    MenyooRunning = true;
-                    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk~s~~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
-                }
+                //if (File.Exists("menyoo.asi"))
+                //{
+                //    MenyooRunning = true;
+                //    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk~s~~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
+                //}
                 ModController = new ModController();
                 ModController.Setup();
             }

@@ -44,6 +44,8 @@ namespace LosSantosRED.lsr.Locations
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
         public Vector3 ClosestRoadNode => ClosestNode;
+        public int ClosestRoadNodeID => ClosestNodeID;
+        public string NodeString { get; set; }
         public bool HasBeenOnHighway => CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000;
         public bool HasBeenOffHighway => !CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway;
         public void Update(Entity entityToLocate)
@@ -119,15 +121,34 @@ namespace LosSantosRED.lsr.Locations
             {
                 Vector3 position = EntityToLocate.Position;//Game.LocalPlayer.Character.Position;
                 Vector3 outPos;
-                NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);//can still get the freeway offramp when you are driving near it, not sure what to do about it!
+                bool hasNode = false;
+
+                hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f ,0f);
+
+                //hasNode = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);//can still get the freeway offramp when you are driving near it, not sure what to do about it!
                 ClosestNode = outPos;
 
 
-                ClosestNodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(position.X, position.Y, position.Z, 1 , 1, 30f, 30f);
+                //ClosestNodeID = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_ID<int>(position.X, position.Y, position.Z, 1 , 1, 30f, 30f);
+                //int busy = -1;
+                //int flags = -1;
+                //bool hasProperties = false;
+                //if(hasNode)
+                //{
+                //    hasProperties = NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES<bool>(ClosestNode.X, ClosestNode.Y, ClosestNode.Z, out busy, out flags);
+                //}
 
-
+                
+                //if(hasProperties)
+                //{
+                //    NodeString = $"busy {busy} flags {flags}";
+                //}
+                //else
+                //{
+                //    NodeString = "";
+                //}
                 //ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);//seems to not get the z coordinate and puts me way down on whatever is lowest
-                if (ClosestNode == Vector3.Zero ||  ClosestNode.DistanceTo2D(EntityToLocate) >= 15f)//was 15f
+                if (!hasNode || ClosestNode == Vector3.Zero ||  ClosestNode.DistanceTo(EntityToLocate) >= 15f)//was 15f
                 {
                     IsOffroad = true;
                 }
@@ -263,7 +284,7 @@ namespace LosSantosRED.lsr.Locations
             else
             {
                 CurrentInterior = Interiors?.GetInterior(InteriorID);
-                if(CurrentInterior == null)
+                if (CurrentInterior == null)
                 {
                     CurrentInterior = new Interior(InteriorID, "");
                 }

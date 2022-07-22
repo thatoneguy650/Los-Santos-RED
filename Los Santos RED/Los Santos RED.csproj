@@ -515,7 +515,9 @@
     <Compile Include="lsr\Locations\MapBlip.cs" />
     <Compile Include="lsr\Ped\Health\BodyLocation.cs" />
     <Compile Include="lsr\Ped\Health\Bone.cs" />
+    <Compile Include="lsr\World\DynamicPlaces.cs" />
     <Compile Include="lsr\World\Places.cs" />
+    <Compile Include="lsr\World\StaticPlaces.cs" />
     <Compile Include="lsr\World\Util\LocationSpawner.cs" />
     <Compile Include="lsr\World\Weather.cs" />
     <Compile Include="ModController.cs" />

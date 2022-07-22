@@ -32,6 +32,9 @@ public class UI : IMenuProvideable
     private string lastCrimesDisplay;
     private string lastPlayerDisplay;
     private string lastStreetDisplay;
+
+    private string lastFaderStreetDisplay;
+
     private string lastVehicleStatusDisplay;
     private string lastWeaponDisplay;
     private string lastZoneDisplay;
@@ -194,7 +197,11 @@ public class UI : IMenuProvideable
             }
             if (Settings.SettingsManager.LSRHUDSettings.ShowStreetDisplay)
             {
-                lastStreetDisplay = GetStreetDisplay();
+                lastStreetDisplay = GetStreetDisplay(true);
+                lastFaderStreetDisplay = GetStreetDisplay(false);
+
+
+
                 if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation))
                 {
                     if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ZoneFader.TextChangedLastUpdate)
@@ -337,7 +344,7 @@ public class UI : IMenuProvideable
     {
         if (Settings.SettingsManager.LSRHUDSettings.ShowPlayerDisplay)
         {
-            PlayerFader.Update(lastPlayerDisplay);
+            PlayerFader.Update(lastPlayerDisplay, lastPlayerDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadePlayerDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
                 DisplayTextOnScreen(PlayerFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionX, Settings.SettingsManager.LSRHUDSettings.PlayerStatusPositionY, Settings.SettingsManager.LSRHUDSettings.PlayerStatusScale, Color.White, Settings.SettingsManager.LSRHUDSettings.PlayerStatusFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.PlayerStatusJustificationID, false, PlayerFader.AlphaValue);
@@ -352,7 +359,7 @@ public class UI : IMenuProvideable
     {
         if (Settings.SettingsManager.LSRHUDSettings.ShowStreetDisplay)
         {
-            StreetFader.Update(lastStreetDisplay);
+            StreetFader.Update(lastFaderStreetDisplay, lastStreetDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeStreetDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
                 DisplayTextOnScreen(StreetFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.StreetPositionX, Settings.SettingsManager.LSRHUDSettings.StreetPositionY, Settings.SettingsManager.LSRHUDSettings.StreetScale, Color.White, Settings.SettingsManager.LSRHUDSettings.StreetFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.StreetJustificationID, false, StreetFader.AlphaValue);
@@ -367,7 +374,7 @@ public class UI : IMenuProvideable
     {
         if (Settings.SettingsManager.LSRHUDSettings.ShowZoneDisplay)
         {
-            ZoneFader.Update(lastZoneDisplay);
+            ZoneFader.Update(lastZoneDisplay, lastZoneDisplay);
             if (Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplay && ((!DisplayablePlayer.IsWanted && !DisplayablePlayer.Investigation.IsActive) || Settings.SettingsManager.LSRHUDSettings.FadeZoneDisplayDuringWantedAndInvestigation) && !IsDrawingWheelMenu)
             {
                 DisplayTextOnScreen(ZoneFader.TextToShow, Settings.SettingsManager.LSRHUDSettings.ZonePositionX, Settings.SettingsManager.LSRHUDSettings.ZonePositionY, Settings.SettingsManager.LSRHUDSettings.ZoneScale, Color.White, Settings.SettingsManager.LSRHUDSettings.ZoneFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.ZoneJustificationID, false, ZoneFader.AlphaValue);
@@ -794,7 +801,7 @@ public class UI : IMenuProvideable
             DrawSpeedLimitTexture = false;
         }
     }
-    private string GetStreetDisplay()
+    private string GetStreetDisplay(bool includeAddress)
     {
         string StreetDisplay = "";
         if (1==0)//DisplayablePlayer.CurrentShop != null)//add back in some capacity?
@@ -805,16 +812,16 @@ public class UI : IMenuProvideable
         {
             if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
             {
-
-                string StreetNumber = NativeHelper.CellToStreetNumber(DisplayablePlayer.CellX, DisplayablePlayer.CellY);
                 StreetDisplay = $"{CurrentDefaultTextColor}";
-                StreetDisplay += $"{StreetNumber}";
+                if (includeAddress)
+                {
+                    StreetDisplay += $"{NativeHelper.CellToStreetNumber(DisplayablePlayer.CellX, DisplayablePlayer.CellY)}";
+                }
                 if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
                 {
                     StreetDisplay += "~y~";
                 }
                 StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{CurrentDefaultTextColor}";
-
                 if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
                 {
                     StreetDisplay += $" at {CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {CurrentDefaultTextColor}";

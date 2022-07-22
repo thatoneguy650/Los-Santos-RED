@@ -278,6 +278,10 @@ public class Debug
 
         //if (Player.CurrentLocation?.ClosestRoadNode != Vector3.Zero)
         //{
+        //    if (Player.CurrentLocation.NodeString != "")
+        //    {
+        //        Game.DisplaySubtitle(Player.CurrentLocation.NodeString);
+        //    }
         //    Rage.Debug.DrawArrowDebug(Player.CurrentLocation.ClosestRoadNode + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
         //}
 
@@ -1391,21 +1395,39 @@ public class Debug
 
 
 
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        {
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
 
-            PedExt Cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 50f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-            if(Cop != null && Cop.Pedestrian.Exists())
+            PedExt myPed = World.Pedestrians.PedExts.Where(x=> x.DistanceToPlayer <= 50f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if(myPed != null && myPed.Pedestrian.Exists())
             {
-                EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Tasked");
-                NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.Pedestrian, Player.CurrentVehicle.Vehicle, 18000f, -1, 500f);
-                GameFiber.Sleep(1000);
+                //if (int.TryParse(NativeHelper.GetKeyboardInput("0"), out int item1))
+                //{
+                    if (int.TryParse(NativeHelper.GetKeyboardInput("0"), out int item2))
+                    {
+                    myPed.Pedestrian.BlockPermanentEvents = false;
+                    myPed.Pedestrian.Tasks.Clear();
+
+
+                    myPed.Pedestrian.BlockPermanentEvents = true;
+                        myPed.Pedestrian.KeepTasks = true;
+                        EntryPoint.WriteToConsole($"Cop {myPed.Pedestrian.Handle} Tasked");
+                        //NativeFunction.Natives.CREATE_MOBILE_PHONE(4);
+                        NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE", myPed.Pedestrian, 1, item2);
+                        GameFiber.Sleep(4000);
+                        if(myPed.Pedestrian.Exists())
+                        {
+                        //myPed.Pedestrian.BlockPermanentEvents = false;
+                        //myPed.Pedestrian.Tasks.Clear();
+                        }
+                    }
+               //}
             }
 
             
 
 
-        }
+      //  }
 
         //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
 

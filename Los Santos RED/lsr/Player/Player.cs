@@ -1765,7 +1765,7 @@ namespace Mod
         }
         public void SetDenStatus(Gang gang, bool v)
         {
-            World.Places.SetGangLocationActive(gang.ID, v);
+            World.Places.StaticPlaces.SetGangLocationActive(gang.ID, v);
         }
         public void SetMoney(int Amount)
         {

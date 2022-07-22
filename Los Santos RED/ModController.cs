@@ -161,9 +161,9 @@ namespace LosSantosRED.lsr
             }));
             TaskGroups.Add(new ModTaskGroup("Group7", new List<ModTask>()
             {
-                new ModTask(2000, "World.ActiveNearLocations", World.Places.ActiveNearLocations, 0),//1000
+                new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
-                new ModTask(500, "World.UpdateNear", World.Places.UpdateNearLocations, 2),//1000
+                new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 2),//1000
                 new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationships.Update, 3),//might become a priority...
                 new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 4),//might become a priority...
             }));

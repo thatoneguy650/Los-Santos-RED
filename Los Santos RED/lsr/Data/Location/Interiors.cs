@@ -203,8 +203,18 @@ public class Interiors : IInteriors
             //    new List<string>() {  },
             //    new List<InteriorDoor>() { }),//right door  
             
+            new Interior(96002,"Zancudo Tunnel"),
 
 
+            new Interior(81154,"Braddock Tunnel"),
+            new Interior(40450,"Braddock Tunnel"),
+
+            new Interior(19714,"Braddock Tunnel"),
+
+
+
+            new Interior(30978,"Mission Row Police Station"),
+            new Interior(10242,"Hot Shave Barbers"),
 
             new Interior(49922,"Los Santos Tattoo"),     
             new Interior(93442,"Los Santos Customs"),
