@@ -25,6 +25,13 @@ public class ActivitySettings : ISettingsDefaultable
     public bool AllowPedLooting { get; set; }
     [Description("Allow the player to drag dead or unconscious peds.")]
     public bool AllowDraggingOtherPeds { get; set; }
+
+
+    [Description("Plays an animation the dragged ped.")]
+    public bool PlayDraggingPedAnimation { get; set; }
+
+
+
     [Description("Allow the player to hold a ped hostage at gunpoint.")]
     public bool AllowTakingOtherPedsHostage { get; set; }
     [Description("Allow the player to start random scenarios around the world.")]
@@ -51,5 +58,6 @@ public class ActivitySettings : ISettingsDefaultable
         AllowTakingOtherPedsHostage = false;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
+        PlayDraggingPedAnimation = false;
     }
 }

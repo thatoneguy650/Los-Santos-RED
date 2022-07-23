@@ -94,8 +94,9 @@ namespace Mod
         private bool isCheckingExcessSpeed;
         private bool isShooting;
         private bool isGettingOutOfAVehicle;
+        private ISpeeches Speeches;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups,IDances dances, ISpeeches speeches)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -147,6 +148,7 @@ namespace Mod
             Injuries = new Injuries(this, Settings);
             Dances = dances;
             HumanState = new HumanState(this, TimeControllable, Settings);
+            Speeches = speeches;
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public Cop AliasedCop { get; set; }
@@ -279,7 +281,7 @@ namespace Mod
         public bool IsDead { get; private set; }
         public bool IsDealingDrugs { get; set; } = false;
         public bool IsDealingIllegalGuns { get; set; } = false;
-        public bool IsDisplayingCustomMenus => IsTransacting || IsCustomizingPed;
+        public bool IsDisplayingCustomMenus => IsTransacting || IsCustomizingPed || IsConversing;
         public bool IsDoingSuspiciousActivity { get; set; } = false;
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
@@ -1924,7 +1926,7 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 //IsConversing = true;
-                Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes);
+                Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes, Speeches);
                 Interaction.Start();
             }
         }

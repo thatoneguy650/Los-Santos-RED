@@ -35,6 +35,7 @@ public class ModDataFileManager
     public IssueableWeapons IssueableWeapons;
     public Dances DanceList;
     public Gestures GestureList;
+    public Speeches SpeechList;
 
     public ModDataFileManager()
     {
@@ -121,6 +122,10 @@ public class ModDataFileManager
         GameFiber.Yield();
         GestureList = new Gestures();
         GestureList.ReadConfig();
+        GameFiber.Yield();
+        SpeechList = new Speeches();
+        SpeechList.ReadConfig();
+
     }
     private void SetupAlternateConfigs()
     {

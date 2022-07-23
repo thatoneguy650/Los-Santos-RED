@@ -42,7 +42,7 @@ public class PedCrimes
                     RelationshipGroupName = RelationshipGroupName.ToUpper();
                 }
                 
-                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC")
+                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
                 {
                     return false;
                 }
@@ -539,6 +539,18 @@ public class PedCrimes
                 AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));
             }
             bool isVisiblyArmed = IsVisiblyArmed();
+
+
+            //if(isVisiblyArmed)
+            //{
+            //    int interior = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(PedExt.Pedestrian);
+            //    if(interior == 80386 || interior == 48130)
+            //    {
+            //        isVisiblyArmed = false;
+            //    }
+            //}
+
+
             if (isVisiblyArmed)
             {
                 if (!PedExt.IsInVehicle)

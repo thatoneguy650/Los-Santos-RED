@@ -967,164 +967,173 @@ public class Debug
         //GameFiber.Sleep(1000);
         //SetPropAttachment();
         //StuffTwo();
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
+
+        //    Player.CurrentVehicle.Vehicle.Repair();
+        //    Player.CurrentVehicle.Vehicle.Wash();
+
+        //    int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
+        //    if (extraID != -1)
+        //    {
+        //        bool ExtraExists = NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.CurrentVehicle.Vehicle, extraID);
+
+        //        if (ExtraExists)
+        //        {
+        //            bool ExtraOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, extraID);
+        //            if (ExtraOn)
+        //            {
+        //                NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 1);
+        //            }
+        //            else
+        //            {
+        //                NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 0);
+        //            }
+        //            Game.DisplaySubtitle($"extraID:{extraID} EXISTS isOn: {ExtraOn}");
+        //        }
+        //        else
+        //        {
+        //            Game.DisplaySubtitle($"extraID:{extraID} DOES NOT EXIST");
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.CREATE_MOBILE_PHONE(0);
+        //}
+
+
+
+        //}
+        //foreach (Cop cop in World.Pedestrians.Police)
+        //{
+        //    cop.HasTaser = false;
+        //}
+
+
+        PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+        if (myPed != null)
         {
 
-            Player.CurrentVehicle.Vehicle.Repair();
-            Player.CurrentVehicle.Vehicle.Wash();
+            //myPed.Pedestrian.BlockPermanentEvents = true;
+            //NativeFunction.Natives.CLEAR_PED_TASKS(myPed.Pedestrian);
+            //myPed.Pedestrian.BlockPermanentEvents = true;
+            //myPed.Pedestrian.KeepTasks = true;
+            NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", myPed.Pedestrian, 10000, 2*10000, 0, true, true, true);
 
-            int.TryParse(NativeHelper.GetKeyboardInput(""), out int extraID);
-            if (extraID != -1)
-            {
-                bool ExtraExists = NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Player.CurrentVehicle.Vehicle, extraID);
 
-                if (ExtraExists)
-                {
-                    bool ExtraOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, extraID);
-                    if (ExtraOn)
-                    {
-                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 1);
-                    }
-                    else
-                    {
-                        NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, extraID, 0);
-                    }
-                    Game.DisplaySubtitle($"extraID:{extraID} EXISTS isOn: {ExtraOn}");
-                }
-                else
-                {
-                    Game.DisplaySubtitle($"extraID:{extraID} DOES NOT EXIST");
-                }
-            }
-        }
-        else
-        {
-            NativeFunction.Natives.CREATE_MOBILE_PHONE(0);
+
+           // myPed.IsDealingDrugs = true;
+            //if(myPed.Pedestrian.Exists())
+            //{
+            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
+            //}
+            Game.DisplaySubtitle("RAGDOLLLLLLL");
         }
 
 
 
-            //}
-            //foreach (Cop cop in World.Pedestrians.Police)
-            //{
-            //    cop.HasTaser = false;
-            //}
-
-
-            //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-
-            //if (myPed != null)
-            //{
-            //    myPed.IsDealingDrugs = true;
-            //    //if(myPed.Pedestrian.Exists())
-            //    //{
-            //    //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
-            //    //}
-            //    Game.DisplaySubtitle("Dealer Added");
-            //}
+        //foreach (ModItem modItem in ModItems.Items)
+        //{
+        //    Player.Inventory.Add(modItem, 5);
+        //}
 
 
 
-            //foreach (ModItem modItem in ModItems.Items)
-            //{
-            //    Player.Inventory.Add(modItem, 5);
-            //}
+        //ArrestScene();
+
+        //Game.LocalPlayer.Character.Health -= 5;
+
+        //Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
+        //Player.Inventory.Add(ModItems.Get("Heroin"), 4);
+        //Player.Inventory.Add(ModItems.Get("Cocaine"), 4);
+        //Player.Inventory.Add(ModItems.Get("Crack"), 4);
+
+        //Player.Inventory.Add(ModItems.Get("Toilet Cleaner"), 4);
+        //Player.Inventory.Add(ModItems.Get("SPANK"), 4);
+        //Player.Inventory.Add(ModItems.Get("Marijuana"), 4);
+        //Player.Inventory.Add(ModItems.Get("DIC Lighter"), 4);
+        //Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
+        //Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
+        //Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
+        //PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
+
+        //if (pc != null)
+        //{
+        //    uint hashName = NativeFunction.Natives.GET_HASH_NAME_FOR_COMPONENT<uint>(Game.LocalPlayer.Character, 11, pc.DrawableID, pc.TextureID);
 
 
 
-            //ArrestScene();
-
-            //Game.LocalPlayer.Character.Health -= 5;
-
-            //Player.Inventory.Add(ModItems.Get("Methamphetamine"), 4);
-            //Player.Inventory.Add(ModItems.Get("Heroin"), 4);
-            //Player.Inventory.Add(ModItems.Get("Cocaine"), 4);
-            //Player.Inventory.Add(ModItems.Get("Crack"), 4);
-
-            //Player.Inventory.Add(ModItems.Get("Toilet Cleaner"), 4);
-            //Player.Inventory.Add(ModItems.Get("SPANK"), 4);
-            //Player.Inventory.Add(ModItems.Get("Marijuana"), 4);
-            //Player.Inventory.Add(ModItems.Get("DIC Lighter"), 4);
-            //Player.Inventory.Add(ModItems.Get("Hot Dog"), 4);
-            //Player.Inventory.Add(ModItems.Get("Can of eCola"), 4);
-            //Player.Inventory.Add(ModItems.Get("Redwood Regular"), 4);
-            //PedComponent pc = Player.CurrentModelVariation.Components.Where(x => x.ComponentID == 11).FirstOrDefault();
-
-            //if (pc != null)
-            //{
-            //    uint hashName = NativeFunction.Natives.GET_HASH_NAME_FOR_COMPONENT<uint>(Game.LocalPlayer.Character, 11, pc.DrawableID, pc.TextureID);
+        //    ComponentQueryResult result;
 
 
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+        //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+        //        EntryPoint.WriteToConsole($"uniqueNameHash {result.uniqueNameHash} {result.lockHash} {result.eCharacter} textLabel {result.textureIndex}");
+        //    }
 
-            //    ComponentQueryResult result;
-
-
-            //    unsafe
-            //    {
-            //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
-            //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
-            //        EntryPoint.WriteToConsole($"uniqueNameHash {result.uniqueNameHash} {result.lockHash} {result.eCharacter} textLabel {result.textureIndex}");
-            //    }
-
-            //    ComponentStoreStruct result;
+        //    ComponentStoreStruct result;
 
 
-            //    unsafe
-            //    {
-            //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
-            //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
-            //        EntryPoint.WriteToConsole($"uniqueNameHash {result.lockHash} {result.lockHash} {result.hash} textLabel {result.texture}");
-            //    }
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("INIT_SHOP_PED_COMPONENT", &result);
+        //        NativeFunction.CallByName<int>("GET_SHOP_PED_QUERY_COMPONENT", 11, &result);
+        //        EntryPoint.WriteToConsole($"uniqueNameHash {result.lockHash} {result.lockHash} {result.hash} textLabel {result.texture}");
+        //    }
 
-            //    NativeFunction.Natives.INIT_SHOP_PED_COMPONENT(out result);
-            //    NativeFunction.Natives.GET_SHOP_PED_QUERY_COMPONENT(11, out result);
-
-
-            //}
-            //Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
-            //GameFiber.Sleep(500);
-            //Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");
+        //    NativeFunction.Natives.INIT_SHOP_PED_COMPONENT(out result);
+        //    NativeFunction.Natives.GET_SHOP_PED_QUERY_COMPONENT(11, out result);
 
 
-            //foreach(VehicleExt car in World.CivilianVehicleList)
-            //{
-            //    if(car.Vehicle.Exists())
-            //    {
-            //        Blip coolBlip = car.Vehicle.GetAttachedBlip();
-            //        if(coolBlip.Exists())
-            //        {
-            //            EntryPoint.WriteToConsole($"{car.Vehicle.Handle} {car.Vehicle.Model.Name} {coolBlip.Name} {coolBlip.Sprite}");
-            //        }
-            //    }
-            //}
-
-            //Gang myGang = Gangs.AllGangs.PickRandom();
-            //Player.SetReputation(myGang, -2000, true);
+        //}
+        //Input.DisableCellPhoneControl = !Input.DisableCellPhoneControl;
+        //GameFiber.Sleep(500);
+        //Game.DisplaySubtitle($"Input.DisableCellPhoneControl: {Input.DisableCellPhoneControl}");
 
 
-            //string Name, string IconName, string MessageToSend, DateTime timeToAd
-            //Gang myGang = Gangs.AllGangs.PickRandom();
-            //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
-            //EntryPoint.WriteToConsole($"ADDED Text RANDOM GANG", 5);
+        //foreach(VehicleExt car in World.CivilianVehicleList)
+        //{
+        //    if(car.Vehicle.Exists())
+        //    {
+        //        Blip coolBlip = car.Vehicle.GetAttachedBlip();
+        //        if(coolBlip.Exists())
+        //        {
+        //            EntryPoint.WriteToConsole($"{car.Vehicle.Handle} {car.Vehicle.Model.Name} {coolBlip.Name} {coolBlip.Sprite}");
+        //        }
+        //    }
+        //}
+
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.SetReputation(myGang, -2000, true);
+
+
+        //string Name, string IconName, string MessageToSend, DateTime timeToAd
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials} doing an example thing {Game.GameTime}", Time.CurrentDateTime.AddMinutes(0));
+        //EntryPoint.WriteToConsole($"ADDED Text RANDOM GANG", 5);
 
 
 
-            //PauseMenuExample.Main();
-            // SpawnNoGunAttackers();
-            //NodeChekcer();
-            //StuffTwo();
-            //ModController.DebugUIRunning = !ModController.DebugUIRunning;
-            //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
-            //GameFiber.Sleep(500);
+        //PauseMenuExample.Main();
+        // SpawnNoGunAttackers();
+        //NodeChekcer();
+        //StuffTwo();
+        //ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        //Game.DisplayNotification($"ModController.DebugUIRunning {ModController.DebugUIRunning}");
+        //GameFiber.Sleep(500);
 
-            //NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
-            //EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
-            //Dispatcher.RemoveRoadblock();
-            //CharCam = new Camera(true);
-            //CharCam.Active = false;
-            //Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
-            ////PedSettingStuff();
-            //PedCameraStuff();
+        //NativeFunction.Natives.PLAY_POLICE_REPORT("LAMAR_1_POLICE_LOST", 0.0f);
+        //EntryPoint.WriteToConsole($"PLAY_POLICE_REPORT(LAMAR_1_POLICE_LOST", 5);
+        //Dispatcher.RemoveRoadblock();
+        //CharCam = new Camera(true);
+        //CharCam.Active = false;
+        //Game.LocalPlayer.Character.Position = new Vector3(815.8774f, -1290.531f, 26.28391f);
+        ////PedSettingStuff();
+        //PedCameraStuff();
     }
     public void DebugNumpad8()
     {

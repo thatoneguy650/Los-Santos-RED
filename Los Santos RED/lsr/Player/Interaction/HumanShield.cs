@@ -70,10 +70,7 @@ public class HumanShield : DynamicActivity
         Ped.Pedestrian.KeepTasks = true;
         Ped.Pedestrian.IsPersistent = true;
         AnimationDictionary.RequestAnimationDictionay("anim@gangops@hostage@");
-
-
         AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
-
     }
     private void TakHostage()
     {

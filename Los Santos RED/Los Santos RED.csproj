@@ -116,6 +116,7 @@
     <Compile Include="lsr\Data\Interface\IIssuableWeapons.cs" />
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
+    <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Intoxicants.cs" />
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="lsr\Data\Peds\Gestures.cs" />
     <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
     <Compile Include="lsr\Data\Peds\Heads.cs" />
+    <Compile Include="lsr\Data\Peds\Speeches.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Saves\InventorySave.cs" />
     <Compile Include="lsr\Data\Saves\SavedContact.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="lsr\Player\Interaction\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
+    <Compile Include="lsr\Player\Interaction\SpeechData.cs" />
     <Compile Include="lsr\Player\Interface\IButtonPromptable.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />

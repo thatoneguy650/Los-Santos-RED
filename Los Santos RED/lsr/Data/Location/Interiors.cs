@@ -96,6 +96,10 @@ public class Interiors : IInteriors
             //243.8133f, -44.96839f, 69.89659f
 
 
+            new Interior(80386,"Ammunation Cypress Flats"),
+            new Interior(48130,"Ammunation Pillbox Hill"),
+
+
             new Interior(41474,"24/7 Route 68",
                 new List<string>() {  },
                 new List<string>() {  },
