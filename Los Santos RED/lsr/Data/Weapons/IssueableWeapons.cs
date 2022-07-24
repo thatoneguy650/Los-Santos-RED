@@ -30,7 +30,7 @@ public class IssueableWeapons : IIssuableWeapons
         {
             EntryPoint.WriteToConsole($"No Issuable Weapons config found, creating default", 0);
             DefaultConfig();
-            DefaultConfig_LosSantos2004();
+            DefaultConfig_LosSantos2008();
         }
     }
     private void DefaultConfig()
@@ -489,7 +489,7 @@ public class IssueableWeapons : IIssuableWeapons
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }
 
-    private void DefaultConfig_LosSantos2004()
+    private void DefaultConfig_LosSantos2008()
     {
         //Weapon COPS
         List<IssuableWeapon> AllSidearms = new List<IssuableWeapon>()

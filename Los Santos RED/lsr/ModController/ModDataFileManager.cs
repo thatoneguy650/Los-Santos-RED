@@ -133,7 +133,7 @@ public class ModDataFileManager
         SetupAddonPlatesConfig();
         SetupEUP();
         SetupFullExpandedJurisdiction();
-        SetupLosSantos2004();
+        SetupLosSantos2008();
     }
     private void SetupAddonPlatesConfig()
     {
@@ -172,11 +172,11 @@ public class ModDataFileManager
     }
 
 
-    private void SetupLosSantos2004()
+    private void SetupLosSantos2008()
     {
-        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004");
-        string Description = "PreMade config for 2004 Los Santos";
-        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\readme.txt", Description);
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
+        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LS with Niko. Includes a 2008 flavored vehiclemodelsets.meta and popgroups.ymt";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
 
 }

@@ -1069,21 +1069,15 @@ namespace Mod
         }
         public void Crouch()
         {
-            string CrouchSet = "move_crouch_proto";
-            CrouchSet = "move_ped_crouched";
-            CrouchSet = "move_ped_crouched";
-
-
-            //if(CurrentWeapon != null && !CurrentWeapon.CanPistolSuicide)
-            //{
-            //    CrouchSet = "move_aim_strafe_crouch_2h";
-            //}
-
+            string CrouchSet = "move_ped_crouched";
+            string StrafeCrouchSet = "move_ped_crouched_strafing";
             if (!IsInVehicle)
             {
                 if (IsCrouched)
                 {
-                    NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Character);
+                    NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET(Character,0.5f);
+                    NativeFunction.Natives.RESET_PED_STRAFE_CLIPSET(Character);
+                    NativeFunction.Natives.RESET_PED_WEAPON_MOVEMENT_CLIPSET(Character);
                     IsCrouched = false;
                 }
                 else
@@ -1092,7 +1086,16 @@ namespace Mod
                     {
                         NativeFunction.Natives.REQUEST_ANIM_SET(CrouchSet);
                     }
+
+                    if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>(StrafeCrouchSet))
+                    {
+                        NativeFunction.Natives.REQUEST_ANIM_SET(StrafeCrouchSet);
+                    }
+
+                    SetActionMode(false);
                     NativeFunction.Natives.SET_PED_MOVEMENT_CLIPSET(Character, CrouchSet, 0.5f);
+                    NativeFunction.Natives.SET_PED_STRAFE_CLIPSET(Character, StrafeCrouchSet);
+                    NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Character, "Ballistic");
                     IsCrouched = true;
                 }
             }
@@ -1926,8 +1929,18 @@ namespace Mod
                     Interaction.Dispose();
                 }
                 //IsConversing = true;
-                Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes, Speeches);
-                Interaction.Start();
+
+                if(Settings.SettingsManager.ActivitySettings.UseSimpleConversation)
+                {
+                    Interaction = new Conversation_Simple(this, CurrentLookedAtPed, Settings, Crimes);
+                    Interaction.Start();
+                }
+                else
+                {
+                    Interaction = new Conversation(this, CurrentLookedAtPed, Settings, Crimes, Speeches);
+                    Interaction.Start();
+                }
+
             }
         }
         public void StartHoldUp()
@@ -2124,6 +2137,10 @@ namespace Mod
         {
             bool isUsingActionMode = NativeFunction.Natives.IS_PED_USING_ACTION_MODE<bool>(Character);
             NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Character, !isUsingActionMode, -1, "DEFAULT_ACTION");
+        }
+        public void SetActionMode(bool enabled)
+        {
+            NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Character, enabled, -1, "DEFAULT_ACTION");
         }
         public void ToggleStealthMode()
         {

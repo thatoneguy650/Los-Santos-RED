@@ -36,7 +36,7 @@ public class Agencies : IAgencies
         {
             EntryPoint.WriteToConsole($"No Agencies config found, creating default", 0);
             DefaultConfig_FullExpanded();
-            DefaultConfig_LosSantos2004();
+            DefaultConfig_LosSantos2008();
             DefaultConfig();
         }
     }
@@ -152,7 +152,7 @@ public class Agencies : IAgencies
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
     }
-    private void DefaultConfig_LosSantos2004()
+    private void DefaultConfig_LosSantos2008()
     {
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
@@ -174,7 +174,7 @@ public class Agencies : IAgencies
             new Agency("~w~", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "EMTs", "Amublance3", "LSFD ",null,null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
         };
-        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\Agencies_LosSantos2004.xml");
+        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Agencies_LosSantos2008.xml");
     }
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
     {

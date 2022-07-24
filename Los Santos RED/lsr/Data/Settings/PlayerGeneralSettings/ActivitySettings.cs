@@ -21,6 +21,14 @@ public class ActivitySettings : ISettingsDefaultable
 
     [Description("Allow the player to start converstaions with random peds.")]
     public bool AllowPedConversations { get; set; }
+
+
+
+    [Description("Use the simplified conversation system (Similar to RDR2).")]
+    public bool UseSimpleConversation { get; set; }
+
+
+
     [Description("Allow the player to loot dead or unconscious peds.")]
     public bool AllowPedLooting { get; set; }
     [Description("Allow the player to drag dead or unconscious peds.")]
@@ -38,6 +46,7 @@ public class ActivitySettings : ISettingsDefaultable
     public bool AllowStartingScenarios { get; set; }
     [Description("Allow the player to go into crouch mode.")]
     public bool AllowPlayerCrouching { get; set; }
+
 
     public ActivitySettings()
     {
@@ -59,5 +68,6 @@ public class ActivitySettings : ISettingsDefaultable
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
         PlayDraggingPedAnimation = false;
+        UseSimpleConversation = true;
     }
 }

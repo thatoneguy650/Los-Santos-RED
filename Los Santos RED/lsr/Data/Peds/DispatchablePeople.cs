@@ -382,7 +382,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
-        Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\DispatchablePeople_LosSantos2004.xml");
+        Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_FullExpandedJurisdiction()
     {

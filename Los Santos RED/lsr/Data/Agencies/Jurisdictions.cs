@@ -38,7 +38,7 @@ public class Jurisdictions : IJurisdictions
         {
             EntryPoint.WriteToConsole($"No Zone Jurisdiction config found, creating default", 0);
             DefaultZoneConfig_FullExpandedJurisdiction();
-            DefaultZoneConfig_LosSantos2004();
+            DefaultZoneConfig_LosSantos2008();
             DefaultZoneConfig();
         }
 
@@ -58,7 +58,7 @@ public class Jurisdictions : IJurisdictions
         {
             EntryPoint.WriteToConsole($"No County Jurisdiction config found, creating default", 0);
             DefaultCountyConfig_FullExpandedJurisdiction();
-            DefaultCountyConfig_LosSantos2004();
+            DefaultCountyConfig_LosSantos2008();
             DefaultCountyConfig();
         }
     }
@@ -1004,9 +1004,9 @@ public class Jurisdictions : IJurisdictions
 
     }
 
-    private void DefaultZoneConfig_LosSantos2004()
+    private void DefaultZoneConfig_LosSantos2008()
     {
-        List<ZoneJurisdiction> ZoneJurisdictionsList2004 = new List<ZoneJurisdiction>()
+        List<ZoneJurisdiction> ZoneJurisdictionsList2008 = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSPD","AIRP", 0, 100, 100) {CanSpawnPedestrianOfficers = true },
             new ZoneJurisdiction("LSFD","AIRP", 0, 100, 100),
@@ -1373,18 +1373,18 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
         };
-        Serialization.SerializeParams(ZoneJurisdictionsList2004, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\ZoneJurisdictions_LosSantos2004.xml");
+        Serialization.SerializeParams(ZoneJurisdictionsList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ZoneJurisdictions_LosSantos2008.xml");
     }
-    private void DefaultCountyConfig_LosSantos2004()
+    private void DefaultCountyConfig_LosSantos2008()
     {
-        List<CountyJurisdiction> CountyJurisdictionList2004 = new List<CountyJurisdiction>()
+        List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
             new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
             new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100),
         };
-        Serialization.SerializeParams(CountyJurisdictionList2004, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\CountyJurisdictions_LosSantos2004.xml");
+        Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\CountyJurisdictions_LosSantos2008.xml");
     }
 
 }

@@ -521,27 +521,13 @@ public class DispatchableVehicles : IDispatchableVehicles
 
 
         List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>();
-        List<DispatchableVehicle> FIBVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police4", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("police4", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("police4", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("police4", 0, 70) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 }, };
-        List<DispatchableVehicle> NOOSEVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police4", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("police4", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("police4", 0, 35) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("police4", 0, 40) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 4,MaxOccupants = 5 }};
-        List<DispatchableVehicle> PrisonVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policet", 70, 70),
-            new DispatchableVehicle("police4", 30, 30) };
         List<DispatchableVehicle> LSPDVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 100,100) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(2, true, 100) } },
+            new DispatchableVehicle("police", 85,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(2, true, 100) } },
+            new DispatchableVehicle("police2", 15, 15),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<DispatchableVehicle> LSSDVehicles_Old = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sheriff", 100, 100) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } }, };
+            new DispatchableVehicle("sheriff", 85, 85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, true, 100) } },
+            new DispatchableVehicle("sheriff2", 15, 15), };
 
         List<DispatchableVehicle> BallasVehicles_Old = new List<DispatchableVehicle>() {
             new DispatchableVehicle("baller", 50, 50){ RequiredPrimaryColorID = 145,RequiredSecondaryColorID = 145 },
@@ -568,9 +554,9 @@ public class DispatchableVehicles : IDispatchableVehicles
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("ParkRangerVehicles", UnmarkedVehicles));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles_Old));
-        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles_Old));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FIBVehicles", FIBVehicles));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NOOSEVehicles", NOOSEVehicles));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("PrisonVehicles", PrisonVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSPDVehicles", LSPDVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("SAHPVehicles", SAHPVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("LSSDVehicles", LSSDVehicles_Old));
@@ -607,7 +593,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("CartelVehicles", CartelVehicles_Old));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("RedneckVehicles", RedneckVehicles));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("FamiliesVehicles", FamiliesVehicles));
-        Serialization.SerializeParams(OldVehicleLookupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2004\\DispatchableVehicles_LosSantos2004.xml");
+        Serialization.SerializeParams(OldVehicleLookupGroup, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchableVehicles_LosSantos2008.xml");
 
     }
 
