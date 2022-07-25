@@ -148,7 +148,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             Player.IsPerformingActivity = true;
             Idle();
         }
@@ -188,7 +188,7 @@ namespace LosSantosRED.lsr.Player
             IsActivelySmoking = true;
             while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
                     //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based

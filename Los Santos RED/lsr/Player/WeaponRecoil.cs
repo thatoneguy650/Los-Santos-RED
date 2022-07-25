@@ -23,9 +23,9 @@ public class WeaponRecoil
     }
     public void Update()
     {
-        if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.CurrentWeapon != null)// && !IsInVehicle)
+        if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.Equipment.CurrentWeapon != null)// && !IsInVehicle)
         {
-            if (Player.CurrentWeapon.Category == WeaponCategory.Throwable || Player.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.CurrentWeapon.Category == WeaponCategory.Melee || Player.CurrentWeapon.Category == WeaponCategory.Misc || Player.CurrentWeapon.Category == WeaponCategory.Unknown)
+            if (Player.Equipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;
             }
@@ -66,7 +66,7 @@ public class WeaponRecoil
     }
     private void AdjustPitch()
     {
-        AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticalRecoil, Player.CurrentWeapon.MaxVerticalRecoil);
+        AdjustedPitch = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinVerticalRecoil, Player.Equipment.CurrentWeapon.MaxVerticalRecoil);
         if (Player.IsInVehicle)
         {
             AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
@@ -80,7 +80,7 @@ public class WeaponRecoil
     }
     private void AdjustHeading()
     {
-        AdjustedHeading = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinHorizontalRecoil, Player.CurrentWeapon.MaxHorizontalRecoil);
+        AdjustedHeading = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinHorizontalRecoil, Player.Equipment.CurrentWeapon.MaxHorizontalRecoil);
         if (RandomItems.RandomPercent(50))
         {
             AdjustedHeading *= -1.0f;

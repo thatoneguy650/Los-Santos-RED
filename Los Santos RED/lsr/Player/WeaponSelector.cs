@@ -57,12 +57,12 @@ public class WeaponSelector
         {
             canShoot = true;
         }
-        if (Player.CurrentWeapon != null)
+        if (Player.Equipment.CurrentWeapon != null)
         {
-            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.CurrentWeapon.Hash);
+            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.Equipment.CurrentWeapon.Hash);
             if (LastSetting == null)
             {
-                LastSetting = new SelectorHistory(Player.CurrentWeapon.Hash, eSelectorSetting);
+                LastSetting = new SelectorHistory(Player.Equipment.CurrentWeapon.Hash, eSelectorSetting);
                 LastWeaponSelections.Add(LastSetting);
             }
             else
@@ -75,7 +75,7 @@ public class WeaponSelector
     }
     public void ToggleSelector()
     {
-        if (Player.CurrentWeapon != null)
+        if (Player.Equipment.CurrentWeapon != null)
         {
             if (Game.GameTime - GameTimeLastToggledSelector >= 200)//delayso it doesnt get toggled like crazy
             {
@@ -88,7 +88,7 @@ public class WeaponSelector
                     {
                         found1 = true;
                     }
-                    else if (found1 && Player.CurrentWeapon.SelectorOptions.HasFlag(x))
+                    else if (found1 && Player.Equipment.CurrentWeapon.SelectorOptions.HasFlag(x))
                     {
                         found2 = true;
                         SetSelectorSetting(x);
@@ -126,14 +126,14 @@ public class WeaponSelector
         canShoot = true;
         roundsFired = 0;
 
-        if (Player.CurrentWeapon != null)
+        if (Player.Equipment.CurrentWeapon != null)
         {
-            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.CurrentWeapon.Hash);
+            SelectorHistory LastSetting = LastWeaponSelections.FirstOrDefault(x => x.WeaponHash == Player.Equipment.CurrentWeapon.Hash);
             if(LastSetting != null)
             {
                 CurrentSelectorSetting = LastSetting.SelectorSetting;
             }
-            else if (Player.CurrentWeapon.SelectorOptions.HasFlag(SelectorOptions.FullAuto))
+            else if (Player.Equipment.CurrentWeapon.SelectorOptions.HasFlag(SelectorOptions.FullAuto))
             {
                 CurrentSelectorSetting = SelectorOptions.FullAuto;
             }
@@ -174,10 +174,10 @@ public class WeaponSelector
     }
     private void UpdateShooting()
     {
-        if (prevCurrentWeapon?.Hash != Player.CurrentWeapon?.Hash || Player.CurrentWeapon == null)
+        if (prevCurrentWeapon?.Hash != Player.Equipment.CurrentWeapon?.Hash || Player.Equipment.CurrentWeapon == null)
         {
             Reset();
-            prevCurrentWeapon = Player.CurrentWeapon;
+            prevCurrentWeapon = Player.Equipment.CurrentWeapon;
         }
 
         if (BulletLimt == 0)
@@ -210,7 +210,7 @@ public class WeaponSelector
             roundsFired = 0;
             canShoot = true;
         }
-        if (Player.CurrentWeapon == null)
+        if (Player.Equipment.CurrentWeapon == null)
         {
             Reset();
         }

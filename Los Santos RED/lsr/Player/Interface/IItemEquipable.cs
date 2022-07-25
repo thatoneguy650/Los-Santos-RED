@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -10,12 +11,11 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWeaponSelectable
+    public interface IItemEquipable
     {
-        Equipment Equipment { get; }
-        bool ReleasedFireWeapon { get; }
-        string DebugLine4 { get; set; }
-        Ped Character { get; }
         bool IsInVehicle { get; }
+        bool IsVisiblyArmed { get; set; }
+
+        void SetShot();
     }
 }

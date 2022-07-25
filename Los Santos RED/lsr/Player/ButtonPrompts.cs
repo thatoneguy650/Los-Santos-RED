@@ -12,14 +12,17 @@ public class ButtonPrompts
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
+    public List<ButtonPrompt> Prompts { get; private set; }
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
     {
         Player = player;
         Settings = settings;
+        Prompts = new List<ButtonPrompt>();
     }
     public void Setup()
     {
-        Player.ButtonPromptList.Clear();
+        Prompts.Clear();
+        //Player.ButtonPromptList.Clear();
     }
     public void Update()
     {
@@ -31,8 +34,8 @@ public class ButtonPrompts
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartConversation");
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartTransaction");
+            Prompts.RemoveAll(x => x.Group == "StartConversation");
+            Prompts.RemoveAll(x => x.Group == "StartTransaction");
         }
         if(!addedPromptGroup)
         {
@@ -43,7 +46,7 @@ public class ButtonPrompts
             }
             else
             {
-                Player.ButtonPromptList.RemoveAll(x => x.Group == "Search");
+                Prompts.RemoveAll(x => x.Group == "Search");
             }
             if (Player.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {
@@ -52,7 +55,7 @@ public class ButtonPrompts
             }
             else
             {
-                Player.ButtonPromptList.RemoveAll(x => x.Group == "Drag");
+                Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
         if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
@@ -62,7 +65,7 @@ public class ButtonPrompts
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
+            Prompts.RemoveAll(x => x.Group == "Grab");
         }
         if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
         {
@@ -71,7 +74,7 @@ public class ButtonPrompts
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "InteractableLocation");
+            Prompts.RemoveAll(x => x.Group == "InteractableLocation");
         }
         if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
@@ -80,52 +83,56 @@ public class ButtonPrompts
         }
         else
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "StartScenario");
+            Prompts.RemoveAll(x => x.Group == "StartScenario");
         }
 
         ActivityPrompts();
     }
     public void Dispose()
     {
-        Player.ButtonPromptList.Clear();
+        Prompts.Clear();
+    }
+    public void Clear()
+    {
+        Prompts.Clear();
     }
     public void RemovePrompts(string groupName)
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == groupName);
+        Prompts.RemoveAll(x => x.Group == groupName);
     }
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier) && !Player.ButtonPromptList.Any(x => x.Key == interactKey))
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
         {
-            Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == identifier))
+        if (!Prompts.Any(x => x.Identifier == identifier))
         {
-            Player.ButtonPromptList.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
     public bool HasPrompt(string identifier)
     {
-        return Player.ButtonPromptList.Any(x => x.Identifier == identifier);
+        return Prompts.Any(x => x.Identifier == identifier);
     }
     public bool HasPrompt(Keys key, string excludedIdentifier)
     {
-        return Player.ButtonPromptList.Any(x => x.Key == key && x.Identifier != excludedIdentifier);
+        return Prompts.Any(x => x.Key == key && x.Identifier != excludedIdentifier);
     }
     public bool IsPressed(string identifier)
     {
-        return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsPressedNow);
+        return Prompts.Any(x => x.Identifier == identifier && x.IsPressedNow);
     }
     public bool IsHeld(string identifier)
     {
-        return Player.ButtonPromptList.Any(x => x.Identifier == identifier && x.IsHeldNow);
+        return Prompts.Any(x => x.Identifier == identifier && x.IsHeldNow);
     }
     public bool IsGroupPressed(string group)
     {
-        return Player.ButtonPromptList.Any(x => x.Group == group && x.IsPressedNow);
+        return Prompts.Any(x => x.Group == group && x.IsPressedNow);
     }
     private void PersonInteractingPrompts()
     {
@@ -201,7 +208,6 @@ public class ButtonPrompts
             AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999);
         }
     }
-
     private void LocationInteractingPrompts()
     {
         RemovePrompts("StartConversation");
@@ -288,7 +294,6 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlPause");
         }
     }
-
     private void AttemptAddPrompt(string v1, object continueCurrentActivityPrompt, string v2, Keys interactNegativeOrNo, int v3)
     {
         throw new NotImplementedException();

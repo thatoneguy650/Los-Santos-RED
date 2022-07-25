@@ -30,7 +30,7 @@ public class Conversation_Simple : Interaction
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public override void Dispose()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Conversation");
+        Player.ButtonPrompts.RemovePrompts("Conversation");
         Player.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
         {
@@ -271,27 +271,27 @@ public class Conversation_Simple : Interaction
     {
         if (IsActivelyConversing)
         {
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Conversation");
+            Player.ButtonPrompts.RemovePrompts("Conversation");
         }
         else
         {
-            if (!Player.ButtonPromptList.Any(x => x.Group == "Conversation"))
+            if (!Player.ButtonPrompts.HasPrompt("Conversation"))
             {
-                Player.ButtonPromptList.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "Conversation", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
-                Player.ButtonPromptList.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "Conversation", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
-                Player.ButtonPromptList.Add(new ButtonPrompt("Cancel", "Conversation", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3));
+                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Cancel", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3);
             }
         }
-        if (Player.ButtonPromptList.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
+        if (Player.ButtonPrompts.IsPressed("Cancel"))
         {
             CancelledConversation = true;
             //Dispose();
         }
-        else if (Player.ButtonPromptList.Any(x => x.Identifier == "PositiveReply" && x.IsPressedNow))
+        else if (Player.ButtonPrompts.IsPressed("PositiveReply"))
         {
             Positive();
         }
-        else if (Player.ButtonPromptList.Any(x => x.Identifier == "NegativeReply" && x.IsPressedNow))
+        else if (Player.ButtonPrompts.IsPressed("NegativeReply"))
         {
             Negative();
         }
@@ -349,7 +349,7 @@ public class Conversation_Simple : Interaction
     private void Negative()
     {
         IsActivelyConversing = true;
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
 
         SayInsult(Player.Character, true);
         SayInsult(Ped.Pedestrian, false);
@@ -379,7 +379,7 @@ public class Conversation_Simple : Interaction
     private void Positive()
     {
         IsActivelyConversing = true;
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
         if (Ped.TimesInsultedByPlayer >= 1)
         {
             SayApology(Player.Character, false, true);

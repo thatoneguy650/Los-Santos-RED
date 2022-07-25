@@ -27,15 +27,14 @@ public class Vehicles
         PlateTypes = plateTypes;
         Jurisdictions = jurisdictions;
         Settings = settings;
+        PlateController = new PlateController(this, Zones, PlateTypes, Settings);
     }
+    public PlateController PlateController { get; private set; }
     public List<VehicleExt> PoliceVehicleList => PoliceVehicles;
     public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
     public List<VehicleExt> FireVehicleList => FireVehicles;
     public List<VehicleExt> EMSVehicleList => EMSVehicles;
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
-    public int PoliceVehiclesCount => PoliceVehicles.Count();
-    public int CivilianVehiclesCount => CivilianVehicles.Count();
-    public string DebugString { get; set; } = "";
     public int PoliceHelicoptersCount
     {
         get
@@ -88,33 +87,6 @@ public class Vehicles
         {
             RemoveAbandonedPoliceVehicles();
             FixDamagedPoliceVehicles();
-        }
-    }
-    public void UpdatePlates()
-    {
-        if (Settings.SettingsManager.WorldSettings.UpdateVehiclePlates)
-        {
-            try
-            {
-                int VehiclesUpdated = 0;
-                foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType).ToList())
-                {
-                    if (MyCar.Vehicle.Exists())
-                    {
-                        UpdatePlate(MyCar, false);
-                    }
-                    VehiclesUpdated++;
-                    if (VehiclesUpdated > 4)
-                    {
-                        VehiclesUpdated = 0;
-                        GameFiber.Yield();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole($"Update Plates Error: {ex.Message} {ex.StackTrace}", 0);
-            }
         }
     }
     private void RemoveAbandonedPoliceVehicles()
@@ -176,6 +148,71 @@ public class Vehicles
                 {
                     PoliceCar.Vehicle.Repair();
                     GameFiber.Yield();
+                }
+            }
+        }
+    }
+    public bool AddEntity(Vehicle vehicle)
+    {
+        if (vehicle.Exists())
+        {
+
+            if (vehicle.IsPoliceVehicle)
+            {
+                if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
+                {
+                    VehicleExt Car = new VehicleExt(vehicle, Settings);
+                    Car.IsPolice = true;
+                    PoliceVehicles.Add(Car);
+                    return true;
+                }
+            }
+            else
+            {
+                if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
+                {
+                    VehicleExt Car = new VehicleExt(vehicle, Settings);
+                    CivilianVehicles.Add(Car);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public void AddEntity(VehicleExt vehicleExt, ResponseType responseType)
+    {
+        if (vehicleExt != null && vehicleExt.Vehicle.Exists())
+        {
+            if (responseType == ResponseType.LawEnforcement || vehicleExt.Vehicle.IsPoliceVehicle)
+            {
+                if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+                {
+                    vehicleExt.IsPolice = true;
+                    PoliceVehicles.Add(vehicleExt);
+
+                }
+            }
+            else if (responseType == ResponseType.EMS)
+            {
+                if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+                {
+                    vehicleExt.IsEMT = true;
+                    EMSVehicles.Add(vehicleExt);
+                }
+            }
+            else if (responseType == ResponseType.Fire)
+            {
+                if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+                {
+                    vehicleExt.IsFire = true;
+                    FireVehicles.Add(vehicleExt);
+                }
+            }
+            else
+            {
+                if (!CivilianVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
+                {
+                    CivilianVehicles.Add(vehicleExt);
                 }
             }
         }
@@ -276,151 +313,6 @@ public class Vehicles
             ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == handle);
         }
         return ToReturn;
-    }
-    public bool AddEntity(Vehicle vehicle)
-    {
-        if (vehicle.Exists())
-        {
-            
-            if (vehicle.IsPoliceVehicle)
-            {
-                if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
-                {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings);
-                    Car.IsPolice = true;
-                    PoliceVehicles.Add(Car);
-                    return true;
-                }
-            }
-            else
-            {
-                if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
-                {
-                    VehicleExt Car = new VehicleExt(vehicle, Settings);
-                    CivilianVehicles.Add(Car);
-                    return true;
-                }
-            }
-        }
-        return false;
-     }
-    public void AddEntity(VehicleExt vehicleExt, ResponseType responseType)
-    {
-        if (vehicleExt != null && vehicleExt.Vehicle.Exists())
-        {
-            if (responseType == ResponseType.LawEnforcement || vehicleExt.Vehicle.IsPoliceVehicle)
-            {
-                if (!PoliceVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsPolice = true;
-                    PoliceVehicles.Add(vehicleExt);
-
-                }
-            }
-            else if (responseType == ResponseType.EMS)
-            {
-                if (!EMSVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsEMT = true;
-                    EMSVehicles.Add(vehicleExt);
-                }
-            }
-            else if (responseType == ResponseType.Fire)
-            {
-                if (!FireVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    vehicleExt.IsFire = true;
-                    FireVehicles.Add(vehicleExt);
-                }
-            }
-            else
-            {
-                if (!CivilianVehicles.Any(x => x.Handle == vehicleExt.Vehicle.Handle))
-                {
-                    CivilianVehicles.Add(vehicleExt);
-                }
-            }
-        }
-    }
-    public void UpdatePlate(VehicleExt vehicleExt, bool force)//this might need to come out of here.... along with the two bools
-    {
-        if (vehicleExt.Vehicle.Exists())
-        {
-            vehicleExt.HasUpdatedPlateType = true;
-            PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
-            Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
-            if(force)
-            {
-                PlateType NewType = PlateTypes.GetRandomPlateType();
-                if (NewType != null)
-                {
-                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                    if (NewPlateNumber != "")
-                    {
-                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                    else
-                    {
-                        NewPlateNumber = RandomItems.RandomString(8);
-                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                    if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
-                    {
-                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                        vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                        vehicleExt.CarPlate.PlateType = NewType.Index;
-                    }
-                }
-            }
-            else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
-            {
-                PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
-
-                if (NewType != null)
-                {
-                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                    if (NewPlateNumber != "")
-                    {
-                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                    if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
-                    {
-                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                        vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                        vehicleExt.CarPlate.PlateType = NewType.Index;
-                    }
-                }
-            }
-            else
-            {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
-                {
-                    PlateType NewType = PlateTypes.GetRandomPlateType();
-                    if (NewType != null)
-                    {
-                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                        if (NewPlateNumber != "")
-                        {
-                            vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                            vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                            vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                        }
-                        if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
-                        {
-                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                            vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                            vehicleExt.CarPlate.PlateType = NewType.Index;
-                        }
-                    }
-                }
-            }
-        }
     }
     public Agency GetAgency(Vehicle vehicle, int wantedLevel, ResponseType responseType)
     {

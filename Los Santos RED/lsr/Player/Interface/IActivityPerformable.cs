@@ -11,58 +11,54 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IActivityPerformable
     {
-        bool IsPerformingActivity { get; set; }
-        Ped Character { get; }
-        string ModelName { get; }
-        bool IsMale { get; }
-        bool CanPerformActivities { get; }
-        GangRelationships GangRelationships { get; }
-        int Money { get; }
-
-        void GiveMoney(int moneyToReceive);
+        ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
-        bool IsMoveControlPressed { get; }
-        string FreeModeVoice { get; }
-        bool CharacterModelIsFreeMode { get; }
-        bool CanConverse { get; }
-        bool IsInteractingWithLocation { get; set; }
-        List<ButtonPrompt> ButtonPromptList { get; }
-        Inventory Inventory { get; }
-        PlayerTasks PlayerTasks { get; }
-        bool IsDoingSuspiciousActivity { get; set; }
+        Equipment Equipment { get; }
+        GangRelationships GangRelationships { get; }
         GunDealerRelationship GunDealerRelationship { get; }
-        string PlayerName { get; }
+        Inventory Inventory { get; }
         Licenses Licenses { get; }
+        PlayerTasks PlayerTasks { get; }
         Properties Properties { get; }
+        Violations Violations { get; }
+
+        bool CanConverse { get; }
+        bool CanPerformActivities { get; }
+        Ped Character { get; }
+        bool CharacterModelIsFreeMode { get; }
+        VehicleExt CurrentVehicle { get; }
+        string FreeModeVoice { get; }
+        bool IsAliveAndFree { get; }
         bool IsConversing { get; set; }
-        bool IsInVehicle { get; }
         bool IsDealingDrugs { get; set; }
         bool IsDealingIllegalGuns { get; set; }
-        bool IsTransacting { get; set; }
-        VehicleExt CurrentVehicle { get; }
-        Vehicle LastFriendlyVehicle { get; set; }
-        Violations Violations { get; }
+        bool IsDoingSuspiciousActivity { get; set; }
         bool IsDriver { get; }
-        List<VehicleExt> OwnedVehicles { get; }
-        Vector3 Position { get; }
-        float VehicleSpeedMPH { get; }
-        bool RecentlyCrashedVehicle { get; }
-
-        void SetUnarmed();
-        void StopDynamicActivity();
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
-        void ChangeName(string newName);
-        void EnterVehicleAsPassenger();
-        void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
-        ButtonPrompts ButtonPrompts { get; }
-        bool IsWanted { get; }
+        bool IsInteractingWithLocation { get; set; }
+        bool IsInVehicle { get; }
+        bool IsMale { get; }
+        bool IsMoveControlPressed { get; }
         bool IsNotWanted { get; }
-        bool IsAliveAndFree { get; }
+        bool IsPerformingActivity { get; set; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
-
+        bool IsTransacting { get; set; }
+        bool IsWanted { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
+        string ModelName { get; }
+        int Money { get; }
+        List<VehicleExt> OwnedVehicles { get; }
+        string PlayerName { get; }
+        Vector3 Position { get; }
+        bool RecentlyCrashedVehicle { get; }
+        float VehicleSpeedMPH { get; }
+        void ChangeName(string newName);
+        void EnterVehicleAsPassenger();
+        void GiveMoney(int moneyToReceive);
+        void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
         void SetWantedLevel(int v1, string v2, bool v3);
         void StartConsumingActivity(ModItem modItem, bool v);
-        //void StartConsumingActivity(ModItem modItem, bool v);
+        void StopDynamicActivity();
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
     }
 }

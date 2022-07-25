@@ -248,16 +248,16 @@ public class Loot : DynamicActivity
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
-        if (Player.CurrentWeapon != null)
+        if (Player.Equipment.CurrentWeapon != null)
         {
-            LastWeapon = Player.CurrentWeapon;
+            LastWeapon = Player.Equipment.CurrentWeapon;
         }
         else
         {
             LastWeapon = null;
         }
 
-        Player.SetUnarmed();
+        Player.Equipment.SetUnarmed();
         List<string> IdleToPlay = new List<string>() { "idle_a" , "idle_b" , "idle_c" };
         if(PlayAnimation("amb@medic@standing@tendtodead@enter", "enter") && PlayAnimation("amb@medic@standing@tendtodead@idle_a", IdleToPlay.PickRandom()))
         {

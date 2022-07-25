@@ -43,9 +43,9 @@ public class WeaponSway
     }
     private void Sway()
     {
-        if (Settings.SettingsManager.SwaySettings.ApplySway && Player.CurrentWeapon != null && !IsDisabled)// && !IsInVehicle)
+        if (Settings.SettingsManager.SwaySettings.ApplySway && Player.Equipment.CurrentWeapon != null && !IsDisabled)// && !IsInVehicle)
         {
-            if (Player.CurrentWeapon.Category == WeaponCategory.Throwable || Player.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.CurrentWeapon.Category == WeaponCategory.Melee || Player.CurrentWeapon.Category == WeaponCategory.Misc || Player.CurrentWeapon.Category == WeaponCategory.Unknown)
+            if (Player.Equipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;
             }
@@ -147,7 +147,7 @@ public class WeaponSway
     }
     private void AdjustPitch()
     {
-        AdjustedPitch = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinVerticaSway, Player.CurrentWeapon.MaxVerticaSway);
+        AdjustedPitch = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinVerticaSway, Player.Equipment.CurrentWeapon.MaxVerticaSway);
         AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!VerticalSwayDirection)
         {
@@ -196,7 +196,7 @@ public class WeaponSway
     }
     private void AdjustHeading()
     {
-        AdjustedHeading = RandomItems.GetRandomNumber(Player.CurrentWeapon.MinHorizontalSway, Player.CurrentWeapon.MaxHorizontalSway);
+        AdjustedHeading = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinHorizontalSway, Player.Equipment.CurrentWeapon.MaxHorizontalSway);
         AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalSwayAdjuster * 0.0075f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!HorizontalSwayDirection)
         {

@@ -101,7 +101,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             //AttachBottleToHand();
             Player.IsPerformingActivity = true;
             //PlayingDict = Data.AnimEnterDictionary;
@@ -133,7 +133,7 @@ namespace LosSantosRED.lsr.Player
         {
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                //Player.SetUnarmed();
+                //Player.Equipment.SetUnarmed();
                 //float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 //if (AnimationTime >= 1.0f)
                 //{

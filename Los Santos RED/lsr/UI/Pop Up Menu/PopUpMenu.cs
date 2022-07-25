@@ -63,7 +63,7 @@ public class PopUpMenu
         {
             new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },        
             new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
         };
@@ -71,7 +71,7 @@ public class PopUpMenu
         {
             new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },      
             new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
         };
@@ -104,14 +104,14 @@ public class PopUpMenu
 
         List<PopUpMenuMap> WeaponsSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0,"Selector",Player.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
-            new PopUpMenuMap(1,"Drop Weapon",Player.DropWeapon,"Drop Current Weapon"){ IsCurrentlyValid = new Func<bool>(() => Player.CurrentWeapon != null && Player.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(0,"Selector",Player.Equipment.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(1,"Drop Weapon",Player.Equipment.DropWeapon,"Drop Current Weapon"){ IsCurrentlyValid = new Func<bool>(() => Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.Category != WeaponCategory.Melee) },
         };
         List<PopUpMenuMap> StanceSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0,"Action Mode",Player.ToggleActionMode,"Toggle action mode"),
-            new PopUpMenuMap(1,"Stealth Mode",Player.ToggleStealthMode,"Toggle stealth mode"),
-            new PopUpMenuMap(2,"Toggle Crouch",Player.Crouch,"Toggle Crouch"),//top
+            new PopUpMenuMap(0,"Action Mode",Player.Stance.ToggleActionMode,"Toggle action mode"),
+            new PopUpMenuMap(1,"Stealth Mode",Player.Stance.ToggleStealthMode,"Toggle stealth mode"),
+            new PopUpMenuMap(2,"Toggle Crouch",Player.Stance.Crouch,"Toggle Crouch"),//top
         };
         List<PopUpMenuMap> VehicleSubMenu = new List<PopUpMenuMap>()
         {

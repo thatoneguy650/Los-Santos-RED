@@ -13,6 +13,10 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IActionable
     {
+
+
+
+
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
@@ -45,7 +49,6 @@ namespace LosSantosRED.lsr.Interface
         void ChangePlate(LicensePlate selectedItem);
         void TakeOwnershipOfNearestCar();
         void CallPolice();
-        void SetUnarmed();
         void StartConsumingActivity(ModItem selectedStuff, bool performActivity);
         void PauseCurrentActivity();
         void ContinueCurrentActivity();
@@ -67,26 +70,18 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         bool IsNotWanted { get; }
         PoliceResponse PoliceResponse { get; }
-        WeaponInformation CurrentWeapon { get; }
         bool IsStill { get; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
         HumanState HumanState { get; }
-
-
-        //Action DropWeapon { get; }
-
+        Stance Stance { get; }
+        Equipment Equipment { get; }
         void RemoveOwnershipOfNearestCar();
         void SetMoney(int bribeAmount);
         void Gesture();
-        void ToggleActionMode();
-        void ToggleStealthMode();
-        void ToggleSelector();
-        void Crouch();
         void Dance(DanceData selectedItem);
         void Dance();
         void ToggleSurrender();
-        void DropWeapon();
         void CloseDriverDoor();
         void ToggleRightIndicator();
         void ToggleLeftIndicator();

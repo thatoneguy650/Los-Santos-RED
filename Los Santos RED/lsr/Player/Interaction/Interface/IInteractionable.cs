@@ -11,43 +11,35 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInteractionable
     {
-        bool IsHoldingUp { get; set; }
-        WeaponCategory CurrentWeaponCategory { get; }
-        bool IsConversing { get; set; }
-        Ped Character { get; }
-        PedExt CurrentTargetedPed { get; }
-        bool IsAliveAndFree { get; }
-        List<ButtonPrompt> ButtonPromptList { get; }
-        bool IsInVehicle { get; }
-        bool CanConverse { get; }
-        int Money { get; }
-        bool IsPerformingActivity { get; }
-        bool IsTransacting { get; set; }
-       // bool IsConductingIllicitTransaction { get; set; }
-        bool IsSitting { get; }
-        bool CharacterModelIsFreeMode { get; }
-        string FreeModeVoice { get; }
-      //  GameLocation CurrentShop { get; set; }
-        bool IsMoveControlPressed { get; }
-        bool CanPerformActivities { get; }
-        bool IsDealingDrugs { get; set; }
-        bool IsDealingIllegalGuns { get; set; }
-
-        void SetAngeredCop();
-        void GiveMoney(int v);
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
+        ButtonPrompts ButtonPrompts { get; }
+        CellPhone CellPhone { get; }
+        Equipment Equipment { get; }
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
-        CellPhone CellPhone { get; }
+        bool CanConverse { get; }
+        bool CanPerformActivities { get; }
+        Ped Character { get; }
+        bool CharacterModelIsFreeMode { get; }
+        PedExt CurrentTargetedPed { get; }
+        string FreeModeVoice { get; }
+        bool IsAliveAndFree { get; }
         bool IsCarJacking { get; set; }
-        bool IsLootingBody { get; set; }
-        WeaponInformation CurrentWeapon { get; }
-        WeaponHash LastWeaponHash { get; set; }
-        bool IsHoldingHostage { get; set; }
+        bool IsConversing { get; set; }
+        bool IsDealingDrugs { get; set; }
+        bool IsDealingIllegalGuns { get; set; }
         bool IsDraggingBody { get; set; }
+        bool IsHoldingHostage { get; set; }
+        bool IsHoldingUp { get; set; }
         bool IsIncapacitated { get; }
-
-        void SetUnarmed();
-        void SetPlayerToLastWeapon();
+        bool IsInVehicle { get; }
+        bool IsLootingBody { get; set; }
+        bool IsMoveControlPressed { get; }
+        bool IsPerformingActivity { get; }
+        bool IsSitting { get; }
+        bool IsTransacting { get; set; }
+        int Money { get; }
+        void GiveMoney(int v);
+        void SetAngeredCop();
+        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
     }
 }

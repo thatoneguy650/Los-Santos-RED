@@ -162,7 +162,7 @@ namespace LosSantosRED.lsr
             }
             if (IsPressingSelectorToggle)
             {
-                Player.ToggleSelector();
+                Player.Equipment.ToggleSelector();
             }
             if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
             {
@@ -170,7 +170,7 @@ namespace LosSantosRED.lsr
                 {
                     if (IsPressingCrouchToggle)
                     {
-                        Player.Crouch();
+                        Player.Stance.Crouch();
                         GameTimeLastPressedCrouch = Game.GameTime;
                     }
                 }
@@ -275,7 +275,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateControlStatus()
         {
-            foreach (ButtonPrompt bp in Player.ButtonPromptList)
+            foreach (ButtonPrompt bp in Player.ButtonPrompts.Prompts)
             {
                 if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)
                 {

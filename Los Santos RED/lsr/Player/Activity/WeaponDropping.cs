@@ -35,24 +35,27 @@ public class WeaponDropping
                 return CurrentWeaponAmmo;
         }
     }
-    public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed;
+    public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed && Player.CanPerformActivities;
     public void DropWeapon()
     {
-        DroppingWeapon = true;
-        GameFiber DropWeapon = GameFiber.StartNew(delegate
+        if (CanDropWeapon)
         {
-            DropWeaponAnimation();
-            NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
-            WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            DroppedWeapons.Add(new StoredWeapon((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
-            NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
-            if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+            DroppingWeapon = true;
+            GameFiber DropWeapon = GameFiber.StartNew(delegate
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
-            }
-            GameFiber.Sleep(1000);
-            DroppingWeapon = false;
-        }, "DropWeapon");      
+                DropWeaponAnimation();
+                NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
+                WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+                DroppedWeapons.Add(new StoredWeapon((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
+                NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
+                if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
+                }
+                GameFiber.Sleep(1000);
+                DroppingWeapon = false;
+            }, "DropWeapon");
+        }
     }
     public void Update()
     {

@@ -143,7 +143,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.PruneVehicles", World.Vehicles.Prune, 2),//500
                 new ModTask(1000, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
-                new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.UpdatePlates, 5),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
                 //new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
             }));

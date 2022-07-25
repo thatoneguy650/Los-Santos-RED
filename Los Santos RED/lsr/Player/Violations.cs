@@ -82,7 +82,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastHurtCop = Game.GameTime;
                 //AddViolating(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));
-                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.Equipment.CurrentSeenWeapon, true, true, true);
                 EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
             }
             else
@@ -103,7 +103,7 @@ namespace LosSantosRED.lsr
                 PlayerKilledCops.Add(myPed);
                 GameTimeLastKilledCop = Game.GameTime;
                 GameTimeLastHurtCop = Game.GameTime;
-                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
+                Player.AddCrime(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.Equipment.CurrentSeenWeapon, true, true, true);
                 EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
             }
             else
@@ -288,7 +288,7 @@ namespace LosSantosRED.lsr
         {
             if (Player.RecentlyShot)
             {
-                if (!(Player.Character.IsCurrentWeaponSilenced || Player.CurrentWeaponCategory == WeaponCategory.Melee))
+                if (!(Player.Character.IsCurrentWeaponSilenced || Player.Equipment.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));//.IsCurrentlyViolating = true;
                     if (Player.AnyPoliceRecentlySeenPlayer || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop) || (Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= 50f))
@@ -301,20 +301,20 @@ namespace LosSantosRED.lsr
             if (isBrandishing && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
-                if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 4)
+                if (Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.WeaponLevel >= 4)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//.IsCurrentlyViolating = true;
                 }
-                if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 3)
+                if (Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.WeaponLevel >= 3)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingHeavyWeapon"));//.IsCurrentlyViolating = true;
                 }
-                if (Player.CurrentWeapon != null && Player.CurrentWeapon.Category == WeaponCategory.Melee)
+                if (Player.Equipment.CurrentWeapon != null && Player.Equipment.CurrentWeapon.Category == WeaponCategory.Melee)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
                 }
             }
-            if (isBrandishing && Player.CurrentTargetedPed != null && Player.CurrentWeapon.Category != WeaponCategory.Melee)
+            if (isBrandishing && Player.CurrentTargetedPed != null && Player.Equipment.CurrentWeapon.Category != WeaponCategory.Melee)
             {
                 if(Player.CurrentTargetedPed.IsCop)
                 {
@@ -620,7 +620,7 @@ namespace LosSantosRED.lsr
             {
                 if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
-                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true, true);
+                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.Equipment.CurrentSeenWeapon, true, true, true);
 
 
                     //bool shouldAdd = true;

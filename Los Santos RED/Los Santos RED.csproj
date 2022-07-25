@@ -162,6 +162,7 @@
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
+    <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
     <Compile Include="lsr\Data\Weapons\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
@@ -269,9 +270,11 @@
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
     <Compile Include="lsr\Player\Interface\IHumanStateable.cs" />
+    <Compile Include="lsr\Player\Interface\IItemEquipable.cs" />
     <Compile Include="lsr\Player\Interface\ILicenseable.cs" />
     <Compile Include="lsr\Player\Interface\ILocationInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IPropertyOwnable.cs" />
+    <Compile Include="lsr\Player\Interface\IStanceable.cs" />
     <Compile Include="lsr\Player\Intoxication\IntoxicationEffect.cs" />
     <Compile Include="lsr\Player\Licenses\CCWLicense.cs" />
     <Compile Include="lsr\Player\Licenses\DriversLicense.cs" />
@@ -310,6 +313,8 @@
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Properties\Properties.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
+    <Compile Include="lsr\Player\Stance\Stance.cs" />
+    <Compile Include="lsr\Player\Equipment\Equipment.cs" />
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
@@ -520,10 +525,11 @@
     <Compile Include="lsr\Locations\MapBlip.cs" />
     <Compile Include="lsr\Ped\Health\BodyLocation.cs" />
     <Compile Include="lsr\Ped\Health\Bone.cs" />
-    <Compile Include="lsr\World\DynamicPlaces.cs" />
-    <Compile Include="lsr\World\Places.cs" />
-    <Compile Include="lsr\World\StaticPlaces.cs" />
+    <Compile Include="lsr\World\Places\DynamicPlaces.cs" />
+    <Compile Include="lsr\World\Places\Places.cs" />
+    <Compile Include="lsr\World\Places\StaticPlaces.cs" />
     <Compile Include="lsr\World\Util\LocationSpawner.cs" />
+    <Compile Include="lsr\World\Vehicles\PlateController.cs" />
     <Compile Include="lsr\World\Weather.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
@@ -545,7 +551,7 @@
     <Compile Include="lsr\Ped\Demographics\NameType.cs" />
     <Compile Include="lsr\UI\UI.cs" />
     <Compile Include="lsr\Civilians\Civilians.cs" />
-    <Compile Include="lsr\World\Pedestrians.cs" />
+    <Compile Include="lsr\World\Pedestrians\Pedestrians.cs" />
     <Compile Include="lsr\Time\Time.cs" />
     <Compile Include="lsr\PedSwap\PedSwap.cs" />
     <Compile Include="lsr\Player\Respawning.cs" />
@@ -566,7 +572,7 @@
     <Compile Include="lsr\Data\Settings\Settings.cs" />
     <Compile Include="lsr\Data\Settings\UI settings\UIGeneralSettings.cs" />
     <Compile Include="lsr\Vehicle\PlateType.cs" />
-    <Compile Include="lsr\World\Vehicles.cs" />
+    <Compile Include="lsr\World\Vehicles\Vehicles.cs" />
     <Compile Include="lsr\Weapon\WeaponCategory.cs" />
     <Compile Include="lsr\Weapon\WeaponInformation.cs" />
     <Compile Include="lsr\Ped\PedExt.cs" />

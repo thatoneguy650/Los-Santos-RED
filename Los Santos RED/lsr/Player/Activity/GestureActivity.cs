@@ -55,7 +55,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             Player.IsPerformingActivity = true;       
             if(GestureData.IsInsulting)
             {
@@ -68,7 +68,7 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
                 while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter);
                     if (AnimationTime >= 1.0f)
                     {
@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
                 while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName);
                     if (AnimationTime >= 1.0f)
                     {
@@ -118,7 +118,7 @@ namespace LosSantosRED.lsr.Player
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
                     while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                     {
-                        Player.SetUnarmed();
+                        Player.Equipment.SetUnarmed();
                         float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit);
                         if (AnimationTime >= 1.0f)
                         {

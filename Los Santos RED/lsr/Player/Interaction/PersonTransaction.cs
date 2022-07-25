@@ -136,9 +136,9 @@ public class PersonTransaction : Interaction
                         }
 
 
-                        if (isPaused && Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction" && x.IsPressedNow))
+                        if (isPaused && Player.ButtonPrompts.IsPressed("ContinueTransaction")) //if (isPaused && Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction" && x.IsPressedNow))
                         {
-                            Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
+                            Player.ButtonPrompts.RemovePrompts("ContinueTransaction"); //Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
                             isPaused = false;
 
                             if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
@@ -198,7 +198,7 @@ public class PersonTransaction : Interaction
             }
 
 
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
+            Player.ButtonPrompts.RemovePrompts("ContinueTransaction"); //Player.ButtonPromptList.RemoveAll(x => x.Group == "ContinueTransaction");
             if (Ped != null && Ped.Pedestrian.Exists())
             {
                // Ped.Pedestrian.CanBePulledOutOfVehicles = true;
@@ -419,23 +419,16 @@ public class PersonTransaction : Interaction
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
             Player.LastFriendlyVehicle = null;
             Player.LastFriendlyVehicle = Ped.Pedestrian.CurrentVehicle;
-
-
             PlayerEnteringOtherVehicle = true;
             PedEnteringPlayerVehicle = false;
             EntryPoint.WriteToConsole("Paused Person Transaction");
-
             InteractionMenu.Visible = false;
             isPaused = true;
-
-            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            if (!Player.ButtonPrompts.HasPrompt("ContinueTransaction")) //if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
             {
-                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+                Player.ButtonPrompts.AddPrompt("ContinueTransaction", "Continue Transaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101);
             }
-
-
             GetInVehicleAsPassenger(Player.Character, Ped.Pedestrian.CurrentVehicle);
-
         }
     }
     private void PedGetInCar()
@@ -444,20 +437,14 @@ public class PersonTransaction : Interaction
         {
             //Ped.Pedestrian.StaysInVehiclesWhenJacked = true;
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-
-
-
             InteractionMenu.Visible = false;
             isPaused = true;
-
-            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            if (!Player.ButtonPrompts.HasPrompt("ContinueTransaction")) //if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
             {
-                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+                Player.ButtonPrompts.AddPrompt("ContinueTransaction", "Continue Transaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101);
             }
-
             PlayerEnteringOtherVehicle = false;
             PedEnteringPlayerVehicle = true;
-
             GetInVehicleAsPassenger(Ped.Pedestrian, Player.CurrentVehicle?.Vehicle);
         }
     }
@@ -469,23 +456,16 @@ public class PersonTransaction : Interaction
             isPaused = true;
             EntryPoint.WriteToConsole("Paused Person Transaction");
             SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY" }, true);
-            SayAvailableAmbient(personToFollow, new List<string>() { "GENERIC_YES" }, true);
-            
+            SayAvailableAmbient(personToFollow, new List<string>() { "GENERIC_YES" }, true);    
             InteractionMenu.Visible = false;
-            
-
-            if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
+            if (!Player.ButtonPrompts.HasPrompt("ContinueTransaction")) //if (!Player.ButtonPromptList.Any(x => x.Group == "ContinueTransaction"))
             {
-                Player.ButtonPromptList.Add(new ButtonPrompt("Continue Transaction", "ContinueTransaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101));
+                Player.ButtonPrompts.AddPrompt("ContinueTransaction", "Continue Transaction", "ContinueTransaction", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 101);
             }
-
             isFollowing = true;
-
             personToFollow.BlockPermanentEvents = true;
             personToFollow.KeepTasks = true;
             //NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(0, Player.Character, 2.0f, 2.0f, 0f, 0.75f, -1, 3f, true);
-
-
             unsafe
             {
                 int lol = 0;
@@ -498,11 +478,6 @@ public class PersonTransaction : Interaction
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-
-
-
-
-
             // vehicleToEnter, 5000, seatIndex, 0.5f, 0);
         }
     }
@@ -764,7 +739,7 @@ public class PersonTransaction : Interaction
                 Ped.IsDealingDrugs = true;
             }
         }
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
         {
@@ -884,7 +859,7 @@ public class PersonTransaction : Interaction
                 Ped.IsDealingDrugs = true;
             }
         }
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_BUY", "GENERIC_YES", "BLOCKED_GENEIRC" }, true);
         if (Ped.Pedestrian.Exists())
         {

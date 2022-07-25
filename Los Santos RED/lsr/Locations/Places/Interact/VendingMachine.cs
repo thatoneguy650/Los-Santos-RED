@@ -237,7 +237,7 @@ public class VendingMachine : InteractableLocation
         bool IsCompleted = false;
         while (Player.CanPerformActivities && !IsCancelled)
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
             if (AnimationTime >= 0.5f)
             {

@@ -124,7 +124,7 @@ public class SellMenu : Menu
         if (sellMenuRNUI != null)
         {
             sellMenuRNUI.Visible = false;
-            Player.ButtonPromptList.Clear();
+            Player.ButtonPrompts.Clear();
         }
     }
     public override void Show()
@@ -1087,7 +1087,7 @@ public class SellMenu : Menu
                 NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, CurrentWeapon.Hash);
                 Transaction.OnItemSold(CurrentModItem, CurrentMenuItem, 1);
                 //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 return true;
             }
         }

@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 public class PlateTypes : IPlateTypes
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PlateTypes.xml";
-    private List<PlateType> PlateTypeList = new List<PlateType>();
+    public PlateTypeManager PlateTypeManager { get; private set; }
+
     public void ReadConfig()
     {
 
@@ -24,35 +25,35 @@ public class PlateTypes : IPlateTypes
         FileInfo ConfigFile = LSRDirectory.GetFiles("PlateTypes*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Loaded Plate Types config: {ConfigFile.FullName}",0);
-            PlateTypeList = Serialization.DeserializeParams<PlateType>(ConfigFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Settings config: {ConfigFile.FullName}", 0);
+            PlateTypeManager = Serialization.DeserializeParam<PlateTypeManager>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Plate Types config  {ConfigFileName}",0);
-            PlateTypeList = Serialization.DeserializeParams<PlateType>(ConfigFileName);
+            EntryPoint.WriteToConsole($"Loaded Settings config  {ConfigFileName}", 0);
+            PlateTypeManager = Serialization.DeserializeParam<PlateTypeManager>(ConfigFileName);
         }
         else
         {
-            EntryPoint.WriteToConsole($"No Plate Types config found, creating default", 0);
-            DefaultConfig_Full();
+            EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_Full();
         }
     }
     public PlateType GetPlateType(int CurrentIndex)
     {
-        return PlateTypeList.FirstOrDefault(x => x.Index == CurrentIndex);
+        return PlateTypeManager.PlateTypeList.FirstOrDefault(x => x.Index == CurrentIndex);
     }
     public PlateType GetPlateType(string State)
     {
-        return PlateTypeList.Where(x => x.State == State).PickRandom();
+        return PlateTypeManager.PlateTypeList.Where(x => x.State == State).PickRandom();
     }
     public PlateType GetRandomPlateType()
     {
-        if (!PlateTypeList.Any())
+        if (!PlateTypeManager.PlateTypeList.Any())
             return null;
 
-        List<PlateType> ToPickFrom = PlateTypeList.Where(x => x.CanSpawn).ToList();
+        List<PlateType> ToPickFrom = PlateTypeManager.PlateTypeList.Where(x => x.CanSpawn).ToList();
         int Total = ToPickFrom.Sum(x => x.SpawnChance);
         int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (PlateType Type in ToPickFrom)
@@ -66,17 +67,56 @@ public class PlateTypes : IPlateTypes
         }
         return null;
     }
+    public string GetRandomVanityPlateText()
+    {
+        return PlateTypeManager.VanityPlates.PickRandom();
+    }
     private void DefaultConfig()
     {
-        PlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
-        Serialization.SerializeParams(PlateTypeList, ConfigFileName);
+        PlateTypeManager = new PlateTypeManager();
+        PlateTypeManager.PlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "1ABC234"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "1ABC234"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
+
+        PlateTypeManager.VanityPlates.Add("AZZ KIKR");
+        PlateTypeManager.VanityPlates.Add("STARK 4");
+        PlateTypeManager.VanityPlates.Add("OUTATIME");
+        PlateTypeManager.VanityPlates.Add("MUF DVR");
+
+        PlateTypeManager.VanityPlates.Add("NRVOUS");
+        PlateTypeManager.VanityPlates.Add("PSY WGN");
+        PlateTypeManager.VanityPlates.Add("SOUTHPAW");
+
+
+        PlateTypeManager.VanityPlates.Add("UZI 4U");
+        PlateTypeManager.VanityPlates.Add("DEV IL");
+        PlateTypeManager.VanityPlates.Add("THX 138");
+        PlateTypeManager.VanityPlates.Add("D-FENS");
+        PlateTypeManager.VanityPlates.Add("ECTO-1");
+        PlateTypeManager.VanityPlates.Add("THE CAPN");
+        PlateTypeManager.VanityPlates.Add("18A 4RE");
+        PlateTypeManager.VanityPlates.Add("LWYRUP");
+
+        PlateTypeManager.VanityPlates.Add("ASSMAN");
+        PlateTypeManager.VanityPlates.Add("WEIRDO");
+        PlateTypeManager.VanityPlates.Add("PLNCRAZY");
+        PlateTypeManager.VanityPlates.Add("WDRFULL");
+        PlateTypeManager.VanityPlates.Add("YOU FOOL");
+        PlateTypeManager.VanityPlates.Add("RUB1OUT");
+        PlateTypeManager.VanityPlates.Add("ID8MOMS");
+
+        PlateTypeManager.VanityPlates.Add("ANUSTART");
+        PlateTypeManager.VanityPlates.Add("FL4TOUT");
+        PlateTypeManager.VanityPlates.Add("NVRMYND");
+        PlateTypeManager.VanityPlates.Add("LEDFOOT");
+
+        Serialization.SerializeParam(PlateTypeManager, ConfigFileName);
     }
     private void DefaultConfig_Full()
     {
+        PlateTypeManager FullPlateTypeManager = new PlateTypeManager();
         List<PlateType> FullPlateTypeList = new List<PlateType>();
         FullPlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "1ABC234"));
         FullPlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
@@ -167,7 +207,9 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(64, "New Austin 1", "New Austin", 3, "ABC 123"));
         FullPlateTypeList.Add(new PlateType(65, "New Austin 2", "New Austin", 3, "ABC 123"));
 
-        Serialization.SerializeParams(FullPlateTypeList, "Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\PlateTypes_AddOnPlates_Wildbrick142.xml");
+        FullPlateTypeManager.PlateTypeList = FullPlateTypeList;
+        FullPlateTypeManager.VanityPlates = PlateTypeManager.VanityPlates.Copy();
+        Serialization.SerializeParam(FullPlateTypeManager, "Plugins\\LosSantosRED\\AlternateConfigs\\AddOnPlates_Wildbrick142\\PlateTypes_AddOnPlates_Wildbrick142.xml");
 
     }
 }

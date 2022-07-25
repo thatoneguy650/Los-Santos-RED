@@ -36,7 +36,7 @@ public class Conversation : Interaction
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public override void Dispose()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Conversation");
+        Player.ButtonPrompts.RemovePrompts("Conversation");
         Player.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
         {
@@ -137,7 +137,7 @@ public class Conversation : Interaction
     private void SaySpeech(SpeechData tosay)
     {
         IsActivelyConversing = true;
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
         ConversationMenu.Visible = false;
         SayAvailableAmbient(Player.Character, new List<string>() { tosay.Name }, true, true);
         SayAvailableAmbient(Ped.Pedestrian, new List<string>() { tosay.Name }, true, false);

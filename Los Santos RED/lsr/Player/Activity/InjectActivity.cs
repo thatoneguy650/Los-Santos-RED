@@ -91,7 +91,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             AttachItemToHand();
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastGaveHealth = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 //if (AnimationTime >= 0.25f)
                 //{

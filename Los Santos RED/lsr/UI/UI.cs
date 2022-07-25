@@ -396,7 +396,7 @@ public class UI : IMenuProvideable
 
     private void DisplayTopMenu()
     {     
-        if(IsDrawingWheelMenu && DisplayablePlayer.CurrentWeapon!= null)
+        if(IsDrawingWheelMenu && DisplayablePlayer.Equipment.CurrentWeapon!= null)
         {
             NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);//WEAPON_ICON
         }
@@ -410,7 +410,7 @@ public class UI : IMenuProvideable
 
 
         bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
-        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable;
+        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.Equipment.CurrentWeapon != null && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.RecentlyChangedMoney;
         bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
@@ -503,9 +503,9 @@ public class UI : IMenuProvideable
         {
             instructional.Buttons.Clear();
 
-            if (DisplayablePlayer.ButtonPromptList.Any())
+            if (DisplayablePlayer.ButtonPrompts.Prompts.Any())
             {
-                foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPromptList.OrderByDescending(x => x.Order))
+                foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.Prompts.OrderByDescending(x => x.Order))
                 {
                     if (buttonPrompt.Key != Keys.None)
                     {
@@ -525,7 +525,7 @@ public class UI : IMenuProvideable
                 }
             }
             instructional.Update();
-            if (DisplayablePlayer.ButtonPromptList.Any())
+            if (DisplayablePlayer.ButtonPrompts.Prompts.Any())
             {
                 instructional.Draw();
             }
@@ -618,43 +618,43 @@ public class UI : IMenuProvideable
     }
     private string GetSelectorText()
     {
-        if (DisplayablePlayer.CurrentWeapon != null && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.CurrentWeapon.Category != WeaponCategory.Throwable)
+        if (DisplayablePlayer.Equipment.CurrentWeapon != null && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Throwable)
         {
             if (Settings.SettingsManager.LSRHUDSettings.WeaponDisplaySimpleSelector)
             {
-                if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.Safe)
+                if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.Safe)
                 {
                     return "~w~S~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
                 {
                     return "~r~1~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
                 {
                     return "~r~2~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
                 {
                     return "~r~3~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
                 {
                     return "~r~4~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
                 {
                     return "~r~5~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
                 {
-                    if (DisplayablePlayer.CurrentWeaponMagazineSize == 0)
+                    if (DisplayablePlayer.Equipment.CurrentWeaponMagazineSize == 0)
                     {
                         return $"~r~FULL AUTO~s~";
                     }
                     else
                     {
-                        return $"~r~{DisplayablePlayer.CurrentWeaponMagazineSize}~s~";
+                        return $"~r~{DisplayablePlayer.Equipment.CurrentWeaponMagazineSize}~s~";
                     }
                 }
                 else
@@ -664,33 +664,33 @@ public class UI : IMenuProvideable
             }
             else
             {
-                if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.Safe)
+                if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.Safe)
                 {
                     return "~s~SAFE~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
                 {
                     return "~r~Semi-Auto~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
                 {
                     return "~r~2 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
                 {
                     return "~r~3 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
                 {
                     return "~r~4 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
                 {
                     return "~r~5 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
                 {
-                    if (DisplayablePlayer.CurrentWeaponMagazineSize == 0)
+                    if (DisplayablePlayer.Equipment.CurrentWeaponMagazineSize == 0)
                     {
                         return $"~r~FULL AUTO~s~";
                     }

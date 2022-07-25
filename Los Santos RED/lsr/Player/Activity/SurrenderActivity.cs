@@ -66,7 +66,7 @@ public class SurrenderActivity : DynamicActivity
         {
             return;
         }
-        Player.SetUnarmed();
+        Player.Equipment.SetUnarmed();
         Player.HandsAreUp = true;
 
         if(Player.IsInVehicle)
@@ -93,7 +93,7 @@ public class SurrenderActivity : DynamicActivity
         {
             return;
         }
-        Player.SetUnarmed();
+        Player.Equipment.SetUnarmed();
         Player.IsWavingHands = true;
 
         string Animation;
@@ -141,7 +141,7 @@ public class SurrenderActivity : DynamicActivity
             {
                 return;
             }
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             if (Player.Character.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = Player.Character.CurrentVehicle;
@@ -160,7 +160,7 @@ public class SurrenderActivity : DynamicActivity
             }
             if (StayStanding)
             {
-                //Player.SetUnarmed();
+                //Player.Equipment.SetUnarmed();
                 if (!NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") == 0f)
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);

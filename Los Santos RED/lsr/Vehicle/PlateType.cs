@@ -45,7 +45,6 @@ public class PlateType
     {     
         if (SerialFormat != "")
         {
-            //Mod.Debugging.WriteToLog("PlateType", string.Format("State: {0}, Format: {1}",State, SerialFormat));
             string NewPlateNumber = "";
             foreach (char c in SerialFormat)
             {
@@ -65,7 +64,6 @@ public class PlateType
                 NewPlateNumber += NewChar;
                 
             }
-            //Mod.Debugging.WriteToLog("PlateType", string.Format("State: {0}, PlateNumber: {1}", State, NewPlateNumber));
             return NewPlateNumber.ToUpper();
         }
         else

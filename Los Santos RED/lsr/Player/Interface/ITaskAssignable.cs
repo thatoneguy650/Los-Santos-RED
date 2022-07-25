@@ -10,26 +10,25 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ITaskAssignable
     {
-        GangRelationships GangRelationships { get; }
-        CellPhone CellPhone { get; }
-        VehicleExt CurrentVehicle { get; }
-        Ped Character { get; }
-        Vehicle LastFriendlyVehicle { get; set; }
-        GunDealerRelationship GunDealerRelationship { get; }
-        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
-        bool IsNotWanted { get; }
         ButtonPrompts ButtonPrompts { get; }
+        CellPhone CellPhone { get; }
+        Equipment Equipment { get; }
+        GangRelationships GangRelationships { get; }
+        GunDealerRelationship GunDealerRelationship { get; }
         Investigation Investigation { get; }
-        bool IsAliveAndFree { get; }
-        int WantedLevel { get; }
+        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
         PoliceResponse PoliceResponse { get; }
-        WeaponInformation CurrentWeapon { get; }
-        bool RecentlyShot { get; }
-        bool IsWanted { get; }
-        bool AnyPoliceRecentlySeenPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
-
-        void GiveMoney(int paymentAmountOnCompletion);
+        bool AnyPoliceRecentlySeenPlayer { get; }
+        Ped Character { get; }
+        VehicleExt CurrentVehicle { get; }
+        bool IsAliveAndFree { get; }
+        bool IsNotWanted { get; }
+        bool IsWanted { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
+        bool RecentlyShot { get; }
+        int WantedLevel { get; }
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
+        void GiveMoney(int paymentAmountOnCompletion);
     }
 }

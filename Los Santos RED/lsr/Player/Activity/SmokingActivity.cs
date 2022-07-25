@@ -135,13 +135,13 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             Player.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
             while (Player.CanPerformActivities && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 UpdatePosition();
                 UpdateSmoke();
                 if (PrevHandByFace != IsHandByFace)
@@ -201,7 +201,7 @@ namespace LosSantosRED.lsr.Player
                 uint GameTimeStartedExitAnimation = Game.GameTime;
                 while (Game.GameTime - GameTimeStartedExitAnimation <= 5000 && Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())
                     {
                         SmokedItem.Detach();
@@ -234,7 +234,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
             while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
                     PlayingDict = Data.AnimIdleDictionary;

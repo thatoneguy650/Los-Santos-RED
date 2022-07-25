@@ -234,11 +234,11 @@ public class ActionMenu : Menu
 
         else if (selectedItem == ToggleActionMode)
         {
-            Player.ToggleActionMode();
+            Player.Stance.ToggleActionMode();
         }
         else if (selectedItem == ToggleStealthMode)
         {
-            Player.ToggleStealthMode();
+            Player.Stance.ToggleStealthMode();
         }
         Actions.Visible = false;
         ChangePlate.Items = Player.SpareLicensePlates;

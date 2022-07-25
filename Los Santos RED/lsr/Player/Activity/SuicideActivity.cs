@@ -55,7 +55,7 @@ public class SuicideActivity : DynamicActivity
     {
         Player.IsCommitingSuicide = true;
         Player.IsPerformingActivity = true;
-        if (Player.CurrentWeaponIsOneHanded)//Player.CurrentWeaponCategory == WeaponCategory.Pistol || CurrentWeaponIsOneHanded)//Shoot YOurself
+        if (Player.Equipment.CurrentWeaponIsOneHanded)//Player.CurrentWeaponCategory == WeaponCategory.Pistol || CurrentWeaponIsOneHanded)//Shoot YOurself
         {
             Enter("pistol");
             IdlePistol();
@@ -82,7 +82,7 @@ public class SuicideActivity : DynamicActivity
         bool AddedPrompts = false;
         while (Player.CanPerformActivities && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
             if (ScenePhase >= 0.2f)
             {
@@ -93,19 +93,19 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPromptList.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
-                    Player.ButtonPromptList.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2));
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Cancel", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2);
                     AddedPrompts = true;
                 }    
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "CommitSuicide" && x.IsPressedNow))
+                if (Player.ButtonPrompts.IsPressed("CommitSuicide"))
                 {
                     SwallowedPills = true;
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+                    Player.ButtonPrompts.RemovePrompts("Suicide");
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 1f);
                 }
-                else if (Player.ButtonPromptList.Any(x => x.Identifier == "CancelSuicide" && x.IsPressedNow))
+                else if (Player.ButtonPrompts.IsPressed("CancelSuicide"))
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+                    Player.ButtonPrompts.RemovePrompts("Suicide");
                     break;
                 }
             }
@@ -127,21 +127,21 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPromptList.Add(new ButtonPrompt("Commit Suicide", "Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
-                    Player.ButtonPromptList.Add(new ButtonPrompt("Cancel", "Suicide", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2));
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Cancel", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2);
                     AddedPrompts = true;
                 }
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "CommitSuicide" && x.IsPressedNow))
+                if (Player.ButtonPrompts.IsPressed("CommitSuicide"))
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+                    Player.ButtonPrompts.RemovePrompts("Suicide");
                     Vector3 HeadCoordinated = Player.Character.GetBonePosition(PedBoneId.Head);
                     NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Player.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
                     Game.LocalPlayer.Character.Kill();
                     break;
                 }
-                else if (Player.ButtonPromptList.Any(x => x.Identifier == "CancelSuicide" && x.IsPressedNow))
+                else if (Player.ButtonPrompts.IsPressed("CancelSuicide"))
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+                    Player.ButtonPrompts.RemovePrompts("Suicide");
                     break;
                 }
             }
@@ -150,7 +150,7 @@ public class SuicideActivity : DynamicActivity
     }
     private void Exit()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+        Player.ButtonPrompts.RemovePrompts("Suicide");
         //Player.Character.Tasks.Clear();
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.IsPerformingActivity = false;
@@ -159,7 +159,7 @@ public class SuicideActivity : DynamicActivity
     private void Setup()
     {
         AnimationDictionary.RequestAnimationDictionay("mp_suicide");
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Suicide");
+        Player.ButtonPrompts.RemovePrompts("Suicide");
     }
 }
 

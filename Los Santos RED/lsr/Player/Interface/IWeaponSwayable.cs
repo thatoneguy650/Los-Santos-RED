@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWeaponSwayable
     {
-        WeaponInformation CurrentWeapon { get; }
+        Equipment Equipment { get; }
         bool IsInVehicle { get; }
         Ped Character { get; }
         string DebugLine4 { get; set; }

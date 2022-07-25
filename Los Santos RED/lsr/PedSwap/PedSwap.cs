@@ -574,7 +574,7 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        Player.SetUnarmed();
+        Player.Equipment.SetUnarmed();
         World.UnPauseTime();
     }
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
@@ -651,7 +651,7 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
         // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
-        Player.SetUnarmed();
+        Player.Equipment.SetUnarmed();
         World.UnPauseTime();
         GameFiber.Wait(50);
         Player.DisplayPlayerNotification();

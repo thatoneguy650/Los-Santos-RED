@@ -139,39 +139,39 @@ public class HoldUp : Interaction
                 }
                 if (IsTargetting && IsTargetIntimidated)
                 {
-                    if (!Target.HasBeenMugged && !Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash"))
+                    if (!Target.HasBeenMugged && !Player.ButtonPrompts.HasPrompt("DemandCash")) //if (!Target.HasBeenMugged && !Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash"))
                     {
-                        Player.ButtonPromptList.Add(new ButtonPrompt("Demand Cash/Items", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+                        Player.ButtonPrompts.AddPrompt("HoldUp", "Demand Cash/Items", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Demand Cash/Items", "HoldUp", "DemandCash", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
                     }
-                    if (!Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown"))
+                    if (!Player.ButtonPrompts.HasPrompt("ForceDown")) //if (!Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown"))
                     {
-                        Player.ButtonPromptList.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+                        Player.ButtonPrompts.AddPrompt("HoldUp", "Force Down", "ForceDown", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
                     }
-                    if (!Player.ButtonPromptList.Any(x => x.Identifier == "Flee"))
+                    if (!Player.ButtonPrompts.HasPrompt("Flee")) //if (!Player.ButtonPromptList.Any(x => x.Identifier == "Flee"))
                     {
-                        Player.ButtonPromptList.Add(new ButtonPrompt("Force Flee", "HoldUp", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3));
+                        Player.ButtonPrompts.AddPrompt("HoldUp", "Force Flee", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3);//Player.ButtonPromptList.Add(new ButtonPrompt("Force Flee", "HoldUp", "Flee", Settings.SettingsManager.KeySettings.InteractCancel, 3));
                     }
                 }
                 else
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                 }
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (Player.ButtonPrompts.IsPressed("DemandCash") && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?//if (Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     CreateMoneyDrop();
                 }
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
+                if (Player.ButtonPrompts.IsPressed("ForceDown") && IsTargetIntimidated && !ForcedCower)//demand cash?//if (Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
                 {
                     ForcedCower = true;
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     ForceCower();
                 }
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "Flee" && x.IsPressedNow) && IsTargetIntimidated && !Fleed)//demand cash?
+                if (Player.ButtonPrompts.IsPressed("Flee") && IsTargetIntimidated && !Fleed)//demand cash?//if (Player.ButtonPromptList.Any(x => x.Identifier == "Flee" && x.IsPressedNow) && IsTargetIntimidated && !Fleed)//demand cash?
                 {
                     Fleed = true;
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
+                    Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     FuckOff();
                 }
 
@@ -193,7 +193,7 @@ public class HoldUp : Interaction
     }
     private void CleanUp()
     {
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
+        Player.ButtonPrompts.RemovePrompts("HoldUp");
         if (Target != null && Target.Pedestrian.Exists())
         {         
             Target.Pedestrian.BlockPermanentEvents = false;

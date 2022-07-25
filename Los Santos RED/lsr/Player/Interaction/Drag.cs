@@ -96,8 +96,8 @@ public class Drag : DynamicActivity
             
             //AttachPeds();
             bool hasCompletedTasks = StartDrag();
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Drop");
-            Player.ButtonPromptList.RemoveAll(x => x.Group == "Load");
+            Player.ButtonPrompts.RemovePrompts("Drop");
+            Player.ButtonPrompts.RemovePrompts("Load");
             if (hasCompletedTasks)
             {
                 EntryPoint.WriteToConsole("Drag, Finished, completed");
@@ -231,27 +231,21 @@ public class Drag : DynamicActivity
         return angle;
     }
     private bool StartDrag()
-    {
-        
-        if (Player.CurrentWeapon != null)
+    {  
+        if (Player.Equipment.CurrentWeapon != null)
         {
-            LastWeapon = Player.CurrentWeapon;
+            LastWeapon = Player.Equipment.CurrentWeapon;
         }
         else
         {
             LastWeapon = null;
         }
-        Player.SetUnarmed();
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Drop");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == "Drop"))
+        Player.Equipment.SetUnarmed();
+        Player.ButtonPrompts.RemovePrompts("Drop");
+        if (!Player.ButtonPrompts.HasPrompt("Drop"))
         {
-            Player.ButtonPromptList.Add(new ButtonPrompt("Drop", "Drop", "Drop", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+            Player.ButtonPrompts.AddPrompt("Drop", "Drop", "Drop", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
-
-
-
-
-
         if (PlayAttachAnimation() && PlayDragAnimation())
         {
 
@@ -356,20 +350,20 @@ public class Drag : DynamicActivity
                 }
                 else
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Load");
+                    Player.ButtonPrompts.RemovePrompts("Load");
                 }
 
 
-                if (Player.ButtonPromptList.Any(x => x.Identifier == "Drop" && x.IsPressedNow))//demand cash?
+                if (Player.ButtonPrompts.IsPressed("Drop"))//demand cash?
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Drop");
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Load");
+                    Player.ButtonPrompts.RemovePrompts("Drop");
+                    Player.ButtonPrompts.RemovePrompts("Load");
                     return true;
                 }
-                else if (ClosestVehicle != null && Player.ButtonPromptList.Any(x => x.Identifier == "Load" && x.IsPressedNow))//demand cash?
+                else if (ClosestVehicle != null && Player.ButtonPrompts.IsPressed("Load"))//demand cash?
                 {
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Drop");
-                    Player.ButtonPromptList.RemoveAll(x => x.Group == "Load");
+                    Player.ButtonPrompts.RemovePrompts("Drop");
+                    Player.ButtonPrompts.RemovePrompts("Load");
                     LoadBody = true;
                     return true;
                 }

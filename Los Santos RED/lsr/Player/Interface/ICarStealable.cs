@@ -13,10 +13,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsVisiblyArmed { get; }
         bool IsBusted { get; }
         bool IsDead { get; }
-        void SetPlayerToLastWeapon();
         bool IsCarJacking { get; set; }
         bool IsMoveControlPressed { get; }
-        void SetUnarmed();
+        Equipment Equipment { get; }
         void ShootAt(Vector3 targetCoordinate);
         Ped Character { get; }
     }

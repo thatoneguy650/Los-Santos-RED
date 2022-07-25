@@ -11,66 +11,59 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInputable
     {
-        bool IsNotHoldingEnter { get; set; }
-        bool IsBusted { get; }
-        bool CanSurrender { get; }
-        bool HandsAreUp { get; set; }
-        bool CanDropWeapon { get; }
-        VehicleExt CurrentVehicle { get; }
-        bool IsInVehicle { get; }
-        bool IsMoveControlPressed { get; set; }
+        ButtonPrompts ButtonPrompts { get; }
+        CellPhone CellPhone { get; }
+        Equipment Equipment { get; }
+        Sprinting Sprinting { get; }
+        Stance Stance { get; }
+        Cop AliasedCop { get; }      
+        bool CanCancelCurrentActivity { get; }
         bool CanConverseWithLookedAtPed { get; }
         bool CanHoldUpTargettedPed { get; }
-        bool IsConversing { get; }
-        List<ButtonPrompt> ButtonPromptList { get; }
-        bool IsInteracting { get; }
-        bool IsAiming { get; }
-        bool IsMoving { get; }
-        bool IsPerformingActivity { get; set; }
-        Ped Character { get; }
-        Cop AliasedCop { get; }
-        bool IsDisplayingCustomMenus { get; }
-        bool IsCustomizingPed { get; }
-        bool IsPressingFireWeapon { get; set; }
-        bool ReleasedFireWeapon { get; set; }
-        Sprinting Sprinting { get; }
-        bool IsMale { get; }
-        bool IsWavingHands { get; set; }
-        bool IsNotWanted { get; }
-        bool IsWanted { get; }
-        bool CanWaveHands { get; }
-        bool CanPerformActivities { get; }
-        bool CurrentVehicleIsRolledOver { get; }
-        bool CurrentVehicleIsInAir { get; }
-        bool IsAliveAndFree { get; }
         bool CanPauseCurrentActivity { get; }
-        CellPhone CellPhone { get; }
-        ButtonPrompts ButtonPrompts { get; }
-        bool CanCancelCurrentActivity { get; }
+        bool CanPerformActivities { get; }
+        bool CanSurrender { get; }
+        bool CanWaveHands { get; }
 
-        void RaiseHands();
-        void LowerHands();
-        void DropWeapon();
-        void SetUnarmed();
-        void StartConversation();
-        void StartScenario();
-        void StartTransaction();
-        
-
-        void CloseDriverDoor();
-
-        void ToggleSelector();
-        void StartLocationInteraction();
-        void Gesture();
-        void WaveHands();
-        void PlaySpeech(string player, bool v);
-        void PauseCurrentActivity();
-        void LootPed();
-        void GrabPed();
-        void Crouch();
-        void StartSimpleCellphoneActivity();
-        void DragPed();
+        Ped Character { get; }
+        VehicleExt CurrentVehicle { get; }
+        bool CurrentVehicleIsInAir { get; }
+        bool CurrentVehicleIsRolledOver { get; }
+        bool HandsAreUp { get; set; }
+        bool IsAiming { get; }
+        bool IsAliveAndFree { get; }
+        bool IsBusted { get; }
+        bool IsConversing { get; }
+        bool IsCustomizingPed { get; }
+        bool IsDisplayingCustomMenus { get; }
+        bool IsInteracting { get; }
+        bool IsInVehicle { get; }
+        bool IsMale { get; }
+        bool IsMoveControlPressed { get; set; }
+        bool IsMoving { get; }
+        bool IsNotHoldingEnter { get; set; }
+        bool IsNotWanted { get; }
+        bool IsPerformingActivity { get; set; }
+        bool IsPressingFireWeapon { get; set; }
+        bool IsWanted { get; }
+        bool IsWavingHands { get; set; }
+        bool ReleasedFireWeapon { get; set; }
         void CancelCurrentActivity();
+        void CloseDriverDoor();
         void ContinueCurrentActivity();
+        void DragPed();
+        void Gesture();
+        void GrabPed();
+        void LootPed();
+        void LowerHands();
+        void PauseCurrentActivity();
+        void PlaySpeech(string player, bool v);
+        void RaiseHands();
+        void StartConversation();
+        void StartLocationInteraction();
+        void StartScenario();
+        void StartSimpleCellphoneActivity();
+        void StartTransaction();
+        void WaveHands();
     }
 }

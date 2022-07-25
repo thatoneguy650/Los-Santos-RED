@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             Player.IsPerformingActivity = true;
 
             if (Player.ClosestScenario != null && Player.ClosestScenario.InternalName.ToUpper().Contains("SEAT"))
@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr.Player
         {
             while (Player.CanPerformActivities && !IsCancelled && !Player.IsMoveControlPressed)
             {
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 GameFiber.Yield();
             }
             Exit();

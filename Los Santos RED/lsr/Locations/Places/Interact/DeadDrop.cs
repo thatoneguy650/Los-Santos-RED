@@ -126,7 +126,7 @@ public class DeadDrop : InteractableLocation
 
         while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
         {
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_safehousevagos@", "package_dropoff");
             if (AnimationTime >= 1.0f)
             {

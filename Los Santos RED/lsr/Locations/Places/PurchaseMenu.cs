@@ -126,7 +126,7 @@ public class PurchaseMenu : Menu
         {
             purchaseMenu.Visible = false;
         }
-        Player.ButtonPromptList.Clear();
+        Player.ButtonPrompts.Clear();
     }
     public void Setup()
     {
@@ -1467,7 +1467,7 @@ public class PurchaseMenu : Menu
                 {
                     CurrentWeapon.ApplyWeaponVariation(Player.Character, CurrentWeaponVariation);
                 }
-                Player.SetUnarmed();
+                Player.Equipment.SetUnarmed();
                 return true;
             }
         }

@@ -80,28 +80,28 @@ public class HumanShield : DynamicActivity
         Ped.Pedestrian.AttachTo(Player.Character, 0, new Vector3(-0.31f, 0.12f, 0.04f), new Rotator(0, 0, 0));
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1, 0, false, false, false);//-1
         uint GameTimeStarted = Game.GameTime;
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == "Execute"))
+        Player.ButtonPrompts.RemovePrompts("Grab"); //Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
+        if (!Player.ButtonPrompts.HasPrompt("Execute"))// if (!Player.ButtonPromptList.Any(x => x.Identifier == "Execute"))
         {
-            Player.ButtonPromptList.Add(new ButtonPrompt("Execute", "Hostage", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+            Player.ButtonPrompts.AddPrompt("Hostage", "Execute", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Execute", "Hostage", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
         }
-        if (!Player.ButtonPromptList.Any(x => x.Identifier == "Release"))
+        if (!Player.ButtonPrompts.HasPrompt("Release"))//   !Player.ButtonPromptList.Any(x => x.Identifier == "Release"))
         {
-            Player.ButtonPromptList.Add(new ButtonPrompt("Release", "Hostage", "Release", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+            Player.ButtonPrompts.AddPrompt("Hostage", "Release", "Release", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);//Player.ButtonPromptList.Add(new ButtonPrompt("Release", "Hostage", "Release", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
         }
         while (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && Player.IsAliveAndFree && !Player.IsIncapacitated)
         {
             HeadingLoop();
             DirectionLoop();
-            if (Player.ButtonPromptList.Any(x => x.Identifier == "Execute" && x.IsPressedNow))//demand cash?
+            if (Player.ButtonPrompts.IsPressed("Execute")) //if (Player.ButtonPromptList.Any(x => x.Identifier == "Execute" && x.IsPressedNow))//demand cash?
             {
-                Player.ButtonPromptList.RemoveAll(x => x.Group == "Hostage");
+                Player.ButtonPrompts.RemovePrompts("Hostage");
                 ExecuteHostage();
                 break;
             }
-            else if (Player.ButtonPromptList.Any(x => x.Identifier == "Release" && x.IsPressedNow))//demand cash?
+            else if (Player.ButtonPrompts.IsPressed("Release")) //else if (Player.ButtonPromptList.Any(x => x.Identifier == "Release" && x.IsPressedNow))//demand cash?
             {
-                Player.ButtonPromptList.RemoveAll(x => x.Group == "Hostage");
+                Player.ButtonPrompts.RemovePrompts("Hostage");
                 ReleaseHostage();
                 break;
             }
@@ -127,7 +127,7 @@ public class HumanShield : DynamicActivity
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Player.Character, (int)PedConfigFlags.PED_FLAG_NO_PLAYER_MELEE, true);
             GameFiber.Yield();
         }
-        Player.ButtonPromptList.RemoveAll(x => x.Group == "Hostage");
+        Player.ButtonPrompts.RemovePrompts("Hostage");
 
         SetRegularCamera();
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Player.Character, (int)PedConfigFlags.PED_FLAG_NO_PLAYER_MELEE, false);

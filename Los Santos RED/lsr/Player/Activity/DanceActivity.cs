@@ -96,7 +96,7 @@ namespace LosSantosRED.lsr.Player
                 //}
                 while (Player.CanPerformActivities && !IsCancelled)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter);
                     if (AnimationTime >= 0.99f)
                     {
@@ -143,7 +143,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 while (Player.CanPerformActivities && !IsCancelled)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle);
                     if (AnimationTime >= 0.99f && shouldStop)
                     {
@@ -208,7 +208,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 while (Player.CanPerformActivities && !IsCancelled)
                 {
-                    Player.SetUnarmed();
+                    Player.Equipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit);
                     if (AnimationTime >= 0.99f)
                     {
@@ -251,7 +251,7 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.Natives.SET_RADIO_STATION_MUSIC_ONLY(RadioStation.InternalName, true);
             }
 
-            Player.SetUnarmed();
+            Player.Equipment.SetUnarmed();
             Player.IsPerformingActivity = true;
             Player.IsDancing = true;
 
