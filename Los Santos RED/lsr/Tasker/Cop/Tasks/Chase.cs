@@ -577,7 +577,7 @@ public class Chase : ComplexTask
 
 
 
-            if (Ped.DistanceToPlayer <= 150f)
+            if (Ped.DistanceToPlayer <= 75f || Ped.RecentlySeenPlayer)
             {
                 NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
             }

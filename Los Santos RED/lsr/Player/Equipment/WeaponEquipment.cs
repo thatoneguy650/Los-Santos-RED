@@ -26,6 +26,7 @@ public class WeaponEquipment
     public short CurrentWeaponMagazineSize { get; private set; }
     public WeaponInformation CurrentSeenWeapon => !Player.IsInVehicle ? CurrentWeapon : null;
     public WeaponHash LastWeaponHash { get; private set; }
+    public bool IsDangerouslyArmed => Player.IsVisiblyArmed && CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee;
     public WeaponEquipment(IItemEquipable player, IWeaponDroppable weaponDroppable, IWeapons weapons, ISettingsProvideable settings, IWeaponSwayable weaponSwayable, IWeaponRecoilable weaponRecoilable, IWeaponSelectable weaponSelectable)
     {
         Player = player;

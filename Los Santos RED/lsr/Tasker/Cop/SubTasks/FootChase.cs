@@ -32,7 +32,7 @@ public class FootChase
         WriteTicket,
         SimpleLook,
     }
-    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide;
+    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide && !Player.IsDangerouslyArmed;
     private bool ShouldAimTaser => Player.WantedLevel > 1;
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop)
     {
@@ -67,6 +67,22 @@ public class FootChase
         {
             GoToDistance = 10f;
         }
+        else if (Player.IsDangerouslyArmed)
+        {
+            
+            if(Player.IsStill)
+            {
+                if(GoToDistance >= 3f)
+                {
+                    CurrentSubTask = SubTask.None;
+                }
+                GoToDistance = 3f;
+            }
+            else
+            {
+                GoToDistance = 8f;
+            }
+        }
         else if(Player.IsInVehicle)
         {
             GoToDistance = 3f;
@@ -79,7 +95,7 @@ public class FootChase
 
 
         CloseDistance = 10f;
-        if(!Cop.HasTaser)
+        if(!Cop.HasTaser && !Player.IsDangerouslyArmed)
         {
             CloseDistance = 2f;
         }
@@ -92,7 +108,7 @@ public class FootChase
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAttackWithLessLethal();
         }
-        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && ShouldAimTaser && Cop.HasTaser)//7f
+        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && ShouldAimTaser && (Cop.HasTaser || Player.IsDangerouslyArmed))//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAimTaser();
@@ -240,6 +256,7 @@ public class FootChase
                 }
             }
         }
+        EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Attack With Less Lethal");
     }
     private void TaskAimTaser()
     {
@@ -296,6 +313,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Aim Taser");
     }
     private void TaskLookAt()
     {
@@ -373,6 +391,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Look At");
     }
     private void TaskLookAtSimple()
     {
@@ -407,6 +426,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
+        EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Look At Simple");
     }
     private void TaskWriteTicket()
     {
@@ -468,6 +488,7 @@ public class FootChase
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
+        EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Go TO");
     }
 }
 

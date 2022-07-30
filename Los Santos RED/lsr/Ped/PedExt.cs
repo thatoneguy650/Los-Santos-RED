@@ -92,6 +92,7 @@ public class PedExt : IComplexTaskable
 
     public bool IsTrustingOfPlayer { get; set; } = true;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
+    public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;

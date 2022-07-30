@@ -42,6 +42,9 @@ namespace LosSantosRED.lsr.Interface
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
 
         LocationData CurrentLocation { get; }
+        bool IsVisiblyArmed { get; }
+        WeaponEquipment WeaponEquipment { get; }
+        bool IsDangerouslyArmed { get; }
 
 
         //bool IsHostile(Gang gang);

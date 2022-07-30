@@ -235,7 +235,7 @@ public class Investigate : ComplexTask
 
                     if (isCode3)
                     {
-                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
+                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 75f && Player.CurrentLocation.IsOffroad)
                         {
                             if (!isSetCode3Close)
                             {

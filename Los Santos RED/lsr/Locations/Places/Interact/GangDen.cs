@@ -78,6 +78,8 @@ public class GangDen : InteractableLocation
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.SayGreeting = false;
                 StoreCamera.Setup();
+
+
                 CreateInteractionMenu();
                 if(Player.IsWanted)
                 {
@@ -92,9 +94,12 @@ public class GangDen : InteractableLocation
                     }
                     InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
                 }
+
+
+
+                CreateInteractionMenu();
                 if (Player.IsNotWanted)
                 {
-                    RemoveLayLow();
                     KeepInteractionGoing = false;
                     Player.IsTransacting = true;
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
@@ -243,19 +248,19 @@ public class GangDen : InteractableLocation
             {
                 GameFiber.Yield();
             }
-
             Player.SetWantedLevel(0, "Gang Lay Low", true);
             LayLowMenuItem.Enabled = false;
+            KeepInteractionGoing = false;
             //RemoveLayLow();
         }, "LayLowWatcher");
     }
-    private void RemoveLayLow()
-    {
-        if (InteractionMenu.MenuItems.IndexOf(LayLowMenuItem) >= 0)
-        {
-            InteractionMenu.RemoveItemAt(InteractionMenu.MenuItems.IndexOf(LayLowMenuItem));
-            InteractionMenu.RefreshIndex();
-        }
-    }
+    //private void RemoveLayLow()
+    //{
+    //    if (InteractionMenu.MenuItems.IndexOf(LayLowMenuItem) >= 0)
+    //    {
+    //        InteractionMenu.RemoveItemAt(InteractionMenu.MenuItems.IndexOf(LayLowMenuItem));
+    //        InteractionMenu.RefreshIndex();
+    //    }
+    //}
 }
 

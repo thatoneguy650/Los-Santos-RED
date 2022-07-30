@@ -151,6 +151,22 @@
     public int LikelyHoodOfCountySpawn_Wanted6 { get; set; }
     public bool RemoveVanillaSpawnedPeds { get; set; }
 
+
+
+
+    public int TimeBetweenCopSpeak_Armed_Min { get; set; }
+    public int TimeBetweenCopSpeak_Armed_Randomizer_Min { get; set; }
+    public int TimeBetweenCopSpeak_Armed_Randomizer_Max { get; set; }
+    public int TimeBetweenCopSpeak_General_Min { get; set; }
+    public int TimeBetweenCopSpeak_General_Randomizer_Min { get; set; }
+    public int TimeBetweenCopSpeak_General_Randomizer_Max { get; set; }
+    public int TimeBetweenCopSpeak_Deadly_Min { get; set; }
+    public int TimeBetweenCopSpeak_Deadly_Randomizer_Min { get; set; }
+    public int TimeBetweenCopSpeak_Deadly_Randomizer_Max { get; set; }
+    public int TimeBetweenCopSpeak_WeaponsFree_Min { get; set; }
+    public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min { get; set; }
+    public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -315,5 +331,28 @@
 
 
         RemoveVanillaSpawnedPeds = false;
+
+
+
+
+        TimeBetweenCopSpeak_Armed_Min = 10000;
+        TimeBetweenCopSpeak_Armed_Randomizer_Min = 0;
+        TimeBetweenCopSpeak_Armed_Randomizer_Max = 5000;
+
+
+        TimeBetweenCopSpeak_General_Min = 20000;
+        TimeBetweenCopSpeak_General_Randomizer_Min = 0;
+        TimeBetweenCopSpeak_General_Randomizer_Max = 13000;
+
+
+        TimeBetweenCopSpeak_Deadly_Min = 15000;
+        TimeBetweenCopSpeak_Deadly_Randomizer_Min = 0;
+        TimeBetweenCopSpeak_Deadly_Randomizer_Max = 8000;
+
+        TimeBetweenCopSpeak_WeaponsFree_Min = 10000;
+        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min = 0;
+        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 5000;
+
+
     }
 }

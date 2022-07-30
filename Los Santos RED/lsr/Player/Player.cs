@@ -26,6 +26,9 @@ namespace Mod
         private uint GameTimeGotInVehicle;
         private uint GameTimeGotOutOfVehicle;
         private uint GameTimeLastBusted;
+
+
+
         private uint GameTimeLastCrashedVehicle;
         private uint GameTimeLastDied;
         private uint GameTimeLastFedUpCop;
@@ -338,6 +341,7 @@ namespace Mod
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }
         public bool IsVisiblyArmed { get; set; }
+        public bool IsDangerouslyArmed => WeaponEquipment.IsDangerouslyArmed;
         public bool IsWanted => wantedLevel > 0;
         public Vehicle LastFriendlyVehicle { get; set; }
         public GestureData LastGesture { get; set; }
@@ -411,6 +415,7 @@ namespace Mod
         public bool IsBeingANuisance { get; set; }
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
+        public bool WasDangerouslyArmedWhenBusted { get; private set; }
 
         //Required
         public void Setup()
@@ -1085,6 +1090,7 @@ namespace Mod
             IsBusted = true;
             BeingArrested = true;
             GameTimeLastBusted = Game.GameTime;
+            WasDangerouslyArmedWhenBusted = IsDangerouslyArmed;
             Surrendering.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {

@@ -36,7 +36,7 @@ public class Cop : PedExt, IWeaponIssuable
             VoiceName = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
         }
         WeaponInventory = new WeaponInventory(this, Settings);
-        Voice = new Voice(this, ModelName);
+        Voice = new Voice(this, ModelName, Settings);
         AssistManager = new AssistManager(this);
 
     }

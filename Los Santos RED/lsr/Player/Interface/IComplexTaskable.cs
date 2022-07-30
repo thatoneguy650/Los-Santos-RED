@@ -48,6 +48,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 PositionLastSeenDistressedPed { get; }
         bool IsOnBike { get; }
         List<uint> BlackListedVehicles { get; }
+        bool RecentlySeenPlayer { get; }
 
         void SetWantedLevel(int v);
     }

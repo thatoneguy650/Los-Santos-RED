@@ -73,7 +73,7 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
     }
-    public void UpdateLoadout(bool PlayerInVehicle, bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice, bool lethalForceAuthorized)
+    public void UpdateLoadout(bool PlayerInVehicle, bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice, bool lethalForceAuthorized, IItemEquipable player)
     {
         if (WeaponOwner.Pedestrian.Exists())
         {
@@ -156,7 +156,7 @@ public class WeaponInventory
                             }
                             else
                             {
-                                if (lethalForceAuthorized)
+                                if (lethalForceAuthorized || player.WasDangerouslyArmedWhenBusted)
                                 {
                                     SetDeadly(false);
                                 }
@@ -164,7 +164,14 @@ public class WeaponInventory
                                 {
                                     if(WantedLevel >= 2)
                                     {
-                                        SetLessLethal();
+                                        if(player.IsDangerouslyArmed)
+                                        {
+                                            SetDeadly(false);
+                                        }
+                                        else
+                                        {
+                                            SetLessLethal();
+                                        }
                                     }
                                     else
                                     {
@@ -182,7 +189,20 @@ public class WeaponInventory
                             }
                             else
                             {
-                                SetLessLethal();
+                                if (player.IsDangerouslyArmed)
+                                {
+                                    SetDeadly(false);
+                                }
+                                else
+                                {
+                                    SetLessLethal();
+                                }
+                            }
+
+
+                            if(WeaponOwner.IsInVehicle && player.IsDangerouslyArmed)
+                            {
+                                HasHeavyWeaponOnPerson = true;
                             }
                         }
                     }

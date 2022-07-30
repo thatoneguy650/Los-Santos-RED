@@ -49,6 +49,9 @@ namespace LosSantosRED.lsr.Interface
         uint TimeInSearchMode { get; }
         uint TimeToRecognize { get; }
         int WantedLevel { get; }
+        bool IsDangerouslyArmed { get; }
+        bool IsStill { get; }
+
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void Arrest();
         int FineAmount();

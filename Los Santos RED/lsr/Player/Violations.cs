@@ -301,20 +301,20 @@ namespace LosSantosRED.lsr
             if (isBrandishing && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
-                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.WeaponLevel >= 4)
+                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 4)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//.IsCurrentlyViolating = true;
                 }
-                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.WeaponLevel >= 3)
+                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 3)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingHeavyWeapon"));//.IsCurrentlyViolating = true;
                 }
-                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Melee)
+                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon?.Category == WeaponCategory.Melee)
                 {
                     AddViolating(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
                 }
             }
-            if (isBrandishing && Player.CurrentTargetedPed != null && Player.WeaponEquipment?.CurrentWeapon.Category != WeaponCategory.Melee)
+            if (isBrandishing && Player.CurrentTargetedPed != null && Player.WeaponEquipment?.CurrentWeapon?.Category != WeaponCategory.Melee)
             {
                 if(Player.CurrentTargetedPed.IsCop)
                 {

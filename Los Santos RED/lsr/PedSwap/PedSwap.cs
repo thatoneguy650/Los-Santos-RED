@@ -237,8 +237,10 @@ public class PedSwap : IPedSwap
                     Player.IsCop = false;
                     HandlePreviousPed(false, TargetPed);
                     PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+
+
                     Player.GangRelationships.SetGang(gang, false);
-                    IssueWeapons(RandomItems.RandomPercent(gang.PercentageWithMelee) ? gang.GetRandomMeleeWeapon(Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(true, Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(false, Weapons) : null);
+                    IssueWeapons(RandomItems.RandomPercent(gang.PercentageWithMelee) ? gang.GetRandomMeleeWeapon(Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(true, Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithLongGuns) ? gang.GetRandomWeapon(false, Weapons) : null);
                     if (RandomItems.RandomPercent(gang.VehicleSpawnPercentage))
                     {
                         SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
@@ -253,10 +255,13 @@ public class PedSwap : IPedSwap
                             if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                             {
                                 Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                                Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
                             }
                         }
                     }
                     
+
+
                     GameFiber.Sleep(500);
                     Game.FadeScreenIn(500, true);
                     GiveHistory();

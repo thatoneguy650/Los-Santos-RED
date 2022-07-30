@@ -16,19 +16,20 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastUpdatedPolice;
         private int TotalRan;
         private int TotalChecked;
-
-        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings)
+        private IItemEquipable ItemEquipablePlayer;
+        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer)
         {
             World = world;
             Player = currentPlayer;
             Settings = settings;
             Perceptable = perceptable;
+            ItemEquipablePlayer = itemEquipablePlayer;
         }
         public void Update()
         {
             UpdateCops();
             UpdateRecognition();
-            if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1) && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1 || (Player.WantedLevel > 1 && Player.IsDangerouslyArmed && Player.IsStill)) && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
                 GameFiber.Yield();
                 Player.Arrest();
@@ -68,7 +69,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            Cop.WeaponInventory.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized);
+                            Cop.WeaponInventory.UpdateLoadout(Player.IsInVehicle,Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel, Player.IsAttemptingToSurrender, Player.IsBusted, Player.PoliceResponse.IsWeaponsFree, Player.PoliceResponse.HasShotAtPolice, Player.PoliceResponse.LethalForceAuthorized, ItemEquipablePlayer);
                         }
                         if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
                         {
